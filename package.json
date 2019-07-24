@@ -1,0 +1,23 @@
+{
+  "name": "freerooms",
+  "version": "1.0.0",
+  "description": "A web application designed to aide UNSW students in finding vacant rooms.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/csesoc/Freerooms.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/csesoc/Freerooms/issues"
+  },
+  "homepage": "https://github.com/csesoc/Freerooms#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "puppeteer": "^1.19.0"
+  }
+}
