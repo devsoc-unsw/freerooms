@@ -10,7 +10,7 @@ const scraper = require('./app_modules/scrape.js')
 app.get('/', async (req, res) => {
 	// call scraper with scrapeCourseList function and print
 	try {
-		let result = await scraper.scrapeCourseList();
+		let result = await scraper.scrapeCourseTypeList();
 		await res.send(result);
 		console.log('printed message')
 	}

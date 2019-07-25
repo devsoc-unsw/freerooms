@@ -7,7 +7,7 @@ const puppeteer = require('puppeteer');
 // SCRAPE FUNCTIONS
 
 // can be improved to reference by year (cbf to do it right now)
-var scrapeCourseList = (async() => {
+var scrapeCourseTypeList = (async() => {
 	try {
 		const browser = await puppeteer.launch();
 		const page = await browser.newPage();
@@ -33,4 +33,4 @@ var scrapeCourseList = (async() => {
 })
 
 // EXPORT FUNCTIONS
-exports.scrapeCourseList = scrapeCourseList;
+exports.scrapeCourseTypeList = scrapeCourseTypeList;
