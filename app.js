@@ -10,8 +10,9 @@ const scraper = require('./app_modules/scrape.js')
 app.get('/', async (req, res) => {
 	// call scraper with scrapeCourseList function and print
 	try {
-		let result = await scraper.scrapeCourseTypeList();
-		await res.send(result);
+		let typeList = await scraper.scrapeCourseTypeList();
+		let courseList = await scraper.scrapeCourseCodeList(typeList);
+		res.send(courseList);
 		console.log('printed message')
 	}
 	catch (err) {
@@ -22,4 +23,4 @@ app.get('/', async (req, res) => {
 
 app.listen(port, () => {
 	console.log(`Example app listening on port ${port}!`)
-});	
+});

@@ -13,11 +13,13 @@ var scrapeCourseTypeList = (async() => {
 		const page = await browser.newPage();
 		await page.goto(TIMETABLE_URL);
 
-		// get raw list rows and get course code inner text from first cell
+		// get raw list rows and get course code info
 		const result = await page.evaluate(() => {
 			let rawList = Array.from(document.querySelectorAll('.rowLowLight, .rowHighLight'));
-			let list = rawList.map(function(e) { return e.cells[0].innerText; });
-			return list;
+			return rawList;
+			// list returned is a array of DOM's
+			//let list = rawList.map(function(e) { return e.cells[0].innerText; });
+			//return list;
 		})
 
 		// close the browser and return the list
@@ -32,5 +34,20 @@ var scrapeCourseTypeList = (async() => {
 	}
 })
 
+//
+var scrapeCourseCodeList = (async(typeList) => {
+	try {
+		const browser = await puppeteer.launch();
+		const page = await browser.newPage();
+
+	}
+	catch (err) {
+		console.log(error(err));
+		await browser.close(); // close the browser so no lingering instances
+		return Error(err);
+	}
+})
+
 // EXPORT FUNCTIONS
 exports.scrapeCourseTypeList = scrapeCourseTypeList;
+exports.scrapeCourseCodeList = scrapeCourseCodeList;
