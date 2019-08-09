@@ -28,7 +28,7 @@ var scrapeCourseTypeList = (async() => {
 		return result;
 	}
 	catch (err) {
-		console.log(error(err));
+		console.log(err);
 		await browser.close(); // close the browser so no lingering instances
 		return Error(err);
 	}
