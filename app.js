@@ -16,7 +16,7 @@ app.get('/', async (req, res) => {
 	}
 	catch (err) {
 		await res.send('unexpected error has occured')
-		console.log(error(err));
+		console.log(err);
 	}
 });
 
