@@ -28,7 +28,7 @@ var scrapeCourseTypeList = (async() => {
 		return result;
 	}
 	catch (err) {
-		console.log(err);
+		console.log(Error(err));
 		await browser.close(); // close the browser so no lingering instances
 		return Error(err);
 	}
@@ -40,9 +40,11 @@ var scrapeCourseCodeList = (async(typeList) => {
 		const browser = await puppeteer.launch();
 		const page = await browser.newPage();
 
+		await browser.close(); // early close
+		return typeList; 
 	}
 	catch (err) {
-		console.log(error(err));
+		console.log(Error(err));
 		await browser.close(); // close the browser so no lingering instances
 		return Error(err);
 	}
