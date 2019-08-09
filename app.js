@@ -4,7 +4,7 @@ const app = express();
 const port = 1337;
 
 // MODULES
-const scraper = require('./app_modules/scrape.js')
+const scraper = require('./app_modules/scrape.js');
 
 // INDEX ROUTE
 app.get('/', async (req, res) => {
@@ -12,14 +12,14 @@ app.get('/', async (req, res) => {
 	try {
 		let result = await scraper.scrapeCourseTypeList();
 		await res.send(result);
-		console.log('printed message')
+		console.log('printed message');
 	}
 	catch (err) {
-		await res.send('unexpected error has occured')
+		await res.send('unexpected error has occured');
 		console.log(err);
 	}
 });
 
 app.listen(port, () => {
-	console.log(`Example app listening on port ${port}!`)
+	console.log(`Example app listening on port ${port}!`);
 });	
