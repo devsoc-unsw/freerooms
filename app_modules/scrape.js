@@ -9,9 +9,13 @@ const puppeteer = require('puppeteer');
 // can be improved to reference by year (cbf to do it right now)
 var scrapeCourseTypeList = (async() => {
 	try {
-		const browser = await puppeteer.launch();
+		// remove no sandbox later when with debian
+		const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
+		console.log('loaded browser');
 		const page = await browser.newPage();
+		console.log('loaded newPage');
 		await page.goto(TIMETABLE_URL);
+		console.log('url');
 
 		// get raw list rows and get course code info
 		const result = await page.evaluate(() => {
@@ -37,8 +41,9 @@ var scrapeCourseTypeList = (async() => {
 //
 var scrapeCourseCodeList = (async(typeList) => {
 	try {
-		const browser = await puppeteer.launch();
-		const page = await browser.newPage();
+		// remove no sandbox later when with debian
+		const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
+		//const page = await browser.newPage();
 
 		await browser.close(); // early close
 		return typeList; 
