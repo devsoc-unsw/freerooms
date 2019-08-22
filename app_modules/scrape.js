@@ -17,7 +17,7 @@ var scrapeCourseTypeList = (async() => {
 
 		// CONSOLE.LOG CODEBLOCK
 		page.on('console', (log) => console[log._type](log._text));
-		console.log('loaded page eval console.log')
+		console.log('loaded page eval console.log');
 		////////////////////////
 
 		await page.goto(TIMETABLE_URL);
@@ -32,8 +32,10 @@ var scrapeCourseTypeList = (async() => {
 				// if unsw change how they set up the child elements
 				let object = {
 					"code": e.cells[0].innerText,
-					"url": e.cells[0].firstElementChild.href
-				}
+					"name": e.cells[1].innerText,
+					"url": e.cells[0].firstElementChild.href,
+					"course": null
+				};
 
 				return object;
 			});
@@ -49,8 +51,63 @@ var scrapeCourseTypeList = (async() => {
 		console.log(Error(err));
 		await browser.close(); // close the browser so no lingering instances
 		return Error(err);
+	};
+});
+
+var scrapeCourseCodeList = (async(typeList) => {
+	try {
+		// remove no sandbox later when with debian
+		const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
+		console.log('loaded browser');
+		const page = await browser.newPage();
+		console.log('loaded newPage');
+
+		// CONSOLE.LOG CODEBLOCK
+		page.on('console', (log) => console[log._type](log._text));
+		console.log('loaded page eval console.log');
+		////////////////////////
+
+		//console.log(typeList);
+		// Begin Loop to extract data (HOW TO MAKE THIS FASTER? IT'S SLOW AS FUCK. NEED MORE PARALLELISATION)
+		for (var i = 0; i < typeList.length; i++) {
+			// retrieve URL and goto
+			console.log('retrieve url for ' + typeList[i].code);
+			let codeURL = typeList[i].url;
+			await page.goto(codeURL);
+			console.log('loaded course url');
+
+			// evaluate page and retrieve data
+			const result = await page.evaluate(() => {
+				let container = Array.from(document.querySelectorAll('.rowLowLight, .rowHighLight'));
+				let list = container.map(function(e) {
+					// object template for course array
+					let object = {
+						"code": e.cells[0].innerText,
+						"name": e.cells[1].innerText,
+						"url": e.cells[0].firstElementChild.href
+					};
+
+					return object;
+				});
+				return list;
+			});
+
+			// link list onto json array
+			typeList[i].course = result;
+			//console.log(codeURL);
+			//console.log(typeList[i].course.length);
+		};
+
+		await browser.close(); // early close
+		return typeList; 
 	}
-})
+	catch (err) {
+		console.log(Error(err));
+		await browser.close(); // close the browser so no lingering instances
+		return Error(err);
+	}
+});
 
 // EXPORT FUNCTIONS
 exports.scrapeCourseTypeList = scrapeCourseTypeList;
+exports.scrapeCourseCodeList = scrapeCourseCodeList;
