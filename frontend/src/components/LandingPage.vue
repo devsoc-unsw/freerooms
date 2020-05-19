@@ -1,6 +1,6 @@
 <template>
     <div class="room-view">
-        hELLO WORLD
+        {{msg}}
         <v-row
           align="start"
           justify="center"
@@ -14,7 +14,7 @@
             outlined
             tile
           >
-            Location {{index}}
+            <router-link :to="{name: 'locationRoom', params: { locationId : index }}">Location {{index}}</router-link>
           </v-card>
         </v-row>
     </div>
@@ -25,6 +25,11 @@
 
   @Component
   export default class Home extends Vue {
+      msg = "";
+      mounted() {
+          console.log("hello", this.$route.path);
+          this.msg = this.$route.path;
+      }
   }
 </script>
 

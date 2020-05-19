@@ -1,5 +1,7 @@
 <template>
     <div class="room-view">
+        Route: {{msg}}
+        params: {{params}}
         <v-row
           align="end"
           justify="center"
@@ -24,6 +26,12 @@
 
   @Component
   export default class LocationRoomView extends Vue {
+      msg = "";
+      params = {};
+      mounted() {
+          this.msg = this.$route.path;
+          this.params = this.$route.params;
+      }
   }
 </script>
 

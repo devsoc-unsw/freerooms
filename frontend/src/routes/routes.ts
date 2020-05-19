@@ -22,7 +22,7 @@ const routes = [
         children: [
             {
                 path: '/home',
-                name: 'Location',
+                name: 'locations',
                 component: Home
             }
         ]
@@ -30,7 +30,7 @@ const routes = [
     {
         path: "/location/:locationId",
         component: LocationRoomView,
-        name: 'location'
+        name: 'locationRoom'
     }, 
     {
         // we cannot do a nested route as we want to
