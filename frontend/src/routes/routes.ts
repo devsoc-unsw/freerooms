@@ -23,21 +23,30 @@ const routes = [
             {
                 path: '/home',
                 name: 'locations',
-                component: Home
+                component: Home,
+                meta: {
+                    breadCrumb: "Home"
+                }
             }
         ]
     },
     {
         path: "/location/:locationId",
         component: LocationRoomView,
-        name: 'locationRoom'
+        name: 'locationRoom',
+        meta: {
+            breadCrumb: "Location"
+        }
     }, 
     {
         // we cannot do a nested route as we want to
         // render the <router-view> in the root element
         path: "/location/:locationId/room/:roomId",
         component: RoomView,
-        name: 'room'
+        name: 'room',
+        meta: {
+            breadCrumb: "Room"
+        }
     }
 ];
 

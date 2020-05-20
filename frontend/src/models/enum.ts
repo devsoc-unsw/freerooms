@@ -6,3 +6,4 @@ enum Locations {
     Tyree
 }
 
+export default Locations;
