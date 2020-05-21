@@ -3,20 +3,40 @@
         Route: {{msg}}
         params: {{params}}
         <v-row
+          no-gutters
           align="center"
           justify="center"
-          class="grey lighten-5"
           style="height: 300px;"
         >
-          <v-card
-            v-for="(n, index) in 3"
+          <!-- Booked class -->
+          <div v-for="(n, index) in 10"
             :key="n"
-            class="ma-3 pa-6"
-            outlined
-            tile
+            class="ma-3" 
           >
-            <router-link :to="{name: 'room', params: { locationId : locationId, roomId: index}}">Room {{index}}</router-link>
-          </v-card>
+            <router-link :to="{name: 'room', params: { locationId : locationId, roomId: index}}">
+              <v-card
+                class="primary white--text"
+                flat
+              >
+                <v-card-title class="text-center"> Room {{index}} </v-card-title>
+              </v-card>
+            </router-link>
+          </div>
+
+          <!-- Currently booked class -->
+          <div class="ma-3">
+            <router-link :to="{name: 'room', params: { locationId : locationId, roomId: 3}}">
+              <v-card
+                class="info primary--text"
+                flat
+              >
+                <v-card-title class="text-center">
+                  Room 3 <v-icon color="primary" right>event_busy</v-icon>
+                </v-card-title>
+              </v-card>
+            </router-link>
+          </div>
+
         </v-row>
     </div>
 </template>

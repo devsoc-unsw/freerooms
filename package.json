@@ -18,6 +18,10 @@
   "homepage": "https://github.com/csesoc/Freerooms#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "material-design-icons-iconfont": "^5.0.1",
     "puppeteer": "^1.19.0"
+  },
+  "devDependencies": {
+    "@mdi/font": "^5.2.45"
   }
 }

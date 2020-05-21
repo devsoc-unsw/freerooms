@@ -33,6 +33,11 @@
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  background-color: #f7f7ff; 
 }
 
+a {
+  text-decoration: none;
+  font-weight: bold;
+}
 </style>
