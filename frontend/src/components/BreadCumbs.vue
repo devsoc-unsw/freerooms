@@ -10,6 +10,9 @@
 
 <script>
     import LocationService from '../services/locationService';
+    // have to do it like this without a class
+    // so we dont have to deal with lifecycle hoooks like mounted and
+    // we dont have to worry about $route being empty
     export default {
         computed: {
             crumbs: function() {
