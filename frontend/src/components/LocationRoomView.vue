@@ -1,7 +1,5 @@
 <template>
     <div class="location-room-view">
-        Route: {{msg}}
-        params: {{params}}
         <v-row
           no-gutters
           align="center"

@@ -1,6 +1,5 @@
 <template>
     <div class="room-view">
-        {{msg}}
         <v-row
           no-gutters
           align="start"
