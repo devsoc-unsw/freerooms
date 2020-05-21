@@ -10,6 +10,7 @@
       </v-app-bar>
 
       <v-content>
+        <BreadCrumbs />
         <router-view></router-view>
       </v-content>
     </v-app>
@@ -18,9 +19,15 @@
  
 <script lang="ts">
   import { Component, Vue } from 'vue-property-decorator';
+  import BreadCrumbs from './components/BreadCumbs.vue';
 
-  @Component
+  @Component({
+    components: {
+      BreadCrumbs
+    }
+  })
   export default class App extends Vue {
+    
     
   }
 </script>

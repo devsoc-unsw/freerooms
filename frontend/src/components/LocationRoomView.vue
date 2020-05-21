@@ -47,7 +47,7 @@
   @Component
   export default class LocationRoomView extends Vue {
       msg = "";
-      params = {};
+      params: any = null;
       locationId = 0;
       mounted() {
           console.log("hello", this.$route.path);
