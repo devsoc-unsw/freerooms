@@ -19,7 +19,8 @@
                 <v-img
                   class="white--text align-end"
                   height="200px"
-                  src="../assets/building_photos/download-1.jpg"
+                  width="250px"
+                  src="../assets/building_photos/Tyree.png"
                   gradient="to top right, rgba(130,177,255,.5), rgba(25,118,210,.33)"
                 ></v-img>
                 <v-card-title class="text-center">

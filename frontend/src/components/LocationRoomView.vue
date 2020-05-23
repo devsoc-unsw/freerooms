@@ -23,16 +23,22 @@
 
           <!-- Currently booked class -->
           <div class="ma-3">
-            <router-link :to="{name: 'room', params: { locationId : locationId, roomId: 3}}">
-              <v-card
-                class="info primary--text"
-                flat
-              >
-                <v-card-title class="text-center">
-                  Room 3 <v-icon color="primary" right>event_busy</v-icon>
-                </v-card-title>
-              </v-card>
-            </router-link>
+            <v-tooltip top>
+            <template v-slot:activator="{ on }">
+              <router-link :to="{name: 'room', params: { locationId : locationId, roomId: 3}}">
+                <v-card
+                  class="info primary--text"
+                  flat
+                  v-on="on"
+                >
+                  <v-card-title class="text-center">
+                    Room 3 <v-icon color="primary" right>event_busy</v-icon>
+                  </v-card-title>
+                </v-card>
+              </router-link>
+            </template>
+            <span>Room is currently booked.</span>
+            </v-tooltip>
           </div>
 
         </v-row>
