@@ -1,5 +1,5 @@
 // CONSTS
-const TIMETABLE_URL ='http://timetable.unsw.edu.au/2019/subjectSearch.html';
+const TIMETABLE_URL ='http://timetable.unsw.edu.au/2020/subjectSearch.html';
 
 // MODULES
 const puppeteer = require('puppeteer');
