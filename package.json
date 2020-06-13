@@ -19,6 +19,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "material-design-icons-iconfont": "^5.0.1",
+    "moment": "^2.26.0",
     "puppeteer": "^1.19.0"
   },
   "devDependencies": {

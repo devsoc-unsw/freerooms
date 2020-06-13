@@ -4,9 +4,11 @@
       <v-app-bar
         app
         color="primary"
-        dark
       >
-      
+      <v-toolbar-title class="ml-1 font-weight-medium secondary--text">
+        FreeRooms
+      </v-toolbar-title>
+
       </v-app-bar>
 
       <v-content>
