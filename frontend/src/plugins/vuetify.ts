@@ -9,11 +9,15 @@ export default new Vuetify({
         iconfont: 'md',
     },
     theme: {
+        options: {
+            customProperties: true,
+        },
         themes: {
             light: {
                 primary: '#FAAC4E',
                 secondary: '#B45231',
-                accent: '#D3613A',
+                tertiary: '#D3613A',
+                accent: '#BBD6E4',
                 error: '#FF5252',
                 info: '#FFDFB9',
                 success: '#4CAF50',
