@@ -121,11 +121,11 @@
 
       intervalsDefault = {
         // first time slot
-        first: 0,
+        first: 6,
         // num of mins betwween time slots
         minutes: 60,
         // how many slots
-        count: 24,
+        count: 24-6,
         // height of the individual time slots
         height: 48,
       }
