@@ -6,7 +6,7 @@
           align="start"
           justify="center"
         >
-          <v-col cols="3">
+          <v-col cols="12">
             <v-card class="control-card">
               <v-list-item>
                 <v-btn
@@ -30,7 +30,7 @@
                   <v-icon dark>mdi-chevron-right</v-icon>
                 </v-btn>
               </v-list-item>
-              <v-list-item>
+              <v-list-item class="input-item">
                 <v-menu
                 ref="startMenu"
                 v-model="startMenu"
@@ -62,21 +62,21 @@
                   <v-spacer></v-spacer>
                   <v-btn
                     text
-                    color="primary"
+                    :color="color"
                     @click="$refs.startMenu.save(today)"
                   >
                     Today
                   </v-btn>
                   <v-btn
                     text
-                    color="primary"
+                    :color="color"
                     @click="startMenu = false"
                   >
                     Cancel
                   </v-btn>
                   <v-btn
                     text
-                    color="primary"
+                    :color="color"
                     @click="$refs.startMenu.save(start)"
                   >
                     OK
@@ -85,9 +85,8 @@
               </v-menu>
               </v-list-item>
             </v-card>
-          </v-col>
-          <v-col cols="8">
-            <v-sheet height="700">
+
+            <v-sheet height="500">
               <v-calendar
                 ref="calendar"
                 v-model="start"
@@ -112,6 +111,8 @@
 </template>
 
 <script lang="ts">
+  // We should look into spliting up the menu and the calendar into different components
+  // and using vuex to handle state control. Was Ceebs doing that so the html tags are cancer to read now...
   import { Vue, Component } from 'vue-property-decorator';
   import moment from 'moment';
 
@@ -141,6 +142,10 @@
       // initial state of time menu
       startMenu = false;
 
+      getEventColor = (e) => {
+        return "red";
+      }
+
       mounted() {
         console.log(this.start);
       }
@@ -151,6 +156,20 @@
 <style scoped>
   .control-card {
     margin-right: 20px;
+    width:100%;
+    margin-bottom: 10px;
   }
 
+  .input-item {
+    padding-bottom: 20px;
+  }
+
+</style>
+
+<style>
+
+  .v-btn--fab.v-size--default {
+    height: 30px;
+    width: 30px;
+  }
 </style>
