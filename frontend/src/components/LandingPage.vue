@@ -21,7 +21,7 @@
                   height="200px"
                   width="250px"
                   src="../assets/building_photos/Tyree.png"
-                  gradient="to top right, rgba(250,172,78,.5), rgba(180,82,49,.33)"
+                  gradient="to bottom, rgba(250,172,78,.25), rgba(180,82,49,.33)"
                 ></v-img>
                 <v-card-title class="text-center">
                   Location {{index}}

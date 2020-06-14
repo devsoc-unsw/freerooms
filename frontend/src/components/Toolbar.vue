@@ -3,14 +3,15 @@
     app
     flat
     color="accent"
+    class="mb-5"
     >
     <v-img
     max-height="50px"
     max-width="50px"
     src="../assets/favicon/free_rooms_logo.png"
     ></v-img>
-    <v-toolbar-title class="ml-3 mt-1 font-weight-medium tertiary--text">
-    FreeRooms
+    <v-toolbar-title class="ml-3 mt-1 font-weight-medium secondary--text">
+        FreeRooms
     </v-toolbar-title>
 
     </v-app-bar>
@@ -26,4 +27,7 @@
 
 
 <style scoped>
+.v-toolbar__title {
+    font-size:20pt;
+}
 </style>

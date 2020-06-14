@@ -3,7 +3,7 @@
     <v-app>
       <Toolbar />
       <v-content>
-        <BreadCrumbs />
+        <BreadCrumbs class="mt-1"/>
         <router-view></router-view>
       </v-content>
     </v-app>
