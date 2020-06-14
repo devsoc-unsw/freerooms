@@ -9,7 +9,7 @@
         <v-col 
           lg="3"
           fluid
-          justify="center"
+          align="center"
         >
           <v-card
             class="primary white--text text-center"

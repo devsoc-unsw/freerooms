@@ -3,7 +3,6 @@
     app
     flat
     color="accent"
-    class="mb-5"
     >
     <v-img
     max-height="50px"
