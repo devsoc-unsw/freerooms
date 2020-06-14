@@ -1,7 +1,6 @@
 <template>
     <v-app-bar
     app
-    flat
     color="accent"
     >
     <v-img

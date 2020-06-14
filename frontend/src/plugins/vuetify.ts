@@ -22,8 +22,9 @@ export default new Vuetify({
                 info: '#FFDFB9',
                 success: '#4CAF50',
                 warning: '#FAAC4E',
+                background: '#F2F6F7',
             },
-            dark: { // Unimplemented
+            dark: { // Unimplemented 
             }
         }
     }
