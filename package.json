@@ -18,6 +18,7 @@
   "homepage": "https://github.com/csesoc/Freerooms#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "mongodb": "^3.5.9",
     "node-cron": "^2.0.3",
     "puppeteer": "^1.19.0",
     "shelljs": "^0.8.4"
