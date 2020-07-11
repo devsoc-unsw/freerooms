@@ -137,7 +137,7 @@
       mode = 'stack';
       weekdays = [1,2,3,4,5,6,0];
       intervals = this.intervalsDefault;
-      color = 'warning';
+      color = 'accent';
 
       // initial state of time menu
       startMenu = false;

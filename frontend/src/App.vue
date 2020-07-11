@@ -1,16 +1,9 @@
 <template>
   <div id="app">
     <v-app>
-      <v-app-bar
-        app
-        color="primary"
-        dark
-      >
-      
-      </v-app-bar>
-
+      <Toolbar />
       <v-content>
-        <BreadCrumbs />
+        <BreadCrumbs class="mt-1"/>
         <router-view></router-view>
       </v-content>
     </v-app>
@@ -20,10 +13,12 @@
 <script lang="ts">
   import { Component, Vue } from 'vue-property-decorator';
   import BreadCrumbs from './components/BreadCumbs.vue';
+  import Toolbar from './components/Toolbar.vue';
 
   @Component({
     components: {
-      BreadCrumbs
+      BreadCrumbs,
+      Toolbar
     }
   })
   export default class App extends Vue {
@@ -38,8 +33,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
+    /* color: #2c3e50; */
     background-color: #f7f7ff; 
   }
 
@@ -55,13 +49,13 @@
 
   /* Track */
   ::-webkit-scrollbar-track {
-    background: #eee;
+    background: var(--v-info-base);
   }
 
   /* Handle */
   ::-webkit-scrollbar-thumb {
     border-radius: 1rem;
-    background-color: #3a7bd5;
-    background-image: linear-gradient(to top, #3a7bd5 0%, #00d2ff 100%);
+    background-color: var(--v-primary-base);
+    background-image: linear-gradient(to top, var(--v-tertiary-base) 0%, var(--v-primary-base) 100%);
   }
 </style>
