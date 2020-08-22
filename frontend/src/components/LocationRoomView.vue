@@ -10,17 +10,17 @@
             lg="3"
             fluid
             align="center"
+            class="py-3 px-6"
           >
             <v-card
               class="primary white--text text-center"
               flat
               height="300px"
-              width="250px"
             >
               <v-img
                 class="white--text align-end"
                 height="200px"
-                width="300px"
+                width="100%"
                 src="../assets/building_photos/Tyree.png"
                 gradient="to bottom, rgba(250,172,78,.25), rgba(180,82,49,.33)"
               ></v-img>
@@ -42,7 +42,7 @@
               <v-col v-for="(n, index) in 20"
                 :key="n"
                 cols="12"
-                sm="5"
+                sm="6"
                 lg="3"
               >
                 <router-link :to="{name: 'room', params: { locationId : locationId, roomId: index}}">
@@ -58,7 +58,7 @@
               <!-- Currently booked class -->
               <v-col
                 cols="12"
-                sm="5"
+                sm="6"
                 lg="3"
               >
                 <v-tooltip top>
