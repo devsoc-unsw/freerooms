@@ -3,8 +3,8 @@
         <v-row
           no-gutters
           align="center"
-          justify="center"
-
+          justify="left"
+          class="mx-0 px-0"
         >
           <v-col 
             cols="12"
@@ -34,13 +34,16 @@
             cols="12"
             lg="9"
           >
-            <v-row>
+            <v-row
+              align="center"
+              justify="center"
+              class="pl-3 pr-3 pl-md-0"
+            >
               <!-- Booked class -->
               <v-col v-for="(n, index) in 20"
                 :key="n"
-                class="ma-3" 
                 cols="12"
-                sm="4"
+                sm="5"
                 lg="2"
               >
                 <router-link :to="{name: 'room', params: { locationId : locationId, roomId: index}}">
@@ -54,11 +57,11 @@
               </v-col>
 
               <!-- Currently booked class -->
-              <v-col 
-                class="ma-3"
+              <!-- <v-col 
+                class="ma-1"
                 min-width="50px"
                 cols="12"
-                sm="4"
+                sm="5"
                 lg="2"
                 >
                 <v-tooltip top>
@@ -78,7 +81,7 @@
                 </template>
                 <span>Room is currently booked.</span>
                 </v-tooltip>
-              </v-col>
+              </v-col> -->
             </v-row>
           </v-col>
         </v-row>
