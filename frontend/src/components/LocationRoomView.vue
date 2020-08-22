@@ -36,7 +36,7 @@
           >
             <v-row
               align="center"
-              justify="center"
+
               class="pl-3 pr-3 pl-md-0"
             >
               <!-- Booked class -->
@@ -44,7 +44,7 @@
                 :key="n"
                 cols="12"
                 sm="5"
-                lg="2"
+                lg="3"
               >
                 <router-link :to="{name: 'room', params: { locationId : locationId, roomId: index}}">
                   <v-card
@@ -57,31 +57,30 @@
               </v-col>
 
               <!-- Currently booked class -->
-              <!-- <v-col 
-                class="ma-1"
-                min-width="50px"
+              <v-col
                 cols="12"
                 sm="5"
-                lg="2"
-                >
+                lg="3"
+              >
                 <v-tooltip top>
                 <template v-slot:activator="{ on }">
-                  <router-link :to="{name: 'room', params: { locationId : locationId, roomId: 3}}">
-                    <v-card
-                      class="info primary--text"
-                      flat
-                      v-on="on"
-                    >
+                <router-link :to="{name: 'room', params: { locationId : locationId, roomId: index}}">
+                  <v-card
+                    class="info primary--text"
+                    flat
+                    v-on="on"
+                  >
                       <v-card-title class="text-center">
                         <v-icon color="primary" left>event_busy</v-icon>
                         Booked Boi
                       </v-card-title>
-                    </v-card>
-                  </router-link>
+                  </v-card>
+                </router-link>
                 </template>
                 <span>Room is currently booked.</span>
                 </v-tooltip>
-              </v-col> -->
+              </v-col>
+
             </v-row>
           </v-col>
         </v-row>

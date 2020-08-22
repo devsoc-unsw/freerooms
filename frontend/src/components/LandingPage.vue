@@ -3,13 +3,15 @@
         <v-row
           no-gutters
           align="start"
-          justify="center"
-          style="height: 300px;"
+
         >
-          <!-- Booked class -->
-          <div v-for="(n, index) in 3"
+          <v-col v-for="(n, index) in 10"
             :key="n"
-            class="ma-3" 
+            cols="12"
+            sm="5"
+            lg="3"
+            align="center"
+            class="py-3 px-5"
           >
             <router-link :to="{name: 'locationRoom', params: { locationId : index }}">
               <v-card
@@ -19,7 +21,7 @@
                 <v-img
                   class="white--text align-end"
                   height="200px"
-                  width="250px"
+                  width="100%"
                   src="../assets/building_photos/Tyree.png"
                   gradient="to bottom, rgba(250,172,78,.25), rgba(180,82,49,.33)"
                 ></v-img>
@@ -28,7 +30,8 @@
                 </v-card-title>
               </v-card>
             </router-link>
-          </div>
+
+          </v-col>
         </v-row>
     </div>
 </template>
