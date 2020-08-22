@@ -1,7 +1,6 @@
 <template>
     <div class="location-room-view">
         <v-row
-          no-gutters
           align="center"
           justify="left"
           class="mx-0 px-0"

@@ -1,7 +1,9 @@
 <template>
     <v-app-bar
     app
-    color="accent"
+    floating
+    outlined
+    color="background"
     >
     <v-img
     max-height="50px"
