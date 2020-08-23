@@ -14,19 +14,18 @@ export default new Vuetify({
         },
         themes: {
             light: {
-                primary: '#F6915A',
-                secondary: '#D3613A',
+                primary: '#D3613A',
+                secondary: '#F6915A',
                 tertiary: '#B45231',
-                accent: '#BBD6E4',
-                error: '#FF5252',
-                info: '#FFDFB9',
-                success: '#4CAF50',
-                warning: '#FAAC4E',
-                background: '#F2F6F7',
+                accent: '#39D4B0',
+                info: '#5E5E5E',
+                error: '#D44315',
+                success: '#39D43F',
+                warning: '#E8DE1A',
+                background: '#F1F2F1',
             },
             dark: { // Unimplemented 
             }
         }
     }
 });
-// B45231, D3613A, FFDFB9, BBD6E4, FAAC4E (from favicon by desn team).

@@ -1,88 +1,71 @@
 <template>
     <div class="location-room-view">
+        <!-- Header, Building Id -->
         <v-row
-          align="center"
           justify="left"
-          class="mx-0 px-0"
+          align="center"
+          class="mx-0 px-0 primary"
         >
+          <v-spacer></v-spacer>
           <v-col 
-            cols="12"
-            lg="3"
-            fluid
-            align="center"
-            class="py-3 px-6"
+            cols=12
+            sm=3
+            align="right"
+            class="py-5"
           >
-            <v-card
-              class="primary white--text text-center"
-              flat
-              height="300px"
-            >
-              <v-img
-                class="white--text align-end"
-                height="200px"
-                width="100%"
-                src="../assets/building_photos/Tyree.png"
-                gradient="to bottom, rgba(250,172,78,.25), rgba(180,82,49,.33)"
-              ></v-img>
-              <v-card-title class="text-center">
-                Location {{index}}
-              </v-card-title>
-            </v-card>
+            <v-img
+              src="../assets/building_photos/Tyree.png"
+              gradient="to bottom, rgba(250,172,78,.25), rgba(180,82,49,.33)"
+            ></v-img>
           </v-col>
+          <v-spacer></v-spacer>
           <v-col
-            cols="12"
-            lg="9"
+            cols=12
+            sm=6
+            align="left"
+            class="white--text"
           >
-            <v-row
-              align="center"
-
-              class="pl-3 pr-3 pl-md-0"
-            >
-              <!-- Booked class -->
-              <v-col v-for="(n, index) in 20"
-                :key="n"
-                cols="12"
-                sm="6"
-                lg="3"
-              >
-                <router-link :to="{name: 'room', params: { locationId : locationId, roomId: index}}">
-                  <v-card
-                    class="primary white--text"
-                    flat
-                  >
-                    <v-card-title class="text-center"> Room {{index}} </v-card-title>
-                  </v-card>
-                </router-link>
-              </v-col>
-
-              <!-- Currently booked class -->
-              <v-col
-                cols="12"
-                sm="6"
-                lg="3"
-              >
-                <v-tooltip top>
-                <template v-slot:activator="{ on }">
-                <router-link :to="{name: 'room', params: { locationId : locationId, roomId: index}}">
-                  <v-card
-                    class="info primary--text"
-                    flat
-                    v-on="on"
-                  >
-                      <v-card-title class="text-center">
-                        <v-icon color="primary" left>event_busy</v-icon>
-                        Booked Boi
-                      </v-card-title>
-                  </v-card>
-                </router-link>
-                </template>
-                <span>Room is currently booked.</span>
-                </v-tooltip>
-              </v-col>
-
-            </v-row>
+            <div>
+              <span class="display-2">Building McBuildingFace</span><br>
+              <span class="display-1">K-J12</span><br>
+              <span class="body-1">30 Rooms Listed</span><br>
+              <span class="body-1">10 Currently Available</span><br>
+              <span class="body-1">15 Available in the Next Hour</span><br>
+            </div>
           </v-col>
+          <v-spacer></v-spacer>
         </v-row>
+        <!-- Room List -->
+          <v-row
+            class="mx-0 mt-4"
+            align="center"
+            justify="center"
+            v-for="(n, index) in 9"
+            :key="n"
+          >
+          <v-spacer></v-spacer>
+          <v-col 
+            cols="12" 
+            sm="10"
+            class="pa-0 ma-0"
+          >
+            <v-divider></v-divider>
+            <router-link :to="{name: 'room', params: { locationId : locationId, roomId: index}}">
+              <v-card
+                class="background"
+                flat
+              >
+                <v-card-title class="text-left">
+                  <v-icon color="success" class="mr-5">event_busy</v-icon>
+                  <span> Room {{index}} </span>
+                  <v-divider vertical class="mx-5"></v-divider>
+                  Available Until 13:00
+                </v-card-title>
+              </v-card>
+            </router-link>
+          </v-col>
+          <v-spacer></v-spacer>
+          </v-row>
     </div>
 </template>
 
@@ -95,7 +78,6 @@
       params: any = null;
       locationId = 0;
       mounted() {
-          console.log("hello", this.$route.path);
           this.msg = this.$route.path;
           this.params = this.$route.params;
           this.locationId = this.params['locationId'];
