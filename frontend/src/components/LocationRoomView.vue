@@ -25,16 +25,70 @@
               md=7
               class="py-3 px-10"
             >
-              <h1 class="white--text" align="left">
+              <p class="display-3 white--text" align="left">
                 Building McBuildingFace
-              </h1>
-              <h2 class="white--text mb-5" align="left">K-J12</h2>
-              <p class="white--text my-0 py-0" align="left">30 Rooms Listed</p>
-              <p class="white--text my-0 py-0" align="left">10 Currently Available</p>
-              <p class="white--text my-0 py-0" align="left">15 Available in the Next Hour</p>
+              </p>
+              <p class="display-1 white--text mb-5 ml-1" align="left">K-J12</p>
+              <p class="subtitle-1 white--text my-0 py-0 ml-1" align="left">30 Rooms Listed</p>
+              <p class="subtitle-1 white--text my-0 py-0 ml-1" align="left">10 Currently Available</p>
+              <p class="subtitle-1 white--text my-0 py-0 ml-1" align="left">15 Available in the Next Hour</p>
             </v-col>
           </v-row>
         </v-card>
+
+        <!-- Filters -->
+        <v-row 
+          class="mx-5"
+          align="end">
+          <!-- Sort -->
+          <v-col cols="12" sm="4" md="2">
+            <v-select
+              :items="sort_options"
+              label="Sort"
+              :value="sort_options[0]"
+            ></v-select>
+          </v-col>
+          <!-- Hide Unavailable -->
+          <v-col cols="12" sm="4" md="3">
+            <v-switch v-model="enabled" class="ma-2" label="Show Unavailable"></v-switch>
+          </v-col>
+          <v-spacer></v-spacer>
+          <!-- Date -->
+          <v-col cols="12" sm="4" md="2">
+            <v-dialog
+              ref="dialog"
+              v-model="modal"
+              :return-value.sync="date"
+              persistent
+              width="290px"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="date"
+                  label="Picker in dialog"
+                  prepend-icon="event"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker v-model="date" scrollable>
+                <v-spacer></v-spacer>
+                <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
+                <v-btn text color="primary" @click="$refs.dialog.save(date)">OK</v-btn>
+              </v-date-picker>
+            </v-dialog>
+          </v-col>
+          <!-- Time -->
+          <v-col cols="12" sm="4" md="2">
+            <v-select
+              :items="time_options"
+              label="Time"
+              :value="time_options[0]"
+            ></v-select>
+            
+          </v-col>
+        </v-row>
 
         <!-- Room List -->
         <v-row
@@ -75,6 +129,16 @@
       msg = "";
       params: any = null;
       locationId = 0;
+      enabled="true"
+      sort_options = ['Name', 'Available'];
+      time_options = ['Now', '9:00', '9:30', '10:00', '10:30'];
+
+      date= new Date().toISOString().substr(0, 10);
+      menu= false;
+      modal= false;
+      menu2= false;
+
+
       mounted() {
           this.msg = this.$route.path;
           this.params = this.$route.params;
