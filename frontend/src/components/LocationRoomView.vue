@@ -108,7 +108,7 @@
                 flat
               >
                 <v-card-title class="text-left">
-                  <v-icon color="success" class="mr-5">event_busy</v-icon>
+                  <v-icon color="success" class="mr-5">event_available</v-icon>
                   <span> Room {{index}} </span>
                   <v-divider vertical class="mx-5"></v-divider>
                   Available Until 13:00
@@ -134,7 +134,7 @@
                 flat
               >
                 <v-card-title class="text-left">
-                  <v-icon color="warning" class="mr-5">event_busy</v-icon>
+                  <v-icon color="warning" class="mr-5">event_note</v-icon>
                   <span> Room 4 </span>
                   <v-divider vertical class="mx-5"></v-divider>
                   Available After 14:00
