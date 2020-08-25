@@ -29,19 +29,19 @@
                 Building McBuildingFace
               </p>
               <p class="display-1 white--text mb-5 ml-1" align="left">K-J12</p>
-              <p class="subtitle-1 white--text my-0 py-0 ml-1" align="left">30 Rooms Listed</p>
-              <p class="subtitle-1 white--text my-0 py-0 ml-1" align="left">10 Currently Available</p>
-              <p class="subtitle-1 white--text my-0 py-0 ml-1" align="left">15 Available in the Next Hour</p>
+              <p class="subtitle-1 white--text ml-1" align="left">
+                30 Rooms Listed<br>10 Currently Available<br>15 Available in the Next Hour
+              </p>
             </v-col>
           </v-row>
         </v-card>
 
         <!-- Filters -->
         <v-row 
-          class="mx-5"
+          class="mx-5 mt-5"
           align="end">
           <!-- Sort -->
-          <v-col cols="12" sm="4" md="2">
+          <v-col cols="12" sm="4" md="2" class="py-0 my-0">
             <v-select
               :items="sort_options"
               label="Sort"
@@ -49,12 +49,12 @@
             ></v-select>
           </v-col>
           <!-- Hide Unavailable -->
-          <v-col cols="12" sm="4" md="3">
+          <v-col cols="12" sm="6" class="py-0 my-0 pl-1">
             <v-switch v-model="enabled" class="ma-2" label="Show Unavailable"></v-switch>
           </v-col>
           <v-spacer></v-spacer>
           <!-- Date -->
-          <v-col cols="12" sm="4" md="2">
+          <v-col cols="12" sm="4" md="2" class="py-0 my-0">
             <v-dialog
               ref="dialog"
               v-model="modal"
@@ -80,13 +80,12 @@
             </v-dialog>
           </v-col>
           <!-- Time -->
-          <v-col cols="12" sm="4" md="2">
+          <v-col cols="12" sm="4" md="2" class="py-0 my-0">
             <v-select
               :items="time_options"
               label="Time"
               :value="time_options[0]"
             ></v-select>
-            
           </v-col>
         </v-row>
 
