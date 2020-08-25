@@ -94,7 +94,7 @@
           class="mx-5 mt-4"
           align="center"
           justify="center"
-          v-for="(n, index) in 9"
+          v-for="(n, index) in 4"
           :key="n"
         >
           <v-col 
@@ -112,6 +112,58 @@
                   <span> Room {{index}} </span>
                   <v-divider vertical class="mx-5"></v-divider>
                   Available Until 13:00
+                </v-card-title>
+              </v-card>
+            </router-link>
+          </v-col>
+        </v-row>
+        <!-- Currently Unavailable but available later -->
+        <v-row
+          class="mx-5 mt-4"
+          align="center"
+          justify="center"
+        >
+          <v-col 
+            cols="12" 
+            class="pa-0 ma-0"
+          >
+            <v-divider></v-divider>
+            <router-link :to="{name: 'room', params: { locationId : locationId, roomId: 4}}">
+              <v-card
+                class="background"
+                flat
+              >
+                <v-card-title class="text-left">
+                  <v-icon color="warning" class="mr-5">event_busy</v-icon>
+                  <span> Room 4 </span>
+                  <v-divider vertical class="mx-5"></v-divider>
+                  Available After 14:00
+                </v-card-title>
+              </v-card>
+            </router-link>
+          </v-col>
+        </v-row>
+        <!-- Unavailable Today -->
+        <v-row
+          class="mx-5 mt-4"
+          align="center"
+          justify="center"
+        >
+          <v-col 
+            cols="12" 
+            class="pa-0 ma-0"
+          >
+            <v-divider></v-divider>
+            <router-link :to="{name: 'room', params: { locationId : locationId, roomId: 5}}">
+              <v-card
+                class="background"
+                flat
+              >
+                <v-card-title class="text-left">
+                  <v-icon color="error" class="mr-5">event_busy</v-icon>
+                  <span> Room 5 </span>
+                  <v-divider vertical class="mx-5"></v-divider>
+                  Unavailable Today
                 </v-card-title>
               </v-card>
             </router-link>
@@ -145,7 +197,6 @@
       }
   }
 </script>
-
 
 <style scoped>
 
