@@ -5,6 +5,7 @@ const port = 1337;
 
 const cron = require("node-cron");
 const dbName = "freerooms";
+const fs = require('fs');
 
 /* var MongoClient = require("mongodb").MongoClient; */
 var url = "mongodb://localhost:27017";
@@ -28,11 +29,22 @@ const scraper = require("./app_modules/scrape.js");
 app.get("/", async (req, res) => {
   // call scraper with scrapeCourseList function and print
   try {
+    res.send("Triggered");
+    console.log("printed message");
     let courseTypeList = await scraper.scrapeCourseTypeList();
     let courseCodeList = await scraper.scrapeCourseCodeList(courseTypeList);
-    let courseDataList = await scraper.scrapeCourseDataList(courseTypeList)
-    res.send(courseDataList);
-    console.log("printed message");
+    let courseDataList = await scraper.scrapeCourseDataList(courseTypeList);
+    
+    // save to disk for now
+    const data = JSON.stringify(courseDataList);
+    fs.writeFile('data.json', data, (err) => {
+      if (err) {
+        throw err;
+      } 
+      console.log("saved");
+    });
+
+    console.log("processed");
   } catch (err) {
     await res.send("unexpected error has occured");
     console.log(Error(err));
