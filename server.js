@@ -6,12 +6,12 @@ const port = 1337;
 const cron = require("node-cron");
 const dbName = "freerooms";
 
-var MongoClient = require("mongodb").MongoClient;
+/* var MongoClient = require("mongodb").MongoClient; */
 var url = "mongodb://localhost:27017";
 // MODULES
 const scraper = require("./app_modules/scrape.js");
 
-MongoClient.connect(url, function (err, db) {
+/* MongoClient.connect(url, function (err, db) {
   let courseTypeList = scraper.scrapeCourseTypeList();
   if (err) throw err;
   var dbo = db.db("mydb");
@@ -22,7 +22,7 @@ MongoClient.connect(url, function (err, db) {
     db.close();
   });
   db.close();
-});
+}); */
 
 // INDEX ROUTE (to be updated with dedicated update link or procedure)
 app.get("/", async (req, res) => {
@@ -30,7 +30,8 @@ app.get("/", async (req, res) => {
   try {
     let courseTypeList = await scraper.scrapeCourseTypeList();
     let courseCodeList = await scraper.scrapeCourseCodeList(courseTypeList);
-    res.send(courseCodeList);
+    let courseDataList = await scraper.scrapeCourseDataList(courseTypeList)
+    res.send(courseDataList);
     console.log("printed message");
   } catch (err) {
     await res.send("unexpected error has occured");
