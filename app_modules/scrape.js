@@ -122,7 +122,7 @@ var scrapeCourseDataList = (async(typeList) => {
 		// loop through each subject area
 		for (var i = 0; i < typeList.length; i++) {
 			console.log('retrieve course list for ' + typeList[i].subjectCode);
-			let courseList = typeList[i].courseCode;
+			let courseList = typeList[i];
 			console.log('loaded course list for ' + typeList[i].subjectCode);
 
 			// loop through each course of that subject area
@@ -173,7 +173,7 @@ var scrapeCourseDataList = (async(typeList) => {
 								}
 
 								if (courseData[location][e.cells[0].innerText]) {
-									times[location][e.cells[0].innerText].push({
+									courseData[location][e.cells[0].innerText].push({
 										"time": e.cells[1].innerText,
 										"weeks": e.cells[3].innerText
 									});
@@ -182,6 +182,7 @@ var scrapeCourseDataList = (async(typeList) => {
 									console.log("\n\nERROR:" + courseList[j].courseCode + location + "\n\n");
 								}
 							});
+                            elemIter = elements.iterateNext();
 						}
 						/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 						return courseData;
@@ -193,7 +194,7 @@ var scrapeCourseDataList = (async(typeList) => {
 		};
 
 		await browser.close(); // early close
-		return times;
+		return typeList;
 	}
 	catch (err) {
 		console.log(Error(err));
