@@ -21,7 +21,7 @@ var scrapeCourseTypeList = (async() => {
 		console.log('loaded page eval console.log');
 		////////////////////////
 
-		await page.goto(TIMETABLE_URL);
+		await page.goto(TIMETABLE_URL, {waitUntil: 'domcontentloaded'});
 		console.log('loaded url');
 
 		// get raw list rows and get course code info
@@ -70,8 +70,8 @@ var scrapeCourseCodeList = (async(typeList) => {
 		for (var i = 0; i < typeList.length; i++) {
 			// retrieve URL and goto
 			console.log('retrieve url for ' + typeList[i].subjectCode);
-			await page.goto(typeList[i].subjectURL);
-			console.log('loaded subject url for ' + + typeList[i].subjectCode);
+			await page.goto(typeList[i].subjectURL, {waitUntil: 'domcontentloaded'});
+			console.log('loaded subject url for ' + typeList[i].subjectCode);
 
 			// evaluate page and retrieve relevant data
 			const result = await page.evaluate(() => {
@@ -128,7 +128,7 @@ var scrapeCourseDataList = (async(typeList) => {
 			// loop through each course of that subject area
 			for (var j = 0; j < courseList.length; j++) {
 				console.log('retrieve url for ' + courseList[j].courseCode);
-				await page.goto(courseList[j].courseURL);
+				await page.goto(courseList[j].courseURL, {waitUntil: 'domcontentloaded'});
 				console.log('loaded course URL for ' + courseList[j].courseCode);
 
 				// term enumeration (add more as needed - will need to be changed if UNSW changes how they serve the data)

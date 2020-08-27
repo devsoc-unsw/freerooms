@@ -4,7 +4,8 @@
   "description": "A web application designed to aide UNSW students in finding vacant rooms.",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -20,7 +21,8 @@
     "express": "^4.17.1",
     "mongodb": "^3.5.9",
     "node-cron": "^2.0.3",
-    "puppeteer": "^1.19.0",
+    "puppeteer": "^5.2.1",
     "shelljs": "^0.8.4"
-  }
+  },
+  "devDependencies": {}
 }
