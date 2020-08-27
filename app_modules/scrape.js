@@ -109,7 +109,7 @@ var scrapeCourseCodeList = (async(typeList) => {
 var scrapeCourseDataList = (async(typeList) => {
 	try {
 		// remove no sandbox later when with debian
-		const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+		const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
 		console.log('loaded browser');
 		const page = await browser.newPage();
 		console.log('loaded newPage');
@@ -179,7 +179,7 @@ var scrapeCourseDataList = (async(typeList) => {
 									});
 								}
 								else {
-									console.log("\n\nERROR:" + courseList[j].code + location + "\n\n");
+									console.log("\n\nERROR:" + courseList[j].courseCode + location + "\n\n");
 								}
 							});
 						}
@@ -205,4 +205,4 @@ var scrapeCourseDataList = (async(typeList) => {
 // EXPORT FUNCTIONS
 exports.scrapeCourseTypeList = scrapeCourseTypeList;
 exports.scrapeCourseCodeList = scrapeCourseCodeList;
-exports.scrapeCourseTimeList = scrapeCourseDataList;
+exports.scrapeCourseDataList = scrapeCourseDataList;
