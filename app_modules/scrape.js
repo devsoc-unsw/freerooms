@@ -4,7 +4,6 @@ const TIMETABLE_URL ='http://timetable.unsw.edu.au/current';
 
 // MODULES
 const puppeteer = require('puppeteer');
-const { exit } = require('shelljs');
 
 // SCRAPE FUNCTIONS
 
@@ -179,16 +178,18 @@ var scrapeCourseDataList = (async(typeList) => {
 									};
 								}
 
-								// Unable to handle more than one 'Mon' in the same row. Will need to regex this
-								// TODO: Regex split on different days case insensitive
-								if (courseData[location][e.cells[0].innerText]) {
-									courseData[location][e.cells[0].innerText].push({
-										"time": e.cells[1].innerText,
-										"weeks": e.cells[3].innerText
-									});
-								}
-								else {
-									console.log("\n\nERROR:" + code + location + "\n\n");
+								let days = e.cells[0].innerText.split(',');
+								for (var day of days) {
+									day = day.trim();
+									if (courseData[location][day]) {
+										courseData[location][day].push({
+											"time": e.cells[1].innerText,
+											"weeks": e.cells[3].innerText
+										});
+									}
+									else {
+										console.log("\n\nERROR:" + code + "\n>" + day + "<\n" + days + "\n\n");
+									}
 								}
 							});
                             elemIter = elements.iterateNext();
