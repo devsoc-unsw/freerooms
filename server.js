@@ -5,25 +5,36 @@ const port = 1337;
 
 const cron = require("node-cron");
 const dbName = "freerooms";
+const dbCol = "test";
 const fs = require('fs');
 
-/* var MongoClient = require("mongodb").MongoClient; */
-var url = "mongodb://localhost:27017";
+const MongoClient = require("mongodb").MongoClient;
+const url = "mongodb://localhost:27017";
+
+const dataJson = `./data.json`;
 // MODULES
 const scraper = require("./app_modules/scrape.js");
 
-/* MongoClient.connect(url, function (err, db) {
-  let courseTypeList = scraper.scrapeCourseTypeList();
-  if (err) throw err;
-  var dbo = db.db("mydb");
-  var myobj = {};
-  dbo.collection("test").insertOne(myobj, function (err, res) {
+MongoClient.connect(url, function (err, db) {
+  // read from disk for now and parse data json
+  fs.readFile(dataJson, (err, jsonString) => {
     if (err) throw err;
-    console.log("1 document inserted");
-    db.close();
+    console.log("json retrieved");
+    try {
+      var data = JSON.parse(jsonString);
+      console.log("data json parsed");
+      var dbo = db.db(dbName);
+      dbo.collection(dbCol).insertMany(data, function (err, res) {
+        if (err) throw err;
+        console.log("mongo import done");
+        db.close();
+      });
+    } catch(err) {
+      console.log(Error(err));
+      db.close();
+    }
   });
-  db.close();
-}); */
+});
 
 // INDEX ROUTE (to be updated with dedicated update link or procedure)
 app.get("/", async (req, res) => {
@@ -37,16 +48,13 @@ app.get("/", async (req, res) => {
     
     // save to disk for now
     const data = JSON.stringify(courseDataList);
-    fs.writeFile('data.json', data, (err) => {
-      if (err) {
-        throw err;
-      } 
+    fs.writeFile(dataJson, data, (err) => {
+      if (err) throw err;
       console.log("saved");
     });
 
     console.log("processed");
   } catch (err) {
-    await res.send("unexpected error has occured");
     console.log(Error(err));
   }
 });
