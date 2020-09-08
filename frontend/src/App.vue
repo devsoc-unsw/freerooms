@@ -33,8 +33,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
-    /* color: #2c3e50; */
-    background-color: #f7f7ff; 
+    background-color: var(--v-background-base) !important;
   }
 
   a {

@@ -1,15 +1,16 @@
 <template>
     <v-app-bar
     app
-    flat
-    color="accent"
+    floating
+    outlined
+    color="background"
     >
     <v-img
     max-height="50px"
     max-width="50px"
     src="../assets/favicon/free_rooms_logo.png"
     ></v-img>
-    <v-toolbar-title class="ml-3 mt-1 font-weight-medium secondary--text">
+    <v-toolbar-title class="ml-3 mt-1 font-weight-medium primary--text">
         FreeRooms
     </v-toolbar-title>
 
