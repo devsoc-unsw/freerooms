@@ -1,9 +1,11 @@
-// TODO: Refactor everything to use keys rather than array numbers (otherwise why use json objects at all)
 // CONSTS
 const TIMETABLE_URL ='http://timetable.unsw.edu.au/current';
 
 // MODULES
 const puppeteer = require('puppeteer');
+
+// LIBRARIES
+// import { cloneDeep } from "lodash"
 
 // SCRAPE FUNCTIONS
 
@@ -27,7 +29,7 @@ var scrapeCourseTypeList = (async() => {
 		// get raw list rows and get course code info
 		const result = await page.evaluate(() => {
 			let container = Array.from(document.querySelectorAll('.rowLowLight, .rowHighLight'));
-			let list = container.map(function(e) {
+			let list = container.map((e) => {
 
 				// firstElementChild is a dirty fix that will break URLS if UNSW changes how URL is put out
 				let object = {
@@ -76,7 +78,7 @@ var scrapeCourseCodeList = (async(typeList) => {
 			// evaluate page and retrieve relevant data
 			const result = await page.evaluate(() => {
 				let container = Array.from(document.querySelectorAll('.rowLowLight, .rowHighLight'));
-				let list = container.map(function(e) {
+				let list = container.map((e) => {
 
 					// object template for course array
 					let object = {
@@ -164,31 +166,49 @@ var scrapeCourseDataList = (async(typeList) => {
 						var courseData = {};
 						while (elemIter) {
 							let container = elemIter.querySelectorAll('.rowLowLight, .rowHighLight');
-							container.forEach(function (e) {
+							container.forEach((e) => {
 								let location = e.cells[2].innerText;
 								if (!(location in courseData)) {
+									// initialise location
 									courseData[location] = {
-										"Mon": [],
-										"Tue": [],
-										"Wed": [],
-										"Thu": [],
-										"Fri": [],
-										"Sat": [],
-										"Sun": []
+										"Mon": {},
+										"Tue": {},
+										"Wed": {},
+										"Thu": {},
+										"Fri": {},
+										"Sat": {},
+										"Sun": {}
 									};
 								}
 
+								// TODO: problems with WEEKS N1 and some weird formats with `<1` etc.
 								let days = e.cells[0].innerText.split(',');
+								let times = e.cells[1].innerText; //.split(',') UNUSED;
+								let weeks = e.cells[3].innerText.split(',');
 								for (var day of days) {
 									day = day.trim();
-									if (courseData[location][day]) {
-										courseData[location][day].push({
-											"time": e.cells[1].innerText,
-											"weeks": e.cells[3].innerText
-										});
-									}
-									else {
-										console.log("\n\nERROR:" + code + "\n>" + day + "<\n" + days + "\n\n");
+									if (!courseData[location][day]) { continue; };
+
+									for (var week of weeks) {
+										week = week.trim();
+
+										// match on week regex (either single or range), otherwise error
+										if (week.match(/^[0-9]+$/)) {
+											if (!courseData[location][day][week]) { courseData[location][day][week] = [] };
+											courseData[location][day][week].push(times);
+										}
+										else if (week.match(/^([0-9]+)-([0-9]+)$/)) {
+											var weekmatch = week.match(/^([0-9]+)-([0-9]+)$/);
+											const start = parseInt(weekmatch[1]);
+											const end = parseInt(weekmatch[2]);
+											for (weekIter = start; weekIter <= end; weekIter++) {
+												if (!courseData[location][day][weekIter]) { courseData[location][day][weekIter] = [] };
+												courseData[location][day][weekIter].push(times);
+											}
+										}
+										else {
+											console.log("\n\nERROR:" + code + "\n>" + day + "<\n" + days + "\nWEEK: >" + week + "<\n" + weeks + "\n\n");
+										}
 									}
 								}
 							});
