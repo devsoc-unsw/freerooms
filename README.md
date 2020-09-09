@@ -11,9 +11,9 @@ The json object holding all the data passed to `app.js` from `scrape.js` as `cou
 
 > `Day` refers to any element from `['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']`
 
-> `Time_Text` refers to text such as `"12:00 - 14:00"`
+> `Week` refers to text such as `['0', '1', '2', ... '15']`
 
-> `Weeks_Text` refers to text such as `"11"`
+> `Time_Text` refers to text such as `"12:00 - 14:00"`
 ```json
 [
 	{
@@ -28,12 +28,9 @@ The json object holding all the data passed to `app.js` from `scrape.js` as `cou
 				"courseData": {
 					"Term" : {
 						"Location" : {
-							"Day" : [
-								{
-									"time" : "Time_Text", 
-									"weeks" : "Weeks_Text"
-								}
-							]
+							"Day" : {
+								"Week" : [ Time_Text ]
+							}
 						}
 					}
 				}
