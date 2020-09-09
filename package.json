@@ -2,9 +2,10 @@
   "name": "freerooms",
   "version": "1.0.0",
   "description": "A web application designed to aide UNSW students in finding vacant rooms.",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -20,7 +21,9 @@
     "express": "^4.17.1",
     "material-design-icons-iconfont": "^5.0.1",
     "moment": "^2.26.0",
-    "puppeteer": "^1.19.0"
+    "mongodb": "^3.5.9",
+    "node-cron": "^2.0.3",
+    "puppeteer": "^5.2.1"
   },
   "devDependencies": {
     "@mdi/font": "^5.2.45"
