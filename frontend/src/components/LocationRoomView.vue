@@ -2,7 +2,7 @@
     <div class="location-room-view">
         <!-- Header, Building Id -->
         <v-card class="primary mx-5" style="border-radius:10px">
-          <v-row align="center" justify="left">
+          <v-row align="center">
           <v-spacer></v-spacer>
           <v-col
             cols=12
@@ -93,7 +93,6 @@
         <v-row
           class="mx-5 mt-4"
           align="center"
-          justify="center"
           v-for="(n, index) in 4"
           :key="n"
         >
@@ -121,7 +120,6 @@
         <v-row
           class="mx-5 mt-4"
           align="center"
-          justify="center"
         >
           <v-col 
             cols="12" 
@@ -147,7 +145,6 @@
         <v-row
           class="mx-5 mt-4"
           align="center"
-          justify="center"
         >
           <v-col 
             cols="12" 
