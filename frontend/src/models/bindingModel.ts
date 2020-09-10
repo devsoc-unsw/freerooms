@@ -9,7 +9,7 @@ class RoomInfo {
         this.Location = json.Location;
         this.RoomName = json.RoomName;
         this.BookedTimeSlots = [];
-        for(let room of json.BookedTimeSlots) {
+        for (let room of json.BookedTimeSlots) {
             this.BookedTimeSlots.push(new (room));
         }
     }
