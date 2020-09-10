@@ -34,39 +34,18 @@
 </template>
 
 <script lang="ts">
+  import { Vue, Component, Prop } from 'vue-property-decorator';
+  import LocationService from '../services/locationService';
 
-  export default {
-    data: function(){
-      return{
-        buildings:[
-          "Ainsworth",
-          "Law",
-          "Tyree",
-          "Goldstein",
-          "Samuels", 
-          "Central Lecture Block",
-          "Law Library",
-          "UNSW Business School",
-          "Quadrangle",
-          "Library",
-          "Chemical Sc",
-          "Law Building",
-          "Law Theatre",
-          "Electrical Engineering",
-          "Colombo",
-          "Science & Engineering",
-          "Webster",
-          "Civil Engineering",
-          "New South Global Theatre",
-          "Tyree Energy Technology",
-          "Willis Annexe",
-          "Red Centre",
-          "Mathews",
-          "Squarehouse",
-          "John Goodsell"
-        ]
-      }
-     }
+  @Component
+  export default class LandingPage extends Vue {
+    service = new LocationService();
+
+    buildings=[""];
+
+    mounted() {
+      this.buildings = this.service.getAllLocations();
+    }
   }
 </script>
 
