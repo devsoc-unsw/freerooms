@@ -43,7 +43,8 @@
           class="mx-5 mt-5"
           align="end">
           <!-- Sort -->
-          <v-col cols="12" sm="4" md="2" class="py-0 my-0">
+          <v-col cols="12" sm="4" md="2" class="py-0 my-0"
+          style="display:none">
             <v-select
               :items="sort_options"
               label="Sort"
@@ -56,7 +57,8 @@
           </v-col>
           <v-spacer></v-spacer>
           <!-- Date -->
-          <v-col cols="12" sm="4" md="2" class="py-0 my-0">
+          <v-col cols="12" sm="4" md="2" class="py-0 my-0"
+          style="display:none">
             <v-dialog
               ref="dialog"
               v-model="modal"
@@ -82,7 +84,8 @@
             </v-dialog>
           </v-col>
           <!-- Time -->
-          <v-col cols="12" sm="4" md="2" class="py-0 my-0">
+          <v-col cols="12" sm="4" md="2" class="py-0 my-0"
+          style="display:none">
             <v-select
               :items="time_options"
               label="Time"
