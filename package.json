@@ -19,10 +19,13 @@
   "homepage": "https://github.com/csesoc/Freerooms#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "material-design-icons-iconfont": "^5.0.1",
+    "moment": "^2.26.0",
     "mongodb": "^3.5.9",
     "node-cron": "^2.0.3",
-    "puppeteer": "^5.2.1",
-    "shelljs": "^0.8.4"
+    "puppeteer": "^5.2.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@mdi/font": "^5.2.45"
+  }
 }
