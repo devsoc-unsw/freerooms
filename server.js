@@ -8,14 +8,14 @@ const dbName = "freerooms";
 const dbCol = "test";
 const fs = require('fs');
 
-/* const MongoClient = require("mongodb").MongoClient; */
+const MongoClient = require("mongodb").MongoClient;
 const url = "mongodb://localhost:27017";
 
 const dataJson = `./data.json`;
 // MODULES
 const scraper = require("./app_modules/scrape.js");
 
-/* MongoClient.connect(url, function (err, db) {
+MongoClient.connect(url, function (err, db) {
   // read from disk for now and parse data json
   fs.readFile(dataJson, (err, jsonString) => {
     if (err) throw err;
@@ -34,7 +34,7 @@ const scraper = require("./app_modules/scrape.js");
       db.close();
     }
   });
-}); */
+});
 
 // INDEX ROUTE (to be updated with dedicated update link or procedure)
 app.get("/", async (req, res) => {
