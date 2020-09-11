@@ -9,9 +9,12 @@
           <v-col cols="12">
             <v-card class="control-card">
               <v-list-item>
+                <!-- TODO: unhide buttons once code to resend request to backend
+                            for a new week is done. -->
                 <v-btn
                   fab
                   small
+                  hidden
                   absolute
                   left
                   :color="color"
@@ -23,6 +26,7 @@
                   fab
                   small
                   absolute
+                  hidden
                   right
                   :color="color"
                   @click="$refs.calendar.next()"
@@ -101,7 +105,6 @@
                 :events="events"
                 :event-overlap-mode="mode"
                 :event-overlap-threshold="45"
-                :event-color="getEventColor"
               ></v-calendar>
             </v-sheet>
           </v-col>
@@ -115,40 +118,70 @@
   // and using vuex to handle state control. Was Ceebs doing that so the html tags are cancer to read now...
   import { Vue, Component } from 'vue-property-decorator';
   import moment from 'moment';
+  import DbService from '../services/dbService';
 
   @Component
-  export default class LocationRoomView extends Vue {
+  export default class LocationRoomView extends Vue {  
+    dbService = new DbService();
 
-      intervalsDefault = {
-        // first time slot
-        first: 6,
-        // num of mins betwween time slots
-        minutes: 60,
-        // how many slots
-        count: 24-6,
-        // height of the individual time slots
-        height: 48,
+    params: any = [];
+
+    roomName = ''; //TODO: modify to take actual current room name
+    bookedNameText = 'Occupied'; // Name of all bookings shown on calendar 
+
+    intervalsDefault = {
+      // first time slot
+      first: 6,
+      // num of mins betwween time slots
+      minutes: 60,
+      // how many slots
+      count: 24-6,
+      // height of the individual time slots
+      height: 48,
+    }
+
+    today = moment().format('YYYY-MM-DD');
+    start = this.today;
+    events = [];
+    type = 'week';
+    mode = 'stack';
+    weekdays = [1,2,3,4,5,6,0];
+    intervals = this.intervalsDefault;
+    color = 'secondary';
+
+    // initial state of time menu
+    startMenu = false;
+
+    // Get all bookings for the room in the given time range.
+    async getEvents () {
+      const gEvents = [];
+
+      const events = await this.getEventsFromDb();
+      for (const event of events) {
+        gEvents.push({
+          name: this.bookedNameText,
+          start: event.start,
+          end:  event.end,
+
+        });
       }
+      
+      return gEvents;
+    }
 
-      today = moment().format('YYYY-MM-DD');
-      start = this.today;
-      events = [];
-      type = 'week';
-      mode = 'stack';
-      weekdays = [1,2,3,4,5,6,0];
-      intervals = this.intervalsDefault;
-      color = 'accent';
+    async getEventsFromDb() {
+      const startTime = moment().format('YYYY-MM-DD');
+      const endTime = moment().format('YYYY-MM-DD');
+      const result = await this.dbService.getRoomBookingsInTimeRange(this.roomName, startTime, endTime);
+      return result;
+    }
 
-      // initial state of time menu
-      startMenu = false;
-
-      getEventColor = (e) => {
-        return "red";
-      }
-
-      mounted() {
-        console.log(this.start);
-      }
+    async mounted() {
+      this.params = this.$route.params;
+      this.roomName = this.params['roomId'];
+      if (this.roomName == null) this.roomName = '';
+      this.events = await this.getEvents();
+    }
   }
 </script>
 

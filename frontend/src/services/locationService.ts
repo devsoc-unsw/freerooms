@@ -9,5 +9,9 @@ export default class LocationService {
     getLocationbyId (id: number): string {
         return Locations[id];
     }
+
+    getAllLocations (): string[] {
+        return Object.keys(Locations).filter(key => !isNaN(Number(Locations[key])));
+    }
 }
 
