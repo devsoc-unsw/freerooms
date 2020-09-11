@@ -179,15 +179,22 @@ var scrapeCourseDataList = (async(courseList) => {
 							}
 						}
 						await asyncForEach(container, async(e) => {
-							// TODO: Regex the location to use stuff inside parenthesis (from the end) as building code and rest as name
-							const location = e.cells[2].innerText;
-							// initialise location if it doesn't exist yet
-							if (!(location in returnData)) {
-								returnData[location] = {};
+							// regex the location to split into name, building code and room code
+							const location = e.cells[2].innerText.trim().match(/^(.*) +\((.*-.*)-(.*)\)$|^.* +\(ONLINE\)$/);
+							const name = (location == null) ? "ONLINE" : location[1];
+							const building = (location == null) ? "ONLINE" : location[2];
+							const room = (location == null) ? "ONLINE" : location[3];
+							// initialise location building if it doesn't exist yet
+							if (!(building in returnData)) {
+								returnData[building] = {};
+							}
+							// initialise location room if it doesn't exist yet
+							if (!(room in returnData[building])) {
+								returnData[building][room] = {};
 							}
 
 							// assign location object by reference for easier use
-							var currLocation = returnData[location];
+							var currLocation = returnData[building][room];
 
 							const weeks = e.cells[3].innerText.split(',');
 							const days = e.cells[0].innerText.split(',');
@@ -197,7 +204,7 @@ var scrapeCourseDataList = (async(courseList) => {
 								week = week.trim();
 
 								// day helper function
-								var dayHelper = (async(currLocation, week, days, times) => {
+								var dayHelper = (async(currLocation, week, days, times, name) => {
 									// CONSTS
 									const TIME_REGEX = /^((0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]) - ((0[0-9]|1[0-9]|2[0-3]):[0-5][0-9])$/;
 									// TODO: make a way to create this automatically from date.js
@@ -208,7 +215,7 @@ var scrapeCourseDataList = (async(courseList) => {
 									// TODO: No error checking for valid days for now
 									for (var day of days) {
 										day = day.trim();
-										if (!currLocation[week][day]) { currLocation[week][day] = []; }
+										if (!currLocation[week][day]) { currLocation[week][day] = { "name": name, "classes": [] }; }
 										// ensure times is of correct format
 										if (times.match(TIME_REGEX)) {
 											// get date
@@ -220,7 +227,7 @@ var scrapeCourseDataList = (async(courseList) => {
 												"start": `${pushDate} ${timeObj[1]}`,
 												"end": `${pushDate} ${timeObj[3]}`
 											};
-											currLocation[week][day].push(pushObj);
+											currLocation[week][day].classes.push(pushObj);
 										}
 										else {
 											console.log("\n\nTIME ERROR:" + courseObj.courseCode + "\n>" + times + "<\n\n");
@@ -242,12 +249,12 @@ var scrapeCourseDataList = (async(courseList) => {
 									const end = parseInt(weekmatch[2]);
 									for (var weekIter = start; weekIter <= end; weekIter++) {
 										if (!currLocation[weekIter]) { currLocation[weekIter] = {}; }
-										await dayHelper(currLocation, weekIter, days, times);
+										await dayHelper(currLocation, weekIter, days, times, name);
 									}
 								}
 								else if (week.match(/^[0-9]+$/)) {
 									if (!currLocation[week]) { currLocation[week] = {}; }
-									await dayHelper(currLocation, week, days, times);
+									await dayHelper(currLocation, week, days, times, name);
 									//console.log(JSON.stringify(currLocation));
 								}
 								else {
