@@ -14,19 +14,24 @@ const api = {
   // Get a list of all rooms in a building.
   // Possibly hardcode buildingName to a building code & replace date with hardcoded term + week + day.
   getRoomsInBuilding: handleError(async (buildingName: string, date: string) => {
+    const url = baseURL + "buildings/" + "K-J17" + "/" + "101"; // Ainsworth room 101.
     // The actual call.
-    const res = await axios.get(baseURL + "buildings/"
-                                  + buildingName + "/"
-                                  + date);
+    const res = await axios.get(url);
     return res.data;
   }),
-  // Get a list of all booked periods in the bace
+
+  // Get a list of all booked periods in the room, within the given week.
   getRoomBookingsInTimeRange: handleError(async (roomName: string, startDate: string, endDate: string) => {
+    // Ainsworth room 101 week 1.
     const res = await axios.get(baseURL + "buildings/"
-                                  + roomName + "/"
-                                  + startDate + "/"
-                                  + endDate);
+                                  + "K-J17" + "/"
+                                  + "101" + "/"
+                                  + "1"
+                                );
     return res.data;
+    // ^ DEPENDING ON WHAT THIS RETURNS, you may need to split the time
+    //  period of a booking into two + some extra conversion. Follow the
+    // format of the dummy output in the branch 'call_backend'.
   })
   };
 
