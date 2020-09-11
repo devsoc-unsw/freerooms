@@ -174,22 +174,15 @@ var scrapeCourseDataList = (async(courseList) => {
 							if (!(location in returnData)) {
 								returnData[location] = {};
 							}
-							// initialise course if it doesn't exist yet
-							if (!(courseObj.courseCode in returnData[location])) {
-								returnData[location][courseObj.courseCode] = {};
-							}
 
 							// assign location object by reference for easier use
-							var currLocation = returnData[location][courseObj.courseCode];
+							var currLocation = returnData[location];
 
 							const weeks = e.cells[3].innerText.split(',');
 							const days = e.cells[0].innerText.split(',');
 							const times = e.cells[1].innerText; //.split(','); UNUSED
 							// loop through weeks
 							for (var week of weeks) {
-/* 								if (courseObj.courseCode == "ANAT2521") {
-									console.log("\n\nWEEK ERROR:" + courseObj.courseCode + "\n>" + week + "<\n" + weeks + "\n\n");
-								} */
 								week = week.trim();
 								// match on week regex (either single or range), otherwise error
 								// TODO: the logic for week matching is really hacky atm. if anyone knows a better way, feel free to make a PR
@@ -206,11 +199,13 @@ var scrapeCourseDataList = (async(courseList) => {
 										// TODO: DRY principle needs to be adhered as i'm repeating code. this is only temp
 										for (var day of days) {
 											day = day.trim();
-/* 											if (courseObj.courseCode == "ANAT2521") {
-												console.log("\n\nDAY ERROR1:" + courseObj.courseCode + "\n>" + day + "<\n" + days + "\n\n");
-											} */
 											if (!currLocation[weekIter][day]) { currLocation[weekIter][day] = []; }
-											currLocation[weekIter][day].push(times);
+											// push times and relevant course to array
+											var pushObj = {
+												"courseCode": courseObj.courseCode,
+												"times": times
+											};
+											currLocation[weekIter][day].push(pushObj);
 											// TODO: this should never trigger for now while no error checking
 											/* else {
 												console.log("\n\nDAY ERROR:" + courseObj.courseCode + "\n>" + day + "<\n" + days + "\n\n");
@@ -226,11 +221,13 @@ var scrapeCourseDataList = (async(courseList) => {
 									// TODO: DRY principle needs to be adhered as i'm repeating code. this is only temp
 									for (var day of days) {
 										day = day.trim();
-/* 										if (courseObj.courseCode == "ANAT2521") {
-											console.log("\n\nDAY ERROR2:" + courseObj.courseCode + "\n>" + day + "<\n" + days + "\n\n");
-										} */
 										if (!currLocation[week][day]) { currLocation[week][day] = []; }
-										currLocation[week][day].push(times);
+										// push times and relevant course to array
+										var pushObj = {
+											"courseCode": courseObj.courseCode,
+											"times": times
+										};
+										currLocation[week][day].push(pushObj);
 										// TODO: this should never trigger for now while no error checking
 										/* else {
 											console.log("\n\nDAY ERROR:" + courseObj.courseCode + "\n>" + day + "<\n" + days + "\n\n");
