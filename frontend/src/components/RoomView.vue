@@ -153,10 +153,10 @@
     startMenu = false;
 
     // Get all bookings for the room in the given time range.
-    getEvents () {
+    async getEvents () {
       const gEvents = [];
 
-      const events = this.getEventsFromDb();
+      const events = await this.getEventsFromDb();
       for (const event of events) {
         gEvents.push({
           name: this.bookedNameText,
@@ -169,18 +169,18 @@
       return gEvents;
     }
 
-    getEventsFromDb() {
+    async getEventsFromDb() {
       const startTime = moment().format('YYYY-MM-DD');
       const endTime = moment().format('YYYY-MM-DD');
-      const result = this.dbService.getRoomBookingsInTimeRange(this.roomName, startTime, endTime);
+      const result = await this.dbService.getRoomBookingsInTimeRange(this.roomName, startTime, endTime);
       return result;
     }
 
-    mounted() {
-      this.events = this.getEvents();
+    async mounted() {
       this.params = this.$route.params;
       this.roomName = this.params['roomId'];
       if (this.roomName == null) this.roomName = '';
+      this.events = await this.getEvents();
     }
   }
 </script>

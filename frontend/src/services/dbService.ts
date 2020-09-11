@@ -1,61 +1,36 @@
 // Class to handle Frontend Requests to backend for data from mongodb database.
-import moment from 'moment';
+import axios from 'axios';
+
+const baseURL = 'http://localhost:1337/';
+
+// Handle error on request to backend.
+const handleError = fn => (...params) =>
+  fn(...params).catch(error => {
+    console.log(`${error.response.status}: ${error.response.statusText}`, 'error');
+  });
+
+const api = {
+    getRoomsInBuilding: handleError(async (buildingName: string, date: string) => {
+      const res = await axios.get(baseURL + "buildings/"
+                                    + buildingName + "/"
+                                    + date);
+      return res.data;
+    }),
+    getRoomBookingsInTimeRange: handleError(async (roomName: string, startDate: string, endDate: string) => {
+      const res = await axios.get(baseURL + "buildings/"
+                                    + roomName + "/"
+                                    + startDate + "/"
+                                    + endDate);
+      return res.data;
+    })
+  };
 
 export default class DbService {
     // TODO: Add the calls to backend in these functions.
     // Get an array of objects of all rooms within a building.
-    getRoomsInBuilding (buildingName: string, hour: string): { name: string; available: boolean }[] {
-        // Fake data set.
-        const data = [
-            {
-                "Keith Burrows Theatre (K-J14-G05)": [
-                    {    
-                    "start": "2020-09-11 11",
-                    "end": "2020-09-11 12"
-                    },
-                    {    
-                    "start": "2020-09-11 9",
-                    "end": "2020-09-11 10"
-                    },
-                    {    
-                    "start": "2020-09-11 14",
-                    "end": "2020-09-11 15"
-                    },
-                    {    
-                    "start": "2020-09-11 17",
-                    "end": "2020-09-11 19"
-                    },
-                ],
-            },
-            {
-                "Keith Burrows Theatre (K-J14-105)": [
-                    {    
-                    "start": "2020-09-11 11",
-                    "end": "2020-09-11 12"
-                    },
-                    {    
-                    "start": "2020-09-11 2",
-                    "end": "2020-09-11 10"
-                    }
-                ],
-            },
-            {
-                "Keith Burrows Theatre (K-J14-205)": [
-                    {    
-                    "start": "2020-09-11 9",
-                    "end": "2020-09-11 10"
-                    }
-                ],
-            },
-            {
-                "Keith Burrows Theatre (K-J14-207)": [
-                    {    
-                    "start": "2020-09-11 11",
-                    "end": "2020-09-11 12"
-                    }
-                ],
-            }
-        ];
+   async getRoomsInBuilding (buildingName: string, hour: string) {
+        const data = await api.getRoomsInBuilding(buildingName);
+        console.log("a"+ data);
 
         // Format results.
         const result: any = [];
@@ -81,31 +56,8 @@ export default class DbService {
     }
 
     // Returns a list of objects containing the start and end time of each event.
-    getRoomBookingsInTimeRange (room: string, startTime: string, endTime: string) {
-        // Fake data
-        const data = [
-            {
-                "start": "2020-09-7 9:00",
-                "end": "2020-09-7 10:00"
-            },
-            {
-                "start": "2020-09-9 9:00",
-                "end": "2020-09-9 10:00"
-            },
-            {
-                "start": "2020-09-9 13:00",
-                "end": "2020-09-9 15:00"
-            },
-            {
-                "start": "2020-09-11 14:00",
-                "end": "2020-09-11 15:00"
-            },
-            {
-                "start": "2020-09-11 10:00",
-                "end": "2020-09-11 12:00"
-            },
-        ];
-
+    async getRoomBookingsInTimeRange (room: string, startTime: string, endTime: string) {
+        const data = await api.getRoomBookingsInTimeRange(room, startTime, endTime);
 
         return data;
     }

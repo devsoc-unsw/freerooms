@@ -186,13 +186,13 @@
     date = new Date().toISOString().substr(0, 10);
     modal = false;
 
-    mounted() {
+    async mounted() {
         this.msg = this.$route.path;
         this.params = this.$route.params;
         this.hour = moment().format('hh');
         this.locationId = this.params['locationId'];
         this.buildingName = this.locationService.getLocationbyId(this.locationId);
-        this.allRooms = this.dbService.getRoomsInBuilding(this.buildingName, this.hour);
+        this.allRooms = await this.dbService.getRoomsInBuilding(this.buildingName, this.hour);
         this.listedRooms = this.allRooms;
         this.availableRooms = this.filterRoomsAvailable(this.allRooms, true);
         this.unavailableRooms = this.filterRoomsAvailable(this.allRooms, false);
