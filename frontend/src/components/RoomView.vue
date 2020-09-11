@@ -101,7 +101,6 @@
                 :events="events"
                 :event-overlap-mode="mode"
                 :event-overlap-threshold="45"
-                :event-color="getEventColor"
               ></v-calendar>
             </v-sheet>
           </v-col>
@@ -115,12 +114,16 @@
   // and using vuex to handle state control. Was Ceebs doing that so the html tags are cancer to read now...
   import { Vue, Component } from 'vue-property-decorator';
   import moment from 'moment';
+  import DbService from '../services/dbService';
 
   @Component
   export default class LocationRoomView extends Vue {  
-    //TODO: remove the two lines below.
-    names = ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party'];  
-    colors = ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'];
+    dbService = new DbService();
+
+    params: any = [];
+
+    roomName = ''; //TODO: modify to take actual current room name
+    bookedName = 'Booked'; // Name of all bookings shown on calendar 
 
     intervalsDefault = {
       // first time slot
@@ -145,47 +148,36 @@
     // initial state of time menu
     startMenu = false;
 
-    getEventColor = (e) => {
-      return "primary";
+    // Get all bookings for the room in the given time range.
+    getEvents () {
+      const gEvents = [];
+
+      const events = this.getEventsFromDb();
+      console.log(events);
+      for (const event of events) {
+        gEvents.push({
+          name: this.bookedName,
+          start: event.start,
+          end:  event.end,
+
+        });
+      }
+      
+      return gEvents;
     }
 
-    // Get all bookings for the room in the given time range.
-    // getEvents ({ start, end }) {
-    //   const gEvents = []
-
-    //   const min = new Date(`${start.date}T00:00:00`)
-    //   const max = new Date(`${end.date}T23:59:59`)
-    //   const days = (max.getTime() - min.getTime()) / 86400000
-    //   const eventCount = this.rnd(days, days + 20)
-
-
-
-    //   for (let i = 0; i < eventCount; i++) {
-    //     const allDay = this.rnd(0, 3) === 0
-    //     const firstTimestamp = this.rnd(min.getTime(), max.getTime())
-    //     const first = new Date(firstTimestamp - (firstTimestamp % 900000))
-    //     const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000
-    //     const second = new Date(first.getTime() + secondTimestamp)
-
-    //     gEvents.push({
-    //       name: this.names[this.rnd(0, this.names.length - 1)],
-    //       start: first,
-    //       end: second,
-    //       color: this.colors[this.rnd(0, this.colors.length - 1)],
-    //       timed: !allDay,
-    //     })
-    //   }
-    //   return gEvents;
-    // }
-
-    // rnd (a, b) {
-    //   return Math.floor((b - a + 1) * Math.random()) + a
-    // }
-
+    getEventsFromDb() {
+      const startTime = moment().format('YYYY-MM-DD');
+      const endTime = moment().format('YYYY-MM-DD');
+      const result = this.dbService.getRoomBookingsInTimeRange(this.roomName, startTime, endTime);
+      return result;
+    }
 
     mounted() {
-      console.log(this.start);
-      // this.events = this.getEvents({start: this.start, end: this.start+7});
+      this.events = this.getEvents();
+      this.params = this.$route.params;
+      this.roomName = this.params['roomId'];
+      if (this.roomName == null) this.roomName = '';
     }
   }
 </script>
