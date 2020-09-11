@@ -123,7 +123,7 @@
     params: any = [];
 
     roomName = ''; //TODO: modify to take actual current room name
-    bookedName = 'Booked'; // Name of all bookings shown on calendar 
+    bookedNameText = 'Occupied'; // Name of all bookings shown on calendar 
 
     intervalsDefault = {
       // first time slot
@@ -153,10 +153,9 @@
       const gEvents = [];
 
       const events = this.getEventsFromDb();
-      console.log(events);
       for (const event of events) {
         gEvents.push({
-          name: this.bookedName,
+          name: this.bookedNameText,
           start: event.start,
           end:  event.end,
 

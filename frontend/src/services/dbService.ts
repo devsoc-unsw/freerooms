@@ -6,7 +6,7 @@ export default class DbService {
     // Get an array of objects of all rooms within a building.
     getRoomsInBuilding (buildingName: string, hour: string): { name: string; available: boolean }[] {
         // Fake data set.
-        const rooms = [
+        const data = [
             {
                 "Keith Burrows Theatre (K-J14-G05)": [
                     {    
@@ -57,8 +57,9 @@ export default class DbService {
             }
         ];
 
+        // Format results.
         const result: any = [];
-        for (const room of rooms) {
+        for (const room of data) {
             const curResult = {}
             const splitName = Object.keys(room)[0].split("-");
             curResult['name'] = splitName[splitName.length-1].split(")")[0];
@@ -68,6 +69,7 @@ export default class DbService {
         return result;
     }
 
+    // Check if a room is available at the given hour.
     checkAvailable(bookings: any[], hour: string) {
         for (const timePair of bookings) {
             const startHour = timePair['start'].split(' ')[1];
@@ -80,11 +82,32 @@ export default class DbService {
 
     // Returns a list of objects containing the start and end time of each event.
     getRoomBookingsInTimeRange (room: string, startTime: string, endTime: string) {
-        const startTimeGen = moment();
-        const endTimeGen = startTimeGen.clone().add(1, 'd');
-        return [{start: startTimeGen.format('YYYY-MM-DD hh:mm'),
-                 end: endTimeGen.format('YYYY-MM-DD hh:mm')}
-               ];
+        // Fake data
+        const data = [
+            {
+                "start": "2020-09-7 9:00",
+                "end": "2020-09-7 10:00"
+            },
+            {
+                "start": "2020-09-9 9:00",
+                "end": "2020-09-9 10:00"
+            },
+            {
+                "start": "2020-09-9 13:00",
+                "end": "2020-09-9 15:00"
+            },
+            {
+                "start": "2020-09-11 14:00",
+                "end": "2020-09-11 15:00"
+            },
+            {
+                "start": "2020-09-11 10:00",
+                "end": "2020-09-11 12:00"
+            },
+        ];
+
+
+        return data;
     }
 
     // Currently unused. //

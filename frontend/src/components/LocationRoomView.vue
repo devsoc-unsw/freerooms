@@ -28,7 +28,7 @@
               <p class="display-3 white--text" align="left">
                 {{ buildingName }}
               </p>
-              <p class="display-1 white--text mb-5 ml-1" align="left">K-J12</p>
+              <!-- <p class="display-1 white--text mb-5 ml-1" align="left">K-J12</p> -->
               <p class="subtitle-1 white--text ml-1" align="left">
                 {{ allRooms.length }} Rooms Listed<br>
                 {{ availableRooms.length }} Currently Available<br>
@@ -214,7 +214,6 @@
     }
 
     updateList() {
-        console.log(this.enabled);
       if (this.enabled == true) {
         this.listedRooms = this.allRooms;
       } else {
