@@ -99,7 +99,8 @@ Date.prototype.addDays = function(days) {
 // term = term as a number (summer term is 0, term 1 is 1, etc.)
 // week = week number
 // day = day as a string (eg. "Thu", "Thurs", "Thursday", etc.)
-let weekToDate = (res, year, term, week, day) => {
+// option = option selected (0 for Date String or 1 for Formatted Date String, otherwise Date object)
+let weekToDate = (async(res, year, term, week, day, option) => {
 	week -= 1; // Handle week number being 1-indexed
 	day = day.substr(0, 3); // Grab the start of the day just in case it isn't passed in correctly
 
@@ -110,8 +111,11 @@ let weekToDate = (res, year, term, week, day) => {
 	let date = new Date(start);
 	date.addDays(week * 7 + DAYS.indexOf(day));
 
-	return date.toDateString();
-};
+	if (option == null) { return date; }
+	else if (option == 0) { return date.toDateString(); }
+	else if (option == 1) { return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`; }
+	else { return date; }
+});
 
 // EXPORTS
 exports.keyDatesDict = scrapeKeyDatesDict;

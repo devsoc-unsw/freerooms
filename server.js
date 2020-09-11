@@ -8,14 +8,14 @@ const dbName = "freerooms";
 const dbCol = "test";
 const fs = require('fs');
 
-const MongoClient = require("mongodb").MongoClient;
+//const MongoClient = require("mongodb").MongoClient;
 const url = "mongodb://localhost:27017";
 
 const dataJson = `./data.json`;
 // MODULES
 const scraper = require("./app_modules/scrape.js");
 
-MongoClient.connect(url, function (err, db) {
+/* MongoClient.connect(url, function (err, db) {
   // read from disk for now and parse data json
   fs.readFile(dataJson, (err, jsonString) => {
     if (err) throw err;
@@ -34,7 +34,7 @@ MongoClient.connect(url, function (err, db) {
       db.close();
     }
   });
-});
+}); */
 
 // INDEX ROUTE (to be updated with dedicated update link or procedure)
 app.get("/", async (req, res) => {
@@ -60,19 +60,21 @@ app.get("/", async (req, res) => {
 });
 
 // BUILDING DATA ROUTE
-app.get("/buildings", async (req, res) => {
+// NOTE: UNUSED
+/* app.get("/buildings", async (req, res) => {
   try {
     console.log("building data successful");
   } catch (err) {
     await res.send("buildings data error");
     console.log(Error(err));
   }
-});
+}); */
 
 // BUILDING ROOM CODE + STATUS DATA ROUTE
 app.get("/buildings/:buildingId", async (req, res) => {
   try {
-    console.log("building rooms + status successful");
+    console.log(`requested rooms for ${req.params.buildingId}`);
+    res.send(`requested rooms for ${req.params.buildingId}`);
   } catch (err) {
     await res.send("building rooms data error");
     console.log(Error(err));
@@ -82,7 +84,8 @@ app.get("/buildings/:buildingId", async (req, res) => {
 // BUILDING ROOM STATUS DATA ROUTE
 app.get("/buildings/:buildingId/:roomId", async (req, res) => {
   try {
-    console.log("room status successful");
+    console.log(`requested rooms for ${req.params.roomId} in ${req.params.buildingId}`);
+    res.send(`requested rooms for ${req.params.roomId} in ${req.params.buildingId}`);
   } catch (err) {
     await res.send("building room status data error");
     console.log(Error(err));
@@ -92,7 +95,8 @@ app.get("/buildings/:buildingId/:roomId", async (req, res) => {
 // ROOM STATUS FOR WEEK DATA ROUTE
 app.get("/buildings/:buildingId/:roomID/:week", async (req, res) => {
   try {
-    console.log("room status for week successful");
+    console.log(`requested rooms for ${req.params.roomId} in ${req.params.buildingId} during week ${req.params.week}`);
+    res.send(`requested rooms for ${req.params.roomId} in ${req.params.buildingId} during week ${req.params.week}`);
   } catch (err) {
     await res.send("Invalid Room status");
     console.log(Error(err));

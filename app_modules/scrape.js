@@ -1,12 +1,22 @@
 // CONSTS
 const TIMETABLE_URL ='http://timetable.unsw.edu.au/current';
+// term enumeration (add more as needed - will need to be changed if UNSW changes how they serve the data)
+// Note 1: group matches table text (appended with "Detail") above start of classes for that term
+// Note 2: individual matches text beside "Teaching Period" for each class/tutorial
+const TERMS = {
+	"U1": { "val": 'U1 - Summer Teaching Period', "idx": 0 },
+	"T1": { "val": 'T1 - Teaching Period One', "idx": 1},
+	"T2": { "val": 'T2 - Teaching Period Two', "idx": 2},
+	"T3": { "val": 'T3 - Teaching Period Three', "idx": 3}
+};
 
 // MODULES
 const puppeteer = require('puppeteer');
+const dateconvert = require('./date.js');
 
 // LIBRARIES
 // your libraries here (try importing only functions you need)
-var lodashMerge = require('lodash/merge')
+var lodashMerge = require('lodash/merge');
 
 // SCRAPE FUNCTIONS
 // scrapes current timetable for current UNSW subject areas
@@ -119,6 +129,9 @@ var scrapeCourseDataList = (async(courseList) => {
 		console.log('loaded browser');
 		const page = await browser.newPage();
 		console.log('loaded newPage');
+		// expose needed functions to page.evaluate
+		await page.exposeFunction('weekToDate', dateconvert.weekToDate);
+		console.log('loaded dateconvert module')
 
 		// CONSOLE.LOG CODEBLOCK
 		page.on('console', (log) => console[log._type](log._text));
@@ -128,18 +141,8 @@ var scrapeCourseDataList = (async(courseList) => {
 		// init object for terms
 		var termsObj = {};
 
-		// term enumeration (add more as needed - will need to be changed if UNSW changes how they serve the data)
-		// Note 1: group matches table text (appended with "Detail") above start of classes for that term
-		// Note 2: individual matches text beside "Teaching Period" for each class/tutorial
-		const terms = {
-			"U1": 'U1 - Summer Teaching Period',
-			"T1": 'T1 - Teaching Period One',
-			"T2": 'T2 - Teaching Period Two',
-			"T3": 'T3 - Teaching Period Three'
-		};
-
-		// course count
-		//console.log(courseList.length);
+		// generate calender date information
+		var keyDates = await dateconvert.keyDatesDict();
 
 		// iterate through the courselist and retrieve data as necessary
 		for (var courseIter = 0; courseIter < courseList.length; courseIter++) {
@@ -148,13 +151,14 @@ var scrapeCourseDataList = (async(courseList) => {
 			//console.log('loaded course URL for ' + courseList[courseIter].courseCode);
 
 			// loop over each term
-			for (var termsKey in terms) {
-				//console.log(`###################### loaded term: ${termsKey} ######################`);
+			for (var termsKey in TERMS) {
+				//console.log(`###################### loaded term: ${TERMS[termsKey].val} ######################`);
 
-				// code is courseCode for debugging purposes
-				const result = await page.evaluate((termsvalue, courseObj) => {
+				// TODO: reduce parameters to PARAM object and modules to MODUKE object
+				// evaluate the course and create object
+				const result = await page.evaluate(async(termvalue, termindex, courseObj, keyDates) => {
 					// xpath query to find the table for specified term
-					const xpath = `//table[tbody[tr[td[contains(text(), '${termsvalue}')]]]]`;
+					const xpath = `//table[tbody[tr[td[contains(text(), '${termvalue}')]]]]`;
 					// evaluate query and get elements we need to work with
 					const elements = document.evaluate(xpath, document, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
 					// get our first element (null if non-existent)
@@ -166,8 +170,15 @@ var scrapeCourseDataList = (async(courseList) => {
 					// iterate each of the tables for each specific term and generate returnData with terms, locations, weeks, days and times
 					var returnData = {};
 					while (elemIter) {
-						const container = elemIter.querySelectorAll('.rowLowLight, .rowHighLight');
-						container.forEach((e) => {
+						const container = Array.from(elemIter.querySelectorAll('.rowLowLight, .rowHighLight'));
+						// evil async foreach hacks from google
+						// source: https://codeburst.io/javascript-async-await-with-foreach-b6ba62bbf404
+						async function asyncForEach(array, callback) {
+							for (let index = 0; index < array.length; index++) {
+								await callback(array[index], index, array);
+							}
+						}
+						await asyncForEach(container, async(e) => {
 							// TODO: Regex the location to use stuff inside parenthesis (from the end) as building code and rest as name
 							const location = e.cells[2].innerText;
 							// initialise location if it doesn't exist yet
@@ -180,10 +191,48 @@ var scrapeCourseDataList = (async(courseList) => {
 
 							const weeks = e.cells[3].innerText.split(',');
 							const days = e.cells[0].innerText.split(',');
-							const times = e.cells[1].innerText; //.split(','); UNUSED
+							const times = e.cells[1].innerText.trim(); //.split(','); UNUSED
 							// loop through weeks
 							for (var week of weeks) {
 								week = week.trim();
+
+								// day helper function
+								var dayHelper = (async(currLocation, week, days, times) => {
+									// CONSTS
+									const TIME_REGEX = /^((0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]) - ((0[0-9]|1[0-9]|2[0-3]):[0-5][0-9])$/;
+									// TODO: make a way to create this automatically from date.js
+									const YEAR = 2020;
+									const DATE_OPTION = 1;
+
+									// loop through days
+									// TODO: No error checking for valid days for now
+									for (var day of days) {
+										day = day.trim();
+										if (!currLocation[week][day]) { currLocation[week][day] = []; }
+										// ensure times is of correct format
+										if (times.match(TIME_REGEX)) {
+											// get date
+											const pushDate = await weekToDate(keyDates, YEAR, termindex, week, day, DATE_OPTION);
+											var timeObj = times.match(TIME_REGEX);
+											// push times and relevant course to array
+											var pushObj = {
+												"courseCode": courseObj.courseCode,
+												"start": `${pushDate} ${timeObj[1]}`,
+												"end": `${pushDate} ${timeObj[3]}`
+											};
+											currLocation[week][day].push(pushObj);
+										}
+										else {
+											console.log("\n\nTIME ERROR:" + courseObj.courseCode + "\n>" + times + "<\n\n");
+											continue;
+										}
+										// TODO: this should never trigger for now while no error checking
+										/* else {
+											console.log("\n\nDAY ERROR:" + courseObj.courseCode + "\n>" + day + "<\n" + days + "\n\n");
+											continue;
+										} */
+									}
+								});
 								// match on week regex (either single or range), otherwise error
 								// TODO: the logic for week matching is really hacky atm. if anyone knows a better way, feel free to make a PR
 								// TODO: problems with WEEKS N1 and some weird formats with `<1` etc.
@@ -193,47 +242,13 @@ var scrapeCourseDataList = (async(courseList) => {
 									const end = parseInt(weekmatch[2]);
 									for (var weekIter = start; weekIter <= end; weekIter++) {
 										if (!currLocation[weekIter]) { currLocation[weekIter] = {}; }
-										
-										// loop through days
-										// TODO: No error checking for valid days for now
-										// TODO: DRY principle needs to be adhered as i'm repeating code. this is only temp
-										for (var day of days) {
-											day = day.trim();
-											if (!currLocation[weekIter][day]) { currLocation[weekIter][day] = []; }
-											// push times and relevant course to array
-											var pushObj = {
-												"courseCode": courseObj.courseCode,
-												"times": times
-											};
-											currLocation[weekIter][day].push(pushObj);
-											// TODO: this should never trigger for now while no error checking
-											/* else {
-												console.log("\n\nDAY ERROR:" + courseObj.courseCode + "\n>" + day + "<\n" + days + "\n\n");
-												continue;
-											} */
-										}
+										await dayHelper(currLocation, weekIter, days, times);
 									}
 								}
 								else if (week.match(/^[0-9]+$/)) {
 									if (!currLocation[week]) { currLocation[week] = {}; }
-									// loop through days
-									// TODO: No error checking for valid days for now
-									// TODO: DRY principle needs to be adhered as i'm repeating code. this is only temp
-									for (var day of days) {
-										day = day.trim();
-										if (!currLocation[week][day]) { currLocation[week][day] = []; }
-										// push times and relevant course to array
-										var pushObj = {
-											"courseCode": courseObj.courseCode,
-											"times": times
-										};
-										currLocation[week][day].push(pushObj);
-										// TODO: this should never trigger for now while no error checking
-										/* else {
-											console.log("\n\nDAY ERROR:" + courseObj.courseCode + "\n>" + day + "<\n" + days + "\n\n");
-											continue;
-										} */
-									}
+									await dayHelper(currLocation, week, days, times);
+									//console.log(JSON.stringify(currLocation));
 								}
 								else {
 									console.log("\n\nWEEK ERROR:" + courseObj.courseCode + "\n>" + week + "<\n" + weeks + "\n\n");
@@ -243,8 +258,9 @@ var scrapeCourseDataList = (async(courseList) => {
 						});
 						elemIter = elements.iterateNext();
 					}
+					//console.log(JSON.stringify(returnData));
 					return returnData;
-				}, terms[termsKey], courseList[courseIter]);
+				}, TERMS[termsKey].val, TERMS[termsKey].idx, courseList[courseIter], keyDates);
 				// merge objects using lodash
 				termsObj[termsKey] = lodashMerge({},termsObj[termsKey], result);
 			}
