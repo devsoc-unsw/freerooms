@@ -22,12 +22,16 @@ const api = {
 
   // Get a list of all booked periods in the room, within the given week.
   getRoomBookingsInTimeRange: handleError(async (roomName: string, startDate: string, endDate: string) => {
+    // Ainsworth room 101 week 1.
     const res = await axios.get(baseURL + "buildings/"
                                   + "K-J17" + "/"
                                   + "101" + "/"
                                   + "1"
                                 );
     return res.data;
+    // ^ DEPENDING ON WHAT THIS RETURNS, you may need to split the time
+    //  period of a booking into two + some extra conversion. Follow the
+    // format of the dummy output in the branch 'call_backend'.
   })
   };
 
