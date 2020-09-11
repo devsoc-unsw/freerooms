@@ -155,3 +155,4 @@ let dateToWeek = ((res, date) => {
 // EXPORTS
 exports.keyDatesDict = scrapeKeyDatesDict;
 exports.weekToDate = weekToDate;
+exports.dateToWeek = dateToWeek;
