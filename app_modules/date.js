@@ -1,6 +1,7 @@
 // CONSTS
 const CALENDAR_URL ='https://student.unsw.edu.au/calendar';
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const TERMS = {"Summer Term": "U1", "Term 1": "T1", "Term 2": "T2", "Term 3": "T3"}
 
 // MODULES
 const puppeteer = require('puppeteer');
@@ -115,6 +116,40 @@ let weekToDate = (async(res, year, term, week, day, option) => {
 	else if (option == 0) { return date.toDateString(); }
 	else if (option == 1) { return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`; }
 	else { return date; }
+});
+
+// Rudimentary method to convert date to term + week num
+// NOTE: Only works if the key dates object starts terms on a Monday
+//
+// res = response object from scrapeKeyDatesDict
+// date = Date Object for the date being converted
+let dateToWeek = ((res, date) => {
+    let target = date;
+
+    // Loop through array of term start dates to determine
+    // which term we're in and the start date of that term
+    let curr = new Date(Date.parse(res[target.getFullYear()][0]["start"]));
+    let prev = curr;
+
+    let i = 0;
+    while (curr <= target) {
+        i++;
+        prev = curr;
+        if (i == res[target.getFullYear()].length) break;
+        curr = new Date(Date.parse(res[target.getFullYear()][i]["start"]));
+    }
+
+    // Calculate week number
+    let daysRaw = target - prev;
+    let days = Math.ceil(daysRaw / (1000 * 60 * 60 * 24));
+    let weeks = Math.ceil(days / 7)+1;
+
+    // Output
+    return {
+    	"term": TERMS[res[target.getFullYear()][i-1]["term"]],
+    	"week": weeks,
+    	"day": DAYS[target.getDay()]
+    };
 });
 
 // EXPORTS
