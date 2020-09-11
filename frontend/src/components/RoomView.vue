@@ -9,9 +9,12 @@
           <v-col cols="12">
             <v-card class="control-card">
               <v-list-item>
+                <!-- TODO: unhide buttons once code to resend request to backend
+                            for a new week is done. -->
                 <v-btn
                   fab
                   small
+                  hidden
                   absolute
                   left
                   :color="color"
@@ -23,6 +26,7 @@
                   fab
                   small
                   absolute
+                  hidden
                   right
                   :color="color"
                   @click="$refs.calendar.next()"
