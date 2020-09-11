@@ -180,7 +180,8 @@ var scrapeCourseDataList = (async(courseList) => {
 						}
 						await asyncForEach(container, async(e) => {
 							// regex the location to split into name, building code and room code
-							const location = e.cells[2].innerText.trim().match(/^(.*) +\((.*-.*)-(.*)\)$|^.* +\(ONLINE\)$/);
+							// ONLINE: |^.* +\(ONLINE\)$
+							const location = e.cells[2].innerText.trim().match(/^(.*) +\((.*-.*)-(.*)\)$/);
 							const name = (location == null) ? "ONLINE" : location[1];
 							const building = (location == null) ? "ONLINE" : location[2];
 							const room = (location == null) ? "ONLINE" : location[3];

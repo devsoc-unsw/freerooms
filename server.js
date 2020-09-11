@@ -85,11 +85,11 @@ app.get("/update", async (req, res) => {
   }
 }); */
 
-// BUILDING ROOM CODE + STATUS DATA ROUTE
+// TODO: BUILDING ROOM CODE + STATUS DATA ROUTE
 app.get("/buildings/:buildingId", async (req, res) => {
   try {
     console.log(`requested rooms for ${req.params.buildingId}`);
-    res.send(dataJson.T3[req.params.buildingId][1].Thu);
+    res.send(`requested rooms for ${req.params.buildingId}`);
   } catch (err) {
     await res.send("building rooms data error");
     console.log(Error(err));
@@ -100,14 +100,18 @@ app.get("/buildings/:buildingId", async (req, res) => {
 app.get("/buildings/:buildingId/:roomId", async (req, res) => {
   try {
     console.log(`requested room status for ${req.params.roomId} in ${req.params.buildingId}`);
-    res.send(`requested room status for ${req.params.roomId} in ${req.params.buildingId}`);
+    // NOTE: HARDCODED STUFF WHICH WILL BE AUTOMATED LATER
+    const term = "T3";
+    const week = 1;
+    const day = "Thu";
+    res.send(dataJson[term][req.params.buildingId][req.params.roomId][week][day].classes);
   } catch (err) {
     await res.send("building room status data error");
     console.log(Error(err));
   }
 });
 
-// ROOM STATUS FOR WEEK DATA ROUTE
+// TODO: ROOM STATUS FOR WEEK DATA ROUTE
 app.get("/buildings/:buildingId/:roomId/:week", async (req, res) => {
   try {
     console.log(`requested rooms for ${req.params.roomId} in ${req.params.buildingId} during week ${req.params.week}`);
@@ -118,7 +122,7 @@ app.get("/buildings/:buildingId/:roomId/:week", async (req, res) => {
   }
 });
 
-// WEEK NUM DATA ROUTE
+// TODO: WEEK NUM DATA ROUTE
 app.get("/weekNum", async (req, res) => {
   try {
     console.log("weekNum successful");
