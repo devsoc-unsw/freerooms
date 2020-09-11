@@ -2,7 +2,7 @@
 
 **Array of all rooms in a specified building, with their booked times for a specified date.**
 
-Request from frontend would supply the room name, a starting date and an ending date.
+Request from frontend would supply the room name, and a date.
 
 An example building name could be: `Keith Burrows`
 The date would follow the format: `YYYY-MM-DD`. This will need conversion.
