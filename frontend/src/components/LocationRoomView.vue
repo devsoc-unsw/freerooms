@@ -157,6 +157,7 @@
   import { Vue, Component, Prop } from 'vue-property-decorator';
   import LocationService from '../services/locationService';
   import DbService from '../services/dbService';
+  import moment from 'moment';
 
   @Component
   export default class LocationRoomView extends Vue {
@@ -172,6 +173,7 @@
     availableRooms = [];
     unavailableRooms = [];
     listedRooms= [];
+    hour = '';
 
 
     // Filter / Sort variables.
@@ -187,9 +189,10 @@
     mounted() {
         this.msg = this.$route.path;
         this.params = this.$route.params;
+        this.hour = moment().format('hh');
         this.locationId = this.params['locationId'];
         this.buildingName = this.locationService.getLocationbyId(this.locationId);
-        this.allRooms = this.dbService.getRoomsInBuilding(this.buildingName);
+        this.allRooms = this.dbService.getRoomsInBuilding(this.buildingName, this.hour);
         this.listedRooms = this.allRooms;
         this.availableRooms = this.filterRoomsAvailable(this.allRooms, true);
         this.unavailableRooms = this.filterRoomsAvailable(this.allRooms, false);
