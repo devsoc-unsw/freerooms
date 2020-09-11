@@ -104,7 +104,15 @@ app.get("/buildings/:buildingId/:roomId", async (req, res) => {
     const term = "T3";
     const week = 1;
     const day = "Thu";
-    res.send(dataJson[term][req.params.buildingId][req.params.roomId][week][day].classes);
+    //res.send(dataJson[term][req.params.buildingId][req.params.roomId][week][day].classes);
+
+    var returnObj = {}
+    const roomname = dataJson[term][req.params.buildingId][req.params.roomId][week][day].name;
+    const classes = dataJson[term][req.params.buildingId][req.params.roomId][week][day].classes;
+    returnObj[roomname] = classes;
+    res.send([returnObj]);
+
+    console.log("sent");
   } catch (err) {
     await res.send("building room status data error");
     console.log(Error(err));
