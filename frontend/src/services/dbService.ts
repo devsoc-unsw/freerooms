@@ -9,24 +9,28 @@ const handleError = fn => (...params) =>
     console.log(`${error.response.status}: ${error.response.statusText}`, 'error');
   });
 
+// Api to call the backend.
 const api = {
-    getRoomsInBuilding: handleError(async (buildingName: string, date: string) => {
-      const res = await axios.get(baseURL + "buildings/"
-                                    + buildingName + "/"
-                                    + date);
-      return res.data;
-    }),
-    getRoomBookingsInTimeRange: handleError(async (roomName: string, startDate: string, endDate: string) => {
-      const res = await axios.get(baseURL + "buildings/"
-                                    + roomName + "/"
-                                    + startDate + "/"
-                                    + endDate);
-      return res.data;
-    })
+  // Get a list of all rooms in a building.
+  // Possibly hardcode buildingName to a building code & replace date with hardcoded term + week + day.
+  getRoomsInBuilding: handleError(async (buildingName: string, date: string) => {
+    // The actual call.
+    const res = await axios.get(baseURL + "buildings/"
+                                  + buildingName + "/"
+                                  + date);
+    return res.data;
+  }),
+  // Get a list of all booked periods in the bace
+  getRoomBookingsInTimeRange: handleError(async (roomName: string, startDate: string, endDate: string) => {
+    const res = await axios.get(baseURL + "buildings/"
+                                  + roomName + "/"
+                                  + startDate + "/"
+                                  + endDate);
+    return res.data;
+  })
   };
 
 export default class DbService {
-    // TODO: Add the calls to backend in these functions.
     // Get an array of objects of all rooms within a building.
    async getRoomsInBuilding (buildingName: string, hour: string) {
         const data = await api.getRoomsInBuilding(buildingName);
