@@ -108,7 +108,7 @@ app.get("/buildings/:buildingId/:roomId", async (req, res) => {
 });
 
 // ROOM STATUS FOR WEEK DATA ROUTE
-app.get("/buildings/:buildingId/:roomID/:week", async (req, res) => {
+app.get("/buildings/:buildingId/:roomId/:week", async (req, res) => {
   try {
     console.log(`requested rooms for ${req.params.roomId} in ${req.params.buildingId} during week ${req.params.week}`);
     res.send(`requested rooms for ${req.params.roomId} in ${req.params.buildingId} during week ${req.params.week}`);
