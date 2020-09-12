@@ -154,7 +154,6 @@ var scrapeCourseDataList = (async(courseList) => {
 			for (var termsKey in TERMS) {
 				//console.log(`###################### loaded term: ${TERMS[termsKey].val} ######################`);
 
-				// TODO: reduce parameters to PARAM object and modules to MODUKE object
 				// evaluate the course and create object
 				const result = await page.evaluate(async(termvalue, termindex, courseObj, keyDates) => {
 					// xpath query to find the table for specified term
