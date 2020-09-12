@@ -99,6 +99,10 @@ app.get("/buildings/:buildingId", async (req, res) => {
 // BUILDING ROOM STATUS DATA ROUTE
 app.get("/buildings/:buildingId/:roomId", async (req, res) => {
   try {
+    // NOTE: TEMPORARY FIX ON CORS HEADER ISSUE
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+
     console.log(`requested room status for ${req.params.roomId} in ${req.params.buildingId}`);
     // NOTE: HARDCODED STUFF WHICH WILL BE AUTOMATED LATER
     const term = "T3";
@@ -106,9 +110,9 @@ app.get("/buildings/:buildingId/:roomId", async (req, res) => {
     const day = "Thu";
     //res.send(dataJson[term][req.params.buildingId][req.params.roomId][week][day].classes);
 
-    var returnObj = {}
-    const roomname = dataJson[term][req.params.buildingId][req.params.roomId][week][day].name;
-    const classes = dataJson[term][req.params.buildingId][req.params.roomId][week][day].classes;
+    var returnObj = {};
+    const roomname = dataJson[term][req.params.buildingId][req.params.roomId].name;
+    const classes = dataJson[term][req.params.buildingId][req.params.roomId][week][day];
     returnObj[roomname] = classes;
     res.send([returnObj]);
 
@@ -122,8 +126,22 @@ app.get("/buildings/:buildingId/:roomId", async (req, res) => {
 // TODO: ROOM STATUS FOR WEEK DATA ROUTE
 app.get("/buildings/:buildingId/:roomId/:week", async (req, res) => {
   try {
+    // NOTE: TEMPORARY FIX ON CORS HEADER ISSUE
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+    
     console.log(`requested rooms for ${req.params.roomId} in ${req.params.buildingId} during week ${req.params.week}`);
-    res.send(`requested rooms for ${req.params.roomId} in ${req.params.buildingId} during week ${req.params.week}`);
+    // NOTE: HARDCODED STUFF WHICH WILL BE AUTOMATED LATER
+    const term = "T3";
+    
+    var returnList = [];
+    //const roomname = dataJson[term][req.params.buildingId][req.params.roomId].name;
+    const days = dataJson[term][req.params.buildingId][req.params.roomId][req.params.week];
+    for (var day in days) {
+      returnList = returnList.concat(days[day]);
+    }
+
+    res.send(returnList);
   } catch (err) {
     await res.send("Invalid Room status");
     console.log(Error(err));

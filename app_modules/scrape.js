@@ -191,7 +191,7 @@ var scrapeCourseDataList = (async(courseList) => {
 							}
 							// initialise location room if it doesn't exist yet
 							if (!(room in returnData[building])) {
-								returnData[building][room] = {};
+								returnData[building][room] = { "name": name };
 							}
 
 							// assign location object by reference for easier use
@@ -205,7 +205,7 @@ var scrapeCourseDataList = (async(courseList) => {
 								week = week.trim();
 
 								// day helper function
-								var dayHelper = (async(currLocation, week, days, times, name) => {
+								var dayHelper = (async(currLocation, week, days, times) => {
 									// CONSTS
 									const TIME_REGEX = /^((0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]) - ((0[0-9]|1[0-9]|2[0-3]):[0-5][0-9])$/;
 									// TODO: make a way to create this automatically from date.js
@@ -216,7 +216,7 @@ var scrapeCourseDataList = (async(courseList) => {
 									// TODO: No error checking for valid days for now
 									for (var day of days) {
 										day = day.trim();
-										if (!currLocation[week][day]) { currLocation[week][day] = { "name": name, "classes": [] }; }
+										if (!currLocation[week][day]) { currLocation[week][day] = []; }
 										// ensure times is of correct format
 										if (times.match(TIME_REGEX)) {
 											// get date
@@ -228,7 +228,7 @@ var scrapeCourseDataList = (async(courseList) => {
 												"start": `${pushDate} ${timeObj[1]}`,
 												"end": `${pushDate} ${timeObj[3]}`
 											};
-											currLocation[week][day].classes.push(pushObj);
+											currLocation[week][day].push(pushObj);
 										}
 										else {
 											console.log("\n\nTIME ERROR:" + courseObj.courseCode + "\n>" + times + "<\n\n");
@@ -250,12 +250,12 @@ var scrapeCourseDataList = (async(courseList) => {
 									const end = parseInt(weekmatch[2]);
 									for (var weekIter = start; weekIter <= end; weekIter++) {
 										if (!currLocation[weekIter]) { currLocation[weekIter] = {}; }
-										await dayHelper(currLocation, weekIter, days, times, name);
+										await dayHelper(currLocation, weekIter, days, times);
 									}
 								}
 								else if (week.match(/^[0-9]+$/)) {
 									if (!currLocation[week]) { currLocation[week] = {}; }
-									await dayHelper(currLocation, week, days, times, name);
+									await dayHelper(currLocation, week, days, times);
 									//console.log(JSON.stringify(currLocation));
 								}
 								else {

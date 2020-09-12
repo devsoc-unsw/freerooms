@@ -14,7 +14,7 @@ const api = {
   // Get a list of all rooms in a building.
   // Possibly hardcode buildingName to a building code & replace date with hardcoded term + week + day.
   getRoomsInBuilding: handleError(async (buildingName: string, date: string) => {
-    const url = baseURL + "buildings/" + "K-J17" + "/" + "101"; // Ainsworth room 101.
+    const url = baseURL + "buildings/" + "K-J17" + "/" + "101"; // Ainsworth room 101
     // The actual call.
     const res = await axios.get(url);
     return res.data;
