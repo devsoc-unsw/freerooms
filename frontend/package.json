@@ -1,5 +1,5 @@
 {
-  "name": "FreeRooms",
+  "name": "freerooms",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "apollo-boost": "^0.4.7",
+    "axios": "^0.20.0",
     "core-js": "^3.6.4",
     "graphql": "^15.0.0",
     "moment": "^2.26.0",
