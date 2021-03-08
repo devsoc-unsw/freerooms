@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../components/LandingPage.vue";
 import LocationRoomView from "../components/LocationRoomView.vue";
@@ -12,50 +12,50 @@ import RoomView from "../components/RoomView.vue";
 // roomView -> mon-fri view of avaliable times for room
 // TODO add 404
 const routes = [
-    {
-        path: "/", 
-        redirect: '/home',
-        name: 'home',
-        component: {
-            template: '<router-view/>',
-        }, 
-        children: [
-            {
-                path: '/home',
-                name: 'locations',
-                component: Home,
-                meta: {
-                    breadCrumb: "Home"
-                }
-            }
-        ]
+  {
+    path: "/",
+    redirect: "/home",
+    name: "home",
+    component: {
+      template: "<router-view/>",
     },
-    {
-        path: "/location/:locationId",
-        component: LocationRoomView,
-        name: 'locationRoom',
+    children: [
+      {
+        path: "/home",
+        name: "locations",
+        component: Home,
         meta: {
-            breadCrumb: "Location"
-        }
-    }, 
-    {
-        // we cannot do a nested route as we want to
-        // render the <router-view> in the root element
-        path: "/location/:locationId/room/:roomId",
-        component: RoomView,
-        name: 'room',
-        meta: {
-            breadCrumb: "Room"
-        }
-    }
+          breadCrumb: "Home",
+        },
+      },
+    ],
+  },
+  {
+    path: "/location/:locationId",
+    component: LocationRoomView,
+    name: "locationRoom",
+    meta: {
+      breadCrumb: "Location",
+    },
+  },
+  {
+    // we cannot do a nested route as we want to
+    // render the <router-view> in the root element
+    path: "/location/:locationId/room/:roomId",
+    component: RoomView,
+    name: "room",
+    meta: {
+      breadCrumb: "Room",
+    },
+  },
 ];
 
 // set history mode to get rid of #
 // https://router.vuejs.org/guide/essentials/history-mode.html
 // TODO configure server
 const router = new VueRouter({
-    mode: 'history',
-    routes
+  mode: "history",
+  routes,
 });
 
 Vue.use(VueRouter);
