@@ -12,45 +12,50 @@ const TERMS = {
 
 // MODULES
 const puppeteer = require("puppeteer");
-const dateconvert = require("./date.js");
+const dateConverter = require("./date.js");
 
 // LIBRARIES
-// your libraries here (try importing only functions you need)
-var lodashMerge = require("lodash/merge");
+// Your libraries here (try importing only functions you need to increase performance)
+let lodashMerge = require("lodash/merge");
 
 // SCRAPE FUNCTIONS
-// scrapes current timetable for current UNSW subject areas
-var scrapeCourseTypeList = async () => {
+// Scrapes current timetable for current UNSW subject areas and their associated courses' timetables
+const scrapeCourseTypeList = async () => {
   try {
-    // remove no sandbox later when with debian;
+    // Create new browser and page
+    // TODO remove no sandbox later when with debian;
     const browser = await puppeteer.launch({
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
-    console.log("loaded browser");
-    const page = await browser.newPage();
-    console.log("loaded newPage");
+    console.log("Loaded browser");
 
-    // CONSOLE.LOG CODEBLOCK
+    const page = await browser.newPage();
+    console.log("Loaded new page");
+
+    // TODO what does this do??
+    //////////////////////////// CONSOLE.LOG CODEBLOCK ////////////////////////////
     page.on("console", log => console[log._type](log._text));
     console.log("loaded page eval console.log");
-    ////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////
 
+    // Visit timetable page
     await page.goto(TIMETABLE_URL, { waitUntil: "domcontentloaded" });
-    console.log("loaded url");
+    console.log("Loaded UNSW timetable");
 
-    // get raw list rows and get course code info
+    // Get raw list rows in subject area timetabl
+    // Extract subject area code, name and link to corresponding timetabling page
     const result = await page.evaluate(() => {
       let container = Array.from(
         document.querySelectorAll(".rowLowLight, .rowHighLight")
       );
       let list = container.map(e => {
         // firstElementChild is a dirty fix that will break URLS if UNSW changes how URL is put out
+        // TODO find better solution
         let object = {
           subjectCode: e.cells[0].innerText,
           subjectName: e.cells[1].innerText,
           subjectURL: e.cells[0].firstElementChild.href,
         };
-
         return object;
       });
       return list;
@@ -59,48 +64,51 @@ var scrapeCourseTypeList = async () => {
     await browser.close();
     return result;
   } catch (err) {
+    // Close browser so that there are no lingering instances
+    await browser.close();
     console.log(Error(err));
-    await browser.close(); // close the browser so no lingering instances
     return Error(err);
   }
 };
 
-// scrapes current timetable for current UNSW courses seperated under each subject area
-var scrapeCourseCodeList = async typeList => {
+// Scrapes timetable for current UNSW courses seperated under each subject area
+const scrapeCourseCodeList = async typeList => {
   try {
-    // remove no sandbox later when with debian
+    // Create new browser and page
+    // TODO remove no sandbox later when with debian
     const browser = await puppeteer.launch({
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
-    console.log("loaded browser");
-    const page = await browser.newPage();
-    console.log("loaded newPage");
+    console.log("Loaded browser");
 
-    // CONSOLE.LOG CODEBLOCK
+    const page = await browser.newPage();
+    console.log("Loaded new page");
+
+    // TODO what does this do??
+    //////////////////////////// CONSOLE.LOG CODEBLOCK ////////////////////////////
     page.on("console", log => console[log._type](log._text));
     console.log("loaded page eval console.log");
-    ////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////
 
-    // init courses
-    var courseList = [];
+    let courseList = [];
 
-    // extract and process course info and seperate as per each subject area
-    for (var subjIter = 0; subjIter < typeList.length; subjIter++) {
-      // retrieve URL and goto
-      console.log("retrieve url for " + typeList[subjIter].subjectCode);
-      await page.goto(typeList[subjIter].subjectURL, {
+    // Extract and process course info
+    for (let i = 0; i < typeList.length; i++) {
+      // Retrieve URL for subject
+      await page.goto(typeList[i].subjectURL, {
         waitUntil: "domcontentloaded",
       });
-      console.log("loaded subject url for " + typeList[subjIter].subjectCode);
+      console.log("Loaded timetable page for " + typeList[i].subjectCode);
 
-      // evaluate page and retrieve relevant data
+      // Evaluate page and retrieve relevant data
       const result = await page.evaluate(subjObj => {
-        var container = Array.from(
+        let container = Array.from(
           document.querySelectorAll(".rowLowLight, .rowHighLight")
         );
-        var list = container.map(e => {
-          // object template for course array
-          var object = {
+        let list = container.map(e => {
+          // firstElementChild is a dirty fix that will break URLS if UNSW changes how URL is put out
+          // TODO find better solution
+          let object = {
             subjectCode: subjObj.subjectCode,
             subjectName: subjObj.subjectName,
             subjectURL: subjObj.subjectURL,
@@ -111,64 +119,68 @@ var scrapeCourseCodeList = async typeList => {
           return object;
         });
         return list;
-      }, typeList[subjIter]);
+      }, typeList[i]);
 
-      // push results onto courselist with evil ECMASCript 6 spread syntax
+      // Push results onto courseList with evil ECMASCript 6 spread syntax
       courseList.push(...result);
     }
 
     await browser.close();
     return courseList;
   } catch (err) {
+    // Close browser so that there are no lingering instances
+    await browser.close();
     console.log(Error(err));
-    await browser.close(); // close the browser so no lingering instances
     return Error(err);
   }
 };
 
 // scrapes time and location data of each occupied room per each courses schedule (Rohan's Flawed Timelist + Kim's Refactor)
-var scrapeCourseDataList = async courseList => {
+const scrapeCourseDataList = async courseList => {
   try {
-    // remove no sandbox later when with debian
+    // Create new browser and page
+    // TODO remove no sandbox later when with debian
     const browser = await puppeteer.launch({
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
-    console.log("loaded browser");
-    const page = await browser.newPage();
-    console.log("loaded newPage");
-    // expose needed functions to page.evaluate
-    await page.exposeFunction("weekToDate", dateconvert.weekToDate);
-    console.log("loaded dateconvert module");
+    console.log("Loaded browser");
 
-    // CONSOLE.LOG CODEBLOCK
+    const page = await browser.newPage();
+    console.log("Loaded newPage");
+
+    // Expose needed functions to page.evaluate
+    await page.exposeFunction("weekToDate", dateConverter.weekToDate);
+    console.log("Loaded dateConverter module");
+
+    // TODO what does this do??
+    //////////////////////////// CONSOLE.LOG CODEBLOCK ////////////////////////////
     page.on("console", log => console[log._type](log._text));
     console.log("loaded page eval console.log");
-    ////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////
 
-    // init object for terms
-    var termsObj = {};
+    let termsObj = {};
 
-    // generate calender date information
-    var keyDates = await dateconvert.keyDatesDict();
+    // Generate calender date information
+    let keyDates = await dateConverter.scrapeKeyDates();
 
-    // iterate through the courselist and retrieve data as necessary
-    for (var courseIter = 0; courseIter < courseList.length; courseIter++) {
-      //console.log('retrieve url for ' + courseList[courseIter].courseCode);
-      await page.goto(courseList[courseIter].courseURL, {
+    // Iterate through the courseList and retrieve data for each course's timetable
+    for (let i = 0; i < courseList.length; i++) {
+      await page.goto(courseList[i].courseURL, {
         waitUntil: "domcontentloaded",
       });
-      //console.log('loaded course URL for ' + courseList[courseIter].courseCode);
+      // console.log('Loaded course URL for ' + courseList[i].courseCode);
 
-      // loop over each term
-      for (var termsKey in TERMS) {
-        //console.log(`###################### loaded term: ${TERMS[termsKey].val} ######################`);
+      // Loop over each term
+      for (let termsKey in TERMS) {
+        //console.log(`Loaded term: ${TERMS[termsKey].val}`);
 
-        // evaluate the course and create object
+        // Evaluate the course and create object to store timetable information for it
         const result = await page.evaluate(
-          async (termvalue, termindex, courseObj, keyDates) => {
+          async (termValue, termIndex, courseObj, keyDates) => {
             // xpath query to find the table for specified term
-            const xpath = `//table[tbody[tr[td[contains(text(), '${termvalue}')]]]]`;
-            // evaluate query and get elements we need to work with
+            const xpath = `//table[tbody[tr[td[contains(text(), '${termValue}')]]]]`;
+
+            // Evaluate query and get the elements we need
             const elements = document.evaluate(
               xpath,
               document,
@@ -176,29 +188,42 @@ var scrapeCourseDataList = async courseList => {
               XPathResult.ORDERED_NODE_ITERATOR_TYPE,
               null
             );
-            // get our first element (null if non-existent)
-            var elemIter = elements.iterateNext();
-            // early return with null if course doesn't run this term
-            if (!elemIter) {
-              return null;
-            }
 
-            // NOTE: maybe we can make elemIter a for loop?
-            // iterate each of the tables for each specific term and generate returnData with terms, locations, weeks, days and times
-            var returnData = {};
+            // TODO change XPathResult.ORDERED_NODE_ITERATOR_TYPE to XPathResult.ORDERED_NODE_SNAPSHOT_TYPE
+            // See https://stackoverflow.com/questions/48235278/xpath-error-the-document-has-mutated-since-the-result-was-returned
+
+            // Get our first element (null if non-existent). Early return with null if course doesn't run this term
+            let elemIter = elements.iterateNext();
+            if (!elemIter) return null;
+
+            // Iterate through each of the tables for each term
+            // Then generate returnData object with terms, locations, weeks, days and times
+
+            // Key: building code
+            // Values: an object for each room
+
+            // For room object:
+            // Key: room code
+            // Values: course code, start time and end time of class in that room (which is an object)
+
+            let returnData = {};
+
+            // TODO: maybe we can make elemIter a for loop?
             while (elemIter) {
               const container = Array.from(
                 elemIter.querySelectorAll(".rowLowLight, .rowHighLight")
               );
-              // evil async foreach hacks from google
-              // source: https://codeburst.io/javascript-async-await-with-foreach-b6ba62bbf404
+
+              // Evil async foreach hacks from google
+              // Source: https://codeburst.io/javascript-async-await-with-foreach-b6ba62bbf404
               async function asyncForEach(array, callback) {
                 for (let index = 0; index < array.length; index++) {
                   await callback(array[index], index, array);
                 }
               }
+
               await asyncForEach(container, async e => {
-                // regex the location to split into name, building code and room code
+                // Apply regex to the location to split into name, building code and room code
                 // ONLINE: |^.* +\(ONLINE\)$
                 const location = e.cells[2].innerText
                   .trim()
@@ -206,59 +231,70 @@ var scrapeCourseDataList = async courseList => {
                 const name = location == null ? "ONLINE" : location[1];
                 const building = location == null ? "ONLINE" : location[2];
                 const room = location == null ? "ONLINE" : location[3];
-                // initialise location building if it doesn't exist yet
+
+                // Initialise location building if it doesn't exist yet
                 if (!(building in returnData)) {
                   returnData[building] = {};
                 }
-                // initialise location room if it doesn't exist yet
+
+                // Initialise location room if it doesn't exist yet
                 if (!(room in returnData[building])) {
                   returnData[building][room] = { name: name };
                 }
 
-                // assign location object by reference for easier use
-                var currLocation = returnData[building][room];
+                // Assign location object by reference for easier use
+                let currLocation = returnData[building][room];
 
                 const weeks = e.cells[3].innerText.split(",");
                 const days = e.cells[0].innerText.split(",");
                 const times = e.cells[1].innerText.trim(); //.split(','); UNUSED
-                // loop through weeks
-                for (var week of weeks) {
+
+                // Loop through weeks
+                for (let week of weeks) {
                   week = week.trim();
 
-                  // day helper function
-                  var dayHelper = async (currLocation, week, days, times) => {
-                    // CONSTS
-                    const TIME_REGEX = /^((0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]) - ((0[0-9]|1[0-9]|2[0-3]):[0-5][0-9])$/;
+                  // Helper function to generate class data for a room
+                  // This will contain the data for all classes for a particular week and day in the given room
+                  // For each day of week, every class' course code, start time and end time will be stored in an array
+                  const dayHelper = async (currLocation, week, days, times) => {
                     // TODO: make a way to create this automatically from date.js
-                    const YEAR = 2020;
+                    const TIME_REGEX = /^((0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]) - ((0[0-9]|1[0-9]|2[0-3]):[0-5][0-9])$/;
+                    // TODO: generate year programatically
+                    const YEAR = 2021;
                     const DATE_OPTION = 1;
 
-                    // loop through days
+                    // Loop through days
                     // TODO: No error checking for valid days for now
-                    for (var day of days) {
+                    for (let day of days) {
                       day = day.trim();
-                      if (!currLocation[week][day]) {
+
+                      // Initialise array of classes for the current day of the current week in the given room
+                      if (!currLocation[week][day])
                         currLocation[week][day] = [];
-                      }
-                      // ensure times is of correct format
+
+                      // Ensure times are of the correct format
                       if (times.match(TIME_REGEX)) {
-                        // get date
-                        const pushDate = await weekToDate(
+                        // Convert nth week and day to an actual date
+                        const convertedDate = await weekToDate(
                           keyDates,
                           YEAR,
-                          termindex,
+                          termIndex,
                           week,
                           day,
                           DATE_OPTION
                         );
-                        var timeObj = times.match(TIME_REGEX);
-                        // push times and relevant course to array
-                        var pushObj = {
+
+                        // TODO this can't be right? what does this do
+                        let timeObj = times.match(TIME_REGEX);
+
+                        // Push class data to the array
+                        let classData = {
                           courseCode: courseObj.courseCode,
-                          start: `${pushDate} ${timeObj[1]}`,
-                          end: `${pushDate} ${timeObj[3]}`,
+                          start: `${convertedDate} ${timeObj[1]}`,
+                          end: `${convertedDate} ${timeObj[3]}`,
                         };
-                        currLocation[week][day].push(pushObj);
+
+                        currLocation[week][day].push(classData);
                       } else {
                         console.log(
                           "\n\nTIME ERROR:" +
@@ -271,30 +307,26 @@ var scrapeCourseDataList = async courseList => {
                       }
                       // TODO: this should never trigger for now while no error checking
                       /* else {
-											console.log("\n\nDAY ERROR:" + courseObj.courseCode + "\n>" + day + "<\n" + days + "\n\n");
-											continue;
-										} */
+                        console.log("\n\nDAY ERROR:" + courseObj.courseCode + "\n>" + day + "<\n" + days + "\n\n");
+                        continue;
+										  } */
                     }
                   };
-                  // match on week regex (either single or range), otherwise error
-                  // TODO: the logic for week matching is really hacky atm. if anyone knows a better way, feel free to make a PR
-                  // TODO: problems with WEEKS N1 and some weird formats with `<1` etc.
+
+                  // Ensure week matches regex (either a single week or range of weeks)
+                  // TODO the logic for week matching is really hacky atm. if anyone knows a better way, feel free to make a PR
+                  // TODO problems with WEEKS N1 and some weird formats with `<1` etc.
                   if (week.match(/^([0-9]+)-([0-9]+)$/)) {
-                    var weekmatch = week.match(/^([0-9]+)-([0-9]+)$/);
-                    const start = parseInt(weekmatch[1]);
-                    const end = parseInt(weekmatch[2]);
-                    for (var weekIter = start; weekIter <= end; weekIter++) {
-                      if (!currLocation[weekIter]) {
-                        currLocation[weekIter] = {};
-                      }
-                      await dayHelper(currLocation, weekIter, days, times);
+                    let weekMatch = week.match(/^([0-9]+)-([0-9]+)$/);
+                    let start = parseInt(weekMatch[1]);
+                    let end = parseInt(weekMatch[2]);
+                    for (let currWeek = start; currWeek <= end; currWeek++) {
+                      if (!currLocation[currWeek]) currLocation[currWeek] = {};
+                      await dayHelper(currLocation, currWeek, days, times);
                     }
                   } else if (week.match(/^[0-9]+$/)) {
-                    if (!currLocation[week]) {
-                      currLocation[week] = {};
-                    }
+                    if (!currLocation[week]) currLocation[week] = {};
                     await dayHelper(currLocation, week, days, times);
-                    //console.log(JSON.stringify(currLocation));
                   } else {
                     console.log(
                       "\n\nWEEK ERROR:" +
@@ -311,27 +343,29 @@ var scrapeCourseDataList = async courseList => {
               });
               elemIter = elements.iterateNext();
             }
-            //console.log(JSON.stringify(returnData));
             return returnData;
           },
           TERMS[termsKey].val,
           TERMS[termsKey].idx,
-          courseList[courseIter],
+          courseList[i],
           keyDates
         );
-        // merge objects using lodash
+
+        // Merge result with current term data using lodash
         termsObj[termsKey] = lodashMerge({}, termsObj[termsKey], result);
       }
+
       console.log(
-        `completed course ${courseList[courseIter].courseCode} - ${courseIter} of ${courseList.length}`
+        `Completed course ${courseList[i].courseCode} - ${i} of ${courseList.length}`
       );
     }
 
-    await browser.close(); // early close
+    await browser.close();
     return termsObj;
   } catch (err) {
+    // Close browser so that there are no lingering instances
+    await browser.close();
     console.log(Error(err));
-    await browser.close(); // close the browser so no lingering instances
     return Error(err);
   }
 };

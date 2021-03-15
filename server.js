@@ -1,21 +1,23 @@
-// NODE APP INIT
+// Initialising application using Express
 const express = require("express");
 const app = express();
 const port = 1337;
 
-const cron = require("node-cron");
+// Database integeration
 const dbName = "freerooms";
 const dbCol = "test";
-const fs = require('fs');
+const fs = require("fs");
 
-/* const MongoClient = require("mongodb").MongoClient;
-const url = "mongodb://localhost:27017"; */
-var dataJsonPath = './data.json';
+// Data file (global)
+const dataJsonPath = "./data.json";
 var dataJson = require(dataJsonPath);
 
 // MODULES
 const scraper = require("./app_modules/scrape.js");
+/* const MongoClient = require("mongodb").MongoClient;
+const url = "mongodb://localhost:27017"; */
 
+// Connect to database
 /* MongoClient.connect(url, function (err, db) {
   // read from disk for now and parse data json
   fs.readFile(dataJson, (err, jsonString) => {
@@ -39,36 +41,43 @@ const scraper = require("./app_modules/scrape.js");
 
 // INDEX ROUTE (to be updated with dedicated update link or procedure)
 app.get("/", async (req, res) => {
-  // call scraper with scrapeCourseList function and print
   try {
-    res.send("Welcome to the freerooms backend");
-    console.log("processed");
+    res.send("Welcome to the Freerooms backend");
+
+    // This code is for testing - comment out the res.send() above before calling this route
+    // let courseTypeList = await scraper.scrapeCourseTypeList();
+    // let courseCodeList = await scraper.scrapeCourseCodeList(courseTypeList);
+    // let courseDataList = await scraper.scrapeCourseDataList(courseCodeList);
+    // res.send(courseDataList);
+    // const date = require("./app_modules/date.js");
+    // let keyDates = date.scrapeKeyDates();
+    // res.send(keyDates);
   } catch (err) {
     console.log(Error(err));
   }
 });
 
-// INDEX ROUTE (to be updated with dedicated update link or procedure)
+// Main route for getting scraper data
 app.get("/update", async (req, res) => {
-  // call scraper with scrapeCourseList function and print
   try {
-    res.send("Triggered");
+    res.send("Update route triggered");
     let courseTypeList = await scraper.scrapeCourseTypeList();
     let courseCodeList = await scraper.scrapeCourseCodeList(courseTypeList);
     let courseDataList = await scraper.scrapeCourseDataList(courseCodeList);
 
-    // update global
+    // Update global variable dataJson
     dataJson = courseDataList;
-    console.log("updated");
+    console.log("Updated data.json");
 
-    // save to disk for now
+    // Save data.json to disk for now
+    // TODO write to database
     const data = JSON.stringify(courseDataList);
-    fs.writeFile(dataJsonPath, data, (err) => {
+    fs.writeFile(dataJsonPath, data, err => {
       if (err) throw err;
-      console.log("saved");
+      console.log("Successfully wrote new data to data.json");
     });
 
-    console.log("processed");
+    console.log("Update successfully processed");
   } catch (err) {
     console.log(Error(err));
   }
@@ -86,64 +95,79 @@ app.get("/update", async (req, res) => {
 }); */
 
 // TODO: BUILDING ROOM CODE + STATUS DATA ROUTE
+// Route to check status of all rooms in a particular building
 app.get("/buildings/:buildingId", async (req, res) => {
   try {
-    console.log(`requested rooms for ${req.params.buildingId}`);
-    res.send(`requested rooms for ${req.params.buildingId}`);
+    console.log(`Requested rooms for ${req.params.buildingId}`);
+    res.send(`Requested rooms for ${req.params.buildingId}`);
   } catch (err) {
-    await res.send("building rooms data error");
+    res.send("Building rooms data error");
     console.log(Error(err));
   }
 });
 
-// BUILDING ROOM STATUS DATA ROUTE
+// Route to check availability of a particular room in a particular building
 app.get("/buildings/:buildingId/:roomId", async (req, res) => {
   try {
-    // NOTE: TEMPORARY FIX ON CORS HEADER ISSUE
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    // TODO TEMPORARY FIX ON CORS HEADER ISSUE
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept"
+    );
 
-    console.log(`requested room status for ${req.params.roomId} in ${req.params.buildingId}`);
-    // NOTE: HARDCODED STUFF WHICH WILL BE AUTOMATED LATER
+    console.log(
+      `Requested room availability for ${req.params.roomId} in ${req.params.buildingId}`
+    );
+
+    // TODO HARDCODED STUFF WHICH WILL BE AUTOMATED LATER
     const term = "T3";
     const week = 1;
     const day = "Thu";
-    //res.send(dataJson[term][req.params.buildingId][req.params.roomId][week][day].classes);
 
-    var returnObj = {};
-    const roomname = dataJson[term][req.params.buildingId][req.params.roomId].name;
-    const classes = dataJson[term][req.params.buildingId][req.params.roomId][week][day];
+    let returnObj = {};
+    const roomname =
+      dataJson[term][req.params.buildingId][req.params.roomId].name;
+    const classes =
+      dataJson[term][req.params.buildingId][req.params.roomId][week][day];
     returnObj[roomname] = classes;
     res.send([returnObj]);
 
-    console.log("sent");
+    console.log("Room availability sent");
   } catch (err) {
-    await res.send("building room status data error");
+    res.send("Room availability data error");
     console.log(Error(err));
   }
 });
 
 // TODO: ROOM STATUS FOR WEEK DATA ROUTE
+// Route to check availability of a particular room during a particular week
 app.get("/buildings/:buildingId/:roomId/:week", async (req, res) => {
   try {
-    // NOTE: TEMPORARY FIX ON CORS HEADER ISSUE
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
-    
-    console.log(`requested rooms for ${req.params.roomId} in ${req.params.buildingId} during week ${req.params.week}`);
-    // NOTE: HARDCODED STUFF WHICH WILL BE AUTOMATED LATER
+    // TODO TEMPORARY FIX ON CORS HEADER ISSUE
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept"
+    );
+
+    console.log(
+      `Requested room availability for ${req.params.roomId} in ${req.params.buildingId} during week ${req.params.week}`
+    );
+
+    // TODO HARDCODED STUFF WHICH WILL BE AUTOMATED LATER
     const term = "T3";
-    
-    var returnList = [];
-    //const roomname = dataJson[term][req.params.buildingId][req.params.roomId].name;
-    const days = dataJson[term][req.params.buildingId][req.params.roomId][req.params.week];
-    for (var day in days) {
+
+    let returnList = [];
+    const days =
+      dataJson[term][req.params.buildingId][req.params.roomId][req.params.week];
+    for (let day in days) {
       returnList = returnList.concat(days[day]);
     }
 
     res.send(returnList);
   } catch (err) {
-    await res.send("Invalid Room status");
+    res.send("Invalid Room status");
     console.log(Error(err));
   }
 });
@@ -159,5 +183,5 @@ app.get("/weekNum", async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}!`);
+  console.log(`Freerooms backend now listening on port ${port}!`);
 });
