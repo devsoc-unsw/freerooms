@@ -1,8 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../components/LandingPage.vue";
-import LocationRoomView from "../components/LocationRoomView.vue";
-import RoomView from "../components/RoomView.vue";
+import Home from "../views/LandingPage.vue";
+import LocationRoomView from "../views/LocationRoomView.vue";
+import RoomView from "../views/RoomView.vue";
 
 // Routes
 // can add more as we go along
