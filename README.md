@@ -26,6 +26,14 @@ npm run build
 
 ### Backend
 
+##### Project setup
+
+```
+npm install
+```
+
+#### Run with npm
+
 ```
 npm start
 ```
