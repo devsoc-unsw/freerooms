@@ -1,17 +1,11 @@
-import Locations from '../models/enum';
+import Buildings from "../models/Buildings";
 
 export default class LocationService {
-    
-    getRoomById (id: number): string {
-        return `Room ${id}`;
-    }
-    
-    getLocationbyId (id: number): string {
-        return Locations[id];
-    }
+  getBuildingByID(id: number): string {
+    return Buildings[id];
+  }
 
-    getAllLocations (): string[] {
-        return Object.keys(Locations).filter(key => !isNaN(Number(Locations[key])));
-    }
+  getAllBuildings(): string[] {
+    return Object.keys(Buildings).filter(key => !isNaN(Number(Buildings[key])));
+  }
 }
-
