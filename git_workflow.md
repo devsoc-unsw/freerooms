@@ -1,4 +1,6 @@
-# Git Workflow
+# Git Workflow  
+
+Based on [Gordon Zhong's](https://github.com/gawdn) contributing guide
 
 ## Initial Setup
 
