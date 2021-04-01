@@ -72,7 +72,7 @@ app.get("/update", async (req, res) => {
     // Save data.json to disk for now
     // TODO write to database
     const data = JSON.stringify(courseDataList);
-    fs.writeFile(dataJsonPath, data, err => {
+    fs.writeFile(dataJsonPath, data, (err) => {
       if (err) throw err;
       console.log("Successfully wrote new data to data.json");
     });

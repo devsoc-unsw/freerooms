@@ -6,6 +6,8 @@ export default class LocationService {
   }
 
   getAllBuildings(): string[] {
-    return Object.keys(Buildings).filter(key => !isNaN(Number(Buildings[key])));
+    return Object.keys(Buildings).filter(
+      (key) => !isNaN(Number(Buildings[key]))
+    );
   }
 }

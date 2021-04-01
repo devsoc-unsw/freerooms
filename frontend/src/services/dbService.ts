@@ -4,8 +4,8 @@ import axios from "axios";
 const baseURL = "http://localhost:1337/";
 
 // Handle error on request to backend.
-const handleError = fn => (...params) =>
-  fn(...params).catch(error => {
+const handleError = (fn) => (...params) =>
+  fn(...params).catch((error) => {
     console.log(
       `${error.response.status}: ${error.response.statusText}`,
       "error"

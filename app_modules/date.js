@@ -58,7 +58,7 @@ const scrapeKeyDates = async () => {
       let container = [];
       document
         .querySelectorAll(".table-striped")
-        .forEach(term => container.push(term.querySelectorAll("tr")[1]));
+        .forEach((term) => container.push(term.querySelectorAll("tr")[1]));
 
       // Object to store start/end date of each term for each year
       // Key is year
@@ -66,12 +66,12 @@ const scrapeKeyDates = async () => {
       let keyDates = {};
 
       // For each year, store term data in array
-      yearInfo.querySelectorAll("td").forEach(year => {
+      yearInfo.querySelectorAll("td").forEach((year) => {
         // For YEAR table label
         if (year.innerText == "YEAR") return;
 
         let yearList = [];
-        container.forEach(termDates => {
+        container.forEach((termDates) => {
           // Get raw dates string from table, for each term, for the current year
           // Example date string: "15 Feb - 13 May"
           let dateString = termDates.querySelectorAll("td")[
@@ -81,12 +81,12 @@ const scrapeKeyDates = async () => {
 
           // Dirty fix - set all 'words' to be 3 characters long (for month->num conversion)
           let d = [];
-          dateString.split(" ").forEach(word => d.push(word.substr(0, 3)));
+          dateString.split(" ").forEach((word) => d.push(word.substr(0, 3)));
           dateString = d.join(" ");
 
           // Split dateString into an array
           let dates = [];
-          dateString.split("-").forEach(date => dates.push(date.trim()));
+          dateString.split("-").forEach((date) => dates.push(date.trim()));
 
           // Construct object to store relevant information about term
           let yearText = year.innerText;

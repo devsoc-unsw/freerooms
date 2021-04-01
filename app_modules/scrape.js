@@ -42,7 +42,7 @@ const scrapeCourseTypeList = async () => {
       let container = Array.from(
         document.querySelectorAll(".rowLowLight, .rowHighLight")
       );
-      let list = container.map(e => {
+      let list = container.map((e) => {
         // firstElementChild is a dirty fix that will break URLS if UNSW changes how URL is put out
         // TODO find better solution
         let object = {
@@ -66,7 +66,7 @@ const scrapeCourseTypeList = async () => {
 };
 
 // Scrapes timetable for current UNSW courses seperated under each subject area
-const scrapeCourseCodeList = async typeList => {
+const scrapeCourseCodeList = async (typeList) => {
   try {
     // Create new browser and page
     // TODO remove no sandbox later when with debian
@@ -89,11 +89,11 @@ const scrapeCourseCodeList = async typeList => {
       console.log("Loaded timetable page for " + typeList[i].subjectCode);
 
       // Evaluate page and retrieve relevant data
-      const result = await page.evaluate(subjObj => {
+      const result = await page.evaluate((subjObj) => {
         let container = Array.from(
           document.querySelectorAll(".rowLowLight, .rowHighLight")
         );
-        let list = container.map(e => {
+        let list = container.map((e) => {
           // firstElementChild is a dirty fix that will break URLS if UNSW changes how URL is put out
           // TODO find better solution
           let object = {
@@ -124,7 +124,7 @@ const scrapeCourseCodeList = async typeList => {
 };
 
 // scrapes time and location data of each occupied room per each courses schedule (Rohan's Flawed Timelist + Kim's Refactor)
-const scrapeCourseDataList = async courseList => {
+const scrapeCourseDataList = async (courseList) => {
   try {
     // Create new browser and page
     // TODO remove no sandbox later when with debian
@@ -204,7 +204,7 @@ const scrapeCourseDataList = async courseList => {
                 }
               }
 
-              await asyncForEach(container, async e => {
+              await asyncForEach(container, async (e) => {
                 // Apply regex to the location to split into name, building code and room code
                 // ONLINE: |^.* +\(ONLINE\)$
                 // If a class is online, the regex will not match
