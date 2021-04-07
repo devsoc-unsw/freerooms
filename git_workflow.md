@@ -31,7 +31,8 @@ From the `dev` branch, we can create temporary branches to work on different fea
    1. Individual files can be added like `git add file1 file2`
    2. If you don't want to add newly created files, use the `-u` flag instead
 6. `git commit -m "commit message here"` - commit your changes to your local branch.
-7. `git push` - pushes your changes to your feature's remote branch. This can be done any time you want.
+   1. All commit messages must be linked to the corresponding issue on the Jira board which you have been assigned to. For example, if the issue code is FREE-1 then your commit message must look like, for example, `FREE-1 Initial commit`
+8. `git push` - pushes your changes to your feature's remote branch. This can be done any time you want.
 
 When you are finished with your work:
 
