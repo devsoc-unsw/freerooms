@@ -42,7 +42,6 @@ npm start
 
 The json object `data.json` is currently organised as follows (subject to change):
 
-`Term` refers to any element from `['U1', 'T1', 'T2', 'T3']` (all will exist as of time of writing)  
 `BuildingID` refers to building code such as `K-J17`  
 `RoomID` refers to room code such as `101` or `G01`  
 `RoomName` refers to the room name such as `Ainsworth 101` or `Ainsworth G01`  
@@ -53,19 +52,17 @@ The json object `data.json` is currently organised as follows (subject to change
 
 ```json
 {
-  "Term": {
-    "BuildingID": {
-      "RoomID": {
-        "name": "RoomName",
-        "Week": {
-          "Day": [
-            {
-              "courseCode": "courseCodeText",
-              "start": "Time_Text",
-              "end": "Time_Text"
-            }
-          ]
-        }
+  "BuildingID": {
+    "RoomID": {
+      "name": "RoomName",
+      "Week": {
+        "Day": [
+          {
+            "courseCode": "courseCodeText",
+            "start": "Time_Text",
+            "end": "Time_Text"
+          }
+        ]
       }
     }
   }
