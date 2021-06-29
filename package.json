@@ -1,7 +1,7 @@
 {
   "name": "freerooms",
   "version": "1.0.0",
-  "description": "A web application designed to aide UNSW students in finding vacant rooms.",
+  "description": "A web application designed to aid UNSW students in finding vacant rooms.",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -18,15 +18,7 @@
   },
   "homepage": "https://github.com/csesoc/Freerooms#readme",
   "dependencies": {
-    "axios": "^0.21.1",
     "express": "^4.17.1",
-    "lodash": "^4.17.21",
-    "material-design-icons-iconfont": "^5.0.1",
-    "moment": "^2.26.0",
-    "mongodb": "^3.5.9",
-    "puppeteer": "^5.2.1"
-  },
-  "devDependencies": {
-    "@mdi/font": "^5.2.45"
+    "moment": "^2.26.0"
   }
 }
