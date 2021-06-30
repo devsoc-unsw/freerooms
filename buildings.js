@@ -1,4 +1,4 @@
-{
+const buildingDataJson = {
     "K-F8" : {"name" : "Law", "id" : "K-F8", "img" : "blergh"},
     "K-E12": {"name" : "UNSW Business School", "id" : "K-E12", "img" : "blergh"},
     "K-D26": {"name" : "Biological Sciences North", "id" : "K-D26", "img" : "blergh"},
@@ -28,3 +28,5 @@
     "P-D": {"name" : "blergh", "id" : "P-D", "img" : "blergh"},
     "P-E" : {"name" : "blergh", "id" : "P-E", "img" : "blergh"}
 }
+
+export default buildingDataJson;

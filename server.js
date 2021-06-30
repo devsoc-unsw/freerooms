@@ -5,30 +5,22 @@ const port = 1337;
 
 // Data file (global)
 import dataJson from "./data.js";
+import buildingDataJson from "./buildings.js";
 
 // Route to get all buildings
 app.get("/buildings", async (req, res) => {
   try {
     console.log(`Requested all buildings`);
-    let ret = '{ "buildings" : [';
-    let i = 1;
-    for (building in dataJson["U1"]) {
-      ret = ret + "{";
-      ret = ret + '"name" : "' + buildingDataJson[building]["name"] + '" ,';
-      ret = ret + '"id" : "' + buildingDataJson[building]["id"] + '" ,';
-      ret = ret + '"img" : "' + buildingDataJson[building]["img"] + '"';
-      ret = ret + "}";
-      //console.log(Object.keys(dataJson["U1"]).length);
-      if (i != Object.keys(dataJson["U1"]).length) {
-        ret = ret + ",";
-      }
-
-      i++;
+    let ret = {"buildings" : []};
+    for (let building in dataJson["U1"]) {
+      let iter = {};
+      iter["name"] = buildingDataJson[building]["name"];
+      iter["id"] = buildingDataJson[building]["id"];
+      iter["img"] = buildingDataJson[building]["img"];
+      ret["buildings"].push(iter);
     }
-    ret = ret + "]}";
-    //console.log(ret);
-    console.log(JSON.parse(ret));
-    res.send(JSON.parse(ret));
+    console.log(ret);
+    res.send(ret);
   } catch (err) {
     res.send(`Failed to send all buildings`);
     console.log(Error(err));
