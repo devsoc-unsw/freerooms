@@ -54,6 +54,7 @@ function getTerm(day, month, year) {
   if (dateCurrent >= t3Start && dateCurrent <= t3End) {
     return 3;
   }
+  return -1;
 }
 //Get the current number of the week
 //Simple integer division based on the amount of days based since the start of the term
@@ -90,31 +91,69 @@ function getWeek(term, day, month, year) {
   return weekNumber;
 
 }
+function isValidDate(d) {
+  return d instanceof Date && !isNaN(d);
+}
 // Route to get status of all rooms in a particular building
 app.get("/buildings/:buildingId", async (req, res) => {
   try {
     //res.send(`Requested rooms for ${req.params.buildingId}`);
     let buildingID = req.params.buildingId;
+
+    //Error checking for validity of building ID
+    if (!dataJson["U1"].hasOwnProperty(buildingID)) {
+      res.send({
+        "message": "invalid building ID",
+        "status": 400,
+      });
+    }
     let ret = {"rooms": {}};
 
     //Get current date
-    const d = new Date();
+    let d = new Date();
+
+    //Check if datetime query was passed
+    //If it is do the following
+    if (req.query.datetime) {
+      //Error checking to see if the datetime is valid or not
+      let timestamp = Date.parse(req.query.datetime);
+      if(isNaN(timestamp)) {
+        res.send({
+          "message": "invalid date",
+          "status": 400,
+        });
+        console.log("herrr???");
+      } else {
+        //If it is a valid date, change d to inteead be the datetime passed in the query
+        //Instead of the current one
+        d = new Date(req.query.datetime);
+      }
+    }
     let date = d.getDate();
     let month = d.getMonth();
     let year = d.getFullYear();
-
+    console.log("The date is" + date + "/" + month + "/" + year);
     //Find current term and week based on above algorithms
     const t = getTerm(date, month, year);
+
+    //This will break if a date not in a given school term is supplied
+    if (t === -1) {
+      res.send({
+        "message": "invalid date",
+        "status": 400,
+      });
+    }
     const w = getWeek(t, date, month, year);
 
     //Find current day of week from enumerated array
     const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
     const day = d.getDay();
     let dayOfWeek = days[day];
+
+    console.log("It is week: " + w + " and the day is " + dayOfWeek + " and the hour is " + d.getHours() + "and the minutes are " + d.getMinutes());
     
     //Access json file, note HardCoded term U1 needs to be altered for the found term with above function
     let buildingObj = dataJson["U1"][buildingID];
-
     //Loop through each room in the chosen building
     for (let room in buildingObj) {
       //If there are classes in the current week check through them
@@ -128,6 +167,17 @@ app.get("/buildings/:buildingId", async (req, res) => {
             //Parsing the start and end date from the JSON
             let startDateTime = new Date();
             let endDateTime = new Date();
+
+            //Setting the date, month and year to be those of d
+            //This is incase datetime was specified in which case a different day of the year
+            //Is required
+            startDateTime.setDate(date);
+            startDateTime.setMonth(month);
+            startDateTime.setFullYear(year);
+
+            endDateTime.setDate(date);
+            endDateTime.setMonth(month);
+            endDateTime.setFullYear(year);
 
             let timeStart = buildingObj[room][w.toString()][dayOfWeek][lesson]["start"].split(" ")[1];
             let timeEnd = buildingObj[room][w.toString()][dayOfWeek][lesson]["end"].split(" ")[1];
@@ -160,7 +210,7 @@ app.get("/buildings/:buildingId", async (req, res) => {
               ret["rooms"][room] = "free";
             }
             //Debugging Statement
-            //console.log("This class goes from " + timeStart + " to " + timeEnd);
+            console.log("This class goes from " + timeStart + " to " + timeEnd);
           }
           
         } else {
