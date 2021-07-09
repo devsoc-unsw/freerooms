@@ -85,23 +85,28 @@ app.get("/buildings/:buildingId/:roomId", async (req, res) => {
       `Requested room availability for ${req.params.roomId} in ${req.params.buildingId}`
     );
 
-    // TODO HARDCODED STUFF WHICH WILL BE AUTOMATED LATER
+
     let ret = {};
     let buildingID = req.params.buildingId;
     let roomID = req.params.roomId;
 
+    //Ensure building ID is valid
     if (!dataJson["U1"].hasOwnProperty(buildingID)) {
       res.send({
         "message": "invalid building ID",
         "status": 400,
       });
     }
+
+    //Ensure room ID is valid
     if (!dataJson["U1"][buildingID].hasOwnProperty(roomID)) {
       res.send({
         "message": "invalid room ID",
         "status": 400,
       });
     }
+
+    //Generate return data straight from the JSON data
     ret = dataJson["U1"][buildingID][roomID];
 
     res.send(ret);
