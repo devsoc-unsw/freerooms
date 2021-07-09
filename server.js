@@ -86,18 +86,25 @@ app.get("/buildings/:buildingId/:roomId", async (req, res) => {
     );
 
     // TODO HARDCODED STUFF WHICH WILL BE AUTOMATED LATER
-    const term = "T3";
-    const week = 1;
-    const day = "Thu";
+    let ret = {};
+    let buildingID = req.params.buildingId;
+    let roomID = req.params.roomId;
 
-    let returnObj = {};
-    const roomname =
-      dataJson[term][req.params.buildingId][req.params.roomId].name;
-    const classes =
-      dataJson[term][req.params.buildingId][req.params.roomId][week][day];
-    returnObj[roomname] = classes;
-    res.send(returnObj);
+    if (!dataJson["U1"].hasOwnProperty(buildingID)) {
+      res.send({
+        "message": "invalid building ID",
+        "status": 400,
+      });
+    }
+    if (!dataJson["U1"][buildingID].hasOwnProperty(roomID)) {
+      res.send({
+        "message": "invalid room ID",
+        "status": 400,
+      });
+    }
+    ret = dataJson["U1"][buildingID][roomID];
 
+    res.send(ret);
     console.log("Room availability sent");
   } catch (err) {
     res.send("Room availability data error");
