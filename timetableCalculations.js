@@ -20,10 +20,10 @@ export function getTerm(day, month, year) {
     if (dateCurrent >= t1Start && dateCurrent <= t1End) {
       return 1;
     }
-    if (dateCurrent >= t2Start && dateCurrent <= t2End) {
+    else if (dateCurrent >= t2Start && dateCurrent <= t2End) {
       return 2;
     }
-    if (dateCurrent >= t3Start && dateCurrent <= t3End) {
+    else if (dateCurrent >= t3Start && dateCurrent <= t3End) {
       return 3;
     }
     return -1;
@@ -74,10 +74,10 @@ export function retrieveRoomStatus(buildingObj, d, roomId = -1) {
 
     //This will break if the date given is not in the school term
     if (t === -1) {
-    return {
-        "message": "invalid date",
-        "status": 400,
-    };
+        return {
+            "message": "invalid date",
+            "status": 400,
+        };
     }
 
     const w = getWeek(t, date, month, year);
@@ -90,69 +90,70 @@ export function retrieveRoomStatus(buildingObj, d, roomId = -1) {
     let ret = {"rooms": {}};
 
     for (let room in buildingObj) {
-    //If there are classes in the current week check through them
-    //Otherwise the class is free
-    if (buildingObj[room].hasOwnProperty(w.toString())) {
-        //If there are classes on the given day of the week check through them
+        //If there are classes in the current week check through them
         //Otherwise the class is free
-        if (buildingObj[room][w.toString()].hasOwnProperty(dayOfWeek)) {
-        //Loop through every class in the room on a given day, checking its time period
-        for (let lesson in buildingObj[room][w.toString()][dayOfWeek]) {
-            //Parsing the start and end date from the JSON
-            let startDateTime = new Date();
-            let endDateTime = new Date();
+        if (buildingObj[room].hasOwnProperty(w.toString())) {
+            //If there are classes on the given day of the week check through them
+            //Otherwise the class is free
+            if (buildingObj[room][w.toString()].hasOwnProperty(dayOfWeek)) {
+            //Loop through every class in the room on a given day, checking its time period
+                for (let lesson in buildingObj[room][w.toString()][dayOfWeek]) {
+                    //Parsing the start and end date from the JSON
+                    let startDateTime = new Date();
+                    let endDateTime = new Date();
 
-            //Setting the date, month and year to be those of d
-            //This is incase datetime was specified in which case a different day of the year
-            //Is required
-            startDateTime.setDate(date);
-            startDateTime.setMonth(month);
-            startDateTime.setFullYear(year);
+                    //Setting the date, month and year to be those of d
+                    //This is incase datetime was specified in which case a different day of the year
+                    //Is required
+                    startDateTime.setDate(date);
+                    startDateTime.setMonth(month);
+                    startDateTime.setFullYear(year);
 
-            endDateTime.setDate(date);
-            endDateTime.setMonth(month);
-            endDateTime.setFullYear(year);
+                    endDateTime.setDate(date);
+                    endDateTime.setMonth(month);
+                    endDateTime.setFullYear(year);
 
-            let timeStart = buildingObj[room][w.toString()][dayOfWeek][lesson]["start"].split(" ")[1];
-            let timeEnd = buildingObj[room][w.toString()][dayOfWeek][lesson]["end"].split(" ")[1];
+                    let timeStart = buildingObj[room][w.toString()][dayOfWeek][lesson]["start"].split(" ")[1];
+                    let timeEnd = buildingObj[room][w.toString()][dayOfWeek][lesson]["end"].split(" ")[1];
 
-            startDateTime.setHours(parseInt(timeStart.split(":")[0]));
-            startDateTime.setMinutes(parseInt(timeStart.split(":")[1]));
+                    startDateTime.setHours(parseInt(timeStart.split(":")[0]));
+                    startDateTime.setMinutes(parseInt(timeStart.split(":")[1]));
 
-            endDateTime.setHours(parseInt(timeEnd.split(":")[0]));
-            endDateTime.setMinutes(parseInt(timeEnd.split(":")[1]));
+                    endDateTime.setHours(parseInt(timeEnd.split(":")[0]));
+                    endDateTime.setMinutes(parseInt(timeEnd.split(":")[1]));
 
-            //If the current time is during the time of the class
-            //note: a break occurs here to ensure that a soon or busy is definitely given if found
-            //otherwise if a class occurs after the given one it would overwrite the soon or busy status
-            if (d >= startDateTime && d <= endDateTime) {
-            //Find the difference in minutes
-            let diff = endDateTime.getTime() - d.getTime();
-            let minutesToEnd = diff / (1000*60);
+                    //If the current time is during the time of the class
+                    //note: a break occurs here to ensure that a soon or busy is definitely given if found
+                    //otherwise if a class occurs after the given one it would overwrite the soon or busy status
+                    if (d >= startDateTime && d <= endDateTime) {
+                        //Find the difference in minutes
+                        let diff = endDateTime.getTime() - d.getTime();
+                        let minutesToEnd = diff / (1000*60);
 
-            //If within 15 minutes, the class is soon, otherwise busy
-            //As per specification
-            if (minutesToEnd <= 15) {
-                ret["rooms"][room] = "soon";
-                break;
+                        //If within 15 minutes, the class is soon, otherwise busy
+                        //As per specification
+                        if (minutesToEnd <= 15) {
+                            ret["rooms"][room] = "soon";
+                            break;
+                        } else {
+                            ret["rooms"][room] = "busy";
+                            break;
+                        }
+
+                    } else {
+                    //this will only show up if the current time is not during any of the given class times
+                    ret["rooms"][room] = "free";
+                    }
+                    //Debugging Statement
+                    console.log("This class goes from " + timeStart + " to " + timeEnd);
+                }
+                
             } else {
-                ret["rooms"][room] = "busy";
-                break;
+                ret["rooms"][room] = "free";
             }
-            } else {
-            //this will only show up if the current time is not during any of the given class times
-            ret["rooms"][room] = "free";
-            }
-            //Debugging Statement
-            console.log("This class goes from " + timeStart + " to " + timeEnd);
-        }
-        
         } else {
-        ret["rooms"][room] = "free";
+            ret["rooms"][room] = "free";
         }
-    } else {
-        ret["rooms"][room] = "free";
-    }
     }
     return ret;
 }
