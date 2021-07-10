@@ -1,0 +1,32 @@
+const buildingDataJson = {
+    "K-F8" : {"name" : "Law", "id" : "K-F8", "img" : "blergh"},
+    "K-E12": {"name" : "UNSW Business School", "id" : "K-E12", "img" : "blergh"},
+    "K-D26": {"name" : "Biological Sciences North", "id" : "K-D26", "img" : "blergh"},
+    "K-E19": {"name" : "Central Lecture Block", "id" : "K-E19", "img" : "blergh"},
+    "K-F23": {"name" : "Matthews", "id" : "K-F23", "img" : "blergh"},
+    "K-B16": {"name" : "Colombo", "id" : "K-B16", "img" : "blergh"},
+    "K-F20": {"name" : "John Goodsell", "id" : "K-F20", "img" : "blergh"},
+    "K-G14": {"name" : "Webster", "id" : "K-G14", "img" : "blergh"},
+    "K-E15": {"name" : "Quadrangle", "id" : "K-E15", "img" : "blergh"},
+    "K-E4": {"name" : "Squarehouse", "id" : "K-E4", "img" : "blergh"},
+    "K-K15": {"name" : "Old Main", "id" : "K-K15", "img" : "blergh"},
+    "K-H13": {"name" : "Red Centre", "id" : "K-H13", "img" : "blergh"},
+    "K-E8": {"name" : "Science and Engineering", "id" : "K-E8", "img" : "blergh"},
+    "K-G17": {"name" : "Electrical Engineering", "id" : "K-G17", "img" : "blergh"},
+    "ONLINE": {"name" : "ONLINE", "id" : "ONLINE", "img" : "blergh"},
+    "K-K17": {"name" : "Building K-17", "id" : "K-K17", "img" : "blergh"},
+    "K-J17": {"name" : "Ainsworth", "id" : "K-J17", "img" : "blergh"},
+    "K-G15": {"name" : "Webster", "id" : "K-G15", "img" : "blergh"},
+    "K-H6": {"name" : "Tyree", "id" : "K-H6", "img" : "blergh"},
+    "K-C20": {"name" : "Morven Brown", "id" : "K-C20", "img" : "blergh"},
+    "K-J18": {"name" : "Willis Annexe", "id" : "K-J18", "img" : "blergh"},
+    "K-F10": {"name" : "Chemical Sciences", "id" : "K-F10", "img" : "blergh"},
+    "K-D16": {"name" : "Goldstein", "id" : "K-D16", "img" : "blergh"},
+    "K-E26": {"name" : "Biological Sciences South", "id" : "K-E26", "img" : "blergh"},
+    "K-J14": {"name" : "Keith Burrows Theatre", "id" : "K-J14", "img" : "blergh"},
+    "P-F": {"name" : "blergh", "id" : "P-F", "img" : "blergh"},
+    "P-D": {"name" : "blergh", "id" : "P-D", "img" : "blergh"},
+    "P-E" : {"name" : "blergh", "id" : "P-E", "img" : "blergh"}
+}
+
+export default buildingDataJson;
