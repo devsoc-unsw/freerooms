@@ -7,14 +7,16 @@
 </template>
 
 <script>
-import LocationService from "../services/locationService";
+import dbService from "../services/dbService";
 // have to do it like this without a class
 // so we dont have to deal with lifecycle hoooks like mounted and
 // we dont have to worry about $route being empty
+// class crumbs {
+// }
 export default {
   computed: {
     crumbs: function() {
-      const service = new LocationService();
+      const service = new dbService();
 
       // Example route: localhost:8080/location/1/room/Ainsworth%20101
       let pathArray = this.$route.path.split("/");
@@ -33,25 +35,28 @@ export default {
       pathArray = tempArr;
 
       // Create breadcrumbs
-      const breadcrumbs = pathArray.reduce((breadcrumbArray, path, idx) => {
-        let name = "";
+      const breadcrumbs = pathArray.reduce(
+        async (breadcrumbArray, path, idx) => {
+          let name = "";
 
-        const params = this.$route.params;
-        if (path.includes("location")) {
-          name = service.getBuildingByID(params["locationId"]);
-        } else if (path.includes("room")) {
-          name = params["roomId"];
-        }
+          const params = this.$route.params;
+          if (path.includes("location")) {
+            name = await service.getBuildingByLocation(params["locationId"]);
+          } else if (path.includes("room")) {
+            name = params["roomId"];
+          }
 
-        breadcrumbArray.push({
-          to: breadcrumbArray[idx - 1]
-            ? breadcrumbArray[idx - 1].to + "/" + path // Append current room/building to previous path
-            : "/" + path, // Is first element, just return /path
-          text: name,
-          exact: true, // Ensure it is a link
-        });
-        return breadcrumbArray;
-      }, []);
+          breadcrumbArray.push({
+            to: breadcrumbArray[idx - 1]
+              ? breadcrumbArray[idx - 1].to + "/" + path // Append current room/building to previous path
+              : "/" + path, // Is first element, just return /path
+            text: name,
+            exact: true, // Ensure it is a link
+          });
+          return breadcrumbArray;
+        },
+        []
+      );
 
       // Add root
       breadcrumbs.unshift({

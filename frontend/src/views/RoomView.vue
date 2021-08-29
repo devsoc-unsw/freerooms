@@ -118,7 +118,8 @@ export default class LocationRoomView extends Vue {
 
   params: any = [];
 
-  roomName = ""; //TODO: modify to take actual current room name
+  locationId = ""; 
+  roomId = ""; // TODO: modify to take actual current room name
   bookedNameText = "Occupied"; // Name of all bookings shown on calendar
 
   intervalsDefault = {
@@ -149,9 +150,10 @@ export default class LocationRoomView extends Vue {
     const startTime = moment().format("YYYY-MM-DD");
     const endTime = moment().format("YYYY-MM-DD");
     const result = await this.dbService.getRoomBookingsInTimeRange(
-      this.roomName,
+      this.locationId,
+      this.roomId,
       startTime,
-      endTime
+      endTime,
     );
     return result;
   }
@@ -174,8 +176,9 @@ export default class LocationRoomView extends Vue {
   }
 
   async mounted() {
-    this.roomName = this.$route.params["roomId"];
-    if (this.roomName == null) this.roomName = "";
+    this.locationId = this.$route.params["locationId"];
+    this.roomId = this.$route.params["roomId"];
+    if (this.roomId == null) this.roomId = "";
     this.events = await this.getEvents();
   }
 }

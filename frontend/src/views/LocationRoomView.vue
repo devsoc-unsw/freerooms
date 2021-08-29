@@ -7,8 +7,9 @@
         <v-col cols="12" md="4" class="py-3 px-10">
           <div class="d-flex justify-left">
             <v-avatar width="300" height="250" tile style="border-radius:10px">
-              <!--TODO assign image programatically-->
-              <v-img src="../assets/building_photos/Tyree.png"></v-img>
+              <v-img
+                :src="`../assets/building_photos/${locationId}.png`"
+              ></v-img>
             </v-avatar>
           </div>
         </v-col>
@@ -19,7 +20,9 @@
           <p class="subtitle-1 white--text ml-1" align="left">
             {{ allRooms.length }} Rooms Listed<br />
             {{ availableRooms.length }} Currently Available<br />
-            {{ unavailableRooms.length }} Available in the Next Hour
+            {{ unavailableRooms.length }} Currently Unavailable
+            <!-- TODO -->
+            <!-- {{ availableSoonRooms.length }} Available in the Next Hour  -->
           </p>
         </v-col>
       </v-row>
@@ -31,9 +34,11 @@
       <!-- Sort -->
       <v-col cols="12" sm="4" md="2" class="py-0 my-0">
         <v-select
+          v-model="select"
           :items="sort_options"
           label="Sort"
-          :value="sort_options[0]"
+          :item-value="select"
+          return-object
         ></v-select>
       </v-col>
       <!-- Hide Unavailable -->
@@ -49,11 +54,11 @@
       <!-- Date -->
       <v-col cols="12" sm="4" md="2" class="py-0 my-0">
         <v-dialog
-          ref="dialog"
-          v-model="modal"
+          ref="dateDialog"
+          v-model="dateModal"
           :return-value.sync="date"
-          persistent
           width="290px"
+          persistent
         >
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
@@ -67,8 +72,10 @@
           </template>
           <v-date-picker v-model="date" scrollable>
             <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
-            <v-btn text color="primary" @click="$refs.dialog.save(date)"
+            <v-btn text color="primary" @click="dateModal = false"
+              >Cancel</v-btn
+            >
+            <v-btn text color="primary" @click="$refs.dateDialog.save(date)"
               >OK</v-btn
             >
           </v-date-picker>
@@ -76,11 +83,33 @@
       </v-col>
       <!-- Time -->
       <v-col cols="12" sm="4" md="2" class="py-0 my-0">
-        <v-select
-          :items="time_options"
-          label="Time"
-          :value="time_options[0]"
-        ></v-select>
+        <v-dialog
+          ref="timeDialog"
+          v-model="timeModal"
+          :return-value.sync="time"
+          persistent
+          width="290px"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field
+              v-model="time"
+              label="Choose time"
+              prepend-icon="schedule"
+              readonly
+              v-bind="attrs"
+              v-on="on"
+            ></v-text-field>
+          </template>
+          <v-time-picker v-model="time">
+            <v-spacer></v-spacer>
+            <v-btn text color="primary" @click="timeModal = false"
+              >Cancel</v-btn
+            >
+            <v-btn text color="primary" @click="$refs.timeDialog.save(time)"
+              >OK</v-btn
+            >
+          </v-time-picker>
+        </v-dialog>
       </v-col>
     </v-row>
 
@@ -96,7 +125,7 @@
         <router-link
           :to="{
             name: 'room',
-            params: { locationId: locationId, roomId: room.name },
+            params: { locationId, roomId: room.name },
           }"
         >
           <v-card class="background" flat>
@@ -140,88 +169,76 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { Route } from "vue-router";
-import LocationService from "../services/locationService";
 import DbService from "../services/dbService";
 import moment from "moment";
-
+import { Room, RoomStatus } from "../types";
 @Component
 export default class LocationRoomView extends Vue {
-  locationService = new LocationService();
   dbService = new DbService();
 
   // Initialisation for reactive variables.
   msg = "";
   params: any = null;
-  locationId = 0;
+  locationId = "";
   buildingName = "";
-  allRooms = [];
-  availableRooms = [];
-  unavailableRooms = [];
-  listedRooms = [];
-  hour = "";
+  allRooms: Room[] = [];
+  availableRooms: Room[] = [];
+  unavailableRooms: Room[] = [];
+  listedRooms: Room[] = [];
 
   // Filter / Sort variables.
   enabled = true;
   sort_options = ["Name", "Available"];
-  time_options = [
-    "0:00",
-    "1:00",
-    "2:00",
-    "3:00",
-    "4:00",
-    "5:00",
-    "6:00",
-    "7:00",
-    "8:00",
-    "9:00",
-    "10:00",
-    "11:00",
-    "12:00",
-    "13:00",
-    "14:00",
-    "15:00",
-    "16:00",
-    "17:00",
-    "18:00",
-    "19:00",
-    "20:00",
-    "21:00",
-    "22:00",
-    "23:00",
-  ];
-  date = new Date().toISOString().substr(0, 10);
-  modal = false;
+  select = "Name";
+  date = moment(new Date().toISOString()).format("YYYY-MM-DD");
+  time = moment(new Date().toISOString()).format("HH:mm");
+
+  dateModal = false;
+  timeModal = false;
 
   async mounted() {
     this.msg = this.$route.path;
     this.params = this.$route.params;
-    this.hour = moment().format("hh");
     this.locationId = this.params["locationId"];
-    this.buildingName = this.locationService.getBuildingByID(this.locationId);
+    this.buildingName = await this.dbService.getBuildingByLocation(
+      this.locationId
+    );
     this.allRooms = await this.dbService.getRoomsInBuilding(
-      this.buildingName,
-      this.hour
+      this.locationId,
+      "2021-03-11T10:20" // This is just a date for testing with available/unavailable rooms
+      // `${this.date}T${this.time}` // TODO: Updates to date/time do not rerender
     );
     this.listedRooms = this.allRooms;
     this.availableRooms = this.filterRoomsAvailable(this.allRooms, true);
     this.unavailableRooms = this.filterRoomsAvailable(this.allRooms, false);
   }
-
-  filterRoomsAvailable(rooms, filterAvailable) {
+  filterRoomsAvailable(rooms: Room[], filterAvailable: boolean) {
     if (filterAvailable) return rooms.filter(this.checkAvailable);
     return rooms.filter(this.checkUnavailable);
   }
 
-  checkAvailable(room, index, array): boolean {
-    if (room.available) return true;
+  checkAvailable(room: Room, index: number, array: Room[]): boolean {
+    if (room.available === "free") return true;
     return false;
   }
-
-  checkUnavailable(room, index, array): boolean {
-    if (room.available) return false;
+  // TODO: need to get rooms that are unavailable now but is available in the next hour
+  checkAvailableSoon(room: Room, index: number, array: Room[]): boolean {
+    if (room.available === "free") return false;
     return true;
   }
-
+  checkUnavailable(room: Room, index: number, array: Room[]): boolean {
+    if (room.available === "free") return false;
+    return true;
+  }
+  // TODO: Fix infinite loop issue or change method for sorting filters
+  sortRooms(rooms: Room[], sort: string) {
+    if (this.select === "Name") {
+      rooms.sort((a: Room, b: Room) => (a.name > b.name ? 1 : -1));
+    } else {
+      rooms.sort((a: Room, b: Room) => (a.available < b.available ? 1 : -1));
+    }
+    return rooms;
+  }
   updateList() {
     if (this.enabled == true) {
       this.listedRooms = this.allRooms;
@@ -231,14 +248,30 @@ export default class LocationRoomView extends Vue {
   }
 
   // Get calendar markdown icon color depending on a room's availability.
-  getCalendarIconColor(available: boolean): string {
-    if (available == true) return "success";
-    return "error";
+  getCalendarIconColor(available: RoomStatus): string {
+    switch (available) {
+      case "free":
+        return "success";
+      case "soon":
+        return "orange";
+      case "busy":
+        return "error";
+      default:
+        return "error";
+    }
   }
 
-  getAvailabilityText(available: boolean): string {
-    if (available == true) return "Available Now";
-    return "Unavailable Now";
+  getAvailabilityText(available: RoomStatus): string {
+    switch (available) {
+      case "free":
+        return "Available now";
+      case "soon":
+        return "Available soon";
+      case "busy":
+        return "Unavailable now";
+      default:
+        return "Unavailable now";
+    }
   }
 }
 </script>
