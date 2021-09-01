@@ -75,7 +75,7 @@
             <v-btn text color="primary" @click="dateModal = false"
               >Cancel</v-btn
             >
-            <v-btn text color="primary" @click="$refs.dateDialog.save(date)"
+            <v-btn text color="primary" @click="$refs.dateDialog.save(date); updateDateTime()"
               >OK</v-btn
             >
           </v-date-picker>
@@ -105,7 +105,7 @@
             <v-btn text color="primary" @click="timeModal = false"
               >Cancel</v-btn
             >
-            <v-btn text color="primary" @click="$refs.timeDialog.save(time)"
+            <v-btn text color="primary" @click="$refs.timeDialog.save(time); updateDateTime()"
               >OK</v-btn
             >
           </v-time-picker>
@@ -205,7 +205,7 @@ export default class LocationRoomView extends Vue {
     );
     this.allRooms = await this.dbService.getRoomsInBuilding(
       this.locationId,
-      "2021-03-11T10:20" // This is just a date for testing with available/unavailable rooms
+      `${this.date}T${this.time}` // This is just a date for testing with available/unavailable rooms
       // `${this.date}T${this.time}` // TODO: Updates to date/time do not rerender
     );
     this.listedRooms = this.allRooms;
@@ -215,6 +215,12 @@ export default class LocationRoomView extends Vue {
   filterRoomsAvailable(rooms: Room[], filterAvailable: boolean) {
     if (filterAvailable) return rooms.filter(this.checkAvailable);
     return rooms.filter(this.checkUnavailable);
+  }
+
+  async updateDateTime() {
+    this.allRooms = await this.dbService.getRoomsInBuilding(
+      this.locationId,
+      `${this.date}T${this.time}`);
   }
 
   checkAvailable(room: Room, index: number, array: Room[]): boolean {
