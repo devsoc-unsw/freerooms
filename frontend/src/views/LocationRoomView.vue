@@ -221,6 +221,9 @@ export default class LocationRoomView extends Vue {
     this.allRooms = await this.dbService.getRoomsInBuilding(
       this.locationId,
       `${this.date}T${this.time}`);
+    this.listedRooms = this.allRooms;
+    this.availableRooms = this.filterRoomsAvailable(this.allRooms, true);
+    this.unavailableRooms = this.filterRoomsAvailable(this.allRooms, false);
   }
 
   checkAvailable(room: Room, index: number, array: Room[]): boolean {
