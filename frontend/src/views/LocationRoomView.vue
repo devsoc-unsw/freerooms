@@ -125,7 +125,7 @@
         <router-link
           :to="{
             name: 'room',
-            params: { locationId, roomId: room.name },
+            params: { locationId, roomId: room.name, datetime: date },
           }"
         >
           <v-card class="background" flat>

@@ -35,7 +35,7 @@ const api = {
   getRoomBookings: handleError(
     async (location: string, room: string, date?: string) => {
       const url = `/buildings/${location}/${room}`;
-      const res = await axios.get(url, { params: { datetime: date } });
+      const res = await axios.get(url);
       return res.data;
     }
   ),
@@ -87,9 +87,7 @@ export default class DbService {
       console.log(`Could not get all the rooms from building ${building}`);
       return [];
     }
-    console.log(data);
     const rooms = data.rooms;
-
     const result: Room[] = [];
     for (const room in rooms) {
       const currStatus = rooms[room];
@@ -120,7 +118,14 @@ export default class DbService {
       return [];
     }
     const startDate = new Date(startTime);
+    startDate.setHours(0);
     const endDate = new Date(endTime);
+    endDate.setHours(23);
+    endDate.setMinutes(59);
+    endDate.setSeconds(59);
+
+    //console.log("In the DB we are going from " + startDate + " to " + endDate);
+    //console.log(data);
     const result: Booking[] = [];
     for (const week in data) {
       const weekData = data[week];
@@ -131,10 +136,9 @@ export default class DbService {
           const bookingEndDate = new Date(booking.end);
           // booking starts after start date and ends before end date
           if (bookingStartDate >= startDate && bookingEndDate <= endDate) {
+            //console.log("We have found this booking and it starts at " + bookingStartDate + " and ends at " + bookingEndDate);
             result.push(booking);
             // skip the rest of the day's bookings
-          } else {
-            break;
           }
         }
       }

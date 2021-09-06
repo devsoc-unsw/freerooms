@@ -60,7 +60,7 @@
                   <v-btn
                     text
                     :color="color"
-                    @click="$refs.startMenu.save(today)"
+                    @click="$refs.startMenu.save(today); updateDateTime();"
                   >
                     Today
                   </v-btn>
@@ -70,7 +70,7 @@
                   <v-btn
                     text
                     :color="color"
-                    @click="$refs.startMenu.save(start)"
+                    @click="$refs.startMenu.save(start); updateDateTime();"
                   >
                     OK
                   </v-btn>
@@ -124,13 +124,14 @@ export default class LocationRoomView extends Vue {
 
   intervalsDefault = {
     // TODO First time slot buggy
-    first: 6,
+    first: 5,
     // Minutes between each time slot
     minutes: 60,
     // How many slots
     count: 24 - 6,
     // Height of the individual time slots
     height: 48,
+
   };
 
   today = moment().format("YYYY-MM-DD");
@@ -147,14 +148,17 @@ export default class LocationRoomView extends Vue {
 
   // Get all bookings for the room in the given time range.
   async getEventsFromDb() {
-    const startTime = moment().format("YYYY-MM-DD");
-    const endTime = moment().format("YYYY-MM-DD");
+    const startTime = moment(this.start, "YYYY-MM-DD").isoWeekday(1).format("YYYY-MM-DD");
+    const endTime = moment(startTime, "YYYY-MM-DD").add(6, 'd').format("YYYY-MM-DD");
+
+    //console.log(startTime, endTime);
     const result = await this.dbService.getRoomBookingsInTimeRange(
       this.locationId,
       this.roomId,
       startTime,
       endTime,
     );
+    //console.log(result);
     return result;
   }
 
@@ -171,14 +175,19 @@ export default class LocationRoomView extends Vue {
         color: "",
       });
     }
-
+    //console.log(allEvents);
     return allEvents;
   }
 
   async mounted() {
     this.locationId = this.$route.params["locationId"];
     this.roomId = this.$route.params["roomId"];
+    this.start = this.$route.params["datetime"]
+    //console.log("we are looking at " + this.locationId + " at room " + this.roomId);
     if (this.roomId == null) this.roomId = "";
+    this.events = await this.getEvents();
+  }
+  async updateDateTime() {
     this.events = await this.getEvents();
   }
 }
@@ -186,7 +195,7 @@ export default class LocationRoomView extends Vue {
 
 <style scoped>
 .control-card {
-  margin-right: 20px;
+  margin-right: 0px;
   width: 100%;
   margin-bottom: 10px;
 }
