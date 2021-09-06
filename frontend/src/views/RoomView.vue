@@ -107,8 +107,8 @@
 // TODO Turn each part of the view into components, as detailed above.
 // TODO Use vuex to handle state
 import { Vue, Component } from "vue-property-decorator";
-import moment from "moment";
 import DbService from "../services/dbService";
+import {DateTime} from "luxon";
 import { EventModel } from "../models/BindingModel";
 import { Route } from "vue-router";
 
@@ -121,7 +121,6 @@ export default class LocationRoomView extends Vue {
   locationId = ""; 
   roomId = ""; // TODO: modify to take actual current room name
   bookedNameText = "Occupied"; // Name of all bookings shown on calendar
-
   intervalsDefault = {
     // TODO First time slot buggy
     first: 5,
@@ -134,7 +133,7 @@ export default class LocationRoomView extends Vue {
 
   };
 
-  today = moment().format("YYYY-MM-DD");
+  today = DateTime.now().toFormat("yyyy-MM-dd");
   start = this.today;
   events: EventModel[] = [];
   type = "week";
@@ -148,8 +147,9 @@ export default class LocationRoomView extends Vue {
 
   // Get all bookings for the room in the given time range.
   async getEventsFromDb() {
-    const startTime = moment(this.start, "YYYY-MM-DD").isoWeekday(1).format("YYYY-MM-DD");
-    const endTime = moment(startTime, "YYYY-MM-DD").add(6, 'd').format("YYYY-MM-DD");
+    const startTime = DateTime.fromFormat(this.start, "yyyy-MM-dd").set({weekday: 1}).toFormat("yyyy-MM-dd");
+    
+    const endTime = DateTime.fromFormat(startTime, "yyyy-MM-dd").plus({days: 6}).toFormat("yyyy-MM-dd");
 
     //console.log(startTime, endTime);
     const result = await this.dbService.getRoomBookingsInTimeRange(
@@ -199,7 +199,6 @@ export default class LocationRoomView extends Vue {
   width: 100%;
   margin-bottom: 10px;
 }
-
 .input-item {
   padding-bottom: 20px;
 }
@@ -209,5 +208,8 @@ export default class LocationRoomView extends Vue {
 .v-btn--fab.v-size--default {
   height: 30px;
   width: 30px;
+}
+.v-calendar .v-event-timed-container {
+  margin-right: 0px;
 }
 </style>
