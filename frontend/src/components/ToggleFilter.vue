@@ -12,8 +12,8 @@ import { Vue, Component, Prop, PropSync } from "vue-property-decorator";
 
 @Component
 export default class ToggleFilter extends Vue {
-  @Prop(Function) onChange;
-  @Prop(String) readonly label;
+  @Prop(Function) onChange!: Function;
+  @Prop(String) readonly label!: string;
   @PropSync("enabled", { type: Boolean }) syncedEnabled!: boolean;
 }
 </script>

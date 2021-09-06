@@ -37,7 +37,7 @@ import { Vue, Component, Prop, PropSync } from "vue-property-decorator";
 
 @Component
 export default class DatePicker extends Vue {
-  @Prop(Function) onChange;
+  @Prop(Function) onChange!: Function;
   @PropSync("modal", { type: Boolean }) syncedModal!: boolean;
   @PropSync("date", { type: String }) syncedDate!: string;
 }

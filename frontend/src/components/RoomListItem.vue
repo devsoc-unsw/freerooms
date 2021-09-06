@@ -28,10 +28,10 @@ import { Room, RoomStatus } from "../types";
 
 @Component
 export default class RoomListItem extends Vue {
-  @Prop(Object) readonly room: Room;
-  @Prop(String) readonly locationId: string;
-  @Prop(String) readonly time: string;
-  @Prop(String) readonly date: string;
+  @Prop(Object) readonly room!: Room;
+  @Prop(String) readonly locationId!: string;
+  @Prop(String) readonly time!: string;
+  @Prop(String) readonly date!: string;
 
   // Get calendar markdown icon color depending on a room's availability.
   getCalendarIconColor(available: RoomStatus): string {
