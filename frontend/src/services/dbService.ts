@@ -93,7 +93,7 @@ export default class DbService {
       const currStatus = rooms[room];
       const data = {
         name: room,
-        available: currStatus,
+        status: currStatus,
       };
       result.push(data);
     }

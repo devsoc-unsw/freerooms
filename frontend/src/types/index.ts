@@ -1,7 +1,7 @@
 export type RoomStatus = "free" | "soon" | "busy";
 export type Room = {
   name: string;
-  available: RoomStatus;
+  status: RoomStatus;
 };
 
 export type Campus = "Paddington" | "Kensington";

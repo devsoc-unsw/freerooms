@@ -20,16 +20,14 @@
           <p class="subtitle-1 white--text ml-1" align="left">
             {{ allRooms.length }} Rooms Listed<br />
             {{ availableRooms.length }} Currently Available<br />
+            {{ availableSoonRooms.length }} Available within 15 minutes<br />
             {{ unavailableRooms.length }} Currently Unavailable
-            <!-- TODO -->
-            <!-- {{ availableSoonRooms.length }} Available in the Next Hour  -->
           </p>
         </v-col>
       </v-row>
     </v-card>
 
     <!-- Filters -->
-    <!-- TODO fix filters -->
     <v-row class="mx-5 mt-5" align="end">
       <!-- Sort -->
       <v-col cols="12" sm="4" md="2" class="py-0 my-0">
@@ -38,13 +36,13 @@
           :items="sort_options"
           label="Sort"
           :item-value="select"
-          return-object
+          @change="updateList()"
         ></v-select>
       </v-col>
       <!-- Hide Unavailable -->
       <v-col cols="12" sm="6" class="py-0 my-0 pl-1">
         <v-switch
-          :change="updateList()"
+          @change="updateList()"
           v-model="enabled"
           class="ma-2"
           label="Show Unavailable"
@@ -70,12 +68,18 @@
               v-on="on"
             ></v-text-field>
           </template>
-          <v-date-picker v-model="date" scrollable>
+          <v-date-picker mode="date" v-model="date" scrollable>
             <v-spacer></v-spacer>
             <v-btn text color="primary" @click="dateModal = false"
               >Cancel</v-btn
             >
-            <v-btn text color="primary" @click="$refs.dateDialog.save(date); updateDateTime()"
+            <v-btn
+              text
+              color="primary"
+              @click="
+                $refs.dateDialog.save(date);
+                updateDateTime();
+              "
               >OK</v-btn
             >
           </v-date-picker>
@@ -100,12 +104,18 @@
               v-on="on"
             ></v-text-field>
           </template>
-          <v-time-picker v-model="time">
+          <v-time-picker mode="time" v-model="time">
             <v-spacer></v-spacer>
             <v-btn text color="primary" @click="timeModal = false"
               >Cancel</v-btn
             >
-            <v-btn text color="primary" @click="$refs.timeDialog.save(time); updateDateTime()"
+            <v-btn
+              text
+              color="primary"
+              @click="
+                $refs.timeDialog.save(time);
+                updateDateTime();
+              "
               >OK</v-btn
             >
           </v-time-picker>
@@ -125,18 +135,21 @@
         <router-link
           :to="{
             name: 'room',
-            params: { locationId, roomId: room.name, datetime: date },
+            params: {
+              locationId,
+              roomId: room.name,
+              datetime: date,
+            },
           }"
         >
           <v-card class="background" flat>
             <v-card-title class="text-left">
-              <!-- TODO check if room is available or not and assign appropriately -->
-              <v-icon :color="getCalendarIconColor(room.available)" class="mr-5"
+              <v-icon :color="getCalendarIconColor(room.status)" class="mr-5"
                 >event_available</v-icon
               >
               <div style="width:70px">{{ room.name }}</div>
               <v-divider vertical class="mx-5"></v-divider>
-              {{ getAvailabilityText(room.available) }}
+              {{ getAvailabilityText(room.status) }}
             </v-card-title>
           </v-card>
         </router-link>
@@ -167,10 +180,9 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
-import { Route } from "vue-router";
+import { Vue, Component } from "vue-property-decorator";
 import DbService from "../services/dbService";
-import moment from "moment";
+import { DateTime } from "luxon";
 import { Room, RoomStatus } from "../types";
 @Component
 export default class LocationRoomView extends Vue {
@@ -183,6 +195,7 @@ export default class LocationRoomView extends Vue {
   buildingName = "";
   allRooms: Room[] = [];
   availableRooms: Room[] = [];
+  availableSoonRooms: Room[] = [];
   unavailableRooms: Room[] = [];
   listedRooms: Room[] = [];
 
@@ -190,8 +203,8 @@ export default class LocationRoomView extends Vue {
   enabled = true;
   sort_options = ["Name", "Available"];
   select = "Name";
-  date = moment(new Date().toISOString()).format("YYYY-MM-DD");
-  time = moment(new Date().toISOString()).format("HH:mm");
+  date = DateTime.now().toFormat("yyyy-MM-dd");
+  time = DateTime.now().toFormat("HH:mm");
 
   dateModal = false;
   timeModal = false;
@@ -205,55 +218,47 @@ export default class LocationRoomView extends Vue {
     );
     this.allRooms = await this.dbService.getRoomsInBuilding(
       this.locationId,
-      `${this.date}T${this.time}` // This is just a date for testing with available/unavailable rooms
-      // `${this.date}T${this.time}` // TODO: Updates to date/time do not rerender
+      `${this.date} ${this.time}`
     );
     this.listedRooms = this.allRooms;
-    this.availableRooms = this.filterRoomsAvailable(this.allRooms, true);
-    this.unavailableRooms = this.filterRoomsAvailable(this.allRooms, false);
+    this.availableRooms = this.filterRoomsAvailable(this.allRooms, "free");
+    this.availableSoonRooms = this.filterRoomsAvailable(this.allRooms, "soon");
+    this.unavailableRooms = this.filterRoomsAvailable(this.allRooms, "busy");
   }
-  filterRoomsAvailable(rooms: Room[], filterAvailable: boolean) {
-    if (filterAvailable) return rooms.filter(this.checkAvailable);
-    return rooms.filter(this.checkUnavailable);
+
+  filterRoomsAvailable(rooms: Room[], filterStatus: RoomStatus) {
+    const filteredRooms = rooms.filter((v) => v.status === filterStatus);
+    return filteredRooms;
   }
 
   async updateDateTime() {
     this.allRooms = await this.dbService.getRoomsInBuilding(
       this.locationId,
-      `${this.date}T${this.time}`);
+      `${this.date} ${this.time}`
+    );
     this.listedRooms = this.allRooms;
-    this.availableRooms = this.filterRoomsAvailable(this.allRooms, true);
-    this.unavailableRooms = this.filterRoomsAvailable(this.allRooms, false);
+    this.availableRooms = this.filterRoomsAvailable(this.allRooms, "free");
+    this.availableSoonRooms = this.filterRoomsAvailable(this.allRooms, "soon");
+    this.unavailableRooms = this.filterRoomsAvailable(this.allRooms, "busy");
   }
 
-  checkAvailable(room: Room, index: number, array: Room[]): boolean {
-    if (room.available === "free") return true;
-    return false;
-  }
-  // TODO: need to get rooms that are unavailable now but is available in the next hour
-  checkAvailableSoon(room: Room, index: number, array: Room[]): boolean {
-    if (room.available === "free") return false;
-    return true;
-  }
-  checkUnavailable(room: Room, index: number, array: Room[]): boolean {
-    if (room.available === "free") return false;
-    return true;
-  }
-  // TODO: Fix infinite loop issue or change method for sorting filters
-  sortRooms(rooms: Room[], sort: string) {
+  sortRooms(rooms: Room[]) {
     if (this.select === "Name") {
       rooms.sort((a: Room, b: Room) => (a.name > b.name ? 1 : -1));
     } else {
-      rooms.sort((a: Room, b: Room) => (a.available < b.available ? 1 : -1));
+      // free -> soon -> busy
+      rooms.sort((a: Room) => (a.status === "free" ? -1 : 1));
     }
     return rooms;
   }
+
   updateList() {
     if (this.enabled == true) {
       this.listedRooms = this.allRooms;
     } else {
       this.listedRooms = this.availableRooms;
     }
+    this.sortRooms(this.listedRooms);
   }
 
   // Get calendar markdown icon color depending on a room's availability.
@@ -275,7 +280,8 @@ export default class LocationRoomView extends Vue {
       case "free":
         return "Available now";
       case "soon":
-        return "Available soon";
+        // TODO: Should we return a specfic time instead?
+        return `Available within 15 minutes of ${this.time}`;
       case "busy":
         return "Unavailable now";
       default:

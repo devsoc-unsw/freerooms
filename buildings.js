@@ -37,9 +37,9 @@ const buildingDataJson = {
   "K-E26": { name: "Biological Sciences South", id: "K-E26", img: "" },
   "K-J14": { name: "Keith Burrows Theatre", id: "K-J14", img: "" },
   "K-F13": { name: "Science Theatre", id: "K-F13", img: "" },
-  "P-F": { name: "P-F", id: "P-F", img: "" },
-  "P-D": { name: "P-D", id: "P-D", img: "" },
-  "P-E": { name: "P-E", id: "P-E", img: "" },
+  "P-F": { name: "Block F", id: "P-F", img: "" },
+  "P-D": { name: "Block D", id: "P-D", img: "" },
+  "P-E": { name: "Block E", id: "P-E", img: "" },
 };
 
 export default buildingDataJson;
