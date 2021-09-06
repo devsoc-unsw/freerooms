@@ -32,13 +32,11 @@ const api = {
   }),
 
   // Get a list of all booked periods in the room for a given date.
-  getRoomBookings: handleError(
-    async (location: string, room: string, date?: string) => {
-      const url = `/buildings/${location}/${room}`;
-      const res = await axios.get(url);
-      return res.data;
-    }
-  ),
+  getRoomBookings: handleError(async (location: string, room: string) => {
+    const url = `/buildings/${location}/${room}`;
+    const res = await axios.get(url);
+    return res.data;
+  }),
 };
 
 export default class DbService {
@@ -47,7 +45,7 @@ export default class DbService {
   async getAllBuildings(campus?: Campus) {
     const data = await api.getAllBuildings();
     if (!data) {
-      console.log("Could not get all buildings", campus);
+      console.error("Could not get all buildings", campus);
       return [];
     }
     let buildings: BuildingData[] = data.buildings;
@@ -55,7 +53,6 @@ export default class DbService {
     buildings.sort((a: BuildingData, b: BuildingData) =>
       a.name > b.name ? 1 : -1
     );
-    console.log("sorted", buildings);
 
     if (!campus) return buildings;
 
@@ -70,7 +67,7 @@ export default class DbService {
   async getBuildingByLocation(location: string) {
     const data = await api.getAllBuildings();
     if (!data) {
-      console.log(`Could not get building with location ${location}`);
+      console.error(`Could not get building with location ${location}`);
       return [];
     }
     const building = data.buildings.find(
@@ -84,7 +81,7 @@ export default class DbService {
     console.log("date", date);
     const data = await api.getRoomsInBuilding(building, date);
     if (!data) {
-      console.log(`Could not get all the rooms from building ${building}`);
+      console.error(`Could not get all the rooms from building ${building}`);
       return [];
     }
     const rooms = data.rooms;
@@ -111,7 +108,7 @@ export default class DbService {
     const data = await api.getRoomBookings(location, room, startTime);
 
     if (!data) {
-      console.log(`Could not get bookings for room ${room}`, {
+      console.error(`Could not get bookings for room ${room}`, {
         room,
         startTime,
       });
@@ -144,12 +141,5 @@ export default class DbService {
       }
     }
     return result;
-  }
-
-  // Currently unused. //
-  // Given a specific time, returns true if the given room is available,
-  // false otherwise.
-  getRoomStatusAtTime(bookings: Booking[], room: Room, time: string): boolean {
-    return true;
   }
 }

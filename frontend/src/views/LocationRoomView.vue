@@ -31,95 +31,37 @@
     <v-row class="mx-5 mt-5" align="end">
       <!-- Sort -->
       <v-col cols="12" sm="4" md="2" class="py-0 my-0">
-        <v-select
-          v-model="select"
-          :items="sort_options"
-          label="Sort"
-          :item-value="select"
-          @change="updateList()"
-        ></v-select>
+        <sort-filter
+          label="Sort rooms"
+          :selected.sync="selected"
+          :sortOptions="sort_options"
+          @onChange="updateList"
+        />
       </v-col>
       <!-- Hide Unavailable -->
       <v-col cols="12" sm="6" class="py-0 my-0 pl-1">
-        <v-switch
-          @change="updateList()"
-          v-model="enabled"
-          class="ma-2"
-          label="Show Unavailable"
-        ></v-switch>
+        <toggle-filter
+          label="Show unavailable"
+          :enabled.sync="enabled"
+          @onChange="updateList"
+        />
       </v-col>
       <v-spacer></v-spacer>
       <!-- Date -->
       <v-col cols="12" sm="4" md="2" class="py-0 my-0">
-        <v-dialog
-          ref="dateDialog"
-          v-model="dateModal"
-          :return-value.sync="date"
-          width="290px"
-          persistent
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-text-field
-              v-model="date"
-              label="Choose date"
-              prepend-icon="event"
-              readonly
-              v-bind="attrs"
-              v-on="on"
-            ></v-text-field>
-          </template>
-          <v-date-picker mode="date" v-model="date" scrollable>
-            <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="dateModal = false"
-              >Cancel</v-btn
-            >
-            <v-btn
-              text
-              color="primary"
-              @click="
-                $refs.dateDialog.save(date);
-                updateDateTime();
-              "
-              >OK</v-btn
-            >
-          </v-date-picker>
-        </v-dialog>
+        <date-picker
+          :date.sync="date"
+          @onChange="updateDateTime"
+          :modal="dateModal"
+        />
       </v-col>
       <!-- Time -->
       <v-col cols="12" sm="4" md="2" class="py-0 my-0">
-        <v-dialog
-          ref="timeDialog"
-          v-model="timeModal"
-          :return-value.sync="time"
-          persistent
-          width="290px"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-text-field
-              v-model="time"
-              label="Choose time"
-              prepend-icon="schedule"
-              readonly
-              v-bind="attrs"
-              v-on="on"
-            ></v-text-field>
-          </template>
-          <v-time-picker mode="time" v-model="time">
-            <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="timeModal = false"
-              >Cancel</v-btn
-            >
-            <v-btn
-              text
-              color="primary"
-              @click="
-                $refs.timeDialog.save(time);
-                updateDateTime();
-              "
-              >OK</v-btn
-            >
-          </v-time-picker>
-        </v-dialog>
+        <time-picker
+          :time.sync="time"
+          @onChange="updateDateTime"
+          :modal="timeModal"
+        />
       </v-col>
     </v-row>
 
@@ -132,48 +74,12 @@
     >
       <v-col cols="12" class="pa-0 ma-0">
         <v-divider></v-divider>
-        <router-link
-          :to="{
-            name: 'room',
-            params: {
-              locationId,
-              roomId: room.name,
-              datetime: date,
-            },
-          }"
-        >
-          <v-card class="background" flat>
-            <v-card-title class="text-left">
-              <v-icon :color="getCalendarIconColor(room.status)" class="mr-5"
-                >event_available</v-icon
-              >
-              <div style="width:70px">{{ room.name }}</div>
-              <v-divider vertical class="mx-5"></v-divider>
-              {{ getAvailabilityText(room.status) }}
-            </v-card-title>
-          </v-card>
-        </router-link>
-      </v-col>
-    </v-row>
-
-    <!-- Currently Unavailable but available later ReferenceTemplate-->
-    <!-- TODO: Implement this inside of the room list loop. 
-                   Remove this row once done. -->
-    <v-row class="mx-5 mt-4" align="center" style="display:none">
-      <v-col cols="12" class="pa-0 ma-0">
-        <v-divider></v-divider>
-        <router-link
-          :to="{ name: 'room', params: { locationId: locationId, roomId: 4 } }"
-        >
-          <v-card class="background" flat>
-            <v-card-title class="text-left">
-              <v-icon color="warning" class="mr-5">event_note</v-icon>
-              <span> Room 4 </span>
-              <v-divider vertical class="mx-5"></v-divider>
-              Available After 14:00
-            </v-card-title>
-          </v-card>
-        </router-link>
+        <room-list-item
+          :room="room"
+          :locationId="locationId"
+          :date="date"
+          :time="time"
+        />
       </v-col>
     </v-row>
   </div>
@@ -184,7 +90,21 @@ import { Vue, Component } from "vue-property-decorator";
 import DbService from "../services/dbService";
 import { DateTime } from "luxon";
 import { Room, RoomStatus } from "../types";
-@Component
+import RoomListItem from "../components/RoomListItem.vue";
+import SortFilter from "../components/SortFilter.vue";
+import ToggleFilter from "../components/ToggleFilter.vue";
+import DatePicker from "../components/DatePicker.vue";
+import TimePicker from "../components/TimePicker.vue";
+
+@Component({
+  components: {
+    SortFilter,
+    ToggleFilter,
+    DatePicker,
+    TimePicker,
+    RoomListItem,
+  },
+})
 export default class LocationRoomView extends Vue {
   dbService = new DbService();
 
@@ -202,7 +122,7 @@ export default class LocationRoomView extends Vue {
   // Filter / Sort variables.
   enabled = true;
   sort_options = ["Name", "Available"];
-  select = "Name";
+  selected = "Name";
   date = DateTime.now().toFormat("yyyy-MM-dd");
   time = DateTime.now().toFormat("HH:mm");
 
@@ -243,11 +163,21 @@ export default class LocationRoomView extends Vue {
   }
 
   sortRooms(rooms: Room[]) {
-    if (this.select === "Name") {
+    if (this.selected === "Name") {
       rooms.sort((a: Room, b: Room) => (a.name > b.name ? 1 : -1));
     } else {
       // free -> soon -> busy
-      rooms.sort((a: Room) => (a.status === "free" ? -1 : 1));
+      rooms.sort((a: Room, b: Room) => {
+        // if status is the same then compare the room name
+        if (a.status === b.status) {
+          return b.name < a.name ? 1 : -1;
+        }
+
+        if (b.status === "free") return 1;
+        if (a.status === "free") return -1;
+
+        return b.status > a.status ? 1 : -1;
+      });
     }
     return rooms;
   }
@@ -259,34 +189,6 @@ export default class LocationRoomView extends Vue {
       this.listedRooms = this.availableRooms;
     }
     this.sortRooms(this.listedRooms);
-  }
-
-  // Get calendar markdown icon color depending on a room's availability.
-  getCalendarIconColor(available: RoomStatus): string {
-    switch (available) {
-      case "free":
-        return "success";
-      case "soon":
-        return "orange";
-      case "busy":
-        return "error";
-      default:
-        return "error";
-    }
-  }
-
-  getAvailabilityText(available: RoomStatus): string {
-    switch (available) {
-      case "free":
-        return "Available now";
-      case "soon":
-        // TODO: Should we return a specfic time instead?
-        return `Available within 15 minutes of ${this.time}`;
-      case "busy":
-        return "Unavailable now";
-      default:
-        return "Unavailable now";
-    }
   }
 }
 </script>
