@@ -25,7 +25,15 @@ export default new Vuetify({
         background: "#F1F2F1",
       },
       dark: {
-        // Unimplemented
+        primary: "#a94e2f",
+        secondary: "#ae643d",
+        tertiary: "#B45231",
+        accent: "#39D4B0",
+        info: "#5E5E5E",
+        error: "#D44315",
+        success: "#39D43F",
+        warning: "#E8DE1A",
+        background: "#2c2d2c",
       },
     },
   },

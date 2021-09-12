@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app floating outlined color="background">
+  <v-app-bar app outlined color="background">
     <v-app-bar-nav-icon>
       <router-link
         :to="{
@@ -16,13 +16,20 @@
     <v-toolbar-title class="ml-3 mt-1 font-weight-medium primary--text">
       FreeRooms
     </v-toolbar-title>
+    <v-spacer></v-spacer>
+    <theme-button />
   </v-app-bar>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
+import ThemeButton from "./ThemeButton.vue";
 
-@Component
+@Component({
+  components: {
+    ThemeButton,
+  },
+})
 export default class Toolbar extends Vue {}
 </script>
 

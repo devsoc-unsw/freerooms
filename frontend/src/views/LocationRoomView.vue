@@ -52,7 +52,7 @@
         <date-picker
           :date.sync="date"
           @onChange="updateDateTime"
-          :modal="dateModal"
+          :modal.sync="dateModal"
         />
       </v-col>
       <!-- Time -->
@@ -60,7 +60,7 @@
         <time-picker
           :time.sync="time"
           @onChange="updateDateTime"
-          :modal="timeModal"
+          :modal.sync="timeModal"
         />
       </v-col>
     </v-row>

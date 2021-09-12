@@ -1,7 +1,7 @@
 // TODO: Decide on whether we want img as info sent from backend
 const buildingDataJson = {
   "K-F8": { name: "Law", id: "K-F8", img: "" },
-  "K-E12": { name: "UNSW Business School", id: "K-E12", img: "" },
+  "K-E12": { name: "Business School", id: "K-E12", img: "" },
   "K-D26": { name: "Biological Sciences North", id: "K-D26", img: "" },
   "K-D23": { name: "Mathews Theatres", id: "K-D23", img: "" },
   "K-E19": { name: "Central Lecture Block", id: "K-E19", img: "" },
