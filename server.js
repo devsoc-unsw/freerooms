@@ -1,7 +1,7 @@
 // Initialising application using Express
 import express from "express";
 const app = express();
-const port = 1337;
+const port = 3000;
 
 // Data file (global)
 import dataJson from "./data.js";
