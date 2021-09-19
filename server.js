@@ -56,8 +56,8 @@ const getAllRooms = async () => {
 // Route to get all buildings
 app.get("/buildings", async (req, res) => {
   try {
-    console.log(`Requested all buildings`);
-    let ret = {"buildings" : []};
+    let ret = { buildings: [] };
+
     for (let building in dataJson["U1"]) {
       let iter = {};
       iter["name"] = buildingDataJson[building]["name"];
@@ -65,7 +65,7 @@ app.get("/buildings", async (req, res) => {
       iter["img"] = buildingDataJson[building]["img"];
       ret["buildings"].push(iter);
     }
-    console.log(ret);
+
     res.send(ret);
   } catch (err) {
     res.send(`Failed to send all buildings`);
@@ -76,17 +76,17 @@ app.get("/buildings", async (req, res) => {
 // Route to get status of all rooms in a particular building
 app.get("/buildings/:buildingId", async (req, res) => {
   try {
-    //res.send(`Requested rooms for ${req.params.buildingId}`);
     let buildingID = req.params.buildingId;
 
     //Error checking for validity of building ID
     if (!dataJson["U1"].hasOwnProperty(buildingID)) {
       res.send({
-        "message": "invalid building ID",
-        "status": 400,
+        message: "invalid building ID",
+        status: 400,
       });
     }
-    let ret = {"rooms": {}};
+
+    let ret = { rooms: {} };
 
     //Get current date
     let d = new Date();
@@ -96,10 +96,11 @@ app.get("/buildings/:buildingId", async (req, res) => {
     if (req.query.datetime) {
       //Error checking to see if the datetime is valid or not
       let timestamp = Date.parse(req.query.datetime);
-      if(isNaN(timestamp)) {
+
+      if (isNaN(timestamp)) {
         res.send({
-          "message": "invalid date",
-          "status": 400,
+          message: "invalid date",
+          status: 400,
         });
       } else {
         //If it is a valid date, change d to inteead be the datetime passed in the query
@@ -107,6 +108,7 @@ app.get("/buildings/:buildingId", async (req, res) => {
         d = new Date(req.query.datetime);
       }
     }
+
     //Create JS object from JSON file
     let buildingObj = dataJson["U1"][buildingID];
 
@@ -124,11 +126,6 @@ app.get("/buildings/:buildingId", async (req, res) => {
 // Route to get availability of a particular room in a particular building
 app.get("/buildings/:buildingId/:roomId", async (req, res) => {
   try {
-    console.log(
-      `Requested room availability for ${req.params.roomId} in ${req.params.buildingId}`
-    );
-
-
     let ret = {};
     let buildingID = req.params.buildingId;
     let roomID = req.params.roomId;
@@ -136,16 +133,16 @@ app.get("/buildings/:buildingId/:roomId", async (req, res) => {
     //Ensure building ID is valid
     if (!dataJson["U1"].hasOwnProperty(buildingID)) {
       res.send({
-        "message": "invalid building ID",
-        "status": 400,
+        message: "invalid building ID",
+        status: 400,
       });
     }
 
     //Ensure room ID is valid
     if (!dataJson["U1"][buildingID].hasOwnProperty(roomID)) {
       res.send({
-        "message": "invalid room ID",
-        "status": 400,
+        message: "invalid room ID",
+        status: 400,
       });
     }
 
@@ -153,7 +150,6 @@ app.get("/buildings/:buildingId/:roomId", async (req, res) => {
     ret = dataJson["U1"][buildingID][roomID];
 
     res.send(ret);
-    console.log("Room availability sent");
   } catch (err) {
     res.send("Room availability data error");
     console.log(Error(err));
