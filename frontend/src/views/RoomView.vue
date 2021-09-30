@@ -147,6 +147,7 @@ export default class LocationRoomView extends Vue {
 
   // Get all bookings for the room in the given time range.
   async getEventsFromDb() {
+    
     const startTime = DateTime.fromFormat(this.start, "yyyy-MM-dd").set({weekday: 1}).toFormat("yyyy-MM-dd");
     
     const endTime = DateTime.fromFormat(startTime, "yyyy-MM-dd").plus({days: 6}).toFormat("yyyy-MM-dd");
@@ -158,12 +159,14 @@ export default class LocationRoomView extends Vue {
       startTime,
       endTime,
     );
-    //console.log(result);
+    // console.log("aloha");
+    // console.log(result);
     return result;
   }
 
   // Add name and colour to events
   async getEvents() {
+    
     const allEvents: EventModel[] = [];
 
     const events = await this.getEventsFromDb();
@@ -175,7 +178,8 @@ export default class LocationRoomView extends Vue {
         color: "",
       });
     }
-    //console.log(allEvents);
+    console.log(events);
+    console.log(allEvents);
     return allEvents;
   }
 
@@ -188,6 +192,7 @@ export default class LocationRoomView extends Vue {
     this.events = await this.getEvents();
   }
   async updateDateTime() {
+    
     this.events = await this.getEvents();
   }
 }

@@ -1,6 +1,7 @@
 // Class to handle Frontend Requests to backend for data from mongodb database.
-import { Booking, BuildingData, Campus, Room } from "@/types";
+import { BuildingData, Campus, Room } from "@/types";
 import axios, { AxiosError } from "axios";
+import { DateTime } from "luxon";
 
 // Handle error on request to backend.
 const handleError = (fn: Function) => (...params: any) =>
@@ -48,7 +49,9 @@ export default class DbService {
       console.error("Could not get all buildings", campus);
       return [];
     }
+
     let buildings: BuildingData[] = data.buildings;
+
     // Sort build names alphabetically
     buildings.sort((a: BuildingData, b: BuildingData) =>
       a.name > b.name ? 1 : -1
@@ -61,39 +64,48 @@ export default class DbService {
     } else {
       buildings = buildings.filter((data) => data.id.startsWith("P-"));
     }
+
     return buildings;
   }
 
   async getBuildingByLocation(location: string) {
     const data = await api.getAllBuildings();
+
     if (!data) {
       console.error(`Could not get building with location ${location}`);
       return [];
     }
+
     const building = data.buildings.find(
       (data: BuildingData) => data.id === location
     );
+
     return building.name;
   }
 
   // Get an array of objects of all rooms within a building.
   async getRoomsInBuilding(building: string, date?: string) {
-    console.log("date", date);
     const data = await api.getRoomsInBuilding(building, date);
+
     if (!data) {
       console.error(`Could not get all the rooms from building ${building}`);
       return [];
     }
+
     const rooms = data.rooms;
     const result: Room[] = [];
+
     for (const room in rooms) {
       const currStatus = rooms[room];
+
       const data = {
         name: room,
         status: currStatus,
       };
+
       result.push(data);
     }
+
     return result;
   }
 
@@ -105,7 +117,11 @@ export default class DbService {
     endTime: string
   ) {
     // Gets all the room bookings from start time
+    const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
     const data = await api.getRoomBookings(location, room, startTime);
+
+    console.log("Room data!")
+    console.log(data)
 
     if (!data) {
       console.error(`Could not get bookings for room ${room}`, {
@@ -114,28 +130,50 @@ export default class DbService {
       });
       return [];
     }
+
     const startDate = new Date(startTime);
     startDate.setHours(0);
+
     const endDate = new Date(endTime);
     endDate.setHours(23);
     endDate.setMinutes(59);
     endDate.setSeconds(59);
 
-    //console.log("In the DB we are going from " + startDate + " to " + endDate);
-    //console.log(data);
-    const result: Booking[] = [];
+    console.log("In the DB we are going from " + startDate + " to " + endDate);
+    const result = [];
+    const times: number[] = [];
+
     for (const week in data) {
+      if (week === "name") continue;
       const weekData = data[week];
+
       for (const day in weekData) {
         const dayData = data[week][day];
+
         for (const booking of dayData) {
-          const bookingStartDate = new Date(booking.start);
-          const bookingEndDate = new Date(booking.end);
-          // booking starts after start date and ends before end date
+          if (!booking["start"] || !booking["end"]) continue;
+
+          const currentDay = startDate.getDate() + days.indexOf(day);
+          const hoursStart = startDate.getHours() + parseInt(booking["start"].split(":")[0]);
+          const hoursEnd = startDate.getHours() + parseInt(booking["end"].split(":")[0]);
+          
+          const bookingStartDate = new Date(startDate.getFullYear(), startDate.getMonth(), currentDay, hoursStart, 0, 0);
+          const bookingEndDate = new Date(startDate.getFullYear(), startDate.getMonth(), currentDay, hoursEnd, 0, 0);
+
+          const bookingEdit = booking;
+          bookingEdit["start"] = DateTime.fromJSDate(bookingStartDate).toFormat("yyyy-MM-dd HH:mm");
+          bookingEdit["end"] = DateTime.fromJSDate(bookingEndDate).toFormat("yyyy-MM-dd HH:mm");
+
           if (bookingStartDate >= startDate && bookingEndDate <= endDate) {
-            //console.log("We have found this booking and it starts at " + bookingStartDate + " and ends at " + bookingEndDate);
-            result.push(booking);
-            // skip the rest of the day's bookings
+            
+            console.log("We have found this booking and it starts at " + bookingStartDate + " and ends at " + bookingEndDate);
+            console.log(bookingEdit);
+            console.log(times)
+            if (!times.includes(bookingStartDate.getTime())) {
+              result.push(bookingEdit);
+            }
+            times.push(bookingStartDate.getTime());
+            
           }
         }
       }
