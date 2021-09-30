@@ -16,7 +16,7 @@
         >
         <div style="width:70px">{{ room.name }}</div>
         <v-divider vertical class="mx-5"></v-divider>
-        {{ getAvailabilityText(room.status) }}
+        {{ getAvailabilityText(room.status, room) }}
       </v-card-title>
     </v-card>
   </router-link>
@@ -25,6 +25,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { Room, RoomStatus } from "../types";
+import { DateTime } from "luxon";
 
 @Component
 export default class RoomListItem extends Vue {
@@ -52,8 +53,9 @@ export default class RoomListItem extends Vue {
       case "free":
         return "Available now";
       case "soon":
-        // TODO: Should we return a specfic time instead?
-        return `Available within 15 minutes of ${this.time}`;
+        return `Available after ${DateTime.fromISO(
+          this.room.classEndTime
+        ).toLocaleString(DateTime.TIME_SIMPLE)}`;
       case "busy":
         return "Unavailable now";
       default:

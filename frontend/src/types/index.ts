@@ -1,6 +1,7 @@
 export type RoomStatus = "free" | "soon" | "busy";
 export type Room = {
   name: string;
+  classEndTime: string;
   status: RoomStatus;
 };
 

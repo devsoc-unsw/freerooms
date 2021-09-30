@@ -96,11 +96,11 @@ export default class DbService {
     const result: Room[] = [];
 
     for (const room in rooms) {
-      const currStatus = rooms[room];
-
+      const roomInfo = rooms[room];
       const data = {
         name: room,
-        status: currStatus,
+        classEndTime: roomInfo.endtime,
+        status: roomInfo.status,
       };
 
       result.push(data);
@@ -150,15 +150,35 @@ export default class DbService {
           if (!booking["start"] || !booking["end"]) continue;
 
           const currentDay = startDate.getDate() + days.indexOf(day);
-          const hoursStart = startDate.getHours() + parseInt(booking["start"].split(":")[0]);
-          const hoursEnd = startDate.getHours() + parseInt(booking["end"].split(":")[0]);
+          const hoursStart =
+            startDate.getHours() + parseInt(booking["start"].split(":")[0]);
+          const hoursEnd =
+            startDate.getHours() + parseInt(booking["end"].split(":")[0]);
 
-          const bookingStartDate = new Date(startDate.getFullYear(), startDate.getMonth(), currentDay, hoursStart, 0, 0);
-          const bookingEndDate = new Date(startDate.getFullYear(), startDate.getMonth(), currentDay, hoursEnd, 0, 0);
+          const bookingStartDate = new Date(
+            startDate.getFullYear(),
+            startDate.getMonth(),
+            currentDay,
+            hoursStart,
+            0,
+            0
+          );
+          const bookingEndDate = new Date(
+            startDate.getFullYear(),
+            startDate.getMonth(),
+            currentDay,
+            hoursEnd,
+            0,
+            0
+          );
 
           const bookingEdit = booking;
-          bookingEdit["start"] = DateTime.fromJSDate(bookingStartDate).toFormat("yyyy-MM-dd HH:mm");
-          bookingEdit["end"] = DateTime.fromJSDate(bookingEndDate).toFormat("yyyy-MM-dd HH:mm");
+          bookingEdit["start"] = DateTime.fromJSDate(bookingStartDate).toFormat(
+            "yyyy-MM-dd HH:mm"
+          );
+          bookingEdit["end"] = DateTime.fromJSDate(bookingEndDate).toFormat(
+            "yyyy-MM-dd HH:mm"
+          );
 
           if (bookingStartDate >= startDate && bookingEndDate <= endDate) {
             if (!times.includes(bookingStartDate.getTime())) {
