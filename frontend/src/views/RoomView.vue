@@ -111,8 +111,6 @@
 </template>
 
 <script lang="ts">
-// TODO Turn each part of the view into components, as detailed above.
-// TODO Use vuex to handle state
 import { Vue, Component } from "vue-property-decorator";
 import DbService from "../services/dbService";
 import { DateTime } from "luxon";
@@ -126,10 +124,11 @@ export default class LocationRoomView extends Vue {
   params: any = [];
 
   locationId = "";
-  roomId = ""; // TODO: modify to take actual current room name
+  buildingName = "";
+  roomId = "";
+
   bookedNameText = "Occupied"; // Name of all bookings shown on calendar
   intervalsDefault = {
-    // TODO First time slot buggy
     first: 5,
     // Minutes between each time slot
     minutes: 60,
@@ -139,9 +138,9 @@ export default class LocationRoomView extends Vue {
     height: 48,
   };
 
-  buildingName = "";
   today = DateTime.now().toFormat("yyyy-MM-dd");
   start = this.today;
+
   events: EventModel[] = [];
   type = "week";
   mode = "stack";
@@ -168,6 +167,7 @@ export default class LocationRoomView extends Vue {
       startTime,
       endTime
     );
+
     return result;
   }
 
@@ -176,6 +176,7 @@ export default class LocationRoomView extends Vue {
     const allEvents: EventModel[] = [];
 
     const events = await this.getEventsFromDb();
+
     for (const event of events) {
       allEvents.push({
         name: this.bookedNameText,
@@ -184,6 +185,7 @@ export default class LocationRoomView extends Vue {
         color: "",
       });
     }
+
     return allEvents;
   }
 
@@ -192,6 +194,7 @@ export default class LocationRoomView extends Vue {
     this.buildingName = await this.dbService.getBuildingByLocation(
       this.locationId
     );
+
     this.roomId = this.$route.params["roomId"];
     this.start = this.$route.params["datetime"];
 
