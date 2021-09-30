@@ -1,6 +1,7 @@
 // TODO: Decide on whether we want img as info sent from backend
-const buildingDataJson = {
+const buildingData = {
   "K-F8": { name: "Law", id: "K-F8", img: "" },
+  "K-C27" : { name: "Wallace Wurth", id: "K-C27", img: ""},
   "K-E12": { name: "Business School", id: "K-E12", img: "" },
   "K-D26": { name: "Biological Sciences North", id: "K-D26", img: "" },
   "K-D23": { name: "Mathews Theatres", id: "K-D23", img: "" },
@@ -20,7 +21,6 @@ const buildingDataJson = {
   "K-M15": { name: "Rubert Myers Building", id: "K-M15", img: "" },
   "K-F17": { name: "Rex Vowels Theatre", id: "K-F17", img: "" },
   "K-K14": { name: "Physics Theatre", id: "K-K14", img: "" },
-  ONLINE: { name: "ONLINE", id: "ONLINE", img: "" },
   "K-K17": { name: "CSE Building", id: "K-K17", img: "" },
   "K-J17": { name: "Ainsworth", id: "K-J17", img: "" },
   "K-J12": { name: "Newton Building", id: "K-J12", img: "" },
@@ -37,9 +37,6 @@ const buildingDataJson = {
   "K-E26": { name: "Biological Sciences South", id: "K-E26", img: "" },
   "K-J14": { name: "Keith Burrows Theatre", id: "K-J14", img: "" },
   "K-F13": { name: "Science Theatre", id: "K-F13", img: "" },
-  "P-F": { name: "Block F", id: "P-F", img: "" },
-  "P-D": { name: "Block D", id: "P-D", img: "" },
-  "P-E": { name: "Block E", id: "P-E", img: "" },
 };
 
-export default buildingDataJson;
+export default buildingData;
