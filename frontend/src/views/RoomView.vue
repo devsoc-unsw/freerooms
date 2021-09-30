@@ -1,6 +1,7 @@
 <template>
   <div class="RoomView">
     <v-container>
+      <div class="title">{{ this.buildingName + " " + this.roomId }}</div>
       <v-row no-gutters align="start" justify="center">
         <v-col cols="12">
           <v-card class="control-card">
@@ -138,6 +139,7 @@ export default class LocationRoomView extends Vue {
     height: 48,
   };
 
+  buildingName = "";
   today = DateTime.now().toFormat("yyyy-MM-dd");
   start = this.today;
   events: EventModel[] = [];
@@ -187,6 +189,9 @@ export default class LocationRoomView extends Vue {
 
   async mounted() {
     this.locationId = this.$route.params["locationId"];
+    this.buildingName = await this.dbService.getBuildingByLocation(
+      this.locationId
+    );
     this.roomId = this.$route.params["roomId"];
     this.start = this.$route.params["datetime"];
 
@@ -222,5 +227,8 @@ export default class LocationRoomView extends Vue {
 }
 .v-calendar .v-event-timed-container {
   margin-right: 0px;
+}
+.title {
+  padding: 10px;
 }
 </style>
