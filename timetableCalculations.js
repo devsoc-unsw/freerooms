@@ -1,4 +1,5 @@
 import fetch from "node-fetch";
+import { JSDOM } from "jsdom";
 
 const SCRAPER_URL =
   "https://timetable.csesoc.unsw.edu.au/api/terms/2021-T3/freerooms/";
@@ -31,7 +32,50 @@ export const getWeek = async (day, month, year) => {
   return Math.ceil(daysPastTerm / 7);
 };
 
-export const retrieveRoomStatus = async (buildings, currDate) => {
+export const getAllRooms = async () => {
+  const ROOM_URL =
+    "https://www.learningenvironments.unsw.edu.au/find-teaching-space?building_name=&room_name=&page=";
+
+  const MAX_PAGES = 13;
+
+  const ROOM_REGEX = /^[A-Z]-[A-Z][0-9]{1,2}-[A-Z]{0,2}[0-9]{1,4}[A-Z]{0,1}$/;
+  // One letter - campus ID, e.g. K for Kensington
+  // One letter followed by one or two numbers for grid reference e.g. D16 or F8
+  // Zero, one or two letters for the floor then between one to four numbers for the room number
+  // Library rooms may end in a letter
+  // Zero letter floor - 313
+  // One letter floor - M18
+  // Two letter floor - LG19
+
+  let rooms = [];
+
+  for (let i = 0; i < MAX_PAGES; i++) {
+    let data = await fetch(ROOM_URL + i).then((response) => response.text());
+
+    const htmlDoc = new JSDOM(data);
+    let roomCodes =
+      htmlDoc.window.document.getElementsByClassName("field-item");
+
+    let cleanRoomCodes = [];
+
+    for (let j = 0; j < roomCodes.length; j++) {
+      let roomCode = roomCodes.item(j).innerHTML;
+      if (ROOM_REGEX.test(roomCode)) {
+        cleanRoomCodes.push(roomCode);
+      }
+    }
+
+    rooms = rooms.concat(cleanRoomCodes);
+  }
+
+  return rooms;
+};
+
+export const retrieveRoomStatus = async (
+  buildingID,
+  roomTimetable,
+  currDate
+) => {
   let date = currDate.getDate();
   let month = currDate.getMonth();
   let year = currDate.getFullYear();
@@ -44,20 +88,38 @@ export const retrieveRoomStatus = async (buildings, currDate) => {
   const day = currDate.getDay();
   let dayOfWeek = days[day];
 
-  let ret = { rooms: {} };
+  let result = { rooms: {} };
 
-  for (let room in buildings) {
+  const allRooms = await getAllRooms();
+
+  for (let room of allRooms) {
+    //console.log(room);
+    let [campus, builidngID, roomID] = room.split("-");
+
+    if (
+      room.startsWith(buildingID + "-") &&
+      !roomTimetable.hasOwnProperty(roomID)
+    ) {
+      console.log(room);
+      result["rooms"][roomID] = {
+        status: "free",
+        endtime: "",
+      };
+    }
+  }
+
+  for (let room in roomTimetable) {
     //If there are classes in the current week check through them
     //Otherwise the class is free
     if (
-      buildings[room].hasOwnProperty(week) &&
-      buildings[room][week].hasOwnProperty(dayOfWeek)
+      roomTimetable[room].hasOwnProperty(week) &&
+      roomTimetable[room][week].hasOwnProperty(dayOfWeek)
     ) {
       //If there are classes on the given day of the week check through them
       //Otherwise the class is free
 
       //Loop through every class in the room on a given day, checking its time period
-      for (let lesson in buildings[room][week][dayOfWeek]) {
+      for (let lesson in roomTimetable[room][week][dayOfWeek]) {
         //Parsing the start and end date from the JSON
 
         //Setting the date, month and year to be those of currDate
@@ -65,8 +127,8 @@ export const retrieveRoomStatus = async (buildings, currDate) => {
         let startDateTime = new Date(year, month, date);
         let endDateTime = new Date(year, month, date);
 
-        let timeStart = buildings[room][week][dayOfWeek][lesson]["start"];
-        let timeEnd = buildings[room][week][dayOfWeek][lesson]["end"];
+        let timeStart = roomTimetable[room][week][dayOfWeek][lesson]["start"];
+        let timeEnd = roomTimetable[room][week][dayOfWeek][lesson]["end"];
 
         startDateTime.setHours(parseInt(timeStart.split(":")[0]));
         startDateTime.setMinutes(parseInt(timeStart.split(":")[1]));
@@ -85,13 +147,13 @@ export const retrieveRoomStatus = async (buildings, currDate) => {
           //If within 15 minutes, the class is soon, otherwise busy
           //As per specification
           if (minutesToEnd <= 15) {
-            ret["rooms"][room] = {
+            result["rooms"][room] = {
               status: "soon",
               endtime: endDateTime.toISOString(),
             };
             break;
           } else {
-            ret["rooms"][room] = {
+            result["rooms"][room] = {
               status: "busy",
               endtime: endDateTime.toISOString(),
             };
@@ -99,18 +161,19 @@ export const retrieveRoomStatus = async (buildings, currDate) => {
           }
         } else {
           //this will only show up if the current time is not during any of the given class times
-          ret["rooms"][room] = {
+          result["rooms"][room] = {
             status: "free",
             endtime: "",
           };
         }
       }
     } else {
-      ret["rooms"][room] = {
+      result["rooms"][room] = {
         status: "free",
         endtime: "",
       };
     }
   }
-  return ret;
+  console.log(result);
+  return result;
 };
