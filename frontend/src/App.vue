@@ -17,8 +17,8 @@ import Toolbar from "./components/Toolbar.vue";
 
 @Component({
   components: {
-    BreadCrumbs,
     Toolbar,
+    BreadCrumbs,
   },
 })
 export default class App extends Vue {}

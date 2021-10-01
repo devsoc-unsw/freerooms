@@ -49,7 +49,6 @@ export default class LandingPage extends Vue {
 
   async mounted() {
     this.buildings = await this.service.getAllBuildings();
-    console.log(this.buildings);
   }
 }
 </script>
