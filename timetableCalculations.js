@@ -93,14 +93,12 @@ export const retrieveRoomStatus = async (
   const allRooms = await getAllRooms();
 
   for (let room of allRooms) {
-    //console.log(room);
     let [campus, builidngID, roomID] = room.split("-");
 
     if (
       room.startsWith(buildingID + "-") &&
       !roomTimetable.hasOwnProperty(roomID)
     ) {
-      console.log(room);
       result["rooms"][roomID] = {
         status: "free",
         endtime: "",
@@ -174,6 +172,6 @@ export const retrieveRoomStatus = async (
       };
     }
   }
-  console.log(result);
+
   return result;
 };

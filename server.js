@@ -3,17 +3,22 @@ import express from "express";
 import fetch from "node-fetch";
 
 // Helper functions
-import { retrieveRoomStatus } from "./timetableCalculations.js";
+import { getAllRooms, retrieveRoomStatus } from "./timetableCalculations.js";
 import buildingData from "./buildings.js";
 
 const app = express();
 const port = 3000;
 
-const SCRAPER_URL = "https://timetable.csesoc.unsw.edu.au/api/terms/2021-T3/freerooms/"
+const SCRAPER_URL =
+  "https://timetable.csesoc.unsw.edu.au/api/terms/2021-T3/freerooms/";
 
 const getData = async () => {
-  return fetch(SCRAPER_URL).then(data => data.json()).then(data => {return data});
-}
+  return fetch(SCRAPER_URL)
+    .then((data) => data.json())
+    .then((data) => {
+      return data;
+    });
+};
 
 // Route to get all buildings
 app.get("/buildings", async (req, res) => {
@@ -38,15 +43,17 @@ app.get("/buildings", async (req, res) => {
 // Route to get status of all rooms in a particular building
 app.get("/buildings/:buildingId", async (req, res) => {
   try {
-    const dataJson = await getData();
+    const data = await getData();
 
     let buildingID = req.params.buildingId;
 
-    if (!dataJson.hasOwnProperty(buildingID)) {
+    if (!data.hasOwnProperty(buildingID)) {
       res.send({
         message: "invalid building ID",
         status: 400,
       });
+
+      return;
     }
 
     //Get current date
@@ -61,6 +68,8 @@ app.get("/buildings/:buildingId", async (req, res) => {
           message: "invalid date",
           status: 400,
         });
+
+        return;
       } else {
         //If it is a valid date, change currDate to intead be the datetime passed in the query
         currDate = new Date(req.query.datetime);
@@ -68,10 +77,14 @@ app.get("/buildings/:buildingId", async (req, res) => {
     }
 
     //Create JS object from JSON file
-    let buildingObj = dataJson[buildingID];
+    let buildingObj = data[buildingID];
 
     //Pass through to function to get all rooms and their status into required roomStatus
-    let roomStatus = await retrieveRoomStatus(buildingID, buildingObj, currDate);
+    let roomStatus = await retrieveRoomStatus(
+      buildingID,
+      buildingObj,
+      currDate
+    );
     res.send(roomStatus);
   } catch (err) {
     res.send("Building rooms data error");
@@ -82,29 +95,38 @@ app.get("/buildings/:buildingId", async (req, res) => {
 // Route to get availability of a particular room in a particular building
 app.get("/buildings/:buildingId/:roomId", async (req, res) => {
   try {
-    const dataJson = await getData();
+    const data = await getData();
+    const allRooms = await getAllRooms();
 
     let buildingID = req.params.buildingId;
     let roomID = req.params.roomId;
 
     //Ensure building ID is valid
-    if (!dataJson.hasOwnProperty(buildingID)) {
+    if (!data.hasOwnProperty(buildingID)) {
       res.send({
         message: "invalid building ID",
         status: 400,
       });
+
+      return;
     }
 
     //Ensure room ID is valid
-    if (!dataJson[buildingID].hasOwnProperty(roomID)) {
-      res.send({
-        message: "invalid room ID",
-        status: 400,
-      });
+    if (!data[buildingID].hasOwnProperty(roomID)) {
+      if (allRooms.includes(buildingID + "-" + roomID)) {
+        return [];
+      } else {
+        res.send({
+          message: "invalid room ID",
+          status: 400,
+        });
+
+        return;
+      }
     }
 
     //Generate return data straight from the JSON data
-    let availabilities = dataJson[buildingID][roomID];
+    let availabilities = data[buildingID][roomID];
     res.send(availabilities);
   } catch (err) {
     res.send("Room availability data error");
