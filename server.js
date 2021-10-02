@@ -1,24 +1,17 @@
 // Initialising application using Express
 import express from "express";
-import fetch from "node-fetch";
 
 // Helper functions
-import { getAllRooms, retrieveRoomStatus } from "./timetableCalculations.js";
+import {
+  getData,
+  getAllRooms,
+  retrieveRoomStatus,
+} from "./timetableCalculations.js";
+
 import buildingData from "./buildings.js";
 
 const app = express();
 const port = 3000;
-
-const SCRAPER_URL =
-  "https://timetable.csesoc.unsw.edu.au/api/terms/2021-T3/freerooms/";
-
-const getData = async () => {
-  return fetch(SCRAPER_URL)
-    .then((data) => data.json())
-    .then((data) => {
-      return data;
-    });
-};
 
 // Route to get all buildings
 app.get("/buildings", async (req, res) => {

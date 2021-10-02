@@ -4,12 +4,9 @@ import { JSDOM } from "jsdom";
 const SCRAPER_URL =
   "https://timetable.csesoc.unsw.edu.au/api/terms/2021-T3/freerooms/";
 
-const getData = async () => {
-  return fetch(SCRAPER_URL)
-    .then((data) => data.json())
-    .then((data) => {
-      return data;
-    });
+export const getData = async () => {
+  const res = await fetch(SCRAPER_URL);
+  return res.json();
 };
 
 //Get the current number of the week
@@ -50,13 +47,14 @@ export const getAllRooms = async () => {
   let rooms = [];
 
   for (let i = 0; i < MAX_PAGES; i++) {
-    let data = await fetch(ROOM_URL + i).then((response) => response.text());
+    const response = await fetch(ROOM_URL + i);
+    const data = await response.text();
 
     const htmlDoc = new JSDOM(data);
-    let roomCodes =
+    const roomCodes =
       htmlDoc.window.document.getElementsByClassName("field-item");
 
-    let cleanRoomCodes = [];
+    const cleanRoomCodes = [];
 
     for (let j = 0; j < roomCodes.length; j++) {
       let roomCode = roomCodes.item(j).innerHTML;
