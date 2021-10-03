@@ -1,5 +1,5 @@
 <template>
-  <v-breadcrumbs :items="crumbs">
+  <v-breadcrumbs :items="breadcrumbs">
     <template v-slot:divider>
       <v-icon>mdi-chevron-right</v-icon>
     </template>
@@ -7,61 +7,55 @@
 </template>
 
 <script>
-import LocationService from "../services/locationService";
-// have to do it like this without a class
-// so we dont have to deal with lifecycle hoooks like mounted and
-// we dont have to worry about $route being empty
+import dbService from "../services/dbService";
+
 export default {
-  computed: {
-    crumbs: function() {
-      const service = new LocationService();
+  data() {
+    return {
+      breadcrumbs: [],
+    };
+  },
+  mounted: function() {
+    const service = new dbService();
 
-      // Example route: localhost:8080/location/1/room/Ainsworth%20101
-      let pathArray = this.$route.path.split("/");
-      pathArray.shift();
+    // Example route: localhost:8080/location/K-F8/room/101
+    const urlWords = this.$route.path.split("/");
 
-      // Separate path into its different components
-      // i.e. the building (location/1) and room (room/Ainsworth%20101)
-      const tempArr = [];
-      if (pathArray.length > 1) {
-        let i = 0;
-        while (i < pathArray.length) {
-          tempArr.push(pathArray[i] + "/" + pathArray[i + 1]);
-          i += 2;
-        }
-      }
-      pathArray = tempArr;
+    // Get rid of first term which is always ""
+    urlWords.shift();
 
+    // Separate path into its different components
+    // i.e. the building (location/1) and room (room/101)
+    const paths = [];
+    for (let i = 0; i < urlWords.length; i += 2) {
+      paths.push(urlWords.slice(i, i + 2));
+    }
+
+    const params = this.$route.params;
+    service.getBuildingByLocation(params["locationId"]).then((res) => {
       // Create breadcrumbs
-      const breadcrumbs = pathArray.reduce((breadcrumbArray, path, idx) => {
-        let name = "";
-
-        const params = this.$route.params;
+      let name = "";
+      for (const path of paths) {
         if (path.includes("location")) {
-          name = service.getBuildingByID(params["locationId"]);
+          name = res;
         } else if (path.includes("room")) {
           name = params["roomId"];
         }
 
-        breadcrumbArray.push({
-          to: breadcrumbArray[idx - 1]
-            ? breadcrumbArray[idx - 1].to + "/" + path // Append current room/building to previous path
-            : "/" + path, // Is first element, just return /path
+        this.breadcrumbs.push({
+          to: "/" + path,
           text: name,
           exact: true, // Ensure it is a link
         });
-        return breadcrumbArray;
-      }, []);
+      }
 
       // Add root
-      breadcrumbs.unshift({
-        to: "/home",
+      this.breadcrumbs.unshift({
+        to: "/",
         text: "Home",
         exact: true,
       });
-
-      return breadcrumbs;
-    },
+    });
   },
 };
 </script>

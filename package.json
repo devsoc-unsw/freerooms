@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A web application designed to aid UNSW students in finding vacant rooms.",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
@@ -19,6 +20,7 @@
   "homepage": "https://github.com/csesoc/Freerooms#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "moment": "^2.26.0"
+    "jsdom": "^17.0.0",
+    "node-fetch": "^3.0.0"
   }
 }

@@ -1,11 +1,12 @@
 <template>
   <div class="RoomView">
     <v-container>
+      <div class="title">{{ this.buildingName + " " + this.roomId }}</div>
       <v-row no-gutters align="start" justify="center">
         <v-col cols="12">
           <v-card class="control-card">
-            <!--Go forward or back one week-->
-            <!-- TODO: unhide buttons once code to resend request to backend for a new week is done. -->
+            <!-- Go forward or back one week - BROKEN.
+            Changes the date in the datepicker + calendar but events are not updated with the current date
             <v-list-item>
               <v-btn
                 fab
@@ -29,7 +30,7 @@
               >
                 <v-icon dark>mdi-chevron-right</v-icon>
               </v-btn>
-            </v-list-item>
+            </v-list-item> -->
             <!--Date Picker-->
             <v-list-item class="input-item">
               <v-menu
@@ -60,7 +61,10 @@
                   <v-btn
                     text
                     :color="color"
-                    @click="$refs.startMenu.save(today)"
+                    @click="
+                      $refs.startMenu.save(today);
+                      updateDateTime();
+                    "
                   >
                     Today
                   </v-btn>
@@ -70,7 +74,10 @@
                   <v-btn
                     text
                     :color="color"
-                    @click="$refs.startMenu.save(start)"
+                    @click="
+                      $refs.startMenu.save(start);
+                      updateDateTime();
+                    "
                   >
                     OK
                   </v-btn>
@@ -104,11 +111,9 @@
 </template>
 
 <script lang="ts">
-// TODO Turn each part of the view into components, as detailed above.
-// TODO Use vuex to handle state
 import { Vue, Component } from "vue-property-decorator";
-import moment from "moment";
 import DbService from "../services/dbService";
+import { DateTime } from "luxon";
 import { EventModel } from "../models/BindingModel";
 import { Route } from "vue-router";
 
@@ -118,12 +123,13 @@ export default class LocationRoomView extends Vue {
 
   params: any = [];
 
-  roomName = ""; //TODO: modify to take actual current room name
-  bookedNameText = "Occupied"; // Name of all bookings shown on calendar
+  locationId = "";
+  buildingName = "";
+  roomId = "";
 
+  bookedNameText = "Occupied"; // Name of all bookings shown on calendar
   intervalsDefault = {
-    // TODO First time slot buggy
-    first: 6,
+    first: 5,
     // Minutes between each time slot
     minutes: 60,
     // How many slots
@@ -132,8 +138,9 @@ export default class LocationRoomView extends Vue {
     height: 48,
   };
 
-  today = moment().format("YYYY-MM-DD");
+  today = DateTime.now().toFormat("yyyy-MM-dd");
   start = this.today;
+
   events: EventModel[] = [];
   type = "week";
   mode = "stack";
@@ -146,13 +153,21 @@ export default class LocationRoomView extends Vue {
 
   // Get all bookings for the room in the given time range.
   async getEventsFromDb() {
-    const startTime = moment().format("YYYY-MM-DD");
-    const endTime = moment().format("YYYY-MM-DD");
+    const startTime = DateTime.fromFormat(this.start, "yyyy-MM-dd")
+      .set({ weekday: 1 })
+      .toFormat("yyyy-MM-dd");
+
+    const endTime = DateTime.fromFormat(startTime, "yyyy-MM-dd")
+      .plus({ days: 6 })
+      .toFormat("yyyy-MM-dd");
+
     const result = await this.dbService.getRoomBookingsInTimeRange(
-      this.roomName,
+      this.locationId,
+      this.roomId,
       startTime,
       endTime
     );
+
     return result;
   }
 
@@ -161,6 +176,7 @@ export default class LocationRoomView extends Vue {
     const allEvents: EventModel[] = [];
 
     const events = await this.getEventsFromDb();
+
     for (const event of events) {
       allEvents.push({
         name: this.bookedNameText,
@@ -174,8 +190,23 @@ export default class LocationRoomView extends Vue {
   }
 
   async mounted() {
-    this.roomName = this.$route.params["roomId"];
-    if (this.roomName == null) this.roomName = "";
+    this.locationId = this.$route.params["locationId"];
+    this.buildingName = await this.dbService.getBuildingByLocation(
+      this.locationId
+    );
+
+    this.roomId = this.$route.params["roomId"];
+    this.start = this.$route.params["datetime"];
+
+    if (this.roomId == null) this.roomId = "";
+
+    this.today = DateTime.now().toFormat("yyyy-MM-dd");
+    this.start = this.today;
+
+    this.events = await this.getEvents();
+  }
+
+  async updateDateTime() {
     this.events = await this.getEvents();
   }
 }
@@ -183,11 +214,10 @@ export default class LocationRoomView extends Vue {
 
 <style scoped>
 .control-card {
-  margin-right: 20px;
+  margin-right: 0px;
   width: 100%;
   margin-bottom: 10px;
 }
-
 .input-item {
   padding-bottom: 20px;
 }
@@ -197,5 +227,11 @@ export default class LocationRoomView extends Vue {
 .v-btn--fab.v-size--default {
   height: 30px;
   width: 30px;
+}
+.v-calendar .v-event-timed-container {
+  margin-right: 0px;
+}
+.title {
+  padding: 10px;
 }
 </style>

@@ -2,10 +2,10 @@
   <div id="app">
     <v-app>
       <Toolbar />
-      <v-content>
+      <v-main>
         <BreadCrumbs class="mt-1" />
         <router-view></router-view>
-      </v-content>
+      </v-main>
     </v-app>
   </div>
 </template>
@@ -17,8 +17,8 @@ import Toolbar from "./components/Toolbar.vue";
 
 @Component({
   components: {
-    BreadCrumbs,
     Toolbar,
+    BreadCrumbs,
   },
 })
 export default class App extends Vue {}
