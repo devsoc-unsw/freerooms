@@ -105,7 +105,7 @@ app.get("/buildings/:buildingId/:roomId", async (req, res) => {
     }
 
     //Ensure room ID is valid
-    if (!(roomID in data[buildingID])) {
+    if (!data[buildingID] || !(roomID in data[buildingID])) {
       if (allRooms.includes(buildingID + "-" + roomID)) {
         return [];
       } else {
