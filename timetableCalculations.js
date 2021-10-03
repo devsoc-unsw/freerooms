@@ -93,22 +93,20 @@ export const retrieveRoomStatus = async (
 
   // Initialise result with all empty rooms
   for (let room of allRooms) {
-    let [campus, buildingID, roomID] = room.split("-");
+    let [campus, building, roomID] = room.split("-");
 
     // Check that the room belongs to the provided building
+    if (!room.startsWith(buildingID + "-")) continue;
+
     // If there are no classes scheduled (roomTimetable is null) set the room to be free
     // If there are classes scheduled and that room is not in the schedule, set the room to be free
-    if (
-      room.startsWith(buildingID + "-") &&
-      (!roomTimetable || (roomTimetable && !(roomID in roomTimetable)))
-    ) {
+    if (!roomTimetable || (roomTimetable && !(roomID in roomTimetable))) {
       result["rooms"][roomID] = {
         status: "free",
         endtime: "",
       };
     }
   }
-  console.log(roomID, result, roomTimetable);
 
   // No classes scheduled - all rooms are free
   if (!roomTimetable) {
