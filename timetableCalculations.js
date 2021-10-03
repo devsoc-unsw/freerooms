@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
-import { JSDOM } from "jsdom";
+import pkg from "jsdom";
+const { JSDOM } = pkg;
 
 const SCRAPER_URL =
   "https://timetable.csesoc.unsw.edu.au/api/terms/2021-T3/freerooms/";
@@ -90,13 +91,16 @@ export const retrieveRoomStatus = async (
 
   const allRooms = await getAllRooms();
 
+  // Initialise result with all empty rooms
   for (let room of allRooms) {
-    let [campus, builidngID, roomID] = room.split("-");
+    let [campus, building, roomID] = room.split("-");
 
-    if (
-      room.startsWith(buildingID + "-") &&
-      !roomTimetable.hasOwnProperty(roomID)
-    ) {
+    // Check that the room belongs to the provided building
+    if (!room.startsWith(buildingID + "-")) continue;
+
+    // If there are no classes scheduled (roomTimetable is null) set the room to be free
+    // If there are classes scheduled and that room is not in the schedule, set the room to be free
+    if (!roomTimetable || (roomTimetable && !(roomID in roomTimetable))) {
       result["rooms"][roomID] = {
         status: "free",
         endtime: "",
@@ -104,13 +108,15 @@ export const retrieveRoomStatus = async (
     }
   }
 
+  // No classes scheduled - all rooms are free
+  if (!roomTimetable) {
+    return result;
+  }
+
   for (let room in roomTimetable) {
     //If there are classes in the current week check through them
     //Otherwise the class is free
-    if (
-      roomTimetable[room].hasOwnProperty(week) &&
-      roomTimetable[room][week].hasOwnProperty(dayOfWeek)
-    ) {
+    if (week in roomTimetable[room] && dayOfWeek in roomTimetable[room][week]) {
       //If there are classes on the given day of the week check through them
       //Otherwise the class is free
 
