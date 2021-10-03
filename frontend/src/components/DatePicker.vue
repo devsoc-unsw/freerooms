@@ -16,7 +16,13 @@
         v-on="on"
       ></v-text-field>
     </template>
-    <v-date-picker mode="date" v-model="syncedDate" scrollable>
+    <v-date-picker
+      mode="date"
+      v-model="syncedDate"
+      min="2021-09-08"
+      max="2021-12-09"
+      scrollable
+    >
       <v-spacer></v-spacer>
       <v-btn text color="primary" @click="syncedModal = false">Cancel</v-btn>
       <v-btn
