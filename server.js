@@ -8,7 +8,7 @@ import {
   retrieveRoomStatus,
 } from "./timetableCalculations.js";
 
-import buildingData from "./buildings.js";
+import { buildingData } from "./buildings.js";
 
 const app = express();
 const port = 3000;
@@ -40,7 +40,7 @@ app.get("/buildings/:buildingId", async (req, res) => {
 
     let buildingID = req.params.buildingId;
 
-    if (!data.hasOwnProperty(buildingID)) {
+    if (!(buildingID in buildingData)) {
       res.send({
         message: "invalid building ID",
         status: 400,
@@ -95,7 +95,7 @@ app.get("/buildings/:buildingId/:roomId", async (req, res) => {
     let roomID = req.params.roomId;
 
     //Ensure building ID is valid
-    if (!data.hasOwnProperty(buildingID)) {
+    if (!(buildingID in buildingData)) {
       res.send({
         message: "invalid building ID",
         status: 400,
@@ -105,7 +105,7 @@ app.get("/buildings/:buildingId/:roomId", async (req, res) => {
     }
 
     //Ensure room ID is valid
-    if (!data[buildingID].hasOwnProperty(roomID)) {
+    if (!(roomID in data[buildingID])) {
       if (allRooms.includes(buildingID + "-" + roomID)) {
         return [];
       } else {
