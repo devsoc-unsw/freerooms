@@ -1,5 +1,5 @@
 // Class to handle Frontend Requests to backend for data from mongodb database.
-import { BuildingData, Campus, Room } from "@/types";
+import { Booking, BuildingData, Campus, Room } from "@/types";
 import axios, { AxiosError } from "axios";
 import { DateTime } from "luxon";
 
@@ -136,7 +136,7 @@ export default class DbService {
     endDate.setMinutes(59);
     endDate.setSeconds(59);
 
-    const result = [];
+    const result: Booking[] = [];
     const times: number[] = [];
 
     for (const week in data) {
