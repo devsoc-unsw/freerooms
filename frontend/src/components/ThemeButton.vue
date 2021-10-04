@@ -5,7 +5,7 @@
     persistent-hint
     @click="$vuetify.theme.dark = !$vuetify.theme.dark"
   >
-    <v-icon>{{ getIcon($vuetify.theme.dark) }}</v-icon>
+    <v-icon color=primary>{{ getIcon($vuetify.theme.dark) }}</v-icon>
   </v-btn>
 </template>
 
