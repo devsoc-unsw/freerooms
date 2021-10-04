@@ -16,6 +16,7 @@
         v-on="on"
       ></v-text-field>
     </template>
+    <!-- TODO: Change hardcoded term values -->
     <v-date-picker
       mode="date"
       v-model="syncedDate"
