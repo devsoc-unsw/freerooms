@@ -6,10 +6,10 @@
         TODO: Header is the text that will display before expansion, you can move the text around to see what is most appropriate.
       -->
         <v-expansion-panel-header class="d-flex flex-column">
-          <p class="display-2 white--text ma-0 pa-5">
-            Welcome to FreeRooms!
+          <p class="display-2 white--text heading">
+            Welcome to FreeRooms! <span class="beta">beta</span>
           </p>
-          <div class="subtitle-3 white--text" align="center">
+          <div>
             <p>
               FreeRooms is a tool helping UNSW students find their dream study
               location within the campus. We have many features on the way,
@@ -19,7 +19,7 @@
               friends along the way. FreeRooms is free and open-source.
             </p>
             <p>
-              Expand to read more!
+              Tap to expand!
             </p>
           </div>
         </v-expansion-panel-header>
@@ -101,4 +101,21 @@ export default class LandingPage extends Vue {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.heading {
+  width: 45vw;
+  text-align: center;
+}
+
+p {
+  width: 25vw;
+  text-align: left;
+  color: white;
+  line-height: 1.2em;
+}
+
+.beta {
+  font-size: 0.4em;
+  font-weight: 300;
+}
+</style>
