@@ -1,5 +1,5 @@
 <template>
-  <v-breadcrumbs :items="crumbs">
+  <v-breadcrumbs :items="breadcrumbs">
     <template v-slot:divider>
       <v-icon>mdi-chevron-right</v-icon>
     </template>
@@ -8,65 +8,66 @@
 
 <script>
 import dbService from "../services/dbService";
-// have to do it like this without a class
-// so we dont have to deal with lifecycle hoooks like mounted and
-// we dont have to worry about $route being empty
-// class crumbs {
-// }
+
 export default {
-  computed: {
-    crumbs: function() {
-      const service = new dbService();
+  data: function () {
+    return {
+      breadcrumbs: []
+    }
+  },
+  async mounted() {
+    const service = new dbService();
 
-      // Example route: localhost:8080/location/1/room/Ainsworth%20101
-      let pathArray = this.$route.path.split("/");
-      pathArray.shift();
+    // Example route: localhost:8080/location/K-F8/room/101
+    const urlWords = this.$route.path.split("/");
 
-      // Separate path into its different components
-      // i.e. the building (location/1) and room (room/Ainsworth%20101)
-      const tempArr = [];
-      if (pathArray.length > 1) {
-        let i = 0;
-        while (i < pathArray.length) {
-          tempArr.push(pathArray[i] + "/" + pathArray[i + 1]);
-          i += 2;
-        }
+    // Get rid of first term which is always ""
+    urlWords.shift();
+
+    // Separate path into its different components
+    // i.e. the building (location/1) and room (room/101)
+    const paths = [];
+    for (let i = 0; i < urlWords.length; i += 2) {
+      paths.push(urlWords.slice(i, i + 2));
+    }
+
+    const params = this.$route.params;
+
+    // Create breadcrumbs
+    let name = "";
+    for (const path of paths) {
+      if (path.includes("location")) {
+        name = await service.getBuildingByLocation(params["locationId"]);
+      } else if (path.includes("room")) {
+        name = params["roomId"];
       }
-      pathArray = tempArr;
 
-      // Create breadcrumbs
-      const breadcrumbs = pathArray.reduce(
-        async (breadcrumbArray, path, idx) => {
-          let name = "";
+      if (this.breadcrumbs.length == 0) {
+        // Is building, just return path.
+        this.breadcrumbs.push({
+          to: "/" + path.join("/"),
+          text: name,
+          exact: true, // Ensure it is a link
+        });
+      } else {
+        // Is room, make full path from room by combining with building route
+        const prevElement = this.breadcrumbs[this.breadcrumbs.length - 1];
+        this.breadcrumbs.push({
+          to: prevElement.to + "/" + path.join("/"),
+          text: name,
+          exact: true, // Ensure it is a link
+        });
+      }
+    }
 
-          const params = this.$route.params;
-          if (path.includes("location")) {
-            name = await service.getBuildingByLocation(params["locationId"]);
-          } else if (path.includes("room")) {
-            name = params["roomId"];
-          }
+    // Add root
+    this.breadcrumbs.unshift({
+      to: "/",
+      text: "Home",
+      exact: true,
+    });
 
-          breadcrumbArray.push({
-            to: breadcrumbArray[idx - 1]
-              ? breadcrumbArray[idx - 1].to + "/" + path // Append current room/building to previous path
-              : "/" + path, // Is first element, just return /path
-            text: name,
-            exact: true, // Ensure it is a link
-          });
-          return breadcrumbArray;
-        },
-        []
-      );
-
-      // Add root
-      breadcrumbs.unshift({
-        to: "/home",
-        text: "Home",
-        exact: true,
-      });
-
-      return breadcrumbs;
-    },
+    return this.breadcrumbs;
   },
 };
 </script>

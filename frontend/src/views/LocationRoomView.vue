@@ -3,10 +3,14 @@
     <!-- Header, Building Id -->
     <v-card class="primary mx-5" style="border-radius:10px">
       <v-row align="center">
-        <v-spacer></v-spacer>
         <v-col cols="12" md="4" class="py-3 px-10">
-          <div class="d-flex justify-left">
-            <v-avatar width="300" height="250" tile style="border-radius:10px">
+          <div class="d-flex justify-center">
+            <v-avatar
+              tile
+              width="18.75em"
+              height="12.5em"
+              style="border-radius:10px"
+            >
               <v-img
                 :src="`../assets/building_photos/${locationId}.png`"
               ></v-img>
@@ -14,10 +18,10 @@
           </div>
         </v-col>
         <v-col cols="12" md="7" class="py-3 px-10">
-          <p class="display-3 white--text" align="left">
+          <p class="display-2 white--text" align="center">
             {{ buildingName }}
           </p>
-          <p class="subtitle-1 white--text ml-1" align="left">
+          <p class="subtitle-1 white--text ma-1" align="center">
             {{ allRooms.length }} Rooms Listed<br />
             {{ availableRooms.length }} Currently Available<br />
             {{ availableSoonRooms.length }} Available within 15 minutes<br />

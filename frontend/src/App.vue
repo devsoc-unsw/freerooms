@@ -14,11 +14,10 @@
 import { Component, Vue } from "vue-property-decorator";
 import BreadCrumbs from "./components/BreadCrumbs.vue";
 import Toolbar from "./components/Toolbar.vue";
-
 @Component({
   components: {
-    BreadCrumbs,
     Toolbar,
+    BreadCrumbs,
   },
 })
 export default class App extends Vue {}
