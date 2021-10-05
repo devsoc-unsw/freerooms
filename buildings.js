@@ -1,5 +1,5 @@
 // TODO: Decide on whether we want img as info sent from backend
-const buildingData = {
+export const buildingData = {
   "K-F8": { name: "Law", id: "K-F8", img: "" },
   "K-C27" : { name: "Wallace Wurth", id: "K-C27", img: ""},
   "K-E12": { name: "Business School", id: "K-E12", img: "" },
@@ -38,5 +38,3 @@ const buildingData = {
   "K-J14": { name: "Keith Burrows Theatre", id: "K-J14", img: "" },
   "K-F13": { name: "Science Theatre", id: "K-F13", img: "" },
 };
-
-export default buildingData;
