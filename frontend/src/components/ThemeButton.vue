@@ -1,16 +1,25 @@
 <template>
-  <v-switch
+  <v-btn
     v-model="$vuetify.theme.dark"
-    label="Dark mode"
-    inset
-    hide-details
+    icon
     persistent-hint
-  ></v-switch>
+    @click="$vuetify.theme.dark = !$vuetify.theme.dark"
+  >
+    <v-icon color=primary>{{ getIcon($vuetify.theme.dark) }}</v-icon>
+  </v-btn>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 
 @Component
-export default class ThemeButton extends Vue {}
+export default class ThemeButton extends Vue {
+  getIcon(darkMode: boolean) {
+    if (darkMode) {
+      return "mdi-brightness-2";
+    } else {
+      return "mdi-brightness-5";
+    }
+  }
+}
 </script>
