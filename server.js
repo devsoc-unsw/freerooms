@@ -1,5 +1,7 @@
 // Initialising application using Express
 import express from "express";
+import fetch from "node-fetch";
+import { JSDOM } from "jsdom";
 
 // Helper functions
 import {
@@ -12,6 +14,51 @@ import { buildingData } from "./buildings.js";
 
 const app = express();
 const port = 3000;
+
+const SCRAPER_URL = "https://timetable.csesoc.unsw.edu.au/api/terms/2021-T3/freerooms/"
+
+const getData = async () => {
+  return fetch(SCRAPER_URL).then(data => data.json()).then(data => {return data});
+}
+
+// let rooms = await getAllRooms()
+const getAllRooms = async () => {
+  const dataJson = await getData();
+  const ROOM_URL =
+    "https://www.learningenvironments.unsw.edu.au/find-teaching-space?building_name=&room_name=&page=";
+
+  const MAX_PAGES = 13;
+
+  const ROOM_REGEX = /^[A-Z]-[A-Z][0-9]{1,2}-[A-Z]{0,2}[0-9]{1,4}[A-Z]{0,1}$/;
+  // One letter - campus ID, e.g. K for Kensington
+  // One letter followed by one or two numbers for grid reference e.g. D16 or F8
+  // Zero, one or two letters for the floor then between one to four numbers for the room number
+  // Library rooms may end in a letter
+  // Zero letter floor - 313
+  // One letter floor - M18
+  // Two letter floor - LG19
+
+  for (let i = 0; i < MAX_PAGES; i++) {
+    let data = await fetch(ROOM_URL + i).then((response) => response.text());
+
+    const htmlDoc = new JSDOM(data);
+    let roomCodes =
+      htmlDoc.window.document.getElementsByClassName("field-item");
+
+    let cleanRoomCodes = [];
+
+    for (let j = 0; j < roomCodes.length; j++) {
+      let roomCode = roomCodes.item(j).innerHTML;
+      if (ROOM_REGEX.test(roomCode)) {
+        cleanRoomCodes.push(roomCode);
+      }
+    }
+
+    rooms += cleanRoomCodes;
+  }
+
+  return rooms;
+}
 
 // Route to get all buildings
 app.get("/buildings", async (req, res) => {
