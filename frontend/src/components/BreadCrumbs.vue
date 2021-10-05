@@ -10,12 +10,12 @@
 import dbService from "../services/dbService";
 
 export default {
-  data() {
+  data: function () {
     return {
-      breadcrumbs: [],
-    };
+      breadcrumbs: []
+    }
   },
-  mounted: function() {
+  async mounted() {
     const service = new dbService();
 
     // Example route: localhost:8080/location/K-F8/room/101
@@ -32,30 +32,42 @@ export default {
     }
 
     const params = this.$route.params;
-    service.getBuildingByLocation(params["locationId"]).then((res) => {
-      // Create breadcrumbs
-      let name = "";
-      for (const path of paths) {
-        if (path.includes("location")) {
-          name = res;
-        } else if (path.includes("room")) {
-          name = params["roomId"];
-        }
 
+    // Create breadcrumbs
+    let name = "";
+    for (const path of paths) {
+      if (path.includes("location")) {
+        name = await service.getBuildingByLocation(params["locationId"]);
+      } else if (path.includes("room")) {
+        name = params["roomId"];
+      }
+
+      if (this.breadcrumbs.length == 0) {
+        // Is building, just return path.
         this.breadcrumbs.push({
-          to: "/" + path,
+          to: "/" + path.join("/"),
+          text: name,
+          exact: true, // Ensure it is a link
+        });
+      } else {
+        // Is room, make full path from room by combining with building route
+        const prevElement = this.breadcrumbs[this.breadcrumbs.length - 1];
+        this.breadcrumbs.push({
+          to: prevElement.to + "/" + path.join("/"),
           text: name,
           exact: true, // Ensure it is a link
         });
       }
+    }
 
-      // Add root
-      this.breadcrumbs.unshift({
-        to: "/",
-        text: "Home",
-        exact: true,
-      });
+    // Add root
+    this.breadcrumbs.unshift({
+      to: "/",
+      text: "Home",
+      exact: true,
     });
+
+    return this.breadcrumbs;
   },
 };
 </script>

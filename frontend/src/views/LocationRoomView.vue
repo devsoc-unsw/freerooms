@@ -1,7 +1,7 @@
 <template>
   <div class="location-room-view pb-10">
     <!-- Header, Building Id -->
-    <v-card class="primary mx-5" style="border-radius:10px">
+    <v-card class="primary mx-5" style="border-radius:10px; margin-top: 3vh">
       <v-row align="center">
         <v-col cols="12" md="4" class="py-3 px-10">
           <div class="d-flex justify-center">
