@@ -13,7 +13,7 @@ export type BuildingData = {
 };
 
 export type Booking = {
-  course_code: string;
+  courseCode: string;
   start: string;
   end: string;
 };
