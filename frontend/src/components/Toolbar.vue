@@ -13,6 +13,7 @@
       FreeRooms
     </v-toolbar-title>
     <v-spacer></v-spacer>
+    <FeedbackButton />
     <theme-button />
   </v-app-bar>
 </template>
@@ -21,11 +22,13 @@
 import { Vue, Component } from "vue-property-decorator";
 import ThemeButton from "./ThemeButton.vue";
 import AnimateLogo from "./AnimateLogo.vue";
+import FeedbackButton from "./FeedbackButton.vue";
 
 @Component({
   components: {
     ThemeButton,
     AnimateLogo,
+    FeedbackButton
   },
 })
 export default class Toolbar extends Vue {}

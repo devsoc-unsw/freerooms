@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div>
     <img :src="pictureHover()" @mouseover="setHover(true)" @mouseleave="setHover(false)">
   </div>
 </template>
