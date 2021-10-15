@@ -1,13 +1,10 @@
-import { Class } from "./interfaces";
+import { Class, Room } from "./interfaces";
 
 export type ClassList = Class[];
 
-export type Day = Record<string, ClassList>;
+export type Week = Record<string, Day>;
 
-export type Room = {
-  name: string;
-  [classes: string]: Day;
-};
+export type Day = Record<string, ClassList>;
 
 export type Building = Record<string, Room>;
 
