@@ -113,7 +113,7 @@ export const getAllRoomStatus = async (
     // Room has a class currently, check if the room is free soon
     // There is a case when the room is about to be free in 15 mins
     // but the next class starts when the current class ends
-    const currTime = date.getTime();
+    let currTime = date.getTime();
     let isFree = true;
     for (const eachClass of roomData[week][day]) {
       const classStart = new Date(eachClass["start"]).getTime();
@@ -134,8 +134,7 @@ export const getAllRoomStatus = async (
             endtime: eachClass["end"],
           };
         }
-
-        break;
+        currTime = classEnd;
       }
     }
 
