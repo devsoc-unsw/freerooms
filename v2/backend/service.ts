@@ -8,6 +8,7 @@ import { ScraperData } from "./types";
 
 const SCRAPER_URL =
   "https://timetable.csesoc.unsw.edu.au/api/terms/2021-T1/freerooms/";
+const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 export const getData = async (): Promise<ScraperData> => {
   const res = await axios.get(SCRAPER_URL);
@@ -59,10 +60,9 @@ export const getAllRooms = async () => {
   return rooms;
 };
 
-export const getWeek = async (date: Date) => {
-  const dataJson = await getData();
+export const getWeek = (data: ScraperData, date: Date) => {
   // In 'DD/MM/YYYY' format
-  const termStart = dataJson["termStart"];
+  const termStart = data["termStart"];
 
   const termStartDate = new Date(termStart);
   const today = date;
@@ -90,7 +90,7 @@ export const getAllRoomStatus = async (
     throw new Error(`Building id ${buildingId} does not exist`);
   }
 
-  const ret: BuildingRoomStatus = { rooms: {} };
+  const roomStatus: BuildingRoomStatus = { rooms: {} };
   const buildingData = data[buildingId];
   const roomCodes = await getAllRooms();
 
@@ -99,28 +99,11 @@ export const getAllRoomStatus = async (
     if (buildingId !== `${campus}-${building}`) continue;
 
     const roomData = buildingData[roomId];
-    if (!(roomId in buildingData)) {
-      ret.rooms[roomId] = {
-        status: "free",
-        endtime: "",
-      };
-      continue;
-    }
-
-    const week = await getWeek(date);
-    if (!(week in roomData)) {
-      ret.rooms[roomId] = {
-        status: "free",
-        endtime: "",
-      };
-      continue;
-    }
-
-    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    const currDay = date.getDay();
-    const day = days[currDay];
-    if (!(day in roomData[week])) {
-      ret.rooms[roomId] = {
+    const week = getWeek(data, date);
+    const currDayIndex = date.getDay();
+    const day = days[currDayIndex];
+    if (!(roomId in buildingData) || !(week in roomData) || !(day in roomData[week])) {
+      roomStatus.rooms[roomId] = {
         status: "free",
         endtime: "",
       };
@@ -141,12 +124,12 @@ export const getAllRoomStatus = async (
         isFree = false;
 
         if (classEnd - currTime <= FIFTEEN_MIN) {
-          ret.rooms[roomId] = {
+          roomStatus.rooms[roomId] = {
             status: "soon",
             endtime: eachClass["end"],
           };
         } else {
-          ret.rooms[roomId] = {
+          roomStatus.rooms[roomId] = {
             status: "busy",
             endtime: eachClass["end"],
           };
@@ -157,11 +140,11 @@ export const getAllRoomStatus = async (
     }
 
     if (isFree) {
-      ret.rooms[roomId] = {
+      roomStatus.rooms[roomId] = {
         status: "free",
         endtime: "",
       };
     }
   }
-  return ret;
+  return roomStatus;
 };
