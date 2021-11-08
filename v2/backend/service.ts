@@ -1,17 +1,17 @@
 // All logic should go in here.
 // All functions in this file should take in some params from index.ts and spit out an object of some sort
-import fetch from "node-fetch";
+import axios from "axios";
 import pkg from "jsdom";
+const { JSDOM } = pkg;
 import { BuildingRoomStatus } from "./interfaces";
 import { ScraperData } from "./types";
-const { JSDOM } = pkg;
 
 const SCRAPER_URL =
-  "https://timetable.csesoc.unsw.edu.au/api/terms/2021-T3/freerooms/";
+  "https://timetable.csesoc.unsw.edu.au/api/terms/2021-T1/freerooms/";
 
 export const getData = async (): Promise<ScraperData> => {
-  const res = await fetch(SCRAPER_URL);
-  const data = (await res.json()) as ScraperData;
+  const res = await axios.get(SCRAPER_URL);
+  const data = await res.data as ScraperData;
   return data;
 };
 
@@ -34,8 +34,8 @@ export const getAllRooms = async () => {
   let rooms: string[] = [];
 
   for (let i = 0; i < MAX_PAGES; i++) {
-    const response = await fetch(ROOM_URL + i);
-    const data = await response.text();
+    const response = await axios.get(ROOM_URL + i);
+    const data = await response.data;
 
     const htmlDoc = new JSDOM(data);
     const roomCodes =
@@ -69,7 +69,6 @@ export const getWeek = async (date: Date) => {
 
   const diff = today.getTime() - termStartDate.getTime();
 
-  //Calculate days since start of term
   let daysPastTerm = diff / (1000 * 60 * 60 * 24);
 
   //Integer division to get term number
@@ -77,13 +76,16 @@ export const getWeek = async (date: Date) => {
   return Math.ceil(daysPastTerm / 7);
 };
 
-// Gets all the room status and end time in a building
+export const getDate = (datetime: string) => {
+  let timestamp = Date.parse(datetime);
+  return isNaN(timestamp) ? null : new Date(datetime);
+}
+
 export const getAllRoomStatus = async (
   buildingId: string,
   date: Date
 ): Promise<BuildingRoomStatus> => {
   const data: ScraperData = await getData();
-  // check building id exists
   if (!(buildingId in data)) {
     throw new Error(`Building id ${buildingId} does not exist`);
   }
@@ -91,9 +93,12 @@ export const getAllRoomStatus = async (
   const ret: BuildingRoomStatus = { rooms: {} };
   const buildingData = data[buildingId];
   const roomCodes = await getAllRooms();
-  for (const roomId in roomCodes) {
+
+  for (const roomId of roomCodes) {
+    const [campus, building, room] = roomId.split('-');
+    if (buildingId !== `${campus}-${building}`) continue;
+
     const roomData = buildingData[roomId];
-    // Room does not have a class (free)
     if (!(roomId in buildingData)) {
       ret.rooms[roomId] = {
         status: "free",
@@ -101,8 +106,8 @@ export const getAllRoomStatus = async (
       };
       continue;
     }
+
     const week = await getWeek(date);
-    // Room does not have a class in that week
     if (!(week in roomData)) {
       ret.rooms[roomId] = {
         status: "free",
@@ -110,12 +115,10 @@ export const getAllRoomStatus = async (
       };
       continue;
     }
+
     const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const currDay = date.getDay();
     const day = days[currDay];
-
-    const currTime = date.getTime();
-    // Room does not have a class on that day
     if (!(day in roomData[week])) {
       ret.rooms[roomId] = {
         status: "free",
@@ -123,22 +126,21 @@ export const getAllRoomStatus = async (
       };
       continue;
     }
-
-    // Room has a class, check if the room is free soon
-    // case when the room is about to be free in 15 mins
-    // but the next class starts when the class ends
+    
+    // Room has a class currently, check if the room is free soon
+    // There is a case when the room is about to be free in 15 mins
+    // but the next class starts when the current class ends
+    const currTime = date.getTime();
     let isFree = true;
     for (const eachClass of roomData[week][day]) {
-      // loop through each room in case another class starts just as this class
       const classStart = new Date(eachClass["start"]).getTime();
       const classEnd = new Date(eachClass["end"]).getTime();
       const FIFTEEN_MIN = 15 * 1000 * 60;
-      // Time is in between the class
+
       if (currTime >= classStart && currTime < classEnd) {
         isFree = false;
-        // There are <= 15 min left until class ends
+
         if (classEnd - currTime <= FIFTEEN_MIN) {
-          // room is free soon
           ret.rooms[roomId] = {
             status: "soon",
             endtime: eachClass["end"],
@@ -149,6 +151,7 @@ export const getAllRoomStatus = async (
             endtime: eachClass["end"],
           };
         }
+
         break;
       }
     }
