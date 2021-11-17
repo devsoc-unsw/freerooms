@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { getDate, getAllRoomStatus} from "./service";
+import { getDate, getAllRoomStatus } from "./service";
 
 const app = express();
 const PORT = 3000;
@@ -16,15 +16,15 @@ app.get("/buildings", (req: Request, res: Response) => {
 app.get("/buildings/:buildingId", async (req: Request, res: Response) => {
   const { buildingId } = req.params;
   const datetimeString = req.query.datetime as string;
-  
+
   try {
     const datetime = datetimeString ? getDate(datetimeString) : new Date();
-    
+
     if (datetime === null) {
-      res.send({message: "Invalid date", status: 400});
+      res.send({ message: "Invalid date", status: 400 });
       return;
     }
-    
+
     const data = await getAllRoomStatus(buildingId, datetime);
     res.send(data);
   } catch (error: any) {

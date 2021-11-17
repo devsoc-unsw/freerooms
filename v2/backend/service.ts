@@ -12,7 +12,7 @@ const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 export const getData = async (): Promise<ScraperData> => {
   const res = await axios.get(SCRAPER_URL);
-  const data = await res.data as ScraperData;
+  const data = (await res.data) as ScraperData;
   return data;
 };
 
@@ -79,7 +79,7 @@ export const getWeek = (data: ScraperData, date: Date) => {
 export const getDate = (datetime: string) => {
   let timestamp = Date.parse(datetime);
   return isNaN(timestamp) ? null : new Date(datetime);
-}
+};
 
 export const getAllRoomStatus = async (
   buildingId: string,
@@ -95,21 +95,25 @@ export const getAllRoomStatus = async (
   const roomCodes = await getAllRooms();
 
   for (const roomId of roomCodes) {
-    const [campus, building, room] = roomId.split('-');
+    const [campus, building, room] = roomId.split("-");
     if (buildingId !== `${campus}-${building}`) continue;
 
     const roomData = buildingData[roomId];
     const week = getWeek(data, date);
     const currDayIndex = date.getDay();
     const day = days[currDayIndex];
-    if (!(roomId in buildingData) || !(week in roomData) || !(day in roomData[week])) {
+    if (
+      !(roomId in buildingData) ||
+      !(week in roomData) ||
+      !(day in roomData[week])
+    ) {
       roomStatus.rooms[roomId] = {
         status: "free",
         endtime: "",
       };
       continue;
     }
-    
+
     // Room has a class currently, check if the room is free soon
     // There is a case when the room is about to be free in 15 mins
     // but the next class starts when the current class ends
