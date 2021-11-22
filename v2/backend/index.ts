@@ -1,5 +1,10 @@
 import express, { Request, Response } from "express";
-import { getDate, getAllRoomStatus, getAllBuildings } from "./service";
+import {
+  getDate,
+  getAllRoomStatus,
+  getAllBuildings,
+  getRoomAvailability,
+} from "./service";
 
 const app = express();
 const PORT = 3000;
@@ -46,9 +51,32 @@ app.get("/buildings/:buildingId", async (req: Request, res: Response) => {
 });
 
 // Route to get the availability of a particular room in a particular building
-app.get("/buildings/:buildingId/:roomId", (req: Request, res: Response) => {
-  res.send("Hello world!");
-});
+app.get(
+  "/buildings/:buildingId/:roomId",
+  async (req: Request, res: Response) => {
+    const { buildingId } = req.params;
+    const { roomId } = req.params;
+    const datetimeString = req.query.datetime as string;
+
+    try {
+      const datetime = datetimeString ? getDate(datetimeString) : new Date();
+
+      if (datetime === null) {
+        res.send({ message: "Invalid date", status: 400 });
+        return;
+      }
+
+      const data = await getRoomAvailability(buildingId, roomId, datetime);
+      res.send(data);
+    } catch (error: any) {
+      console.error(`Error: ${error.message}`);
+      res.send({
+        message: error.message,
+        status: 400,
+      });
+    }
+  }
+);
 
 app.listen(PORT, () => {
   console.log(`Freerooms backend now listening on port ${PORT}!`);
