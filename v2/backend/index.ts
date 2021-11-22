@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { getDate, getAllRoomStatus } from "./service";
+import { getDate, getAllRoomStatus, getAllBuildings } from "./service";
 
 const app = express();
 const PORT = 3000;
@@ -8,8 +8,17 @@ const PORT = 3000;
 // Pass these parameters to service.ts and then `return res.send()` the result
 
 // Route to get all the buildings
-app.get("/buildings", (req: Request, res: Response) => {
-  res.send("Hello world!");
+app.get("/buildings", async (req: Request, res: Response) => {
+  try {
+    const data = await getAllBuildings();
+    res.send(data);
+  } catch (error: any) {
+    console.error(`Error: ${error.message}`);
+    res.send({
+      message: error.message,
+      status: 400,
+    });
+  }
 });
 
 // Route to get all the rooms in a particular building

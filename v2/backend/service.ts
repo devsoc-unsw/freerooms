@@ -2,9 +2,10 @@
 // All functions in this file should take in some params from index.ts and spit out an object of some sort
 import axios from "axios";
 import pkg from "jsdom";
+import buildingData from "./buildings";
 const { JSDOM } = pkg;
 import { BuildingRoomStatus } from "./interfaces";
-import { ScraperData } from "./types";
+import { BuildingData, ScraperData } from "./types";
 
 const SCRAPER_URL =
   "https://timetable.csesoc.unsw.edu.au/api/terms/2021-T1/freerooms/";
@@ -16,8 +17,17 @@ export const getData = async (): Promise<ScraperData> => {
   return data;
 };
 
+export const getAllBuildings = async (): Promise<BuildingData[]> => {
+  const data = Object.values(buildingData);
+  if (data.length > 0) {
+    return data;
+  } else {
+    throw new Error(`Buildings cannot be retrieved`);
+  }
+};
+
 // Gets all the room codes
-export const getAllRooms = async () => {
+export const getAllRooms = async (): Promise<string[]> => {
   const ROOM_URL =
     "https://www.learningenvironments.unsw.edu.au/find-teaching-space?building_name=&room_name=&page=";
 
@@ -26,7 +36,7 @@ export const getAllRooms = async () => {
   const ROOM_REGEX = /^[A-Z]-[A-Z][0-9]{1,2}-[A-Z]{0,2}[0-9]{1,4}[A-Z]{0,1}$/;
   // One letter - campus ID, e.g. K for Kensington
   // One letter followed by one or two numbers for grid reference e.g. D16 or F8
-  // Zero, one or two letters for the floor then between one to four numbers for the room number
+  // Zero, one osr two letters for the floor then between one to four numbers for the room number
   // Library rooms may end in a letter
   // Zero letter floor - 313
   // One letter floor - M18
@@ -60,7 +70,7 @@ export const getAllRooms = async () => {
   return rooms;
 };
 
-export const getWeek = (data: ScraperData, date: Date) => {
+export const getWeek = (data: ScraperData, date: Date): number => {
   // In 'DD/MM/YYYY' format
   const termStart = data["termStart"];
 
@@ -76,7 +86,7 @@ export const getWeek = (data: ScraperData, date: Date) => {
   return Math.ceil(daysPastTerm / 7);
 };
 
-export const getDate = (datetime: string) => {
+export const getDate = (datetime: string): Date | null => {
   let timestamp = Date.parse(datetime);
   return isNaN(timestamp) ? null : new Date(datetime);
 };

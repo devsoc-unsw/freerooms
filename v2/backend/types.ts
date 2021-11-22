@@ -26,3 +26,9 @@ export type ScraperBuildingData = {
     };
   };
 };
+
+export type BuildingData = {
+  name: string;
+  id: string;
+  img: string;
+};
