@@ -1,7 +1,9 @@
+import { BuildingData } from "./types";
+
 // TODO: Decide on whether we want img as info sent from backend
-const buildingData = {
+const buildingData: Record<string, BuildingData> = {
   "K-F8": { name: "Law", id: "K-F8", img: "" },
-  "K-C27" : { name: "Wallace Wurth", id: "K-C27", img: ""},
+  "K-C27": { name: "Wallace Wurth", id: "K-C27", img: "" },
   "K-E12": { name: "Business School", id: "K-E12", img: "" },
   "K-D26": { name: "Biological Sciences North", id: "K-D26", img: "" },
   "K-D23": { name: "Mathews Theatres", id: "K-D23", img: "" },

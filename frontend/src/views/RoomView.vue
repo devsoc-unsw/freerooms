@@ -116,6 +116,7 @@ import DbService from "../services/dbService";
 import { DateTime } from "luxon";
 import { EventModel } from "../models/BindingModel";
 import { Route } from "vue-router";
+import { Booking } from "../types";
 
 @Component
 export default class LocationRoomView extends Vue {
@@ -127,7 +128,6 @@ export default class LocationRoomView extends Vue {
   buildingName = "";
   roomId = "";
 
-  bookedNameText = "Occupied"; // Name of all bookings shown on calendar
   intervalsDefault = {
     first: 5,
     // Minutes between each time slot
@@ -175,11 +175,11 @@ export default class LocationRoomView extends Vue {
   async getEvents() {
     const allEvents: EventModel[] = [];
 
-    const events = await this.getEventsFromDb();
+    const events: Booking[] = await this.getEventsFromDb();
 
     for (const event of events) {
       allEvents.push({
-        name: this.bookedNameText,
+        name: event.courseCode,
         start: event.start,
         end: event.end,
         color: "",
@@ -233,5 +233,10 @@ export default class LocationRoomView extends Vue {
 }
 .title {
   padding: 10px;
+}
+.v-calendar .v-event-timed {
+  overflow-wrap: break-word;
+  white-space: break-spaces;
+  padding: 3px 4px 3px 0px;
 }
 </style>

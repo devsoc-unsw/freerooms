@@ -8,7 +8,7 @@ import {
   retrieveRoomStatus,
 } from "./timetableCalculations.js";
 
-import { buildingData } from "./buildings.js";
+import buildingData from "./buildings.js";
 
 const app = express();
 const port = 3000;
@@ -105,7 +105,7 @@ app.get("/buildings/:buildingId/:roomId", async (req, res) => {
     }
 
     //Ensure room ID is valid
-    if (!(roomID in data[buildingID])) {
+    if (!data[buildingID] || !(roomID in data[buildingID])) {
       if (allRooms.includes(buildingID + "-" + roomID)) {
         return [];
       } else {

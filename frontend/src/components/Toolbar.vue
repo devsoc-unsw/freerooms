@@ -6,17 +6,14 @@
           name: 'locations',
         }"
       >
-        <v-img
-          max-height="50px"
-          max-width="50px"
-          src="../assets/favicon/free_rooms_logo.png"
-        ></v-img>
+      <AnimateLogo />
       </router-link>
     </v-app-bar-nav-icon>
     <v-toolbar-title class="ml-3 mt-1 font-weight-medium primary--text">
       FreeRooms
     </v-toolbar-title>
     <v-spacer></v-spacer>
+    <FeedbackButton />
     <theme-button />
   </v-app-bar>
 </template>
@@ -24,10 +21,14 @@
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 import ThemeButton from "./ThemeButton.vue";
+import AnimateLogo from "./AnimateLogo.vue";
+import FeedbackButton from "./FeedbackButton.vue";
 
 @Component({
   components: {
     ThemeButton,
+    AnimateLogo,
+    FeedbackButton
   },
 })
 export default class Toolbar extends Vue {}

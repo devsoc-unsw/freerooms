@@ -2,6 +2,7 @@ module.exports = {
   transpileDependencies: ["vuetify"],
   runtimeCompiler: true,
   devServer: {
-    proxy: "http://localhost:3000",
+    disableHostCheck: true,
+    proxy: "https://freerooms.csesoc.unsw.edu.au/",
   },
 };

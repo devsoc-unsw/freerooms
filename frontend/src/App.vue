@@ -3,7 +3,6 @@
     <v-app>
       <Toolbar />
       <v-main>
-        <BreadCrumbs class="mt-1" />
         <router-view></router-view>
       </v-main>
     </v-app>
@@ -12,13 +11,10 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import BreadCrumbs from "./components/BreadCrumbs.vue";
 import Toolbar from "./components/Toolbar.vue";
-
 @Component({
   components: {
     Toolbar,
-    BreadCrumbs,
   },
 })
 export default class App extends Vue {}
