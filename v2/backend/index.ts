@@ -16,7 +16,8 @@ const PORT = 3000;
 // Route to get all the buildings
 app.get("/buildings", async (req: Request, res: Response) => {
   try {
-    const data = await getAllBuildings();
+    const buildingData = await getAllBuildings();
+    const data = { buildings: buildingData };
     res.send(data);
   } catch (error: any) {
     console.error(`Error: ${error.message}`);
