@@ -32,3 +32,10 @@ export type BuildingData = {
   id: string;
   img: string;
 };
+
+export type RoomAvailability = {
+  roomName: string;
+  [week: number]: {
+    [day: string]: ClassList;
+  };
+};

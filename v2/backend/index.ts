@@ -56,17 +56,8 @@ app.get(
   async (req: Request, res: Response) => {
     const { buildingId } = req.params;
     const { roomId } = req.params;
-    const datetimeString = req.query.datetime as string;
-
     try {
-      const datetime = datetimeString ? getDate(datetimeString) : new Date();
-
-      if (datetime === null) {
-        res.send({ message: "Invalid date", status: 400 });
-        return;
-      }
-
-      const data = await getRoomAvailability(buildingId, roomId, datetime);
+      const data = await getRoomAvailability(buildingId, roomId);
       res.send(data);
     } catch (error: any) {
       console.error(`Error: ${error.message}`);

@@ -5,7 +5,12 @@ import pkg from "jsdom";
 import buildingData from "./buildings";
 const { JSDOM } = pkg;
 import { BuildingRoomStatus } from "./interfaces";
-import { BuildingData, RoomStatus, ScraperData } from "./types";
+import {
+  BuildingData,
+  RoomAvailability,
+  RoomStatus,
+  ScraperData,
+} from "./types";
 
 const SCRAPER_URL =
   "https://timetable.csesoc.unsw.edu.au/api/terms/2021-T1/freerooms/";
@@ -165,16 +170,21 @@ export const getAllRoomStatus = async (
 
 export const getRoomAvailability = async (
   buildingId: string,
-  roomId: string,
-  date: Date
-): Promise<RoomStatus> => {
-  let allRooms: BuildingRoomStatus = await getAllRoomStatus(buildingId, date);
-  const room = allRooms.rooms;
+  roomId: string
+) => {
+  const data = await getData();
 
-  if (!(roomId in allRooms.rooms)) {
+  // check buildingId is valid
+  if (!(buildingId in data)) {
+    throw new Error(`Building id ${buildingId} does not exist`);
+  }
+
+  // check roomId is valid
+  if (!(roomId in data[buildingId])) {
     throw new Error(`Room id ${roomId} does not exist`);
   }
 
-  const roomStatus = room[roomId].status;
-  return roomStatus;
+  const roomAvailabilities = data[buildingId][roomId];
+
+  return roomAvailabilities;
 };
