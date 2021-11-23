@@ -14,7 +14,7 @@ export const getData = async (): Promise<ScraperData> => {
 };
 
 // Gets all the room codes for rooms in UNSW by parsing the HTML with regex (please excuse my cardinal sin)
-export const getAllRooms = async (): Promise<string[]> => {
+export const getAllRoomIDs = async (): Promise<string[]> => {
   const ROOM_URL =
     "https://www.learningenvironments.unsw.edu.au/find-teaching-space?building_name=&room_name=&page=";
 
@@ -29,33 +29,34 @@ export const getAllRooms = async (): Promise<string[]> => {
   // One letter floor - M18
   // Two letter floor - LG19
 
-  let rooms: string[] = [];
+  let roomIDs: string[] = [];
 
   for (let i = 0; i < MAX_PAGES; i++) {
     const response = await axios.get(ROOM_URL + i);
     const data = await response.data;
 
     const htmlDoc = new JSDOM(data);
-    const roomCodes =
+    const rawRoomIDs =
       htmlDoc.window.document.getElementsByClassName("field-item");
 
-    if (!roomCodes) return rooms;
+    if (!rawRoomIDs) return roomIDs;
 
-    const cleanRoomCodes = [];
+    const cleanRoomIDs = [];
 
-    for (let j = 0; j < roomCodes.length; j++) {
-      let roomCode = roomCodes.item(j)?.innerHTML;
-      if (roomCode && ROOM_REGEX.test(roomCode)) {
-        cleanRoomCodes.push(roomCode);
+    for (let j = 0; j < rawRoomIDs.length; j++) {
+      let roomID = rawRoomIDs.item(j)?.innerHTML;
+      if (roomID && ROOM_REGEX.test(roomID)) {
+        cleanRoomIDs.push(roomID);
       }
     }
 
-    rooms = rooms.concat(cleanRoomCodes);
+    roomIDs = roomIDs.concat(cleanRoomIDs);
   }
 
-  return rooms;
+  return roomIDs;
 };
 
+// Gets the week number from the date
 export const getWeek = (data: ScraperData, date: Date): number => {
   // In 'DD/MM/YYYY' format
   const termStart = data["termStart"];
@@ -67,11 +68,12 @@ export const getWeek = (data: ScraperData, date: Date): number => {
 
   let daysPastTerm = diff / (1000 * 60 * 60 * 24);
 
-  //Integer division to get term number
-  //Ceil is used because week numbers start from 1 not 0
+  // Integer division to get term number
+  // Ceil is used because week numbers start from 1 not 0
   return Math.ceil(daysPastTerm / 7);
 };
 
+// Parses the provided datetime from the request params
 export const getDate = (datetime: string): Date | null => {
   let timestamp = Date.parse(datetime);
   return isNaN(timestamp) ? null : new Date(datetime);

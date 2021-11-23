@@ -10,8 +10,13 @@ import {
 const app = express();
 const PORT = 3000;
 
-// index.ts only job is extracting the parameters from the url. There should be no other logic
-// Pass these parameters to service.ts and then `return res.send()` the result
+const errorHandler = (res: Response, message: string) => {
+  console.error(`Error: ${message}`);
+  res.send({
+    message: message,
+    status: 400,
+  });
+};
 
 // Route to get all the buildings
 app.get("/buildings", async (req: Request, res: Response) => {
@@ -20,17 +25,13 @@ app.get("/buildings", async (req: Request, res: Response) => {
     const data = { buildings: buildingData };
     res.send(data);
   } catch (error: any) {
-    console.error(`Error: ${error.message}`);
-    res.send({
-      message: error.message,
-      status: 400,
-    });
+    errorHandler(res, error.message);
   }
 });
 
 // Route to get all the rooms in a particular building
-app.get("/buildings/:buildingId", async (req: Request, res: Response) => {
-  const { buildingId } = req.params;
+app.get("/buildings/:buildingID", async (req: Request, res: Response) => {
+  const { buildingID } = req.params;
   const datetimeString = req.query.datetime as string;
 
   try {
@@ -41,32 +42,25 @@ app.get("/buildings/:buildingId", async (req: Request, res: Response) => {
       return;
     }
 
-    const data = await getAllRoomStatus(buildingId, datetime);
+    const roomData = await getAllRoomStatus(buildingID, datetime);
+    const data = { rooms: roomData };
     res.send(data);
   } catch (error: any) {
-    console.error(`Error: ${error.message}`);
-    res.send({
-      message: error.message,
-      status: 400,
-    });
+    errorHandler(res, error.message);
   }
 });
 
 // Route to get the availability of a particular room in a particular building
 app.get(
-  "/buildings/:buildingId/:roomId",
+  "/buildings/:buildingID/:roomNumber",
   async (req: Request, res: Response) => {
-    const { buildingId } = req.params;
-    const { roomId } = req.params;
+    const { buildingID, roomNumber } = req.params;
+
     try {
-      const data = await getRoomAvailability(buildingId, roomId);
+      const data = await getRoomAvailability(buildingID, roomNumber);
       res.send(data);
     } catch (error: any) {
-      console.error(`Error: ${error.message}`);
-      res.send({
-        message: error.message,
-        status: 400,
-      });
+      errorHandler(res, error.message);
     }
   }
 );
