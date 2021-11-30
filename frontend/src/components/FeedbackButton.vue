@@ -17,7 +17,7 @@ export default class FeedbackButton extends Vue {
 <style scoped>
 .feedback {
   font-size: 14px;
-  padding-right: 3%;
+  padding-right: 1vw;
 }
 </style>
 

@@ -80,11 +80,6 @@ import ThemeButton from "./ThemeButton.vue";
 import AnimateLogo from "./AnimateLogo.vue";
 import FeedbackButton from "./FeedbackButton.vue";
 
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-
-library.add(faInfoCircle);
-
 @Component({
   data() {
     return {
@@ -111,11 +106,5 @@ p {
 
 .list {
   text-align: left;
-}
-
-.open-modal {
-  height: auto;
-  min-width: auto;
-  padding: 1vh 3vw;
 }
 </style>
