@@ -1,5 +1,5 @@
 import buildingData from "./buildings.js";
-import { getData, getAllRoomIDs, getWeek } from "./helpers.js";
+import { getData, getAllRoomIDs, getWeek, parseTimeToDate } from "./helpers.js";
 
 const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const FIFTEEN_MIN = 15 * 1000 * 60;
@@ -46,9 +46,8 @@ export const getAllRoomStatus = async (buildingID, date) => {
     let currTime = date.getTime();
     let isFree = true;
     for (const eachClass of roomData[week][day]) {
-      const classStart = new Date(eachClass["start"]).getTime();
-      const classEnd = new Date(eachClass["end"]).getTime();
-
+      const classStart = parseTimeToDate(date, eachClass["start"]).getTime();
+      const classEnd = parseTimeToDate(date, eachClass["end"]).getTime();
       if (currTime >= classStart && currTime < classEnd) {
         isFree = false;
 
