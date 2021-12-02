@@ -91,7 +91,7 @@
             <v-calendar
               ref="calendar"
               v-model="start"
-              :type="type"
+              :type="$vuetify.breakpoint.xs ? 'day' : 'week'"
               :start="start"
               :weekdays="weekdays"
               :color="color"
@@ -142,9 +142,8 @@ export default class LocationRoomView extends Vue {
   start = this.today;
 
   events: EventModel[] = [];
-  type = "week";
   mode = "stack";
-  weekdays = [1, 2, 3, 4, 5, 6, 0];
+  weekdays = [1, 2, 3, 4, 5];
   intervals = this.intervalsDefault;
   color = "secondary";
 
@@ -160,7 +159,6 @@ export default class LocationRoomView extends Vue {
     const endTime = DateTime.fromFormat(startTime, "yyyy-MM-dd")
       .plus({ days: 6 })
       .toFormat("yyyy-MM-dd");
-
     const result = await this.dbService.getRoomBookingsInTimeRange(
       this.locationId,
       this.roomId,
@@ -195,13 +193,11 @@ export default class LocationRoomView extends Vue {
       this.locationId
     );
 
+    this.today = DateTime.now().toFormat("yyyy-MM-dd");
     this.roomId = this.$route.params["roomId"];
-    this.start = this.$route.params["datetime"];
+    this.start = this.$route.params["datetime"] ?? this.today;
 
     if (this.roomId == null) this.roomId = "";
-
-    this.today = DateTime.now().toFormat("yyyy-MM-dd");
-    this.start = this.today;
 
     this.events = await this.getEvents();
   }
@@ -238,5 +234,6 @@ export default class LocationRoomView extends Vue {
   overflow-wrap: break-word;
   white-space: break-spaces;
   padding: 3px 4px 3px 0px;
+  pointer-events: none;
 }
 </style>
