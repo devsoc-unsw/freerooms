@@ -4,6 +4,6 @@ module.exports = {
   devServer: {
     disableHostCheck: true,
     // proxy: "https://freerooms.csesoc.unsw.edu.au/",
-    proxy: "http://localhost:3000",
+    proxy: "http://localhost:3000/",
   },
 };

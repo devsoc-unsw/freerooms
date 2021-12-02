@@ -1,12 +1,5 @@
 <template>
-  
-    <v-dialog v-model="infoModal" width="500">
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn icon v-bind="attrs" v-on="on">
-          <v-icon color='primary'>mdi-information</v-icon>
-        </v-btn>
-      </template>
-
+    <v-dialog ref="infoDialog" v-model="syncedModal" width="500">
       <v-card outlined>
         <v-card-title class="text-h5 primary--text justify-center">
           Welcome to FreeRooms!
@@ -50,7 +43,7 @@
             <v-btn
               color="primary"
               text
-              @click="infoModal = false"
+              @click="syncedModal = false"
               class="open-modal"
             >
               Close
@@ -61,16 +54,12 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component, PropSync} from "vue-property-decorator";
 
-@Component({
-  data() {
-    return {
-      infoModal: ""
-    };
-  }
-})
-export default class AboutDialog extends Vue {}
+@Component
+export default class InfoDialog extends Vue {
+  @PropSync("modal", { type: Boolean }) syncedModal!: boolean;
+}
 </script>
 
 <style scoped>

@@ -17,7 +17,10 @@
     </p>
     <v-spacer></v-spacer>
     <FeedbackButton />
-    <AboutDialog />
+    <v-btn icon @click="infoModal = true">
+      <v-icon color="primary">mdi-information</v-icon>
+    </v-btn>
+    <InfoDialog v-if="infoModal" :modal.sync="infoModal" />
     <ThemeButton />
   </v-app-bar>
 </template>
@@ -27,17 +30,19 @@ import { Vue, Component } from "vue-property-decorator";
 import ThemeButton from "./ThemeButton.vue";
 import AnimateLogo from "./AnimateLogo.vue";
 import FeedbackButton from "./FeedbackButton.vue";
-import AboutDialog from "./AboutDialog.vue";
+import InfoDialog from "./InfoDialog.vue";
 
 @Component({
   components: {
     ThemeButton,
     AnimateLogo,
     FeedbackButton,
-    AboutDialog,
+    InfoDialog,
   },
 })
-export default class Toolbar extends Vue {}
+export default class Toolbar extends Vue {
+  infoModal = false;
+}
 </script>
 
 <style scoped>
