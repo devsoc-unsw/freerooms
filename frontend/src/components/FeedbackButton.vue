@@ -1,13 +1,10 @@
 <template>
   <div>
-    <button @click="gotoGoogle()">
-      <p
-        v-if="$vuetify.breakpoint.width > 450"
-        class="text-sm-subtitle-1 ma-0"
-      >
+    <v-btn color="primary" @click="gotoGoogle()" text>
+      <p v-if="$vuetify.breakpoint.width > 450" class="text-sm-subtitle-1 ma-0">
         FEEDBACK
       </p>
-    </button>
+    </v-btn>
   </div>
 </template>
 

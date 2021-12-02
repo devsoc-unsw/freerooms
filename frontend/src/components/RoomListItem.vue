@@ -14,7 +14,7 @@
         <v-icon :color="getCalendarIconColor(room.status)" class="mr-5"
           >event_available</v-icon
         >
-        <div style="width:70px">{{ room.name }}</div>
+        <div style="width: 70px">{{ room.name }}</div>
         <v-divider vertical class="mx-5"></v-divider>
         {{ getAvailabilityText(room.status, room) }}
       </v-card-title>

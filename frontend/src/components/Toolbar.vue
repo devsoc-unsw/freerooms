@@ -12,9 +12,7 @@
         FreeRooms
       </v-toolbar-title>
     </router-link>
-    <p class="ma-0 text-sm-subtitle-1 primary--text">
-      22T1
-    </p>
+    <p class="ma-0 text-sm-subtitle-1 primary--text">22T1</p>
     <v-spacer></v-spacer>
     <FeedbackButton />
     <v-btn icon @click="infoModal = true">

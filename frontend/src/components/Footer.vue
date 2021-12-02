@@ -5,9 +5,7 @@
         While we try our best, FreeRooms is not an official UNSW site, and
         cannot guarantee data accuracy or reliability.
       </p>
-      <p>
-        Made by >_ CSESoc UNSW
-      </p>
+      <p>Made by >_ CSESoc UNSW</p>
       <a href="mailto:projects@csesoc.unsw.edu.au" target="#">Email</a>
       &nbsp;&nbsp;•&nbsp;&nbsp;
       <a href="https://forms.gle/T9pFovpn2sWSymEY6" target="#">Feedback</a>
