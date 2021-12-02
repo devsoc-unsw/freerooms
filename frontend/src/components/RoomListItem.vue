@@ -14,7 +14,7 @@
         <v-icon :color="getCalendarIconColor(room.status)" class="mr-5"
           >event_available</v-icon
         >
-        <div style="width:70px">{{ room.name }}</div>
+        <div style="width: 70px">{{ room.name }}</div>
         <v-divider vertical class="mx-5"></v-divider>
         {{ getAvailabilityText(room.status, room) }}
       </v-card-title>
@@ -49,13 +49,15 @@ export default class RoomListItem extends Vue {
   }
 
   getAvailabilityText(available: RoomStatus): string {
+    // ! Not setting AM/PM format - Currently in 24hr format
+    const date = DateTime.fromISO(this.room.classEndTime, {
+      setZone: true,
+    });
     switch (available) {
       case "free":
         return "Available now";
       case "soon":
-        return `Available after ${DateTime.fromISO(
-          this.room.classEndTime
-        ).toLocaleString(DateTime.TIME_SIMPLE)}`;
+        return `Available after ${date.toLocaleString(DateTime.TIME_SIMPLE)}`;
       case "busy":
         return "Unavailable now";
       default:

@@ -35,7 +35,7 @@
     <v-row class="mx-5 mt-5" align="end">
       <!-- Sort -->
       <v-col cols="12" sm="4" md="2" class="py-0 my-0">
-        <sort-filter
+        <SortFilter
           label="Sort rooms"
           :selected.sync="selected"
           :sortOptions="sort_options"
@@ -44,7 +44,7 @@
       </v-col>
       <!-- Hide Unavailable -->
       <v-col cols="12" sm="6" class="py-0 my-0 pl-1">
-        <toggle-filter
+        <ToggleFilter
           label="Show unavailable"
           :enabled.sync="enabled"
           @onChange="updateList"
@@ -53,7 +53,7 @@
       <v-spacer></v-spacer>
       <!-- Date -->
       <v-col cols="12" sm="4" md="2" class="py-0 my-0">
-        <date-picker
+        <DatePicker
           :date.sync="date"
           @onChange="updateDateTime"
           :modal.sync="dateModal"
@@ -61,7 +61,7 @@
       </v-col>
       <!-- Time -->
       <v-col cols="12" sm="4" md="2" class="py-0 my-0">
-        <time-picker
+        <TimePicker
           :time.sync="time"
           @onChange="updateDateTime"
           :modal.sync="timeModal"
@@ -78,7 +78,7 @@
     >
       <v-col cols="12" class="pa-0 ma-0">
         <v-divider></v-divider>
-        <room-list-item
+        <RoomListItem
           :room="room"
           :locationId="locationId"
           :date="date"

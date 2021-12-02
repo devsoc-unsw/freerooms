@@ -5,7 +5,7 @@
     persistent-hint
     @click="$vuetify.theme.dark = !$vuetify.theme.dark"
   >
-    <v-icon color=primary>{{ getIcon($vuetify.theme.dark) }}</v-icon>
+    <v-icon color="primary">{{ getIcon($vuetify.theme.dark) }}</v-icon>
   </v-btn>
 </template>
 
@@ -18,7 +18,7 @@ export default class ThemeButton extends Vue {
     if (darkMode) {
       return "mdi-brightness-2";
     } else {
-      return "mdi-brightness-5";
+      return "mdi-white-balance-sunny";
     }
   }
 }

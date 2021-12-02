@@ -16,12 +16,12 @@
         v-on="on"
       ></v-text-field>
     </template>
-    <!-- TODO: Change hardcoded term values -->
+    <!-- TODO: Change hardcoded date values every term -->
     <v-date-picker
       mode="date"
       v-model="syncedDate"
-      min="2021-09-08"
-      max="2021-12-09"
+      min="2022-02-15"
+      max="2022-05-13"
       scrollable
     >
       <v-spacer></v-spacer>

@@ -59,7 +59,7 @@ export const getWeek = (data, date) => {
   // In 'DD/MM/YYYY' format
   const termStart = data["termStart"];
 
-  const termStartDate = new Date(termStart);
+  const termStartDate = new Date(convertToIsoString(termStart));
   const today = date;
 
   const diff = today.getTime() - termStartDate.getTime();
@@ -75,4 +75,17 @@ export const getWeek = (data, date) => {
 export const getDate = (datetime) => {
   let timestamp = Date.parse(datetime);
   return isNaN(timestamp) ? null : new Date(datetime);
+};
+
+export const convertToIsoString = (dateString) => {
+  const [day, month, year] = dateString.split("/");
+  return `${year}-${month}-${day}`;
+};
+
+export const parseTimeToDate = (date, timeString) => {
+  const d = new Date(date);
+  const [hour, min] = timeString.split(":");
+  d.setHours(hour);
+  d.setMinutes(min);
+  return d;
 };

@@ -12,8 +12,8 @@ import dbService from "../services/dbService";
 export default {
   data: function () {
     return {
-      breadcrumbs: []
-    }
+      breadcrumbs: [],
+    };
   },
   async mounted() {
     const service = new dbService();

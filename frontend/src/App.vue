@@ -5,6 +5,7 @@
       <v-main>
         <router-view></router-view>
       </v-main>
+      <Footer/>
     </v-app>
   </div>
 </template>
@@ -12,9 +13,11 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import Toolbar from "./components/Toolbar.vue";
+import Footer from "./components/Footer.vue";
 @Component({
   components: {
     Toolbar,
+    Footer,
   },
 })
 export default class App extends Vue {}
