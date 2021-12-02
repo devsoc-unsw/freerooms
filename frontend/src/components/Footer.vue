@@ -1,5 +1,5 @@
 <template>
-  <v-footer outlined class="footer">
+  <v-footer outlined>
     <div>
       <p>
         While we try our best, FreeRooms is not an official UNSW site, and
@@ -24,7 +24,7 @@ import { Vue, Component } from "vue-property-decorator";
 export default class Footer extends Vue {}
 </script>
 <style scoped>
-.footer {
+.v-footer {
   font-size: 12px;
   justify-content: center;
 }

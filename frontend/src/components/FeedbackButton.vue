@@ -3,7 +3,7 @@
     <button @click="gotoGoogle()">
       <p
         v-if="$vuetify.breakpoint.width > 450"
-        class="text-sm-subtitle-1 feedback ma-0"
+        class="text-sm-subtitle-1 ma-0"
       >
         FEEDBACK
       </p>
@@ -22,7 +22,7 @@ export default class FeedbackButton extends Vue {
 </script>
 
 <style scoped>
-.feedback {
+p {
   font-size: 14px;
 }
 </style>

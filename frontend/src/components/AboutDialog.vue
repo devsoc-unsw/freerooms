@@ -42,6 +42,7 @@
               <li>Dark mode 😎</li>
             </ul>
           </p>
+          <p><b>NOTE:</b> Currently can only check Term 1, 2022 data</p>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
