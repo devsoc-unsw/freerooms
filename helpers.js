@@ -3,7 +3,7 @@ import pkg from "jsdom";
 const { JSDOM } = pkg;
 
 const SCRAPER_URL =
-  "https://timetable.csesoc.unsw.edu.au/api/terms/2021-T1/freerooms/";
+  "https://timetable.csesoc.unsw.edu.au/api/terms/2022-T1/freerooms/";
 
 export const getData = async () => {
   const res = await axios.get(SCRAPER_URL);
