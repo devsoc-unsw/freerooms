@@ -17,7 +17,7 @@
             params: { locationId: buildingData.id },
           }"
         >
-          <v-card class="primary white--text text-center card">
+          <v-card class="primary white--text text-center">
             <v-img
               class="white--text align-end"
               height="12.5em"
@@ -70,7 +70,11 @@ p {
   font-weight: 300;
 }
 
-.card:hover {
+.v-card:hover {
   opacity: 0.9;
+}
+
+.v-card__title {
+  word-break: break-word;
 }
 </style>
