@@ -17,13 +17,12 @@
             params: { locationId: buildingData.id },
           }"
         >
-          <v-card class="primary white--text text-center" flat>
+          <v-card class="primary white--text text-center card">
             <v-img
               class="white--text align-end"
               height="12.5em"
               width="100%"
               :src="`./assets/building_photos/${buildingData.id}.png`"
-              gradient="to bottom, rgba(250,172,78,.25), rgba(180,82,49,.33)"
             ></v-img>
 
             <v-card-title class="text-center">
@@ -69,5 +68,9 @@ p {
 .beta {
   font-size: 0.4em;
   font-weight: 300;
+}
+
+.card:hover {
+  opacity: 0.9;
 }
 </style>

@@ -7,9 +7,6 @@
       >
         FEEDBACK
       </p>
-      <v-icon v-else-if="$vuetify.breakpoint.width > 400" color="primary"
-        >mdi-comment-quote</v-icon
-      >
     </button>
   </div>
 </template>

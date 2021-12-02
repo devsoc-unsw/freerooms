@@ -7,13 +7,14 @@
         </v-btn>
       </template>
 
-      <v-card>
-        <v-card-title class="text-h5 grey lighten-2">
-          Welcome to Freerooms!
+      <v-card outlined>
+        <v-card-title class="text-h5 primary--text justify-center">
+          Welcome to FreeRooms!
         </v-card-title>
+        <v-divider/>
         <v-card-text>
           <p>
-            Freerooms is a tool helping UNSW students find their dream study
+            <b>FreeRooms</b> is a tool helping UNSW students find their dream study
             location on campus. We have many features on the way,
             including a map with the real-time availabilities of each room in a
             UNSW building. It was created by CSESoc Projects - a place for
@@ -21,7 +22,7 @@
             friends along the way. FreeRooms is free and open-source.
           </p>
           <p class="list">
-            How it works:
+            <b>How it works:</b>
             <ul>
               <li>
                 Click on a building you want to study at and the availabilities of different rooms in that building will be listed on the page.
@@ -35,7 +36,7 @@
             </ul>
           </p>
           <p class="list">
-            Features:
+            <b>Features:</b>
             <ul>
               <li>Plan ahead with our calendar, and have regular weekly meetings with your study groups!</li>
               <li>Dark mode 😎</li>
