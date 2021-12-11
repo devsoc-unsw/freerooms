@@ -114,7 +114,7 @@
 import { Vue, Component } from "vue-property-decorator";
 import DbService from "../services/dbService";
 import { DateTime } from "luxon";
-import { EventModel } from "../models/BindingModel";
+import { EventModel } from "../models/bindingModel";
 import { Route } from "vue-router";
 import { Booking } from "../types";
 
