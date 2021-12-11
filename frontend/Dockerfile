@@ -1,5 +1,5 @@
-# Grab the latest Node base image
-FROM node:latest
+# Grab the Node base image
+FROM node:16-bullseye
 
 # Set the current working directory inside the container
 WORKDIR /frontend
