@@ -1,8 +1,12 @@
 import React from "react";
-import "./App.css";
+import Campus from "./Campus";
 
 function App() {
-  return <div className="App">Hello World!</div>;
+  return (
+    <div className="App">
+      <Campus />
+    </div>
+  );
 }
 
 export default App;
