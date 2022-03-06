@@ -1,19 +1,19 @@
 import Image from "next/image";
 import Logo from "../public/assets/favicon/free_rooms_logo.png";
-import { Text } from "@mantine/core";
+import { Box, Text } from "@mantine/core";
 
 const Branding = () => (
-  <div
+  <Box
     style={{
       display: "flex",
       alignItems: "center",
-      paddingBottom: "1rem",
+      flex: 1,
     }}
   >
     <div style={{ width: 50, marginLeft: 10, marginRight: 5 }}>
       <Image src={Logo} alt="Freerooms Logo" priority />
     </div>
-    <div
+    <Box
       style={{
         display: "flex",
         flexDirection: "column",
@@ -30,8 +30,8 @@ const Branding = () => (
       >
         22T1
       </Text>
-    </div>
-  </div>
+    </Box>
+  </Box>
 );
 
 export default Branding;
