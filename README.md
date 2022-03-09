@@ -8,6 +8,8 @@ A web application designed to aid UNSW students in finding vacant rooms.
 
 ##### Project setup
 
+if you are unable to load arcgis modules, please npm install when you git pull
+
 ```
 npm install
 ```
@@ -37,3 +39,4 @@ npm install
 ```
 npm start
 ```
+
