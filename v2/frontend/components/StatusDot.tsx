@@ -1,4 +1,4 @@
-import { Box } from "@mantine/core";
+import Box from "@mui/material/Box";
 
 const StatusDot: React.FC<{ colour: "green" | "orange" | "red" }> = ({
   colour,
@@ -11,11 +11,11 @@ const StatusDot: React.FC<{ colour: "green" | "orange" | "red" }> = ({
         borderRadius: "50%",
         backgroundColor:
           colour === "green"
-            ? theme.colors.green[5]
+            ? theme.palette.success.light
             : colour === "orange"
-            ? theme.colors.orange[5]
-            : theme.colors.red[5],
-        marginRight: 5,
+            ? theme.palette.warning.light
+            : theme.palette.error.light,
+        marginRight: theme.spacing(1.25),
       })}
     />
   );

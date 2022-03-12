@@ -1,89 +1,81 @@
-import Image from "next/image";
-import { Box, Text, createStyles } from "@mantine/core";
+import Image, { ImageProps } from "next/image";
+import { styled } from "@mui/material/styles";
+import Box, { BoxProps } from "@mui/material/Box";
 import StatusDot from "./StatusDot";
+import { Typography } from "@mui/material";
 
-const useStyles = createStyles((theme) => ({
-  image: {
-    borderRadius: theme.radius.md,
-    transition: "all 0.1s ease-in-out",
-    "&:hover": {
-      opacity: 0.6,
-    },
-  },
-  status: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 15,
-    position: "absolute",
-    top: 0,
-    right: 0,
-    backgroundColor: "white",
-    padding: 10,
-    paddingLeft: 15,
-    paddingRight: 15,
-    margin: 10,
-    pointerEvents: "none",
-  },
-  title: {
-    display: "flex",
-    borderRadius: theme.radius.md,
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: "white",
-    padding: 15,
-    paddingLeft: 20,
-    paddingRight: 20,
-    margin: 10,
-    pointerEvents: "none",
+const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
+  position: "relative",
+  flex: 1,
+  backgroundColor: theme.palette.primary.main,
+  height: 385,
+  borderRadius: 10,
+  "&:hover": {
+    cursor: "pointer",
   },
 }));
 
-interface BCProps {
+const StyledImage = styled(Image)<ImageProps>(({ theme }) => ({
+  borderRadius: 10,
+  transition: "all 0.1s ease-in-out",
+  "&:hover": {
+    opacity: 0.7,
+  },
+}));
+
+const StatusBox = styled(Box)<BoxProps>(({ theme }) => ({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  borderRadius: 15,
+  position: "absolute",
+  top: 0,
+  right: 0,
+  backgroundColor: "white",
+  padding: 10,
+  paddingLeft: 15,
+  paddingRight: 15,
+  margin: 10,
+  pointerEvents: "none",
+}));
+
+const TitleBox = styled(Box)<BoxProps>(({ theme }) => ({
+  display: "flex",
+  borderRadius: 10,
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  right: 0,
+  backgroundColor: theme.palette.primary.main,
+  color: "white",
+  padding: 15,
+  paddingLeft: 20,
+  paddingRight: 20,
+  margin: 10,
+  pointerEvents: "none",
+}));
+
+const BuildingCard: React.FC<{
   name: string;
   freerooms: number;
   image: string;
-}
-
-const BuildingCard: React.FC<BCProps> = ({ name, freerooms, image }) => {
-  const { classes } = useStyles();
-
+  onClick: () => void;
+}> = ({ name, freerooms, image, onClick }) => {
   return (
-    <Box
-      sx={(theme) => ({
-        position: "relative",
-        flex: 1,
-        backgroundColor: theme.colors.orange[5],
-        height: 385,
-        borderRadius: theme.radius.md,
-        "&:hover": {
-          cursor: "pointer",
-        },
-      })}
-      onClick={() => {}}
-    >
-      <Image
-        src={image}
-        layout="fill"
-        objectFit="cover"
-        className={classes.image}
-      />
-      <Box className={classes.status}>
+    <MainBox onClick={onClick}>
+      <StyledImage src={image} layout="fill" objectFit="cover" />
+      <StatusBox>
         <StatusDot
           colour={freerooms >= 5 ? "green" : freerooms !== 0 ? "orange" : "red"}
         />
-        <Text size="sm" weight={500}>
+        <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
           {freerooms} rooms available
-        </Text>
-      </Box>
-      <Box className={classes.title}>
-        <Text size="lg" weight={500}>
-          {name}
-        </Text>
-      </Box>
-    </Box>
+        </Typography>
+      </StatusBox>
+      <TitleBox>
+        <Typography sx={{ fontSize: 16, fontWeight: 500 }}>{name}</Typography>
+      </TitleBox>
+    </MainBox>
   );
 };
 

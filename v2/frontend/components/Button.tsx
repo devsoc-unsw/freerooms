@@ -1,22 +1,24 @@
-import Image from "next/image";
-import Logo from "../public/assets/favicon/free_rooms_logo.png";
-import { Button, Text } from "@mantine/core";
+import Button, { ButtonProps } from "@mui/material/Button";
 import React from "react";
 
-const StyledButton: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => (
+const StyledButton: React.FC<{
+  children: React.ReactNode;
+  props?: ButtonProps;
+}> = ({ children, props }) => (
   <Button
+    {...props}
     sx={(theme) => ({
-      backgroundColor: theme.colors.gray[1],
-      color: theme.colors.gray[7],
+      borderRadius: "10px",
+      padding: theme.spacing(1, 3),
+      backgroundColor: "#eee",
+      color: "#333",
+      textTransform: "none",
       transition: "all 0.1s ease-in-out",
       "&:hover": {
-        color: theme.colors.gray[0],
+        backgroundColor: theme.palette.primary.main,
+        color: "#fff",
       },
     })}
-    radius="md"
-    size="md"
   >
     {children}
   </Button>
