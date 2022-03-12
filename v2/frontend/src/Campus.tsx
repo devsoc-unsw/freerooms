@@ -1,34 +1,85 @@
-import React from "react";
-import Map from "@arcgis/core/Map";
-import MapView from "@arcgis/core/views/MapView";
-import esriConfig from "@arcgis/core/config.js";
-import BasemapGallery from "@arcgis/core/widgets/BasemapGallery";
+import { map, view } from "./Basemap";
+import PopupTemplate from "@arcgis/core/PopupTemplate";
+import Graphic from "@arcgis/core/Graphic";
+import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
+import geometry from "@arcgis/core/geometry/Geometry";
+import Point from "@arcgis/core/geometry/Point";
+import TileLayer from "@arcgis/core/layers/TileLayer";
+import PortalItem from "@arcgis/core/portal/PortalItem";
+import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
+import Polyline from "@arcgis/core/geometry/Polyline";
+import SimpleFillSymbol from "@arcgis/core/symbols/SimpleFillSymbol";
+import Layer from "@arcgis/core/layers/Layer";
+import locateWidget from "./CurrentLocation";
 
 function Campus() {
-  esriConfig.apiKey =
-    "AAPK46037065a5604a5cabbb162bdae00b9dIk7R92SXsV3FKXjgXnhF829z71uovMU0SH_pRtgSH4aiDzpDEdAl4MksTkBPHFfg";
-  const map = new Map({
-    basemap: "arcgis-community",
+  const graphicsLayer = new GraphicsLayer();
+  map.add(graphicsLayer);
+  // add a point to the graphic layer
+  const point = new Point({
+    longitude: 151.231,
+    latitude: -33.917,
   });
 
-  const view = new MapView({
-    map: map,
-    center: [151.231, -33.916],
-    zoom: 16,
-    container: "root",
+  const simpleMarkerSymbol = {
+    type: "simple-marker",
+    color: [226, 119, 40], // Orange
+    outline: {
+      color: [255, 255, 255], // White
+      width: 1,
+    },
+  };
+
+  const pointGraphic = new Graphic({
+    geometry: point,
+    symbol: simpleMarkerSymbol,
   });
 
-  let basemapGallery = new BasemapGallery({
-    view: view,
-    visible: true,
+  graphicsLayer.add(pointGraphic);
+
+  // adding polyline to map
+  // to do all the buildings, CSVLayer can be used
+  const paths = [
+    [
+      [151.22801, -33.9177, 35.4],
+      [151.2287, -33.91841, 35.5],
+      [151.22801, -33.9177, 35.6],
+      [151.2287, -33.91841, 35.4],
+    ],
+  ];
+  const polyline = new Polyline({
+    hasZ: true,
+    hasM: true,
+    paths: paths,
+    spatialReference: { wkid: 4326 },
   });
 
-  // Add widget to the top right corner of the view
-  view.ui.add(basemapGallery, {
-    position: "top-right",
+  const simpleLineSymbol = {
+    type: "simple-line",
+    color: [226, 119, 40], // Orange
+    width: 2,
+  };
+
+  const polylineGraphic = new Graphic({
+    geometry: polyline,
+    symbol: simpleLineSymbol,
+  });
+  graphicsLayer.add(polylineGraphic);
+
+  const popupBuildings = new PopupTemplate({
+    title: "Building",
+    content:
+      "<b>Building:</b> {BLDG_NAME}<br><b>Address:</b> {ADDRESS}<br><b>City:</b>",
   });
 
-  return <div className="Campus"></div>;
+  const building = new FeatureLayer({
+    url: "https://services.arcgis.com/V6ZHFr6zdgNZuVG0/arcgis/rest/services/Buildings/FeatureServer/0",
+    popupTemplate: popupBuildings,
+  });
+  pointGraphic.popupTemplate = popupBuildings;
+  map.add(building);
+
+  return <div className="Campus">{locateWidget}</div>;
 }
 
 export default Campus;
