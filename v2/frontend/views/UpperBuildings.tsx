@@ -1,4 +1,3 @@
-import Grid from "@mui/material/Grid";
 import BuildingCard from "../components/BuildingCard";
 
 // TODO: fetch buildings from backend and render cards based on result
@@ -20,6 +19,7 @@ const UpperBuildings: React.FC<{
         freerooms={3}
         image="/assets/building_photos/K-B16.png"
         onClick={() => setCurrentBuilding(`Test ${i}`)}
+        key={i}
       />
     ))}
   </div>

@@ -3,6 +3,8 @@ import type { AppProps } from "next/app";
 import { createTheme } from "@mui/material/styles";
 import { orange, pink } from "@mui/material/colors";
 import ThemeProvider from "@mui/system/ThemeProvider";
+import { SWRConfig } from "swr";
+import axios from "axios";
 
 const theme = createTheme({
   palette: {
@@ -15,11 +17,20 @@ const theme = createTheme({
   },
 });
 
+const fetcher = (url: string) => axios.get(url).then((res) => res.data);
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ThemeProvider theme={theme}>
-      <Component {...pageProps} />
-    </ThemeProvider>
+    <SWRConfig
+      value={{
+        refreshInterval: 3000,
+        fetcher: fetcher,
+      }}
+    >
+      <ThemeProvider theme={theme}>
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </SWRConfig>
   );
 }
 
