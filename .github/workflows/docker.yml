@@ -15,7 +15,7 @@ jobs:
       fail-fast: false
       matrix:
         context: [frontend, v2/backend, v2/frontend]
-        includes:
+        include:
           - context: frontend
             name: vue
           - context: v2/backend
