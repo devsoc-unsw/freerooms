@@ -30,7 +30,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        component: [frontend, /v2/backend, v2/frontend]
+        component: [frontend, v2/backend, v2/frontend]
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
