@@ -1,20 +1,28 @@
-# Grab the Node base image
-FROM node:16-bullseye
+FROM node:16.14-alpine as builder
 
 # Set the current working directory inside the container
-WORKDIR /frontend
+WORKDIR /app
 
-# Copy package.json and package-lock.json into the container
 COPY package.json package-lock.json ./
-
-# Install node modules inside the container using the copied package.json
 RUN npm install
 
-# Copy the entire project into the container
 COPY . .
 
-# Expose the port to the outside world
-EXPOSE 8080
+RUN npm run build
 
-# Run the server
-CMD ["npm", "run", "serve"]
+# nginx state for serving content
+FROM nginx:1.21.6-alpine
+COPY nginx.conf /temp/prod.conf
+RUN envsubst /app < /temp/prod.conf > /etc/nginx/conf.d/default.conf
+
+# Set working directory to nginx asset directory
+WORKDIR /usr/share/nginx/html
+# Remove default nginx static assets
+RUN rm -rf ./*
+# Copy static assets from builder stage
+COPY --from=builder /app/dist .
+
+EXPOSE 80
+
+# Containers run nginx with global directives and daemon off
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
