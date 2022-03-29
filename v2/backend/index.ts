@@ -1,5 +1,4 @@
 import express, { Request, Response } from "express";
-import cors from "cors";
 
 import { getDate } from "./helpers";
 import {
@@ -9,8 +8,7 @@ import {
 } from "./service";
 
 const app = express();
-const PORT = 3001;
-app.use(cors());
+const PORT = 3000;
 
 const errorHandler = (res: Response, message: string) => {
   console.error(`Error: ${message}`);
