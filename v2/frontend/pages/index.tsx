@@ -29,7 +29,7 @@ const Home: NextPage<{ buildings: BuildingReturnData }> = ({ buildings }) => {
 export async function getStaticProps() {
   // fetches /buildings via **BUILD** time so we don't need to have
   // the client fetch buildings data every request
-  const res = await fetch(process.env.HOST + "/buildings");
+  const res = await fetch("/buildings");
   const buildings: BuildingReturnData = await res.json();
   return {
     props: {

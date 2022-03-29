@@ -71,7 +71,7 @@ const BuildingCard: React.FC<{
 }> = ({ building }) => {
   const { data, error } = useSWR<BuildingRoomStatus[]>(
     // TODO: change this when deploying
-    "http://localhost:3001/buildings/" + building.id
+    "/buildings/" + building.id
   );
   const [freerooms, setFreeRooms] = React.useState(0);
   React.useEffect(() => {
