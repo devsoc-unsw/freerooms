@@ -1,8 +1,12 @@
+import React from "react";
+import useSWR from "swr";
+import { BuildingData, BuildingRoomStatus } from "../types";
 import Image, { ImageProps } from "next/image";
 import { styled } from "@mui/material/styles";
 import Box, { BoxProps } from "@mui/material/Box";
 import StatusDot from "./StatusDot";
 import { Typography } from "@mui/material";
+import Link from "next/link";
 
 const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
   position: "relative",
@@ -55,27 +59,50 @@ const TitleBox = styled(Box)<BoxProps>(({ theme }) => ({
   pointerEvents: "none",
 }));
 
+const calculateFreerooms = (rooms: BuildingRoomStatus[]) => {
+  let freerooms = 5;
+  // {message: 'unable to verify the first certificate', status: 400}
+  console.log(rooms);
+  return freerooms;
+};
+
 const BuildingCard: React.FC<{
-  name: string;
-  freerooms: number;
-  image: string;
-  onClick: () => void;
-}> = ({ name, freerooms, image, onClick }) => {
+  building: BuildingData;
+}> = ({ building }) => {
+  const { data, error } = useSWR<BuildingRoomStatus[]>(
+    // TODO: change this when deploying
+    "http://localhost:3001/buildings/" + building.id
+  );
+  const [freerooms, setFreeRooms] = React.useState(0);
+  React.useEffect(() => {
+    if (data && !error) setFreeRooms(calculateFreerooms(data));
+  }, [data]);
+
   return (
-    <MainBox onClick={onClick}>
-      <StyledImage src={image} layout="fill" objectFit="cover" />
-      <StatusBox>
-        <StatusDot
-          colour={freerooms >= 5 ? "green" : freerooms !== 0 ? "orange" : "red"}
+    <Link scroll={false} href={`/?building=${building.id}`}>
+      <MainBox>
+        <StyledImage
+          src={`/assets/building_photos/${building.id}.png`}
+          layout="fill"
+          objectFit="cover"
         />
-        <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
-          {freerooms} rooms available
-        </Typography>
-      </StatusBox>
-      <TitleBox>
-        <Typography sx={{ fontSize: 16, fontWeight: 500 }}>{name}</Typography>
-      </TitleBox>
-    </MainBox>
+        <StatusBox>
+          <StatusDot
+            colour={
+              freerooms >= 5 ? "green" : freerooms !== 0 ? "orange" : "red"
+            }
+          />
+          <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
+            {freerooms} rooms available
+          </Typography>
+        </StatusBox>
+        <TitleBox>
+          <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
+            {building.name}
+          </Typography>
+        </TitleBox>
+      </MainBox>
+    </Link>
   );
 };
 

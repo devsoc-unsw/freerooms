@@ -3,8 +3,9 @@
 */
 
 import React from "react";
-import type { NextPage } from "next";
-import Head from "next/head";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { BuildingReturnData } from "../types";
 
 import Drawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
@@ -18,10 +19,7 @@ import SearchIcon from "@mui/icons-material/Search";
 
 import Branding from "../components/Branding";
 import Button from "../components/Button";
-import { StyledTabs, StyledTab } from "../components/StyledTabs";
-import UpperBuildings from "./UpperBuildings";
-
-import useBuildings from "../hooks/useBuildings";
+import BuildingCard from "../components/BuildingCard";
 
 const drawerWidth = 400;
 
@@ -84,25 +82,48 @@ const ButtonGroup = styled(Box)(({ theme }) => ({
   paddingRight: theme.spacing(2),
 }));
 
-const ListView = () => {
+const ListView = ({ data }: { data: BuildingReturnData }) => {
+  const router = useRouter();
+  const { building } = router.query;
+
+  /* commented these out for now because backend doesn't return upper/lower info
   const [selection, setSelection] = React.useState<string>("upper");
+  React.useEffect(() => {
+    clearCurrentBuilding();
+  }, [selection]);
+  const clearCurrentBuilding = () => {
+    setCurrentBuilding(null);
+    router.push("/");
+  };
+  */
+
   const [currentBuilding, setCurrentBuilding] = React.useState<string | null>(
-    null
+    building ? building.toString() : null
   ); // use BuildingID here
-  const { buildings, isLoading, isError } = useBuildings();
 
   const drawerOpen = () => (currentBuilding ? true : false);
 
   React.useEffect(() => {
-    setCurrentBuilding(null);
-  }, [selection]);
+    if (building) setCurrentBuilding(building.toString());
+  }, [building]);
+
+  React.useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   return (
     <Container maxWidth={false}>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
-        <AppBar position="fixed" open={drawerOpen()}>
+        <AppBar
+          position="fixed"
+          open={drawerOpen()}
+          sx={(theme) => ({
+            borderBottom: "1px solid #e0e0e0",
+          })}
+        >
           <Branding />
+          {/* 
           <StyledTabs
             value={selection}
             onChange={(_e: React.SyntheticEvent, newValue: string) => {
@@ -117,6 +138,8 @@ const ListView = () => {
             <StyledTab label="Upper Campus" value="upper" />
             <StyledTab label="Lower Campus" value="lower" />
           </StyledTabs>
+           */}
+          <div />
           <ButtonGroup>
             <Stack direction="row" spacing={1.5}>
               <Button aria-label="Search">
@@ -127,14 +150,26 @@ const ListView = () => {
           </ButtonGroup>
         </AppBar>
         <Main open={drawerOpen()}>
-          {selection === "upper" ? (
+          {/* selection === "upper" ? (
             <UpperBuildings setCurrentBuilding={setCurrentBuilding} />
           ) : (
             <p>
               Todo: load lower campus buildings{buildings} {isLoading}{" "}
               {`${isError}`}
             </p>
-          )}
+          )*/}
+          <div
+            style={{
+              width: "100%",
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+              gridGap: "20px",
+            }}
+          >
+            {data.buildings.map((building) => (
+              <BuildingCard building={building} key={building.id} />
+            ))}
+          </div>
         </Main>
         <Drawer
           sx={{
