@@ -1,11 +1,16 @@
 import axios from "axios";
 import pkg from "jsdom";
-const { JSDOM } = pkg;
-
 import { ScraperData } from "./types";
+const { JSDOM } = pkg;
+const path = require("path");
+const https = require("https");
+const rootCas = require("ssl-root-cas").create();
+
+rootCas.addFile(path.resolve(__dirname, "intermediate.pem"));
+https.globalAgent.options.ca = rootCas;
 
 const SCRAPER_URL =
-  "https://timetable.csesoc.unsw.edu.au/api/terms/2021-T1/freerooms/";
+  "https://timetable.csesoc.unsw.edu.au/api/terms/2022-T1/freerooms/";
 
 export const getData = async (): Promise<ScraperData> => {
   const res = await axios.get(SCRAPER_URL);
@@ -15,6 +20,8 @@ export const getData = async (): Promise<ScraperData> => {
 
 // Gets all the room codes for rooms in UNSW by parsing the HTML with regex (please excuse my cardinal sin)
 export const getAllRoomIDs = async (): Promise<string[]> => {
+  // hello this is a bit slow! is there a way that we could move this to a background process
+  // that fetches like every x hours on our server, instead of doing this per request?
   const ROOM_URL =
     "https://www.learningenvironments.unsw.edu.au/find-teaching-space?building_name=&room_name=&page=";
 
