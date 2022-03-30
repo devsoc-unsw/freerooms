@@ -38,11 +38,19 @@ export type TimetableData = Record<string, Building>;
 
 export type RoomStatus = "free" | "soon" | "busy";
 
-export type BuildingRoomStatus = {
-  [roomId: string]: {
-    status: RoomStatus;
-    endtime: string;
+export type BuildingRoomStatusDetails = {
+  status: RoomStatus;
+  endtime: string;
+};
+
+export type BuildingRoomReturnStatus = {
+  rooms: {
+    [roomId: string]: BuildingRoomStatusDetails;
   };
+};
+
+export type BuildingRoomStatus = {
+  [roomId: string]: BuildingRoomStatusDetails;
 };
 
 export type BuildingData = {

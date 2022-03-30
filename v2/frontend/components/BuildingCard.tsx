@@ -1,12 +1,18 @@
 import React from "react";
 import useSWR from "swr";
-import { BuildingData, BuildingRoomStatus } from "../types";
+import { server } from "../config";
+import { BuildingData, BuildingRoomReturnStatus } from "../types";
+
 import Image, { ImageProps } from "next/image";
 import { styled } from "@mui/material/styles";
 import Box, { BoxProps } from "@mui/material/Box";
 import StatusDot from "./StatusDot";
 import { Typography } from "@mui/material";
 import Link from "next/link";
+import CircularProgress from "@mui/material/CircularProgress";
+
+const INITIALISING = -2;
+const FAILED = -1;
 
 const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
   position: "relative",
@@ -59,24 +65,25 @@ const TitleBox = styled(Box)<BoxProps>(({ theme }) => ({
   pointerEvents: "none",
 }));
 
-const calculateFreerooms = (rooms: BuildingRoomStatus[]) => {
-  let freerooms = 5;
-  // {message: 'unable to verify the first certificate', status: 400}
-  console.log(rooms);
+const calculateFreerooms = (data: BuildingRoomReturnStatus) => {
+  if (!data || !data.rooms) return FAILED;
+  let freerooms = 0;
+  for (const [key, value] of Object.entries(data.rooms)) {
+    if (value.status === "free") freerooms++;
+  }
   return freerooms;
 };
 
 const BuildingCard: React.FC<{
   building: BuildingData;
 }> = ({ building }) => {
-  const { data, error } = useSWR<BuildingRoomStatus[]>(
-    // TODO: change this when deploying
-    "/buildings/" + building.id
+  const { data, error } = useSWR<BuildingRoomReturnStatus>(
+    server + "/buildings/" + building.id
   );
-  const [freerooms, setFreeRooms] = React.useState(0);
+  const [freerooms, setFreeRooms] = React.useState(INITIALISING);
   React.useEffect(() => {
     if (data && !error) setFreeRooms(calculateFreerooms(data));
-  }, [data]);
+  }, [data, error]);
 
   return (
     <Link scroll={false} href={`/?building=${building.id}`}>
@@ -87,14 +94,28 @@ const BuildingCard: React.FC<{
           objectFit="cover"
         />
         <StatusBox>
-          <StatusDot
-            colour={
-              freerooms >= 5 ? "green" : freerooms !== 0 ? "orange" : "red"
-            }
-          />
-          <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
-            {freerooms} rooms available
-          </Typography>
+          {freerooms > INITIALISING ? (
+            <>
+              {freerooms !== FAILED ? (
+                <StatusDot
+                  colour={
+                    freerooms >= 5
+                      ? "green"
+                      : freerooms !== 0
+                      ? "orange"
+                      : "red"
+                  }
+                />
+              ) : null}
+              <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
+                {freerooms !== FAILED
+                  ? `${freerooms} rooms available`
+                  : "data unavailable"}
+              </Typography>
+            </>
+          ) : (
+            <CircularProgress size={20} thickness={5} disableShrink />
+          )}
         </StatusBox>
         <TitleBox>
           <Typography sx={{ fontSize: 16, fontWeight: 500 }}>

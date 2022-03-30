@@ -5,7 +5,7 @@
 import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { BuildingReturnData } from "../types";
+import { BuildingData, BuildingReturnData } from "../types";
 
 import Drawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
@@ -106,10 +106,6 @@ const ListView = ({ data }: { data: BuildingReturnData }) => {
   React.useEffect(() => {
     if (building) setCurrentBuilding(building.toString());
   }, [building]);
-
-  React.useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   return (
     <Container maxWidth={false}>
