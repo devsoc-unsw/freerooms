@@ -18,7 +18,7 @@
     "graphql": "^15.0.0",
     "luxon": "^2.0.2",
     "material-design-icons-iconfont": "^5.0.1",
-    "moment": "^2.26.0",
+    "moment": "^2.29.2",
     "vue": "^2.6.11",
     "vue-apollo": "^3.0.3",
     "vue-async-computed": "^3.9.0",
