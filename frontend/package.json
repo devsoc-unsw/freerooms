@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "VUE_APP_ENVIRONMENT=development vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
@@ -18,7 +18,7 @@
     "graphql": "^15.0.0",
     "luxon": "^2.0.2",
     "material-design-icons-iconfont": "^5.0.1",
-    "moment": "^2.26.0",
+    "moment": "^2.29.2",
     "vue": "^2.6.11",
     "vue-apollo": "^3.0.3",
     "vue-async-computed": "^3.9.0",
@@ -39,7 +39,7 @@
     "@vue/cli-service": "~4.3.0",
     "@vue/eslint-config-typescript": "^5.0.2",
     "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^6.2.2",
+    "eslint-plugin-vue": "^7.20.0",
     "sass": "~1.32.12",
     "sass-loader": "^8.0.0",
     "typescript": "~3.8.3",
