@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/csesoc/Freerooms#readme",
   "dependencies": {
-    "axios": "^0.24.0",
+    "axios": "^0.26.1",
     "express": "^4.17.1",
     "jsdom": "^17.0.0"
   }
