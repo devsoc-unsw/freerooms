@@ -3,6 +3,5 @@ module.exports = {
   runtimeCompiler: true,
   devServer: {
     disableHostCheck: true,
-    proxy: "https://freerooms.csesoc.unsw.edu.au/",
   },
 };

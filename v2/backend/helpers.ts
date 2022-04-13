@@ -10,7 +10,7 @@ rootCas.addFile(path.resolve(__dirname, "intermediate.pem"));
 https.globalAgent.options.ca = rootCas;
 
 const SCRAPER_URL =
-  "https://timetable.csesoc.unsw.edu.au/api/terms/2022-T1/freerooms/";
+  "https://timetable.csesoc.app/api/terms/2022-T1/freerooms/";
 
 export const getData = async (): Promise<ScraperData> => {
   const res = await axios.get(SCRAPER_URL);
