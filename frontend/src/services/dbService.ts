@@ -2,7 +2,7 @@
 import { Booking, BuildingData, Campus, Room } from "@/types";
 import axios, { AxiosError } from "axios";
 import { DateTime } from "luxon";
-import { API_URL } from "@/apiConfig";
+import { API_URL } from "@/apiconfig";
 
 // Handle error on request to backend.
 const handleError = (fn: Function) => (...params: any) =>

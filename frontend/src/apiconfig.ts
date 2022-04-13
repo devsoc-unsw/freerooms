@@ -4,7 +4,7 @@ export enum Env {
 }
 
 const LOCAL = 'http://localhost:3000';
-const LIVE = 'https://timetable.csesoc.app';
+const LIVE = 'https://freerooms.csesoc.app';
 
 const API_CONFIG: Record<string, string> = Object.freeze({
   [Env.DEV]: `${LOCAL}`,
