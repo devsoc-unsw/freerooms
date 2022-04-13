@@ -20,6 +20,6 @@
   "dependencies": {
     "axios": "^0.24.0",
     "express": "^4.17.1",
-    "jsdom": "^17.0.0"
+    "jsdom": "^19.0.0"
   }
 }
