@@ -20,7 +20,7 @@
     "material-design-icons-iconfont": "^5.0.1",
     "moment": "^2.29.2",
     "vue": "^2.6.11",
-    "vue-apollo": "^3.0.3",
+    "vue-apollo": "^3.1.0",
     "vue-async-computed": "^3.9.0",
     "vue-class-component": "^7.2.3",
     "vue-property-decorator": "^8.4.1",
