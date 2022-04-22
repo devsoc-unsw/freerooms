@@ -1,5 +1,4 @@
 import express, { Request, Response } from "express";
-const cors = require("cors");
 
 import { getDate } from "./helpers";
 import {
@@ -8,7 +7,7 @@ import {
   getRoomAvailability,
 } from "./service";
 
-import cors from 'cors';
+import cors from "cors";
 
 const app = express();
 const PORT = 3000;
