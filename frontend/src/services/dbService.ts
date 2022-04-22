@@ -2,6 +2,7 @@
 import { Booking, BuildingData, Campus, Room } from "@/types";
 import axios, { AxiosError } from "axios";
 import { DateTime } from "luxon";
+import { API_URL } from "@/apiconfig";
 
 // Handle error on request to backend.
 const handleError = (fn: Function) => (...params: any) =>
@@ -20,13 +21,13 @@ const handleError = (fn: Function) => (...params: any) =>
 const api = {
   // Get a list of all buildings
   getAllBuildings: async () => {
-    const url = `/buildings`;
+    const url = `${API_URL}/buildings`;
     const res = await axios.get(url);
     return res.data;
   },
   // Get a list of all rooms in a building.
   getRoomsInBuilding: handleError(async (location: string, date?: string) => {
-    const url = `/buildings/${location}`;
+    const url = `${API_URL}/buildings/${location}`;
     const qs = { params: { datetime: date } };
     const res = await axios.get(url, qs);
     return res.data;
@@ -34,7 +35,7 @@ const api = {
 
   // Get a list of all booked periods in the room for a given date.
   getRoomBookings: handleError(async (location: string, room: string) => {
-    const url = `/buildings/${location}/${room}`;
+    const url = `${API_URL}/buildings/${location}/${room}`;
     const res = await axios.get(url);
     return res.data;
   }),

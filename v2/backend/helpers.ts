@@ -2,15 +2,8 @@ import axios from "axios";
 import pkg from "jsdom";
 import { ScraperData } from "./types";
 const { JSDOM } = pkg;
-const path = require("path");
-const https = require("https");
-const rootCas = require("ssl-root-cas").create();
 
-rootCas.addFile(path.resolve(__dirname, "intermediate.pem"));
-https.globalAgent.options.ca = rootCas;
-
-const SCRAPER_URL =
-  "https://timetable.csesoc.unsw.edu.au/api/terms/2022-T1/freerooms/";
+const SCRAPER_URL = "https://timetable.csesoc.app/api/terms/2022-T1/freerooms/";
 
 export const getData = async (): Promise<ScraperData> => {
   const res = await axios.get(SCRAPER_URL);
