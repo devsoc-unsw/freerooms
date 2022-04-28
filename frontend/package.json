@@ -14,7 +14,7 @@
     "@types/luxon": "^2.0.2",
     "apollo-boost": "^0.4.7",
     "axios": "^0.21.2",
-    "core-js": "^3.6.4",
+    "core-js": "^3.22.3",
     "graphql": "^15.0.0",
     "luxon": "^2.0.2",
     "material-design-icons-iconfont": "^5.0.1",
