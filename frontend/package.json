@@ -17,7 +17,7 @@
     "core-js": "^3.22.4",
     "graphql": "^15.0.0",
     "luxon": "^2.0.2",
-    "material-design-icons-iconfont": "^5.0.1",
+    "material-design-icons-iconfont": "^6.7.0",
     "moment": "^2.29.2",
     "vue": "^2.6.11",
     "vue-apollo": "^3.1.0",
