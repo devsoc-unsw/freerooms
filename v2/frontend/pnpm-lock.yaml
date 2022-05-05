@@ -2,8 +2,8 @@ lockfileVersion: 5.4
 
 specifiers:
   '@babel/core': 7.17.10
-  '@mantine/core': 3.6.11
-  '@mantine/hooks': 3.6.11
+  '@mantine/core': 3.6.14
+  '@mantine/hooks': 3.6.14
   '@types/node': 17.0.31
   '@types/react': 17.0.44
   eslint: 8.14.0
@@ -14,8 +14,8 @@ specifiers:
   typescript: 4.6.4
 
 dependencies:
-  '@mantine/core': 3.6.11_omdqyiqrksenkdrghzlhnxuedu
-  '@mantine/hooks': 3.6.11_react@17.0.2
+  '@mantine/core': 3.6.14_4int73xuwpzmx3vwmz5ii4hl2y
+  '@mantine/hooks': 3.6.14_react@17.0.2
   next: 12.1.6_tmacpkxga3bcx5k2p7mjqnxqbe
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
@@ -398,15 +398,15 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.12
     dev: true
 
-  /@mantine/core/3.6.11_omdqyiqrksenkdrghzlhnxuedu:
-    resolution: {integrity: sha512-WeL10zfO/u6ZBTh6LOxP2WBqdvNpG0BU0tdUfZFUIRW6/rz+vWhZylFwZfxtaoDgas6JaXWm+Hdxqnop9Zix2w==}
+  /@mantine/core/3.6.14_4int73xuwpzmx3vwmz5ii4hl2y:
+    resolution: {integrity: sha512-O8x2uvLND9omsqI3hdkb59tkOyY7U4iSj+ZtKb9iPxejRxg+xv2BTlc5hxr5wFyu6gGv5NOoAelrdI/4g/e+1A==}
     peerDependencies:
-      '@mantine/hooks': 3.6.11
+      '@mantine/hooks': 3.6.14
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     dependencies:
-      '@mantine/hooks': 3.6.11_react@17.0.2
-      '@mantine/styles': 3.6.11_fcdgd5lt5hi7mmx5qv2pcp22ie
+      '@mantine/hooks': 3.6.14_react@17.0.2
+      '@mantine/styles': 3.6.14_fcdgd5lt5hi7mmx5qv2pcp22ie
       '@popperjs/core': 2.11.5
       '@radix-ui/react-scroll-area': 0.1.4_react@17.0.2
       clsx: 1.1.1
@@ -419,16 +419,16 @@ packages:
       - '@types/react'
     dev: false
 
-  /@mantine/hooks/3.6.11_react@17.0.2:
-    resolution: {integrity: sha512-HojHT9FnP+mEA1idXYNVxTy7Fdzlk8aLjs/v9Mik9os3TjPiLSV9C6pSck06LepEIC6PEICQi/WSTP1rY8ZP+g==}
+  /@mantine/hooks/3.6.14_react@17.0.2:
+    resolution: {integrity: sha512-ob6FdjG7/plSpp2VOUvfEQb8a02hlLFo8Qp/EFU8OHn3lfp8PEKGxWQznPPQ9Zay53ZFm05ixrFq9z7+M5jEdQ==}
     peerDependencies:
       react: '>=16.8.0'
     dependencies:
       react: 17.0.2
     dev: false
 
-  /@mantine/styles/3.6.11_fcdgd5lt5hi7mmx5qv2pcp22ie:
-    resolution: {integrity: sha512-KgDWV1TfaTXbhOKjoE31jDtTHn55VrmurrnXiPFndGlCPwx9RHQF4MNaUEHQof+qq4qTRR/wOLGrC43s21FbDA==}
+  /@mantine/styles/3.6.14_fcdgd5lt5hi7mmx5qv2pcp22ie:
+    resolution: {integrity: sha512-LtTrR1TMs7lGIL7jXrV8mFVLfIvZ0aRshSXXREyFe1X1T+qIOJlBFy/kconkSJdJmqpJ3T5yXivQebz9h8OT4Q==}
     peerDependencies:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
