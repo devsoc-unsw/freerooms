@@ -19,6 +19,10 @@
         "@types/react-dom"
       ],
       "groupName": "react monorepo with types"
+    },
+    {
+      "matchPackagePatterns": ["@mantine/*"],
+      "groupName": "mantine monorepo"
     }
   ]
 }
