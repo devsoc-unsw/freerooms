@@ -10,16 +10,23 @@ jobs:
       fail-fast: false
       matrix:
         component: [frontend, v2/frontend]
+        include:
+          - component: frontend
+            command: npm ci
+          - component: v2/frontend
+            command: pnpm i --frozen-lockfile
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: "16"
+      - name: Install pnpm
+        run: npm i -g pnpm
       - name: Install dependencies
-        run: npm ci
+        run: ${{ matrix.command }}
         working-directory: ${{ matrix.component }}
       - name: Build
-        run: npm run lint
+        run: pnpm lint
         working-directory: ${{ matrix.component }}
   build:
     name: "Build (${{ matrix.component }})"
@@ -28,14 +35,23 @@ jobs:
       fail-fast: false
       matrix:
         component: [frontend, v2/backend, v2/frontend]
+        include:
+          - component: frontend
+            command: npm ci
+          - component: v2/frontend
+            command: pnpm i --frozen-lockfile
+          - component: v2/backend
+            command: pnpm i --frozen-lockfile
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: "16"
+      - name: Install pnpm
+        run: npm i -g pnpm
       - name: Install dependencies
-        run: npm ci
+        run: ${{ matrix.command }}
         working-directory: ${{ matrix.component }}
       - name: Build
-        run: npm run build
+        run: pnpm build
         working-directory: ${{ matrix.component }}

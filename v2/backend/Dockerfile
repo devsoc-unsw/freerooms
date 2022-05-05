@@ -1,20 +1,22 @@
 FROM node:16.14-alpine as builder
+RUN npm i -g pnpm
 
 # Set the current working directory inside the container
 WORKDIR /app
 
-COPY package.json package-lock.json ./
-RUN npm install
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install
 
 COPY . .
 
-RUN npm run build
+RUN pnpm run build
 
 FROM node:16.14-alpine as runner
+RUN npm i -g pnpm
 WORKDIR /app
 
-COPY package.json package-lock.json ./
-RUN npm install --production
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --production
 
 COPY --from=builder /app/dist ./dist
 
