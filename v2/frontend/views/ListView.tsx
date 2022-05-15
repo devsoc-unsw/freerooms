@@ -10,6 +10,7 @@ import {
 } from "@mantine/core";
 
 import Branding from "../components/Branding";
+import Searchbar from "../components/Searchbar";
 
 const ListView = () => {
   const [selection, setSelection] = React.useState<string>("upper");
@@ -17,8 +18,9 @@ const ListView = () => {
   return (
     <AppShell
       header={
-        <Header height={80} padding="xs">
+        <Header height={150} padding="xs">
           <Branding />
+          <Searchbar />
         </Header>
       }
       navbar={
