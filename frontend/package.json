@@ -16,7 +16,7 @@
     "axios": "0.27.2",
     "core-js": "3.22.5",
     "graphql": "15.8.0",
-    "luxon": "2.3.2",
+    "luxon": "2.4.0",
     "material-design-icons-iconfont": "5.0.1",
     "moment": "2.29.3",
     "vue": "2.6.14",
