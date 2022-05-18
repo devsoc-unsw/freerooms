@@ -39,13 +39,11 @@ export const getAllRoomIDs = async () => {
   let roomIDs: string[] = [];
   let roomPromises: Promise<any>[] = [];
   for (let i = 0; i < MAX_PAGES; i++) {
-    const response = await axios.get(ROOM_URL + i);
-    const data = response.data;
-    roomPromises.push(data);
+    roomPromises.push(axios.get(ROOM_URL + i));
   }
-  await Promise.all(roomPromises).then((values) => {
-    values.forEach((data) => {
-      const htmlDoc = new JSDOM(data);
+  await Promise.all(roomPromises).then((responses) => {
+    responses.forEach((response) => {
+      const htmlDoc = new JSDOM(response.data);
       const rawRoomIDs =
         htmlDoc.window.document.getElementsByClassName("field-item");
       if (!rawRoomIDs) return roomIDs;
