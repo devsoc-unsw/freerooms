@@ -9,11 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@mantine/core": "3.6.14",
-    "@mantine/hooks": "3.6.14",
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.8.1",
+    "@mui/icons-material": "^5.5.0",
+    "@mui/material": "^5.8.0",
+    "@mui/system": "^5.8.0",
+    "axios": "^0.26.1",
     "next": "12.1.6",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "swr": "^1.2.2"
   },
   "devDependencies": {
     "@babel/core": "7.17.12",
