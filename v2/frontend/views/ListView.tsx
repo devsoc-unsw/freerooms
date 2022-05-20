@@ -186,16 +186,7 @@ const ListView = ({ data }: { data: BuildingReturnData }) => {
           open={drawerOpen()}
         >
           <Divider />
-          {currentBuilding ? (
-            <>
-              <StyledImage
-                src={`/assets/building_photos/${currentBuilding}.png`}
-                layout="fill"
-                priority={true}
-              />
-              currently selected: {currentBuilding}
-            </>
-          ) : null}
+          {currentBuilding ? <>currently selected: {currentBuilding}</> : null}
         </Drawer>
       </Box>
     </Container>
