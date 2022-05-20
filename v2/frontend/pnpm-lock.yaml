@@ -6,6 +6,7 @@ specifiers:
   '@emotion/styled': ^11.8.1
   '@mui/icons-material': ^5.5.0
   '@mui/material': ^5.8.0
+  '@mui/system': ^5.8.0
   '@types/node': 17.0.31
   '@types/react': 17.0.45
   axios: ^0.26.1
@@ -22,6 +23,7 @@ dependencies:
   '@emotion/styled': 11.8.1_3f927cea58851bff20058e27c47df476
   '@mui/icons-material': 5.8.0_99c9214bc47a23b5ac3f4ac7775be82f
   '@mui/material': 5.8.0_c8c10a639b2b9753cb2d3f27112f331c
+  '@mui/system': 5.8.0_b5991da3249a8a03ba2924225b5f4cea
   axios: 0.26.1
   next: 12.1.6_1c8eb55a7cd394dff7d2e804253294a5
   react: 17.0.2
