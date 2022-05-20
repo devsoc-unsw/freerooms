@@ -91,9 +91,10 @@ const BuildingCard: React.FC<{
 
   React.useEffect(() => {
     if (isVisible && !loaded) {
+      setLoaded(true);
       calcFreerooms();
     }
-  }, [isVisible]);
+  }, [isVisible, loaded, calcFreerooms]);
 
   return (
     <Link scroll={false} href={`/?building=${building.id}`}>
