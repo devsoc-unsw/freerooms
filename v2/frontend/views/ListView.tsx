@@ -5,6 +5,7 @@
 import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import Image, { ImageProps } from "next/image";
 import { BuildingData, BuildingReturnData } from "../types";
 
 import Drawer from "@mui/material/Drawer";
@@ -80,6 +81,10 @@ const ButtonGroup = styled(Box)(({ theme }) => ({
   justifyContent: "flex-end",
   alignItems: "center",
   paddingRight: theme.spacing(2),
+}));
+
+const StyledImage = styled(Image)<ImageProps>(({ theme }) => ({
+  borderRadius: 10,
 }));
 
 const ListView = ({ data }: { data: BuildingReturnData }) => {
@@ -181,7 +186,16 @@ const ListView = ({ data }: { data: BuildingReturnData }) => {
           open={drawerOpen()}
         >
           <Divider />
-          currently selected: {currentBuilding}
+          {currentBuilding ? (
+            <>
+              <StyledImage
+                src={`/assets/building_photos/${currentBuilding}.png`}
+                layout="fill"
+                priority={true}
+              />
+              currently selected: {currentBuilding}
+            </>
+          ) : null}
         </Drawer>
       </Box>
     </Container>
