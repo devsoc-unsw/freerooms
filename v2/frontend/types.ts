@@ -27,40 +27,40 @@ export type Day = Record<string, ClassList>;
 
 export type Week = Record<string, Day>;
 
-export type Room = {
+export type RoomClasses = {
   name: string;
   classes: Week;
 };
 
-export type Building = Record<string, Room>;
+// export type Building = Record<string, Room>;
 
 export type TimetableData = Record<string, Building>;
 
 export type RoomStatus = "free" | "soon" | "busy";
 
-export type BuildingRoomStatusDetails = {
+export type Room = {
   status: RoomStatus;
   endtime: string;
 };
 
 export type BuildingRoomReturnStatus = {
   rooms: {
-    [roomId: string]: BuildingRoomStatusDetails;
+    [roomId: string]: Room;
   };
 };
 
 export type BuildingRoomStatus = {
-  [roomId: string]: BuildingRoomStatusDetails;
+  [roomId: string]: Room;
 };
 
-export type BuildingData = {
+export type Building = {
   name: string;
   id: string;
   img: string;
 };
 
 export type BuildingReturnData = {
-  buildings: BuildingData[];
+  buildings: Building[];
 };
 
 export type RoomAvailability = {

@@ -31,7 +31,9 @@ export async function getStaticProps() {
   // fetches /buildings via **BUILD** time so we don't need to have
   // the client fetch buildings data every request
   const res = await fetch(server + "/buildings");
-  const buildings: BuildingReturnData = await res.json();
+  let buildings: BuildingReturnData = await res.json();
+  buildings.buildings.sort((a, b) => a.name.localeCompare(b.name));
+  console.log(buildings);
   return {
     props: {
       buildings,

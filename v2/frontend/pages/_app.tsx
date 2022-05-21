@@ -17,7 +17,8 @@ const theme = createTheme({
   },
 });
 
-const fetcher = (url: string) => axios.get(url).then((res) => res.data);
+const fetcher = (url: string, config: any) =>
+  axios.get(url, config).then((res) => res.data);
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

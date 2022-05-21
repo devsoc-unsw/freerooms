@@ -6,7 +6,7 @@ import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Image, { ImageProps } from "next/image";
-import { BuildingData, BuildingReturnData } from "../types";
+import { Building, BuildingReturnData } from "../types";
 
 import Drawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
@@ -21,6 +21,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import Branding from "../components/Branding";
 import Button from "../components/Button";
 import BuildingCard from "../components/BuildingCard";
+import BuildingInfo from "./BuildingInfo";
 
 const drawerWidth = 400;
 
@@ -104,9 +105,9 @@ const ListView = ({ data }: { data: BuildingReturnData }) => {
 
   const [currentBuilding, setCurrentBuilding] = React.useState<string | null>(
     building ? building.toString() : null
-  ); // use BuildingID here
+  );
 
-  const drawerOpen = () => (currentBuilding ? true : false);
+  const drawerOpen = currentBuilding ? true : false;
 
   React.useEffect(() => {
     if (building) setCurrentBuilding(building.toString());
@@ -118,7 +119,7 @@ const ListView = ({ data }: { data: BuildingReturnData }) => {
         <CssBaseline />
         <AppBar
           position="fixed"
-          open={drawerOpen()}
+          open={drawerOpen}
           sx={(theme) => ({
             borderBottom: "1px solid #e0e0e0",
           })}
@@ -150,7 +151,7 @@ const ListView = ({ data }: { data: BuildingReturnData }) => {
             </Stack>
           </ButtonGroup>
         </AppBar>
-        <Main open={drawerOpen()}>
+        <Main open={drawerOpen}>
           {/* selection === "upper" ? (
             <UpperBuildings setCurrentBuilding={setCurrentBuilding} />
           ) : (
@@ -183,10 +184,10 @@ const ListView = ({ data }: { data: BuildingReturnData }) => {
           }}
           variant="persistent"
           anchor="right"
-          open={drawerOpen()}
+          open={drawerOpen}
         >
           <Divider />
-          {currentBuilding ? <>currently selected: {currentBuilding}</> : null}
+          <BuildingInfo id={currentBuilding!} />
         </Drawer>
       </Box>
     </Container>

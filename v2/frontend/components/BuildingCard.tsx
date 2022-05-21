@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import useSWR from "swr";
 import { server } from "../config";
-import { BuildingData, BuildingRoomReturnStatus } from "../types";
+import { Building, BuildingRoomReturnStatus } from "../types";
 
 import Image, { ImageProps } from "next/image";
 import { styled } from "@mui/material/styles";
@@ -76,25 +76,21 @@ const calculateFreerooms = (data: BuildingRoomReturnStatus) => {
 };
 
 const BuildingCard: React.FC<{
-  building: BuildingData;
+  building: Building;
 }> = ({ building }) => {
   const ref = useRef();
   const isVisible = useOnScreen(ref);
 
-  const [loaded, setLoaded] = React.useState(false);
+  const { data, error } = useSWR<BuildingRoomReturnStatus>(
+    isVisible ? server + "/buildings/" + building.id : null
+  );
   const [freerooms, setFreeRooms] = React.useState(INITIALISING);
 
-  const calcFreerooms = async () =>
-    fetch(server + "/buildings/" + building.id)
-      .then((res) => res.json())
-      .then((data) => setFreeRooms(calculateFreerooms(data)));
-
   React.useEffect(() => {
-    if (isVisible && !loaded) {
-      setLoaded(true);
-      calcFreerooms();
+    if (isVisible && data) {
+      setFreeRooms(calculateFreerooms(data));
     }
-  }, [isVisible, loaded, calcFreerooms]);
+  }, [data, isVisible, setFreeRooms, calculateFreerooms]);
 
   return (
     <Link scroll={false} href={`/?building=${building.id}`}>
@@ -108,7 +104,7 @@ const BuildingCard: React.FC<{
         <StatusBox>
           {freerooms > INITIALISING ? (
             <>
-              {freerooms !== FAILED ? (
+              {error || freerooms !== FAILED ? (
                 <StatusDot
                   colour={
                     freerooms >= 5
@@ -120,7 +116,7 @@ const BuildingCard: React.FC<{
                 />
               ) : null}
               <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
-                {freerooms !== FAILED
+                {error || freerooms !== FAILED
                   ? `${freerooms} room${freerooms === 1 ? "" : "s"} available`
                   : "data unavailable"}
               </Typography>
