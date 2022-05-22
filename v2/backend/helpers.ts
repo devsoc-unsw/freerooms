@@ -1,11 +1,29 @@
 import axios from "axios";
 import pkg from "jsdom";
+import { ScraperData } from "./types";
 const { JSDOM } = pkg;
 
-import { ScraperData } from "./types";
+/*
+ * Definitions
+ */
+const SCRAPER_URL = "https://timetable.csesoc.app/api/terms/2022-T1/freerooms/";
+const ROOM_URL =
+  "https://www.learningenvironments.unsw.edu.au/find-teaching-space?building_name=&room_name=&page=";
 
-const SCRAPER_URL =
-  "https://timetable.csesoc.unsw.edu.au/api/terms/2021-T1/freerooms/";
+const MAX_PAGES = 13;
+
+const ROOM_REGEX = /^[A-Z]-[A-Z][0-9]{1,2}-[A-Z]{0,2}[0-9]{1,4}[A-Z]{0,1}$/;
+// One letter - campus ID, e.g. K for Kensington
+// One letter followed by one or two numbers for grid reference e.g. D16 or F8
+// Zero, one or two letters for the floor then between one to four numbers for the room number
+// Library rooms may end in a letter
+// Zero letter floor - 313
+// One letter floor - M18
+// Two letter floor - LG19
+
+/*
+ * Implementation
+ */
 
 export const getData = async (): Promise<ScraperData> => {
   const res = await axios.get(SCRAPER_URL);
@@ -14,52 +32,41 @@ export const getData = async (): Promise<ScraperData> => {
 };
 
 // Gets all the room codes for rooms in UNSW by parsing the HTML with regex (please excuse my cardinal sin)
-export const getAllRoomIDs = async (): Promise<string[]> => {
-  const ROOM_URL =
-    "https://www.learningenvironments.unsw.edu.au/find-teaching-space?building_name=&room_name=&page=";
-
-  const MAX_PAGES = 13;
-
-  const ROOM_REGEX = /^[A-Z]-[A-Z][0-9]{1,2}-[A-Z]{0,2}[0-9]{1,4}[A-Z]{0,1}$/;
-  // One letter - campus ID, e.g. K for Kensington
-  // One letter followed by one or two numbers for grid reference e.g. D16 or F8
-  // Zero, one or two letters for the floor then between one to four numbers for the room number
-  // Library rooms may end in a letter
-  // Zero letter floor - 313
-  // One letter floor - M18
-  // Two letter floor - LG19
+export const getAllRoomIDs = async () => {
+  // hello this is a bit slow! is there a way that we could move this to a background process
+  // that fetches like every x hours on our server, instead of doing this per request?
 
   let roomIDs: string[] = [];
   console.log("hiiii");
 
+  let roomPromises: Promise<any>[] = [];
   for (let i = 0; i < MAX_PAGES; i++) {
-    const response = await axios.get(ROOM_URL + i);
-    const data = await response.data;
-
-    const htmlDoc = new JSDOM(data);
-    const rawRoomIDs =
-      htmlDoc.window.document.getElementsByClassName("field-item");
-
-    if (!rawRoomIDs) return roomIDs;
-
-    const cleanRoomIDs = [];
-
-    for (let j = 0; j < rawRoomIDs.length; j++) {
-      let roomID = rawRoomIDs.item(j)?.innerHTML;
-      if (roomID && ROOM_REGEX.test(roomID)) {
-        cleanRoomIDs.push(roomID);
-      }
-    }
-
-    roomIDs = roomIDs.concat(cleanRoomIDs);
+    roomPromises.push(axios.get(ROOM_URL + i));
   }
+
+  await Promise.all(roomPromises).then((responses) => {
+    responses.forEach((response) => {
+      const htmlDoc = new JSDOM(response.data);
+      const rawRoomIDs =
+        htmlDoc.window.document.getElementsByClassName("field-item");
+      if (!rawRoomIDs) return roomIDs;
+      const cleanRoomIDs = [];
+      for (let j = 0; j < rawRoomIDs.length; j++) {
+        let roomID = rawRoomIDs.item(j)?.innerHTML;
+        if (roomID && ROOM_REGEX.test(roomID)) {
+          cleanRoomIDs.push(roomID);
+        }
+      }
+      roomIDs = roomIDs.concat(cleanRoomIDs);
+    });
+  });
 
   const dict = {"roomIDs": roomIDs};
   const dictString = JSON.stringify(dict);
   const fs = require('fs');
   fs.writeFile("database.json", dictString);
   console.log("hello");
-
+  
   return roomIDs;
 };
 
