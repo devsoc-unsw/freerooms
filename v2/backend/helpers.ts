@@ -30,6 +30,7 @@ export const getAllRoomIDs = async (): Promise<string[]> => {
   // Two letter floor - LG19
 
   let roomIDs: string[] = [];
+  console.log("hiiii");
 
   for (let i = 0; i < MAX_PAGES; i++) {
     const response = await axios.get(ROOM_URL + i);
@@ -52,6 +53,12 @@ export const getAllRoomIDs = async (): Promise<string[]> => {
 
     roomIDs = roomIDs.concat(cleanRoomIDs);
   }
+
+  const dict = {"roomIDs": roomIDs};
+  const dictString = JSON.stringify(dict);
+  const fs = require('fs');
+  fs.writeFile("database.json", dictString);
+  console.log("hello");
 
   return roomIDs;
 };
