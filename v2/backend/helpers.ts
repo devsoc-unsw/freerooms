@@ -63,10 +63,11 @@ export const getAllRoomIDs = async () => {
 
   const dict = {"roomIDs": roomIDs};
   const dictString = JSON.stringify(dict);
+  console.log(dictString)
   const fs = require('fs');
-  fs.writeFile("database.json", dictString);
+  fs.writeFileSync("database.json", dictString);
   console.log("hello");
-  
+
   return roomIDs;
 };
 
