@@ -77,7 +77,8 @@ const calculateFreerooms = (data: BuildingRoomReturnStatus) => {
 
 const BuildingCard: React.FC<{
   building: Building;
-}> = ({ building }) => {
+  setBuilding: (building: Building) => void;
+}> = ({ building, setBuilding }) => {
   const ref = useRef();
   const isVisible = useOnScreen(ref);
 
@@ -93,45 +94,39 @@ const BuildingCard: React.FC<{
   }, [data, isVisible, setFreeRooms, calculateFreerooms]);
 
   return (
-    <Link scroll={false} href={`/?building=${building.id}`}>
-      <MainBox ref={ref}>
-        <StyledImage
-          src={`/assets/building_photos/${building.id}.png`}
-          layout="fill"
-          objectFit="cover"
-          priority={true}
-        />
-        <StatusBox>
-          {freerooms > INITIALISING ? (
-            <>
-              {error || freerooms !== FAILED ? (
-                <StatusDot
-                  colour={
-                    freerooms >= 5
-                      ? "green"
-                      : freerooms !== 0
-                      ? "orange"
-                      : "red"
-                  }
-                />
-              ) : null}
-              <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
-                {error || freerooms !== FAILED
-                  ? `${freerooms} room${freerooms === 1 ? "" : "s"} available`
-                  : "data unavailable"}
-              </Typography>
-            </>
-          ) : (
-            <CircularProgress size={20} thickness={5} disableShrink />
-          )}
-        </StatusBox>
-        <TitleBox>
-          <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
-            {building.name}
-          </Typography>
-        </TitleBox>
-      </MainBox>
-    </Link>
+    <MainBox ref={ref} onClick={() => setBuilding(building)}>
+      <StyledImage
+        src={`/assets/building_photos/${building.id}.png`}
+        layout="fill"
+        objectFit="cover"
+        priority={true}
+      />
+      <StatusBox>
+        {freerooms > INITIALISING ? (
+          <>
+            {error || freerooms !== FAILED ? (
+              <StatusDot
+                colour={
+                  freerooms >= 5 ? "green" : freerooms !== 0 ? "orange" : "red"
+                }
+              />
+            ) : null}
+            <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
+              {error || freerooms !== FAILED
+                ? `${freerooms} room${freerooms === 1 ? "" : "s"} available`
+                : "data unavailable"}
+            </Typography>
+          </>
+        ) : (
+          <CircularProgress size={20} thickness={5} disableShrink />
+        )}
+      </StatusBox>
+      <TitleBox>
+        <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
+          {building.name}
+        </Typography>
+      </TitleBox>
+    </MainBox>
   );
 };
 

@@ -56,9 +56,6 @@ const StatusBox = styled(Box)<BoxProps>(({ theme }) => ({
   justifyContent: "center",
   alignItems: "center",
   borderRadius: 15,
-  position: "absolute",
-  top: 0,
-  right: 0,
   backgroundColor: "white",
   padding: 10,
   paddingLeft: 15,
@@ -84,46 +81,18 @@ const TitleBox = styled(Box)<BoxProps>(({ theme }) => ({
 }));
 
 const BuildingInfo: React.FC<{
-  id: string;
-}> = ({ id }) => {
-  const [date, setDate] = React.useState<DateTime | null>(null);
-  React.useEffect(() => {
-    setDate(DateTime.now());
-  }, []);
+  building?: Building;
+}> = ({ building }) => {
+  if (!building) return <></>;
+  const [date, setDate] = React.useState<DateTime>(DateTime.now());
   const [sort, setSort] = React.useState<"name" | "available">("name");
-
-  const { data: buildingsData, error: buildingsError } =
-    useSWR<BuildingReturnData>(server + "/buildings");
-  const [building, setBuilding] = React.useState<Building | null>(null);
-
-  React.useEffect(() => {
-    buildingsData!.buildings
-      .find((building) => building.id === id)
-      .then((building) => setBuilding(building));
-  }, [buildingsData, id]);
+  const [rooms, setRooms] = React.useState<Room[]>([]);
 
   const { data: roomsData, error: roomsError } =
     useSWR<BuildingRoomReturnStatus>({
-      url: server + "/buildings/" + id,
+      url: server + "/buildings/" + building.id,
       config: { params: { datetime: date.toFormat("yyyy-MM-dd HH:mm") } },
     });
-
-  const [allRooms, setAllRooms] = React.useState<Room[]>([]);
-  const [availableRooms, setAvailableRooms] = React.useState<Room[]>([]);
-  const [unavailableRooms, setUnavailableRooms] = React.useState<Room[]>([]);
-
-  const filterRoomsAvailable = (rooms: Room[], filterStatus: RoomStatus) =>
-    rooms.filter((v) => v.status === filterStatus);
-
-  /*const updateDateTime = async () => {
-    this.availableRooms = this.filterRoomsAvailable(this.allRooms, "free");
-    this.availableSoonRooms = this.filterRoomsAvailable(this.allRooms, "soon");
-    this.unavailableRooms = this.filterRoomsAvailable(this.allRooms, "busy");
-  };*/
-
-  React.useEffect(() => {
-    // update rooms
-  }, [roomsData]);
 
   /*const sortRooms = (rooms: Room[]) => {
     if (sort === "name") {
@@ -145,49 +114,53 @@ const BuildingInfo: React.FC<{
 
   return (
     <MainBox>
-      <AppBar
-        position="fixed"
-        sx={(theme) => ({
-          borderBottom: "1px solid #e0e0e0",
-        })}
+      <StatusBox>
+        {roomsData ? (
+          <>
+            {roomsError ? (
+              <StatusDot
+                colour={
+                  rooms.filter((r) => r.status === "free").length >= 5
+                    ? "green"
+                    : rooms.filter((r) => r.status === "free").length !== 0
+                    ? "orange"
+                    : "red"
+                }
+              />
+            ) : null}
+            <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
+              {roomsData && !roomsError
+                ? `${rooms.length} room${
+                    rooms.length === 1 ? "" : "s"
+                  } available`
+                : "data unavailable"}
+            </Typography>
+          </>
+        ) : (
+          <CircularProgress size={20} thickness={5} disableShrink />
+        )}
+      </StatusBox>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+          flexWrap: "wrap",
+          margin: 10,
+        }}
       >
-        <StatusBox>
-          {roomsData ? (
-            <>
-              {roomsError ? (
-                <StatusDot
-                  colour={
-                    availableRooms.length >= 5
-                      ? "green"
-                      : availableRooms.length !== 0
-                      ? "orange"
-                      : "red"
-                  }
-                />
-              ) : null}
-              <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
-                {roomsData && !roomsError
-                  ? `${allRooms.length} room${
-                      allRooms.length === 1 ? "" : "s"
-                    } available`
-                  : "data unavailable"}
-              </Typography>
-            </>
-          ) : (
-            <CircularProgress size={20} thickness={5} disableShrink />
-          )}
-        </StatusBox>
-      </AppBar>
-      <StyledImage
-        src={`/assets/building_photos/${id}.png`}
-        layout="fill"
-        objectFit="cover"
-        priority={true}
-      />
+        <StyledImage
+          src={`/assets/building_photos/${building.id}.png`}
+          layout="fill"
+          objectFit="cover"
+          priority={true}
+        />
+      </div>
 
       <TitleBox>
         <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
-          {building ? building.name : ""}
+          {building.name}
         </Typography>
       </TitleBox>
     </MainBox>
