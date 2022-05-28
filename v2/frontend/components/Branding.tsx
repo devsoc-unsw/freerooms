@@ -14,6 +14,12 @@ const StyledBox = styled(Box)<BoxProps>(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   flex: 1,
+  opacity: 1,
+  transition: "all 0.1s ease-in-out",
+  "&:hover": {
+    cursor: "pointer",
+    opacity: 0.7,
+  },
 }));
 
 const Branding = (props: BoxProps) => (
@@ -28,7 +34,7 @@ const Branding = (props: BoxProps) => (
       }}
     >
       <StyledText sx={{ lineHeight: 1 }}>Freerooms</StyledText>
-      <StyledText sx={{ lineHeight: 1, marginTop: 0.5 }}>22T1</StyledText>
+      <StyledText sx={{ lineHeight: 1, marginTop: 0.5 }}>22T2</StyledText>
     </Box>
   </StyledBox>
 );

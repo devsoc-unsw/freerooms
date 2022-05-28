@@ -81,18 +81,23 @@ const TitleBox = styled(Box)<BoxProps>(({ theme }) => ({
 }));
 
 const BuildingInfo: React.FC<{
-  building?: Building;
+  building: Building | null;
+  onClose?: () => void;
 }> = ({ building }) => {
   if (!building) return <></>;
+
   const [date, setDate] = React.useState<DateTime>(DateTime.now());
   const [sort, setSort] = React.useState<"name" | "available">("name");
   const [rooms, setRooms] = React.useState<Room[]>([]);
-
   const { data: roomsData, error: roomsError } =
-    useSWR<BuildingRoomReturnStatus>({
-      url: server + "/buildings/" + building.id,
-      config: { params: { datetime: date.toFormat("yyyy-MM-dd HH:mm") } },
-    });
+    useSWR<BuildingRoomReturnStatus>(
+      building
+        ? {
+            url: server + "/buildings/" + building!.id,
+            config: { params: { datetime: date.toFormat("yyyy-MM-dd HH:mm") } },
+          }
+        : null
+    );
 
   /*const sortRooms = (rooms: Room[]) => {
     if (sort === "name") {
@@ -151,7 +156,7 @@ const BuildingInfo: React.FC<{
         }}
       >
         <StyledImage
-          src={`/assets/building_photos/${building.id}.png`}
+          src={`/assets/building_photos/${building!.id}.png`}
           layout="fill"
           objectFit="cover"
           priority={true}
@@ -160,7 +165,7 @@ const BuildingInfo: React.FC<{
 
       <TitleBox>
         <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
-          {building.name}
+          {building!.name}
         </Typography>
       </TitleBox>
     </MainBox>

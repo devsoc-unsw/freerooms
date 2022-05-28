@@ -30,15 +30,11 @@ import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
 import SearchIcon from "@mui/icons-material/Search";
 import { BoxProps, Typography } from "@mui/material";
-import CircularProgress from "@mui/material/CircularProgress";
 
-import StatusDot from "../components/StatusDot";
 import Branding from "../components/Branding";
 import Button from "../components/Button";
 import BuildingCard from "../components/BuildingCard";
-
-const INITIALISING = -2;
-const FAILED = -1;
+import BuildingInfo from "../views/BuildingInfo";
 
 const Home: NextPage<{ data: BuildingReturnData }> = ({ data }) => {
   const router = useRouter();
@@ -72,76 +68,6 @@ const Home: NextPage<{ data: BuildingReturnData }> = ({ data }) => {
 
   const drawerOpen = currentBuilding ? true : false;
 
-  const [date, setDate] = React.useState<DateTime>(DateTime.now());
-  const [sort, setSort] = React.useState<"name" | "available">("name");
-  const [rooms, setRooms] = React.useState<Room[]>([]);
-  const { data: roomsData, error: roomsError } =
-    useSWR<BuildingRoomReturnStatus>(
-      currentBuilding
-        ? {
-            url: server + "/buildings/" + currentBuilding!.id,
-            config: { params: { datetime: date.toFormat("yyyy-MM-dd HH:mm") } },
-          }
-        : null
-    );
-
-  const BuildingInfo = () =>
-    currentBuilding ? (
-      <MainBox>
-        <StatusBox>
-          {roomsData ? (
-            <>
-              {roomsError ? (
-                <StatusDot
-                  colour={
-                    rooms.filter((r) => r.status === "free").length >= 5
-                      ? "green"
-                      : rooms.filter((r) => r.status === "free").length !== 0
-                      ? "orange"
-                      : "red"
-                  }
-                />
-              ) : null}
-              <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
-                {roomsData && !roomsError
-                  ? `${rooms.length} room${
-                      rooms.length === 1 ? "" : "s"
-                    } available`
-                  : "data unavailable"}
-              </Typography>
-            </>
-          ) : (
-            <CircularProgress size={20} thickness={5} disableShrink />
-          )}
-        </StatusBox>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            flexWrap: "wrap",
-            margin: 10,
-          }}
-        >
-          <StyledImage
-            src={`/assets/building_photos/${currentBuilding!.id}.png`}
-            layout="fill"
-            objectFit="cover"
-            priority={true}
-          />
-        </div>
-
-        <TitleBox>
-          <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
-            {currentBuilding!.name}
-          </Typography>
-        </TitleBox>
-      </MainBox>
-    ) : (
-      <></>
-    );
-
   return (
     <Container maxWidth={false}>
       <Head>
@@ -162,7 +88,11 @@ const Home: NextPage<{ data: BuildingReturnData }> = ({ data }) => {
             borderBottom: "1px solid #e0e0e0",
           })}
         >
-          <Branding />
+          <Branding
+            onClick={() => {
+              setCurrentBuilding(null);
+            }}
+          />
           {/* 
           <StyledTabs
             value={selection}
@@ -229,7 +159,10 @@ const Home: NextPage<{ data: BuildingReturnData }> = ({ data }) => {
           open={drawerOpen}
         >
           <Divider />
-          <BuildingInfo />
+          <BuildingInfo
+            building={currentBuilding}
+            onClose={() => setCurrentBuilding(null)}
+          />
         </Drawer>
       </Box>
     </Container>
