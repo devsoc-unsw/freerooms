@@ -39,34 +39,41 @@ export const getAllRoomIDs = async () => {
   let roomIDs: string[] = [];
   console.log("hiiii");
 
-  let roomPromises: Promise<any>[] = [];
-  for (let i = 0; i < MAX_PAGES; i++) {
-    roomPromises.push(axios.get(ROOM_URL + i));
-  }
+  // let roomPromises: Promise<any>[] = [];
+  // for (let i = 0; i < MAX_PAGES; i++) {
+  //   roomPromises.push(axios.get(ROOM_URL + i));
+  // }
 
-  await Promise.all(roomPromises).then((responses) => {
-    responses.forEach((response) => {
-      const htmlDoc = new JSDOM(response.data);
-      const rawRoomIDs =
-        htmlDoc.window.document.getElementsByClassName("field-item");
-      if (!rawRoomIDs) return roomIDs;
-      const cleanRoomIDs = [];
-      for (let j = 0; j < rawRoomIDs.length; j++) {
-        let roomID = rawRoomIDs.item(j)?.innerHTML;
-        if (roomID && ROOM_REGEX.test(roomID)) {
-          cleanRoomIDs.push(roomID);
-        }
-      }
-      roomIDs = roomIDs.concat(cleanRoomIDs);
-    });
-  });
+  // await Promise.all(roomPromises).then((responses) => {
+  //   responses.forEach((response) => {
+  //     const htmlDoc = new JSDOM(response.data);
+  //     const rawRoomIDs =
+  //       htmlDoc.window.document.getElementsByClassName("field-item");
+  //     if (!rawRoomIDs) return roomIDs;
+  //     const cleanRoomIDs = [];
+  //     for (let j = 0; j < rawRoomIDs.length; j++) {
+  //       let roomID = rawRoomIDs.item(j)?.innerHTML;
+  //       if (roomID && ROOM_REGEX.test(roomID)) {
+  //         cleanRoomIDs.push(roomID);
+  //       }
+  //     }
+  //     roomIDs = roomIDs.concat(cleanRoomIDs);
+  //   });
+  // });
 
-  const dict = {"roomIDs": roomIDs};
-  const dictString = JSON.stringify(dict);
-  console.log(dictString)
+  // const dict = {"roomIDs": roomIDs};
+  // const dictString = JSON.stringify(dict);
+  // console.log(dictString)
+  // const fs = require('fs');
+  // fs.writeFileSync("database.json", dictString);
+  // console.log("hello");
+
   const fs = require('fs');
-  fs.writeFileSync("database.json", dictString);
-  console.log("hello");
+  let rawData = fs.readFileSync('database.json');
+  let data = JSON.parse(rawData)
+  console.log(data)
+  roomIDs = data["roomIDs"]
+  console.log(roomIDs)
 
   return roomIDs;
 };
