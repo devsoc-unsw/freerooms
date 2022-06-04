@@ -16,12 +16,11 @@ export const getAllBuildings = async (): Promise<BuildingData[]> => {
 
 export const getAllRoomStatus = async (
   buildingID: string,
-  date: Date,
-  roomIDs: string[]
+  date: Date
 ): Promise<BuildingRoomStatus> => {
   const scraperData = await getData();
   const buildingData = scraperData[buildingID];
-  // const roomIDs = await getAllRoomIDs();
+  const roomIDs = await getAllRoomIDs();
 
   const roomStatus: BuildingRoomStatus = {};
 

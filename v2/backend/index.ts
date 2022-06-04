@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 
-import { getDate, getAllRoomIDs } from "./helpers";
+import { getDate } from "./helpers";
 import {
   getAllRoomStatus,
   getAllBuildings,
@@ -12,7 +12,6 @@ import cors from "cors";
 const app = express();
 const PORT = 3000;
 app.use(cors());
-let roomIDs: string[] = [];
 
 const errorHandler = (res: Response, message: string) => {
   console.error(`Error: ${message}`);
@@ -28,7 +27,6 @@ app.get("/buildings", async (req: Request, res: Response) => {
     const buildingData = await getAllBuildings();
     const data = { buildings: buildingData };
     res.send(data);
-    roomIDs = await getAllRoomIDs();
   } catch (error: any) {
     errorHandler(res, error.message);
   }
@@ -47,7 +45,7 @@ app.get("/buildings/:buildingID", async (req: Request, res: Response) => {
       return;
     }
 
-    const roomData = await getAllRoomStatus(buildingID, datetime, roomIDs);
+    const roomData = await getAllRoomStatus(buildingID, datetime);
     const data = { rooms: roomData };
     res.send(data);
   } catch (error: any) {
