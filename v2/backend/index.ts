@@ -10,7 +10,7 @@ import {
 import cors from "cors";
 
 const app = express();
-const PORT = 3000;
+const PORT = 3001;
 app.use(cors());
 
 const errorHandler = (res: Response, message: string) => {

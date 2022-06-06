@@ -100,7 +100,7 @@ const BuildingCard: React.FC<{
     <Link scroll={false} href={`/?building=${building.id}`}>
       <MainBox ref={ref}>
         <StyledImage
-          src={`/assets/building_photos/${building.id}.png`}
+          src={`/assets/building_photos/${building.id}.jpg`}
           layout="fill"
           objectFit="cover"
           priority={true}
