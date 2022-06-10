@@ -11,8 +11,7 @@ const ENVIRONMENTS_URL = "https://www.learningenvironments.unsw.edu.au"
 const BUILDING_URL = ENVIRONMENTS_URL + "/physical-spaces/teaching-spaces?page=";
 const ROOM_URL = ENVIRONMENTS_URL + "/find-teaching-space?building_name=&room_name=&page=";
 
-const BUILDING_PAGES = 2;
-const ROOM_PAGES = 13;
+const LAST_PAGE_REGEX = /<a href=".*page=([0-9]+).*" title="Go to last page">/;
 
 const ROOM_REGEX = /^[A-Z]-[A-Z][0-9]{1,2}-[A-Z]{0,2}[0-9]{1,4}[A-Z]{0,1}$/;
 // One letter - campus ID, e.g. K for Kensington
@@ -33,23 +32,31 @@ export const getData = async (): Promise<ScraperData> => {
   return data;
 };
 
+// Find the number of the last page of a paginated learning environments page
+const getLastPage = (page: string): number => {
+  const match = LAST_PAGE_REGEX.exec(page);
+  return match ? parseInt(match[1]) : 0;
+};
+
 // Get all building data by scraping learning environment website
 export const getBuildingData = async (): Promise<BuildingData[]> => {
+  // Get number of last page from first page
+  const first_page = axios.get(BUILDING_URL + 0);
+  const last_page = getLastPage((await first_page).data);
+
   // Request all buildings pages
-  let buildingPromises: Promise<any>[] = [];
+  let buildingPromises: Promise<any>[] = [first_page];
   let buildings: BuildingData[] = [];
-  for (let i = 0; i < BUILDING_PAGES; i++) {
+  for (let i = 1; i <= last_page; i++) {
     buildingPromises.push(axios.get(BUILDING_URL + i));
   }
-  
-  // Resolve all requests
   await Promise.all(buildingPromises).then((responses) => {
     responses.forEach((response) => {
       const htmlDoc = new JSDOM(response.data);
       const buildingCards =
         htmlDoc.window.document.getElementsByClassName("type-building")
 
-      // Get the building name, ID and image from each card
+      // Get the building name, ID and image URL from each card
       for (let i = 0; i < buildingCards.length; i++) {
         const buildingCard = buildingCards[i];
 
@@ -59,8 +66,7 @@ export const getBuildingData = async (): Promise<BuildingData[]> => {
           buildingCard.querySelector(".node-building-id")?.querySelector(".field-item")?.innerHTML;
         const img_url =
           buildingCard.querySelector('img[typeof="foaf:Image"]')?.getAttribute("src") || '';
-        
-        // if name, id succesfully read, add to array
+
         if (name && id) {
           buildings.push({
             name: name,
@@ -76,12 +82,13 @@ export const getBuildingData = async (): Promise<BuildingData[]> => {
 
 // Gets all the room codes for rooms in UNSW by parsing the HTML with regex (please excuse my cardinal sin)
 export const getAllRoomIDs = async () => {
-  // hello this is a bit slow! is there a way that we could move this to a background process
-  // that fetches like every x hours on our server, instead of doing this per request?
+  // Get number of last page from first page
+  const first_page = axios.get(ROOM_URL + 0);
+  const last_page = getLastPage((await first_page).data);
 
+  let roomPromises: Promise<any>[] = [first_page];
   let roomIDs: string[] = [];
-  let roomPromises: Promise<any>[] = [];
-  for (let i = 0; i < ROOM_PAGES; i++) {
+  for (let i = 1; i <= last_page; i++) {
     roomPromises.push(axios.get(ROOM_URL + i));
   }
   await Promise.all(roomPromises).then((responses) => {
