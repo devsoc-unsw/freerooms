@@ -1,16 +1,18 @@
 import axios from "axios";
 import pkg from "jsdom";
-import { ScraperData } from "./types";
+import { ScraperData, BuildingData } from "./types";
 const { JSDOM } = pkg;
 
 /*
  * Definitions
  */
 const SCRAPER_URL = "https://timetable.csesoc.app/api/terms/2022-T1/freerooms/";
-const ROOM_URL =
-  "https://www.learningenvironments.unsw.edu.au/find-teaching-space?building_name=&room_name=&page=";
+const ENVIRONMENTS_URL = "https://www.learningenvironments.unsw.edu.au"
+const BUILDING_URL = ENVIRONMENTS_URL + "/physical-spaces/teaching-spaces?page=";
+const ROOM_URL = ENVIRONMENTS_URL + "/find-teaching-space?building_name=&room_name=&page=";
 
-const MAX_PAGES = 13;
+const BUILDING_PAGES = 2;
+const ROOM_PAGES = 13;
 
 const ROOM_REGEX = /^[A-Z]-[A-Z][0-9]{1,2}-[A-Z]{0,2}[0-9]{1,4}[A-Z]{0,1}$/;
 // One letter - campus ID, e.g. K for Kensington
@@ -31,6 +33,47 @@ export const getData = async (): Promise<ScraperData> => {
   return data;
 };
 
+// Get all building data by scraping learning environment website
+export const getBuildingData = async (): Promise<BuildingData[]> => {
+  // Request all buildings pages
+  let buildingPromises: Promise<any>[] = [];
+  let buildings: BuildingData[] = [];
+  for (let i = 0; i < BUILDING_PAGES; i++) {
+    buildingPromises.push(axios.get(BUILDING_URL + i));
+  }
+  
+  // Resolve all requests
+  await Promise.all(buildingPromises).then((responses) => {
+    responses.forEach((response) => {
+      const htmlDoc = new JSDOM(response.data);
+      const buildingCards =
+        htmlDoc.window.document.getElementsByClassName("type-building")
+
+      // Get the building name, ID and image from each card
+      for (let i = 0; i < buildingCards.length; i++) {
+        const buildingCard = buildingCards[i];
+
+        const name =
+          buildingCard.querySelector(".node-title")?.querySelector("a")?.innerHTML;
+        const id =
+          buildingCard.querySelector(".node-building-id")?.querySelector(".field-item")?.innerHTML;
+        const img_url =
+          buildingCard.querySelector('img[typeof="foaf:Image"]')?.getAttribute("src") || '';
+        
+        // if name, id succesfully read, add to array
+        if (name && id) {
+          buildings.push({
+            name: name,
+            id: id,
+            img: img_url ? ENVIRONMENTS_URL + img_url : ""
+          } as BuildingData);
+        }
+      }
+    });
+  });
+  return buildings;
+};
+
 // Gets all the room codes for rooms in UNSW by parsing the HTML with regex (please excuse my cardinal sin)
 export const getAllRoomIDs = async () => {
   // hello this is a bit slow! is there a way that we could move this to a background process
@@ -38,7 +81,7 @@ export const getAllRoomIDs = async () => {
 
   let roomIDs: string[] = [];
   let roomPromises: Promise<any>[] = [];
-  for (let i = 0; i < MAX_PAGES; i++) {
+  for (let i = 0; i < ROOM_PAGES; i++) {
     roomPromises.push(axios.get(ROOM_URL + i));
   }
   await Promise.all(roomPromises).then((responses) => {

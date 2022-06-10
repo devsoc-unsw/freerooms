@@ -1,12 +1,12 @@
 import buildingData from "./buildings";
-import { getData, getAllRoomIDs, getWeek } from "./helpers";
+import { getData, getBuildingData, getAllRoomIDs, getWeek } from "./helpers";
 import { BuildingData, BuildingRoomStatus, RoomAvailability } from "./types";
 
 const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const FIFTEEN_MIN = 15 * 1000 * 60;
 
 export const getAllBuildings = async (): Promise<BuildingData[]> => {
-  const data = Object.values(buildingData);
+  const data = await getBuildingData();
   if (data.length > 0) {
     return data;
   } else {
