@@ -1,0 +1,462 @@
+{
+    "K-G27": {
+        "name": "AGSM",
+        "id": "K-G27",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/agsm-building.jpg?itok=Kd8fcJMO",
+        "rooms": [
+            "G03",
+            "G05",
+            "G04",
+            "G07",
+            "G06",
+            "LG06",
+            "LG07"
+        ]
+    },
+    "K-J17": {
+        "name": "Ainsworth Building",
+        "id": "K-J17",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/ainsworth-building_0.jpg?itok=QyEuns2l",
+        "rooms": [
+            "102",
+            "202",
+            "G02",
+            "G03",
+            "201",
+            "G01",
+            "101"
+        ]
+    },
+    "K-D26": {
+        "name": "Biological Sciences (North)",
+        "id": "K-D26",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/bio-sciences.JPG?h=73e7f248&itok=4NkTpHZz",
+        "rooms": [
+            "G07"
+        ]
+    },
+    "K-G6": {
+        "name": "Blockhouse",
+        "id": "K-G6",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/blockhouse.jpg?itok=FLCXlVKy",
+        "rooms": [
+            "G13",
+            "G14",
+            "G15",
+            "G16",
+            "G6"
+        ]
+    },
+    "K-E19": {
+        "name": "Central Lecture Block",
+        "id": "K-E19",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/clb.jpg?itok=Ba6dtuiQ",
+        "rooms": [
+            "103",
+            "104",
+            "105",
+            "G02",
+            "G03",
+            "G04",
+            "G05",
+            "G06"
+        ]
+    },
+    "K-F10": {
+        "name": "Chemical Sciences",
+        "id": "K-F10",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/f10_1.jpg?itok=NYyK7dcZ",
+        "rooms": [
+            "M10",
+            "M11",
+            "M17",
+            "M18"
+        ]
+    },
+    "K-H20": {
+        "name": "Civil Engineering Building",
+        "id": "K-H20",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/civil-engineering.jpg?itok=jpqr98Sy",
+        "rooms": [
+            "101",
+            "102",
+            "109",
+            "G1",
+            "G6",
+            "G8",
+            "701"
+        ]
+    },
+    "K-B16": {
+        "name": "Colombo Building",
+        "id": "K-B16",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/columbo.jpg?itok=1pK07Y2L",
+        "rooms": [
+            "LG03",
+            "LG04",
+            "LG05",
+            "LG01",
+            "LG02"
+        ]
+    },
+    "K-G17": {
+        "name": "Electrical Engineering Bldg",
+        "id": "K-G17",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/Electrical-Engineering-1_0.jpg?itok=lnfaYNQr",
+        "rooms": [
+            "G22",
+            "G23",
+            "G09",
+            "G10",
+            "G03",
+            "G04"
+        ]
+    },
+    "K-D16": {
+        "name": "Goldstein Hall",
+        "id": "K-D16",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/goldstein.jpg?itok=mVBqS5tj",
+        "rooms": [
+            "G07",
+            "G09",
+            "G01",
+            "G02",
+            "G03",
+            "G04",
+            "G05",
+            "G06"
+        ]
+    },
+    "K-F20": {
+        "name": "John Goodsell Building",
+        "id": "K-F20",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/john-goodsell.jpg?itok=L-pGHiiJ",
+        "rooms": [
+            "LG19",
+            "LG21"
+        ]
+    },
+    "K-G19": {
+        "name": "John Niland Scientia",
+        "id": "K-G19",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/scientia_1_fade.jpg.600x250_q90_crop-smart.jpg?itok=NwOLatu_",
+        "rooms": [
+            "LG02"
+        ]
+    },
+    "K-J14": {
+        "name": "Keith Burrows Theatre",
+        "id": "K-J14",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/keith.jpg?itok=Xa_PkGt2",
+        "rooms": [
+            "G5"
+        ]
+    },
+    "K-F8": {
+        "name": "Law Building",
+        "id": "K-F8",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/UNSW_Law_2015_399-crop.jpg?itok=A5u3a-Zi",
+        "rooms": [
+            "G02",
+            "G04",
+            "G17",
+            "G23",
+            "301",
+            "302",
+            "388",
+            "389",
+            "163",
+            "201",
+            "202",
+            "203",
+            "275",
+            "276",
+            "101",
+            "111",
+            "162",
+            "303"
+        ]
+    },
+    "K-F21": {
+        "name": "Library Stage 2",
+        "id": "K-F21",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/library.jpg?itok=TD1ZihPh",
+        "rooms": [
+            "176B",
+            "176A"
+        ]
+    },
+    "K-F23": {
+        "name": "Mathews Building",
+        "id": "K-F23",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/matthews.jpg?itok=37YmCdzA",
+        "rooms": [
+            "101",
+            "102",
+            "103",
+            "307",
+            "310",
+            "311",
+            "312",
+            "313",
+            "303",
+            "306",
+            "308",
+            "309",
+            "228",
+            "230",
+            "231",
+            "232",
+            "301",
+            "302",
+            "106",
+            "107",
+            "108",
+            "214",
+            "226",
+            "227",
+            "104",
+            "105"
+        ]
+    },
+    "K-D23": {
+        "name": "Mathews Theatres",
+        "id": "K-D23",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/matthews-theatres.jpg?itok=oi3e7TBD",
+        "rooms": [
+            "201",
+            "203",
+            "303",
+            "304"
+        ]
+    },
+    "K-C20": {
+        "name": "Morven Brown Building",
+        "id": "K-C20",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/morven-brown_0.jpg?itok=ApUEzh74",
+        "rooms": [
+            "G4",
+            "G5",
+            "G6",
+            "LG2",
+            "LG30",
+            "G3"
+        ]
+    },
+    "K-J12": {
+        "name": "Newton Building",
+        "id": "K-J12",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/newton.jpg?itok=tKK_gLhs",
+        "rooms": [
+            "306",
+            "307"
+        ]
+    },
+    "K-K15": {
+        "name": "Old Main Building",
+        "id": "K-K15",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/old-main-buliding.JPG?itok=dCNjGsYv",
+        "rooms": [
+            "149",
+            "150",
+            "229",
+            "230",
+            "G31",
+            "G32",
+            "151"
+        ]
+    },
+    "K-K14": {
+        "name": "Physics Theatre",
+        "id": "K-K14",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/physics-theatre.jpg?itok=fVuJ6juY",
+        "rooms": [
+            "19"
+        ]
+    },
+    "K-E15": {
+        "name": "Quadrangle Building",
+        "id": "K-E15",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/The%20Quad-25.jpg?itok=AI_9fkbt",
+        "rooms": [
+            "1027",
+            "1043",
+            "G031",
+            "G032",
+            "G034",
+            "G044",
+            "G045",
+            "G047",
+            "G048",
+            "G052",
+            "G053",
+            "G054",
+            "G055",
+            "G040",
+            "G042",
+            "G046",
+            "1047",
+            "1048",
+            "1049",
+            "G025",
+            "G026",
+            "G027",
+            "1001",
+            "1042",
+            "1045",
+            "1046",
+            "G033"
+        ]
+    },
+    "K-F17": {
+        "name": "Rex Vowels Theatre",
+        "id": "K-F17",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/rex-vowels.jpg?itok=z19Iy-UC",
+        "rooms": [
+            "LG3"
+        ]
+    },
+    "K-M15": {
+        "name": "Rupert Myers Building",
+        "id": "K-M15",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/rupert-myers.jpg?itok=CTeVdJaF",
+        "rooms": [
+            "1001"
+        ]
+    },
+    "K-E8": {
+        "name": "Science & Engineering Building",
+        "id": "K-E8",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/unsw_image1_john_gollings_2.jpg?itok=fB6sXV7c",
+        "rooms": [
+            "B26",
+            "B27",
+            "G02",
+            "G05",
+            "G07",
+            "B24",
+            "B25"
+        ]
+    },
+    "K-F13": {
+        "name": "Science Theatre",
+        "id": "K-F13",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/science-theatre.JPG?itok=nsK3YwfO",
+        "rooms": [
+            "G09"
+        ]
+    },
+    "K-C24": {
+        "name": "Sir John Clancy Auditorium",
+        "id": "K-C24",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/8748C4B7-9071-47A1-AD4E-EC68D1874B50.jpg?itok=Gac9ZP9U",
+        "rooms": [
+            "G17"
+        ]
+    },
+    "K-E4": {
+        "name": "Squarehouse",
+        "id": "K-E4",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/squarehouse_0.jpg?itok=nI8heB1-",
+        "rooms": [
+            "217",
+            "218",
+            "115",
+            "203",
+            "205",
+            "206",
+            "207",
+            "208",
+            "211",
+            "214",
+            "215",
+            "114"
+        ]
+    },
+    "K-H13": {
+        "name": "The Red Centre",
+        "id": "K-H13",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/red_03.jpg?itok=b_njw-8t",
+        "rooms": [
+            "1040",
+            "1041",
+            "1042",
+            "1043",
+            "2060",
+            "2061",
+            "2062",
+            "2063",
+            "G001",
+            "M032",
+            "M010",
+            "3037",
+            "4034",
+            "4037",
+            "2035"
+        ]
+    },
+    "K-H6": {
+        "name": "Tyree Energy Technology",
+        "id": "K-H6",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/tyree.jpg?itok=k6rdFjlt",
+        "rooms": [
+            "LG03",
+            "LG05",
+            "LG07",
+            "G16",
+            "G17",
+            "G15"
+        ]
+    },
+    "K-E12": {
+        "name": "UNSW Business School",
+        "id": "K-E12",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/ARC_funding_banner.jpg?itok=tY6IcfVW",
+        "rooms": [
+            "130",
+            "207",
+            "215",
+            "216",
+            "219",
+            "220",
+            "232",
+            "105",
+            "107",
+            "114",
+            "115",
+            "118",
+            "119",
+            "205"
+        ]
+    },
+    "K-H22": {
+        "name": "Vallentine Annexe",
+        "id": "K-H22",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/valentine.jpg?itok=9JmzseS7",
+        "rooms": [
+            "121"
+        ]
+    },
+    "K-G14": {
+        "name": "Webster Building",
+        "id": "K-G14",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/robert-webster-building.jpg?itok=1JLlJX3p",
+        "rooms": [
+            "127",
+            "256",
+            "302",
+            "250",
+            "251",
+            "252"
+        ]
+    },
+    "K-G15": {
+        "name": "Webster Theatres",
+        "id": "K-G15",
+        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/webster-theatres.jpg?itok=4qS1jah0",
+        "rooms": [
+            "190",
+            "290"
+        ]
+    }
+}

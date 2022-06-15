@@ -49,6 +49,10 @@ export type BuildingData = {
   img: string;
 };
 
+export type BuildingDatabase = Record<string, {
+  rooms: string[];
+} & BuildingData>
+
 export type RoomAvailability = {
   roomName: string;
   [week: number]: {
