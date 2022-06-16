@@ -25,7 +25,6 @@ export const getAllRoomStatus = async (
   buildingID: string,
   date: Date
 ): Promise<BuildingRoomStatus> => {
-  // Get list of roomNumbers for building from database
   const buildingData = await getBuildingData();
   if (!(buildingID in buildingData)) {
     throw new Error(`Building ID ${buildingID} does not exist`);
@@ -94,6 +93,7 @@ export const getRoomAvailability = async (
   buildingID: string,
   roomNumber: string
 ): Promise<RoomAvailability> => {
+  // Check if room exists in database
   const buildingData = await getBuildingData();
   if (!(buildingID in buildingData)) {
     throw new Error(`Building ID ${buildingID} does not exist`);
@@ -104,5 +104,12 @@ export const getRoomAvailability = async (
   }
 
   const scraperData = await getScraperData();
+  // Unsure what to do if building/room has no listed classes
+  // if (
+  //   !(buildingID in scraperData) ||
+  //   !(roomNumber in scraperData[buildingID])
+  // ) {
+  //   return {roomName: ''};
+  // }
   return scraperData[buildingID][roomNumber];
 };
