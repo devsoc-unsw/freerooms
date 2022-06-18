@@ -41,12 +41,9 @@ export const getAllRoomIDs = async () => {
   const fs = require('fs');
   const stats = fs.statSync('database.json');
   const modTime = stats.mtime;
-  console.log(modTime + ' ' + stats.ctime);
   let timeNow = new Date();
-  console.log(timeNow)
-  console.log(timeNow.getFullYear() - modTime.getFullYear());
-  console.log(timeNow.getMonth() - modTime.getMonth());
 
+  // check if database.json has been updated within the month
   if (timeNow.getFullYear() - modTime.getFullYear() > 0 || timeNow.getMonth() - modTime.getMonth() > 0) {
     let roomPromises: Promise<any>[] = [];
     for (let i = 0; i < MAX_PAGES; i++) {
@@ -72,15 +69,13 @@ export const getAllRoomIDs = async () => {
   
     const dict = {"roomIDs": roomIDs};
     const dictString = JSON.stringify(dict);
-    console.log(dictString)
     const fs = require('fs');
     fs.writeFileSync("database.json", dictString);
+  } else {
+    let rawData = fs.readFileSync('database.json');
+    let data = JSON.parse(rawData)
+    roomIDs = data["roomIDs"]
   }
-  
-  let rawData = fs.readFileSync('database.json');
-  let data = JSON.parse(rawData)
-  roomIDs = data["roomIDs"]
-  console.log(roomIDs)
 
   return roomIDs;
 };
