@@ -35,7 +35,7 @@ const AppBar = styled(MuiAppBar)(({ theme }) => ({
 const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
   position: "relative",
   flex: 1,
-  backgroundColor: theme.palette.primary.main,
+  backgroundColor: '#FAFAFA',
   height: 385,
   borderRadius: 10,
   "&:hover": {
@@ -68,11 +68,12 @@ const TitleBox = styled(Box)<BoxProps>(({ theme }) => ({
   display: "flex",
   borderRadius: 10,
   position: "absolute",
-  bottom: 0,
+  top: 0,
   left: 0,
   right: 0,
-  backgroundColor: theme.palette.primary.main,
-  color: "white",
+  backgroundColor: "white", 
+  //backgroundColor: theme.palette.primary.main,
+  color: "Black",
   padding: 15,
   paddingLeft: 20,
   paddingRight: 20,
@@ -122,7 +123,7 @@ const BuildingInfo: React.FC<{
       <StatusBox>
         {roomsData ? (
           <>
-            {roomsError ? (
+            {roomsError ? null : (
               <StatusDot
                 colour={
                   rooms.filter((r) => r.status === "free").length >= 5
@@ -132,7 +133,7 @@ const BuildingInfo: React.FC<{
                     : "red"
                 }
               />
-            ) : null}
+            ) }
             <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
               {roomsData && !roomsError
                 ? `${rooms.length} room${
@@ -153,11 +154,15 @@ const BuildingInfo: React.FC<{
           alignItems: "center",
           flexWrap: "wrap",
           margin: 10,
+          paddingTop: 25
         }}
       >
         <StyledImage
           src={`/assets/building_photos/${building!.id}.png`}
-          layout="fill"
+
+          width = "946px"
+          height= "648px"
+          //layout = "fill"
           objectFit="cover"
           priority={true}
         />
