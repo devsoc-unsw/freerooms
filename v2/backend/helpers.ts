@@ -6,12 +6,19 @@ const { JSDOM } = pkg;
 /*
  * Definitions
  */
-const SCRAPER_URL = "https://timetable.csesoc.app/api/terms/2022-T1/freerooms/";
+const API = "https://timetable.csesoc.app"
+
+const TERM_DATE_FETCH = `${API}/api/startdate/freerooms`;
+const TERM_ID_FETCH = `${API}/api/availableterm`;
+
+const TERM_ID_LENGTH = 2;
+
 const ROOM_URL =
   "https://www.learningenvironments.unsw.edu.au/find-teaching-space?building_name=&room_name=&page=";
 
 const MAX_PAGES = 13;
 
+const DATE_REGEX = /(\d{2})\/(\d{2})\/(\d{4})/;
 const ROOM_REGEX = /^[A-Z]-[A-Z][0-9]{1,2}-[A-Z]{0,2}[0-9]{1,4}[A-Z]{0,1}$/;
 // One letter - campus ID, e.g. K for Kensington
 // One letter followed by one or two numbers for grid reference e.g. D16 or F8
@@ -24,8 +31,38 @@ const ROOM_REGEX = /^[A-Z]-[A-Z][0-9]{1,2}-[A-Z]{0,2}[0-9]{1,4}[A-Z]{0,1}$/;
 /*
  * Implementation
  */
+export const getStartDate = async () => {
+  const termDateFetch = await axios.get(TERM_DATE_FETCH);
+  const termDateRes = await termDateFetch.data;
+
+  if (DATE_REGEX.test(termDateRes)) {
+    return termDateRes;
+  } else {
+    throw new Error(`Start Date retrieved incorrectly`);
+  }
+}
 
 export const getData = async (): Promise<ScraperData> => {
+  const termIdFetch = await axios.get(TERM_ID_FETCH);
+  const termIdRes = await termIdFetch.data;
+
+  let termNum;
+  let termYear;
+
+  if (termIdRes.length === TERM_ID_LENGTH) {
+    termNum = `T${parseInt(termIdRes.substring(1))}`;
+  } else {
+    termNum = `Summer`;
+  }
+
+  const termDateRes = await getStartDate();
+  if (termDateRes != null) {
+    termYear = termDateRes.substring(6);
+  } 
+
+  const termId = `${termYear}-${termNum}`;
+  const SCRAPER_URL = `${API}/api/terms/${termId}/freerooms`;
+
   const res = await axios.get(SCRAPER_URL);
   const data = (await res.data) as ScraperData;
   return data;
@@ -61,9 +98,10 @@ export const getAllRoomIDs = async () => {
 };
 
 // Gets the week number from the date
-export const getWeek = (data: ScraperData, date: Date): number => {
+export const getWeek = async (data: ScraperData, date: Date) => {
   // In 'DD/MM/YYYY' format
-  const termStart = data["termStart"];
+  const termStart = await getStartDate();
+  // console.log(termStart);
 
   const termStartDate = new Date(termStart);
   const today = date;
