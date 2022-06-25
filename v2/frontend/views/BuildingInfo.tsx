@@ -94,45 +94,12 @@ const BuildingInfo: React.FC<{
   
 
   const { data: roomsData, error: roomsError } =
-    // useSWR<BuildingRoomReturnStatus>(
-    //   building
-    //     ? {
-    //         url: server + "/buildings/" + building!.id,
-    //         config: { params: { datetime: date.toFormat("yyyy-MM-dd HH:mm") } },
-    //       }
-    //     : null
-    // );
       (useSWR<BuildingRoomReturnStatus>(
         building ? server + "/buildings/" + building!.id : null
     ));
     
-  //const [rooms, setRooms] = React.useState<Room[]>([]);
   const rooms = (roomsData ? Object.values(roomsData['rooms']) : null)
-  console.log(rooms)
-  console.log(Array.isArray(rooms) )
-  //const rooms = roomsData['rooms']
-  // React.useEffect(() => {
-  //   if (building && roomsData) {
-  //     setRooms(calculateFreerooms(roomsData));
-  //   }
-  // }, [roomsData, building, setRooms, calculateFreerooms]);
-  /*const sortRooms = (rooms: Room[]) => {
-    if (sort === "name") {
-      rooms.sort((a: Room, b: Room) => (a.name > b.name ? 1 : -1));
-    } else {
-      // free -> soon -> busy
-      rooms.sort((a: Room, b: Room) => {
-        // if status is the same then compare the room name
-        if (a.status === b.status) {
-          return b.name < a.name ? 1 : -1;
-        }
-        if (b.status === "free") return 1;
-        if (a.status === "free") return -1;
-        return b.status > a.status ? 1 : -1;
-      });
-    }
-    return rooms;
-  };*/
+
 
   return (
     <MainBox>
@@ -173,11 +140,11 @@ const BuildingInfo: React.FC<{
               </TitleBox> */}
               {building!.name}
               <br />
-              {/* {(roomsData && !roomsError)
-                ? `${rooms.length} room${
-                    rooms.length === 1 ? "" : "s"
+              {(roomsData && !roomsError)
+                ? `${(rooms.filter((r: { status: string; }) => r.status === "free").length)} room${
+                  (rooms.filter((r: { status: string; }) => r.status === "free").length) === 1 ? "" : "s"
                   } available`
-                : "data unavailable"} */}
+                : "data unavailable"}
             </Typography>
           </>
         ) : (
