@@ -82,6 +82,7 @@ const TitleBox = styled(Box)<BoxProps>(({ theme }) => ({
   pointerEvents: "none",
 }));
 
+
 const BuildingInfo: React.FC<{
   building: Building | null;
   onClose?: () => void;
@@ -90,17 +91,31 @@ const BuildingInfo: React.FC<{
 
   const [date, setDate] = React.useState<DateTime>(DateTime.now());
   const [sort, setSort] = React.useState<"name" | "available">("name");
-  const [rooms, setRooms] = React.useState<Room[]>([]);
-  const { data: roomsData, error: roomsError } =
-    useSWR<BuildingRoomReturnStatus>(
-      building
-        ? {
-            url: server + "/buildings/" + building!.id,
-            config: { params: { datetime: date.toFormat("yyyy-MM-dd HH:mm") } },
-          }
-        : null
-    );
+  
 
+  const { data: roomsData, error: roomsError } =
+    // useSWR<BuildingRoomReturnStatus>(
+    //   building
+    //     ? {
+    //         url: server + "/buildings/" + building!.id,
+    //         config: { params: { datetime: date.toFormat("yyyy-MM-dd HH:mm") } },
+    //       }
+    //     : null
+    // );
+      (useSWR<BuildingRoomReturnStatus>(
+        building ? server + "/buildings/" + building!.id : null
+    ));
+    
+  //const [rooms, setRooms] = React.useState<Room[]>([]);
+  const rooms = (roomsData ? Object.values(roomsData['rooms']) : null)
+  console.log(rooms)
+  console.log(Array.isArray(rooms) )
+  //const rooms = roomsData['rooms']
+  // React.useEffect(() => {
+  //   if (building && roomsData) {
+  //     setRooms(calculateFreerooms(roomsData));
+  //   }
+  // }, [roomsData, building, setRooms, calculateFreerooms]);
   /*const sortRooms = (rooms: Room[]) => {
     if (sort === "name") {
       rooms.sort((a: Room, b: Room) => (a.name > b.name ? 1 : -1));
@@ -130,16 +145,22 @@ const BuildingInfo: React.FC<{
           </Typography>
         </TitleBox> */}
         {/* apparently for every if statement if we reverse it would be right but I don't understand why??? */}
-        {!roomsData ? (
+        
+        
+        {roomsData ? (
           <>
-            {!roomsError ? null : (
+            {roomsError ? null : (
               <StatusDot
+                
+                
                 colour={
-                  rooms.filter((r) => r.status === "free").length >= 5
-                    ? "green"
-                    : rooms.filter((r) => r.status === "free").length !== 0
-                    ? "orange"
-                    : "red"
+                  rooms ? (
+                    (rooms.filter((r: { status: string; }) => r.status === "free").length) >= 5
+                      ? "green"
+                      : rooms.filter((room: { status: string; }) => room.status === "free").length !== 0
+                      ? "orange"
+                      : "red"
+                  ): "red"
                 }
               />
             ) }
@@ -152,11 +173,11 @@ const BuildingInfo: React.FC<{
               </TitleBox> */}
               {building!.name}
               <br />
-              {(roomsData && !roomsError)
+              {/* {(roomsData && !roomsError)
                 ? `${rooms.length} room${
                     rooms.length === 1 ? "" : "s"
                   } available`
-                : "data unavailable"}
+                : "data unavailable"} */}
             </Typography>
           </>
         ) : (
