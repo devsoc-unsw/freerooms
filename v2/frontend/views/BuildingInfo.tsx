@@ -62,6 +62,7 @@ const StatusBox = styled(Box)<BoxProps>(({ theme }) => ({
   paddingRight: 15,
   margin: 10,
   pointerEvents: "none",
+  color: "black",
 }));
 
 const TitleBox = styled(Box)<BoxProps>(({ theme }) => ({
@@ -120,10 +121,18 @@ const BuildingInfo: React.FC<{
 
   return (
     <MainBox>
+
       <StatusBox>
-        {roomsData ? (
+        {/* allowing this will block the status box info ? maybe we should just have the building name below */}
+        {/* <TitleBox>
+          <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
+            {building!.name}
+          </Typography>
+        </TitleBox> */}
+        {/* apparently for every if statement if we reverse it would be right but I don't understand why??? */}
+        {!roomsData ? (
           <>
-            {roomsError ? null : (
+            {!roomsError ? null : (
               <StatusDot
                 colour={
                   rooms.filter((r) => r.status === "free").length >= 5
@@ -135,7 +144,15 @@ const BuildingInfo: React.FC<{
               />
             ) }
             <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
-              {roomsData && !roomsError
+              {/* this allows the appear of building name */}
+              {/* <TitleBox>
+                <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
+                  {building!.name}
+                </Typography>
+              </TitleBox> */}
+              {building!.name}
+              <br />
+              {(roomsData && !roomsError)
                 ? `${rooms.length} room${
                     rooms.length === 1 ? "" : "s"
                   } available`
@@ -143,6 +160,7 @@ const BuildingInfo: React.FC<{
             </Typography>
           </>
         ) : (
+          // apparently all the things above failed and this one is not working :))
           <CircularProgress size={20} thickness={5} disableShrink />
         )}
       </StatusBox>
@@ -168,11 +186,7 @@ const BuildingInfo: React.FC<{
         />
       </div>
 
-      <TitleBox>
-        <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
-          {building!.name}
-        </Typography>
-      </TitleBox>
+      
     </MainBox>
   );
 };
