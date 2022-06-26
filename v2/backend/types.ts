@@ -5,7 +5,7 @@ export type ScraperData = {
 export type ScraperBuildingData = {
   [buildingId: string]: {
     [roomId: string]: {
-      roomName: string;
+      name: string;
       [week: number]: {
         [day: string]: ClassList;
       };
@@ -49,12 +49,21 @@ export type BuildingData = {
   img: string;
 };
 
-export type BuildingDatabase = Record<string, {
-  rooms: string[];
-} & BuildingData>
+export type RoomData = {
+  name: string;
+  id: string;
+};
+
+export type BuildingDatabase = {
+  [buildingId: string]: BuildingData & {
+    rooms: {
+      [roomNumber: string]: RoomData;
+    };
+  };
+};
 
 export type RoomAvailability = {
-  roomName: string;
+  name: string;
   [week: number]: {
     [day: string]: ClassList;
   };

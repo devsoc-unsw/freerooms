@@ -1,7 +1,7 @@
 import axios from "axios";
 import pkg from "jsdom";
 import fs from "fs";
-import { ScraperData, BuildingDatabase, BuildingData } from "./types";
+import { ScraperData, BuildingDatabase, BuildingData, RoomData } from "./types";
 const { JSDOM } = pkg;
 
 /*
@@ -20,6 +20,7 @@ const ROOM_URL = `${ENVIRONMENTS_URL}/find-teaching-space?building_name=&room_na
 
 const LAST_PAGE_REGEX = /<a href=".*page=([0-9]+).*" title="Go to last page">/;
 const DATE_REGEX = /(\d{2})\/(\d{2})\/(\d{4})/;
+const BUILDING_REGEX = /^[A-Z]-[A-Z][0-9]{1,2}$/;
 const ROOM_REGEX = /^[A-Z]-[A-Z][0-9]{1,2}-[A-Z]{0,2}[0-9]{1,4}[A-Z]{0,1}$/;
 // One letter - campus ID, e.g. K for Kensington
 // One letter followed by one or two numbers for grid reference e.g. D16 or F8
@@ -100,22 +101,25 @@ const scrapeBuildingData = async(): Promise<BuildingDatabase> => {
         name: name,
         id: id,
         img: img,
-        rooms: []
+        rooms: {}
       }
     });
   });
 
   // Add all rooms to their respective buildings
-  await getAllRoomIDs().then((roomIDs) => {
-    roomIDs.forEach((roomID) => {
-      const [campus, buildingGrid, roomNumber] = roomID.split("-");
+  await getAllRooms().then((rooms) => {
+    rooms.forEach(({ name, id }) => {
+      const [campus, buildingGrid, roomNumber] = id.split("-");
       const buildingID = `${campus}-${buildingGrid}`;
       if (!(buildingID in data)) {
-        throw new Error(`Building not found for Room ID ${roomID}`);
+        throw new Error(`Building not found for Room ID ${id}`);
       }
-      data[buildingID].rooms.push(roomNumber);
-    })
-  })
+      data[buildingID].rooms[roomNumber] = {
+        name: name,
+        id: id
+      };
+    });
+  });
 
   fs.writeFileSync('database.json', JSON.stringify(data, null, 4));
   return data;
@@ -135,18 +139,23 @@ const getAllBuildings = async(): Promise<BuildingData[]> => {
     responses.forEach((response) => {
       const htmlDoc = new JSDOM(response.data);
       const buildingCards =
-        htmlDoc.window.document.getElementsByClassName("type-building")
+        htmlDoc.window.document.getElementsByClassName("type-building");
       for (let i = 0; i < buildingCards.length; i++) {
         const buildingCard = buildingCards[i];
         
-        const name =
-          buildingCard.querySelector(".node-title")?.querySelector("a")?.innerHTML;
-        const id =
-          buildingCard.querySelector(".node-building-id")?.querySelector(".field-item")?.innerHTML;
-        const img_url =
-          buildingCard.querySelector('img[typeof="foaf:Image"]')?.getAttribute("src");
+        const name = buildingCard
+          .querySelector(".node-title")
+          ?.querySelector("a")
+          ?.innerHTML;
+        const id = buildingCard
+          .querySelector(".node-building-id")
+          ?.querySelector(".field-item")
+          ?.innerHTML;
+        const img_url = buildingCard
+          .querySelector('img[typeof="foaf:Image"]')
+          ?.getAttribute("src");
 
-        if (name && id) {
+        if (name && id && BUILDING_REGEX.test(id)) {
           const cleanName = name.replace('&amp;', '&');
           buildings.push({
             name: cleanName,
@@ -161,7 +170,7 @@ const getAllBuildings = async(): Promise<BuildingData[]> => {
 };
 
 // Gets room codes from a page by parsing the HTML with regex (please excuse my cardinal sin)
-const getAllRoomIDs = async(): Promise<string[]> => {
+const getAllRooms = async(): Promise<RoomData[]> => {
   const first_page = axios.get(ROOM_URL + 0);
   const last_page_num = getLastPage((await first_page).data);
   const roomPromises: Promise<any>[] = [first_page];
@@ -169,22 +178,39 @@ const getAllRoomIDs = async(): Promise<string[]> => {
     roomPromises.push(axios.get(ROOM_URL + i));
   }
 
-  const roomIDs: string[] = [];
+  const rooms: RoomData[] = [];
   await Promise.all(roomPromises).then((responses) => {
     responses.forEach((response) => {
       const htmlDoc = new JSDOM(response.data);
-      const rawRoomIDs =
-        htmlDoc.window.document.getElementsByClassName("field-item");
-      if (!rawRoomIDs) return roomIDs;
-      for (let j = 0; j < rawRoomIDs.length; j++) {
-        let roomID = rawRoomIDs.item(j)?.innerHTML;
-        if (roomID && ROOM_REGEX.test(roomID)) {
-          roomIDs.push(roomID);
+      const roomCards =
+        htmlDoc.window.document.getElementsByClassName("type-room");
+      for (let i = 0; i < roomCards.length; i++) {
+        const roomCard = roomCards[i];
+        
+        const name = roomCard
+          .querySelector(".node-title")
+          ?.querySelector("a")
+          ?.innerHTML;
+        const id = roomCard
+          .querySelector(".node-room-id")
+          ?.querySelector(".field-item")
+          ?.innerHTML;
+
+        if (name && id && ROOM_REGEX.test(id)) {
+          const cleanName = name
+              .replace(`${id} - `, '')
+              .replace('&amp;', '&')
+              .replace('  ', ' ');
+
+          rooms.push({
+            name: cleanName ? cleanName : id,
+            id: id
+          });
         }
       }
     });
   });
-  return roomIDs;
+  return rooms;
 };
 
 // Find the number of the last page of a paginated learning environments page
@@ -205,7 +231,6 @@ export const getWeek = async (date: Date) => {
 
   let daysPastTerm = diff / (1000 * 60 * 60 * 24);
 
-  // Integer division to get term number
   // Ceil is used because week numbers start from 1 not 0
   return Math.ceil(daysPastTerm / 7);
 };

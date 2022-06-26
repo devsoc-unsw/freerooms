@@ -11,7 +11,7 @@ export const getAllBuildings = async (): Promise<BuildingData[]> => {
   }
   // Omit rooms property, img is not sent for now
   const res: BuildingData[] = [];
-  data.forEach(({ name, id, img, rooms }) => {
+  data.forEach(({ name, id }) => {
     res.push({
       name: name,
       id: id,
@@ -29,7 +29,7 @@ export const getAllRoomStatus = async (
   if (!(buildingID in buildingData)) {
     throw new Error(`Building ID ${buildingID} does not exist`);
   }
-  const buildingRooms = buildingData[buildingID].rooms;
+  const buildingRooms = Object.keys(buildingData[buildingID].rooms);
 
   const week = await getWeek(date);
   const day = days[date.getDay()];
@@ -98,18 +98,17 @@ export const getRoomAvailability = async (
   if (!(buildingID in buildingData)) {
     throw new Error(`Building ID ${buildingID} does not exist`);
   }
-  const buildingRooms = buildingData[buildingID].rooms;
-  if (!(buildingRooms.includes(roomNumber))) {
+  if (!(roomNumber in buildingData[buildingID].rooms)) {
     throw new Error(`Room ID ${buildingID}-${roomNumber} does not exist`);
   }
 
   const scraperData = await getScraperData();
-  // Unsure what to do if building/room has no listed classes
-  // if (
-  //   !(buildingID in scraperData) ||
-  //   !(roomNumber in scraperData[buildingID])
-  // ) {
-  //   return {roomName: ''};
-  // }
-  return scraperData[buildingID][roomNumber];
+  if (
+    !(buildingID in scraperData) ||
+    !(roomNumber in scraperData[buildingID])
+  ) {
+    return {name: buildingData[buildingID].rooms[roomNumber].name};
+  } else {
+    return scraperData[buildingID][roomNumber];
+  }
 };
