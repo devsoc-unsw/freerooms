@@ -31,10 +31,10 @@ export const getAllRoomStatus = async (
   }
   const buildingRooms = buildingData[buildingID].rooms;
 
-  const scraperData = await getScraperData();
-  const week = await getWeek(scraperData, date);
+  const week = await getWeek(date);
   const day = days[date.getDay()];
 
+  const scraperData = await getScraperData();
   const roomStatus: BuildingRoomStatus = {};
   for (const roomNumber of buildingRooms) {
     if (

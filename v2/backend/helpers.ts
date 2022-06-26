@@ -70,24 +70,27 @@ export const getScraperData = async (): Promise<ScraperData> => {
 };
 
 export const getBuildingData = async(): Promise<BuildingDatabase> => {
-  // If database.json over a month old, re scrape
-  const stat = fs.statSync('database.json');
-  const modTime = stat.mtime;
-  const timeNow = new Date();
-  if (
-    timeNow.getFullYear() - modTime.getFullYear() > 0 ||
-    timeNow.getMonth() - modTime.getMonth() > 0
-  ) {
-    await scrapeBuildingData();
-  }
+  let data;
 
-  const rawData = fs.readFileSync('database.json', 'utf8');
-  const data = JSON.parse(rawData) as BuildingDatabase;
+  // If database.json over a month old or missing, re scrape
+  const timeNow = new Date();
+  const stat = fs.statSync('database.json', {throwIfNoEntry: false});
+  if (
+    !stat ||
+    timeNow.getFullYear() - stat.mtime.getFullYear() > 0 ||
+    timeNow.getMonth() - stat.mtime.getMonth() > 0
+  ) {
+    data = await scrapeBuildingData();
+  } else {
+    const rawData = fs.readFileSync('database.json', 'utf8');
+    data = JSON.parse(rawData) as BuildingDatabase;
+  }
+  
   return data;
 }
 
 // Scrape building data and store in a JSON file
-const scrapeBuildingData = async() => {
+const scrapeBuildingData = async(): Promise<BuildingDatabase> => {
   const data: BuildingDatabase = {};
 
   // Add each building to data
@@ -115,6 +118,7 @@ const scrapeBuildingData = async() => {
   })
 
   fs.writeFileSync('database.json', JSON.stringify(data, null, 4));
+  return data;
 }
 
 // Get all building data by scraping learning environment website
@@ -190,10 +194,9 @@ const getLastPage = (page: string): number => {
 };
 
 // Gets the week number from the date
-export const getWeek = async (data: ScraperData, date: Date) => {
+export const getWeek = async (date: Date) => {
   // In 'DD/MM/YYYY' format
   const termStart = await getStartDate();
-  // console.log(termStart);
 
   const termStartDate = new Date(termStart);
   const today = date;
