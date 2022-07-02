@@ -29,7 +29,7 @@ export const getAllRoomStatus = async (
     if (buildingID !== `${campus}-${buildingGrid}`) continue;
 
     const roomData = buildingData[roomNumber];
-    const week = getWeek(scraperData, date);
+    const week = await getWeek(scraperData, date);
     const day = days[date.getDay()];
     if (
       !(roomNumber in buildingData) ||
