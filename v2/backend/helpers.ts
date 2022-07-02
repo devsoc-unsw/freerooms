@@ -60,7 +60,7 @@ export const getScraperData = async (): Promise<ScraperData> => {
   const termDateRes = await getStartDate();
   if (termDateRes != null) {
     termYear = termDateRes.substring(6);
-  } 
+  }
 
   const termId = `${termYear}-${termNum}`;
   const SCRAPER_URL = `${API}/api/terms/${termId}/freerooms`;
@@ -70,12 +70,12 @@ export const getScraperData = async (): Promise<ScraperData> => {
   return data;
 };
 
-export const getBuildingData = async(): Promise<BuildingDatabase> => {
+export const getBuildingData = async (): Promise<BuildingDatabase> => {
   let data;
 
   // If database.json over a month old or missing, re scrape
   const timeNow = new Date();
-  const stat = fs.statSync('database.json', {throwIfNoEntry: false});
+  const stat = fs.statSync('database.json', { throwIfNoEntry: false });
   if (
     !stat ||
     timeNow.getFullYear() - stat.mtime.getFullYear() > 0 ||
@@ -86,12 +86,12 @@ export const getBuildingData = async(): Promise<BuildingDatabase> => {
     const rawData = fs.readFileSync('database.json', 'utf8');
     data = JSON.parse(rawData) as BuildingDatabase;
   }
-  
+
   return data;
 }
 
 // Scrape building data and store in a JSON file
-const scrapeBuildingData = async(): Promise<BuildingDatabase> => {
+const scrapeBuildingData = async (): Promise<BuildingDatabase> => {
   const data: BuildingDatabase = {};
 
   // Add each building to data
@@ -126,7 +126,7 @@ const scrapeBuildingData = async(): Promise<BuildingDatabase> => {
 }
 
 // Get all building data by scraping learning environment website
-const getAllBuildings = async(): Promise<BuildingData[]> => {
+const getAllBuildings = async (): Promise<BuildingData[]> => {
   let first_page = axios.get(BUILDING_URL + 0);
   let last_page_num = getLastPage((await first_page).data);
   const buildingPromises: Promise<any>[] = [first_page];
@@ -142,7 +142,7 @@ const getAllBuildings = async(): Promise<BuildingData[]> => {
         htmlDoc.window.document.getElementsByClassName("type-building");
       for (let i = 0; i < buildingCards.length; i++) {
         const buildingCard = buildingCards[i];
-        
+
         const name = buildingCard
           .querySelector(".node-title")
           ?.querySelector("a")
@@ -170,7 +170,7 @@ const getAllBuildings = async(): Promise<BuildingData[]> => {
 };
 
 // Gets room codes from a page by parsing the HTML with regex (please excuse my cardinal sin)
-const getAllRooms = async(): Promise<RoomData[]> => {
+const getAllRooms = async (): Promise<RoomData[]> => {
   const first_page = axios.get(ROOM_URL + 0);
   const last_page_num = getLastPage((await first_page).data);
   const roomPromises: Promise<any>[] = [first_page];
@@ -186,7 +186,7 @@ const getAllRooms = async(): Promise<RoomData[]> => {
         htmlDoc.window.document.getElementsByClassName("type-room");
       for (let i = 0; i < roomCards.length; i++) {
         const roomCard = roomCards[i];
-        
+
         const name = roomCard
           .querySelector(".node-title")
           ?.querySelector("a")
@@ -198,9 +198,9 @@ const getAllRooms = async(): Promise<RoomData[]> => {
 
         if (name && id && ROOM_REGEX.test(id)) {
           const cleanName = name
-              .replace(`${id} - `, '')
-              .replace('&amp;', '&')
-              .replace('  ', ' ');
+            .replace(`${id} - `, '')
+            .replace('&amp;', '&')
+            .replace('  ', ' ');
 
           rooms.push({
             name: cleanName ? cleanName : id,

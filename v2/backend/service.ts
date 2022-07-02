@@ -107,7 +107,7 @@ export const getRoomAvailability = async (
     !(buildingID in scraperData) ||
     !(roomNumber in scraperData[buildingID])
   ) {
-    return {name: buildingData[buildingID].rooms[roomNumber].name};
+    return { name: buildingData[buildingID].rooms[roomNumber].name };
   } else {
     return scraperData[buildingID][roomNumber];
   }
