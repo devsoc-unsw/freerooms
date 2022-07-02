@@ -73,14 +73,8 @@ export const getScraperData = async (): Promise<ScraperData> => {
 export const getBuildingData = async (): Promise<BuildingDatabase> => {
   let data;
 
-  // If database.json over a month old or missing, re scrape
-  const timeNow = new Date();
-  const stat = fs.statSync('database.json', { throwIfNoEntry: false });
-  if (
-    !stat ||
-    timeNow.getFullYear() - stat.mtime.getFullYear() > 0 ||
-    timeNow.getMonth() - stat.mtime.getMonth() > 0
-  ) {
+  // If database.json missing, create it
+  if (!fs.existsSync('database.json')) {
     data = await scrapeBuildingData();
   } else {
     const rawData = fs.readFileSync('database.json', 'utf8');
@@ -91,7 +85,7 @@ export const getBuildingData = async (): Promise<BuildingDatabase> => {
 }
 
 // Scrape building data and store in a JSON file
-const scrapeBuildingData = async (): Promise<BuildingDatabase> => {
+export const scrapeBuildingData = async (): Promise<BuildingDatabase> => {
   const data: BuildingDatabase = {};
 
   // Add each building to data

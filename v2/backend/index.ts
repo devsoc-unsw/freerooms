@@ -1,6 +1,7 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
+import fs from "fs";
 
-import { getDate } from "./helpers";
+import { getDate, scrapeBuildingData } from "./helpers";
 import {
   getAllRoomStatus,
   getAllBuildings,
@@ -67,6 +68,20 @@ app.get(
     }
   }
 );
+
+// After each request, check if database.json needs to be updated
+app.use(async (req: Request, res: Response, next: NextFunction) => {
+  const timeNow = new Date();
+  const stat = fs.statSync('database.json', { throwIfNoEntry: false });
+  if (
+    !stat ||
+    timeNow.getFullYear() - stat.mtime.getFullYear() > 0 ||
+    timeNow.getMonth() - stat.mtime.getMonth() > 0
+  ) {
+    await scrapeBuildingData();
+  }
+  next();
+});
 
 app.listen(PORT, () => {
   console.log(`Freerooms backend now listening on port ${PORT}!`);
