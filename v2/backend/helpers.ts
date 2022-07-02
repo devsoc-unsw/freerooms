@@ -74,26 +74,46 @@ export const getAllRoomIDs = async () => {
   // that fetches like every x hours on our server, instead of doing this per request?
 
   let roomIDs: string[] = [];
-  let roomPromises: Promise<any>[] = [];
-  for (let i = 0; i < MAX_PAGES; i++) {
-    roomPromises.push(axios.get(ROOM_URL + i));
-  }
-  await Promise.all(roomPromises).then((responses) => {
-    responses.forEach((response) => {
-      const htmlDoc = new JSDOM(response.data);
-      const rawRoomIDs =
-        htmlDoc.window.document.getElementsByClassName("field-item");
-      if (!rawRoomIDs) return roomIDs;
-      const cleanRoomIDs = [];
-      for (let j = 0; j < rawRoomIDs.length; j++) {
-        let roomID = rawRoomIDs.item(j)?.innerHTML;
-        if (roomID && ROOM_REGEX.test(roomID)) {
-          cleanRoomIDs.push(roomID);
+
+  const fs = require('fs');
+  const stats = fs.statSync('database.json');
+  const modTime = stats.mtime;
+  let timeNow = new Date();
+
+  // check if database.json has been updated within the month
+  if (timeNow.getFullYear() - modTime.getFullYear() > 0 || timeNow.getMonth() - modTime.getMonth() > 0) {
+    let roomPromises: Promise<any>[] = [];
+    for (let i = 0; i < MAX_PAGES; i++) {
+      roomPromises.push(axios.get(ROOM_URL + i));
+    }
+  
+    await Promise.all(roomPromises).then((responses) => {
+      responses.forEach((response) => {
+        const htmlDoc = new JSDOM(response.data);
+        const rawRoomIDs =
+          htmlDoc.window.document.getElementsByClassName("field-item");
+        if (!rawRoomIDs) return roomIDs;
+        const cleanRoomIDs = [];
+        for (let j = 0; j < rawRoomIDs.length; j++) {
+          let roomID = rawRoomIDs.item(j)?.innerHTML;
+          if (roomID && ROOM_REGEX.test(roomID)) {
+            cleanRoomIDs.push(roomID);
+          }
         }
-      }
-      roomIDs = roomIDs.concat(cleanRoomIDs);
+        roomIDs = roomIDs.concat(cleanRoomIDs);
+      });
     });
-  });
+  
+    const dict = {"roomIDs": roomIDs};
+    const dictString = JSON.stringify(dict);
+    const fs = require('fs');
+    fs.writeFileSync("database.json", dictString);
+  } else {
+    let rawData = fs.readFileSync('database.json');
+    let data = JSON.parse(rawData)
+    roomIDs = data["roomIDs"]
+  }
+
   return roomIDs;
 };
 
