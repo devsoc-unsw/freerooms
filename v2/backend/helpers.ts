@@ -116,6 +116,7 @@ export const scrapeBuildingData = async (): Promise<BuildingDatabase> => {
   });
 
   fs.writeFileSync('database.json', JSON.stringify(data, null, 4));
+  console.log(`[${new Date().toLocaleString()}] Updated database.json`);
   return data;
 }
 
