@@ -88,19 +88,6 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-// Error-handling middleware
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  const timestamp = new Date().toString();
-  console.log(`[${timestamp}] "${req.originalUrl}" ERROR : ${err.message}`);
-
-  if (!res.writableFinished) {
-    res.send({
-      message: err.message,
-      status: 400,
-    });
-  }
-});
-
 app.listen(PORT, () => {
   const timestamp = new Date().toLocaleString();
   console.log(`[${timestamp}] Freerooms backend now listening on port ${PORT}!`);
