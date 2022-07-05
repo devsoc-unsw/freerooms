@@ -129,119 +129,145 @@ export const scrapeBuildingData = async (): Promise<BuildingDatabase> => {
 
 // Get all building data by scraping learning environment website
 const getAllBuildings = async (): Promise<BuildingData[]> => {
-  let first_page = axiosInstance.get(BUILDING_URL + 0);
-  let last_page_num = getLastPage((await first_page).data);
-  const buildingPromises: Promise<any>[] = [first_page];
-  for (let i = 1; i <= last_page_num; i++) {
-    buildingPromises.push(axiosInstance.get(BUILDING_URL + i));
+  // Scrape each page separately
+  const buildingPromises: Promise<BuildingData[]>[] = [];
+  let last_page_num = await getLastPage(BUILDING_URL);
+  for (let i = 0; i <= last_page_num; i++) {
+    buildingPromises.push(scrapeBuildingPage(BUILDING_URL + i));
   }
 
+  // Collate the result of scraping each page
   const buildings: BuildingData[] = [];
-  await Promise.all(buildingPromises).then((responses) => {
-    responses.forEach((response) => {
-      const htmlDoc = new JSDOM(response.data);
-      const buildingCards =
-        htmlDoc.window.document.getElementsByClassName("type-building");
-      for (let i = 0; i < buildingCards.length; i++) {
-        const buildingCard = buildingCards[i];
-
-        const rawName = buildingCard
-          .querySelector(".node-title")
-          ?.querySelector("a")
-          ?.innerHTML;
-        const id = buildingCard
-          .querySelector(".node-building-id")
-          ?.querySelector(".field-item")
-          ?.innerHTML;
-        const img_url = buildingCard
-          .querySelector('img[typeof="foaf:Image"]')
-          ?.getAttribute("src");
-        if (!rawName || !id || !BUILDING_REGEX.test(id)) continue;
-
-        const name = rawName.replace('&amp;', '&');
-        buildings.push({
-          name: name,
-          id: id,
-          img: img_url ? ENVIRONMENTS_URL + img_url : ""
-        });
-      }
-    });
+  await Promise.all(buildingPromises).then((buildingLists) => {
+    for (const buildingList of buildingLists) {
+      buildings.push(...buildingList);
+    }
   });
   return buildings;
-};
+}
+
+// Given a building page url, scrape it for all building data
+const scrapeBuildingPage = async (url: string) => {
+  const response = await axiosInstance.get(url);
+  const htmlDoc = new JSDOM(response.data);
+  const buildingCards =
+    htmlDoc.window.document.getElementsByClassName("type-building");
+
+  const buildings: BuildingData[] = [];
+  for (let i = 0; i < buildingCards.length; i++) {
+    const buildingCard = buildingCards[i];
+
+    const rawName = buildingCard
+      .querySelector(".node-title")
+      ?.querySelector("a")
+      ?.innerHTML;
+    const id = buildingCard
+      .querySelector(".node-building-id")
+      ?.querySelector(".field-item")
+      ?.innerHTML;
+    const img_url = buildingCard
+      .querySelector('img[typeof="foaf:Image"]')
+      ?.getAttribute("src");
+    if (!rawName || !id || !BUILDING_REGEX.test(id)) continue;
+
+    const name = rawName.replace('&amp;', '&');
+    buildings.push({
+      name: name,
+      id: id,
+      img: img_url ? ENVIRONMENTS_URL + img_url : ""
+    });
+  }
+  return buildings;
+}
 
 const getAllRooms = async (): Promise<RoomData[]> => {
-  const first_page = axiosInstance.get(ROOM_URL + 0);
-  const last_page_num = getLastPage((await first_page).data);
-  const roomListPromises: Promise<any>[] = [first_page];
-  for (let i = 1; i <= last_page_num; i++) {
-    roomListPromises.push(axiosInstance.get(ROOM_URL + i));
+  // Scrape each page separately
+  const roomPromises: Promise<RoomData[]>[] = [];
+  let last_page_num = await getLastPage(ROOM_URL);
+  for (let i = 0; i <= last_page_num; i++) {
+    roomPromises.push(scrapeRoomListPage(ROOM_URL + i));
   }
 
-  // Find all the room links
-  const roomPromises: Promise<any>[] = [];
-  await Promise.all(roomListPromises).then((responses) => {
-    responses.forEach((response) => {
-      const htmlDoc = new JSDOM(response.data);
-      const roomCards =
-        htmlDoc.window.document.getElementsByClassName("type-room");
-      for (let i = 0; i < roomCards.length; i++) {
-        const roomLink = roomCards[i]
-          .querySelector(".teaser-link")
-          ?.querySelector("a")
-          ?.getAttribute("href");
-        if (!roomLink) continue;
-        roomPromises.push(axiosInstance.get(ENVIRONMENTS_URL + roomLink));
-      }
-    });
-  });
-
+  // Collate the result of scraping each page
   const rooms: RoomData[] = [];
-  await Promise.all(roomPromises).then((responses) => {
-    responses.forEach((response) => {
-      const htmlDoc = new JSDOM(response.data).window.document;
-
-      const title = htmlDoc
-        .querySelector("h1")
-        ?.innerHTML;
-      if (!title) return;
-      const [id, rawName] = title.trim().split(' - ');
-      if (!ROOM_REGEX.test(id)) return;
-      const name = rawName.replace('&amp;', '&').replace('  ', ' ');
-
-      const capacity = htmlDoc
-        .querySelector(".field--name-field-room-capacity")
-        ?.querySelector(".field-item")
-        ?.innerHTML;
-      const rawUsage = htmlDoc
-        .querySelector(".field--name-field-room-usage")
-        ?.querySelector(".field-item")
-        ?.innerHTML;
-      if (!capacity || !rawUsage) return;
-
-      let usage: RoomUsage;
-      if (rawUsage.includes('Lecture')) {
-        usage = "LEC";
-      } else if (rawUsage.includes('Tutorial')) {
-        usage = "TUT";
-      } else {
-        return;
-      }
-
-      rooms.push({
-        id: id,
-        name: name,
-        capacity: parseInt(capacity),
-        usage: usage
-      });
-    });
+  await Promise.all(roomPromises).then((roomLists) => {
+    for (const roomList of roomLists) {
+      rooms.push(...roomList);
+    }
   });
-
   return rooms;
 };
 
-// Find the number of the last page of a paginated learning environments page
-const getLastPage = (page: string): number => {
+const scrapeRoomListPage = async (url: string) => {
+  const response = await axiosInstance.get(url);
+  const htmlDoc = new JSDOM(response.data);
+  const roomCards =
+    htmlDoc.window.document.getElementsByClassName("type-room");
+
+  const roomPromises: Promise<RoomData>[] = [];
+  for (let i = 0; i < roomCards.length; i++) {
+    const roomLink = roomCards[i]
+      .querySelector(".teaser-link")
+      ?.querySelector("a")
+      ?.getAttribute("href");
+    if (!roomLink) continue;
+    roomPromises.push(scrapeRoomPage(ENVIRONMENTS_URL + roomLink));
+  }
+
+  const rooms: RoomData[] = [];
+  await Promise.all(roomPromises).then((scrapedRooms) => {
+    for (const scrapedRoom of scrapedRooms) {
+      if (scrapedRoom) {
+        rooms.push(scrapedRoom);
+      }
+    }
+  });
+  return rooms;
+}
+
+const scrapeRoomPage = async (url: string) => {
+  const response = await axiosInstance.get(url);
+  const htmlDoc = new JSDOM(response.data).window.document;
+
+  const title = htmlDoc
+    .querySelector("h1")
+    ?.innerHTML;
+  if (!title) return {} as RoomData;
+  const [id, rawName] = title.trim().split(' - ');
+  if (!ROOM_REGEX.test(id)) return {} as RoomData;
+  const name = rawName.replace('&amp;', '&').replace('  ', ' ');
+
+  const capacity = htmlDoc
+    .querySelector(".field--name-field-room-capacity")
+    ?.querySelector(".field-item")
+    ?.innerHTML;
+  const rawUsage = htmlDoc
+    .querySelector(".field--name-field-room-usage")
+    ?.querySelector(".field-item")
+    ?.innerHTML;
+  if (!capacity || !rawUsage) return {} as RoomData;
+
+  let usage: RoomUsage;
+  if (rawUsage.includes('Lecture')) {
+    usage = "LEC";
+  } else if (rawUsage.includes('Tutorial')) {
+    usage = "TUT";
+  } else {
+    return {} as RoomData;
+  }
+
+  return {
+    id: id,
+    name: name,
+    capacity: parseInt(capacity),
+    usage: usage
+  } as RoomData;
+}
+
+// Finds the number of the last page of a learning environments page
+const getLastPage = async (url: string) => {
+  const response = await axiosInstance.get(url + 0);
+  const page = response.data;
   const match = LAST_PAGE_REGEX.exec(page);
   return match ? parseInt(match[1]) : 0;
 };
