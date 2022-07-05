@@ -1,7 +1,8 @@
 import axios from "axios";
 import pkg from "jsdom";
 import fs from "fs";
-import { ScraperData, BuildingDatabase, BuildingData, RoomData } from "./types";
+import { ScraperData, BuildingDatabase, BuildingData, RoomData, RoomUsage } from "./types";
+import axiosRateLimit from "axios-rate-limit";
 const { JSDOM } = pkg;
 
 /*
@@ -33,6 +34,9 @@ const ROOM_REGEX = /^[A-Z]-[A-Z][0-9]{1,2}-[A-Z]{0,2}[0-9]{1,4}[A-Z]{0,1}$/;
 /*
  * Implementation
  */
+// Global rate limited axios instance
+const axiosInstance = axiosRateLimit(axios.create(), { maxRPS: 50 });
+
 export const getStartDate = async () => {
   const termDateFetch = await axios.get(TERM_DATE_FETCH);
   const termDateRes = await termDateFetch.data;
@@ -102,31 +106,34 @@ export const scrapeBuildingData = async (): Promise<BuildingDatabase> => {
 
   // Add all rooms to their respective buildings
   await getAllRooms().then((rooms) => {
-    rooms.forEach(({ name, id }) => {
+    rooms.forEach(({ name, id, capacity, usage }) => {
       const [campus, buildingGrid, roomNumber] = id.split("-");
       const buildingID = `${campus}-${buildingGrid}`;
       if (!(buildingID in data)) {
         throw new Error(`Building not found for Room ID ${id}`);
       }
+
       data[buildingID].rooms[roomNumber] = {
         name: name,
-        id: id
+        id: id,
+        capacity: capacity,
+        usage: usage
       };
     });
   });
 
   fs.writeFileSync('database.json', JSON.stringify(data, null, 4));
-  console.log(`[${new Date().toLocaleString()}] Updated database.json`);
+  console.log(`Updated database.json`);
   return data;
 }
 
 // Get all building data by scraping learning environment website
 const getAllBuildings = async (): Promise<BuildingData[]> => {
-  let first_page = axios.get(BUILDING_URL + 0);
+  let first_page = axiosInstance.get(BUILDING_URL + 0);
   let last_page_num = getLastPage((await first_page).data);
   const buildingPromises: Promise<any>[] = [first_page];
   for (let i = 1; i <= last_page_num; i++) {
-    buildingPromises.push(axios.get(BUILDING_URL + i));
+    buildingPromises.push(axiosInstance.get(BUILDING_URL + i));
   }
 
   const buildings: BuildingData[] = [];
@@ -138,7 +145,7 @@ const getAllBuildings = async (): Promise<BuildingData[]> => {
       for (let i = 0; i < buildingCards.length; i++) {
         const buildingCard = buildingCards[i];
 
-        const name = buildingCard
+        const rawName = buildingCard
           .querySelector(".node-title")
           ?.querySelector("a")
           ?.innerHTML;
@@ -149,62 +156,87 @@ const getAllBuildings = async (): Promise<BuildingData[]> => {
         const img_url = buildingCard
           .querySelector('img[typeof="foaf:Image"]')
           ?.getAttribute("src");
+        if (!rawName || !id || !BUILDING_REGEX.test(id)) continue;
 
-        if (name && id && BUILDING_REGEX.test(id)) {
-          const cleanName = name.replace('&amp;', '&');
-          buildings.push({
-            name: cleanName,
-            id: id,
-            img: img_url ? ENVIRONMENTS_URL + img_url : ""
-          });
-        }
+        const name = rawName.replace('&amp;', '&');
+        buildings.push({
+          name: name,
+          id: id,
+          img: img_url ? ENVIRONMENTS_URL + img_url : ""
+        });
       }
     });
   });
   return buildings;
 };
 
-// Gets room codes from a page by parsing the HTML with regex (please excuse my cardinal sin)
 const getAllRooms = async (): Promise<RoomData[]> => {
-  const first_page = axios.get(ROOM_URL + 0);
+  const first_page = axiosInstance.get(ROOM_URL + 0);
   const last_page_num = getLastPage((await first_page).data);
-  const roomPromises: Promise<any>[] = [first_page];
+  const roomListPromises: Promise<any>[] = [first_page];
   for (let i = 1; i <= last_page_num; i++) {
-    roomPromises.push(axios.get(ROOM_URL + i));
+    roomListPromises.push(axiosInstance.get(ROOM_URL + i));
   }
 
-  const rooms: RoomData[] = [];
-  await Promise.all(roomPromises).then((responses) => {
+  // Find all the room links
+  const roomPromises: Promise<any>[] = [];
+  await Promise.all(roomListPromises).then((responses) => {
     responses.forEach((response) => {
       const htmlDoc = new JSDOM(response.data);
       const roomCards =
         htmlDoc.window.document.getElementsByClassName("type-room");
       for (let i = 0; i < roomCards.length; i++) {
-        const roomCard = roomCards[i];
-
-        const name = roomCard
-          .querySelector(".node-title")
+        const roomLink = roomCards[i]
+          .querySelector(".teaser-link")
           ?.querySelector("a")
-          ?.innerHTML;
-        const id = roomCard
-          .querySelector(".node-room-id")
-          ?.querySelector(".field-item")
-          ?.innerHTML;
-
-        if (name && id && ROOM_REGEX.test(id)) {
-          const cleanName = name
-            .replace(`${id} - `, '')
-            .replace('&amp;', '&')
-            .replace('  ', ' ');
-
-          rooms.push({
-            name: cleanName ? cleanName : id,
-            id: id
-          });
-        }
+          ?.getAttribute("href");
+        if (!roomLink) continue;
+        roomPromises.push(axiosInstance.get(ENVIRONMENTS_URL + roomLink));
       }
     });
   });
+
+  const rooms: RoomData[] = [];
+  await Promise.all(roomPromises).then((responses) => {
+    responses.forEach((response) => {
+      const htmlDoc = new JSDOM(response.data).window.document;
+
+      const title = htmlDoc
+        .querySelector("h1")
+        ?.innerHTML;
+      if (!title) return;
+      const [id, rawName] = title.trim().split(' - ');
+      if (!ROOM_REGEX.test(id)) return;
+      const name = rawName.replace('&amp;', '&').replace('  ', ' ');
+
+      const capacity = htmlDoc
+        .querySelector(".field--name-field-room-capacity")
+        ?.querySelector(".field-item")
+        ?.innerHTML;
+      const rawUsage = htmlDoc
+        .querySelector(".field--name-field-room-usage")
+        ?.querySelector(".field-item")
+        ?.innerHTML;
+      if (!capacity || !rawUsage) return;
+
+      let usage: RoomUsage;
+      if (rawUsage.includes('Lecture')) {
+        usage = "LEC";
+      } else if (rawUsage.includes('Tutorial')) {
+        usage = "TUT";
+      } else {
+        return;
+      }
+
+      rooms.push({
+        id: id,
+        name: name,
+        capacity: parseInt(capacity),
+        usage: usage
+      });
+    });
+  });
+
   return rooms;
 };
 

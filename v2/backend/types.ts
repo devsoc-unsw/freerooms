@@ -49,9 +49,13 @@ export type BuildingData = {
   img: string;
 };
 
+export type RoomUsage = "LEC" | "TUT";
+
 export type RoomData = {
   name: string;
   id: string;
+  capacity: number;
+  usage: RoomUsage;
 };
 
 export type BuildingDatabase = {
