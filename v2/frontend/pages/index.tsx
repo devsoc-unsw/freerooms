@@ -9,6 +9,7 @@ import Head from "next/head";
 import { server } from "../config";
 import { BuildingReturnData } from "../types";
 import ListView from "../views/ListView";
+import FilterBar from "../components/FilterBar";
 
 const Home: NextPage<{ buildings: BuildingReturnData }> = ({ buildings }) => {
   return (
@@ -22,6 +23,7 @@ const Home: NextPage<{ buildings: BuildingReturnData }> = ({ buildings }) => {
         <link rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
+      <FilterBar data={buildings} multiSelect={true}/>
       <ListView data={buildings} />
     </>
   );
