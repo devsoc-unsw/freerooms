@@ -8,7 +8,7 @@ const FilterBar: React.FC<{
     }> = ({ data, multiSelect }) => {
 
     const [open, setOpen] = useState(false);
-    const [selection, setSelection] = useState([]); // Array holds selected items.
+    const [selection, setSelection] = useState([]); 
     
     const items = [
         {
@@ -28,20 +28,17 @@ const FilterBar: React.FC<{
     // Toggle dropDown on and off.
     const toggle = () => setOpen(!open);
     
-
+    // Handling click interactions (adding + removing selected items)
     const handleOnClick = (item: React.ReactNode) => {
-        // Selection is unique
         if (!selection.some(current => current.id === item.id)) { // Current represents an instance when .some iterates selection
-            // If not multiselect, add item to setSelection arr. 
+            // If not multiselect, add item to setSelection[]
             if (!multiSelect) {
                 setSelection([item]);
-            } else if (multiSelect) { // Otherwise multiselect, let users select multiple items.
+            } else if (multiSelect) {
                 setSelection([...selection, item]); // Spread current selection and add new item
             }
         } else { // Item has been selected -> want to remove selection
             let selectionRemoved = selection;
-            // Want to return a new array called 'selectionRemoved'
-            // We use filter to grab all items except for the one selected.
             selectionRemoved = selectionRemoved.filter(
                 current => current.id !== item.id
             );
@@ -66,32 +63,30 @@ const FilterBar: React.FC<{
 
     return (
         <>
-            <button 
-                onClick={() => toggle()}
-                // onBlur={(e: React.FocusEvent) => dismissHandler(e)}
-            >
-                <div className="dropDown-header__title">
+            <div className="dd-container">
+                <div className="dd-header">
                     <p>Filter</p>
                     <p>Reset</p>
                 </div>
-                <FilterListIcon />
-                <div className="dropDown-header__action">
-                    {/* If dd is opened, show close otherwise show open */}
-                    <p>{open ? 'Close' : 'Open'}</p> 
+                <div className="dd-header-action" 
+                    onClick={() => toggle()}
+                    // onBlur={(e: React.FocusEvent) => dismissHandler(e)}
+                    >
+                    <p>{open ? <FilterListIcon /> : <FilterListIcon />}</p> 
                 </div>
                 {open && (
-                <ul className="dropDown-list">
+                <ul className="dd-list">
                     {items.map(item => (
-                        <li className="dropDown-item" key={item.id}>
-                            <button type="button" onClick={() => handleOnClick(item)}>
-                                <span>{item.value}</span>
-                                <span>{isItemInSelection(item) && ' Selected'}</span> 
+                        <li className="dd-item" onClick={() => handleOnClick(item)} key={item.id}>
+                            <button onClick={() => handleOnClick(item)}>
+                                {item.value}
+                                {isItemInSelection(item) && ' Selected'} 
                             </button>
                         </li>
                     ))}
                 </ul>
             )}
-            </button>
+            </div>
         </>
     );
 };
