@@ -17,6 +17,7 @@ import StatusDot from "../components/StatusDot";
 import { Typography } from "@mui/material";
 import MuiAppBar from "@mui/material/AppBar";
 import CircularProgress from "@mui/material/CircularProgress";
+import { ContactPageSharp } from "@mui/icons-material";
 
 const INITIALISING = -2;
 const FAILED = -1;
@@ -53,35 +54,79 @@ const StyledImage = styled(Image)<ImageProps>(({ theme }) => ({
 
 const StatusBox = styled(Box)<BoxProps>(({ theme }) => ({
   display: "flex",
-  justifyContent: "center",
+  justifyContent: "right",
   alignItems: "center",
   borderRadius: 15,
   backgroundColor: "white",
-  padding: 10,
+  //padding: 10,
   paddingLeft: 15,
-  paddingRight: 15,
-  margin: 10,
+  paddingRight: 65,
+  marginBottom: 0,
+  marginTop: 15,
+  marginRight: 10,
+  marginLeft: 10,
+  //marginRight: 10,
   pointerEvents: "none",
   color: "black",
+  height: 75,
 }));
 
 const TitleBox = styled(Box)<BoxProps>(({ theme }) => ({
   display: "flex",
   borderRadius: 10,
   position: "absolute",
-  top: 0,
+  justifyContent: "left",
+  alignItems: "center",
+  height: 50,
+  width: 225,
+  top: 5,
   left: 0,
   right: 0,
-  backgroundColor: "white", 
+  backgroundColor: "white",
   //backgroundColor: theme.palette.primary.main,
   color: "Black",
-  padding: 15,
+  paddingTop: 15,
   paddingLeft: 20,
   paddingRight: 20,
+  //paddingBottom: 20,
   margin: 10,
+  marginTop: 15,
   pointerEvents: "none",
 }));
 
+const RoomBox = styled(Box)<BoxProps>(({ theme }) => ({
+  display: "flex",
+  height: 385,
+  borderRadius: 10,
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  right: 0,
+  backgroundColor: '#F1F1F1',
+  margin: 10,
+  marginTop: 0,
+}));
+
+const IndiviRoomBox = styled(Box)<BoxProps>(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  borderRadius: 10,
+  position: "absolute",
+  height: 75,
+  left: 0,
+  right: 0,
+  fontSize: 20,
+  fontWeight: 500,
+  backgroundColor: '#FFFFFF',
+  color: "black",
+  padding: 5,
+  paddingLeft: 20,
+  paddingRight: 20,
+  margin: 10,
+  marginTop: 0,
+  pointerEvents: "none",
+  
+}));
 
 const BuildingInfo: React.FC<{
   building: Building | null;
@@ -91,59 +136,45 @@ const BuildingInfo: React.FC<{
 
   const [date, setDate] = React.useState<DateTime>(DateTime.now());
   const [sort, setSort] = React.useState<"name" | "available">("name");
-  
+
 
   const { data: roomsData, error: roomsError } =
-      (useSWR<BuildingRoomReturnStatus>(
-        building ? server + "/buildings/" + building!.id : null
+    (useSWR<BuildingRoomReturnStatus>(
+      building ? server + "/buildings/" + building!.id : null
     ));
-    
-  const rooms = (roomsData ? Object.values(roomsData['rooms']) : null)
+
+
+
+  const rooms = (roomsData && roomsData['rooms'] ? Object.values(roomsData['rooms']) : null)
 
 
   return (
     <MainBox>
-
       <StatusBox>
-        {/* allowing this will block the status box info ? maybe we should just have the building name below */}
-        {/* <TitleBox>
+        <TitleBox>
           <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
             {building!.name}
           </Typography>
-        </TitleBox> */}
-        {/* apparently for every if statement if we reverse it would be right but I don't understand why??? */}
-        
-        
+        </TitleBox>
         {roomsData ? (
           <>
             {roomsError ? null : (
               <StatusDot
-                
-                
                 colour={
                   rooms ? (
                     (rooms.filter((r: { status: string; }) => r.status === "free").length) >= 5
-                      ? "green"
+                      ? "green" 
                       : rooms.filter((room: { status: string; }) => room.status === "free").length !== 0
-                      ? "orange"
-                      : "red"
-                  ): "red"
+                        ? "orange"
+                        : "red"
+                  ) : "red"
                 }
               />
-            ) }
+            )}
             <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
-              {/* this allows the appear of building name */}
-              {/* <TitleBox>
-                <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
-                  {building!.name}
-                </Typography>
-              </TitleBox> */}
-              {building!.name}
-              <br />
-              {(roomsData && !roomsError)
-                ? `${(rooms.filter((r: { status: string; }) => r.status === "free").length)} room${
-                  (rooms.filter((r: { status: string; }) => r.status === "free").length) === 1 ? "" : "s"
-                  } available`
+
+              {(roomsData && !roomsError && rooms)
+                ? `${(rooms.filter((r: { status: string; }) => r.status === "free").length)} / ${rooms.length}`
                 : "data unavailable"}
             </Typography>
           </>
@@ -151,7 +182,10 @@ const BuildingInfo: React.FC<{
           // apparently all the things above failed and this one is not working :))
           <CircularProgress size={20} thickness={5} disableShrink />
         )}
-      </StatusBox>
+      </StatusBox>`
+
+
+
       <div
         style={{
           display: "flex",
@@ -160,21 +194,58 @@ const BuildingInfo: React.FC<{
           alignItems: "center",
           flexWrap: "wrap",
           margin: 10,
-          paddingTop: 25
+          marginTop: 0
+          //paddingTop: 25
         }}
       >
         <StyledImage
           src={`/assets/building_photos/${building!.id}.png`}
 
-          width = "946px"
-          height= "648px"
+          width="946px"
+          height="648px"
           //layout = "fill"
           objectFit="cover"
           priority={true}
         />
       </div>
 
-      
+
+      <RoomBox>
+        <ul style={{
+          width: "100%",
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+          gridGap: "20px",
+
+        }}>
+          {roomsData && rooms ? (Object.keys(roomsData['rooms']).map((room_name) => {
+
+            const room = roomsData['rooms'][room_name]
+            return (
+              room['status'] === 'free' ? <li><IndiviRoomBox>
+                {room_name} <text style={{
+                  color: '#2AA300', 
+                  flex: 1,
+                  textAlign: 'center',
+                }}> Available Now </text>
+              </IndiviRoomBox></li> : <IndiviRoomBox><Typography sx={{ fontSize: 20, fontWeight: 500 }}>
+                {room_name} <text style={{ color: '#D30000' }}>  Unavailable</text>
+              </Typography></IndiviRoomBox>
+            )
+          })) : null}
+        </ul>
+
+
+      </RoomBox>
+
+      {/* allowing this will block the status box info ? maybe we should just have the building name below */}
+      {/* <TitleBox>
+        <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
+          {building!.name}
+        </Typography>
+      </TitleBox> */}
+
+
     </MainBox>
   );
 };
