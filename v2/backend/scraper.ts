@@ -13,7 +13,7 @@ const ENVIRONMENTS_URL = "https://www.learningenvironments.unsw.edu.au"
 const BUILDING_URL = `${ENVIRONMENTS_URL}/physical-spaces/teaching-spaces?page=`;
 const ROOM_URL = `${ENVIRONMENTS_URL}/find-teaching-space?building_name=&room_name=&page=`;
 
-const LAST_PAGE_REGEX = /<a href=".*page=([0-9]+).*" title="Go to last page">/;
+const PAGE_NUM_REGEX = /^.*page=([0-9]+).*$/;
 const BUILDING_REGEX = /^[A-Z]-[A-Z][0-9]{1,2}$/;
 const ROOM_REGEX = /^[A-Z]-[A-Z][0-9]{1,2}-[A-Z]{0,2}[0-9]{1,4}[A-Z]{0,1}$/;
 // One letter - campus ID, e.g. K for Kensington
@@ -90,9 +90,8 @@ const getAllBuildings = async (): Promise<BuildingData[]> => {
 // Given a building list page URL, scrape each listed building
 const scrapeBuildingListPage = async (url: string) => {
   const response = await axiosInstance.get(url);
-  const htmlDoc = new JSDOM(response.data);
-  const buildingCards =
-    htmlDoc.window.document.getElementsByClassName("type-building");
+  const htmlDoc = new JSDOM(response.data).window.document;
+  const buildingCards = htmlDoc.getElementsByClassName("type-building");
 
   const buildings: BuildingData[] = [];
   for (let i = 0; i < buildingCards.length; i++) {
@@ -143,9 +142,8 @@ const getAllRooms = async (): Promise<RoomData[]> => {
 // Given a room list page URL, scrape each listed room
 const scrapeRoomListPage = async (url: string) => {
   const response = await axiosInstance.get(url);
-  const htmlDoc = new JSDOM(response.data);
-  const roomCards =
-    htmlDoc.window.document.getElementsByClassName("type-room");
+  const htmlDoc = new JSDOM(response.data).window.document;
+  const roomCards = htmlDoc.getElementsByClassName("type-room");
 
   // Obtain and scrape links for each room
   const roomPromises: Promise<RoomData | undefined>[] = [];
@@ -171,7 +169,7 @@ const scrapeRoomListPage = async (url: string) => {
 }
 
 // Given a room page URL, scrape the room's data
-const scrapeRoomPage = async (url: string) => {  
+const scrapeRoomPage = async (url: string) => {
   const response = await axiosInstance.get(url);
   const htmlDoc = new JSDOM(response.data).window.document;
 
@@ -213,8 +211,12 @@ const scrapeRoomPage = async (url: string) => {
 // Finds the number of the last page of a learning environments page
 const getLastPage = async (url: string) => {
   const response = await axiosInstance.get(url + 0);
-  const page = response.data;
-  const match = LAST_PAGE_REGEX.exec(page);
+  const htmlDoc = new JSDOM(response.data).window.document;
+  const page_href = htmlDoc
+    .querySelector('a[title="Go to last page"]')
+    ?.getAttribute("href");
+  if (!page_href) return 0;
+  const match = PAGE_NUM_REGEX.exec(page_href);
   return match ? parseInt(match[1]) : 0;
 };
 
