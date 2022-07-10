@@ -147,7 +147,8 @@ const scrapeRoomListPage = async (url: string) => {
   const roomCards =
     htmlDoc.window.document.getElementsByClassName("type-room");
 
-  const roomPromises: Promise<RoomData>[] = [];
+  // Obtain and scrape links for each room
+  const roomPromises: Promise<RoomData | undefined>[] = [];
   for (let i = 0; i < roomCards.length; i++) {
     const roomLink = roomCards[i]
       .querySelector(".teaser-link")
@@ -157,6 +158,7 @@ const scrapeRoomListPage = async (url: string) => {
     roomPromises.push(scrapeRoomPage(ENVIRONMENTS_URL + roomLink));
   }
 
+  // Collate scraped rooms
   const rooms: RoomData[] = [];
   await Promise.all(roomPromises).then((scrapedRooms) => {
     for (const scrapedRoom of scrapedRooms) {
@@ -169,16 +171,16 @@ const scrapeRoomListPage = async (url: string) => {
 }
 
 // Given a room page URL, scrape the room's data
-const scrapeRoomPage = async (url: string) => {
+const scrapeRoomPage = async (url: string) => {  
   const response = await axiosInstance.get(url);
   const htmlDoc = new JSDOM(response.data).window.document;
 
   const title = htmlDoc
     .querySelector("h1")
     ?.innerHTML;
-  if (!title) return {} as RoomData;
+  if (!title) return;
   const [id, rawName] = title.trim().split(' - ');
-  if (!ROOM_REGEX.test(id)) return {} as RoomData;
+  if (!ROOM_REGEX.test(id)) return;
   const name = rawName.replace('&amp;', '&').replace('  ', ' ');
 
   const capacity = htmlDoc
@@ -189,7 +191,7 @@ const scrapeRoomPage = async (url: string) => {
     .querySelector(".field--name-field-room-usage")
     ?.querySelector(".field-item")
     ?.innerHTML;
-  if (!capacity || !rawUsage) return {} as RoomData;
+  if (!capacity || !rawUsage) return;
 
   let usage: RoomUsage;
   if (rawUsage.includes('Lecture')) {
@@ -197,7 +199,7 @@ const scrapeRoomPage = async (url: string) => {
   } else if (rawUsage.includes('Tutorial')) {
     usage = "TUT";
   } else {
-    return {} as RoomData;
+    return;
   }
 
   return {
@@ -219,12 +221,19 @@ const getLastPage = async (url: string) => {
 /*
  * Main
  */
+process.on('uncaughtException', (err: any) => {
+  if (process.send) {
+    process.send({ data: {}, err: err.toString() });
+  }
+  process.disconnect();
+});
+
 console.log('Updating database.json...');
 scrapeBuildingData().then((data) => {
   fs.writeFileSync('database.json', JSON.stringify(data, null, 4));
   console.log(`Updated database.json`);
   if (process.send) {
-    process.send(data);
+    process.send({ data: data });
   }
   process.disconnect();
 });

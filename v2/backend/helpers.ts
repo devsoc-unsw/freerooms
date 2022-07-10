@@ -69,18 +69,21 @@ export const getBuildingData = async (): Promise<BuildingDatabase> => {
 }
 
 // Spawn child process to scrape building data
-// or return process to ongoing promise
+// or return promise to ongoing process
 let ongoingScraper: Promise<BuildingDatabase> | null = null;
 export const scrapeBuildingData = async (): Promise<BuildingDatabase> => {
   if (ongoingScraper === null) {
     ongoingScraper = new Promise((resolve, reject) => {
       const child = child_process.fork('./scraper.ts');
-      child.on('message', (msg: BuildingDatabase) => {
-        ongoingScraper = null;
-        resolve(msg);
+      child.on('message', (msg: { data: BuildingDatabase, err?: string }) => {
+        if (msg.err) reject(msg.err);
+        resolve(msg.data);
       });
       child.on('error', () => {
-        reject()
+        reject();
+      });
+      child.on('exit', () => {
+        ongoingScraper = null;
       });
     });
   }

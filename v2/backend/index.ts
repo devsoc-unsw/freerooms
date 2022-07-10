@@ -79,10 +79,10 @@ app.use(
 
 // Error-handling middleware
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  console.log(`"${req.originalUrl}" ${err}`);
+  console.log(`"${req.originalUrl}" ${err}`)
 
   if (!res.writableEnded) {
-    res.send({ message: err.message, status: 400 });
+    res.send({ message: err.toString(), status: 400 });
   }
   next();
 });
