@@ -17,11 +17,14 @@ import StatusDot from "../components/StatusDot";
 import { Typography } from "@mui/material";
 import MuiAppBar from "@mui/material/AppBar";
 import CircularProgress from "@mui/material/CircularProgress";
+import CloseIcon from "@mui/icons-material/Close";
+import Button from "../components/Button";
+import axios from "axios";
 
 const INITIALISING = -2;
 const FAILED = -1;
 
-const AppBar = styled(MuiAppBar)(({ theme }) => ({
+const AppBox = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   color: theme.palette.getContrastText(theme.palette.background.default),
   boxShadow: "none",
@@ -29,7 +32,7 @@ const AppBar = styled(MuiAppBar)(({ theme }) => ({
   flexDirection: "row",
   alignItems: "center",
   justifyContent: "center",
-  padding: theme.spacing(2, 1),
+  padding: theme.spacing(3, 1),
 }));
 
 const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
@@ -80,24 +83,22 @@ const TitleBox = styled(Box)<BoxProps>(({ theme }) => ({
   pointerEvents: "none",
 }));
 
+const fetchTerm = (url: any, term: any) =>
+  axios({ url, params: { term } }).then((res) => res.data);
+
 const BuildingInfo: React.FC<{
   building: Building | null;
   onClose?: () => void;
 }> = ({ building }) => {
   if (!building) return <></>;
+  console.log(server + "/buildings/" + building!.id);
 
   const [date, setDate] = React.useState<DateTime>(DateTime.now());
   const [sort, setSort] = React.useState<"name" | "available">("name");
   const [rooms, setRooms] = React.useState<Room[]>([]);
+  // BUGS HERE
   const { data: roomsData, error: roomsError } =
-    useSWR<BuildingRoomReturnStatus>(
-      building
-        ? {
-            url: server + "/buildings/" + building!.id,
-            config: { params: { datetime: date.toFormat("yyyy-MM-dd HH:mm") } },
-          }
-        : null
-    );
+    useSWR<BuildingRoomReturnStatus>(server + "/buildings/" + building!.id);
 
   /*const sortRooms = (rooms: Room[]) => {
     if (sort === "name") {
@@ -119,6 +120,11 @@ const BuildingInfo: React.FC<{
 
   return (
     <MainBox>
+      <AppBox>
+        <Button aria-label="Close">
+          <CloseIcon />
+        </Button>
+      </AppBox>
       <StatusBox>
         {roomsData ? (
           <>
