@@ -18,6 +18,12 @@ import { Typography } from "@mui/material";
 import MuiAppBar from "@mui/material/AppBar";
 import CircularProgress from "@mui/material/CircularProgress";
 import { ContactPageSharp } from "@mui/icons-material";
+import TextField from "@mui/material/TextField";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+
 
 const INITIALISING = -2;
 const FAILED = -1;
@@ -83,7 +89,6 @@ const TitleBox = styled(Box)<BoxProps>(({ theme }) => ({
   left: 0,
   right: 0,
   backgroundColor: "white",
-  //backgroundColor: theme.palette.primary.main,
   color: "Black",
   paddingTop: 15,
   paddingLeft: 20,
@@ -96,7 +101,7 @@ const TitleBox = styled(Box)<BoxProps>(({ theme }) => ({
 
 const RoomBox = styled(Box)<BoxProps>(({ theme }) => ({
   display: "flex",
-  height: 385,
+  height: 395,
   borderRadius: 10,
   position: "absolute",
   bottom: 0,
@@ -125,7 +130,6 @@ const IndiviRoomBox = styled(Box)<BoxProps>(({ theme }) => ({
   margin: 10,
   marginTop: 0,
   pointerEvents: "none",
-  
 }));
 
 const BuildingInfo: React.FC<{
@@ -143,9 +147,15 @@ const BuildingInfo: React.FC<{
       building ? server + "/buildings/" + building!.id : null
     ));
 
-
-
   const rooms = (roomsData && roomsData['rooms'] ? Object.values(roomsData['rooms']) : null)
+
+  const [value, setValue] = React.useState<Date | null>(
+    new Date("2014-08-18T21:11:54")
+  );
+
+  const handleChange = (newValue: Date | null) => {
+    setValue(newValue);
+  };
 
 
   return (
@@ -163,7 +173,7 @@ const BuildingInfo: React.FC<{
                 colour={
                   rooms ? (
                     (rooms.filter((r: { status: string; }) => r.status === "free").length) >= 5
-                      ? "green" 
+                      ? "green"
                       : rooms.filter((room: { status: string; }) => room.status === "free").length !== 0
                         ? "orange"
                         : "red"
@@ -194,7 +204,8 @@ const BuildingInfo: React.FC<{
           alignItems: "center",
           flexWrap: "wrap",
           margin: 10,
-          marginTop: 0
+          marginTop: 0,
+          marginBottom: 5
           //paddingTop: 25
         }}
       >
@@ -209,6 +220,40 @@ const BuildingInfo: React.FC<{
         />
       </div>
 
+      <table>
+        <tbody>
+          <tr>
+            <td style={{ padding: '7.5px' }}>
+
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DesktopDatePicker
+                  inputFormat="MM/dd/yyyy"
+                  value={value}
+                  onChange={handleChange}
+                  renderInput={(params) => <TextField {...params} sx={{
+                    svg: { color: '#000000' },
+                    input: { color: '#000000' },
+                  }} />}
+                />
+
+              </LocalizationProvider>
+            </td>
+            <td style={{ padding: '7.5px' }}>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <TimePicker
+                  value={value}
+                  onChange={handleChange}
+                  renderInput={(params) => <TextField {...params} sx={{
+                    svg: { color: '#000000' },
+                    input: { color: '#000000' },
+                  }} />}
+                />
+              </LocalizationProvider>
+
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       <RoomBox>
         <ul style={{
@@ -224,7 +269,7 @@ const BuildingInfo: React.FC<{
             return (
               room['status'] === 'free' ? <li><IndiviRoomBox>
                 {room_name} <text style={{
-                  color: '#2AA300', 
+                  color: '#2AA300',
                   flex: 1,
                   textAlign: 'center',
                 }}> Available Now </text>
