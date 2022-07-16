@@ -21,6 +21,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import Branding from "../components/Branding";
 import Button from "../components/Button";
 import BuildingCard from "../components/BuildingCard";
+import FilterBar from "../components/FilterBar";
 
 const drawerWidth = 400;
 

@@ -24,7 +24,7 @@ const Home: NextPage<{ buildings: BuildingReturnData }> = ({ buildings }) => {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <FilterBar data={buildings} multiSelect={true}/>
-      <ListView data={buildings} />
+      {/* <ListView data={buildings} /> */}
     </>
   );
 };

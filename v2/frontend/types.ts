@@ -69,3 +69,8 @@ export type RoomAvailability = {
     [day: string]: ClassList;
   };
 };
+
+export type DropDownItem = {
+  id: number,
+  value: string,
+};
