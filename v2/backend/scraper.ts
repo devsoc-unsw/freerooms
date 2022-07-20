@@ -2,6 +2,7 @@ import axios from "axios";
 import axiosRateLimit from "axios-rate-limit";
 import fs from "fs";
 import pkg from "jsdom";
+import * as puppeteer from "puppeteer";
 const { JSDOM } = pkg;
 
 import { BuildingDatabase, BuildingData, RoomData, RoomUsage } from "./types";
@@ -9,11 +10,14 @@ import { BuildingDatabase, BuildingData, RoomData, RoomUsage } from "./types";
 /*
  * Definitions
  */
+const BATCHSIZE = 10;
+
 const ENVIRONMENTS_URL = "https://www.learningenvironments.unsw.edu.au"
 const BUILDING_URL = `${ENVIRONMENTS_URL}/physical-spaces/teaching-spaces?page=`;
 const ROOM_URL = `${ENVIRONMENTS_URL}/find-teaching-space?building_name=&room_name=&page=`;
 
 const PAGE_NUM_REGEX = /^.*page=([0-9]+).*$/;
+const COORD_REGEX = /(-?[0-9]{1,3}\.[0-9]{1,10}),(-?[0-9]{1,3}\.[0-9]{1,10})/;
 const BUILDING_REGEX = /^[A-Z]-[A-Z][0-9]{1,2}$/;
 const ROOM_REGEX = /^[A-Z]-[A-Z][0-9]{1,2}-[A-Z]{0,2}[0-9]{1,4}[A-Z]{0,1}$/;
 // One letter - campus ID, e.g. K for Kensington
@@ -31,37 +35,27 @@ const ROOM_REGEX = /^[A-Z]-[A-Z][0-9]{1,2}-[A-Z]{0,2}[0-9]{1,4}[A-Z]{0,1}$/;
 // Global rate limited axios instance
 const axiosInstance = axiosRateLimit(axios.create(), { maxRPS: 50 });
 
-// Scrape building data and store in a JSON file
-const scrapeBuildingData = async (): Promise<BuildingDatabase> => {
+// Scrape and return building data
+const scrapeBuildingDatabase = async (): Promise<BuildingDatabase> => {
   const data: BuildingDatabase = {};
 
   // Add each building to data
   await getAllBuildings().then((buildings) => {
-    buildings.forEach(({ name, id, img }) => {
-      data[id] = {
-        name: name,
-        id: id,
-        img: img,
-        rooms: {}
-      }
+    buildings.forEach((building) => {
+      data[building.id] = building;
     });
   });
 
   // Add all rooms to their respective buildings
   await getAllRooms().then((rooms) => {
-    rooms.forEach(({ name, id, capacity, usage }) => {
-      const [campus, buildingGrid, roomNumber] = id.split("-");
+    rooms.forEach((room) => {
+      const [campus, buildingGrid, roomNumber] = room.id.split("-");
       const buildingID = `${campus}-${buildingGrid}`;
       if (!(buildingID in data)) {
-        throw new Error(`Building not found for Room ID ${id}`);
+        throw new Error(`Building not found for Room ID ${room.id}`);
       }
 
-      data[buildingID].rooms[roomNumber] = {
-        name: name,
-        id: id,
-        capacity: capacity,
-        usage: usage
-      };
+      data[buildingID].rooms[roomNumber] = room;
     });
   });
 
@@ -70,59 +64,140 @@ const scrapeBuildingData = async (): Promise<BuildingDatabase> => {
 
 // Get all building data by scraping UNSW learning environments site
 const getAllBuildings = async (): Promise<BuildingData[]> => {
-  // Scrape each page separately
-  const buildingPromises: Promise<BuildingData[]>[] = [];
+  // Scrape each list page 
+  const buildingLinkPromises: Promise<string[]>[] = [];
   let last_page_num = await getLastPage(BUILDING_URL);
   for (let i = 0; i <= last_page_num; i++) {
-    buildingPromises.push(scrapeBuildingListPage(BUILDING_URL + i));
+    buildingLinkPromises.push(scrapeBuildingListPage(BUILDING_URL + i));
   }
 
-  // Collate the result of scraping each page
-  const buildings: BuildingData[] = [];
-  await Promise.all(buildingPromises).then((buildingLists) => {
-    for (const buildingList of buildingLists) {
-      buildings.push(...buildingList);
+  // Collate the links from each page
+  const buildingLinks: string[] = [];
+  await Promise.all(buildingLinkPromises).then((buildingLinkLists) => {
+    for (const buildingLinkList of buildingLinkLists) {
+      buildingLinks.push(...buildingLinkList);
     }
   });
+
+  // Open each building page with headless browser
+  const browser = await puppeteer.launch({
+    headless: true,
+    args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-gpu"],
+  });
+  const pages = await createPages(browser, BATCHSIZE);
+
+  const buildings: BuildingData[] = [];
+  for (let i = 0; i < buildingLinks.length;) {
+    // Process in batches
+    const buildingPromises: Promise<BuildingData | undefined>[] = [];
+    for (let j = 0; j < BATCHSIZE && i < buildingLinks.length; j++, i++) {
+      buildingPromises.push(scrapeBuildingPage(pages[j], buildingLinks[i]));
+    }
+
+    await Promise.all(buildingPromises).then((scrapedBuildings) => {
+      for (const scrapedBuilding of scrapedBuildings) {
+        if (scrapedBuilding) {
+          buildings.push(scrapedBuilding);
+        }
+      }
+    });
+  }
+
+  await browser.close();
   return buildings;
 }
 
-// Given a building list page URL, scrape each listed building
-const scrapeBuildingListPage = async (url: string) => {
+// Create browser pages that intercept and abort non-document/script requests
+const createPages = async (browser: puppeteer.Browser, batchsize: number): Promise<puppeteer.Page[]> => {
+  const pages: puppeteer.Page[] = [];
+  for (let i = 0; i < batchsize; i++) {
+    const page = await browser.newPage();
+    // Block all css, fonts and images
+    await page.setRequestInterception(true);
+    page.on("request", (request) => {
+      const type = request.resourceType();
+      const include = ["document", "script"];
+      if (include.includes(type)) {
+        request.continue();
+      } else {
+        request.abort();
+      }
+    });
+    pages.push(page);
+  }
+  return pages;
+};
+
+// Given a building list page, return a list of URLs to building pages
+const scrapeBuildingListPage = async (url: string): Promise<string[]> => {
   const response = await axiosInstance.get(url);
   const htmlDoc = new JSDOM(response.data).window.document;
   const buildingCards = htmlDoc.getElementsByClassName("type-building");
 
-  const buildings: BuildingData[] = [];
+  // Get links of each listed building
+  const buildingLinks: string[] = [];
   for (let i = 0; i < buildingCards.length; i++) {
-    const buildingCard = buildingCards[i];
-
-    const rawName = buildingCard
-      .querySelector(".node-title")
+    const buildingLink = buildingCards[i]
+      .querySelector(".teaser-link")
       ?.querySelector("a")
+      ?.getAttribute("href");
+    if (buildingLink) {
+      buildingLinks.push(ENVIRONMENTS_URL + buildingLink);
+    };
+  }
+
+  return buildingLinks;
+}
+
+// Given a building page URL, scrape the building's data
+const scrapeBuildingPage = async (page: puppeteer.Page, url: string): Promise<BuildingData | undefined> => {
+  // Navigate to URL and wait for map to be loaded
+  await page.goto(url, { waitUntil: 'domcontentloaded' });
+  await page.waitForSelector("[title='Open this area in Google Maps (opens a new window)']");
+
+  // Retrieve all necessary elements
+  const { rawName, id, mapUrl, imgUrl } = await page.evaluate(() => {
+    const rawName = document
+      .querySelector("h1")
       ?.innerHTML;
-    const id = buildingCard
-      .querySelector(".node-building-id")
+    const id = document
+      .querySelector(".field--name-field-building-id")
       ?.querySelector(".field-item")
       ?.innerHTML;
-    const img_url = buildingCard
-      .querySelector('img[typeof="foaf:Image"]')
+    const mapUrl = document
+      .querySelector("a[title='Open this area in Google Maps (opens a new window)']")
+      ?.getAttribute('href');
+    const imgUrl = document
+      .getElementById('block-page-sidebar')
+      ?.querySelector('img[typeof="foaf:Image"]')
       ?.getAttribute("src");
-    if (!rawName || !id || !BUILDING_REGEX.test(id)) continue;
 
-    const name = rawName.replace('&amp;', '&');
-    buildings.push({
-      name: name,
-      id: id,
-      img: img_url ? ENVIRONMENTS_URL + img_url : ""
-    });
-  }
-  return buildings;
+    return { rawName, id, mapUrl, imgUrl };
+  });
+
+  // Process elements
+  if (!rawName) return;
+  const name = rawName.trim().replace('&amp;', '&');
+
+  if (!id || !BUILDING_REGEX.test(id)) return;
+
+  if (!mapUrl) return;
+  const coordsMatch = COORD_REGEX.exec(mapUrl);
+  if (!coordsMatch) return;
+
+  return {
+    name: name,
+    id: id,
+    img: imgUrl ? ENVIRONMENTS_URL + imgUrl : "",
+    lat: parseFloat(coordsMatch[1]),
+    long: parseFloat(coordsMatch[2]),
+    rooms: {}
+  } as BuildingData;
 }
 
 // Get all rooms by scraping UNSW learning environments site
 const getAllRooms = async (): Promise<RoomData[]> => {
-  // Scrape each page separately
+  // Scrape each list page separately
   const roomPromises: Promise<RoomData[]>[] = [];
   let last_page_num = await getLastPage(ROOM_URL);
   for (let i = 0; i <= last_page_num; i++) {
@@ -140,7 +215,7 @@ const getAllRooms = async (): Promise<RoomData[]> => {
 };
 
 // Given a room list page URL, scrape each listed room
-const scrapeRoomListPage = async (url: string) => {
+const scrapeRoomListPage = async (url: string): Promise<RoomData[]> => {
   const response = await axiosInstance.get(url);
   const htmlDoc = new JSDOM(response.data).window.document;
   const roomCards = htmlDoc.getElementsByClassName("type-room");
@@ -169,7 +244,7 @@ const scrapeRoomListPage = async (url: string) => {
 }
 
 // Given a room page URL, scrape the room's data
-const scrapeRoomPage = async (url: string) => {
+const scrapeRoomPage = async (url: string): Promise<RoomData | undefined> => {
   const response = await axiosInstance.get(url);
   const htmlDoc = new JSDOM(response.data).window.document;
 
@@ -185,12 +260,12 @@ const scrapeRoomPage = async (url: string) => {
     .querySelector(".field--name-field-room-capacity")
     ?.querySelector(".field-item")
     ?.innerHTML;
+
   const rawUsage = htmlDoc
     .querySelector(".field--name-field-room-usage")
     ?.querySelector(".field-item")
     ?.innerHTML;
   if (!capacity || !rawUsage) return;
-
   let usage: RoomUsage;
   if (rawUsage.includes('Lecture')) {
     usage = "LEC";
@@ -209,7 +284,7 @@ const scrapeRoomPage = async (url: string) => {
 }
 
 // Finds the number of the last page of a learning environments page
-const getLastPage = async (url: string) => {
+const getLastPage = async (url: string): Promise<number> => {
   const response = await axiosInstance.get(url + 0);
   const htmlDoc = new JSDOM(response.data).window.document;
   const page_href = htmlDoc
@@ -231,7 +306,7 @@ process.on('uncaughtException', (err: any) => {
 });
 
 console.log('Updating database.json...');
-scrapeBuildingData().then((data) => {
+scrapeBuildingDatabase().then((data) => {
   fs.writeFileSync('database.json', JSON.stringify(data, null, 4));
   console.log(`Updated database.json`);
   if (process.send) {
