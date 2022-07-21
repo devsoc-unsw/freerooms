@@ -23,8 +23,8 @@ const Home: NextPage<{ buildings: BuildingReturnData }> = ({ buildings }) => {
         <link rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
-      <FilterBar data={buildings} multiSelect={true}/>
-      {/* <ListView data={buildings} /> */}
+      {/* <FilterBar data={buildings} multiSelect={true}/> */}
+      <ListView data={buildings} />
     </>
   );
 };

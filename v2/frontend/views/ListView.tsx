@@ -171,6 +171,7 @@ const ListView = ({ data }: { data: BuildingReturnData }) => {
             {data.buildings.map((building) => (
               <BuildingCard building={building} key={building.id} />
             ))}
+            <FilterBar data={building} multiSelect={true}/>
           </div>
         </Main>
         <Drawer
