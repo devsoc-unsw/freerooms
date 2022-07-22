@@ -14,7 +14,7 @@ import Image, { ImageProps } from "next/image";
 import { styled } from "@mui/material/styles";
 import Box, { BoxProps } from "@mui/material/Box";
 import StatusDot from "../components/StatusDot";
-import { Typography } from "@mui/material";
+import { IconButton, Typography } from "@mui/material";
 import MuiAppBar from "@mui/material/AppBar";
 import CircularProgress from "@mui/material/CircularProgress";
 import { ContactPageSharp } from "@mui/icons-material";
@@ -23,6 +23,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import CloseIcon from '@mui/icons-material/Close';
 
 
 const INITIALISING = -2;
@@ -66,7 +67,7 @@ const StatusBox = styled(Box)<BoxProps>(({ theme }) => ({
   backgroundColor: "white",
   //padding: 10,
   paddingLeft: 15,
-  paddingRight: 65,
+  paddingRight: 5,
   marginBottom: 0,
   marginTop: 15,
   marginRight: 10,
@@ -92,7 +93,7 @@ const TitleBox = styled(Box)<BoxProps>(({ theme }) => ({
   color: "Black",
   paddingTop: 15,
   paddingLeft: 20,
-  paddingRight: 20,
+  //paddingRight: 20,
   //paddingBottom: 20,
   margin: 10,
   marginTop: 15,
@@ -157,7 +158,6 @@ const BuildingInfo: React.FC<{
     setValue(newValue);
   };
 
-
   return (
     <MainBox>
       <StatusBox>
@@ -166,9 +166,11 @@ const BuildingInfo: React.FC<{
             {building!.name}
           </Typography>
         </TitleBox>
+
         {roomsData ? (
           <>
             {roomsError ? null : (
+              
               <StatusDot
                 colour={
                   rooms ? (
@@ -181,18 +183,21 @@ const BuildingInfo: React.FC<{
                 }
               />
             )}
-            <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
+            <Typography sx={{ fontSize: 12, fontWeight: 500 }} mr = {1}>
 
               {(roomsData && !roomsError && rooms)
                 ? `${(rooms.filter((r: { status: string; }) => r.status === "free").length)} / ${rooms.length}`
                 : "data unavailable"}
             </Typography>
+            <IconButton aria-label="close" size="small">
+              <CloseIcon fontSize="small" />
+            </IconButton>
           </>
         ) : (
           // apparently all the things above failed and this one is not working :))
           <CircularProgress size={20} thickness={5} disableShrink />
         )}
-      </StatusBox>`
+      </StatusBox>
 
 
 
@@ -204,7 +209,7 @@ const BuildingInfo: React.FC<{
           alignItems: "center",
           flexWrap: "wrap",
           margin: 10,
-          marginTop: 0,
+          marginTop: 25,
           marginBottom: 5
           //paddingTop: 25
         }}
