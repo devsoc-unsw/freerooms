@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
+import axios from "axios";
 import useSWR from "swr";
-import { DateTime } from "luxon";
 import { server } from "../config";
 import {
   Room,
@@ -10,17 +10,16 @@ import {
   BuildingRoomReturnStatus,
 } from "../types";
 
-import Image, { ImageProps } from "next/image";
 import { styled } from "@mui/material/styles";
+import Image, { ImageProps } from "next/image";
 import Box, { BoxProps } from "@mui/material/Box";
 import StatusDot from "../components/StatusDot";
-import { IconButton, Typography } from "@mui/material";
-import MuiAppBar from "@mui/material/AppBar";
+import { Typography } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import CloseIcon from "@mui/icons-material/Close";
 import Button from "../components/Button";
-import axios from "axios";
-import { ContactPageSharp } from "@mui/icons-material";
+
+import { DateTime } from "luxon";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -31,33 +30,22 @@ const INITIALISING = -2;
 const FAILED = -1;
 
 const AppBox = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.background.default,
-  color: theme.palette.getContrastText(theme.palette.background.default),
   boxShadow: "none",
   display: "flex",
   flexDirection: "row",
   alignItems: "center",
-  justifyContent: "center",
-  padding: theme.spacing(3, 1),
+  justifyContent: "space-between",
+  padding: theme.spacing(3, 2, 2, 3),
 }));
 
 const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
   position: "relative",
   flex: 1,
   backgroundColor: "#FAFAFA",
-  height: 385,
-  borderRadius: 10,
-  "&:hover": {
-    cursor: "pointer",
-  },
 }));
 
 const StyledImage = styled(Image)<ImageProps>(({ theme }) => ({
   borderRadius: 10,
-  transition: "all 0.1s ease-in-out",
-  "&:hover": {
-    opacity: 0.7,
-  },
 }));
 
 const StatusBox = styled(Box)<BoxProps>(({ theme }) => ({
@@ -65,273 +53,213 @@ const StatusBox = styled(Box)<BoxProps>(({ theme }) => ({
   justifyContent: "right",
   alignItems: "center",
   borderRadius: 15,
-  backgroundColor: "white",
-  //padding: 10,
-  paddingLeft: 15,
-  paddingRight: 5,
-  marginBottom: 0,
-  marginTop: 15,
-  marginRight: 10,
-  marginLeft: 10,
-  //marginRight: 10,
-  pointerEvents: "none",
-  color: "black",
-  height: 75,
-}));
-
-const TitleBox = styled(Box)<BoxProps>(({ theme }) => ({
-  display: "flex",
-  borderRadius: 10,
-  position: "absolute",
-  justifyContent: "left",
-  alignItems: "center",
-  height: 50,
-  width: 225,
-  top: 5,
-  left: 0,
-  right: 0,
-  backgroundColor: "white",
-  color: "Black",
-  paddingTop: 15,
-  paddingLeft: 20,
-  //paddingRight: 20,
-  //paddingBottom: 20,
-  margin: 10,
-  marginTop: 15,
-  pointerEvents: "none",
+  padding: theme.spacing(0, 2, 0, 2),
 }));
 
 const RoomBox = styled(Box)<BoxProps>(({ theme }) => ({
-  display: "flex",
-  height: 395,
   borderRadius: 10,
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  right: 0,
   backgroundColor: "#F1F1F1",
   margin: 10,
-  marginTop: 0,
+  padding: theme.spacing(0.5),
 }));
 
 const IndiviRoomBox = styled(Box)<BoxProps>(({ theme }) => ({
   display: "flex",
+  flexDirection: "row",
+  justifyContent: "space-between",
   alignItems: "center",
   borderRadius: 10,
-  position: "absolute",
-  height: 75,
-  left: 0,
-  right: 0,
   fontSize: 20,
   fontWeight: 500,
   backgroundColor: "#FFFFFF",
   color: "black",
-  padding: 5,
-  paddingLeft: 20,
-  paddingRight: 20,
-  margin: 10,
-  marginTop: 0,
-  pointerEvents: "none",
+  padding: theme.spacing(2, 3),
+  margin: theme.spacing(1.5, 1),
 }));
-
-const fetchTerm = (url: any, term: any) =>
-  axios({ url, params: { term } }).then((res) => res.data);
 
 const BuildingInfo: React.FC<{
   building: Building | null;
   onClose?: () => void;
-}> = ({ building }) => {
+}> = ({ building, onClose }) => {
   if (!building) return <></>;
-  console.log(server + "/buildings/" + building!.id);
 
-  const [date, setDate] = React.useState<DateTime>(DateTime.now());
+  const [value, setValue] = React.useState<Date | null>(new Date());
   const [sort, setSort] = React.useState<"name" | "available">("name");
+  const [roomsData, setRoomsData] = React.useState<
+    BuildingRoomReturnStatus | undefined
+  >();
+  const [roomsError, setRoomsError] = React.useState<string | undefined>();
 
-  const { data: roomsData, error: roomsError } =
-    useSWR<BuildingRoomReturnStatus>(
-      building ? server + "/buildings/" + building!.id : null
-    );
-
-  const rooms =
-    roomsData && roomsData["rooms"] ? Object.values(roomsData["rooms"]) : null;
-
-  const [value, setValue] = React.useState<Date | null>(
-    new Date("2014-08-18T21:11:54")
-  );
-
-  const handleChange = (newValue: Date | null) => {
-    setValue(newValue);
+  const fetchRooms = async () => {
+    axios
+      .get(server + "/buildings/" + building!.id, {
+        params: {
+          datetime: `${DateTime.fromJSDate(value!).toFormat(
+            "yyyy-MM-dd"
+          )}T${DateTime.fromJSDate(value!).toFormat("HH:mm")}`,
+        },
+      })
+      .then((res) => setRoomsData(res.data))
+      .catch((err) => setRoomsError(err.message));
   };
+
+  React.useEffect(() => {
+    setRoomsData(undefined);
+  }, [building]);
+
+  React.useEffect(() => {
+    setRoomsData(undefined);
+    fetchRooms();
+  }, [building, value]);
+
+  const customTextField = (
+    params: JSX.IntrinsicAttributes & TextFieldProps
+  ) => (
+    <TextField
+      {...params}
+      sx={{
+        svg: { color: "#000000" },
+        input: { color: "#000000" },
+      }}
+    />
+  );
 
   return (
     <MainBox>
       <AppBox>
-        <Button aria-label="Close">
-          <CloseIcon />
-        </Button>
-      </AppBox>
-      <StatusBox>
-        <TitleBox>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
           <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
             {building!.name}
           </Typography>
-        </TitleBox>
-
-        {roomsData ? (
-          <>
-            {roomsError ? null : (
-              <StatusDot
-                colour={
-                  rooms
-                    ? rooms.filter(
-                        (r: { status: string }) => r.status === "free"
-                      ).length >= 5
-                      ? "green"
-                      : rooms.filter(
-                          (room: { status: string }) => room.status === "free"
-                        ).length !== 0
-                      ? "orange"
-                      : "red"
-                    : "red"
-                }
-              />
-            )}
-            <Typography sx={{ fontSize: 12, fontWeight: 500 }} mr={1}>
-              {roomsData && !roomsError && rooms
-                ? `${
-                    rooms.filter((r: { status: string }) => r.status === "free")
-                      .length
-                  } / ${rooms.length}`
-                : "data unavailable"}
-            </Typography>
-            <IconButton aria-label="close" size="small">
-              <CloseIcon fontSize="small" />
-            </IconButton>
-          </>
-        ) : (
-          // apparently all the things above failed and this one is not working :))
-          <CircularProgress size={20} thickness={5} disableShrink />
-        )}
-      </StatusBox>
+          <StatusBox>
+            {!roomsData ? (
+              // loading
+              <CircularProgress size={20} thickness={5} disableShrink />
+            ) : null}
+          </StatusBox>
+        </div>
+        <Button aria-label="Close" onClick={onClose}>
+          <CloseIcon />
+        </Button>
+      </AppBox>
 
       <div
         style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-          flexWrap: "wrap",
           margin: 10,
-          marginTop: 25,
-          marginBottom: 5,
-          //paddingTop: 25
         }}
       >
         <StyledImage
-          src={`/assets/building_photos/${building!.id}.png`}
+          src={`/assets/building_photos/${building!.id}.jpg`}
           width="946px"
           height="648px"
-          //layout = "fill"
           objectFit="cover"
           priority={true}
         />
       </div>
 
-      <table>
-        <tbody>
-          <tr>
-            <td style={{ padding: "7.5px" }}>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DesktopDatePicker
-                  inputFormat="MM/dd/yyyy"
-                  value={value}
-                  onChange={handleChange}
-                  renderInput={(
-                    params: JSX.IntrinsicAttributes & TextFieldProps
-                  ) => (
-                    <TextField
-                      {...params}
-                      sx={{
-                        svg: { color: "#000000" },
-                        input: { color: "#000000" },
-                      }}
-                    />
-                  )}
-                />
-              </LocalizationProvider>
-            </td>
-            <td style={{ padding: "7.5px" }}>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <TimePicker
-                  value={value}
-                  onChange={handleChange}
-                  renderInput={(
-                    params: JSX.IntrinsicAttributes & TextFieldProps
-                  ) => (
-                    <TextField
-                      {...params}
-                      sx={{
-                        svg: { color: "#000000" },
-                        input: { color: "#000000" },
-                      }}
-                    />
-                  )}
-                />
-              </LocalizationProvider>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <RoomBox>
-        <ul
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <div
           style={{
-            width: "100%",
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-            gridGap: "20px",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            margin: 10,
           }}
         >
-          {roomsData && rooms
-            ? Object.keys(roomsData["rooms"]).map((room_name) => {
-                const room = roomsData["rooms"][room_name];
-                return room["status"] === "free" ? (
-                  <li>
-                    <IndiviRoomBox>
-                      {room_name}{" "}
-                      <text
-                        style={{
-                          color: "#2AA300",
-                          flex: 1,
-                          textAlign: "center",
-                        }}
-                      >
-                        {" "}
-                        Available Now{" "}
-                      </text>
-                    </IndiviRoomBox>
-                  </li>
-                ) : (
-                  <IndiviRoomBox>
-                    <Typography sx={{ fontSize: 20, fontWeight: 500 }}>
-                      {room_name}{" "}
-                      <text style={{ color: "#D30000" }}> Unavailable</text>
-                    </Typography>
-                  </IndiviRoomBox>
-                );
-              })
-            : null}
-        </ul>
-      </RoomBox>
+          <DesktopDatePicker
+            inputFormat="dd/MM/yyyy"
+            value={value}
+            onChange={(newValue) => setValue(newValue)}
+            renderInput={customTextField}
+          />
+          <div style={{ width: 10 }} />
+          <TimePicker
+            value={value}
+            onChange={(newValue) => setValue(newValue)}
+            renderInput={customTextField}
+          />
+        </div>
+      </LocalizationProvider>
 
-      {/* allowing this will block the status box info ? maybe we should just have the building name below */}
-      {/* <TitleBox>
-        <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
-          {building!.name}
-        </Typography>
-      </TitleBox> */}
+      <RoomBox>
+        {roomsData ? (
+          Object.keys(roomsData["rooms"]).map((room_name) => {
+            const room = roomsData["rooms"][room_name];
+            return (
+              <IndiviRoomBox>
+                {room_name}{" "}
+                <Typography
+                  sx={{ fontSize: 16, fontWeight: 500 }}
+                  style={{
+                    color: room["status"] === "free" ? "#2AA300" : "#D30000",
+                  }}
+                >
+                  {room["status"] === "free" ? "Available" : "Unavailable"}
+                </Typography>
+              </IndiviRoomBox>
+            );
+          })
+        ) : (
+          <Typography
+            sx={{
+              fontSize: 16,
+              fontWeight: 500,
+              textAlign: "center",
+              padding: 10,
+            }}
+          >
+            Loading...
+          </Typography>
+        )}
+      </RoomBox>
     </MainBox>
   );
 };
+
+/* 
+(
+<>
+  {roomsError
+    ? null
+    : () => {
+        const rooms =
+          roomsData && roomsData["rooms"]
+            ? Object.values(roomsData["rooms"])
+            : null;
+
+        return (
+          <StatusDot
+            colour={
+              rooms
+                ? rooms.filter(
+                    (r: { status: string }) => r.status === "free"
+                  ).length >= 5
+                  ? "green"
+                  : rooms.filter(
+                      (room: { status: string }) =>
+                        room.status === "free"
+                    ).length !== 0
+                  ? "orange"
+                  : "red"
+                : "red"
+            }
+          />
+        );
+      }}
+  <Typography
+    sx={{ fontSize: 14, fontWeight: 500, opacity: 0.8 }}
+  >
+    {roomsData && !roomsError
+      ? `${Object.values(roomsData["rooms"]).length}`
+      : "data unavailable"}
+  </Typography>
+</>
+)*/
 
 export default BuildingInfo;

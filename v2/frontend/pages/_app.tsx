@@ -17,14 +17,13 @@ const theme = createTheme({
   },
 });
 
-const fetcher = (url: string, config: any) =>
-  axios.get({ url, ...config }).then((res) => res.data);
+const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <SWRConfig
       value={{
-        refreshInterval: 3000,
+        refreshInterval: 30000, // update every 30 seconds
         fetcher: fetcher,
       }}
     >

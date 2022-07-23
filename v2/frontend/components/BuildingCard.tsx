@@ -88,6 +88,7 @@ const BuildingCard: React.FC<{
   const [freerooms, setFreeRooms] = React.useState(INITIALISING);
 
   React.useEffect(() => {
+    console.log(1);
     if (isVisible && data) {
       setFreeRooms(calculateFreerooms(data));
     }
@@ -96,7 +97,7 @@ const BuildingCard: React.FC<{
   return (
     <MainBox ref={ref} onClick={() => setBuilding(building)}>
       <StyledImage
-        src={`/assets/building_photos/${building.id}.png`}
+        src={`/assets/building_photos/${building.id}.jpg`}
         layout="fill"
         objectFit="cover"
         priority={true}
