@@ -5,7 +5,7 @@ import pkg from "jsdom";
 import * as puppeteer from "puppeteer";
 const { JSDOM } = pkg;
 
-import { BuildingDatabase, BuildingData, RoomData, RoomUsage } from "./types";
+import { BuildingDatabase, BuildingData, RoomData, RoomUsage, ScrapeResult } from "./types";
 
 /*
  * Definitions
@@ -16,7 +16,7 @@ const ENVIRONMENTS_URL = "https://www.learningenvironments.unsw.edu.au"
 const BUILDING_URL = `${ENVIRONMENTS_URL}/physical-spaces/teaching-spaces?page=`;
 const ROOM_URL = `${ENVIRONMENTS_URL}/find-teaching-space?building_name=&room_name=&page=`;
 
-const PAGE_NUM_REGEX = /^.*page=([0-9]+).*$/;
+const PAGE_NUM_REGEX = /page=([0-9]+)/;
 const COORD_REGEX = /(-?[0-9]{1,3}\.[0-9]{1,10}),(-?[0-9]{1,3}\.[0-9]{1,10})/;
 const BUILDING_REGEX = /^[A-Z]-[A-Z][0-9]{1,2}$/;
 const ROOM_REGEX = /^[A-Z]-[A-Z][0-9]{1,2}-[A-Z]{0,2}[0-9]{1,4}[A-Z]{0,1}$/;
@@ -89,7 +89,7 @@ const getAllBuildings = async (): Promise<BuildingData[]> => {
   const buildings: BuildingData[] = [];
   for (let i = 0; i < buildingLinks.length;) {
     // Process in batches
-    const buildingPromises: Promise<BuildingData | undefined>[] = [];
+    const buildingPromises: Promise<ScrapeResult<BuildingData>>[] = [];
     for (let j = 0; j < BATCHSIZE && i < buildingLinks.length; j++, i++) {
       buildingPromises.push(scrapeBuildingPage(pages[j], buildingLinks[i]));
     }
@@ -108,7 +108,10 @@ const getAllBuildings = async (): Promise<BuildingData[]> => {
 }
 
 // Create browser pages that intercept and abort non-document/script requests
-const createPages = async (browser: puppeteer.Browser, batchsize: number): Promise<puppeteer.Page[]> => {
+const createPages = async (
+  browser: puppeteer.Browser,
+  batchsize: number
+): Promise<puppeteer.Page[]> => {
   const pages: puppeteer.Page[] = [];
   for (let i = 0; i < batchsize; i++) {
     const page = await browser.newPage();
@@ -150,7 +153,10 @@ const scrapeBuildingListPage = async (url: string): Promise<string[]> => {
 }
 
 // Given a building page URL, scrape the building's data
-const scrapeBuildingPage = async (page: puppeteer.Page, url: string): Promise<BuildingData | undefined> => {
+const scrapeBuildingPage = async (
+  page: puppeteer.Page,
+  url: string
+): Promise<ScrapeResult<BuildingData>> => {
   // Navigate to URL and wait for map to be loaded
   await page.goto(url, { waitUntil: 'domcontentloaded' });
   await page.waitForSelector("[title='Open this area in Google Maps (opens a new window)']");
@@ -182,7 +188,7 @@ const scrapeBuildingPage = async (page: puppeteer.Page, url: string): Promise<Bu
   if (!id || !BUILDING_REGEX.test(id)) return;
 
   if (!mapUrl) return;
-  const coordsMatch = COORD_REGEX.exec(mapUrl);
+  const coordsMatch = COORD_REGEX.exec(mapUrl); 
   if (!coordsMatch) return;
 
   return {
@@ -221,7 +227,7 @@ const scrapeRoomListPage = async (url: string): Promise<RoomData[]> => {
   const roomCards = htmlDoc.getElementsByClassName("type-room");
 
   // Obtain and scrape links for each room
-  const roomPromises: Promise<RoomData | undefined>[] = [];
+  const roomPromises: Promise<ScrapeResult<RoomData>>[] = [];
   for (let i = 0; i < roomCards.length; i++) {
     const roomLink = roomCards[i]
       .querySelector(".teaser-link")
@@ -244,7 +250,9 @@ const scrapeRoomListPage = async (url: string): Promise<RoomData[]> => {
 }
 
 // Given a room page URL, scrape the room's data
-const scrapeRoomPage = async (url: string): Promise<RoomData | undefined> => {
+const scrapeRoomPage = async (
+  url: string
+): Promise<ScrapeResult<RoomData>> => {
   const response = await axiosInstance.get(url);
   const htmlDoc = new JSDOM(response.data).window.document;
 
@@ -301,8 +309,8 @@ const getLastPage = async (url: string): Promise<number> => {
 process.on('uncaughtException', (err: any) => {
   if (process.send) {
     process.send({ data: {}, err: err.toString() });
+    process.disconnect();
   }
-  process.disconnect();
 });
 
 console.log('Updating database.json...');
@@ -311,6 +319,6 @@ scrapeBuildingDatabase().then((data) => {
   console.log(`Updated database.json`);
   if (process.send) {
     process.send({ data: data });
+    process.disconnect();
   }
-  process.disconnect();
 });

@@ -42,6 +42,8 @@ export type RoomData = {
   usage: RoomUsage;
 };
 
+export type ScrapeResult<T extends RoomData | BuildingData> = T | undefined;
+
 export type RoomStatus = "free" | "soon" | "busy";
 
 export type BuildingRoomStatus = {
