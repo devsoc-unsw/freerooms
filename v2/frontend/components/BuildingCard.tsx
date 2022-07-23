@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import useSWR from "swr";
 import { server } from "../config";
-import { BuildingData, BuildingRoomReturnStatus } from "../types";
+import { Building, BuildingRoomReturnStatus } from "../types";
 
 import Image, { ImageProps } from "next/image";
 import { styled } from "@mui/material/styles";
@@ -76,66 +76,58 @@ const calculateFreerooms = (data: BuildingRoomReturnStatus) => {
 };
 
 const BuildingCard: React.FC<{
-  building: BuildingData;
-}> = ({ building }) => {
+  building: Building;
+  setBuilding: (building: Building) => void;
+}> = ({ building, setBuilding }) => {
   const ref = useRef();
   const isVisible = useOnScreen(ref);
 
-  const [loaded, setLoaded] = React.useState(false);
+  const { data, error } = useSWR<BuildingRoomReturnStatus>(
+    isVisible ? server + "/buildings/" + building.id : null
+  );
   const [freerooms, setFreeRooms] = React.useState(INITIALISING);
 
-  const calcFreerooms = async () =>
-    fetch(server + "/buildings/" + building.id)
-      .then((res) => res.json())
-      .then((data) => setFreeRooms(calculateFreerooms(data)));
-
   React.useEffect(() => {
-    if (isVisible && !loaded) {
-      setLoaded(true);
-      calcFreerooms();
+    console.log(1);
+    if (isVisible && data) {
+      setFreeRooms(calculateFreerooms(data));
     }
-  }, [isVisible, loaded, calcFreerooms]);
+  }, [data, isVisible, setFreeRooms, calculateFreerooms]);
 
   return (
-    <Link scroll={false} href={`/?building=${building.id}`}>
-      <MainBox ref={ref}>
-        <StyledImage
-          src={`/assets/building_photos/${building.id}.jpg`}
-          layout="fill"
-          objectFit="cover"
-          priority={true}
-        />
-        <StatusBox>
-          {freerooms > INITIALISING ? (
-            <>
-              {freerooms !== FAILED ? (
-                <StatusDot
-                  colour={
-                    freerooms >= 5
-                      ? "green"
-                      : freerooms !== 0
-                      ? "orange"
-                      : "red"
-                  }
-                />
-              ) : null}
-              <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
-                {freerooms !== FAILED
-                  ? `${freerooms} room${freerooms === 1 ? "" : "s"} available`
-                  : "data unavailable"}
-              </Typography>
-            </>
-          ) : (
-            <CircularProgress size={20} thickness={5} disableShrink />
-          )}
-        </StatusBox>
-        <TitleBox>
-          <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
-            {building.name}
-          </Typography>
-        </TitleBox>
-      </MainBox>
-    </Link>
+    <MainBox ref={ref} onClick={() => setBuilding(building)}>
+      <StyledImage
+        src={`/assets/building_photos/${building.id}.jpg`}
+        layout="fill"
+        objectFit="cover"
+        priority={true}
+      />
+      <StatusBox>
+        {freerooms > INITIALISING ? (
+          <>
+            {error || freerooms !== FAILED ? (
+              <StatusDot
+                colour={
+                  freerooms >= 5 ? "green" : freerooms !== 0 ? "orange" : "red"
+                }
+              />
+            ) : null}
+            <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
+              {error || freerooms !== FAILED
+                ? `${freerooms} room${freerooms === 1 ? "" : "s"} available`
+                : "data unavailable"}
+            </Typography>
+          </>
+        ) : (
+          <CircularProgress size={20} thickness={5} disableShrink />
+        )}
+      </StatusBox>
+      <TitleBox>
+        <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
+          {building.name}
+        </Typography>
+      </TitleBox>
+    </MainBox>
   );
 };
 
