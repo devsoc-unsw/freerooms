@@ -11,11 +11,12 @@ export const getAllBuildings = async (): Promise<BuildingReturnData[]> => {
   }
   // Omit rooms property, img is not sent for now
   const res: BuildingReturnData[] = [];
-  data.forEach(({ name, id }) => {
+  data.forEach(({ name, id, lat, long }) => {
     res.push({
       name: name,
       id: id,
-      img: ''
+      lat: lat,
+      long: long,
     });
   });
   return res;

@@ -56,7 +56,8 @@ export type BuildingRoomStatus = {
 export type BuildingReturnData = {
   name: string;
   id: string;
-  img: string;
+  lat: number;
+  long: number;
 };
 
 
