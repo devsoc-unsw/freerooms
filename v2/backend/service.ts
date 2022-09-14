@@ -1,21 +1,22 @@
 import { getBuildingData, getScraperData, getWeek } from "./helpers";
-import { BuildingData, BuildingRoomStatus, RoomAvailability } from "./types";
+import { BuildingReturnData, BuildingRoomStatus, RoomAvailability } from "./types";
 
 const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const FIFTEEN_MIN = 15 * 1000 * 60;
 
-export const getAllBuildings = async (): Promise<BuildingData[]> => {
+export const getAllBuildings = async (): Promise<BuildingReturnData[]> => {
   const data = Object.values(await getBuildingData());
   if (!data) {
     throw new Error(`Buildings cannot be retrieved`);
   }
   // Omit rooms property, img is not sent for now
-  const res: BuildingData[] = [];
-  data.forEach(({ name, id }) => {
+  const res: BuildingReturnData[] = [];
+  data.forEach(({ name, id, lat, long }) => {
     res.push({
       name: name,
       id: id,
-      img: ''
+      lat: lat,
+      long: long,
     });
   });
   return res;

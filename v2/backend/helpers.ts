@@ -1,8 +1,7 @@
 import axios from "axios";
-import pkg from "jsdom";
+import child_process from "child_process";
 import fs from "fs";
-import { ScraperData, BuildingDatabase, BuildingData, RoomData } from "./types";
-const { JSDOM } = pkg;
+import { ScraperData, BuildingDatabase } from "./types";
 
 /*
  * Definitions
@@ -13,22 +12,7 @@ const TERM_DATE_FETCH = `${API}/api/startdate/freerooms`;
 const TERM_ID_FETCH = `${API}/api/availableterm`;
 
 const TERM_ID_LENGTH = 2;
-
-const ENVIRONMENTS_URL = "https://www.learningenvironments.unsw.edu.au"
-const BUILDING_URL = `${ENVIRONMENTS_URL}/physical-spaces/teaching-spaces?page=`;
-const ROOM_URL = `${ENVIRONMENTS_URL}/find-teaching-space?building_name=&room_name=&page=`;
-
-const LAST_PAGE_REGEX = /<a href=".*page=([0-9]+).*" title="Go to last page">/;
 const DATE_REGEX = /(\d{2})\/(\d{2})\/(\d{4})/;
-const BUILDING_REGEX = /^[A-Z]-[A-Z][0-9]{1,2}$/;
-const ROOM_REGEX = /^[A-Z]-[A-Z][0-9]{1,2}-[A-Z]{0,2}[0-9]{1,4}[A-Z]{0,1}$/;
-// One letter - campus ID, e.g. K for Kensington
-// One letter followed by one or two numbers for grid reference e.g. D16 or F8
-// Zero, one or two letters for the floor then between one to four numbers for the room number
-// Library rooms may end in a letter
-// Zero letter floor - 313
-// One letter floor - M18
-// Two letter floor - LG19
 
 /*
  * Implementation
@@ -73,14 +57,8 @@ export const getScraperData = async (): Promise<ScraperData> => {
 export const getBuildingData = async (): Promise<BuildingDatabase> => {
   let data;
 
-  // If database.json over a month old or missing, re scrape
-  const timeNow = new Date();
-  const stat = fs.statSync('database.json', { throwIfNoEntry: false });
-  if (
-    !stat ||
-    timeNow.getFullYear() - stat.mtime.getFullYear() > 0 ||
-    timeNow.getMonth() - stat.mtime.getMonth() > 0
-  ) {
+  // If database.json missing, create it
+  if (!fs.existsSync('database.json')) {
     data = await scrapeBuildingData();
   } else {
     const rawData = fs.readFileSync('database.json', 'utf8');
@@ -90,134 +68,28 @@ export const getBuildingData = async (): Promise<BuildingDatabase> => {
   return data;
 }
 
-// Scrape building data and store in a JSON file
-const scrapeBuildingData = async (): Promise<BuildingDatabase> => {
-  const data: BuildingDatabase = {};
-
-  // Add each building to data
-  await getAllBuildings().then((buildings) => {
-    buildings.forEach(({ name, id, img }) => {
-      data[id] = {
-        name: name,
-        id: id,
-        img: img,
-        rooms: {}
-      }
+// Spawn child process to scrape building data
+// or return promise to ongoing process
+let ongoingScraper: Promise<BuildingDatabase> | null = null;
+export const scrapeBuildingData = async (): Promise<BuildingDatabase> => {
+  if (ongoingScraper === null) {
+    ongoingScraper = new Promise((resolve, reject) => {
+      const child = child_process.fork('./scraper.ts');
+      child.on('message', (msg: { data: BuildingDatabase, err?: string }) => {
+        if (msg.err) reject(msg.err);
+        resolve(msg.data);
+      });
+      child.on('error', () => {
+        reject();
+      });
+      child.on('exit', () => {
+        ongoingScraper = null;
+      });
     });
-  });
+  }
 
-  // Add all rooms to their respective buildings
-  await getAllRooms().then((rooms) => {
-    rooms.forEach(({ name, id }) => {
-      const [campus, buildingGrid, roomNumber] = id.split("-");
-      const buildingID = `${campus}-${buildingGrid}`;
-      if (!(buildingID in data)) {
-        throw new Error(`Building not found for Room ID ${id}`);
-      }
-      data[buildingID].rooms[roomNumber] = {
-        name: name,
-        id: id
-      };
-    });
-  });
-
-  fs.writeFileSync('database.json', JSON.stringify(data, null, 4));
-  return data;
+  return ongoingScraper;
 }
-
-// Get all building data by scraping learning environment website
-const getAllBuildings = async (): Promise<BuildingData[]> => {
-  let first_page = axios.get(BUILDING_URL + 0);
-  let last_page_num = getLastPage((await first_page).data);
-  const buildingPromises: Promise<any>[] = [first_page];
-  for (let i = 1; i <= last_page_num; i++) {
-    buildingPromises.push(axios.get(BUILDING_URL + i));
-  }
-
-  const buildings: BuildingData[] = [];
-  await Promise.all(buildingPromises).then((responses) => {
-    responses.forEach((response) => {
-      const htmlDoc = new JSDOM(response.data);
-      const buildingCards =
-        htmlDoc.window.document.getElementsByClassName("type-building");
-      for (let i = 0; i < buildingCards.length; i++) {
-        const buildingCard = buildingCards[i];
-
-        const name = buildingCard
-          .querySelector(".node-title")
-          ?.querySelector("a")
-          ?.innerHTML;
-        const id = buildingCard
-          .querySelector(".node-building-id")
-          ?.querySelector(".field-item")
-          ?.innerHTML;
-        const img_url = buildingCard
-          .querySelector('img[typeof="foaf:Image"]')
-          ?.getAttribute("src");
-
-        if (name && id && BUILDING_REGEX.test(id)) {
-          const cleanName = name.replace('&amp;', '&');
-          buildings.push({
-            name: cleanName,
-            id: id,
-            img: img_url ? ENVIRONMENTS_URL + img_url : ""
-          });
-        }
-      }
-    });
-  });
-  return buildings;
-};
-
-// Gets room codes from a page by parsing the HTML with regex (please excuse my cardinal sin)
-const getAllRooms = async (): Promise<RoomData[]> => {
-  const first_page = axios.get(ROOM_URL + 0);
-  const last_page_num = getLastPage((await first_page).data);
-  const roomPromises: Promise<any>[] = [first_page];
-  for (let i = 1; i <= last_page_num; i++) {
-    roomPromises.push(axios.get(ROOM_URL + i));
-  }
-
-  const rooms: RoomData[] = [];
-  await Promise.all(roomPromises).then((responses) => {
-    responses.forEach((response) => {
-      const htmlDoc = new JSDOM(response.data);
-      const roomCards =
-        htmlDoc.window.document.getElementsByClassName("type-room");
-      for (let i = 0; i < roomCards.length; i++) {
-        const roomCard = roomCards[i];
-
-        const name = roomCard
-          .querySelector(".node-title")
-          ?.querySelector("a")
-          ?.innerHTML;
-        const id = roomCard
-          .querySelector(".node-room-id")
-          ?.querySelector(".field-item")
-          ?.innerHTML;
-
-        if (name && id && ROOM_REGEX.test(id)) {
-          const cleanName = name
-            .replace(`${id} - `, '')
-            .replace('&amp;', '&')
-            .replace('  ', ' ');
-
-          rooms.push({
-            name: cleanName ? cleanName : id,
-            id: id
-          });
-        }
-      }
-    });
-  });
-  return rooms;
-};
-
-// Find the number of the last page of a paginated learning environments page
-const getLastPage = (page: string): number => {
-  const match = LAST_PAGE_REGEX.exec(page);
-  return match ? parseInt(match[1]) : 0;
-};
 
 // Gets the week number from the date
 export const getWeek = async (date: Date) => {
