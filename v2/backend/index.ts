@@ -41,7 +41,6 @@ app.get(
     if (datetime === null) {
       throw new Error('Invalid date');
     }
-
     const roomData = await getAllRoomStatus(buildingID, datetime);
     const data = { rooms: roomData };
     res.send(data);

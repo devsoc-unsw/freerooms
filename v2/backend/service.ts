@@ -58,13 +58,18 @@ export const getAllRoomStatus = async (
     let currTime = date.getTime();
     let isFree = true;
     for (const eachClass of scraperData[buildingID][roomNumber][week][day]) {
-      const classStart = new Date(eachClass["start"]).getTime();
-      const classEnd = new Date(eachClass["end"]).getTime();
+      let classStart = new Date(date.valueOf()); 
+      const [startHours, startMinutes] = eachClass["start"].split(':');
+      classStart.setHours(+startHours, +startMinutes);
 
-      if (currTime >= classStart && currTime < classEnd) {
+      let classEnd = new Date(date.valueOf()); 
+      const [endHours, endMinutes] = eachClass["end"].split(':');
+      classEnd.setHours(+endHours, +endMinutes);
+      
+      if (currTime >= classStart.getTime() && currTime < classEnd.getTime()) {
         isFree = false;
 
-        if (classEnd - currTime <= FIFTEEN_MIN) {
+        if (classEnd.getTime() - currTime <= FIFTEEN_MIN) {
           roomStatus[roomNumber] = {
             status: "soon",
             endtime: eachClass["end"],
@@ -75,7 +80,7 @@ export const getAllRoomStatus = async (
             endtime: eachClass["end"],
           };
         }
-        currTime = classEnd;
+        currTime = classEnd.getTime();
       }
     }
 
