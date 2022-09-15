@@ -17,6 +17,8 @@ FROM node:16.15-alpine as runner
 RUN npm i -g pnpm
 WORKDIR /app
 
+ENV NODE_ENV production
+
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --production
 
