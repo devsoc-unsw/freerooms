@@ -9,7 +9,7 @@ import { ScraperData, BuildingDatabase } from "./types";
 const API = "https://timetable.csesoc.app"
 
 const TERM_DATE_FETCH = `${API}/api/startdate/freerooms`;
-const TERM_ID_FETCH = `${API}/api/availableterm`;
+const TERM_ID_FETCH = `${API}/api/currentterm`;
 
 const TERM_ID_LENGTH = 2;
 const DATE_REGEX = /(\d{2})\/(\d{2})\/(\d{4})/;
@@ -95,8 +95,8 @@ export const scrapeBuildingData = async (): Promise<BuildingDatabase> => {
 export const getWeek = async (date: Date) => {
   // In 'DD/MM/YYYY' format
   const termStart = await getStartDate();
-
-  const termStartDate = new Date(termStart);
+  const [day, month, year] = termStart.split('/');
+  const termStartDate = new Date(+year, +month - 1, day);
   const today = date;
 
   const diff = today.getTime() - termStartDate.getTime();
