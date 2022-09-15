@@ -74,7 +74,9 @@ let ongoingScraper: Promise<BuildingDatabase> | null = null;
 export const scrapeBuildingData = async (): Promise<BuildingDatabase> => {
   if (ongoingScraper === null) {
     ongoingScraper = new Promise((resolve, reject) => {
-      const child = child_process.fork('./scraper.ts');
+      const dev = process.env.NODE_ENV !== "production";
+      const scraper_path = dev ? './scraper.ts' : 'dist/scraper.js';
+      const child = child_process.fork(scraper_path);
       child.on('message', (msg: { data: BuildingDatabase, err?: string }) => {
         if (msg.err) reject(msg.err);
         resolve(msg.data);

@@ -4,6 +4,8 @@ RUN npm i -g pnpm
 # Set the current working directory inside the container
 WORKDIR /app
 
+ENV NODE_ENV production
+
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install
 

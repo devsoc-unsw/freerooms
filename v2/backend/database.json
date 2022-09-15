@@ -81,6 +81,12 @@
                 "capacity": 100,
                 "usage": "LEC"
             },
+            "G01": {
+                "id": "K-J17-G01",
+                "name": "Ainsworth G01",
+                "capacity": 50,
+                "usage": "TUT"
+            },
             "G02": {
                 "id": "K-J17-G02",
                 "name": "Ainsworth G02",
@@ -92,12 +98,6 @@
                 "name": "Ainsworth G03",
                 "capacity": 350,
                 "usage": "LEC"
-            },
-            "G01": {
-                "id": "K-J17-G01",
-                "name": "Ainsworth G01",
-                "capacity": 50,
-                "usage": "TUT"
             }
         }
     },
@@ -123,6 +123,18 @@
         "lat": -33.916921,
         "long": 151.226793,
         "rooms": {
+            "G16": {
+                "id": "K-G6-G16",
+                "name": "Blockhouse G16",
+                "capacity": 38,
+                "usage": "TUT"
+            },
+            "G6": {
+                "id": "K-G6-G6",
+                "name": "Blockhouse G6",
+                "capacity": 38,
+                "usage": "TUT"
+            },
             "G13": {
                 "id": "K-G6-G13",
                 "name": "Blockhouse G13",
@@ -138,18 +150,6 @@
             "G15": {
                 "id": "K-G6-G15",
                 "name": "Blockhouse G15",
-                "capacity": 38,
-                "usage": "TUT"
-            },
-            "G16": {
-                "id": "K-G6-G16",
-                "name": "Blockhouse G16",
-                "capacity": 38,
-                "usage": "TUT"
-            },
-            "G6": {
-                "id": "K-G6-G6",
-                "name": "Blockhouse G6",
                 "capacity": 38,
                 "usage": "TUT"
             }
@@ -219,6 +219,12 @@
         "lat": -33.917115,
         "long": 151.228732,
         "rooms": {
+            "M17": {
+                "id": "K-F10-M17",
+                "name": "ChemicalSc M17",
+                "capacity": 253,
+                "usage": "LEC"
+            },
             "M10": {
                 "id": "K-F10-M10",
                 "name": "Chemical Sc M10",
@@ -229,12 +235,6 @@
                 "id": "K-F10-M11",
                 "name": "Chemical Sc M11",
                 "capacity": 97,
-                "usage": "LEC"
-            },
-            "M17": {
-                "id": "K-F10-M17",
-                "name": "ChemicalSc M17",
-                "capacity": 253,
                 "usage": "LEC"
             },
             "M18": {
@@ -276,12 +276,6 @@
                 "capacity": 56,
                 "usage": "TUT"
             },
-            "G1": {
-                "id": "K-H20-G1",
-                "name": "Civil Engineering G1",
-                "capacity": 106,
-                "usage": "LEC"
-            },
             "G6": {
                 "id": "K-H20-G6",
                 "name": "Civil Engineering G6",
@@ -293,6 +287,12 @@
                 "name": "Civil Engineering G8",
                 "capacity": 64,
                 "usage": "TUT"
+            },
+            "G1": {
+                "id": "K-H20-G1",
+                "name": "Civil Engineering G1",
+                "capacity": 106,
+                "usage": "LEC"
             }
         }
     },
@@ -303,6 +303,12 @@
         "lat": -33.916226,
         "long": 151.231301,
         "rooms": {
+            "LG01": {
+                "id": "K-B16-LG01",
+                "name": "Colombo LG01",
+                "capacity": 48,
+                "usage": "TUT"
+            },
             "LG03": {
                 "id": "K-B16-LG03",
                 "name": "Colombo Theatre A",
@@ -320,12 +326,6 @@
                 "name": "Colombo Theatre C",
                 "capacity": 154,
                 "usage": "LEC"
-            },
-            "LG01": {
-                "id": "K-B16-LG01",
-                "name": "Colombo LG01",
-                "capacity": 48,
-                "usage": "TUT"
             },
             "LG02": {
                 "id": "K-B16-LG02",
@@ -387,16 +387,16 @@
         "lat": -33.916604,
         "long": 151.231191,
         "rooms": {
-            "G07": {
-                "id": "K-D16-G07",
-                "name": "Goldstein G07",
-                "capacity": 24,
+            "G04": {
+                "id": "K-D16-G04",
+                "name": "Goldstein G04",
+                "capacity": 18,
                 "usage": "TUT"
             },
-            "G09": {
-                "id": "K-D16-G09",
-                "name": "Goldstein G09",
-                "capacity": 42,
+            "G05": {
+                "id": "K-D16-G05",
+                "name": "Goldstein G05",
+                "capacity": 24,
                 "usage": "TUT"
             },
             "G01": {
@@ -411,22 +411,22 @@
                 "capacity": 30,
                 "usage": "TUT"
             },
+            "G07": {
+                "id": "K-D16-G07",
+                "name": "Goldstein G07",
+                "capacity": 24,
+                "usage": "TUT"
+            },
+            "G09": {
+                "id": "K-D16-G09",
+                "name": "Goldstein G09",
+                "capacity": 42,
+                "usage": "TUT"
+            },
             "G03": {
                 "id": "K-D16-G03",
                 "name": "Goldstein G03",
                 "capacity": 40,
-                "usage": "TUT"
-            },
-            "G04": {
-                "id": "K-D16-G04",
-                "name": "Goldstein G04",
-                "capacity": 18,
-                "usage": "TUT"
-            },
-            "G05": {
-                "id": "K-D16-G05",
-                "name": "Goldstein G05",
-                "capacity": 24,
                 "usage": "TUT"
             },
             "G06": {
@@ -579,18 +579,6 @@
                 "capacity": 44,
                 "usage": "TUT"
             },
-            "G02": {
-                "id": "K-F8-G02",
-                "name": "Law Theatre G02",
-                "capacity": 90,
-                "usage": "LEC"
-            },
-            "G04": {
-                "id": "K-F8-G04",
-                "name": "Law Theatre G04",
-                "capacity": 347,
-                "usage": "LEC"
-            },
             "G17": {
                 "id": "K-F8-G17",
                 "name": "Law Library G17",
@@ -602,6 +590,18 @@
                 "name": "Law Theatre G23",
                 "capacity": 90,
                 "usage": "LEC"
+            },
+            "G02": {
+                "id": "K-F8-G02",
+                "name": "Law Theatre G02",
+                "capacity": 90,
+                "usage": "LEC"
+            },
+            "G04": {
+                "id": "K-F8-G04",
+                "name": "Law Theatre G04",
+                "capacity": 347,
+                "usage": "LEC"
             }
         }
     },
@@ -612,15 +612,15 @@
         "lat": -33.917702,
         "long": 151.233242,
         "rooms": {
-            "176B": {
-                "id": "K-F21-176B",
-                "name": "Library 176B",
-                "capacity": 24,
-                "usage": "TUT"
-            },
             "176A": {
                 "id": "K-F21-176A",
                 "name": "Library 176A",
+                "capacity": 24,
+                "usage": "TUT"
+            },
+            "176B": {
+                "id": "K-F21-176B",
+                "name": "Library 176B",
                 "capacity": 24,
                 "usage": "TUT"
             }
@@ -831,24 +831,6 @@
         "lat": -33.916827,
         "long": 151.233154,
         "rooms": {
-            "G4": {
-                "id": "K-C20-G4",
-                "name": "Morven Brown G4",
-                "capacity": 36,
-                "usage": "TUT"
-            },
-            "G5": {
-                "id": "K-C20-G5",
-                "name": "Morven Brown G5",
-                "capacity": 22,
-                "usage": "TUT"
-            },
-            "G6": {
-                "id": "K-C20-G6",
-                "name": "Morven Brown G6",
-                "capacity": 42,
-                "usage": "TUT"
-            },
             "LG2": {
                 "id": "K-C20-LG2",
                 "name": "Morven Brown LG2",
@@ -865,6 +847,24 @@
                 "id": "K-C20-G3",
                 "name": "Morven Brown G3",
                 "capacity": 38,
+                "usage": "TUT"
+            },
+            "G4": {
+                "id": "K-C20-G4",
+                "name": "Morven Brown G4",
+                "capacity": 36,
+                "usage": "TUT"
+            },
+            "G5": {
+                "id": "K-C20-G5",
+                "name": "Morven Brown G5",
+                "capacity": 22,
+                "usage": "TUT"
+            },
+            "G6": {
+                "id": "K-C20-G6",
+                "name": "Morven Brown G6",
+                "capacity": 42,
                 "usage": "TUT"
             }
         }
@@ -1017,22 +1017,22 @@
                 "capacity": 20,
                 "usage": "TUT"
             },
-            "G031": {
-                "id": "K-E15-G031",
-                "name": "Quadrangle G031",
-                "capacity": 52,
+            "G053": {
+                "id": "K-E15-G053",
+                "name": "Quadrangle G053",
+                "capacity": 44,
                 "usage": "TUT"
             },
-            "G032": {
-                "id": "K-E15-G032",
-                "name": "Quadrangle G032",
-                "capacity": 58,
+            "G054": {
+                "id": "K-E15-G054",
+                "name": "Quadrangle G054",
+                "capacity": 24,
                 "usage": "TUT"
             },
-            "G034": {
-                "id": "K-E15-G034",
-                "name": "Quadrangle G034",
-                "capacity": 60,
+            "G055": {
+                "id": "K-E15-G055",
+                "name": "Quadrangle G055",
+                "capacity": 18,
                 "usage": "TUT"
             },
             "G044": {
@@ -1045,6 +1045,12 @@
                 "id": "K-E15-G045",
                 "name": "Quadrangle G045",
                 "capacity": 51,
+                "usage": "TUT"
+            },
+            "G046": {
+                "id": "K-E15-G046",
+                "name": "Quadrangle G046",
+                "capacity": 30,
                 "usage": "TUT"
             },
             "G047": {
@@ -1065,22 +1071,16 @@
                 "capacity": 26,
                 "usage": "TUT"
             },
-            "G053": {
-                "id": "K-E15-G053",
-                "name": "Quadrangle G053",
-                "capacity": 44,
+            "G031": {
+                "id": "K-E15-G031",
+                "name": "Quadrangle G031",
+                "capacity": 52,
                 "usage": "TUT"
             },
-            "G054": {
-                "id": "K-E15-G054",
-                "name": "Quadrangle G054",
-                "capacity": 24,
-                "usage": "TUT"
-            },
-            "G055": {
-                "id": "K-E15-G055",
-                "name": "Quadrangle G055",
-                "capacity": 18,
+            "G032": {
+                "id": "K-E15-G032",
+                "name": "Quadrangle G032",
+                "capacity": 58,
                 "usage": "TUT"
             },
             "G040": {
@@ -1095,10 +1095,10 @@
                 "capacity": 22,
                 "usage": "TUT"
             },
-            "G046": {
-                "id": "K-E15-G046",
-                "name": "Quadrangle G046",
-                "capacity": 30,
+            "G034": {
+                "id": "K-E15-G034",
+                "name": "Quadrangle G034",
+                "capacity": 60,
                 "usage": "TUT"
             },
             "G025": {
@@ -1398,6 +1398,12 @@
                 "capacity": 26,
                 "usage": "TUT"
             },
+            "M010": {
+                "id": "K-H13-M010",
+                "name": "Red Centre West M010",
+                "capacity": 44,
+                "usage": "TUT"
+            },
             "G001": {
                 "id": "K-H13-G001",
                 "name": "Red Centre Theatre",
@@ -1409,12 +1415,6 @@
                 "name": "Red Centre Central Wing M032",
                 "capacity": 89,
                 "usage": "LEC"
-            },
-            "M010": {
-                "id": "K-H13-M010",
-                "name": "Red Centre West M010",
-                "capacity": 44,
-                "usage": "TUT"
             }
         }
     },

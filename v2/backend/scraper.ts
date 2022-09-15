@@ -117,7 +117,7 @@ const createPages = async (
     const page = await browser.newPage();
     // Block all css, fonts and images
     await page.setRequestInterception(true);
-    page.on("request", (request) => {
+    page.on("request", (request: puppeteer.HTTPRequest) => {
       const type = request.resourceType();
       const include = ["document", "script"];
       if (include.includes(type)) {
