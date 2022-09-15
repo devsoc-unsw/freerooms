@@ -183,7 +183,7 @@ export async function getStaticProps() {
   // };
   return {
     props: {
-      data: {buildings: {}},
+      data: {buildings: []},
     },
   };
 }
