@@ -172,18 +172,13 @@ const Home: NextPage<{ data: BuildingReturnData }> = ({ data }) => {
 export async function getStaticProps() {
   // fetches /buildings via **BUILD** time so we don't need to have
   // the client fetch buildings data every request
-  // const res = await fetch(server + "/buildings");
-  // let buildings: BuildingReturnData = await res.json();
-  // buildings.buildings.sort((a, b) => a.name.localeCompare(b.name));
-  // console.log(buildings);
-  // return {
-  //   props: {
-  //     data: buildings,
-  //   },
-  // };
+  const res = await fetch(server + "/buildings");
+  let buildings: BuildingReturnData = await res.json();
+  buildings.buildings.sort((a, b) => a.name.localeCompare(b.name));
+  console.log(buildings);
   return {
     props: {
-      data: {buildings: []},
+      data: buildings,
     },
   };
 }
