@@ -8,6 +8,7 @@ import {
   getAllBuildings,
   getRoomAvailability,
 } from "./service";
+import { Filters } from "./types";
 
 const app = express();
 const PORT = 3000;
@@ -35,13 +36,26 @@ app.get(
   "/buildings/:buildingID",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const { buildingID } = req.params;
-    const datetimeString = req.query.datetime as string;
 
+    const datetimeString = req.query.datetime as string;
     const datetime = datetimeString ? getDate(datetimeString) : new Date();
     if (datetime === null) {
       throw new Error('Invalid date');
     }
-    const roomData = await getAllRoomStatus(buildingID, datetime);
+
+    const capacity = parseInt(req.query.capacity as string);
+    const usage = req.query.usage as string;
+    const location = req.query.location as string;
+    const duration = parseInt(req.query.duration as string);
+
+    const filters: Filters = {
+      capacity: capacity ? capacity : 0,
+      usage: (usage == 'LEC' || usage == 'TUT') ? usage : null,
+      location: (location == 'upper' || location == 'lower') ? location : null,
+      duration: duration ? duration : 0,
+    }
+
+    const roomData = await getAllRoomStatus(buildingID, datetime, filters);
     const data = { rooms: roomData };
     res.send(data);
     next();

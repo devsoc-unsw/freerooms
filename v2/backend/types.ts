@@ -44,13 +44,15 @@ export type RoomData = {
 
 export type ScrapeResult<T extends RoomData | BuildingData> = T | undefined;
 
-export type RoomStatus = "free" | "soon" | "busy";
+export type Status = "free" | "soon" | "busy";
 
-export type BuildingRoomStatus = {
-  [roomId: string]: {
-    status: RoomStatus;
-    endtime: string;
-  };
+export type RoomStatus = {
+  status: Status;
+  endtime: string;
+};
+
+export type RoomStatusReturnData = {
+  [roomId: string]: RoomStatus;
 };
 
 export type BuildingReturnData = {
@@ -60,5 +62,12 @@ export type BuildingReturnData = {
   long: number;
 };
 
+export type Location = "upper" | "lower";
 
+export type Filters = {
+  capacity: number,
+  usage: RoomUsage | null;
+  location: Location | null;
+  duration: number;
+}
 
