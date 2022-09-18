@@ -1,7 +1,7 @@
 import axios from "axios";
 import child_process from "child_process";
 import fs from "fs";
-import { ScraperData, BuildingDatabase } from "./types";
+import { ScraperData, BuildingDatabase, RoomStatus, ClassList } from "./types";
 
 /*
  * Definitions
@@ -13,6 +13,8 @@ const TERM_ID_FETCH = `${API}/api/currentterm`;
 
 const TERM_ID_LENGTH = 2;
 const DATE_REGEX = /(\d{2})\/(\d{2})\/(\d{4})/;
+
+const FIFTEEN_MIN = 15 * 1000 * 60;
 
 /*
  * Implementation
@@ -114,3 +116,60 @@ export const getDate = (datetime: string): Date | null => {
   let timestamp = Date.parse(datetime);
   return isNaN(timestamp) ? null : new Date(datetime);
 };
+
+// Return a copy of provided date set to provided time
+// Time must be in the format HH:MM
+export const combineDateTime = (date: Date, time: string) => {
+  const newDate = new Date(date.valueOf());
+  const [hours, minutes] = time.split(':');
+  newDate.setHours(+hours, +minutes);
+  return newDate;
+}
+
+// Given a datetime and a list of the room's bookings for the,
+// corresponding date, calculate the status of the room
+// If room if not free for the given minimum duration, return null
+export const calculateStatus = (
+  datetime: Date,
+  classes: ClassList,
+  minDuration: number
+): RoomStatus | null => {
+  let roomStatus: RoomStatus = {
+    status: "free",
+    endtime: "",
+  };
+
+  let currTime = datetime.getTime();
+  for (const eachClass of classes) {
+    let classStart = combineDateTime(datetime, eachClass['start']);
+    let classStartTime = classStart.getTime();
+
+    let classEnd = combineDateTime(datetime, eachClass['end']);
+    let classEndTime = classEnd.getTime();
+
+    if (roomStatus.status === 'free' && currTime < classStartTime) {
+      // If room is free at current time and this class is after
+      const duration = (classStartTime - currTime) / (1000 * 60);
+      if (duration < minDuration) {
+        return null;
+      } else {
+        return roomStatus;
+      }
+    } else if (currTime >= classStartTime && currTime < classEndTime) {
+      if (minDuration > 0) return null;
+
+      // If class occuring at current time, check if ending soon
+      if (classEndTime - datetime.getTime() <= FIFTEEN_MIN) {
+        roomStatus.status = "soon";
+      } else {
+        roomStatus.status = "busy";
+      }
+      roomStatus.endtime = classEnd.toISOString();
+
+      // Continue looping forward to check for consecutive classes
+      currTime = classEndTime;
+    }
+  }
+
+  return roomStatus;
+}
