@@ -40,19 +40,46 @@ app.get(
     const datetimeString = req.query.datetime as string;
     const datetime = datetimeString ? getDate(datetimeString) : new Date();
     if (datetime === null) {
-      throw new Error('Invalid date');
+      throw new Error('Invalid datetime');
     }
 
-    const capacity = parseInt(req.query.capacity as string);
-    const usage = req.query.usage as string;
-    const location = req.query.location as string;
-    const duration = parseInt(req.query.duration as string);
+    let filters: Filters = {
+      capacity: 0,
+      duration: 0,
+      usage: null,
+      location: null,
+    };
+  
+    if (req.query.capacity) {
+      const capacity = parseInt(req.query.capacity as string);
+      if (isNaN(capacity) || capacity < 0) {
+        throw new Error('Invalid capacity');
+      }
+      filters.capacity = capacity;
+    }
 
-    const filters: Filters = {
-      capacity: capacity ? capacity : 0,
-      usage: (usage == 'LEC' || usage == 'TUT') ? usage : null,
-      location: (location == 'upper' || location == 'lower') ? location : null,
-      duration: duration ? duration : 0,
+    if (req.query.duration) {
+      const duration = parseInt(req.query.duration as string);
+      if (isNaN(duration) || duration < 0) {
+        throw new Error('Invalid duration');
+      }
+      filters.capacity = duration;
+    }
+
+    if (req.query.usage) {
+      const usage = req.query.usage as string;
+      if (usage !== 'LEC' && usage !== 'TUT') {
+        throw new Error('Invalid usage: must be one of "LEC" or "TUT"');
+      }
+      filters.usage = usage;
+    }
+
+    if (req.query.location) {
+      const location = req.query.location as string;
+      if (location !== 'upper' && location !== 'lower') {
+        throw new Error('Invalid location: must be one of "upper" or "lower"');
+      }
+      filters.location = location;
     }
 
     const roomData = await getAllRoomStatus(buildingID, datetime, filters);
