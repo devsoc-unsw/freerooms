@@ -39,7 +39,6 @@ export const getAllRoomStatus = async (
   const scraperData = await getScraperData();
   const roomStatus: RoomStatusReturnData = {};
   for (const roomNumber of buildingRooms) {
-
     // Skip room if it does not match filter
     const roomData = buildingData[buildingID].rooms[roomNumber];
     const roomGrid = parseInt(buildingID.substring(3));
@@ -66,29 +65,16 @@ export const getAllRoomStatus = async (
       continue;
     }
 
-    // Filter out duplicates and sort by start time
-    let classes: ClassList =
+    const classes: ClassList =
       scraperData[buildingID][roomNumber][week][day]
-      .filter((cls, index, clsList) =>
-        index === clsList.findIndex((x) =>
-          x.start === cls.start && x.end === cls.end
-        )
-      ).sort((a, b) => {
-        return combineDateTime(date, a.start).getTime() -
-          combineDateTime(date, b.start).getTime();
-      });
-
     const status = calculateStatus(date, classes, filters.duration);
-    if (status === null) {
-      continue;
-    } else {
+    if (status !== null) {
       roomStatus[roomNumber] = status;
     }
   }
 
   return roomStatus;
 };
-
 
 export const getRoomAvailability = async (
   buildingID: string,

@@ -126,48 +126,62 @@ export const combineDateTime = (date: Date, time: string) => {
   return newDate;
 }
 
-// Given a datetime and a list of the room's bookings for the,
-// corresponding date, calculate the status of the room
+// Given a datetime and a list of the room's bookings for 
+// the corresponding date, calculate the status of the room
 // If room if not free for the given minimum duration, return null
 export const calculateStatus = (
   datetime: Date,
   classes: ClassList,
   minDuration: number
 ): RoomStatus | null => {
-  let roomStatus: RoomStatus = {
+  const roomStatus: RoomStatus = {
     status: "free",
     endtime: "",
   };
 
-  let currTime = datetime.getTime();
-  for (const eachClass of classes) {
-    let classStart = combineDateTime(datetime, eachClass['start']);
-    let classStartTime = classStart.getTime();
+  // Filter out duplicates and sort by start time
+  const cleanClasses: ClassList = classes
+    .filter((cls, index, clsList) =>
+      index === clsList.findIndex((x) =>
+        x.start === cls.start && x.end === cls.end
+      )
+    )
+    .sort((a, b) => {
+      return combineDateTime(datetime, a.start).getTime() -
+        combineDateTime(datetime, b.start).getTime();
+    });
 
-    let classEnd = combineDateTime(datetime, eachClass['end']);
-    let classEndTime = classEnd.getTime();
+  // Find first class that ends after current time
+  const afterIndex = cleanClasses.findIndex((cls) => (
+    datetime < combineDateTime(datetime, cls.end)
+  ));
 
-    if (roomStatus.status === 'free' && currTime < classStartTime) {
-      // If room is free at current time and this class is after
-      const duration = (classStartTime - currTime) / (1000 * 60);
-      if (duration < minDuration) {
-        return null;
-      } else {
-        return roomStatus;
-      }
-    } else if (currTime >= classStartTime && currTime < classEndTime) {
-      if (minDuration > 0) return null;
+  if (afterIndex === -1) {
+    // No such class, it is free indefinitely
+    return roomStatus;
+  }
 
-      // If class occuring at current time, check if ending soon
-      if (classEndTime - datetime.getTime() <= FIFTEEN_MIN) {
+  const afterClass = cleanClasses[afterIndex];
+  const start = combineDateTime(datetime, afterClass.start);
+  const end = combineDateTime(datetime, afterClass.end);
+  if (datetime < start) {
+    // Class starts after current time
+    // Check if it meets minDuration filter
+    const duration = (start.getTime() - datetime.getTime()) / (1000 * 60);
+    return duration < minDuration ? null : roomStatus;
+  } else {
+    // Class starts before current time i.e. class occurring now
+    if (minDuration > 0) return null;
+    roomStatus.status = "busy";
+
+    if (end.getTime() - datetime.getTime() <= FIFTEEN_MIN) {
+      // Ending soon, check the next class
+      const next = cleanClasses[afterIndex + 1];
+      if (!next || combineDateTime(datetime, next.start) > end) {
+        // No next class, or it starts after the current class ends
         roomStatus.status = "soon";
-      } else {
-        roomStatus.status = "busy";
+        roomStatus.endtime = end.toISOString();
       }
-      roomStatus.endtime = classEnd.toISOString();
-
-      // Continue looping forward to check for consecutive classes
-      currTime = classEndTime;
     }
   }
 
