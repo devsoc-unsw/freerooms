@@ -35,6 +35,7 @@ import Branding from "../components/Branding";
 import Button from "../components/Button";
 import BuildingCard from "../components/BuildingCard";
 import BuildingInfo from "../views/BuildingInfo";
+import SearchBar from "../components/SearchBar";
 
 const Home: NextPage<{ data: BuildingReturnData }> = ({ data }) => {
   const router = useRouter();
@@ -112,9 +113,12 @@ const Home: NextPage<{ data: BuildingReturnData }> = ({ data }) => {
           <div />
           <ButtonGroup>
             <Stack direction="row" spacing={1.5}>
-              <Button aria-label="Search">
-                <SearchIcon />
-              </Button>
+              <SearchBar
+                open={true}
+                setOpen={function (open: boolean): void {
+                  throw new Error("Function not implemented.");
+                }}
+              ></SearchBar>
               <Button>Map</Button>
             </Stack>
           </ButtonGroup>
