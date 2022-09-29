@@ -1,40 +1,48 @@
-import buildingData from "./buildings";
-import { getData, getAllRoomIDs, getWeek } from "./helpers";
-import { BuildingData, BuildingRoomStatus, RoomAvailability } from "./types";
+import { getBuildingData, getScraperData, getWeek } from "./helpers";
+import { BuildingReturnData, BuildingRoomStatus, RoomAvailability } from "./types";
 
 const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const FIFTEEN_MIN = 15 * 1000 * 60;
 
-export const getAllBuildings = async (): Promise<BuildingData[]> => {
-  const data = Object.values(buildingData);
-  if (data.length > 0) {
-    return data;
-  } else {
+export const getAllBuildings = async (): Promise<BuildingReturnData[]> => {
+  const data = Object.values(await getBuildingData());
+  if (!data) {
     throw new Error(`Buildings cannot be retrieved`);
   }
+  // Omit rooms property, img is not sent for now
+  const res: BuildingReturnData[] = [];
+  data.forEach(({ name, id, lat, long }) => {
+    res.push({
+      name: name,
+      id: id,
+      lat: lat,
+      long: long,
+    });
+  });
+  return res;
 };
 
 export const getAllRoomStatus = async (
   buildingID: string,
   date: Date
 ): Promise<BuildingRoomStatus> => {
-  const scraperData = await getData();
-  const buildingData = scraperData[buildingID];
-  const roomIDs = await getAllRoomIDs();
+  const buildingData = await getBuildingData();
+  if (!(buildingID in buildingData)) {
+    throw new Error(`Building ID ${buildingID} does not exist`);
+  }
+  const buildingRooms = Object.keys(buildingData[buildingID].rooms);
 
+  const week = await getWeek(date);
+  const day = days[date.getDay()];
+
+  const scraperData = await getScraperData();
   const roomStatus: BuildingRoomStatus = {};
-
-  for (const roomID of roomIDs) {
-    const [campus, buildingGrid, roomNumber] = roomID.split("-");
-    if (buildingID !== `${campus}-${buildingGrid}`) continue;
-
-    const roomData = buildingData[roomNumber];
-    const week = getWeek(scraperData, date);
-    const day = days[date.getDay()];
+  for (const roomNumber of buildingRooms) {
     if (
-      !(roomNumber in buildingData) ||
-      !(week in roomData) ||
-      !(day in roomData[week])
+      !(buildingID in scraperData) ||
+      !(roomNumber in scraperData[buildingID]) ||
+      !(week in scraperData[buildingID][roomNumber]) ||
+      !(day in scraperData[buildingID][roomNumber][week])
     ) {
       roomStatus[roomNumber] = {
         status: "free",
@@ -49,14 +57,19 @@ export const getAllRoomStatus = async (
     // TODO test this lol
     let currTime = date.getTime();
     let isFree = true;
-    for (const eachClass of roomData[week][day]) {
-      const classStart = new Date(eachClass["start"]).getTime();
-      const classEnd = new Date(eachClass["end"]).getTime();
+    for (const eachClass of scraperData[buildingID][roomNumber][week][day]) {
+      let classStart = new Date(date.valueOf()); 
+      const [startHours, startMinutes] = eachClass["start"].split(':');
+      classStart.setHours(+startHours, +startMinutes);
 
-      if (currTime >= classStart && currTime < classEnd) {
+      let classEnd = new Date(date.valueOf()); 
+      const [endHours, endMinutes] = eachClass["end"].split(':');
+      classEnd.setHours(+endHours, +endMinutes);
+      
+      if (currTime >= classStart.getTime() && currTime < classEnd.getTime()) {
         isFree = false;
 
-        if (classEnd - currTime <= FIFTEEN_MIN) {
+        if (classEnd.getTime() - currTime <= FIFTEEN_MIN) {
           roomStatus[roomNumber] = {
             status: "soon",
             endtime: eachClass["end"],
@@ -67,7 +80,7 @@ export const getAllRoomStatus = async (
             endtime: eachClass["end"],
           };
         }
-        currTime = classEnd;
+        currTime = classEnd.getTime();
       }
     }
 
@@ -79,10 +92,6 @@ export const getAllRoomStatus = async (
     }
   }
 
-  if (Object.keys(roomStatus).length === 0) {
-    throw new Error(`Building ID ${buildingID} does not exist`);
-  }
-
   return roomStatus;
 };
 
@@ -90,13 +99,22 @@ export const getRoomAvailability = async (
   buildingID: string,
   roomNumber: string
 ): Promise<RoomAvailability> => {
-  const data = await getData();
-
-  if (!(buildingID in data)) {
+  // Check if room exists in database
+  const buildingData = await getBuildingData();
+  if (!(buildingID in buildingData)) {
     throw new Error(`Building ID ${buildingID} does not exist`);
-  } else if (!(roomNumber in data[buildingID])) {
-    throw new Error(`Building ID ${roomNumber} does not exist`);
+  }
+  if (!(roomNumber in buildingData[buildingID].rooms)) {
+    throw new Error(`Room ID ${buildingID}-${roomNumber} does not exist`);
   }
 
-  return data[buildingID][roomNumber];
+  const scraperData = await getScraperData();
+  if (
+    !(buildingID in scraperData) ||
+    !(roomNumber in scraperData[buildingID])
+  ) {
+    return { name: buildingData[buildingID].rooms[roomNumber].name };
+  } else {
+    return scraperData[buildingID][roomNumber];
+  }
 };
