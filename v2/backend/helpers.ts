@@ -1,7 +1,7 @@
 import axios from "axios";
 import child_process from "child_process";
 import fs from "fs";
-import { ScraperData, BuildingDatabase } from "./types";
+import { ScraperData, BuildingDatabase, RoomStatus, ClassList } from "./types";
 
 /*
  * Definitions
@@ -13,6 +13,8 @@ const TERM_ID_FETCH = `${API}/api/currentterm`;
 
 const TERM_ID_LENGTH = 2;
 const DATE_REGEX = /(\d{2})\/(\d{2})\/(\d{4})/;
+
+const FIFTEEN_MIN = 15 * 1000 * 60;
 
 /*
  * Implementation
@@ -114,3 +116,74 @@ export const getDate = (datetime: string): Date | null => {
   let timestamp = Date.parse(datetime);
   return isNaN(timestamp) ? null : new Date(datetime);
 };
+
+// Return a copy of provided date set to provided time
+// Time must be in the format HH:MM
+export const combineDateTime = (date: Date, time: string) => {
+  const newDate = new Date(date.valueOf());
+  const [hours, minutes] = time.split(':');
+  newDate.setHours(+hours, +minutes);
+  return newDate;
+}
+
+// Given a datetime and a list of the room's bookings for 
+// the corresponding date, calculate the status of the room
+// If room if not free for the given minimum duration, return null
+export const calculateStatus = (
+  datetime: Date,
+  classes: ClassList,
+  minDuration: number
+): RoomStatus | null => {
+  const roomStatus: RoomStatus = {
+    status: "free",
+    endtime: "",
+  };
+
+  // Filter out duplicates and sort by start time
+  const cleanClasses: ClassList = classes
+    .filter((cls, index, clsList) =>
+      index === clsList.findIndex((x) =>
+        x.start === cls.start && x.end === cls.end
+      )
+    )
+    .sort((a, b) => {
+      return combineDateTime(datetime, a.start).getTime() -
+        combineDateTime(datetime, b.start).getTime();
+    });
+
+  // Find first class that ends after current time
+  const afterIndex = cleanClasses.findIndex((cls) => (
+    datetime < combineDateTime(datetime, cls.end)
+  ));
+
+  if (afterIndex === -1) {
+    // No such class, it is free indefinitely
+    return roomStatus;
+  }
+
+  const afterClass = cleanClasses[afterIndex];
+  const start = combineDateTime(datetime, afterClass.start);
+  const end = combineDateTime(datetime, afterClass.end);
+  if (datetime < start) {
+    // Class starts after current time
+    // Check if it meets minDuration filter
+    const duration = (start.getTime() - datetime.getTime()) / (1000 * 60);
+    return duration < minDuration ? null : roomStatus;
+  } else {
+    // Class starts before current time i.e. class occurring now
+    if (minDuration > 0) return null;
+    roomStatus.status = "busy";
+
+    if (end.getTime() - datetime.getTime() <= FIFTEEN_MIN) {
+      // Ending soon, check the next class
+      const next = cleanClasses[afterIndex + 1];
+      if (!next || combineDateTime(datetime, next.start) > end) {
+        // No next class, or it starts after the current class ends
+        roomStatus.status = "soon";
+        roomStatus.endtime = end.toISOString();
+      }
+    }
+  }
+
+  return roomStatus;
+}

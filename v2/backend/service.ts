@@ -1,15 +1,15 @@
-import { getBuildingData, getScraperData, getWeek } from "./helpers";
-import { BuildingReturnData, BuildingRoomStatus, RoomAvailability } from "./types";
+import { calculateStatus, combineDateTime, getBuildingData, getScraperData, getWeek } from "./helpers";
+import { BuildingReturnData, Class, ClassList, Filters, RoomAvailability, RoomStatus, RoomStatusReturnData } from "./types";
 
-const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-const FIFTEEN_MIN = 15 * 1000 * 60;
+const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const UPPER = 19; // Buildings with grid 19+ are upper campus
 
 export const getAllBuildings = async (): Promise<BuildingReturnData[]> => {
   const data = Object.values(await getBuildingData());
   if (!data) {
     throw new Error(`Buildings cannot be retrieved`);
   }
-  // Omit rooms property, img is not sent for now
+
   const res: BuildingReturnData[] = [];
   data.forEach(({ name, id, lat, long }) => {
     res.push({
@@ -24,8 +24,9 @@ export const getAllBuildings = async (): Promise<BuildingReturnData[]> => {
 
 export const getAllRoomStatus = async (
   buildingID: string,
-  date: Date
-): Promise<BuildingRoomStatus> => {
+  date: Date,
+  filters: Filters
+): Promise<RoomStatusReturnData> => {
   const buildingData = await getBuildingData();
   if (!(buildingID in buildingData)) {
     throw new Error(`Building ID ${buildingID} does not exist`);
@@ -33,11 +34,24 @@ export const getAllRoomStatus = async (
   const buildingRooms = Object.keys(buildingData[buildingID].rooms);
 
   const week = await getWeek(date);
-  const day = days[date.getDay()];
+  const day = DAYS[date.getDay()];
 
   const scraperData = await getScraperData();
-  const roomStatus: BuildingRoomStatus = {};
+  const roomStatus: RoomStatusReturnData = {};
   for (const roomNumber of buildingRooms) {
+    // Skip room if it does not match filter
+    const roomData = buildingData[buildingID].rooms[roomNumber];
+    const roomGrid = parseInt(buildingID.substring(3));
+    const roomLocation = roomGrid < UPPER ? 'lower' : 'upper';
+    if (
+      roomData.capacity < filters.capacity ||
+      (filters.usage && roomData.usage != filters.usage) ||
+      (filters.location && filters.location != roomLocation)
+    ) {
+      continue;
+    }
+
+    // If no data for this room on this day, it is free
     if (
       !(buildingID in scraperData) ||
       !(roomNumber in scraperData[buildingID]) ||
@@ -51,44 +65,11 @@ export const getAllRoomStatus = async (
       continue;
     }
 
-    // Room has a class currently, check if the room is free soon
-    // There is a case when the room is about to be free in 15 mins
-    // but the next class starts when the current class ends
-    // TODO test this lol
-    let currTime = date.getTime();
-    let isFree = true;
-    for (const eachClass of scraperData[buildingID][roomNumber][week][day]) {
-      let classStart = new Date(date.valueOf()); 
-      const [startHours, startMinutes] = eachClass["start"].split(':');
-      classStart.setHours(+startHours, +startMinutes);
-
-      let classEnd = new Date(date.valueOf()); 
-      const [endHours, endMinutes] = eachClass["end"].split(':');
-      classEnd.setHours(+endHours, +endMinutes);
-      
-      if (currTime >= classStart.getTime() && currTime < classEnd.getTime()) {
-        isFree = false;
-
-        if (classEnd.getTime() - currTime <= FIFTEEN_MIN) {
-          roomStatus[roomNumber] = {
-            status: "soon",
-            endtime: eachClass["end"],
-          };
-        } else {
-          roomStatus[roomNumber] = {
-            status: "busy",
-            endtime: eachClass["end"],
-          };
-        }
-        currTime = classEnd.getTime();
-      }
-    }
-
-    if (isFree) {
-      roomStatus[roomNumber] = {
-        status: "free",
-        endtime: "",
-      };
+    const classes: ClassList =
+      scraperData[buildingID][roomNumber][week][day]
+    const status = calculateStatus(date, classes, filters.duration);
+    if (status !== null) {
+      roomStatus[roomNumber] = status;
     }
   }
 
