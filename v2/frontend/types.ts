@@ -1,40 +1,25 @@
 // copied over from backend
 
 export type ScraperData = {
-  termStart: string;
-} & ScraperBuildingData;
-
-export type ScraperBuildingData = {
   [buildingId: string]: {
-    [roomId: string]: {
-      roomName: string;
-      [week: number]: {
-        [day: string]: ClassList;
-      };
-    };
+    [roomId: string]: RoomAvailability;
   };
 };
+
+export type RoomAvailability = {
+  name: string;
+  [week: number]: {
+    [day: string]: ClassList;
+  };
+};
+
+export type ClassList = Class[];
 
 export type Class = {
   courseCode: string;
   start: string;
   end: string;
 };
-
-export type ClassList = Class[];
-
-export type Day = Record<string, ClassList>;
-
-export type Week = Record<string, Day>;
-
-export type RoomClasses = {
-  name: string;
-  classes: Week;
-};
-
-// export type Building = Record<string, Room>;
-
-export type TimetableData = Record<string, Building>;
 
 export type Status = "free" | "soon" | "busy";
 
@@ -54,19 +39,13 @@ export type RoomsReturnData = {
 export type Building = {
   name: string;
   id: string;
-  img: string;
+  lat: number;
+  long: number;
 };
 
 export type BuildingReturnData = {
-  buildings: Building[];
-};
-
-export type RoomAvailability = {
-  roomName: string;
-  [week: number]: {
-    [day: string]: ClassList;
-  };
-};
+  buildings: Building[]
+}
 
 export type RoomUsage = "LEC" | "TUT";
 
@@ -86,4 +65,3 @@ export type RoomsRequestParams = {
   location?: string,
   duration?: number
 }
-

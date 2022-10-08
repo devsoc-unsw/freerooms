@@ -56,25 +56,24 @@ const Home: NextPage<{ data: BuildingReturnData }> = ({ data }) => {
   };
   */
 
-  const [currentBuilding, setCurrentBuilding] = React.useState<Building | null>(
-    null
-  );
-
+  // State variables to be used by the various new features
   const [sort, setSort] = React.useState<string>("alphabetical");
   const [query, setQuery] = React.useState<string>("");
-  
   const [datetime, setDatetime] = React.useState<Date | null>(new Date());
-  const [filters, setFilters] = React.useState<Filters>({
-    capacity: 0, usage: null, location: null, duration: 0
-  });
+  const [filters, setFilters] = React.useState<Filters>(
+    { capacity: 0, usage: null, location: null, duration: 0 }
+  );
   const [hideUnavailable, setHideUnavailable] = React.useState<boolean>(false);
-  
+
   const [roomsData, setRoomsData] = React.useState<RoomsReturnData | undefined>(undefined);
-  // fetchRoomStatus(filters, datetime, setRoomsData);
   React.useEffect(() => {
     setRoomsData(undefined);
     fetchRoomStatus(filters, datetime, setRoomsData);
   }, [filters, datetime]);
+
+  const [currentBuilding, setCurrentBuilding] = React.useState<Building | null>(
+    null
+  );
 
   React.useEffect(() => {
     if (building) {
@@ -113,37 +112,6 @@ const Home: NextPage<{ data: BuildingReturnData }> = ({ data }) => {
               setCurrentBuilding(null);
             }}
           />
-          
-          <TextField
-            label="searchQuery"
-            onKeyPress={(e) => {
-              if (e.key === 'Enter') setQuery(e.target.value)
-            }}
-          />
-          <TextField
-            label="hideUnavailable"
-            onKeyPress={(e) => {
-              if (e.key === 'Enter') setHideUnavailable(e.target.value == "true")
-            }}
-          />
-          <TextField
-            label="capacity"
-            onKeyPress={(e) => {
-              if (e.key === 'Enter') {
-                  const newFilter: Filters = {...filters};  
-                  newFilter.capacity = e.target.value ? +e.target.value : 0;
-                  setFilters(newFilter)
-                }
-              }
-            }
-          />
-          <TextField
-            label="sort"
-            onKeyPress={(e) => {
-              if (e.key === 'Enter') setSort(e.target.value)
-            }}
-          />
-
           {/* 
           <StyledTabs
             value={selection}
@@ -237,6 +205,7 @@ const fetchRoomStatus = (
   if (datetime) params.datetime = `${DateTime.fromJSDate(datetime).toFormat(
     "yyyy-MM-dd"
   )}T${DateTime.fromJSDate(datetime).toFormat("HH:mm")}`
+
   if (filter !== null) {
     if (filter.capacity > 0) params.capacity = filter.capacity;
     if (filter.usage !== null) params.usage = filter.usage;
@@ -244,8 +213,7 @@ const fetchRoomStatus = (
     if (filter.duration > 0) params.duration = filter.duration;
   }
 
-  axios
-    .get(server + "/rooms", {params: params})
+  axios.get(server + "/rooms", { params: params })
     .then((res) => {
       setRoomsData(res.status == 200 ? res.data as RoomsReturnData : {});
     })

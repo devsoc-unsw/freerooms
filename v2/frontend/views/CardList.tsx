@@ -1,22 +1,11 @@
 
 import React from "react";
-import {Building, BuildingReturnData, BuildingStatus, RoomsReturnData } from "../types";
+import {Building, BuildingReturnData, RoomsReturnData } from "../types";
 
 import BuildingCard from "../components/BuildingCard";
 
-function lowerToUpper(a: any, b: any) {
-  const a_ycoord = Number(a.id.slice(3, 5).replace(/'/g, ''));
-  const b_ycoord = Number(b.id.slice(3, 5).replace(/'/g, ''));
-  // const a_xcoord = (a.id.slice(2, 3));
-  // const b_xcoord = (b.id.slice(2, 3));
-  if (a_ycoord < b_ycoord) {
-    return -1;
-  }
-  if (a_ycoord > b_ycoord) {
-    return 1;
-  }
-  return 0;
-}
+const INITIALISING = -2;
+const FAILED = -1;
 
 const CardList: React.FC<{
   data: BuildingReturnData;
@@ -37,23 +26,24 @@ const CardList: React.FC<{
     );
     
     // Sort the displayed buildings
-    switch (sortOrder) {
-      case "alphabetical":
-        displayedBuildings.sort((a, b) => a.name.localeCompare(b.name)); break;
-      case "reverseAlphabetical":
-        displayedBuildings.sort((a, b) => b.name.localeCompare(a.name)); break;
-      case "lowerToUpper":
-        displayedBuildings.sort(lowerToUpper); break;
-      case "upperToLower":
-        displayedBuildings.sort(lowerToUpper).reverse(); break;
-      case "mostRooms":
-        displayedBuildings.sort((a, b) =>
-          countFreerooms(statusData, b.id) - countFreerooms(statusData, a.id)
-        );
-        break;
-      case "nearest":
-        // idk lol
-    }
+    displayedBuildings.sort((a, b) => {
+      switch (sortOrder) {
+        case "alphabetical":
+          return a.name.localeCompare(b.name);
+        case "reverseAlphabetical":
+          return b.name.localeCompare(a.name);
+        case "lowerToUpper":
+          return a.long - b.long;
+        case "upperToLower":
+          return b.long - a.long;
+        case "mostRooms":
+          return countFreerooms(statusData, b.id) - countFreerooms(statusData, a.id);
+        case "nearest":
+          // idk lol
+        default:
+          return 0
+      }
+    });
   
     setBuildings(displayedBuildings);
   }, [searchQuery, hideUnavailable, sortOrder, statusData]);
@@ -63,7 +53,7 @@ const CardList: React.FC<{
       style={{
         width: "100%",
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+        gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
         gridGap: "20px",
       }}
     >
@@ -83,8 +73,8 @@ const countFreerooms = (
   roomStatus: RoomsReturnData | undefined,
   buildingId: string
 ): number => {
-  if (roomStatus === undefined) return -2;
-  if (!(buildingId in roomStatus)) return -1;
+  if (roomStatus === undefined) return INITIALISING;
+  if (!(buildingId in roomStatus)) return FAILED;
 
   let freerooms = 0;
   for (const room of Object.values(roomStatus[buildingId])) {
