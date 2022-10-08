@@ -51,11 +51,15 @@ export type RoomStatus = {
   endtime: string;
 };
 
-export type RoomStatusReturnData = {
+export type BuildingStatus = {
   [roomId: string]: RoomStatus;
 };
 
-export type BuildingReturnData = {
+export type RoomsReturnData = {
+  [buildingId: string]: BuildingStatus;
+};
+
+export type BuildingsReturnData = {
   name: string;
   id: string;
   lat: number;
