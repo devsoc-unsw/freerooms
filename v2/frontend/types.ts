@@ -36,21 +36,19 @@ export type RoomClasses = {
 
 export type TimetableData = Record<string, Building>;
 
-export type RoomStatus = "free" | "soon" | "busy";
+export type Status = "free" | "soon" | "busy";
 
-export type Room = {
-  status: RoomStatus;
+export type RoomStatus = {
+  status: Status;
   endtime: string;
 };
 
-export type BuildingRoomReturnStatus = {
-  rooms: {
-    [roomId: string]: Room;
-  };
+export type BuildingStatus = {
+  [roomId: string]: RoomStatus;
 };
 
-export type BuildingRoomStatus = {
-  [roomId: string]: Room;
+export type RoomsReturnData = {
+  [buildingId: string]: BuildingStatus;
 };
 
 export type Building = {
@@ -69,3 +67,23 @@ export type RoomAvailability = {
     [day: string]: ClassList;
   };
 };
+
+export type RoomUsage = "LEC" | "TUT";
+
+export type Location = "upper" | "lower";
+
+export type Filters = {
+  capacity: number,
+  usage: RoomUsage | null;
+  location: Location | null;
+  duration: number;
+}
+
+export type RoomsRequestParams = {
+  datetime?: string,
+  capacity?: number,
+  usage?: string,
+  location?: string,
+  duration?: number
+}
+

@@ -3,11 +3,11 @@ import axios from "axios";
 import useSWR from "swr";
 import { server } from "../config";
 import {
-  Room,
   RoomStatus,
   Building,
   BuildingReturnData,
-  BuildingRoomReturnStatus,
+  BuildingStatus,
+  RoomsReturnData,
 } from "../types";
 
 import { styled } from "@mui/material/styles";
@@ -80,37 +80,24 @@ const IndiviRoomBox = styled(Box)<BoxProps>(({ theme }) => ({
 const BuildingInfo: React.FC<{
   building: Building | null;
   onClose?: () => void;
-}> = ({ building, onClose }) => {
+  datetime: Date | null;
+  setDatetime: (datetime: Date | null) => void;
+  statusData: RoomsReturnData | undefined;
+}> = ({ building, onClose, datetime, setDatetime, statusData }) => {
   if (!building) return <></>;
 
-  const [value, setValue] = React.useState<Date | null>(new Date());
   const [sort, setSort] = React.useState<"name" | "available">("name");
   const [roomsData, setRoomsData] = React.useState<
-    BuildingRoomReturnStatus | undefined
+    BuildingStatus | undefined
   >();
   const [roomsError, setRoomsError] = React.useState<string | undefined>();
 
-  const fetchRooms = async () => {
-    axios
-      .get(server + "/buildings/" + building!.id, {
-        params: {
-          datetime: `${DateTime.fromJSDate(value!).toFormat(
-            "yyyy-MM-dd"
-          )}T${DateTime.fromJSDate(value!).toFormat("HH:mm")}`,
-        },
-      })
-      .then((res) => setRoomsData(res.data))
-      .catch((err) => setRoomsError(err.message));
-  };
-
   React.useEffect(() => {
     setRoomsData(undefined);
-  }, [building]);
-
-  React.useEffect(() => {
-    setRoomsData(undefined);
-    fetchRooms();
-  }, [building, value]);
+    if (statusData && building.id in statusData) {
+      setRoomsData(statusData[building.id])
+    }
+  }, [building, statusData]);
 
   const customTextField = (
     params: JSX.IntrinsicAttributes & TextFieldProps
@@ -174,14 +161,14 @@ const BuildingInfo: React.FC<{
         >
           <DesktopDatePicker
             inputFormat="dd/MM/yyyy"
-            value={value}
-            onChange={(newValue) => setValue(newValue)}
+            value={datetime}
+            onChange={(newValue) => setDatetime(newValue)}
             renderInput={customTextField}
           />
           <div style={{ width: 10 }} />
           <TimePicker
-            value={value}
-            onChange={(newValue) => setValue(newValue)}
+            value={datetime}
+            onChange={(newValue) => setDatetime(newValue)}
             renderInput={customTextField}
           />
         </div>
@@ -189,11 +176,11 @@ const BuildingInfo: React.FC<{
 
       <RoomBox>
         {roomsData ? (
-          Object.keys(roomsData["rooms"]).map((room_name) => {
-            const room = roomsData["rooms"][room_name];
+          Object.keys(roomsData).map((roomId) => {
+            const room = roomsData[roomId];
             return (
               <IndiviRoomBox>
-                {room_name}{" "}
+                {roomId}{" "}
                 <Typography
                   sx={{ fontSize: 16, fontWeight: 500 }}
                   style={{
