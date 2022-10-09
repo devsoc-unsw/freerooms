@@ -3,9 +3,6 @@ import React from "react";
 import { Building, BuildingReturnData, RoomsReturnData } from "../types";
 
 import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
 import FlipMove from "react-flip-move";
 
 import BuildingCard from "../components/BuildingCard";
@@ -51,7 +48,7 @@ const CardList: React.FC<{
     // If hideUnavailable is true, filter any that have no available rooms
     const displayedBuildings = [...data.buildings].filter((building) =>
       building.name.toLowerCase().startsWith(searchQuery.toLowerCase()) &&
-      (!hideUnavailable || countFreerooms(statusData, building.id))
+      (!hideUnavailable || countFreerooms(statusData, building.id) > 0)
     );
 
     // Sort the displayed buildings
@@ -68,7 +65,7 @@ const CardList: React.FC<{
         case "mostRooms":
           return countFreerooms(statusData, b.id) - countFreerooms(statusData, a.id);
         case "nearest":
-        // idk lol
+          // idk lol
         default:
           return 0
       }
@@ -78,7 +75,7 @@ const CardList: React.FC<{
   }, [searchQuery, hideUnavailable, sortOrder, statusData]);
 
   return (
-    <FlipMoveGrid>
+    <FlipMoveGrid onStart={() => window.scrollTo(0, 0)}>
       {buildings.map((building) => (
         <FlippableCard
           key={building.id}
