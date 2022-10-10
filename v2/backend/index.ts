@@ -11,7 +11,7 @@ import {
 import { Filters } from "./types";
 
 const app = express();
-const PORT = 3001;
+const PORT = 3000;
 app.use(cors());
 
 // Wrapper for request handler functions to catch async exceptions
