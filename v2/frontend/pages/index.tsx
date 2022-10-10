@@ -173,8 +173,8 @@ export async function getStaticProps() {
   // fetches /buildings via **BUILD** time so we don't need to have
   // the client fetch buildings data every request
   const res = await fetch(server + "/buildings");
-  // let buildings = await res.json() as BuildingReturnData;
-  let buildings = { buildings: [] };
+  const buildings: BuildingReturnData = await res.json()
+  // const buildings: BuildingReturnData = { buildings: [] };
 
   return {
     props: {
