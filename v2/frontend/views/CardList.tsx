@@ -47,27 +47,26 @@ const CardList: React.FC<{
     // Filter any out that dont start with query
     // If hideUnavailable is true, filter any that have no available rooms
     const displayedBuildings = [...data.buildings].filter((building) =>
-      building.name.toLowerCase().startsWith(searchQuery.toLowerCase()) &&
+      building.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
       (!hideUnavailable || countFreerooms(statusData, building.id) > 0)
     );
 
     // Sort the displayed buildings
     displayedBuildings.sort((a, b) => {
       switch (sortOrder) {
-        case "alphabetical":
-          return a.name.localeCompare(b.name);
-        case "reverseAlphabetical":
-          return b.name.localeCompare(a.name);
         case "lowerToUpper":
           return a.long - b.long;
         case "upperToLower":
           return b.long - a.long;
-        case "mostRooms":
-          return countFreerooms(statusData, b.id) - countFreerooms(statusData, a.id);
         case "nearest":
           // idk lol
+        case "mostRooms":
+          return countFreerooms(statusData, b.id) - countFreerooms(statusData, a.id);
+        case "reverseAlphabetical":
+          return b.name.localeCompare(a.name);
         default:
-          return 0
+          // default is alphabetical
+          return a.name.localeCompare(b.name);
       }
     });
 
@@ -75,7 +74,10 @@ const CardList: React.FC<{
   }, [searchQuery, hideUnavailable, sortOrder, statusData]);
 
   return (
-    <FlipMoveGrid onStart={() => window.scrollTo(0, 0)}>
+    <FlipMoveGrid
+      duration={500}
+      onStartAll={() => window.scrollTo(0, 0)}
+    >
       {buildings.map((building) => (
         <FlippableCard
           key={building.id}
