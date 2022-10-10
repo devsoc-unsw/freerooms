@@ -174,7 +174,7 @@ export async function getStaticProps() {
   // the client fetch buildings data every request
   const res = await fetch(server + "/buildings");
   // let buildings = await res.json() as BuildingReturnData;
-  let buildings = buildings = { buildings: [] };
+  let buildings = { buildings: [] };
 
   return {
     props: {
