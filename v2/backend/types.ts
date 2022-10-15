@@ -69,9 +69,9 @@ export type BuildingsReturnData = {
 export type Location = "upper" | "lower";
 
 export type Filters = {
-  capacity: number,
-  usage: RoomUsage | null;
-  location: Location | null;
-  duration: number;
+  capacity?: number,
+  usage?: RoomUsage;
+  location?: Location;
+  duration?: number;
 }
 

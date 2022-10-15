@@ -43,12 +43,7 @@ app.get(
       throw new Error('Invalid datetime');
     }
 
-    const filters: Filters = {
-      capacity: 0,
-      duration: 0,
-      usage: null,
-      location: null,
-    };
+    const filters: Filters = {};
   
     if (req.query.capacity) {
       const capacity = parseInt(req.query.capacity as string);
@@ -111,12 +106,9 @@ app.get(
       throw new Error('Invalid datetime');
     }
 
-    const filters: Filters = {
-      capacity: 0,
-      duration: 0,
-      usage: null,
-      location: null,
-    };
+    console.log(typeof(req.query))
+
+    const filters: Filters = {};
   
     if (req.query.capacity) {
       const capacity = parseInt(req.query.capacity as string);

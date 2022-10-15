@@ -41,22 +41,21 @@ export const getAllRoomStatus = async (
     const buildingStatus: BuildingStatus = {};
     for (const roomNumber in buildingRooms) {
       const roomData = buildingRooms[roomNumber];
-      
-      // Skip room if it does not match filter
       if (
-        roomData.capacity < filters.capacity ||
+        (filters.capacity && roomData.capacity < filters.capacity) ||
         (filters.usage && roomData.usage != filters.usage)
       ) {
+        // Skip room if it does not match filter
         continue;
       }
   
-      // If no data for this room on this day, it is free
       if (
         !(buildingID in scraperData) ||
         !(roomNumber in scraperData[buildingID]) ||
         !(week in scraperData[buildingID][roomNumber]) ||
         !(day in scraperData[buildingID][roomNumber][week])
       ) {
+        // If no data for this room on this day, it is free
         buildingStatus[roomNumber] = {
           status: "free",
           endtime: "",
@@ -65,7 +64,7 @@ export const getAllRoomStatus = async (
       }
   
       const classes = scraperData[buildingID][roomNumber][week][day];
-      const status = calculateStatus(date, classes, filters.duration);
+      const status = calculateStatus(date, classes, filters.duration || 0);
       if (status !== null) {
         buildingStatus[roomNumber] = status;
       }
