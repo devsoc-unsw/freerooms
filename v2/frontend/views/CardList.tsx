@@ -33,22 +33,22 @@ const FlippableCard = React.forwardRef<HTMLDivElement, {
 
 const CardList: React.FC<{
   data: BuildingReturnData;
-  setBuilding: (building: Building) => void;
-  sortOrder: string;
-  searchQuery: string;
+  setCurrentBuilding: (building: Building) => void;
+  sort: string;
+  query: string;
   hideUnavailable: boolean;
-  statusData: RoomsReturnData | undefined;
-}> = ({ data, setBuilding, sortOrder, searchQuery, hideUnavailable, statusData }) => {
+  roomStatusData: RoomsReturnData | undefined;
+}> = ({ data, setCurrentBuilding: setBuilding, sort: sortOrder, query: searchQuery, hideUnavailable, roomStatusData }) => {
   const [buildings, setBuildings] = React.useState<Building[]>([...data.buildings]);
 
   React.useEffect(() => {
-    if (statusData === undefined) return;
+    if (roomStatusData === undefined) return;
 
     // Filter any out that dont start with query
     // If hideUnavailable is true, filter any that have no available rooms
     const displayedBuildings = [...data.buildings].filter((building) =>
       building.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-      (!hideUnavailable || countFreerooms(statusData, building.id) > 0)
+      (!hideUnavailable || countFreerooms(roomStatusData, building.id) > 0)
     );
 
     // Sort the displayed buildings
@@ -59,9 +59,9 @@ const CardList: React.FC<{
         case "upperToLower":
           return b.long - a.long;
         case "nearest":
-          // idk lol
+        // idk lol
         case "mostRooms":
-          return countFreerooms(statusData, b.id) - countFreerooms(statusData, a.id);
+          return countFreerooms(roomStatusData, b.id) - countFreerooms(roomStatusData, a.id);
         case "reverseAlphabetical":
           return b.name.localeCompare(a.name);
         default:
@@ -71,7 +71,7 @@ const CardList: React.FC<{
     });
 
     setBuildings(displayedBuildings);
-  }, [searchQuery, hideUnavailable, sortOrder, statusData]);
+  }, [searchQuery, hideUnavailable, sortOrder, roomStatusData]);
 
   return (
     <FlipMoveGrid
@@ -83,7 +83,7 @@ const CardList: React.FC<{
           key={building.id}
           building={building}
           setBuilding={setBuilding}
-          freerooms={countFreerooms(statusData, building.id)}
+          freerooms={countFreerooms(roomStatusData, building.id)}
         />
       ))}
     </FlipMoveGrid>

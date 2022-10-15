@@ -34,12 +34,9 @@ import { BoxProps, Typography } from "@mui/material";
 
 import Branding from "../components/Branding";
 import Button from "../components/Button";
-import BuildingCard from "../components/BuildingCard";
 import BuildingInfo from "../views/BuildingInfo";
 import CardList from "../views/CardList";
 import axios from "axios";
-
-import TextField from "@mui/material/TextField"; // REMOVE ME
 
 const Home: NextPage<{ data: BuildingReturnData }> = ({ data }) => {
   const router = useRouter();
@@ -63,23 +60,22 @@ const Home: NextPage<{ data: BuildingReturnData }> = ({ data }) => {
   const [filters, setFilters] = React.useState<Filters>({});
   const [hideUnavailable, setHideUnavailable] = React.useState<boolean>(false);
 
-  const [roomsData, setRoomsData] = React.useState<RoomsReturnData | undefined>(undefined);
+  const [roomStatusData, setRoomStatusData] = React.useState<RoomsReturnData | undefined>();
   const fetchRoomStatus = () => {
     const params: RoomsRequestParams = { ...filters };
     if (datetime) {
-      params.datetime = `${DateTime.fromJSDate(datetime).toFormat("yyyy-MM-dd")}
-                         T${DateTime.fromJSDate(datetime).toFormat("HH:mm")}`;
-    } 
+      params.datetime = DateTime.fromJSDate(datetime).toFormat("yyyy-MM-dd'T'HH:mm");
+    }
 
     axios.get(server + "/rooms", { params: params })
       .then((res) => {
-        setRoomsData(res.status == 200 ? res.data : undefined);
+        setRoomStatusData(res.status == 200 ? res.data : undefined);
       })
-      .catch((err) => setRoomsData(undefined));
+      .catch((err) => setRoomStatusData(undefined));
   }
 
   React.useEffect(() => {
-    setRoomsData(undefined);
+    setRoomStatusData(undefined);
     fetchRoomStatus();
   }, [filters, datetime]);
 
@@ -161,11 +157,11 @@ const Home: NextPage<{ data: BuildingReturnData }> = ({ data }) => {
           )*/}
           <CardList
             data={data}
-            setBuilding={setCurrentBuilding}
-            sortOrder={sort}
-            searchQuery={query}
+            setCurrentBuilding={setCurrentBuilding}
+            sort={sort}
+            query={query}
             hideUnavailable={hideUnavailable}
-            statusData={roomsData}
+            roomStatusData={roomStatusData}
           />
         </Main>
         <Drawer
@@ -187,7 +183,7 @@ const Home: NextPage<{ data: BuildingReturnData }> = ({ data }) => {
             onClose={() => setCurrentBuilding(null)}
             datetime={datetime}
             setDatetime={setDatetime}
-            statusData={roomsData}
+            roomStatusData={roomStatusData}
           />
         </Drawer>
       </Box>
@@ -199,30 +195,12 @@ export async function getStaticProps() {
   // fetches /buildings via **BUILD** time so we don't need to have
   // the client fetch buildings data every request
   const res = await fetch(server + "/buildings");
-  let buildings: BuildingReturnData = await res.json();
-  buildings.buildings.sort((a, b) => a.name.localeCompare(b.name));
+  const buildings: BuildingReturnData = await res.json();
   return {
     props: {
       data: buildings,
     },
   };
-}
-
-const fetchRoomStatus = (
-  filter: Filters,
-  datetime: Date | null,
-  setRoomsData: (roomsData: RoomsReturnData | undefined) => void
-): void => {
-  const params: RoomsRequestParams = { ...filter };
-  if (datetime) params.datetime = `${DateTime.fromJSDate(datetime).toFormat(
-    "yyyy-MM-dd"
-  )}T${DateTime.fromJSDate(datetime).toFormat("HH:mm")}`;
-
-  axios.get(server + "/rooms", { params: params })
-    .then((res) => {
-      setRoomsData(res.status == 200 ? res.data : undefined);
-    })
-    .catch((err) => setRoomsData(undefined));
 }
 
 const drawerWidth = 400;

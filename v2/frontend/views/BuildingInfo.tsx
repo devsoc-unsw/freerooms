@@ -82,22 +82,20 @@ const BuildingInfo: React.FC<{
   onClose?: () => void;
   datetime: Date | null;
   setDatetime: (datetime: Date | null) => void;
-  statusData: RoomsReturnData | undefined;
-}> = ({ building, onClose, datetime, setDatetime, statusData }) => {
+  roomStatusData: RoomsReturnData | undefined;
+}> = ({ building, onClose, datetime, setDatetime, roomStatusData }) => {
   if (!building) return <></>;
 
   const [sort, setSort] = React.useState<"name" | "available">("name");
-  const [roomsData, setRoomsData] = React.useState<
-    BuildingStatus | undefined
-  >();
+  const [rooms, setRooms] = React.useState<BuildingStatus | undefined>();
   const [roomsError, setRoomsError] = React.useState<string | undefined>();
 
   React.useEffect(() => {
-    setRoomsData(undefined);
-    if (statusData && building.id in statusData) {
-      setRoomsData(statusData[building.id])
+    setRooms(undefined);
+    if (roomStatusData && building.id in roomStatusData) {
+      setRooms(roomStatusData[building.id])
     }
-  }, [building, statusData]);
+  }, [building, roomStatusData]);
 
   const customTextField = (
     params: JSX.IntrinsicAttributes & TextFieldProps
@@ -125,7 +123,7 @@ const BuildingInfo: React.FC<{
             {building!.name}
           </Typography>
           <StatusBox>
-            {!roomsData ? (
+            {!rooms ? (
               // loading
               <CircularProgress size={20} thickness={5} disableShrink />
             ) : null}
@@ -175,9 +173,9 @@ const BuildingInfo: React.FC<{
       </LocalizationProvider>
 
       <RoomBox>
-        {roomsData ? (
-          Object.keys(roomsData).map((roomId) => {
-            const room = roomsData[roomId];
+        {rooms ? (
+          Object.keys(rooms).map((roomId) => {
+            const room = rooms[roomId];
             return (
               <IndiviRoomBox>
                 {roomId}{" "}
@@ -216,8 +214,8 @@ const BuildingInfo: React.FC<{
     ? null
     : () => {
         const rooms =
-          roomsData && roomsData["rooms"]
-            ? Object.values(roomsData["rooms"])
+          rooms && rooms["rooms"]
+            ? Object.values(rooms["rooms"])
             : null;
 
         return (
@@ -242,8 +240,8 @@ const BuildingInfo: React.FC<{
   <Typography
     sx={{ fontSize: 14, fontWeight: 500, opacity: 0.8 }}
   >
-    {roomsData && !roomsError
-      ? `${Object.values(roomsData["rooms"]).length}`
+    {rooms && !roomsError
+      ? `${Object.values(rooms["rooms"]).length}`
       : "data unavailable"}
   </Typography>
 </>
