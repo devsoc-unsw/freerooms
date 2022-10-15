@@ -60,15 +60,27 @@ const Home: NextPage<{ data: BuildingReturnData }> = ({ data }) => {
   const [sort, setSort] = React.useState<string>("alphabetical");
   const [query, setQuery] = React.useState<string>("");
   const [datetime, setDatetime] = React.useState<Date | null>(new Date());
-  const [filters, setFilters] = React.useState<Filters>(
-    { capacity: 0, usage: null, location: null, duration: 0 }
-  );
+  const [filters, setFilters] = React.useState<Filters>({});
   const [hideUnavailable, setHideUnavailable] = React.useState<boolean>(false);
 
   const [roomsData, setRoomsData] = React.useState<RoomsReturnData | undefined>(undefined);
+  const fetchRoomStatus = () => {
+    const params: RoomsRequestParams = { ...filters };
+    if (datetime) {
+      params.datetime = `${DateTime.fromJSDate(datetime).toFormat("yyyy-MM-dd")}
+                         T${DateTime.fromJSDate(datetime).toFormat("HH:mm")}`;
+    } 
+
+    axios.get(server + "/rooms", { params: params })
+      .then((res) => {
+        setRoomsData(res.status == 200 ? res.data : undefined);
+      })
+      .catch((err) => setRoomsData(undefined));
+  }
+
   React.useEffect(() => {
     setRoomsData(undefined);
-    fetchRoomStatus(filters, datetime, setRoomsData);
+    fetchRoomStatus();
   }, [filters, datetime]);
 
   const [currentBuilding, setCurrentBuilding] = React.useState<Building | null>(
@@ -197,27 +209,20 @@ export async function getStaticProps() {
 }
 
 const fetchRoomStatus = (
-  filter: Filters | null,
+  filter: Filters,
   datetime: Date | null,
-  setRoomsData: (roomsData: RoomsReturnData) => void
+  setRoomsData: (roomsData: RoomsReturnData | undefined) => void
 ): void => {
-  const params: RoomsRequestParams = {};
+  const params: RoomsRequestParams = { ...filter };
   if (datetime) params.datetime = `${DateTime.fromJSDate(datetime).toFormat(
     "yyyy-MM-dd"
-  )}T${DateTime.fromJSDate(datetime).toFormat("HH:mm")}`
-
-  if (filter !== null) {
-    if (filter.capacity > 0) params.capacity = filter.capacity;
-    if (filter.usage !== null) params.usage = filter.usage;
-    if (filter.location !== null) params.usage = filter.location;
-    if (filter.duration > 0) params.duration = filter.duration;
-  }
+  )}T${DateTime.fromJSDate(datetime).toFormat("HH:mm")}`;
 
   axios.get(server + "/rooms", { params: params })
     .then((res) => {
-      setRoomsData(res.status == 200 ? res.data as RoomsReturnData : {});
+      setRoomsData(res.status == 200 ? res.data : undefined);
     })
-    .catch((err) => setRoomsData({}));
+    .catch((err) => setRoomsData(undefined));
 }
 
 const drawerWidth = 400;
