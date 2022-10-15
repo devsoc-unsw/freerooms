@@ -121,7 +121,7 @@ app.get(
       if (isNaN(duration) || duration < 0) {
         throw new Error('Invalid duration');
       }
-      filters.capacity = duration;
+      filters.duration = duration;
     }
 
     if (req.query.usage) {
