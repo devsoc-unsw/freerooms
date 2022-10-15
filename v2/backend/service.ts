@@ -33,9 +33,12 @@ export const getAllRoomStatus = async (
   const scraperData = await getScraperData();
   const result: RoomsReturnData = {};
   for (const buildingID in buildingData) {
-    const roomGrid = parseInt(buildingID.substring(3));
-    const roomLocation = roomGrid < UPPER ? 'lower' : 'upper';
-    if (filters.location && filters.location != roomLocation) continue;
+    const roomLocation = +buildingID.substring(3) < UPPER ? 'lower' : 'upper';
+    if (filters.location && filters.location != roomLocation) {
+      // Skip building if it does not match filter
+      result[buildingID] = {};
+      continue;
+    }
 
     const buildingRooms = buildingData[buildingID].rooms;
     const buildingStatus: BuildingStatus = {};

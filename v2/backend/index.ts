@@ -106,8 +106,6 @@ app.get(
       throw new Error('Invalid datetime');
     }
 
-    console.log(typeof(req.query))
-
     const filters: Filters = {};
   
     if (req.query.capacity) {
