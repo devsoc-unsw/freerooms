@@ -41,7 +41,10 @@ const CardList: React.FC<{
   const [buildings, setBuildings] = React.useState<Building[]>([...buildingData.buildings]);
 
   React.useEffect(() => {
-    if (roomStatusData === undefined) return;
+    if (
+      roomStatusData === undefined ||
+      Object.keys(roomStatusData).length == 0
+    ) return;
 
     // Filter any out that dont start with query
     // If hideUnavailable is true, filter any that have no available rooms

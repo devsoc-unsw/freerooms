@@ -68,9 +68,9 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({ buildingData }) 
 
     axios.get(server + "/rooms", { params: params })
       .then((res) => {
-        setRoomStatusData(res.status == 200 ? res.data : undefined);
+        setRoomStatusData(res.status == 200 ? res.data : {});
       })
-      .catch((err) => setRoomStatusData(undefined));
+      .catch((err) => setRoomStatusData({}));
   }
 
   React.useEffect(() => {
