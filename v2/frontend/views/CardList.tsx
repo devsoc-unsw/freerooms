@@ -32,28 +32,27 @@ const FlippableCard = React.forwardRef<HTMLDivElement, {
 ));
 
 const CardList: React.FC<{
-  data: BuildingReturnData;
+  buildingData: BuildingReturnData;
   setCurrentBuilding: (building: Building) => void;
   sort: string;
   query: string;
-  hideUnavailable: boolean;
   roomStatusData: RoomsReturnData | undefined;
-}> = ({ data, setCurrentBuilding: setBuilding, sort: sortOrder, query: searchQuery, hideUnavailable, roomStatusData }) => {
-  const [buildings, setBuildings] = React.useState<Building[]>([...data.buildings]);
+}> = ({ buildingData, setCurrentBuilding, sort, query, roomStatusData }) => {
+  const [buildings, setBuildings] = React.useState<Building[]>([...buildingData.buildings]);
 
   React.useEffect(() => {
     if (roomStatusData === undefined) return;
 
     // Filter any out that dont start with query
     // If hideUnavailable is true, filter any that have no available rooms
-    const displayedBuildings = [...data.buildings].filter((building) =>
-      building.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-      (!hideUnavailable || countFreerooms(roomStatusData, building.id) > 0)
+    const displayedBuildings = [...buildingData.buildings].filter((building) =>
+      building.name.toLowerCase().includes(query.toLowerCase()) &&
+      Object.keys(roomStatusData[building.id]).length > 0
     );
 
     // Sort the displayed buildings
     displayedBuildings.sort((a, b) => {
-      switch (sortOrder) {
+      switch (sort) {
         case "lowerToUpper":
           return a.long - b.long;
         case "upperToLower":
@@ -71,7 +70,7 @@ const CardList: React.FC<{
     });
 
     setBuildings(displayedBuildings);
-  }, [searchQuery, hideUnavailable, sortOrder, roomStatusData]);
+  }, [query, sort, roomStatusData]);
 
   return (
     <FlipMoveGrid
@@ -82,7 +81,7 @@ const CardList: React.FC<{
         <FlippableCard
           key={building.id}
           building={building}
-          setBuilding={setBuilding}
+          setBuilding={setCurrentBuilding}
           freerooms={countFreerooms(roomStatusData, building.id)}
         />
       ))}

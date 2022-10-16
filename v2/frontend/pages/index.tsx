@@ -38,7 +38,7 @@ import BuildingInfo from "../views/BuildingInfo";
 import CardList from "../views/CardList";
 import axios from "axios";
 
-const Home: NextPage<{ data: BuildingReturnData }> = ({ data }) => {
+const Home: NextPage<{ buildingData: BuildingReturnData }> = ({ buildingData }) => {
   const router = useRouter();
   const { building } = router.query;
 
@@ -58,7 +58,6 @@ const Home: NextPage<{ data: BuildingReturnData }> = ({ data }) => {
   const [query, setQuery] = React.useState<string>("");
   const [datetime, setDatetime] = React.useState<Date | null>(new Date());
   const [filters, setFilters] = React.useState<Filters>({});
-  const [hideUnavailable, setHideUnavailable] = React.useState<boolean>(false);
 
   const [roomStatusData, setRoomStatusData] = React.useState<RoomsReturnData | undefined>();
   const fetchRoomStatus = () => {
@@ -85,9 +84,9 @@ const Home: NextPage<{ data: BuildingReturnData }> = ({ data }) => {
 
   React.useEffect(() => {
     if (building) {
-      const buildingData = data.buildings.find((b) => b.id === building);
-      if (buildingData) {
-        setCurrentBuilding(buildingData);
+      const selectedBuilding = buildingData.buildings.find((b) => b.id === building);
+      if (selectedBuilding) {
+        setCurrentBuilding(selectedBuilding);
         router.replace("/", undefined, { shallow: true });
       }
     }
@@ -156,11 +155,10 @@ const Home: NextPage<{ data: BuildingReturnData }> = ({ data }) => {
             </p>
           )*/}
           <CardList
-            data={data}
+            buildingData={buildingData}
             setCurrentBuilding={setCurrentBuilding}
             sort={sort}
             query={query}
-            hideUnavailable={hideUnavailable}
             roomStatusData={roomStatusData}
           />
         </Main>
@@ -198,7 +196,7 @@ export async function getStaticProps() {
   const buildings: BuildingReturnData = await res.json();
   return {
     props: {
-      data: buildings,
+      buildingData: buildings,
     },
   };
 }
