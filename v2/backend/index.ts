@@ -180,7 +180,7 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.log(`"${req.originalUrl}" ${err}`)
 
   if (!res.writableEnded) {
-    res.send({ message: err.toString(), status: 400 });
+    res.status(400).send(err.toString());
   }
   next();
 });
