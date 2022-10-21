@@ -10,49 +10,37 @@ import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 
-const SearchBar = ({
-  open,
-  setOpen,
-}: {
-  open: boolean;
-  setOpen: (open: boolean) => void;
-}) => {
+const SearchBar = ({ setQuery }: { setQuery: (query: string) => void }) => {
   return (
-    <Box sx={{ "& > :not(style)": { m: 1, width: "70ch" } }}>
-      <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-        <TextField
-          id="input-with-sx"
-          label="Search for free room..."
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon />
-              </InputAdornment>
-            ),
-          }}
-          variant="outlined"
-        />
-      </Box>
+    <Box sx={{ "& > :not(style)": { width: "70ch" } }}>
+      <TextField
+        id="input-with-sx"
+        placeholder="Search for free room..."
+        fullWidth
+        //entering the target
+        onKeyDown={(event) => {
+          const target = event.target as HTMLInputElement;
+          if (event.key === "Enter") {
+            setQuery(target.value);
+          }
+        }}
+        //clearing the search bar
+        onChange={(event) => {
+          if (event.target.value === "") {
+            setQuery(event.target.value);
+          }
+        }}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon />
+            </InputAdornment>
+          ),
+        }}
+        variant="outlined"
+      />
     </Box>
   );
-  /* 
-  return (
-    <Dialog open={open} /*BackdropComponent={()=> <Backdrop open={false}/> }>
-      <DialogContent dividers>
-        <Typography gutterBottom>
-          Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-          dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-          consectetur ac, vestibulum at eros.
-        </Typography>
-
-        <Typography gutterBottom>
-          Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-          Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
-        </Typography>
-      </DialogContent>
-    </Dialog>
-  );
-  */
 };
 
 export default SearchBar;

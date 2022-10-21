@@ -35,14 +35,13 @@ import { BoxProps, Typography } from "@mui/material";
 import Branding from "../components/Branding";
 import Button from "../components/Button";
 import BuildingInfo from "../views/BuildingInfo";
-<<<<<<< HEAD
 import SearchBar from "../components/SearchBar";
-=======
 import CardList from "../views/CardList";
 import axios from "axios";
->>>>>>> origin/FREE-58-building-card-shuffling
 
-const Home: NextPage<{ buildingData: BuildingReturnData }> = ({ buildingData }) => {
+const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
+  buildingData,
+}) => {
   const router = useRouter();
   const { building } = router.query;
 
@@ -63,19 +62,23 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({ buildingData }) 
   const [datetime, setDatetime] = React.useState<Date | null>(new Date());
   const [filters, setFilters] = React.useState<Filters>({});
 
-  const [roomStatusData, setRoomStatusData] = React.useState<RoomsReturnData | undefined>();
+  const [roomStatusData, setRoomStatusData] = React.useState<
+    RoomsReturnData | undefined
+  >();
   const fetchRoomStatus = () => {
     const params: RoomsRequestParams = { ...filters };
     if (datetime) {
-      params.datetime = DateTime.fromJSDate(datetime).toFormat("yyyy-MM-dd'T'HH:mm");
+      params.datetime =
+        DateTime.fromJSDate(datetime).toFormat("yyyy-MM-dd'T'HH:mm");
     }
 
-    axios.get(server + "/rooms", { params: params })
+    axios
+      .get(server + "/rooms", { params: params })
       .then((res) => {
         setRoomStatusData(res.status == 200 ? res.data : {});
       })
       .catch((err) => setRoomStatusData({}));
-  }
+  };
 
   React.useEffect(() => {
     setRoomStatusData(undefined);
@@ -88,7 +91,9 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({ buildingData }) 
 
   React.useEffect(() => {
     if (building) {
-      const selectedBuilding = buildingData.buildings.find((b) => b.id === building);
+      const selectedBuilding = buildingData.buildings.find(
+        (b) => b.id === building
+      );
       if (selectedBuilding) {
         setCurrentBuilding(selectedBuilding);
         router.replace("/", undefined, { shallow: true });
@@ -116,6 +121,8 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({ buildingData }) 
           open={drawerOpen}
           sx={(theme) => ({
             borderBottom: "1px solid #e0e0e0",
+            justifyContent: "center",
+            alignItems: "center",
           })}
         >
           <Branding
@@ -123,31 +130,11 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({ buildingData }) 
               setCurrentBuilding(null);
             }}
           />
-          {/* 
-          <StyledTabs
-            value={selection}
-            onChange={(_e: React.SyntheticEvent, newValue: string) => {
-              setSelection(newValue);
-            }}
-            centered
-            aria-label="upper or lower campus selector"
-            sx={(theme) => ({
-              marginLeft: theme.spacing(3),
-            })}
-          >
-            <StyledTab label="Upper Campus" value="upper" />
-            <StyledTab label="Lower Campus" value="lower" />
-          </StyledTabs>
-           */}
+          <SearchBar setQuery={setQuery}></SearchBar>
+
           <div />
           <ButtonGroup>
             <Stack direction="row" spacing={1.5}>
-              <SearchBar
-                open={true}
-                setOpen={function (open: boolean): void {
-                  throw new Error("Function not implemented.");
-                }}
-              ></SearchBar>
               <Button>Map</Button>
             </Stack>
           </ButtonGroup>
@@ -200,7 +187,7 @@ export async function getStaticProps() {
   // fetches /buildings via **BUILD** time so we don't need to have
   // the client fetch buildings data every request
   const res = await fetch(server + "/buildings");
-  const buildings: BuildingReturnData = await res.json()
+  const buildings: BuildingReturnData = await res.json();
   // const buildings: BuildingReturnData = { buildings: [] };
   return {
     props: {
