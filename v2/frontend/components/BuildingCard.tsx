@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import useSWR from "swr";
 import { server } from "../config";
-import { Building, BuildingRoomReturnStatus } from "../types";
+import { Building, BuildingStatus } from "../types";
 
 import Image, { ImageProps } from "next/image";
 import { styled } from "@mui/material/styles";
@@ -66,33 +66,12 @@ const TitleBox = styled(Box)<BoxProps>(({ theme }) => ({
   pointerEvents: "none",
 }));
 
-const calculateFreerooms = (data: BuildingRoomReturnStatus) => {
-  if (!data || !data.rooms) return FAILED;
-  let freerooms = 0;
-  for (const [key, value] of Object.entries(data.rooms)) {
-    if (value.status === "free") freerooms++;
-  }
-  return freerooms;
-};
-
 const BuildingCard: React.FC<{
   building: Building;
   setBuilding: (building: Building) => void;
-}> = ({ building, setBuilding }) => {
+  freerooms: number
+}> = ({ building, setBuilding, freerooms }) => {
   const ref = useRef();
-  const isVisible = useOnScreen(ref);
-
-  const { data, error } = useSWR<BuildingRoomReturnStatus>(
-    isVisible ? server + "/buildings/" + building.id : null
-  );
-  const [freerooms, setFreeRooms] = React.useState(INITIALISING);
-
-  React.useEffect(() => {
-    console.log(1);
-    if (isVisible && data) {
-      setFreeRooms(calculateFreerooms(data));
-    }
-  }, [data, isVisible, setFreeRooms, calculateFreerooms]);
 
   return (
     <MainBox ref={ref} onClick={() => setBuilding(building)}>
@@ -105,7 +84,7 @@ const BuildingCard: React.FC<{
       <StatusBox>
         {freerooms > INITIALISING ? (
           <>
-            {error || freerooms !== FAILED ? (
+            {freerooms !== FAILED ? (
               <StatusDot
                 colour={
                   freerooms >= 5 ? "green" : freerooms !== 0 ? "orange" : "red"
@@ -113,7 +92,7 @@ const BuildingCard: React.FC<{
               />
             ) : null}
             <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
-              {error || freerooms !== FAILED
+              {freerooms !== FAILED
                 ? `${freerooms} room${freerooms === 1 ? "" : "s"} available`
                 : "data unavailable"}
             </Typography>

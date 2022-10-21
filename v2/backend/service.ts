@@ -1,16 +1,16 @@
-import { getBuildingData, getScraperData, getWeek } from "./helpers";
-import { BuildingReturnData, BuildingRoomStatus, RoomAvailability } from "./types";
+import { calculateStatus, getBuildingData, getScraperData, getWeek } from "./helpers";
+import { BuildingsReturnData, Filters, RoomAvailability, BuildingStatus, RoomsReturnData } from "./types";
 
-const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-const FIFTEEN_MIN = 15 * 1000 * 60;
+const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const UPPER = 19; // Buildings with grid 19+ are upper campus
 
-export const getAllBuildings = async (): Promise<BuildingReturnData[]> => {
+export const getAllBuildings = async (): Promise<BuildingsReturnData[]> => {
   const data = Object.values(await getBuildingData());
   if (!data) {
     throw new Error(`Buildings cannot be retrieved`);
   }
-  // Omit rooms property, img is not sent for now
-  const res: BuildingReturnData[] = [];
+
+  const res: BuildingsReturnData[] = [];
   data.forEach(({ name, id, lat, long }) => {
     res.push({
       name: name,
@@ -23,76 +23,59 @@ export const getAllBuildings = async (): Promise<BuildingReturnData[]> => {
 };
 
 export const getAllRoomStatus = async (
-  buildingID: string,
-  date: Date
-): Promise<BuildingRoomStatus> => {
-  const buildingData = await getBuildingData();
-  if (!(buildingID in buildingData)) {
-    throw new Error(`Building ID ${buildingID} does not exist`);
-  }
-  const buildingRooms = Object.keys(buildingData[buildingID].rooms);
-
+  date: Date,
+  filters: Filters
+): Promise<RoomsReturnData> => {
   const week = await getWeek(date);
-  const day = days[date.getDay()];
+  const day = DAYS[date.getDay()];
 
+  const buildingData = await getBuildingData();
   const scraperData = await getScraperData();
-  const roomStatus: BuildingRoomStatus = {};
-  for (const roomNumber of buildingRooms) {
-    if (
-      !(buildingID in scraperData) ||
-      !(roomNumber in scraperData[buildingID]) ||
-      !(week in scraperData[buildingID][roomNumber]) ||
-      !(day in scraperData[buildingID][roomNumber][week])
-    ) {
-      roomStatus[roomNumber] = {
-        status: "free",
-        endtime: "",
-      };
+  const result: RoomsReturnData = {};
+  for (const buildingID in buildingData) {
+    const roomLocation = +buildingID.substring(3) < UPPER ? 'lower' : 'upper';
+    if (filters.location && filters.location != roomLocation) {
+      // Skip building if it does not match filter
+      result[buildingID] = {};
       continue;
     }
 
-    // Room has a class currently, check if the room is free soon
-    // There is a case when the room is about to be free in 15 mins
-    // but the next class starts when the current class ends
-    // TODO test this lol
-    let currTime = date.getTime();
-    let isFree = true;
-    for (const eachClass of scraperData[buildingID][roomNumber][week][day]) {
-      let classStart = new Date(date.valueOf()); 
-      const [startHours, startMinutes] = eachClass["start"].split(':');
-      classStart.setHours(+startHours, +startMinutes);
-
-      let classEnd = new Date(date.valueOf()); 
-      const [endHours, endMinutes] = eachClass["end"].split(':');
-      classEnd.setHours(+endHours, +endMinutes);
-      
-      if (currTime >= classStart.getTime() && currTime < classEnd.getTime()) {
-        isFree = false;
-
-        if (classEnd.getTime() - currTime <= FIFTEEN_MIN) {
-          roomStatus[roomNumber] = {
-            status: "soon",
-            endtime: eachClass["end"],
-          };
-        } else {
-          roomStatus[roomNumber] = {
-            status: "busy",
-            endtime: eachClass["end"],
-          };
-        }
-        currTime = classEnd.getTime();
+    const buildingRooms = buildingData[buildingID].rooms;
+    const buildingStatus: BuildingStatus = {};
+    for (const roomNumber in buildingRooms) {
+      const roomData = buildingRooms[roomNumber];
+      if (
+        (filters.capacity && roomData.capacity < filters.capacity) ||
+        (filters.usage && roomData.usage != filters.usage)
+      ) {
+        // Skip room if it does not match filter
+        continue;
+      }
+  
+      if (
+        !(buildingID in scraperData) ||
+        !(roomNumber in scraperData[buildingID]) ||
+        !(week in scraperData[buildingID][roomNumber]) ||
+        !(day in scraperData[buildingID][roomNumber][week])
+      ) {
+        // If no data for this room on this day, it is free
+        buildingStatus[roomNumber] = {
+          status: "free",
+          endtime: "",
+        };
+        continue;
+      }
+  
+      const classes = scraperData[buildingID][roomNumber][week][day];
+      const status = calculateStatus(date, classes, filters.duration || 0);
+      if (status !== null) {
+        buildingStatus[roomNumber] = status;
       }
     }
-
-    if (isFree) {
-      roomStatus[roomNumber] = {
-        status: "free",
-        endtime: "",
-      };
-    }
+    result[buildingID] = buildingStatus;
   }
 
-  return roomStatus;
+  return result;
 };
 
 export const getRoomAvailability = async (

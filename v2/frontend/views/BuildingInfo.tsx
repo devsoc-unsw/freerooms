@@ -1,13 +1,13 @@
-import React, { useRef } from "react";
+import React from "react";
 import axios from "axios";
 import useSWR from "swr";
 import { server } from "../config";
 import {
-  Room,
   RoomStatus,
   Building,
   BuildingReturnData,
-  BuildingRoomReturnStatus,
+  BuildingStatus,
+  RoomsReturnData,
 } from "../types";
 
 import { styled } from "@mui/material/styles";
@@ -80,37 +80,22 @@ const IndiviRoomBox = styled(Box)<BoxProps>(({ theme }) => ({
 const BuildingInfo: React.FC<{
   building: Building | null;
   onClose?: () => void;
-}> = ({ building, onClose }) => {
+  datetime: Date | null;
+  setDatetime: (datetime: Date | null) => void;
+  roomStatusData: RoomsReturnData | undefined;
+}> = ({ building, onClose, datetime, setDatetime, roomStatusData }) => {
   if (!building) return <></>;
 
-  const [value, setValue] = React.useState<Date | null>(new Date());
   const [sort, setSort] = React.useState<"name" | "available">("name");
-  const [roomsData, setRoomsData] = React.useState<
-    BuildingRoomReturnStatus | undefined
-  >();
+  const [rooms, setRooms] = React.useState<BuildingStatus | undefined>();
   const [roomsError, setRoomsError] = React.useState<string | undefined>();
 
-  const fetchRooms = async () => {
-    axios
-      .get(server + "/buildings/" + building!.id, {
-        params: {
-          datetime: `${DateTime.fromJSDate(value!).toFormat(
-            "yyyy-MM-dd"
-          )}T${DateTime.fromJSDate(value!).toFormat("HH:mm")}`,
-        },
-      })
-      .then((res) => setRoomsData(res.data))
-      .catch((err) => setRoomsError(err.message));
-  };
-
   React.useEffect(() => {
-    setRoomsData(undefined);
-  }, [building]);
-
-  React.useEffect(() => {
-    setRoomsData(undefined);
-    fetchRooms();
-  }, [building, value]);
+    setRooms(undefined);
+    if (roomStatusData && building.id in roomStatusData) {
+      setRooms(roomStatusData[building.id])
+    }
+  }, [building, roomStatusData]);
 
   const customTextField = (
     params: JSX.IntrinsicAttributes & TextFieldProps
@@ -138,7 +123,7 @@ const BuildingInfo: React.FC<{
             {building!.name}
           </Typography>
           <StatusBox>
-            {!roomsData ? (
+            {!rooms ? (
               // loading
               <CircularProgress size={20} thickness={5} disableShrink />
             ) : null}
@@ -174,26 +159,26 @@ const BuildingInfo: React.FC<{
         >
           <DesktopDatePicker
             inputFormat="dd/MM/yyyy"
-            value={value}
-            onChange={(newValue) => setValue(newValue)}
+            value={datetime}
+            onChange={(newValue) => setDatetime(newValue)}
             renderInput={customTextField}
           />
           <div style={{ width: 10 }} />
           <TimePicker
-            value={value}
-            onChange={(newValue) => setValue(newValue)}
+            value={datetime}
+            onChange={(newValue) => setDatetime(newValue)}
             renderInput={customTextField}
           />
         </div>
       </LocalizationProvider>
 
       <RoomBox>
-        {roomsData ? (
-          Object.keys(roomsData["rooms"]).map((room_name) => {
-            const room = roomsData["rooms"][room_name];
+        {rooms ? (
+          Object.keys(rooms).map((roomId) => {
+            const room = rooms[roomId];
             return (
               <IndiviRoomBox>
-                {room_name}{" "}
+                {roomId}{" "}
                 <Typography
                   sx={{ fontSize: 16, fontWeight: 500 }}
                   style={{
@@ -229,8 +214,8 @@ const BuildingInfo: React.FC<{
     ? null
     : () => {
         const rooms =
-          roomsData && roomsData["rooms"]
-            ? Object.values(roomsData["rooms"])
+          rooms && rooms["rooms"]
+            ? Object.values(rooms["rooms"])
             : null;
 
         return (
@@ -255,8 +240,8 @@ const BuildingInfo: React.FC<{
   <Typography
     sx={{ fontSize: 14, fontWeight: 500, opacity: 0.8 }}
   >
-    {roomsData && !roomsError
-      ? `${Object.values(roomsData["rooms"]).length}`
+    {rooms && !roomsError
+      ? `${Object.values(rooms["rooms"]).length}`
       : "data unavailable"}
   </Typography>
 </>
