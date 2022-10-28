@@ -131,6 +131,7 @@ const Home: NextPage<{ data: BuildingReturnData }> = ({ data }) => {
             </p>
           )*/}
           <div
+            id={"Home-Building-Tiles"}
             style={{
               width: "100%",
               display: "grid",

@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import getOffsetParent from "@popperjs/core/lib/dom-utils/getOffsetParent";
 
 const Landing: React.FC = () => {
   return (
@@ -34,7 +35,10 @@ const Landing: React.FC = () => {
           Find unallocated CATS rooms at UNSW
         </p>
         <button onClick={() => {
-          window.scrollTo({ left: 0, top: 950, behavior: "smooth" });
+          let position: number;
+          // @ts-ignore
+          position = document.querySelector("#Home-Building-Tiles").getBoundingClientRect().top;
+          window.scrollTo({ left: 0, top: position - 100, behavior: "smooth" });
         }} style={{
           backgroundColor: "#111",
           color: "white",
