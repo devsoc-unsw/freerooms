@@ -11,8 +11,7 @@ const Landing: React.FC = () => {
       display: "flex",
       flexDirection: "row",
       justifyContent: "center",
-      paddingBottom: "15vh",
-      overflow: "scroll"
+      paddingBottom: "15vh"
     }}>
       <div style={{ width: "auto", display: "flex", flexDirection: "column", margin: "auto"}}>
         <div style={{ width: "auto", margin: 0, justifyContent: "flex-start", display: "flex", flexDirection: "row"}}>
@@ -38,7 +37,7 @@ const Landing: React.FC = () => {
           let position: number;
           // @ts-ignore
           position = document.querySelector("#Home-Building-Tiles").getBoundingClientRect().top;
-          window.scrollBy({ top: position - 100, behavior: "smooth" });
+          window.scrollBy({ left: 0, top: position - 100, behavior: "smooth" });
         }} style={{
           backgroundColor: "#111",
           color: "white",
