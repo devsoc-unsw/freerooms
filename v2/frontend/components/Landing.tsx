@@ -1,6 +1,5 @@
 import React from "react";
 import Image from "next/image";
-import getOffsetParent from "@popperjs/core/lib/dom-utils/getOffsetParent";
 
 const Landing: React.FC = () => {
   return (
