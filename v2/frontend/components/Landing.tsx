@@ -13,6 +13,7 @@ const Landing: React.FC = () => {
       flexDirection: "row",
       justifyContent: "center",
       paddingBottom: "15vh",
+      overflow: "scroll"
     }}>
       <div style={{ width: "auto", display: "flex", flexDirection: "column", margin: "auto"}}>
         <div style={{ width: "auto", margin: 0, justifyContent: "flex-start", display: "flex", flexDirection: "row"}}>
@@ -62,7 +63,7 @@ const Landing: React.FC = () => {
           </svg>
         </button>
       </div>
-      <div style={{ width: "auto", margin: "auto" }}>
+      <div id={"landing-freerooms-logo"} style={{ width: "auto", margin: "auto" }}>
         <Image width={400} height={400} alt={"Freerooms Logo"} src={"/../public/assets/favicon/free_rooms_logo.png"} />
       </div>
     </div>
