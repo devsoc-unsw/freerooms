@@ -7,7 +7,8 @@ import { orange } from "@mui/material/colors";
 
 const StyledText = styled(Typography)<TypographyProps>(({ theme }) => ({
   color: theme.palette.primary.main,
-  fontWeight: 500,
+  fontWeight: 600,
+  fontFamily: "Josefin Sans"
 }));
 
 const StyledBox = styled(Box)<BoxProps>(({ theme }) => ({
@@ -34,7 +35,7 @@ const Branding = (props: BoxProps) => (
       }}
     >
       <StyledText sx={{ lineHeight: 1 }}>Freerooms</StyledText>
-      <StyledText sx={{ lineHeight: 1, marginTop: 0.5 }}>22T2</StyledText>
+      <StyledText sx={{ lineHeight: 1, marginTop: 0.5, fontFamily: "Arial", fontSize: "0.8rem"}}>22T2</StyledText>
     </Box>
   </StyledBox>
 );

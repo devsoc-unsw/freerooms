@@ -35,6 +35,7 @@ import Branding from "../components/Branding";
 import Button from "../components/Button";
 import BuildingCard from "../components/BuildingCard";
 import BuildingInfo from "../views/BuildingInfo";
+import Landing from "../components/Landing";
 
 const Home: NextPage<{ data: BuildingReturnData }> = ({ data }) => {
   const router = useRouter();
@@ -93,7 +94,7 @@ const Home: NextPage<{ data: BuildingReturnData }> = ({ data }) => {
               setCurrentBuilding(null);
             }}
           />
-          {/* 
+          {/*
           <StyledTabs
             value={selection}
             onChange={(_e: React.SyntheticEvent, newValue: string) => {
@@ -120,6 +121,7 @@ const Home: NextPage<{ data: BuildingReturnData }> = ({ data }) => {
           </ButtonGroup>
         </AppBar>
         <Main open={drawerOpen}>
+          <Landing/>
           {/* selection === "upper" ? (
             <UpperBuildings setCurrentBuilding={setCurrentBuilding} />
           ) : (
@@ -129,6 +131,7 @@ const Home: NextPage<{ data: BuildingReturnData }> = ({ data }) => {
             </p>
           )*/}
           <div
+            id={"Home-Building-Tiles"}
             style={{
               width: "100%",
               display: "grid",
@@ -173,9 +176,9 @@ export async function getStaticProps() {
   // fetches /buildings via **BUILD** time so we don't need to have
   // the client fetch buildings data every request
   const res = await fetch(server + "/buildings");
-  let buildings: BuildingReturnData = await res.json();
-  buildings.buildings.sort((a, b) => a.name.localeCompare(b.name));
-  console.log(buildings);
+  const buildings: BuildingReturnData = await res.json()
+  // const buildings: BuildingReturnData = { buildings: [] };
+
   return {
     props: {
       data: buildings,
@@ -189,7 +192,7 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   open?: boolean;
 }>(({ theme, open }) => ({
   display: "flex",
-  flexDirection: "row",
+  flexDirection: "column",
   flexGrow: 1,
   padding: theme.spacing(12, 0),
   transition: theme.transitions.create("margin", {
@@ -242,6 +245,14 @@ const ButtonGroup = styled(Box)(({ theme }) => ({
   justifyContent: "flex-end",
   alignItems: "center",
   paddingRight: theme.spacing(2),
+}));
+
+const StyledImage = styled(Image)<ImageProps>(({ theme }) => ({
+  borderRadius: 10,
+  transition: "all 0.1s ease-in-out",
+  "&:hover": {
+    opacity: 0.7,
+  },
 }));
 
 export default Home;
