@@ -6,11 +6,12 @@ import React from "react";
 import { server } from "../config";
 import { DateTime } from "luxon";
 import {
-  Room,
   RoomStatus,
-  BuildingRoomReturnStatus,
   Building,
   BuildingReturnData,
+  Filters,
+  RoomsReturnData,
+  RoomsRequestParams,
 } from "../types";
 
 import useSWR from "swr";
@@ -33,11 +34,12 @@ import { BoxProps, Typography } from "@mui/material";
 
 import Branding from "../components/Branding";
 import Button from "../components/Button";
-import BuildingCard from "../components/BuildingCard";
 import BuildingInfo from "../views/BuildingInfo";
+import CardList from "../views/CardList";
+import axios from "axios";
 import Landing from "../components/Landing";
 
-const Home: NextPage<{ data: BuildingReturnData }> = ({ data }) => {
+const Home: NextPage<{ buildingData: BuildingReturnData }> = ({ buildingData }) => {
   const router = useRouter();
   const { building } = router.query;
 
@@ -52,16 +54,40 @@ const Home: NextPage<{ data: BuildingReturnData }> = ({ data }) => {
   };
   */
 
+  // State variables to be used by the various new features
+  const [sort, setSort] = React.useState<string>("alphabetical");
+  const [query, setQuery] = React.useState<string>("");
+  const [datetime, setDatetime] = React.useState<Date | null>(new Date());
+  const [filters, setFilters] = React.useState<Filters>({});
+
+  const [roomStatusData, setRoomStatusData] = React.useState<RoomsReturnData | undefined>();
+  const fetchRoomStatus = () => {
+    const params: RoomsRequestParams = { ...filters };
+    if (datetime) {
+      params.datetime = DateTime.fromJSDate(datetime).toFormat("yyyy-MM-dd'T'HH:mm");
+    }
+
+    axios.get(server + "/rooms", { params: params })
+      .then((res) => {
+        setRoomStatusData(res.status == 200 ? res.data : {});
+      })
+      .catch((err) => setRoomStatusData({}));
+  }
+
+  React.useEffect(() => {
+    setRoomStatusData(undefined);
+    fetchRoomStatus();
+  }, [filters, datetime]);
+
   const [currentBuilding, setCurrentBuilding] = React.useState<Building | null>(
     null
   );
 
   React.useEffect(() => {
-    console.log("building", building);
     if (building) {
-      const buildingData = data.buildings.find((b) => b.id === building);
-      if (buildingData) {
-        setCurrentBuilding(buildingData);
+      const selectedBuilding = buildingData.buildings.find((b) => b.id === building);
+      if (selectedBuilding) {
+        setCurrentBuilding(selectedBuilding);
         router.replace("/", undefined, { shallow: true });
       }
     }
@@ -130,22 +156,14 @@ const Home: NextPage<{ data: BuildingReturnData }> = ({ data }) => {
               {`${isError}`}
             </p>
           )*/}
-          <div
-            id={"Home-Building-Tiles"}
-            style={{
-              width: "100%",
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-              gridGap: "20px",
-            }}
-          >
-            {data.buildings.map((building) => (
-              <BuildingCard
-                building={building}
-                key={building.id}
-                setBuilding={setCurrentBuilding}
-              />
-            ))}
+          <div id={"Home-Building-Tiles"}>
+            <CardList
+              buildingData={buildingData}
+              setCurrentBuilding={setCurrentBuilding}
+              sort={sort}
+              query={query}
+              roomStatusData={roomStatusData}
+            />
           </div>
         </Main>
         <Drawer
@@ -165,6 +183,9 @@ const Home: NextPage<{ data: BuildingReturnData }> = ({ data }) => {
           <BuildingInfo
             building={currentBuilding}
             onClose={() => setCurrentBuilding(null)}
+            datetime={datetime}
+            setDatetime={setDatetime}
+            roomStatusData={roomStatusData}
           />
         </Drawer>
       </Box>
@@ -178,10 +199,9 @@ export async function getStaticProps() {
   const res = await fetch(server + "/buildings");
   const buildings: BuildingReturnData = await res.json()
   // const buildings: BuildingReturnData = { buildings: [] };
-
   return {
     props: {
-      data: buildings,
+      buildingData: buildings,
     },
   };
 }
