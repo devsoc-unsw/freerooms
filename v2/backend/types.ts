@@ -51,11 +51,15 @@ export type RoomStatus = {
   endtime: string;
 };
 
-export type RoomStatusReturnData = {
+export type BuildingStatus = {
   [roomId: string]: RoomStatus;
 };
 
-export type BuildingReturnData = {
+export type RoomsReturnData = {
+  [buildingId: string]: BuildingStatus;
+};
+
+export type BuildingsReturnData = {
   name: string;
   id: string;
   lat: number;
@@ -65,9 +69,9 @@ export type BuildingReturnData = {
 export type Location = "upper" | "lower";
 
 export type Filters = {
-  capacity: number,
-  usage: RoomUsage | null;
-  location: Location | null;
-  duration: number;
+  capacity?: number,
+  usage?: RoomUsage;
+  location?: Location;
+  duration?: number;
 }
 

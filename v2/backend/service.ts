@@ -1,16 +1,16 @@
-import { calculateStatus, combineDateTime, getBuildingData, getScraperData, getWeek } from "./helpers";
-import { BuildingReturnData, Class, ClassList, Filters, RoomAvailability, RoomStatus, RoomStatusReturnData } from "./types";
+import { calculateStatus, getBuildingData, getScraperData, getWeek } from "./helpers";
+import { BuildingsReturnData, Filters, RoomAvailability, BuildingStatus, RoomsReturnData } from "./types";
 
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const UPPER = 19; // Buildings with grid 19+ are upper campus
 
-export const getAllBuildings = async (): Promise<BuildingReturnData[]> => {
+export const getAllBuildings = async (): Promise<BuildingsReturnData[]> => {
   const data = Object.values(await getBuildingData());
   if (!data) {
     throw new Error(`Buildings cannot be retrieved`);
   }
 
-  const res: BuildingReturnData[] = [];
+  const res: BuildingsReturnData[] = [];
   data.forEach(({ name, id, lat, long }) => {
     res.push({
       name: name,
@@ -23,57 +23,59 @@ export const getAllBuildings = async (): Promise<BuildingReturnData[]> => {
 };
 
 export const getAllRoomStatus = async (
-  buildingID: string,
   date: Date,
   filters: Filters
-): Promise<RoomStatusReturnData> => {
-  const buildingData = await getBuildingData();
-  if (!(buildingID in buildingData)) {
-    throw new Error(`Building ID ${buildingID} does not exist`);
-  }
-  const buildingRooms = Object.keys(buildingData[buildingID].rooms);
-
+): Promise<RoomsReturnData> => {
   const week = await getWeek(date);
   const day = DAYS[date.getDay()];
 
+  const buildingData = await getBuildingData();
   const scraperData = await getScraperData();
-  const roomStatus: RoomStatusReturnData = {};
-  for (const roomNumber of buildingRooms) {
-    // Skip room if it does not match filter
-    const roomData = buildingData[buildingID].rooms[roomNumber];
-    const roomGrid = parseInt(buildingID.substring(3));
-    const roomLocation = roomGrid < UPPER ? 'lower' : 'upper';
-    if (
-      roomData.capacity < filters.capacity ||
-      (filters.usage && roomData.usage != filters.usage) ||
-      (filters.location && filters.location != roomLocation)
-    ) {
+  const result: RoomsReturnData = {};
+  for (const buildingID in buildingData) {
+    const roomLocation = +buildingID.substring(3) < UPPER ? 'lower' : 'upper';
+    if (filters.location && filters.location != roomLocation) {
+      // Skip building if it does not match filter
+      result[buildingID] = {};
       continue;
     }
 
-    // If no data for this room on this day, it is free
-    if (
-      !(buildingID in scraperData) ||
-      !(roomNumber in scraperData[buildingID]) ||
-      !(week in scraperData[buildingID][roomNumber]) ||
-      !(day in scraperData[buildingID][roomNumber][week])
-    ) {
-      roomStatus[roomNumber] = {
-        status: "free",
-        endtime: "",
-      };
-      continue;
+    const buildingRooms = buildingData[buildingID].rooms;
+    const buildingStatus: BuildingStatus = {};
+    for (const roomNumber in buildingRooms) {
+      const roomData = buildingRooms[roomNumber];
+      if (
+        (filters.capacity && roomData.capacity < filters.capacity) ||
+        (filters.usage && roomData.usage != filters.usage)
+      ) {
+        // Skip room if it does not match filter
+        continue;
+      }
+  
+      if (
+        !(buildingID in scraperData) ||
+        !(roomNumber in scraperData[buildingID]) ||
+        !(week in scraperData[buildingID][roomNumber]) ||
+        !(day in scraperData[buildingID][roomNumber][week])
+      ) {
+        // If no data for this room on this day, it is free
+        buildingStatus[roomNumber] = {
+          status: "free",
+          endtime: "",
+        };
+        continue;
+      }
+  
+      const classes = scraperData[buildingID][roomNumber][week][day];
+      const status = calculateStatus(date, classes, filters.duration || 0);
+      if (status !== null) {
+        buildingStatus[roomNumber] = status;
+      }
     }
-
-    const classes: ClassList =
-      scraperData[buildingID][roomNumber][week][day]
-    const status = calculateStatus(date, classes, filters.duration);
-    if (status !== null) {
-      roomStatus[roomNumber] = status;
-    }
+    result[buildingID] = buildingStatus;
   }
 
-  return roomStatus;
+  return result;
 };
 
 export const getRoomAvailability = async (
