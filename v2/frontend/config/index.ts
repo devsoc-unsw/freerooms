@@ -1,5 +1,14 @@
-const dev = process.env.NODE_ENV !== "production";
+export enum Env {
+  DEV = "development",
+  PROD = "production",
+}
 
-export const server = dev
-  ? "http://localhost:3000"
-  : "https://freerooms.csesoc.app";
+const LOCAL = "http://localhost:3000";
+const LIVE = "https://freerooms.csesoc.app";
+
+const API_CONFIG: Record<string, string> = Object.freeze({
+  [Env.DEV]: `${LOCAL}`,
+  [Env.PROD]: `${LIVE}`,
+});
+
+export const API_URL: string = API_CONFIG[process.env.NODE_ENV || Env.DEV] + "/api";

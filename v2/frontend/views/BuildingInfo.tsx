@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import useSWR from "swr";
-import { server } from "../config";
+import { API_URL } from "../config";
 import {
   RoomStatus,
   Building,
