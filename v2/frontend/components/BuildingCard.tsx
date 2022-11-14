@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import useSWR from "swr";
-import { server } from "../config";
+import { API_URL } from "../config";
 import { Building, BuildingStatus } from "../types";
 
 import Image, { ImageProps } from "next/image";

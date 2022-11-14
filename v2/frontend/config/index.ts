@@ -11,4 +11,4 @@ const API_CONFIG: Record<string, string> = Object.freeze({
   [Env.PROD]: `${LIVE}`,
 });
 
-export const server: string = API_CONFIG[process.env.NODE_ENV || Env.DEV] + "/api";
+export const API_URL: string = API_CONFIG[process.env.NODE_ENV || Env.DEV] + "/api";

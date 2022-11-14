@@ -3,7 +3,7 @@
 */
 
 import React from "react";
-import { server } from "../config";
+import { API_URL } from "../config";
 import { DateTime } from "luxon";
 import {
   RoomStatus,
@@ -74,7 +74,7 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
     }
 
     axios
-      .get(server + "/rooms", { params: params })
+      .get(API_URL + "/rooms", { params: params })
       .then((res) => {
         setRoomStatusData(res.status == 200 ? res.data : {});
       })
@@ -190,9 +190,15 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
 export async function getStaticProps() {
   // fetches /buildings via **BUILD** time so we don't need to have
   // the client fetch buildings data every request
-  const res = await fetch(server + "/buildings");
-  const buildings: BuildingReturnData = await res.json();
-  // const buildings: BuildingReturnData = { buildings: [] };
+  
+  let buildings: BuildingReturnData;
+  try {
+    const res = await fetch(API_URL + "/buildings");
+    buildings = await res.json();
+  } catch {
+    buildings = { buildings: [] };
+  }
+  
   return {
     props: {
       buildingData: buildings,
