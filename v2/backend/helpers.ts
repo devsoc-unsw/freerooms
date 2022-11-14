@@ -1,78 +1,112 @@
 import axios from "axios";
-import pkg from "jsdom";
-import { ScraperData } from "./types";
-const { JSDOM } = pkg;
+import child_process from "child_process";
+import fs from "fs";
+import { ScraperData, BuildingDatabase, RoomStatus, ClassList } from "./types";
 
 /*
  * Definitions
  */
-const SCRAPER_URL = "https://timetable.csesoc.app/api/terms/2022-T1/freerooms/";
-const ROOM_URL =
-  "https://www.learningenvironments.unsw.edu.au/find-teaching-space?building_name=&room_name=&page=";
+const API = "https://timetable.csesoc.app"
 
-const MAX_PAGES = 13;
+const TERM_DATE_FETCH = `${API}/api/startdate/freerooms`;
+const TERM_ID_FETCH = `${API}/api/currentterm`;
 
-const ROOM_REGEX = /^[A-Z]-[A-Z][0-9]{1,2}-[A-Z]{0,2}[0-9]{1,4}[A-Z]{0,1}$/;
-// One letter - campus ID, e.g. K for Kensington
-// One letter followed by one or two numbers for grid reference e.g. D16 or F8
-// Zero, one or two letters for the floor then between one to four numbers for the room number
-// Library rooms may end in a letter
-// Zero letter floor - 313
-// One letter floor - M18
-// Two letter floor - LG19
+const TERM_ID_LENGTH = 2;
+const DATE_REGEX = /(\d{2})\/(\d{2})\/(\d{4})/;
+
+const FIFTEEN_MIN = 15 * 1000 * 60;
 
 /*
  * Implementation
  */
+export const getStartDate = async () => {
+  const termDateFetch = await axios.get(TERM_DATE_FETCH);
+  const termDateRes = await termDateFetch.data;
 
-export const getData = async (): Promise<ScraperData> => {
+  if (DATE_REGEX.test(termDateRes)) {
+    return termDateRes;
+  } else {
+    throw new Error(`Start Date retrieved incorrectly`);
+  }
+}
+
+export const getScraperData = async (): Promise<ScraperData> => {
+  const termIdFetch = await axios.get(TERM_ID_FETCH);
+  const termIdRes = await termIdFetch.data;
+
+  let termNum;
+  let termYear;
+
+  if (termIdRes.length === TERM_ID_LENGTH) {
+    termNum = `T${parseInt(termIdRes.substring(1))}`;
+  } else {
+    termNum = `Summer`;
+  }
+
+  const termDateRes = await getStartDate();
+  if (termDateRes != null) {
+    termYear = termDateRes.substring(6);
+  }
+
+  const termId = `${termYear}-${termNum}`;
+  const SCRAPER_URL = `${API}/api/terms/${termId}/freerooms`;
+
   const res = await axios.get(SCRAPER_URL);
   const data = (await res.data) as ScraperData;
   return data;
 };
 
-// Gets all the room codes for rooms in UNSW by parsing the HTML with regex (please excuse my cardinal sin)
-export const getAllRoomIDs = async () => {
-  // hello this is a bit slow! is there a way that we could move this to a background process
-  // that fetches like every x hours on our server, instead of doing this per request?
+export const getBuildingData = async (): Promise<BuildingDatabase> => {
+  let data;
 
-  let roomIDs: string[] = [];
-  let roomPromises: Promise<any>[] = [];
-  for (let i = 0; i < MAX_PAGES; i++) {
-    roomPromises.push(axios.get(ROOM_URL + i));
+  // If database.json missing, create it
+  if (!fs.existsSync('database.json')) {
+    data = await scrapeBuildingData();
+  } else {
+    const rawData = fs.readFileSync('database.json', 'utf8');
+    data = JSON.parse(rawData) as BuildingDatabase;
   }
-  await Promise.all(roomPromises).then((responses) => {
-    responses.forEach((response) => {
-      const htmlDoc = new JSDOM(response.data);
-      const rawRoomIDs =
-        htmlDoc.window.document.getElementsByClassName("field-item");
-      if (!rawRoomIDs) return roomIDs;
-      const cleanRoomIDs = [];
-      for (let j = 0; j < rawRoomIDs.length; j++) {
-        let roomID = rawRoomIDs.item(j)?.innerHTML;
-        if (roomID && ROOM_REGEX.test(roomID)) {
-          cleanRoomIDs.push(roomID);
-        }
-      }
-      roomIDs = roomIDs.concat(cleanRoomIDs);
+
+  return data;
+}
+
+// Spawn child process to scrape building data
+// or return promise to ongoing process
+let ongoingScraper: Promise<BuildingDatabase> | null = null;
+export const scrapeBuildingData = async (): Promise<BuildingDatabase> => {
+  if (ongoingScraper === null) {
+    ongoingScraper = new Promise((resolve, reject) => {
+      const dev = process.env.NODE_ENV !== "production";
+      const scraper_path = dev ? './scraper.ts' : 'dist/scraper.js';
+      const child = child_process.fork(scraper_path);
+      child.on('message', (msg: { data: BuildingDatabase, err?: string }) => {
+        if (msg.err) reject(msg.err);
+        resolve(msg.data);
+      });
+      child.on('error', () => {
+        reject();
+      });
+      child.on('exit', () => {
+        ongoingScraper = null;
+      });
     });
-  });
-  return roomIDs;
-};
+  }
+
+  return ongoingScraper;
+}
 
 // Gets the week number from the date
-export const getWeek = (data: ScraperData, date: Date): number => {
+export const getWeek = async (date: Date) => {
   // In 'DD/MM/YYYY' format
-  const termStart = data["termStart"];
-
-  const termStartDate = new Date(termStart);
+  const termStart = await getStartDate();
+  const [day, month, year] = termStart.split('/');
+  const termStartDate = new Date(+year, +month - 1, day);
   const today = date;
 
   const diff = today.getTime() - termStartDate.getTime();
 
   let daysPastTerm = diff / (1000 * 60 * 60 * 24);
 
-  // Integer division to get term number
   // Ceil is used because week numbers start from 1 not 0
   return Math.ceil(daysPastTerm / 7);
 };
@@ -82,3 +116,74 @@ export const getDate = (datetime: string): Date | null => {
   let timestamp = Date.parse(datetime);
   return isNaN(timestamp) ? null : new Date(datetime);
 };
+
+// Return a copy of provided date set to provided time
+// Time must be in the format HH:MM
+export const combineDateTime = (date: Date, time: string) => {
+  const newDate = new Date(date.valueOf());
+  const [hours, minutes] = time.split(':');
+  newDate.setHours(+hours, +minutes);
+  return newDate;
+}
+
+// Given a datetime and a list of the room's bookings for 
+// the corresponding date, calculate the status of the room
+// If room if not free for the given minimum duration, return null
+export const calculateStatus = (
+  datetime: Date,
+  classes: ClassList,
+  minDuration: number
+): RoomStatus | null => {
+  const roomStatus: RoomStatus = {
+    status: "free",
+    endtime: "",
+  };
+
+  // Filter out duplicates and sort by start time
+  const cleanClasses: ClassList = classes
+    .filter((cls, index, clsList) =>
+      index === clsList.findIndex((x) =>
+        x.start === cls.start && x.end === cls.end
+      )
+    )
+    .sort((a, b) => {
+      return combineDateTime(datetime, a.start).getTime() -
+        combineDateTime(datetime, b.start).getTime();
+    });
+
+  // Find first class that ends after current time
+  const afterIndex = cleanClasses.findIndex((cls) => (
+    datetime < combineDateTime(datetime, cls.end)
+  ));
+
+  if (afterIndex === -1) {
+    // No such class, it is free indefinitely
+    return roomStatus;
+  }
+
+  const afterClass = cleanClasses[afterIndex];
+  const start = combineDateTime(datetime, afterClass.start);
+  const end = combineDateTime(datetime, afterClass.end);
+  if (datetime < start) {
+    // Class starts after current time
+    // Check if it meets minDuration filter
+    const duration = (start.getTime() - datetime.getTime()) / (1000 * 60);
+    return duration < minDuration ? null : roomStatus;
+  } else {
+    // Class starts before current time i.e. class occurring now
+    if (minDuration > 0) return null;
+    roomStatus.status = "busy";
+
+    if (end.getTime() - datetime.getTime() <= FIFTEEN_MIN) {
+      // Ending soon, check the next class
+      const next = cleanClasses[afterIndex + 1];
+      if (!next || combineDateTime(datetime, next.start) > end) {
+        // No next class, or it starts after the current class ends
+        roomStatus.status = "soon";
+        roomStatus.endtime = end.toISOString();
+      }
+    }
+  }
+
+  return roomStatus;
+}

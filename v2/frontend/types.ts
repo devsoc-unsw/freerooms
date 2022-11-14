@@ -1,19 +1,19 @@
 // copied over from backend
 
 export type ScraperData = {
-  termStart: string;
-} & ScraperBuildingData;
-
-export type ScraperBuildingData = {
   [buildingId: string]: {
-    [roomId: string]: {
-      roomName: string;
-      [week: number]: {
-        [day: string]: ClassList;
-      };
-    };
+    [roomId: string]: RoomAvailability;
   };
 };
+
+export type RoomAvailability = {
+  name: string;
+  [week: number]: {
+    [day: string]: ClassList;
+  };
+};
+
+export type ClassList = Class[];
 
 export type Class = {
   courseCode: string;
@@ -21,56 +21,51 @@ export type Class = {
   end: string;
 };
 
-export type ClassList = Class[];
+export type Status = "free" | "soon" | "busy";
 
-export type Day = Record<string, ClassList>;
-
-export type Week = Record<string, Day>;
-
-export type Room = {
-  name: string;
-  classes: Week;
-};
-
-export type Building = Record<string, Room>;
-
-export type TimetableData = Record<string, Building>;
-
-export type RoomStatus = "free" | "soon" | "busy";
-
-export type BuildingRoomStatusDetails = {
-  status: RoomStatus;
+export type RoomStatus = {
+  status: Status;
   endtime: string;
 };
 
-export type BuildingRoomReturnStatus = {
-  rooms: {
-    [roomId: string]: BuildingRoomStatusDetails;
-  };
+export type BuildingStatus = {
+  [roomId: string]: RoomStatus;
 };
 
-export type BuildingRoomStatus = {
-  [roomId: string]: BuildingRoomStatusDetails;
+export type RoomsReturnData = {
+  [buildingId: string]: BuildingStatus;
 };
 
-export type BuildingData = {
+export type Building = {
   name: string;
   id: string;
-  img: string;
+  lat: number;
+  long: number;
 };
 
 export type BuildingReturnData = {
-  buildings: BuildingData[];
-};
-
-export type RoomAvailability = {
-  roomName: string;
-  [week: number]: {
-    [day: string]: ClassList;
-  };
-};
+  buildings: Building[]
+}
 
 export type DropDownItem = {
   id: number,
   value: string,
 };
+export type RoomUsage = "LEC" | "TUT";
+
+export type Location = "upper" | "lower";
+
+export type Filters = {
+  capacity?: number,
+  usage?: RoomUsage;
+  location?: Location;
+  duration?: number;
+}
+
+export type RoomsRequestParams = {
+  datetime?: string,
+  capacity?: number,
+  usage?: string,
+  location?: string,
+  duration?: number
+}

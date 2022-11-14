@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import { BuildingData, BuildingReturnData, DropDownItem } from "../types";
+import { Building, BuildingReturnData, DropDownItem } from "../types";
 
 import Container from '@mui/material/Container';
 import Box, { BoxProps } from '@mui/material/Box';
 import Button, { ButtonProps } from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
-import { styled, Theme} from '@mui/material/styles';
+import { styled, Theme } from '@mui/material/styles';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -28,7 +28,7 @@ const StyledFilterButton = styled(Box)<BoxProps>(({ theme }) => ({
     borderRadius: 10,
     backgroundColor: "white",
     borderWidth: 2,
-    borderStyle: "solid",  
+    borderStyle: "solid",
     borderColor: theme.palette.primary.main,
 }));
 
@@ -70,12 +70,12 @@ const StyledAccordionDetails = styled(AccordionDetails)(({ theme }) => ({
 
 const FilterBar: React.FC<{
     data: BuildingReturnData
-    multiSelect?: boolean; 
-    }> = ({ data, multiSelect }) => {
+    multiSelect?: boolean;
+}> = ({ data, multiSelect }) => {
 
     // Hide and close Dropdown
     const [open, setOpen] = useState(false);
-    const [selection, setSelection] = useState<any[]>([]); 
+    const [selection, setSelection] = useState<any[]>([]);
 
     const toggle = (open: boolean) => {
         setOpen(!open);
@@ -88,7 +88,7 @@ const FilterBar: React.FC<{
     //     }
     //     return false;
     // };
-    
+
     // Handling click interactions (adding + removing selected items)
     const handleOnClick = (item: DropDownItem) => {
         if (!selection.some(current => current.id === item.id)) { // Current represents an instance when .some iterates selection
@@ -111,7 +111,7 @@ const FilterBar: React.FC<{
 
     // Reveal correct dropdown based on selected option. 
     const dropDownReveal = (item: DropDownItem) => {
-        switch(item.value) {
+        switch (item.value) {
             case "Days":
                 return itemsDisplay(days);
             case "Time Range":
@@ -129,49 +129,49 @@ const FilterBar: React.FC<{
         return <div>
             {items.map(item => (
                 <div onClick={() => handleOnClick(item)} key={item.id}>
-                    <Checkbox/>
+                    <Checkbox />
                     {item.value}
                 </div>
             ))}
         </div>;
     }
-    
+
     return (
         <>
             <StyledFilterButton>
-                <Stack 
+                <Stack
                     direction="row"
                     onClick={() => toggle(open)}
                     spacing={1.5}
-                    alignItems= "center"
-                    // onBlur={(e: React.FocusEvent) => dismissHandler(e)}
-                    >
-                    <p>{open ? <FilterListIcon style={{ color: '#F77F00'}} /> : <FilterListIcon style={{ color: '#F77F00'}}/>}</p> 
+                    alignItems="center"
+                // onBlur={(e: React.FocusEvent) => dismissHandler(e)}
+                >
+                    <p>{open ? <FilterListIcon style={{ color: '#F77F00' }} /> : <FilterListIcon style={{ color: '#F77F00' }} />}</p>
                     <p style={{ color: '#F77F00', fontWeight: 'bold' }}>Filters</p>
                 </Stack>
                 {open && (
-                <Container>
-                    <StyledDropDownMenu>
-                        <StyledHeader>
-                            <h3>Filter</h3>
-                            <p style={{ color: '#F77F00' }}>Reset</p>
-                        </StyledHeader>
-                        {items.map(item => (
-                            <StyledAccordian>
-                                <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel1a-content"
-                                id="panel1a-header"
-                                >
-                                {item.value}
-                                </AccordionSummary>
-                                <StyledAccordionDetails>
-                                    {dropDownReveal(item)}
-                                </StyledAccordionDetails>
-                            </StyledAccordian>
-                        ))}
-                    </StyledDropDownMenu>
-                </Container>
+                    <Container>
+                        <StyledDropDownMenu>
+                            <StyledHeader>
+                                <h3>Filter</h3>
+                                <p style={{ color: '#F77F00' }}>Reset</p>
+                            </StyledHeader>
+                            {items.map(item => (
+                                <StyledAccordian>
+                                    <AccordionSummary
+                                        expandIcon={<ExpandMoreIcon />}
+                                        aria-controls="panel1a-content"
+                                        id="panel1a-header"
+                                    >
+                                        {item.value}
+                                    </AccordionSummary>
+                                    <StyledAccordionDetails>
+                                        {dropDownReveal(item)}
+                                    </StyledAccordionDetails>
+                                </StyledAccordian>
+                            ))}
+                        </StyledDropDownMenu>
+                    </Container>
                 )}
             </StyledFilterButton>
         </>
