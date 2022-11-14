@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Building, BuildingReturnData, DropDownItem } from "../types";
+import React, { useState, useEffect, useRef, PropsWithChildren } from "react";
+import { Building, BuildingReturnData, DropDown, DropDownItem, Filters } from "../types";
 
 import Container from '@mui/material/Container';
 import Box, { BoxProps } from '@mui/material/Box';
@@ -15,245 +15,226 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Checkbox from '@mui/material/Checkbox';
 
 const StyledFilterButton = styled(Box)<BoxProps>(({ theme }) => ({
-    height: 40,
-    width: 140,
-    padding: 20,
-    margin: 20,
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    position: "relative",
-    borderRadius: 10,
-    backgroundColor: "white",
-    borderWidth: 2,
-    borderStyle: "solid",
-    borderColor: theme.palette.primary.main,
+  height: 40,
+  width: 140,
+  padding: 20,
+  margin: 20,
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "center",
+  position: "relative",
+  borderRadius: 10,
+  backgroundColor: "white",
+  borderWidth: 2,
+  borderStyle: "solid",
+  borderColor: theme.palette.primary.main,
 }));
 
 const StyledDropDownMenu = styled(Box)<BoxProps>(({ theme }) => ({
-    width: 250,
-    top: 50,
-    left: 0,
-    borderRadius: 10,
-    display: "flex",
-    flexDirection: "column",
-    position: "absolute",
-    backgroundColor: "white",
-    borderWidth: 1,
-    borderStyle: "solid",
-    borderColor: "#BCBCBC"
+  width: 250,
+  top: 50,
+  left: 0,
+  borderRadius: 10,
+  display: "flex",
+  flexDirection: "column",
+  position: "absolute",
+  backgroundColor: "white",
+  borderWidth: 1,
+  borderStyle: "solid",
+  borderColor: "#BCBCBC"
 }));
 
 const StyledHeader = styled(Box)<BoxProps>(({ theme }) => ({
-    paddingLeft: 15,
-    height: 60,
-    display: "inline-flex",
-    gap: 135
+  paddingLeft: 15,
+  height: 60,
+  display: "inline-flex",
+  gap: 135
 }));
 
 const StyledAccordian = styled(Accordion)(({ theme }) => ({
-    backgroundColor: '#fff',
-    color: "#000",
-    transition: "all 0.1s ease-in-out",
-    "&:hover": {
-        backgroundColor: theme.palette.primary.main,
-        color: "#fff",
-    },
+  backgroundColor: '#fff',
+  color: "#000",
+  transition: "all 0.1s ease-in-out",
+  "&:hover": {
+    backgroundColor: theme.palette.primary.main,
+    color: "#fff",
+  },
 }));
 
 const StyledAccordionDetails = styled(AccordionDetails)(({ theme }) => ({
-    backgroundColor: "#eee",
-    color: "#000"
+  backgroundColor: "#eee",
+  color: "#000"
 }));
 
 const FilterBar: React.FC<{
-    data: BuildingReturnData
-    multiSelect?: boolean;
-}> = ({ data, multiSelect }) => {
+  filters: Filters,
+  setFilters: (filters: Filters) => void
+}> = ({ filters, setFilters }) => {
 
-    // Hide and close Dropdown
-    const [open, setOpen] = useState(false);
-    const [selection, setSelection] = useState<any[]>([]);
+  // Hide and close Dropdown
+  const [open, setOpen] = useState(false);
+  const toggle = (open: boolean) => {
+    setOpen(!open);
+  }
 
-    const toggle = (open: boolean) => {
-        setOpen(!open);
+  // Close dropdown if user clicks outside.
+  const dismissHandler = (event: React.FocusEvent) => {
+    if (event.currentTarget === event.target) {
+      setOpen(!open);
     }
+  };
 
-    // Check if item has been selected.
-    // const isItemInSelection = (item: DropDownItem) => {
-    //     if (selection.find(current => current.id === item.id)) {
-    //       return true;
-    //     }
-    //     return false;
-    // };
+  return (
+    <>
+      <StyledFilterButton>
+        <Stack
+          direction="row"
+          onClick={() => toggle(open)}
+          spacing={1.5}
+          alignItems="center"
+        // onBlur={(e: React.FocusEvent) => dismissHandler(e)}
+        >
+          <p>{open ? <FilterListIcon style={{ color: '#F77F00' }} /> : <FilterListIcon style={{ color: '#F77F00' }} />}</p>
+          <p style={{ color: '#F77F00', fontWeight: 'bold' }}>Filters</p>
+        </Stack>
+        {open && (
+          <Container>
+            <StyledDropDownMenu>
+              <StyledHeader>
+                <h3>Filter</h3>
+                <p style={{ color: '#F77F00' }} onClick={() => setFilters({})}>Reset</p>
+              </StyledHeader>
+              {items.map(item => (
+                <DropdownAccordion
+                  key={item.value}
+                  title={item.text}
+                  items={item.items}
+                  keyString={item.value}
+                  filters={filters}
+                  setFilters={setFilters}
+                />
+              ))}
+            </StyledDropDownMenu>
+          </Container>
+        )}
+      </StyledFilterButton>
+    </>
+  );
+};
 
-    // Handling click interactions (adding + removing selected items)
-    const handleOnClick = (item: DropDownItem) => {
-        if (!selection.some(current => current.id === item.id)) { // Current represents an instance when .some iterates selection
-            setSelection([...selection, item]); // Spread current selection and add new item
-        } else { // Item has been selected -> want to remove selection
-            let selectionRemoved = selection;
-            selectionRemoved = selectionRemoved.filter(
-                current => current.id !== item.id
-            );
-            setSelection([...selectionRemoved]);
-        }
-    };
+const DropdownAccordion: React.FC<{
+  title: string;
+  items: DropDownItem[];
+  filters: Filters;
+  setFilters: (filters: Filters) => void;
+  keyString: string;
+}> = ({ title, items, filters, setFilters, keyString }) => {
+  const key = keyString as keyof Filters;
 
-    // Close dropdown if user clicks outside.
-    const dismissHandler = (event: React.FocusEvent) => {
-        if (event.currentTarget === event.target) {
-            setOpen(!open);
-        }
-    };
-
-    // Reveal correct dropdown based on selected option. 
-    const dropDownReveal = (item: DropDownItem) => {
-        switch (item.value) {
-            case "Duration Free":
-                return itemsDisplay(duration);
-            case "Room Usage":
-                return itemsDisplay(usage);
-            case "Location":
-                return itemsDisplay(locations);
-            case "Room Capacity":
-                return itemsDisplay(roomCapacity);
-            default:
-                return null;
-        }
-    };
-
-    const itemsDisplay = (items: DropDownItem[]) => {
-        return <div>
-            {items.map(item => (
-                <div onClick={() => handleOnClick(item)} key={item.id}>
-                    <Checkbox />
-                    {item.value}
-                </div>
-            ))}
-        </div>;
+  const handleClick = (item: DropDownItem) => {
+    if (filters[key] === item.value) {
+      const { [key]: unsetKey, ...other } = filters;
+      setFilters(other);
+    } else {
+      setFilters({ ...filters, [key]: item.value });
     }
+  };
 
-    return (
-        <>
-            <StyledFilterButton>
-                <Stack
-                    direction="row"
-                    onClick={() => toggle(open)}
-                    spacing={1.5}
-                    alignItems="center"
-                // onBlur={(e: React.FocusEvent) => dismissHandler(e)}
-                >
-                    <p>{open ? <FilterListIcon style={{ color: '#F77F00' }} /> : <FilterListIcon style={{ color: '#F77F00' }} />}</p>
-                    <p style={{ color: '#F77F00', fontWeight: 'bold' }}>Filters</p>
-                </Stack>
-                {open && (
-                    <Container>
-                        <StyledDropDownMenu>
-                            <StyledHeader>
-                                <h3>Filter</h3>
-                                <p style={{ color: '#F77F00' }}>Reset</p>
-                            </StyledHeader>
-                            {items.map(item => (
-                                <StyledAccordian>
-                                    <AccordionSummary
-                                        expandIcon={<ExpandMoreIcon />}
-                                        aria-controls="panel1a-content"
-                                        id="panel1a-header"
-                                    >
-                                        {item.value}
-                                    </AccordionSummary>
-                                    <StyledAccordionDetails>
-                                        {dropDownReveal(item)}
-                                    </StyledAccordionDetails>
-                                </StyledAccordian>
-                            ))}
-                        </StyledDropDownMenu>
-                    </Container>
-                )}
-            </StyledFilterButton>
-        </>
-    );
+  return (
+    <StyledAccordian>
+      <AccordionSummary
+        expandIcon={<ExpandMoreIcon />}
+        aria-controls="panel1a-content"
+        id="panel1a-header"
+      >
+        {title}
+      </AccordionSummary>
+      <StyledAccordionDetails>
+        {items.map(item => (
+          <div onClick={(e) => { e.preventDefault(); handleClick(item) }} key={item.value}>
+            <Checkbox checked={filters[key] === item.value} />
+            {item.text}
+          </div>
+        ))}
+      </StyledAccordionDetails>
+    </StyledAccordian>
+  );
 };
 
 // Dropdown items.
-const items = [
-    {
-        id: 1,
-        value: 'Room Usage',
-    },
-    {
-        id: 2,
-        value: 'Room Capacity',
-    },
-    {
-        id: 3,
-        value: 'Duration Free',
-    },
-    {
-        id: 4,
-        value: 'Location',
-    },
-];
-
-const usage = [
-    {
-        id: 1,
-        value: 'Lecture Hall'
-    },
-    {
-        id: 2,
-        value: 'Tutorial Classroom'
-    }
-];
-
-const duration = [
-    {
-        id: 1,
-        value: '30+ minutes'
-    },
-    {
-        id: 2,
-        value: '1+ hours'
-    },
-    {
-        id: 3,
-        value: '2+ hours'
-    },
-    {
-        id: 4,
-        value: '3+ hours'
-    }
-];
-
-const roomCapacity = [
-    {
-        id: 1,
-        value: '25+'
-    },
-    {
-        id: 2,
-        value: '50+'
-    },
-    {
-        id: 3,
-        value: '100+'
-    },
-    {
-        id: 4,
-        value: '200+'
-  }
-];
-
-const locations = [
-    {
-        id: 1,
-        value: 'Upper Campus'
-    },
-    {
-        id: 2,
-        value: 'Lower Campus'
-    }
+const items: DropDown[] = [
+  {
+    text: 'Room Usage',
+    value: 'usage',
+    items: [
+      {
+        text: 'Tutorial Classroom',
+        value: 'TUT'
+      },
+      {
+        text: 'Lecture Hall',
+        value: 'LEC'
+      }
+    ]
+  },
+  {
+    text: 'Room Capacity',
+    value: 'capacity',
+    items: [
+      {
+        text: '25+',
+        value: '25'
+      },
+      {
+        text: '50+',
+        value: '50'
+      },
+      {
+        text: '100+',
+        value: '100'
+      },
+      {
+        text: '200+',
+        value: '200'
+      }
+    ]
+  },
+  {
+    text: 'Duration Free',
+    value: 'duration',
+    items: [
+      {
+        text: '30+ minutes',
+        value: '30'
+      },
+      {
+        text: '1+ hours',
+        value: '60'
+      },
+      {
+        text: '2+ hours',
+        value: '120'
+      },
+      {
+        text: '3+ hours',
+        value: '180'
+      }
+    ]
+  },
+  {
+    text: 'Location',
+    value: 'location',
+    items: [
+      {
+        text: 'Upper Campus',
+        value: 'upper'
+      },
+      {
+        text: 'Lower Campus',
+        value: 'lower'
+      }
+    ]
+  },
 ];
 
 export default FilterBar;

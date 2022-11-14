@@ -47,25 +47,28 @@ export type BuildingReturnData = {
   buildings: Building[]
 }
 
+export type DropDown = {
+  text: string,
+  value: string
+  items: DropDownItem[]
+};
+
 export type DropDownItem = {
-  id: number,
+  text: string,
   value: string,
 };
-export type RoomUsage = "LEC" | "TUT";
-
-export type Location = "upper" | "lower";
 
 export type Filters = {
-  capacity?: number,
-  usage?: RoomUsage;
-  location?: Location;
-  duration?: number;
+  capacity?: string,
+  usage?: string;
+  location?: string;
+  duration?: string;
 }
 
 export type RoomsRequestParams = {
   datetime?: string,
-  capacity?: number,
+  capacity?: string,
   usage?: string,
   location?: string,
-  duration?: number
+  duration?: string
 }

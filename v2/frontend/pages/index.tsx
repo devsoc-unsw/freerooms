@@ -69,6 +69,7 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
   >();
   const fetchRoomStatus = () => {
     const params: RoomsRequestParams = { ...filters };
+    console.log(filters);
     if (datetime) {
       params.datetime =
         DateTime.fromJSDate(datetime).toFormat("yyyy-MM-dd'T'HH:mm");
@@ -133,7 +134,7 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
             }}
           />
           <SearchBar setQuery={setQuery}></SearchBar>
-          <FilterBar data={buildingData} multiSelect={true}/>
+          <FilterBar filters={filters} setFilters={setFilters}/>
           <div />
           <ButtonGroup>
             <Stack direction="row" spacing={1.5}>
