@@ -17,14 +17,12 @@ import Checkbox from '@mui/material/Checkbox';
 const StyledFilterButton = styled(Box)<BoxProps>(({ theme }) => ({
     height: 40,
     width: 140,
-    top: 100,
     padding: 20,
     margin: 20,
-    flex: 1,
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    position: "absolute",
+    position: "relative",
     borderRadius: 10,
     backgroundColor: "white",
     borderWidth: 2,
@@ -112,10 +110,10 @@ const FilterBar: React.FC<{
     // Reveal correct dropdown based on selected option. 
     const dropDownReveal = (item: DropDownItem) => {
         switch (item.value) {
-            case "Days":
-                return itemsDisplay(days);
-            case "Time Range":
-                return itemsDisplay(times);
+            case "Duration Free":
+                return itemsDisplay(duration);
+            case "Room Usage":
+                return itemsDisplay(usage);
             case "Location":
                 return itemsDisplay(locations);
             case "Room Capacity":
@@ -182,7 +180,7 @@ const FilterBar: React.FC<{
 const items = [
     {
         id: 1,
-        value: 'Days',
+        value: 'Room Usage',
     },
     {
         id: 2,
@@ -190,7 +188,7 @@ const items = [
     },
     {
         id: 3,
-        value: 'Time Range',
+        value: 'Duration Free',
     },
     {
         id: 4,
@@ -198,69 +196,53 @@ const items = [
     },
 ];
 
-const days = [
+const usage = [
     {
         id: 1,
-        value: 'Monday'
+        value: 'Lecture Hall'
     },
     {
         id: 2,
-        value: 'Tuesday'
-    },
-    {
-        id: 3,
-        value: 'Wednesday'
-    },
-    {
-        id: 4,
-        value: 'Thursday'
-    },
-    {
-        id: 5,
-        value: 'Friday'
-    },
-    {
-        id: 6,
-        value: 'Saturday'
-    },
-    {
-        id: 7,
-        value: 'Sunday'
+        value: 'Tutorial Classroom'
     }
 ];
 
-const times = [
+const duration = [
     {
         id: 1,
-        value: '9am - 12pm'
+        value: '30+ minutes'
     },
     {
         id: 2,
-        value: '12pm - 3pm'
+        value: '1+ hours'
     },
     {
         id: 3,
-        value: '3pm - 6pm'
+        value: '2+ hours'
     },
     {
         id: 4,
-        value: '6pm - 9pm'
+        value: '3+ hours'
     }
 ];
 
 const roomCapacity = [
     {
         id: 1,
-        value: '1 - 4'
+        value: '25+'
     },
     {
         id: 2,
-        value: '4 - 8'
+        value: '50+'
     },
     {
         id: 3,
-        value: '8 - 12'
-    }
+        value: '100+'
+    },
+    {
+        id: 4,
+        value: '200+'
+  }
 ];
 
 const locations = [
