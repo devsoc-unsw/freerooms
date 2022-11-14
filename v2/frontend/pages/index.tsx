@@ -156,13 +156,15 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({ buildingData }) 
               {`${isError}`}
             </p>
           )*/}
-          <CardList
-            buildingData={buildingData}
-            setCurrentBuilding={setCurrentBuilding}
-            sort={sort}
-            query={query}
-            roomStatusData={roomStatusData}
-          />
+          <div id={"Home-Building-Tiles"}>
+            <CardList
+              buildingData={buildingData}
+              setCurrentBuilding={setCurrentBuilding}
+              sort={sort}
+              query={query}
+              roomStatusData={roomStatusData}
+            />
+          </div>
         </Main>
         <Drawer
           sx={{
