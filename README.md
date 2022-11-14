@@ -4,7 +4,7 @@ A web application designed to aid UNSW students in finding vacant rooms.
 
 ## Running on your local machine
 
-### Frontend
+### v2 Frontend
 
 ##### Project setup
 
@@ -24,7 +24,7 @@ npm run serve
 npm run build
 ```
 
-### Backend
+### v2 Backend
 
 ##### Project setup
 
