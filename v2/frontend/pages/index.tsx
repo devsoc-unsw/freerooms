@@ -37,6 +37,7 @@ import Button from "../components/Button";
 import BuildingInfo from "../views/BuildingInfo";
 import CardList from "../views/CardList";
 import axios from "axios";
+import Landing from "../components/Landing";
 
 const Home: NextPage<{ buildingData: BuildingReturnData }> = ({ buildingData }) => {
   const router = useRouter();
@@ -119,7 +120,7 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({ buildingData }) 
               setCurrentBuilding(null);
             }}
           />
-          {/* 
+          {/*
           <StyledTabs
             value={selection}
             onChange={(_e: React.SyntheticEvent, newValue: string) => {
@@ -146,6 +147,7 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({ buildingData }) 
           </ButtonGroup>
         </AppBar>
         <Main open={drawerOpen}>
+          <Landing/>
           {/* selection === "upper" ? (
             <UpperBuildings setCurrentBuilding={setCurrentBuilding} />
           ) : (
@@ -208,7 +210,7 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   open?: boolean;
 }>(({ theme, open }) => ({
   display: "flex",
-  flexDirection: "row",
+  flexDirection: "column",
   flexGrow: 1,
   padding: theme.spacing(12, 0),
   transition: theme.transitions.create("margin", {
@@ -261,6 +263,14 @@ const ButtonGroup = styled(Box)(({ theme }) => ({
   justifyContent: "flex-end",
   alignItems: "center",
   paddingRight: theme.spacing(2),
+}));
+
+const StyledImage = styled(Image)<ImageProps>(({ theme }) => ({
+  borderRadius: 10,
+  transition: "all 0.1s ease-in-out",
+  "&:hover": {
+    opacity: 0.7,
+  },
 }));
 
 export default Home;
