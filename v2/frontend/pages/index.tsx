@@ -69,7 +69,6 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
   >();
   const fetchRoomStatus = () => {
     const params: RoomsRequestParams = { ...filters };
-    console.log(filters);
     if (datetime) {
       params.datetime =
         DateTime.fromJSDate(datetime).toFormat("yyyy-MM-dd'T'HH:mm");

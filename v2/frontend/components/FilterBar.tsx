@@ -84,6 +84,30 @@ const FilterBar: React.FC<{
     }
   };
 
+  // Handle user selecting a filter, each dropdown select has an associated key
+  const handleSelect = (key: keyof Filters, item: DropDownItem) => {
+    if (filters[key] === item.value) {
+      // If the same as already selected, unset key
+      const { [key]: unsetKey, ...other } = filters;
+      setFilters(other);
+    } else {
+      // Otherwise, spread existing filters and set key
+      setFilters({ ...filters, [key]: item.value });
+    }
+  };
+
+  // Reveal dropdown items
+  const dropdownReveal = (dropdown: DropDown) => {
+    return <div>
+      {dropdown.items.map(item => (
+        <div onClick={() => handleSelect(dropdown.key, item)} key={item.value}>
+          <Checkbox checked={filters[dropdown.key] === item.value} />
+          {item.text}
+        </div>
+      ))}
+    </div>;
+  }
+
   return (
     <>
       <StyledFilterButton>
@@ -104,15 +128,19 @@ const FilterBar: React.FC<{
                 <h3>Filter</h3>
                 <p style={{ color: '#F77F00' }} onClick={() => setFilters({})}>Reset</p>
               </StyledHeader>
-              {items.map(item => (
-                <DropdownAccordion
-                  key={item.value}
-                  title={item.text}
-                  items={item.items}
-                  keyString={item.value}
-                  filters={filters}
-                  setFilters={setFilters}
-                />
+              {dropdowns.map(dropdown => (
+                <StyledAccordian key={dropdown.key}>
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                  >
+                    {dropdown.text}
+                  </AccordionSummary>
+                  <StyledAccordionDetails>
+                    {dropdownReveal(dropdown)}
+                  </StyledAccordionDetails>
+                </StyledAccordian>
               ))}
             </StyledDropDownMenu>
           </Container>
@@ -122,50 +150,11 @@ const FilterBar: React.FC<{
   );
 };
 
-const DropdownAccordion: React.FC<{
-  title: string;
-  items: DropDownItem[];
-  filters: Filters;
-  setFilters: (filters: Filters) => void;
-  keyString: string;
-}> = ({ title, items, filters, setFilters, keyString }) => {
-  const key = keyString as keyof Filters;
-
-  const handleClick = (item: DropDownItem) => {
-    if (filters[key] === item.value) {
-      const { [key]: unsetKey, ...other } = filters;
-      setFilters(other);
-    } else {
-      setFilters({ ...filters, [key]: item.value });
-    }
-  };
-
-  return (
-    <StyledAccordian>
-      <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
-        aria-controls="panel1a-content"
-        id="panel1a-header"
-      >
-        {title}
-      </AccordionSummary>
-      <StyledAccordionDetails>
-        {items.map(item => (
-          <div onClick={(e) => { e.preventDefault(); handleClick(item) }} key={item.value}>
-            <Checkbox checked={filters[key] === item.value} />
-            {item.text}
-          </div>
-        ))}
-      </StyledAccordionDetails>
-    </StyledAccordian>
-  );
-};
-
-// Dropdown items.
-const items: DropDown[] = [
+// Dropdowns and items.
+const dropdowns: DropDown[] = [
   {
     text: 'Room Usage',
-    value: 'usage',
+    key: 'usage',
     items: [
       {
         text: 'Tutorial Classroom',
@@ -179,7 +168,7 @@ const items: DropDown[] = [
   },
   {
     text: 'Room Capacity',
-    value: 'capacity',
+    key: 'capacity',
     items: [
       {
         text: '25+',
@@ -201,7 +190,7 @@ const items: DropDown[] = [
   },
   {
     text: 'Duration Free',
-    value: 'duration',
+    key: 'duration',
     items: [
       {
         text: '30+ minutes',
@@ -223,7 +212,7 @@ const items: DropDown[] = [
   },
   {
     text: 'Location',
-    value: 'location',
+    key: 'location',
     items: [
       {
         text: 'Upper Campus',

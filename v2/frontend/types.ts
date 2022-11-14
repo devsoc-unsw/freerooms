@@ -49,7 +49,7 @@ export type BuildingReturnData = {
 
 export type DropDown = {
   text: string,
-  value: string
+  key: keyof Filters,
   items: DropDownItem[]
 };
 
