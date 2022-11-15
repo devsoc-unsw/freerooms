@@ -1,9 +1,10 @@
-import Image from "next/image";
-import Logo from "../public/assets/favicon/free_rooms_logo.png";
 import Box, { BoxProps } from "@mui/material/Box";
+import { orange } from "@mui/material/colors";
 import { styled, SxProps, Theme } from "@mui/material/styles";
 import Typography, { TypographyProps } from "@mui/material/Typography";
-import { orange } from "@mui/material/colors";
+import Image from "next/image";
+
+import Logo from "../public/assets/favicon/free_rooms_logo.png";
 
 const StyledText = styled(Typography)<TypographyProps>(({ theme }) => ({
   color: theme.palette.primary.main,

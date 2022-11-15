@@ -2,43 +2,41 @@
   This is the home page (list view of all the buildings)
 */
 
-import React from "react";
-import { API_URL } from "../config";
-import { DateTime } from "luxon";
-import {
-  RoomStatus,
-  Building,
-  BuildingReturnData,
-  Filters,
-  RoomsReturnData,
-  RoomsRequestParams,
-} from "../types";
-
-import useSWR from "swr";
-import type { NextPage } from "next";
-import Head from "next/head";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import Image, { ImageProps } from "next/image";
-
-import Drawer from "@mui/material/Drawer";
-import Box from "@mui/material/Box";
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
-import Container from "@mui/material/Container";
-import { styled } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import Divider from "@mui/material/Divider";
-import Stack from "@mui/material/Stack";
 import SearchIcon from "@mui/icons-material/Search";
 import { BoxProps, Typography } from "@mui/material";
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import CssBaseline from "@mui/material/CssBaseline";
+import Divider from "@mui/material/Divider";
+import Drawer from "@mui/material/Drawer";
+import Stack from "@mui/material/Stack";
+import { styled } from "@mui/material/styles";
+import axios from "axios";
+import { DateTime } from "luxon";
+import type { NextPage } from "next";
+import Head from "next/head";
+import Image, { ImageProps } from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import React from "react";
+import useSWR from "swr";
 
 import Branding from "../components/Branding";
 import Button from "../components/Button";
-import BuildingInfo from "../views/BuildingInfo";
-import SearchBar from "../components/SearchBar";
-import CardList from "../views/CardList";
-import axios from "axios";
 import Landing from "../components/Landing";
+import SearchBar from "../components/SearchBar";
+import { API_URL } from "../config";
+import {
+  Building,
+  BuildingReturnData,
+  Filters,
+  RoomsRequestParams,
+  RoomsReturnData,
+  RoomStatus,
+} from "../types";
+import BuildingInfo from "../views/BuildingInfo";
+import CardList from "../views/CardList";
 
 const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
   buildingData,

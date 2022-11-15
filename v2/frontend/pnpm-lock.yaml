@@ -16,6 +16,7 @@ specifiers:
   eslint: 8.14.0
   eslint-config-next: 12.1.6
   eslint-plugin-react-hooks: ^4.6.0
+  eslint-plugin-simple-import-sort: 8.0.0
   luxon: ^2.5.0
   next: 13.0.3
   react: 18.2.0
@@ -50,6 +51,7 @@ devDependencies:
   eslint: 8.14.0
   eslint-config-next: 12.1.6_vvfgrt7vdgsm7fnhw5yhye66iq
   eslint-plugin-react-hooks: 4.6.0_eslint@8.14.0
+  eslint-plugin-simple-import-sort: 8.0.0_eslint@8.14.0
   typescript: 4.6.4
 
 packages:
@@ -1596,6 +1598,14 @@ packages:
       resolve: 2.0.0-next.4
       semver: 6.3.0
       string.prototype.matchall: 4.0.8
+    dev: true
+
+  /eslint-plugin-simple-import-sort/8.0.0_eslint@8.14.0:
+    resolution: {integrity: sha512-bXgJQ+lqhtQBCuWY/FUWdB27j4+lqcvXv5rUARkzbeWLwea+S5eBZEQrhnO+WgX3ZoJHVj0cn943iyXwByHHQw==}
+    peerDependencies:
+      eslint: '>=5.0.0'
+    dependencies:
+      eslint: 8.14.0
     dev: true
 
   /eslint-scope/7.1.1:

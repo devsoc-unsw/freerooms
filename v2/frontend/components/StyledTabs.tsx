@@ -1,7 +1,7 @@
-import React from "react";
-import Tabs, { TabsProps } from "@mui/material/Tabs";
-import Tab, { TabProps } from "@mui/material/Tab";
 import { styled } from "@mui/material/styles";
+import Tab, { TabProps } from "@mui/material/Tab";
+import Tabs, { TabsProps } from "@mui/material/Tabs";
+import React from "react";
 
 export const StyledTabs = styled(Tabs)<TabsProps>(({ theme }) => ({
   backgroundColor: "#eee",
