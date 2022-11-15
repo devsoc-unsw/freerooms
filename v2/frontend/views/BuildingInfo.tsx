@@ -84,18 +84,19 @@ const BuildingInfo: React.FC<{
   setDatetime: (datetime: Date | null) => void;
   roomStatusData: RoomsReturnData | undefined;
 }> = ({ building, onClose, datetime, setDatetime, roomStatusData }) => {
-  if (!building) return <></>;
-
   const [sort, setSort] = React.useState<"name" | "available">("name");
   const [rooms, setRooms] = React.useState<BuildingStatus | undefined>();
   const [roomsError, setRoomsError] = React.useState<string | undefined>();
 
   React.useEffect(() => {
     setRooms(undefined);
+    if (!building) return;
     if (roomStatusData && building.id in roomStatusData) {
-      setRooms(roomStatusData[building.id])
+      setRooms(roomStatusData[building.id]);
     }
   }, [building, roomStatusData]);
+
+  if (!building) return <></>;
 
   const customTextField = (
     params: JSX.IntrinsicAttributes & TextFieldProps
@@ -140,10 +141,11 @@ const BuildingInfo: React.FC<{
         }}
       >
         <StyledImage
-          src={`/assets/building_photos/${building!.id}.jpg`}
-          width="946px"
-          height="648px"
-          objectFit="cover"
+          alt={`Image of building ${building.id}`}
+          src={`/assets/building_photos/${building.id}.jpg`}
+          width={946}
+          height={648}
+          style={{ objectFit: "cover" }}
           priority={true}
         />
       </div>
@@ -177,7 +179,7 @@ const BuildingInfo: React.FC<{
           Object.keys(rooms).map((roomId) => {
             const room = rooms[roomId];
             return (
-              <IndiviRoomBox>
+              <IndiviRoomBox key={roomId}>
                 {roomId}{" "}
                 <Typography
                   sx={{ fontSize: 16, fontWeight: 500 }}

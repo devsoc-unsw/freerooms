@@ -69,13 +69,14 @@ const TitleBox = styled(Box)<BoxProps>(({ theme }) => ({
 const BuildingCard: React.FC<{
   building: Building;
   setBuilding: (building: Building) => void;
-  freerooms: number
+  freerooms: number;
 }> = ({ building, setBuilding, freerooms }) => {
   const ref = useRef();
 
   return (
     <MainBox ref={ref} onClick={() => setBuilding(building)}>
       <StyledImage
+        alt={`Image of ${building.id}`}
         src={`/assets/building_photos/${building.id}.jpg`}
         layout="fill"
         objectFit="cover"
