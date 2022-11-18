@@ -1,8 +1,8 @@
 import Image from "next/image";
 import React from "react";
 
+import parentLogo from "../public/assets/favicon/csesocgreyblue.png";
 import Logo from "../public/assets/favicon/free_rooms_logo.png";
-import Csesoc from "../public/assets/favicon/csesocgreyblue.png";
 
 const Landing: React.FC = () => {
   return (
@@ -18,7 +18,7 @@ const Landing: React.FC = () => {
     }}>
       <div style={{ width: "auto", display: "flex", flexDirection: "column", margin: "auto"}}>
         <div style={{ width: "auto", margin: 0, justifyContent: "flex-start", display: "flex", flexDirection: "row"}}>
-          <Image style={{margin: 0, padding: 0}} alt={"CSESOC Logo"} width={110} height={25} src={Csesoc} />
+          <Image style={{margin: 0, padding: 0}} alt={"CSESOC Logo"} width={110} height={25} src={parentLogo} />
         </div>
         <h1 id={"FreeroomsTitle"} style={{
           fontFamily: "Josefin Sans",
