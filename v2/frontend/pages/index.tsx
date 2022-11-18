@@ -130,7 +130,6 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
             }}
           />
           <SearchBar setQuery={setQuery}></SearchBar>
-
           <div />
           <ButtonGroup>
             <Stack direction="row" spacing={1.5}>
