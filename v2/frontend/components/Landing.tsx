@@ -1,6 +1,9 @@
 import Image from "next/image";
 import React from "react";
 
+import Logo from "../public/assets/favicon/free_rooms_logo.png";
+import Csesoc from "../public/assets/favicon/csesocgreyblue.png";
+
 const Landing: React.FC = () => {
   return (
     <div style={{
@@ -15,10 +18,7 @@ const Landing: React.FC = () => {
     }}>
       <div style={{ width: "auto", display: "flex", flexDirection: "column", margin: "auto"}}>
         <div style={{ width: "auto", margin: 0, justifyContent: "flex-start", display: "flex", flexDirection: "row"}}>
-          <Image style={{margin: 0, padding: 0}} alt={"CSESOC Logo"} width={50} height={50} src={"/assets/favicon/logo.png"} />
-          <p>
-            presents
-          </p>
+          <Image style={{margin: 0, padding: 0}} alt={"CSESOC Logo"} width={110} height={25} src={Csesoc} />
         </div>
         <h1 id={"FreeroomsTitle"} style={{
           fontFamily: "Josefin Sans",
@@ -31,7 +31,7 @@ const Landing: React.FC = () => {
           Freerooms
         </h1>
         <p id={"FreeroomsBlurb"} style={{ textAlign: "left", fontSize: "1.5rem", fontWeight: "700" }}>
-          Find unallocated CATS rooms at UNSW
+          Check UNSW room bookings
         </p>
         <button onClick={() => {
           let position: number;
@@ -62,7 +62,7 @@ const Landing: React.FC = () => {
         </button>
       </div>
       <div id={"landing-freerooms-logo"} style={{ width: "auto", margin: "auto" }}>
-        <Image width={400} height={400} alt={"Freerooms Logo"} src={"/assets/favicon/free_rooms_logo.png"} />
+        <Image width={400} height={400} alt={"Freerooms Logo"} src={Logo} />
       </div>
     </div>
   );
