@@ -15,7 +15,7 @@ const Landing: React.FC = () => {
     }}>
       <div style={{ width: "auto", display: "flex", flexDirection: "column", margin: "auto"}}>
         <div style={{ width: "auto", margin: 0, justifyContent: "flex-start", display: "flex", flexDirection: "row"}}>
-          <Image style={{margin: 0, padding: 0}} alt={"CSESOC Logo"} width={50} height={50} src={"/../public/assets/favicon/logo.png"} />
+          <Image style={{margin: 0, padding: 0}} alt={"CSESOC Logo"} width={50} height={50} src={"/assets/favicon/logo.png"} />
           <p>
             presents
           </p>
@@ -62,7 +62,7 @@ const Landing: React.FC = () => {
         </button>
       </div>
       <div id={"landing-freerooms-logo"} style={{ width: "auto", margin: "auto" }}>
-        <Image width={400} height={400} alt={"Freerooms Logo"} src={"/../public/assets/favicon/free_rooms_logo.png"} />
+        <Image width={400} height={400} alt={"Freerooms Logo"} src={"/assets/favicon/free_rooms_logo.png"} />
       </div>
     </div>
   );
