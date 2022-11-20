@@ -26,7 +26,7 @@ const StyledBox = styled(Box)<BoxProps>(({ theme }) => ({
 
 const Branding = (props: BoxProps) => (
   <StyledBox {...props}>
-    <div style={{ marginLeft: 10, marginRight: 5 }}>
+    <div>
       <Image width={50} src={Logo} alt="Freerooms Logo" priority />
     </div>
     <Box
@@ -36,7 +36,7 @@ const Branding = (props: BoxProps) => (
       }}
     >
       <StyledText sx={{ lineHeight: 1 }}>Freerooms</StyledText>
-      <StyledText sx={{ lineHeight: 1, marginTop: 0.5, fontFamily: "Arial", fontSize: "0.8rem"}}>22T2</StyledText>
+      <StyledText sx={{ lineHeight: 1, marginTop: 0.5, fontFamily: "Arial", fontSize: "0.8rem"}}>22T3</StyledText>
     </Box>
   </StyledBox>
 );
