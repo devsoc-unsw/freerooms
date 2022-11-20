@@ -39,8 +39,8 @@ import BuildingInfo from "../views/BuildingInfo";
 import CardList from "../views/CardList";
 
 const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
-  buildingData,
-}) => {
+                                                                buildingData,
+                                                              }) => {
   const router = useRouter();
   const { building } = router.query;
 
@@ -60,10 +60,9 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
   const [query, setQuery] = React.useState<string>("");
   const [datetime, setDatetime] = React.useState<Date | null>(new Date());
   const [filters, setFilters] = React.useState<Filters>({});
+  const [showLanding, setShowLanding] = React.useState(true);
 
-  const [roomStatusData, setRoomStatusData] = React.useState<
-    RoomsReturnData | undefined
-  >();
+  const [roomStatusData, setRoomStatusData] = React.useState<RoomsReturnData | undefined>();
   const fetchRoomStatus = () => {
     const params: RoomsRequestParams = { ...filters };
     if (datetime) {
@@ -85,13 +84,13 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
   }, [filters, datetime]);
 
   const [currentBuilding, setCurrentBuilding] = React.useState<Building | null>(
-    null
+    null,
   );
 
   React.useEffect(() => {
     if (building) {
       const selectedBuilding = buildingData.buildings.find(
-        (b) => b.id === building
+        (b) => b.id === building,
       );
       if (selectedBuilding) {
         setCurrentBuilding(selectedBuilding);
@@ -124,21 +123,36 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
             alignItems: "center",
           })}
         >
-          <Branding
-            onClick={() => {
-              setCurrentBuilding(null);
-            }}
-          />
-          <SearchBar setQuery={setQuery}></SearchBar>
-          <div />
-          <ButtonGroup>
-            <Stack direction="row" spacing={1.5}>
-              <Button>Map</Button>
-            </Stack>
-          </ButtonGroup>
+          <div id={"header"}>
+            <div id={"headerBranding"}>
+              <Branding
+                onClick={() => {
+                  setCurrentBuilding(null);
+                  window.location.replace(window.location.href);
+                }}
+              />
+            </div>
+            {
+              showLanding ? null :
+                <div id={"headerSearch"}>
+                  <SearchBar setQuery={setQuery}></SearchBar>
+                </div>
+            }
+            <div id={"headerButtons"}>
+              <ButtonGroup>
+                <Stack direction="row" spacing={1.5}>
+                  <Button>Map</Button>
+                </Stack>
+              </ButtonGroup>
+            </div>
+          </div>
         </AppBar>
         <Main open={drawerOpen}>
-          <Landing/>
+          {
+            showLanding ?
+              <Landing setShowLanding={setShowLanding} />
+              : null
+          }
           {/* selection === "upper" ? (
             <UpperBuildings setCurrentBuilding={setCurrentBuilding} />
           ) : (
@@ -187,7 +201,7 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
 export async function getStaticProps() {
   // fetches /buildings via **BUILD** time so we don't need to have
   // the client fetch buildings data every request
-  
+
   let buildings: BuildingReturnData;
   try {
     const res = await fetch(API_URL + "/buildings");
@@ -195,7 +209,7 @@ export async function getStaticProps() {
   } catch {
     buildings = { buildings: [] };
   }
-  
+
   return {
     props: {
       buildingData: buildings,

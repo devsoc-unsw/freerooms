@@ -12,7 +12,7 @@ import React, { useState } from "react";
 
 const SearchBar = ({ setQuery }: { setQuery: (query: string) => void }) => {
   return (
-    <Box sx={{ "& > :not(style)": { width: "70ch" } }}>
+    <Box id={"SearchBox"}>
       <TextField
         id="input-with-sx"
         placeholder="Search for free room..."
