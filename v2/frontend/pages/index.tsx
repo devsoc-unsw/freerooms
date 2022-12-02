@@ -1,7 +1,6 @@
 /*
   This is the home page (list view of all the buildings)
 */
-
 import SearchIcon from "@mui/icons-material/Search";
 import { BoxProps, Typography } from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
@@ -24,6 +23,7 @@ import useSWR from "swr";
 
 import Branding from "../components/Branding";
 import Button from "../components/Button";
+import Campus from "../components/Campus";
 import Landing from "../components/Landing";
 import SearchBar from "../components/SearchBar";
 import { API_URL } from "../config";
@@ -38,9 +38,7 @@ import {
 import BuildingInfo from "../views/BuildingInfo";
 import CardList from "../views/CardList";
 
-const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
-                                                                buildingData,
-                                                              }) => {
+const Home: NextPage<{ buildingData: BuildingReturnData }> = ({buildingData}) => {
   const router = useRouter();
   const { building } = router.query;
 
@@ -100,102 +98,106 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
   }, [building]);
 
   const drawerOpen = currentBuilding ? true : false;
+  console.log('hello')
 
   return (
-    <Container maxWidth={false}>
-      <Head>
-        <title>Freerooms</title>
-        <meta
-          name="description"
-          content="A web application designed to aid UNSW students in finding vacant rooms."
-        />
-        <link rel="icon" href="/favicon.ico" />
-        <meta name="viewport" content="initial-scale=1, width=device-width" />
-      </Head>
-      <Box sx={{ display: "flex" }}>
-        <CssBaseline />
-        <AppBar
-          position="fixed"
-          open={drawerOpen}
-          sx={(theme) => ({
-            borderBottom: "1px solid #e0e0e0",
-            justifyContent: "center",
-            alignItems: "center",
-          })}
-        >
-          <div id={"header"}>
-            <div id={"headerBranding"}>
-              <Branding
-                onClick={() => {
-                  setCurrentBuilding(null);
-                  window.location.replace(window.location.href);
-                }}
-              />
-            </div>
-            {
-              showLanding ? null :
-                <div id={"headerSearch"}>
-                  <SearchBar setQuery={setQuery}></SearchBar>
-                </div>
-            }
-            <div id={"headerButtons"}>
-              <ButtonGroup>
-                <Stack direction="row" spacing={1.5}>
-                  <Button>Map</Button>
-                </Stack>
-              </ButtonGroup>
-            </div>
-          </div>
-        </AppBar>
-        <Main open={drawerOpen}>
-          {
-            showLanding ?
-              <Landing setShowLanding={setShowLanding} />
-              : null
-          }
-          {/* selection === "upper" ? (
-            <UpperBuildings setCurrentBuilding={setCurrentBuilding} />
-          ) : (
-            <p>
-              Todo: load lower campus buildings{buildings} {isLoading}{" "}
-              {`${isError}`}
-            </p>
-          )*/}
-          <div id={"Home-Building-Tiles"}>
-            <CardList
-              buildingData={buildingData}
-              setCurrentBuilding={setCurrentBuilding}
-              sort={sort}
-              query={query}
-              roomStatusData={roomStatusData}
-            />
-          </div>
-        </Main>
-        <Drawer
-          sx={{
-            width: drawerWidth,
-            flexShrink: 0,
-            "& .MuiDrawer-paper": {
-              width: drawerWidth,
-              boxSizing: "border-box",
-            },
-          }}
-          variant="persistent"
-          anchor="right"
-          open={drawerOpen}
-        >
-          <Divider />
-          <BuildingInfo
-            building={currentBuilding}
-            onClose={() => setCurrentBuilding(null)}
-            datetime={datetime}
-            setDatetime={setDatetime}
-            roomStatusData={roomStatusData}
-          />
-        </Drawer>
-      </Box>
-    </Container>
+    <Campus></Campus>
   );
+  // return (
+  //   <Container maxWidth={false}>
+  //     <Head>
+  //       <title>Freerooms</title>
+  //       <meta
+  //         name="description"
+  //         content="A web application designed to aid UNSW students in finding vacant rooms."
+  //       />
+  //       <link rel="icon" href="/favicon.ico" />
+  //       <meta name="viewport" content="initial-scale=1, width=device-width" />
+  //     </Head>
+  //     <Box sx={{ display: "flex" }}>
+  //       <CssBaseline />
+  //       <AppBar
+  //         position="fixed"
+  //         open={drawerOpen}
+  //         sx={(theme) => ({
+  //           borderBottom: "1px solid #e0e0e0",
+  //           justifyContent: "center",
+  //           alignItems: "center",
+  //         })}
+  //       >
+  //         <div id={"header"}>
+  //           <div id={"headerBranding"}>
+  //             <Branding
+  //               onClick={() => {
+  //                 setCurrentBuilding(null);
+  //                 window.location.replace(window.location.href);
+  //               }}
+  //             />
+  //           </div>
+  //           {
+  //             showLanding ? null :
+  //               <div id={"headerSearch"}>
+  //                 <SearchBar setQuery={setQuery}></SearchBar>
+  //               </div>
+  //           }
+  //           <div id={"headerButtons"}>
+  //             <ButtonGroup>
+  //               <Stack direction="row" spacing={1.5}>
+  //                 <Button>Map</Button>
+  //               </Stack>
+  //             </ButtonGroup>
+  //           </div>
+  //         </div>
+  //       </AppBar>
+  //       <Main open={drawerOpen}>
+  //         {
+  //           showLanding ?
+  //             <Landing setShowLanding={setShowLanding} />
+  //             : null
+  //         }
+  //         {/* selection === "upper" ? (
+  //           <UpperBuildings setCurrentBuilding={setCurrentBuilding} />
+  //         ) : (
+  //           <p>
+  //             Todo: load lower campus buildings{buildings} {isLoading}{" "}
+  //             {`${isError}`}
+  //           </p>
+  //         )*/}
+  //         <div id={"Home-Building-Tiles"}>
+  //           <CardList
+  //             buildingData={buildingData}
+  //             setCurrentBuilding={setCurrentBuilding}
+  //             sort={sort}
+  //             query={query}
+  //             roomStatusData={roomStatusData}
+  //           />
+  //         </div>
+  //       </Main>
+  //       <Drawer
+  //         sx={{
+  //           width: drawerWidth,
+  //           flexShrink: 0,
+  //           "& .MuiDrawer-paper": {
+  //             width: drawerWidth,
+  //             boxSizing: "border-box",
+  //           },
+  //         }}
+  //         variant="persistent"
+  //         anchor="right"
+  //         open={drawerOpen}
+  //       >
+  //         <Divider />
+  //         <BuildingInfo
+  //           building={currentBuilding}
+  //           onClose={() => setCurrentBuilding(null)}
+  //           datetime={datetime}
+  //           setDatetime={setDatetime}
+  //           roomStatusData={roomStatusData}
+  //         />
+  //       </Drawer>
+  //     </Box>
+  //   </Container>
+  // );
 };
 
 export async function getStaticProps() {
