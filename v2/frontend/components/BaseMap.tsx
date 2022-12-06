@@ -1,47 +1,103 @@
-import { loadCss, loadModules } from "esri-loader";
+import { loadModules } from "esri-loader";
+import { useEffect } from "react";
 
-class Mapping {
-  mapView: import("esri/views/MapView");
-  map: import("esri/Map");
-
-  async initializeMap(): Promise<Mapping> {
-    loadCss("https://js.arcgis.com/4.10/esri/css/main.css");
-
-    // type the returned objects of loadModules using import types. Requires Typescript 2.9
-    type MyModules = [
-      typeof import("esri/Map"),
-      typeof import("esri/views/MapView"),
-      typeof import("esri/config"),
-    ];
-    const [Map, MapView, esriConfig] = await (loadModules([
-      "esri/Map", 
+const mapping = ({ setCurrentBuilding, buildingData }) => {
+  console.log(buildingData.buildings);
+  useEffect(() => {
+    loadModules([
+      "esri/Map",
       "esri/views/MapView",
-      "esri/config"
-    ]) as Promise<MyModules>);
+      "esri/config",
+      "esri/layers/FeatureLayer"
+    ])
+    .then(([
+      Map,
+      MapView,
+      esriConfig, 
+      FeatureLayer
+    ]) => {
     
-    esriConfig.apiKey =
-      "AAPK46037065a5604a5cabbb162bdae00b9dIk7R92SXsV3FKXjgXnhF829z71uovMU0SH_pRtgSH4aiDzpDEdAl4MksTkBPHFfg";
+      const map = new Map({
+        basemap: "arcgis-topographic" 
+      });
+  
+      const view = new MapView({
+        map: map,
+        center: [151.231, -33.917], // Longitude, latitude
+        zoom: 18, // Zoom level
+        container: "viewDiv" // Div element
+      });
+  
+      esriConfig.apiKey = "AAPK7fbfd710c5e443e28d309fc3ba297ceb_Wb-Lg6smsxOnafMSRQLTx3WwDI-mv9jKXig8AECw0pTh06C_uyS40dTDpgPIDMd"; 
+      
+      const buildingRenderer = {
+        "type": "simple",
+        "symbol": {
+          "type": "picture-marker",
+          "url": "https://static.vecteezy.com/system/resources/previews/009/385/892/original/pin-location-icon-sign-free-png.png",
+          "width": "24px",
+          "height": "32px"
+        }
+      }
 
-    const map = new Map({
-      basemap: "arcgis-topographic",
-    });
+      const buildingLabel = {
+        symbol: {
+          type: "text",
+          color: "#FFFFFF",
+          haloColor: "#5E8D74",
+          haloSize: "2px",
+          font: {
+            size: "12px",
+            family: "Noto Sans",
+            style: "normal",
+            weight: "normal"
+          }
+        },
 
-    const view = new MapView({
-      map: map,
-      center: [151.231, -33.917],
-      zoom: 16,
-      container: "viewDiv",
-    });
+        labelPlacement: "above-center",
+        labelExpressionInfo: {
+          expression: "$feature.building_name"
+        }
+      };
+      
+      const layer = new FeatureLayer({
+        url: "https://services7.arcgis.com/2PcAgU0oUMmfCqzW/arcgis/rest/services/unsw_map_feature_layer/FeatureServer/0",
+        renderer: buildingRenderer,
+        labelingInfo: [buildingLabel]
+      });
+      
+      map.add(layer);
+      
+      console.log('works>>');
+      view.on("click", function (evt) {
+        view.hitTest(evt.screenPoint)
+          .then(function (response) {
+            var graphic = response.results[0].graphic;
+            if (graphic) {
+              const building = graphic.attributes.building_name; 
 
-    view.when().then(() => {
-      console.log("map is ready");
-    });
+              if (building) {
+                const buildingFound = buildingData.buildings.find(
+                  (b) => b.name === building,
+                );
+                if (buildingFound) {
+                  setCurrentBuilding(buildingFound);
+                }
+              }
 
-    this.mapView = view;
-    this.map = map;
+            }
+          });
+      });
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+  }, []);
 
-    return this;
-  }
-}
+  return (
+    <div id="viewDiv"></div>
+  );
+};
 
-export default Mapping;
+export default mapping;
+

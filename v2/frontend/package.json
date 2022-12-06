@@ -16,6 +16,7 @@
     "@mui/material": "^5.10.14",
     "@mui/system": "^5.10.14",
     "@mui/x-date-pickers": "^5.0.8",
+    "@types/arcgis-js-api": "^4.25.0",
     "axios": "^0.26.1",
     "date-fns": "^2.29.3",
     "esri-loader": "^3.7.0",

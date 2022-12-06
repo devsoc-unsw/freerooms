@@ -26,6 +26,7 @@ import Button from "../components/Button";
 import Campus from "../components/Campus";
 import Landing from "../components/Landing";
 import SearchBar from "../components/SearchBar";
+
 import { API_URL } from "../config";
 import {
   Building,
@@ -37,8 +38,9 @@ import {
 } from "../types";
 import BuildingInfo from "../views/BuildingInfo";
 import CardList from "../views/CardList";
+import Mapping from "../components/BaseMap";
 
-const Home: NextPage<{ buildingData: BuildingReturnData }> = ({buildingData}) => {
+const Home: NextPage<{ buildingData: BuildingReturnData }> = ({ buildingData }) => {
   const router = useRouter();
   const { building } = router.query;
 
@@ -59,6 +61,7 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({buildingData}) =>
   const [datetime, setDatetime] = React.useState<Date | null>(new Date());
   const [filters, setFilters] = React.useState<Filters>({});
   const [showLanding, setShowLanding] = React.useState(true);
+  const [showMap, setShowMap] = React.useState(false);
 
   const [roomStatusData, setRoomStatusData] = React.useState<RoomsReturnData | undefined>();
   const fetchRoomStatus = () => {
@@ -98,10 +101,109 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({buildingData}) =>
   }, [building]);
 
   const drawerOpen = currentBuilding ? true : false;
-  console.log('hello')
+
+  const handleShowMap = () => {
+    setShowMap(currState => !currState);
+  }; 
 
   return (
-    <Campus></Campus>
+    <Container maxWidth={false}>
+      <Head>
+        <title>Freerooms</title>
+        <meta
+          name="description"
+          content="A web application designed to aid UNSW students in finding vacant rooms."
+        />
+        <link rel="icon" href="/favicon.ico" />
+        <meta name="viewport" content="initial-scale=1, width=device-width" />
+      </Head>
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <AppBar
+          position="fixed"
+          open={drawerOpen}
+          sx={(theme) => ({
+            borderBottom: "1px solid #e0e0e0",
+            justifyContent: "center",
+            alignItems: "center",
+          })}
+        >
+          <div id={"header"}>
+            <div id={"headerBranding"}>
+              <Branding
+                onClick={() => {
+                  setCurrentBuilding(null);
+                  window.location.replace(window.location.href);
+                }}
+              />
+            </div>
+            {
+              showLanding ? null :
+                <div id={"headerSearch"}>
+                  <SearchBar setQuery={setQuery}></SearchBar>
+                </div>
+            }
+            <div id={"headerButtons"}>
+              <ButtonGroup>
+                <Stack direction="row" spacing={1.5}>
+                  <Button onClick={handleShowMap}>Map</Button>
+                </Stack>
+              </ButtonGroup>
+            </div>
+          </div>
+        </AppBar>
+        <Main open={drawerOpen}>
+          {
+            showLanding ?
+              <Landing setShowLanding={setShowLanding} />
+              : null
+          }
+          {/* selection === "upper" ? (
+            <UpperBuildings setCurrentBuilding={setCurrentBuilding} />
+          ) : (
+            <p>
+              Todo: load lower campus buildings{buildings} {isLoading}{" "}
+              {`${isError}`}
+            </p>
+          )*/}
+          <div id={"Home-Building-Tiles"}>
+            {
+              showMap ? 
+              <Mapping setCurrentBuilding={setCurrentBuilding} buildingData={buildingData} />
+              : <CardList
+                buildingData={buildingData}
+                setCurrentBuilding={setCurrentBuilding}
+                sort={sort}
+                query={query}
+                roomStatusData={roomStatusData}
+              />
+            }
+          </div>
+        </Main>
+        <Drawer
+          sx={{
+            width: drawerWidth,
+            flexShrink: 0,
+            "& .MuiDrawer-paper": {
+              width: drawerWidth,
+              boxSizing: "border-box",
+            },
+          }}
+          variant="persistent"
+          anchor="right"
+          open={drawerOpen}
+        >
+          <Divider />
+          <BuildingInfo
+            building={currentBuilding}
+            onClose={() => setCurrentBuilding(null)}
+            datetime={datetime}
+            setDatetime={setDatetime}
+            roomStatusData={roomStatusData}
+          />
+        </Drawer>
+      </Box>
+    </Container>
   );
   // return (
   //   <Container maxWidth={false}>
