@@ -2,7 +2,6 @@ import { loadModules } from "esri-loader";
 import { useEffect } from "react";
 
 const mapping = ({ setCurrentBuilding, buildingData }) => {
-  console.log(buildingData.buildings);
   useEffect(() => {
     loadModules([
       "esri/Map",
@@ -16,7 +15,6 @@ const mapping = ({ setCurrentBuilding, buildingData }) => {
       esriConfig, 
       FeatureLayer
     ]) => {
-    
       const map = new Map({
         basemap: "arcgis-topographic" 
       });

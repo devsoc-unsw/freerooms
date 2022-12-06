@@ -1,8 +1,6 @@
 /*
   This is the home page (list view of all the buildings)
 */
-import SearchIcon from "@mui/icons-material/Search";
-import { BoxProps, Typography } from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -16,14 +14,11 @@ import { DateTime } from "luxon";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image, { ImageProps } from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
-import useSWR from "swr";
 
 import Branding from "../components/Branding";
 import Button from "../components/Button";
-import Campus from "../components/Campus";
 import Landing from "../components/Landing";
 import SearchBar from "../components/SearchBar";
 
@@ -34,7 +29,6 @@ import {
   Filters,
   RoomsRequestParams,
   RoomsReturnData,
-  RoomStatus,
 } from "../types";
 import BuildingInfo from "../views/BuildingInfo";
 import CardList from "../views/CardList";
@@ -62,6 +56,7 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({ buildingData }) 
   const [filters, setFilters] = React.useState<Filters>({});
   const [showLanding, setShowLanding] = React.useState(true);
   const [showMap, setShowMap] = React.useState(false);
+  const [mapState, setMapState] = React.useState(false);
 
   const [roomStatusData, setRoomStatusData] = React.useState<RoomsReturnData | undefined>();
   const fetchRoomStatus = () => {
@@ -153,6 +148,7 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({ buildingData }) 
           </div>
         </AppBar>
         <Main open={drawerOpen}>
+          { console.log('drawer opening')}
           {
             showLanding ?
               <Landing setShowLanding={setShowLanding} />
@@ -168,8 +164,13 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({ buildingData }) 
           )*/}
           <div id={"Home-Building-Tiles"}>
             {
-              showMap ? 
-              <Mapping setCurrentBuilding={setCurrentBuilding} buildingData={buildingData} />
+              (showMap && !mapState) ? 
+              <>
+                <Mapping 
+                  setCurrentBuilding={setCurrentBuilding} 
+                  buildingData={buildingData} 
+                /> 
+              </>
               : <CardList
                 buildingData={buildingData}
                 setCurrentBuilding={setCurrentBuilding}
@@ -205,101 +206,6 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({ buildingData }) 
       </Box>
     </Container>
   );
-  // return (
-  //   <Container maxWidth={false}>
-  //     <Head>
-  //       <title>Freerooms</title>
-  //       <meta
-  //         name="description"
-  //         content="A web application designed to aid UNSW students in finding vacant rooms."
-  //       />
-  //       <link rel="icon" href="/favicon.ico" />
-  //       <meta name="viewport" content="initial-scale=1, width=device-width" />
-  //     </Head>
-  //     <Box sx={{ display: "flex" }}>
-  //       <CssBaseline />
-  //       <AppBar
-  //         position="fixed"
-  //         open={drawerOpen}
-  //         sx={(theme) => ({
-  //           borderBottom: "1px solid #e0e0e0",
-  //           justifyContent: "center",
-  //           alignItems: "center",
-  //         })}
-  //       >
-  //         <div id={"header"}>
-  //           <div id={"headerBranding"}>
-  //             <Branding
-  //               onClick={() => {
-  //                 setCurrentBuilding(null);
-  //                 window.location.replace(window.location.href);
-  //               }}
-  //             />
-  //           </div>
-  //           {
-  //             showLanding ? null :
-  //               <div id={"headerSearch"}>
-  //                 <SearchBar setQuery={setQuery}></SearchBar>
-  //               </div>
-  //           }
-  //           <div id={"headerButtons"}>
-  //             <ButtonGroup>
-  //               <Stack direction="row" spacing={1.5}>
-  //                 <Button>Map</Button>
-  //               </Stack>
-  //             </ButtonGroup>
-  //           </div>
-  //         </div>
-  //       </AppBar>
-  //       <Main open={drawerOpen}>
-  //         {
-  //           showLanding ?
-  //             <Landing setShowLanding={setShowLanding} />
-  //             : null
-  //         }
-  //         {/* selection === "upper" ? (
-  //           <UpperBuildings setCurrentBuilding={setCurrentBuilding} />
-  //         ) : (
-  //           <p>
-  //             Todo: load lower campus buildings{buildings} {isLoading}{" "}
-  //             {`${isError}`}
-  //           </p>
-  //         )*/}
-  //         <div id={"Home-Building-Tiles"}>
-  //           <CardList
-  //             buildingData={buildingData}
-  //             setCurrentBuilding={setCurrentBuilding}
-  //             sort={sort}
-  //             query={query}
-  //             roomStatusData={roomStatusData}
-  //           />
-  //         </div>
-  //       </Main>
-  //       <Drawer
-  //         sx={{
-  //           width: drawerWidth,
-  //           flexShrink: 0,
-  //           "& .MuiDrawer-paper": {
-  //             width: drawerWidth,
-  //             boxSizing: "border-box",
-  //           },
-  //         }}
-  //         variant="persistent"
-  //         anchor="right"
-  //         open={drawerOpen}
-  //       >
-  //         <Divider />
-  //         <BuildingInfo
-  //           building={currentBuilding}
-  //           onClose={() => setCurrentBuilding(null)}
-  //           datetime={datetime}
-  //           setDatetime={setDatetime}
-  //           roomStatusData={roomStatusData}
-  //         />
-  //       </Drawer>
-  //     </Box>
-  //   </Container>
-  // );
 };
 
 export async function getStaticProps() {
