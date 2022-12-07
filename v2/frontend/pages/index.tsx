@@ -2,8 +2,7 @@
   This is the home page (list view of all the buildings)
 */
 
-import SearchIcon from "@mui/icons-material/Search";
-import { BoxProps, Typography } from "@mui/material";
+
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -24,6 +23,7 @@ import useSWR from "swr";
 
 import Branding from "../components/Branding";
 import Button from "../components/Button";
+import FilterBar from "../components/FilterBar";
 import Landing from "../components/Landing";
 import SearchBar from "../components/SearchBar";
 import { API_URL } from "../config";
@@ -136,6 +136,7 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
               showLanding ? null :
                 <div id={"headerSearch"}>
                   <SearchBar setQuery={setQuery}></SearchBar>
+                  <FilterBar filters={filters} setFilters={setFilters}/>
                 </div>
             }
             <div id={"headerButtons"}>
