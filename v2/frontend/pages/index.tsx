@@ -63,25 +63,26 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
   const [showLanding, setShowLanding] = React.useState(true);
 
   const [roomStatusData, setRoomStatusData] = React.useState<RoomsReturnData | undefined>();
-  const fetchRoomStatus = () => {
-    const params: RoomsRequestParams = { ...filters };
-    if (datetime) {
-      params.datetime =
-        DateTime.fromJSDate(datetime).toFormat("yyyy-MM-dd'T'HH:mm");
-    }
-
-    axios
-      .get(API_URL + "/rooms", { params: params })
-      .then((res) => {
-        setRoomStatusData(res.status == 200 ? res.data : {});
-      })
-      .catch((err) => setRoomStatusData({}));
-  };
 
   React.useEffect(() => {
+    const fetchRoomStatus = () => {
+      const params: RoomsRequestParams = { ...filters };
+      if (datetime) {
+        params.datetime =
+          DateTime.fromJSDate(datetime).toFormat("yyyy-MM-dd'T'HH:mm");
+      }
+
+      axios
+        .get(API_URL + "/rooms", { params: params })
+        .then((res) => {
+          setRoomStatusData(res.status == 200 ? res.data : {});
+        })
+        .catch((err) => setRoomStatusData({}));
+    };
+
     setRoomStatusData(undefined);
     fetchRoomStatus();
-  }, [filters, datetime, fetchRoomStatus]);
+  }, [filters, datetime]);
 
   const [currentBuilding, setCurrentBuilding] = React.useState<Building | null>(
     null,
@@ -97,7 +98,8 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
         router.replace("/", undefined, { shallow: true });
       }
     }
-  }, [building, buildingData.buildings, router]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [building]);
 
   const drawerOpen = currentBuilding ? true : false;
 
