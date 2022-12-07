@@ -26,23 +26,28 @@
 #header {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    width: 100vw;
+    justify-content: center;
     max-width: 1300px;
 }
 #headerBranding {
     display: flex;
     justify-self: flex-start;
+    margin-right: 2rem;
 }
 
 #SearchBox {
-    width: 50vw;
+    width: 25rem;
 }
 
 #LandingScreenWhole {
     padding-bottom: 15vh;
     display: flex;
     flex-direction: row;
+}
+#headerButtons {
+    margin: auto;
+    display: flex;
+    align-self: center;
 }
 @media (min-width: 800px) {
     #headerSearch {
@@ -82,9 +87,6 @@
         display: flex;
         flex-direction: column;
         gap: 1rem;
-    }
-    #headerButtons {
-        margin: auto;
     }
     #SearchBox {
         width: 70vw;

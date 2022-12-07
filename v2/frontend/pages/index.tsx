@@ -121,8 +121,8 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
           open={drawerOpen}
           sx={(theme) => ({
             borderBottom: "1px solid #e0e0e0",
-            justifyContent: "center",
-            alignItems: "center",
+            justifyContent: "space-around",
+            alignItems: "center"
           })}
         >
           <div id={"header"}>
@@ -139,15 +139,15 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
                 <div id={"headerSearch"}>
                   <SearchBar setQuery={setQuery}></SearchBar>
                   <FilterBar filters={filters} setFilters={setFilters}/>
+                  <div id={"headerButtons"}>
+                    <ButtonGroup>
+                      <Stack direction="row" spacing={1.5}>
+                        <Button>Map</Button>
+                      </Stack>
+                    </ButtonGroup>
+                  </div>
                 </div>
             }
-            <div id={"headerButtons"}>
-              <ButtonGroup>
-                <Stack direction="row" spacing={1.5}>
-                  <Button>Map</Button>
-                </Stack>
-              </ButtonGroup>
-            </div>
           </div>
         </AppBar>
         <Main open={drawerOpen}>
