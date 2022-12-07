@@ -1,10 +1,11 @@
 import "../styles/globals.css";
-import type { AppProps } from "next/app";
-import { createTheme } from "@mui/material/styles";
+
 import { orange, pink } from "@mui/material/colors";
+import { createTheme } from "@mui/material/styles";
 import ThemeProvider from "@mui/system/ThemeProvider";
-import { SWRConfig } from "swr";
 import axios from "axios";
+import type { AppProps } from "next/app";
+import { SWRConfig } from "swr";
 
 const theme = createTheme({
   palette: {

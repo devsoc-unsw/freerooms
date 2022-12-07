@@ -22,7 +22,7 @@ const asyncHandler = (fn: RequestHandler) =>
 
 // Route to get all the buildings
 app.get(
-  "/buildings",
+  "/api/buildings",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const buildingData = await getAllBuildings();
     const data = { buildings: buildingData };
@@ -33,7 +33,7 @@ app.get(
 
 // Route to get all the rooms in a particular building
 app.get(
-  "/buildings/:buildingID",
+  "/api/buildings/:buildingID",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const { buildingID } = req.params;
 
@@ -86,7 +86,7 @@ app.get(
 
 // Route to get the availability of a particular room in a particular building
 app.get(
-  "/buildings/:buildingID/:roomNumber",
+  "/api/buildings/:buildingID/:roomNumber",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const { buildingID, roomNumber } = req.params;
 
@@ -98,7 +98,7 @@ app.get(
 
 // Route to get status of all rooms
 app.get(
-  "/rooms",
+  "/api/rooms",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const datetimeString = req.query.datetime as string;
     const datetime = datetimeString ? getDate(datetimeString) : new Date();
@@ -148,7 +148,7 @@ app.get(
 
 // Route to get the availability of a particular room in a particular building
 app.get(
-  "/rooms/:roomID",
+  "/api/rooms/:roomID",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const { roomID } = req.params;
     const [campus, buildingGrid, roomNumber] = roomID.split('-');
@@ -159,7 +159,7 @@ app.get(
   })
 );
 
-// After each request, check if database.json needs to be updated
+/*// After each request, check if database.json needs to be updated
 app.use(
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const timeNow = new Date();
@@ -173,7 +173,7 @@ app.use(
     }
     next();
   })
-);
+);*/
 
 // Error-handling middleware
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {

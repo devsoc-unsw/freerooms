@@ -2,48 +2,45 @@
   This is the home page (list view of all the buildings)
 */
 
-import React from "react";
-import { server } from "../config";
-import { DateTime } from "luxon";
-import {
-  RoomStatus,
-  Building,
-  BuildingReturnData,
-  Filters,
-  RoomsReturnData,
-  RoomsRequestParams,
-} from "../types";
-
-import useSWR from "swr";
-import type { NextPage } from "next";
-import Head from "next/head";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import Image, { ImageProps } from "next/image";
-
-import FilterBar from "../components/FilterBar";
-import Drawer from "@mui/material/Drawer";
-import Box from "@mui/material/Box";
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
-import Container from "@mui/material/Container";
-import { styled } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import Divider from "@mui/material/Divider";
-import Stack from "@mui/material/Stack";
 import SearchIcon from "@mui/icons-material/Search";
 import { BoxProps, Typography } from "@mui/material";
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import CssBaseline from "@mui/material/CssBaseline";
+import Divider from "@mui/material/Divider";
+import Drawer from "@mui/material/Drawer";
+import Stack from "@mui/material/Stack";
+import { styled } from "@mui/material/styles";
+import axios from "axios";
+import { DateTime } from "luxon";
+import type { NextPage } from "next";
+import Head from "next/head";
+import Image, { ImageProps } from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import React from "react";
+import useSWR from "swr";
 
 import Branding from "../components/Branding";
 import Button from "../components/Button";
-import BuildingInfo from "../views/BuildingInfo";
-import SearchBar from "../components/SearchBar";
-import CardList from "../views/CardList";
-import axios from "axios";
 import Landing from "../components/Landing";
+import SearchBar from "../components/SearchBar";
+import { API_URL } from "../config";
+import {
+  Building,
+  BuildingReturnData,
+  Filters,
+  RoomsRequestParams,
+  RoomsReturnData,
+  RoomStatus,
+} from "../types";
+import BuildingInfo from "../views/BuildingInfo";
+import CardList from "../views/CardList";
 
 const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
-  buildingData,
-}) => {
+                                                                buildingData,
+                                                              }) => {
   const router = useRouter();
   const { building } = router.query;
 
@@ -63,10 +60,9 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
   const [query, setQuery] = React.useState<string>("");
   const [datetime, setDatetime] = React.useState<Date | null>(new Date());
   const [filters, setFilters] = React.useState<Filters>({});
+  const [showLanding, setShowLanding] = React.useState(true);
 
-  const [roomStatusData, setRoomStatusData] = React.useState<
-    RoomsReturnData | undefined
-  >();
+  const [roomStatusData, setRoomStatusData] = React.useState<RoomsReturnData | undefined>();
   const fetchRoomStatus = () => {
     const params: RoomsRequestParams = { ...filters };
     if (datetime) {
@@ -75,7 +71,7 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
     }
 
     axios
-      .get(server + "/rooms", { params: params })
+      .get(API_URL + "/rooms", { params: params })
       .then((res) => {
         setRoomStatusData(res.status == 200 ? res.data : {});
       })
@@ -88,13 +84,13 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
   }, [filters, datetime]);
 
   const [currentBuilding, setCurrentBuilding] = React.useState<Building | null>(
-    null
+    null,
   );
 
   React.useEffect(() => {
     if (building) {
       const selectedBuilding = buildingData.buildings.find(
-        (b) => b.id === building
+        (b) => b.id === building,
       );
       if (selectedBuilding) {
         setCurrentBuilding(selectedBuilding);
@@ -127,22 +123,36 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
             alignItems: "center",
           })}
         >
-          <Branding
-            onClick={() => {
-              setCurrentBuilding(null);
-            }}
-          />
-          <SearchBar setQuery={setQuery}></SearchBar>
-          <FilterBar filters={filters} setFilters={setFilters}/>
-          <div />
-          <ButtonGroup>
-            <Stack direction="row" spacing={1.5}>
-              <Button>Map</Button>
-            </Stack>
-          </ButtonGroup>
+          <div id={"header"}>
+            <div id={"headerBranding"}>
+              <Branding
+                onClick={() => {
+                  setCurrentBuilding(null);
+                  window.location.replace(window.location.href);
+                }}
+              />
+            </div>
+            {
+              showLanding ? null :
+                <div id={"headerSearch"}>
+                  <SearchBar setQuery={setQuery}></SearchBar>
+                </div>
+            }
+            <div id={"headerButtons"}>
+              <ButtonGroup>
+                <Stack direction="row" spacing={1.5}>
+                  <Button>Map</Button>
+                </Stack>
+              </ButtonGroup>
+            </div>
+          </div>
         </AppBar>
         <Main open={drawerOpen}>
-          <Landing/>
+          {
+            showLanding ?
+              <Landing setShowLanding={setShowLanding} />
+              : null
+          }
           {/* selection === "upper" ? (
             <UpperBuildings setCurrentBuilding={setCurrentBuilding} />
           ) : (
@@ -191,9 +201,15 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
 export async function getStaticProps() {
   // fetches /buildings via **BUILD** time so we don't need to have
   // the client fetch buildings data every request
-  const res = await fetch(server + "/buildings");
-  const buildings: BuildingReturnData = await res.json();
-  // const buildings: BuildingReturnData = { buildings: [] };
+
+  let buildings: BuildingReturnData;
+  try {
+    const res = await fetch(API_URL + "/buildings");
+    buildings = await res.json();
+  } catch {
+    buildings = { buildings: [] };
+  }
+
   return {
     props: {
       buildingData: buildings,

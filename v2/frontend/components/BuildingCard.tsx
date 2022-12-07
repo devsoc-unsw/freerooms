@@ -1,16 +1,16 @@
+import { Typography } from "@mui/material";
+import Box, { BoxProps } from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
+import { styled } from "@mui/material/styles";
+import Image, { ImageProps } from "next/image";
+import Link from "next/link";
 import React, { useRef } from "react";
 import useSWR from "swr";
-import { server } from "../config";
-import { Building, BuildingStatus } from "../types";
 
-import Image, { ImageProps } from "next/image";
-import { styled } from "@mui/material/styles";
-import Box, { BoxProps } from "@mui/material/Box";
-import StatusDot from "./StatusDot";
-import { Typography } from "@mui/material";
-import Link from "next/link";
-import CircularProgress from "@mui/material/CircularProgress";
+import { API_URL } from "../config";
 import useOnScreen from "../hooks/useOnScreen";
+import { Building, BuildingStatus } from "../types";
+import StatusDot from "./StatusDot";
 
 const INITIALISING = -2;
 const FAILED = -1;
@@ -69,13 +69,14 @@ const TitleBox = styled(Box)<BoxProps>(({ theme }) => ({
 const BuildingCard: React.FC<{
   building: Building;
   setBuilding: (building: Building) => void;
-  freerooms: number
+  freerooms: number;
 }> = ({ building, setBuilding, freerooms }) => {
   const ref = useRef();
 
   return (
     <MainBox ref={ref} onClick={() => setBuilding(building)}>
       <StyledImage
+        alt={`Image of ${building.id}`}
         src={`/assets/building_photos/${building.id}.jpg`}
         layout="fill"
         objectFit="cover"

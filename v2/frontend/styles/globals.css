@@ -1,4 +1,5 @@
 @import "typography.css";
+@import "landing.css";
 
 html,
 body {
@@ -6,6 +7,12 @@ body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+@media (max-width: 600px) {
+    body {
+        margin-top: 8rem;
+    }
 }
 
 a {
@@ -45,8 +52,6 @@ a {
     }
 }
 
-@media (max-width: 800px) {
-    #landing-freerooms-logo {
-        display: none;
-    }
-}
+/*@media (max-width: 800px) {*/
+
+/*}*/
