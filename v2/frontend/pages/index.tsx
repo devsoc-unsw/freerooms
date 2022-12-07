@@ -81,7 +81,7 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
   React.useEffect(() => {
     setRoomStatusData(undefined);
     fetchRoomStatus();
-  }, [filters, datetime]);
+  }, [filters, datetime, fetchRoomStatus]);
 
   const [currentBuilding, setCurrentBuilding] = React.useState<Building | null>(
     null,
@@ -97,7 +97,7 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
         router.replace("/", undefined, { shallow: true });
       }
     }
-  }, [building]);
+  }, [building, buildingData.buildings, router]);
 
   const drawerOpen = currentBuilding ? true : false;
 

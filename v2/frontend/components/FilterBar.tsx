@@ -1,18 +1,18 @@
-import React, { useState, useEffect, useRef, PropsWithChildren } from "react";
-import { Building, BuildingReturnData, DropDown, DropDownItem, Filters } from "../types";
-
-import Container from '@mui/material/Container';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
 import Box, { BoxProps } from '@mui/material/Box';
 import Button, { ButtonProps } from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
+import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import { styled, Theme } from '@mui/material/styles';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Checkbox from '@mui/material/Checkbox';
+import React, { PropsWithChildren,useEffect, useRef, useState } from "react";
+
+import { Building, BuildingReturnData, DropDown, DropDownItem, Filters } from "../types";
 
 const StyledFilterButton = styled(Box)<BoxProps>(({ theme }) => ({
   height: 40,

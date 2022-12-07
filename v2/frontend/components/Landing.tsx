@@ -14,7 +14,7 @@ const Landing = (props: { setShowLanding: (arg0: boolean) => void; }) => {
   useEffect(() => {
     props.setShowLanding(true);
     window.scrollTo(0, 0)
-  }, [])
+  }, [props.setShowLanding])
   return (
     <div id={"LandingScreenWhole"} style={{
       height: "95vh",
