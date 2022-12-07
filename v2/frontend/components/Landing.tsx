@@ -37,7 +37,7 @@ const Landing = (props: { setShowLanding: (arg0: boolean) => void; }) => {
           } else {
             window.scrollBy({ left: 0, top: position - 250, behavior: "smooth" });
           }
-          await delay(500);
+          await delay(600);
           props.setShowLanding(false)
         }} id={"FreeroomsCTA"} style={{
           backgroundColor: "#111",
