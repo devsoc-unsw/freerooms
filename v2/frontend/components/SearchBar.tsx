@@ -15,8 +15,9 @@ const SearchBar = ({ setQuery }: { setQuery: (query: string) => void }) => {
     <Box id={"SearchBox"}>
       <TextField
         id="input-with-sx"
-        placeholder="Search for free room..."
+        placeholder="Search for a building..."
         fullWidth
+        inputProps={{style: {height: "12px"}}}
         //entering the target
         onKeyDown={(event) => {
           const target = event.target as HTMLInputElement;

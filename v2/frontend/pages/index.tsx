@@ -2,8 +2,7 @@
   This is the home page (list view of all the buildings)
 */
 
-import SearchIcon from "@mui/icons-material/Search";
-import { BoxProps, Typography } from "@mui/material";
+
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -24,6 +23,7 @@ import useSWR from "swr";
 
 import Branding from "../components/Branding";
 import Button from "../components/Button";
+import FilterBar from "../components/FilterBar";
 import Landing from "../components/Landing";
 import SearchBar from "../components/SearchBar";
 import { API_URL } from "../config";
@@ -63,22 +63,23 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
   const [showLanding, setShowLanding] = React.useState(true);
 
   const [roomStatusData, setRoomStatusData] = React.useState<RoomsReturnData | undefined>();
-  const fetchRoomStatus = () => {
-    const params: RoomsRequestParams = { ...filters };
-    if (datetime) {
-      params.datetime =
-        DateTime.fromJSDate(datetime).toFormat("yyyy-MM-dd'T'HH:mm");
-    }
-
-    axios
-      .get(API_URL + "/rooms", { params: params })
-      .then((res) => {
-        setRoomStatusData(res.status == 200 ? res.data : {});
-      })
-      .catch((err) => setRoomStatusData({}));
-  };
 
   React.useEffect(() => {
+    const fetchRoomStatus = () => {
+      const params: RoomsRequestParams = { ...filters };
+      if (datetime) {
+        params.datetime =
+          DateTime.fromJSDate(datetime).toFormat("yyyy-MM-dd'T'HH:mm");
+      }
+
+      axios
+        .get(API_URL + "/rooms", { params: params })
+        .then((res) => {
+          setRoomStatusData(res.status == 200 ? res.data : {});
+        })
+        .catch((err) => setRoomStatusData({}));
+    };
+
     setRoomStatusData(undefined);
     fetchRoomStatus();
   }, [filters, datetime]);
@@ -97,6 +98,7 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
         router.replace("/", undefined, { shallow: true });
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [building]);
 
   const drawerOpen = currentBuilding ? true : false;
@@ -119,8 +121,8 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
           open={drawerOpen}
           sx={(theme) => ({
             borderBottom: "1px solid #e0e0e0",
-            justifyContent: "center",
-            alignItems: "center",
+            justifyContent: "space-around",
+            alignItems: "center"
           })}
         >
           <div id={"header"}>
@@ -136,15 +138,16 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
               showLanding ? null :
                 <div id={"headerSearch"}>
                   <SearchBar setQuery={setQuery}></SearchBar>
+                  <FilterBar filters={filters} setFilters={setFilters}/>
+                  <div id={"headerButtons"}>
+                    <ButtonGroup>
+                      <Stack direction="row" spacing={1.5}>
+                        <Button>Map</Button>
+                      </Stack>
+                    </ButtonGroup>
+                  </div>
                 </div>
             }
-            <div id={"headerButtons"}>
-              <ButtonGroup>
-                <Stack direction="row" spacing={1.5}>
-                  <Button>Map</Button>
-                </Stack>
-              </ButtonGroup>
-            </div>
           </div>
         </AppBar>
         <Main open={drawerOpen}>
