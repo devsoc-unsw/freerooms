@@ -19,6 +19,7 @@ import React from "react";
 
 import Branding from "../components/Branding";
 import Button from "../components/Button";
+import FilterBar from "../components/FilterBar";
 import Landing from "../components/Landing";
 import SearchBar from "../components/SearchBar";
 
@@ -34,7 +35,9 @@ import BuildingInfo from "../views/BuildingInfo";
 import CardList from "../views/CardList";
 import Mapping from "../components/BaseMap";
 
-const Home: NextPage<{ buildingData: BuildingReturnData }> = ({ buildingData }) => {
+const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
+  buildingData,
+}) => {
   const router = useRouter();
   const { building } = router.query;
 
@@ -58,49 +61,53 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({ buildingData }) 
   const [showMap, setShowMap] = React.useState(false);
   const [buttonText, setButtonText] = React.useState<string>("Map View");
 
-  const [roomStatusData, setRoomStatusData] = React.useState<RoomsReturnData | undefined>();
-  const fetchRoomStatus = () => {
-    const params: RoomsRequestParams = { ...filters };
-    if (datetime) {
-      params.datetime =
-        DateTime.fromJSDate(datetime).toFormat("yyyy-MM-dd'T'HH:mm");
-    }
-
-    axios
-      .get(API_URL + "/rooms", { params: params })
-      .then((res) => {
-        setRoomStatusData(res.status == 200 ? res.data : {});
-      })
-      .catch((err) => setRoomStatusData({}));
-  };
+  const [roomStatusData, setRoomStatusData] = React.useState<
+    RoomsReturnData | undefined
+  >();
 
   React.useEffect(() => {
+    const fetchRoomStatus = () => {
+      const params: RoomsRequestParams = { ...filters };
+      if (datetime) {
+        params.datetime =
+          DateTime.fromJSDate(datetime).toFormat("yyyy-MM-dd'T'HH:mm");
+      }
+
+      axios
+        .get(API_URL + "/rooms", { params: params })
+        .then((res) => {
+          setRoomStatusData(res.status == 200 ? res.data : {});
+        })
+        .catch((err) => setRoomStatusData({}));
+    };
+
     setRoomStatusData(undefined);
     fetchRoomStatus();
   }, [filters, datetime]);
 
   const [currentBuilding, setCurrentBuilding] = React.useState<Building | null>(
-    null,
+    null
   );
 
   React.useEffect(() => {
     if (building) {
       const selectedBuilding = buildingData.buildings.find(
-        (b) => b.id === building,
+        (b) => b.id === building
       );
       if (selectedBuilding) {
         setCurrentBuilding(selectedBuilding);
         router.replace("/", undefined, { shallow: true });
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [building]);
 
   const drawerOpen = currentBuilding ? true : false;
 
   const handleShowMap = () => {
-    setShowMap(currState => !currState);
+    setShowMap((currState) => !currState);
     setButtonText(buttonText == "Map View" ? "List View" : "Map View");
-  }; 
+  };
 
   return (
     <Container maxWidth={false}>
@@ -120,7 +127,7 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({ buildingData }) 
           open={drawerOpen}
           sx={(theme) => ({
             borderBottom: "1px solid #e0e0e0",
-            justifyContent: "center",
+            justifyContent: "space-around",
             alignItems: "center",
           })}
         >
@@ -133,27 +140,31 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({ buildingData }) 
                 }}
               />
             </div>
-            {
-              (showLanding || showMap) ? null :
-                <div id={"headerSearch"}>
-                  <SearchBar setQuery={setQuery}></SearchBar>
+            {showLanding ? null : showMap ? (
+              <div id={"headerButtons"}>
+                <ButtonGroup>
+                  <Stack direction="row" spacing={1.5}>
+                    <Button onClick={handleShowMap}>{buttonText}</Button>
+                  </Stack>
+                </ButtonGroup>
+              </div>
+            ) : (
+              <div id={"headerSearch"}>
+                <SearchBar setQuery={setQuery}></SearchBar>
+                <FilterBar filters={filters} setFilters={setFilters} />
+                <div id={"headerButtons"}>
+                  <ButtonGroup>
+                    <Stack direction="row" spacing={1.5}>
+                      <Button onClick={handleShowMap}>{buttonText}</Button>
+                    </Stack>
+                  </ButtonGroup>
                 </div>
-            }
-            <div id={"headerButtons"}>
-              <ButtonGroup>
-                <Stack direction="row" spacing={1.5}>
-                  <Button onClick={handleShowMap}>{buttonText}</Button>
-                </Stack>
-              </ButtonGroup>
-            </div>
+              </div>
+            )}
           </div>
         </AppBar>
         <Main open={drawerOpen}>
-          {
-            showLanding ?
-              <Landing setShowLanding={setShowLanding} />
-              : null
-          }
+          {showLanding ? <Landing setShowLanding={setShowLanding} /> : null}
           {/* selection === "upper" ? (
             <UpperBuildings setCurrentBuilding={setCurrentBuilding} />
           ) : (
@@ -163,20 +174,20 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({ buildingData }) 
             </p>
           )*/}
           <div id={"Home-Building-Tiles"}>
-            {
-              (showMap) ? 
-              <Mapping 
-                setCurrentBuilding={setCurrentBuilding} 
-                buildingData={buildingData} 
-              /> 
-              : <CardList
+            {showMap ? (
+              <Mapping
+                setCurrentBuilding={setCurrentBuilding}
+                buildingData={buildingData}
+              />
+            ) : (
+              <CardList
                 buildingData={buildingData}
                 setCurrentBuilding={setCurrentBuilding}
                 sort={sort}
                 query={query}
                 roomStatusData={roomStatusData}
               />
-            }
+            )}
           </div>
         </Main>
         <Drawer

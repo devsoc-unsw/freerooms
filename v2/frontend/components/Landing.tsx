@@ -1,26 +1,32 @@
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 
 import parentLogo from "../public/assets/favicon/csesocgreyblue.png";
 import Logo from "../public/assets/favicon/free_rooms_logo.png";
 
 const Landing = (props: { setShowLanding: (arg0: boolean) => void; }) => {
-  function delay(milliseconds: number | undefined){
+  function delay(milliseconds: number | undefined) {
     return new Promise(resolve => {
       setTimeout(resolve, milliseconds);
     });
   }
+
+  useEffect(() => {
+    props.setShowLanding(true);
+    window.scrollTo(0, 0)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   return (
     <div id={"LandingScreenWhole"} style={{
       height: "95vh",
       width: "80vw",
       maxWidth: "100rem",
       margin: "auto",
-      justifyContent: "center"
+      justifyContent: "center",
     }}>
-      <div style={{ width: "auto", display: "flex", flexDirection: "column", margin: "auto"}}>
-        <div style={{ width: "auto", margin: 0, justifyContent: "flex-start", display: "flex", flexDirection: "row"}}>
-          <Image style={{margin: 0, padding: 0}} alt={"CSESOC Logo"} width={110} height={25} src={parentLogo} />
+      <div style={{ width: "auto", display: "flex", flexDirection: "column", margin: "auto" }}>
+        <div style={{ width: "auto", margin: 0, justifyContent: "flex-start", display: "flex", flexDirection: "row" }}>
+          <Image style={{ margin: 0, padding: 0 }} alt={"CSESOC Logo"} width={110} height={25} src={parentLogo} />
         </div>
         <h1 id={"FreeroomsTitle"}>
           Freerooms
@@ -37,8 +43,8 @@ const Landing = (props: { setShowLanding: (arg0: boolean) => void; }) => {
           } else {
             window.scrollBy({ left: 0, top: position - 250, behavior: "smooth" });
           }
-          await delay(500);
-          props.setShowLanding(false)
+          await delay(600);
+          props.setShowLanding(false);
         }} id={"FreeroomsCTA"} style={{
           backgroundColor: "#111",
           color: "white",
@@ -50,7 +56,7 @@ const Landing = (props: { setShowLanding: (arg0: boolean) => void; }) => {
           alignItems: "center",
           justifyContent: "space-between",
           padding: "0 9%",
-          zIndex: 200
+          zIndex: 200,
         }}>
           <p style={{ fontWeight: "600" }}>Start Browsing!</p>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
