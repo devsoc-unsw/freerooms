@@ -56,7 +56,7 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({ buildingData }) 
   const [filters, setFilters] = React.useState<Filters>({});
   const [showLanding, setShowLanding] = React.useState(true);
   const [showMap, setShowMap] = React.useState(false);
-  const [mapState, setMapState] = React.useState(false);
+  const [buttonText, setButtonText] = React.useState<string>("Map View");
 
   const [roomStatusData, setRoomStatusData] = React.useState<RoomsReturnData | undefined>();
   const fetchRoomStatus = () => {
@@ -99,6 +99,7 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({ buildingData }) 
 
   const handleShowMap = () => {
     setShowMap(currState => !currState);
+    setButtonText(buttonText == "Map View" ? "List View" : "Map View");
   }; 
 
   return (
@@ -133,7 +134,7 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({ buildingData }) 
               />
             </div>
             {
-              showLanding ? null :
+              (showLanding || showMap) ? null :
                 <div id={"headerSearch"}>
                   <SearchBar setQuery={setQuery}></SearchBar>
                 </div>
@@ -141,14 +142,13 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({ buildingData }) 
             <div id={"headerButtons"}>
               <ButtonGroup>
                 <Stack direction="row" spacing={1.5}>
-                  <Button onClick={handleShowMap}>Map</Button>
+                  <Button onClick={handleShowMap}>{buttonText}</Button>
                 </Stack>
               </ButtonGroup>
             </div>
           </div>
         </AppBar>
         <Main open={drawerOpen}>
-          { console.log('drawer opening')}
           {
             showLanding ?
               <Landing setShowLanding={setShowLanding} />
@@ -164,13 +164,11 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({ buildingData }) 
           )*/}
           <div id={"Home-Building-Tiles"}>
             {
-              (showMap && !mapState) ? 
-              <>
-                <Mapping 
-                  setCurrentBuilding={setCurrentBuilding} 
-                  buildingData={buildingData} 
-                /> 
-              </>
+              (showMap) ? 
+              <Mapping 
+                setCurrentBuilding={setCurrentBuilding} 
+                buildingData={buildingData} 
+              /> 
               : <CardList
                 buildingData={buildingData}
                 setCurrentBuilding={setCurrentBuilding}
