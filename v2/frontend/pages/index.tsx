@@ -17,12 +17,12 @@ import Image, { ImageProps } from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
 
+import Mapping from "../components/BaseMap";
 import Branding from "../components/Branding";
 import Button from "../components/Button";
 import FilterBar from "../components/FilterBar";
 import Landing from "../components/Landing";
 import SearchBar from "../components/SearchBar";
-
 import { API_URL } from "../config";
 import {
   Building,
@@ -33,7 +33,6 @@ import {
 } from "../types";
 import BuildingInfo from "../views/BuildingInfo";
 import CardList from "../views/CardList";
-import Mapping from "../components/BaseMap";
 
 const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
   buildingData,

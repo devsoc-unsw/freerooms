@@ -1,7 +1,8 @@
 import { loadModules } from "esri-loader";
 import React, { useEffect } from "react";
-import { openFeature, clickedFeature } from "./MarkerSymbol";
+
 import { Building, BuildingReturnData } from "../types";
+import { clickedFeature,openFeature } from "./MarkerSymbol";
 
 const Mapping: React.FC<{
   buildingData: BuildingReturnData;

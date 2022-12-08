@@ -1,11 +1,10 @@
 
-import React from "react";
-import { Building, BuildingReturnData, RoomsReturnData } from "../types";
-
 import { styled } from "@mui/material/styles";
+import React from "react";
 import FlipMove from "react-flip-move";
 
 import BuildingCard from "../components/BuildingCard";
+import { Building, BuildingReturnData, RoomsReturnData } from "../types";
 
 const INITIALISING = -2;
 const FAILED = -1;

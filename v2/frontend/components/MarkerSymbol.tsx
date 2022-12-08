@@ -28,4 +28,4 @@ const clickedFeature = {
   }
 };
 
-export { openFeature, clickedFeature }
+export { clickedFeature,openFeature }
