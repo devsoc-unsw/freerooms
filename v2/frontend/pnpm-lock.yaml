@@ -14,10 +14,10 @@ specifiers:
   '@types/react': 17.0.45
   axios: ^0.26.1
   date-fns: ^2.29.3
-  eslint: 8.14.0
+  eslint: ^8.14.0
   eslint-config-next: 12.1.6
   eslint-plugin-react-hooks: ^4.6.0
-  eslint-plugin-simple-import-sort: 8.0.0
+  eslint-plugin-simple-import-sort: ^8.0.0
   esri-loader: ^3.7.0
   luxon: ^2.5.0
   next: 13.0.3
