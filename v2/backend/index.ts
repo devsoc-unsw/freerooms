@@ -107,7 +107,7 @@ app.get(
     }
 
     const filters: Filters = {};
-  
+
     if (req.query.capacity) {
       const capacity = parseInt(req.query.capacity as string);
       if (isNaN(capacity) || capacity < 0) {

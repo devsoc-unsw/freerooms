@@ -95,7 +95,7 @@ const BuildingCard: React.FC<{
             <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
               {freerooms !== FAILED
                 ? `${freerooms} room${freerooms === 1 ? "" : "s"} available`
-                : "data unavailable"}
+                : "Data Unavailable"}
             </Typography>
           </>
         ) : (

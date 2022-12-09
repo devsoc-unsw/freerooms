@@ -3,12 +3,18 @@
 */
 
 
+import SearchIcon from "@mui/icons-material/Search";
+import { BoxProps, Typography } from "@mui/material";
+import Select from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import axios from "axios";
@@ -26,6 +32,7 @@ import Button from "../components/Button";
 import FilterBar from "../components/FilterBar";
 import Landing from "../components/Landing";
 import SearchBar from "../components/SearchBar";
+import Sort from "../components/SortButton";
 import { API_URL } from "../config";
 import {
   Building,
@@ -146,6 +153,26 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
                       </Stack>
                     </ButtonGroup>
                   </div>
+                  <FormControl sx={{ m: 1, minWidth: 180 }} size="small">
+                    <InputLabel id="sort">Sort</InputLabel>
+                    <Sort
+                      labelId="sort"
+                      id="sort"
+                      value={sort}
+                      label="sort"
+                      onChange={(event) => {
+                        setSort(event.target.value as string);
+                      }}
+                    >
+                      <MenuItem value={"alphabetical"}>Name Ascending</MenuItem>
+                      <MenuItem value={"reverseAlphabetical"}>
+                        Name Descending
+                      </MenuItem>
+                      <MenuItem value={"lowerToUpper"}>Lower Campus</MenuItem>
+                      <MenuItem value={"upperToLower"}>Upper Campus</MenuItem>
+                      <MenuItem value={"mostRooms"}>Most Available Rooms</MenuItem>
+                    </Sort>
+                  </FormControl>
                 </div>
             }
           </div>
