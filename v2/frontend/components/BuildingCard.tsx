@@ -72,19 +72,6 @@ const BuildingCard: React.FC<{
   freerooms: number;
 }> = ({ building, setBuilding, freerooms }) => {
   const ref = useRef();
-  const isVisible = useOnScreen(ref);
-
-  const { data, error } = useSWR<BuildingRoomReturnStatus>(
-    isVisible ? server + "/buildings/" + building.id : null
-  );
-  const [freerooms, setFreeRooms] = React.useState(INITIALISING);
-
-  React.useEffect(() => {
-    console.log(1);
-    if (isVisible && data) {
-      setFreeRooms(calculateFreerooms(data));
-    }
-  }, [data, isVisible, setFreeRooms, calculateFreerooms]);
 
   return (
     <MainBox ref={ref} onClick={() => setBuilding(building)}>
@@ -108,7 +95,7 @@ const BuildingCard: React.FC<{
             <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
               {freerooms !== FAILED
                 ? `${freerooms} room${freerooms === 1 ? "" : "s"} available`
-                : "data unavailable"}
+                : "Data Unavailable"}
             </Typography>
           </>
         ) : (

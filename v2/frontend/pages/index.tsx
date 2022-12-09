@@ -3,12 +3,18 @@
 */
 
 
+import SearchIcon from "@mui/icons-material/Search";
+import { BoxProps, Typography } from "@mui/material";
+import Select from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import axios from "axios";
@@ -20,15 +26,13 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import useSWR from "swr";
-import SearchIcon from "@mui/icons-material/Search";
-import { BoxProps, Typography } from "@mui/material";
-import Select from "@mui/material";
 
 import Branding from "../components/Branding";
 import Button from "../components/Button";
 import FilterBar from "../components/FilterBar";
 import Landing from "../components/Landing";
 import SearchBar from "../components/SearchBar";
+import Sort from "../components/SortButton";
 import { API_URL } from "../config";
 import {
   Building,
@@ -40,12 +44,6 @@ import {
 } from "../types";
 import BuildingInfo from "../views/BuildingInfo";
 import CardList from "../views/CardList";
-import Sort from "../components/SortButton";
-import CardList from "../views/CardList";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import axios from "axios";
 
 const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
                                                                 buildingData,
@@ -172,7 +170,7 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
                       </MenuItem>
                       <MenuItem value={"lowerToUpper"}>Lower Campus</MenuItem>
                       <MenuItem value={"upperToLower"}>Upper Campus</MenuItem>
-                      <MenuItem value={"mostRooms"}>Room Size</MenuItem>
+                      <MenuItem value={"mostRooms"}>Most Available Rooms</MenuItem>
                     </Sort>
                   </FormControl>
                 </div>
