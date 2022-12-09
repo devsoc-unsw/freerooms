@@ -128,8 +128,9 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
           open={drawerOpen}
           sx={(theme) => ({
             borderBottom: "1px solid #e0e0e0",
-            justifyContent: "space-around",
-            alignItems: "center"
+            alignItems: "center",
+            display: "flex",
+            justifyContent: "space-between",
           })}
         >
           <div id={"header"}>
@@ -141,40 +142,16 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
                 }}
               />
             </div>
-            {
-              showLanding ? null :
-                <div id={"headerSearch"}>
-                  <SearchBar setQuery={setQuery}></SearchBar>
-                  <FilterBar filters={filters} setFilters={setFilters}/>
-                  <div id={"headerButtons"}>
-                    <ButtonGroup>
-                      <Stack direction="row" spacing={1.5}>
-                        <Button>Map</Button>
-                      </Stack>
-                    </ButtonGroup>
-                  </div>
-                  <FormControl sx={{ m: 1, minWidth: 180 }} size="small">
-                    <InputLabel id="sort">Sort</InputLabel>
-                    <Sort
-                      labelId="sort"
-                      id="sort"
-                      value={sort}
-                      label="sort"
-                      onChange={(event) => {
-                        setSort(event.target.value as string);
-                      }}
-                    >
-                      <MenuItem value={"alphabetical"}>Name Ascending</MenuItem>
-                      <MenuItem value={"reverseAlphabetical"}>
-                        Name Descending
-                      </MenuItem>
-                      <MenuItem value={"lowerToUpper"}>Lower Campus</MenuItem>
-                      <MenuItem value={"upperToLower"}>Upper Campus</MenuItem>
-                      <MenuItem value={"mostRooms"}>Most Available Rooms</MenuItem>
-                    </Sort>
-                  </FormControl>
-                </div>
-            }
+
+            <div id={"headerSearch"}>
+              <div id={"headerButtons"}>
+                <ButtonGroup>
+                  <Stack direction="row" spacing={1.5}>
+                    <Button>Map</Button>
+                  </Stack>
+                </ButtonGroup>
+              </div>
+            </div>
           </div>
         </AppBar>
         <Main open={drawerOpen}>
@@ -192,6 +169,30 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
             </p>
           )*/}
           <div id={"Home-Building-Tiles"}>
+            <div id={"Home-Options"} style={{ display: "flex", justifyContent: "space-between" }}>
+              <FilterBar filters={filters} setFilters={setFilters} />
+              <SearchBar setQuery={setQuery}></SearchBar>
+              <FormControl sx={{ m: 1, width: 140, margin: "auto"}} size="small">
+                <InputLabel id="sort">Sort</InputLabel>
+                <Sort
+                  labelId="sort"
+                  id="sort"
+                  value={sort}
+                  label="sort"
+                  onChange={(event) => {
+                    setSort(event.target.value as string);
+                  }}
+                >
+                  <MenuItem value={"alphabetical"}>Name Ascending</MenuItem>
+                  <MenuItem value={"reverseAlphabetical"}>
+                    Name Descending
+                  </MenuItem>
+                  <MenuItem value={"lowerToUpper"}>Lower Campus</MenuItem>
+                  <MenuItem value={"upperToLower"}>Upper Campus</MenuItem>
+                  <MenuItem value={"mostRooms"}>Most Available Rooms</MenuItem>
+                </Sort>
+              </FormControl>
+            </div>
             <CardList
               buildingData={buildingData}
               setCurrentBuilding={setCurrentBuilding}

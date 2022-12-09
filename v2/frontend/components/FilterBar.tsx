@@ -28,6 +28,7 @@ const StyledFilterButton = styled(Box)<BoxProps>(({ theme }) => ({
   borderWidth: 2,
   borderStyle: "solid",
   borderColor: theme.palette.primary.main,
+  zIndex: 10,
 }));
 
 const StyledDropDownMenu = styled(Box)<BoxProps>(({ theme }) => ({
