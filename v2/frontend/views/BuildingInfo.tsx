@@ -1,26 +1,4 @@
-<<<<<<< HEAD
-import CloseIcon from "@mui/icons-material/Close";
-import { Typography } from "@mui/material";
-import Box, { BoxProps } from "@mui/material/Box";
-import CircularProgress from "@mui/material/CircularProgress";
-import { styled } from "@mui/material/styles";
-import TextField, { TextFieldProps } from "@mui/material/TextField";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-import axios from "axios";
-import { DateTime } from "luxon";
-import Image, { ImageProps } from "next/image";
 import React from "react";
-import useSWR from "swr";
-
-import Button from "../components/Button";
-import StatusDot from "../components/StatusDot";
-import { API_URL } from "../config";
-=======
-import React from "react";
->>>>>>> a554ede6e4496b6647e1153d95d2a5578b3a8bca
 import {
   Building,
   BuildingStatus,
@@ -28,8 +6,6 @@ import {
   RoomStatus,
 } from "../types";
 
-<<<<<<< HEAD
-=======
 import { styled } from "@mui/material/styles";
 import Image, { ImageProps } from "next/image";
 import Box, { BoxProps } from "@mui/material/Box";
@@ -45,7 +21,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 
->>>>>>> a554ede6e4496b6647e1153d95d2a5578b3a8bca
 const INITIALISING = -2;
 const FAILED = -1;
 
