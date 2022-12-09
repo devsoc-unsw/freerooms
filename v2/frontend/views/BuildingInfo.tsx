@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import CloseIcon from "@mui/icons-material/Close";
 import { Typography } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
@@ -17,14 +18,34 @@ import useSWR from "swr";
 import Button from "../components/Button";
 import StatusDot from "../components/StatusDot";
 import { API_URL } from "../config";
+=======
+import React from "react";
+>>>>>>> a554ede6e4496b6647e1153d95d2a5578b3a8bca
 import {
   Building,
-  BuildingReturnData,
   BuildingStatus,
   RoomsReturnData,
   RoomStatus,
 } from "../types";
 
+<<<<<<< HEAD
+=======
+import { styled } from "@mui/material/styles";
+import Image, { ImageProps } from "next/image";
+import Box, { BoxProps } from "@mui/material/Box";
+import StatusDot from "../components/StatusDot";
+import { Typography } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
+import CloseIcon from "@mui/icons-material/Close";
+import Button from "../components/Button";
+
+import TextField, { TextFieldProps } from "@mui/material/TextField";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+
+>>>>>>> a554ede6e4496b6647e1153d95d2a5578b3a8bca
 const INITIALISING = -2;
 const FAILED = -1;
 
@@ -45,6 +66,8 @@ const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
 
 const StyledImage = styled(Image)<ImageProps>(({ theme }) => ({
   borderRadius: 10,
+  width: "100%",
+  height: "auto"
 }));
 
 const StatusBox = styled(Box)<BoxProps>(({ theme }) => ({

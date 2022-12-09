@@ -3,13 +3,9 @@ import Box, { BoxProps } from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import { styled } from "@mui/material/styles";
 import Image, { ImageProps } from "next/image";
-import Link from "next/link";
 import React, { useRef } from "react";
-import useSWR from "swr";
 
-import { API_URL } from "../config";
-import useOnScreen from "../hooks/useOnScreen";
-import { Building, BuildingStatus } from "../types";
+import { Building } from "../types";
 import StatusDot from "./StatusDot";
 
 const INITIALISING = -2;
@@ -78,8 +74,8 @@ const BuildingCard: React.FC<{
       <StyledImage
         alt={`Image of ${building.id}`}
         src={`/assets/building_photos/${building.id}.jpg`}
-        layout="fill"
-        objectFit="cover"
+        fill={true}
+        style={{ objectFit: "cover" }}
         priority={true}
       />
       <StatusBox>
@@ -95,7 +91,7 @@ const BuildingCard: React.FC<{
             <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
               {freerooms !== FAILED
                 ? `${freerooms} room${freerooms === 1 ? "" : "s"} available`
-                : "data unavailable"}
+                : "Data Unavailable"}
             </Typography>
           </>
         ) : (
