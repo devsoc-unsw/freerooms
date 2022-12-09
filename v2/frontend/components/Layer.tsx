@@ -1,58 +1,24 @@
 import { loadModules } from "esri-loader";
 import React, { useEffect } from "react";
+import loadBaseMap from "./MyMap";
 
 import { Building, BuildingReturnData } from "../types";
 import { clickedFeature,openFeature } from "./MarkerSymbol";
 
-const Mapping: React.FC<{
+const MapLayer: React.FC<{
   buildingData: BuildingReturnData;
   setCurrentBuilding: (building: Building) => void;
 }> = ({ buildingData, setCurrentBuilding }) => {
   useEffect(() => {
-    loadModules([
-      "esri/Map",
-      "esri/views/MapView",
-      "esri/config",
+    const loadModules = async () => ([
       "esri/layers/FeatureLayer",
       "esri/Graphic",
-      "esri/Basemap",
-      "esri/layers/VectorTileLayer",
       "esri/widgets/Track",
       "esri/widgets/Search",
     ])
       .then(
-        ([
-          Map,
-          MapView,
-          esriConfig,
-          FeatureLayer,
-          Graphic,
-          Basemap,
-          VectorTileLayer,
-          Track,
-          Search,
-        ]) => {
-          const basemap = new Basemap({
-            baseLayers: [
-              new VectorTileLayer({
-                portalItem: {
-                  id: "df9c45bd660c42e99231f5b197386599",
-                },
-              }),
-            ],
-          });
-
-          const map = new Map({
-            basemap: basemap,
-          });
-
-          const view = new MapView({
-            map: map,
-            center: [151.231, -33.917], 
-            zoom: 16, 
-            container: "viewDiv", 
-          });
-
+        ([FeatureLayer, Graphic, Track,Search]) => {
+          const {map, view} = await loadBaseMap();
           // tracking widget
           const track = new Track({
             view: view,
@@ -63,8 +29,6 @@ const Mapping: React.FC<{
             track.start();
           });
 
-          esriConfig.apiKey =
-            "AAPK7fbfd710c5e443e28d309fc3ba297ceb_Wb-Lg6smsxOnafMSRQLTx3WwDI-mv9jKXig8AECw0pTh06C_uyS40dTDpgPIDMd";
 
           const buildingLabel = {
             symbol: {

@@ -72,7 +72,7 @@ const BuildingCard: React.FC<{
   freerooms: number;
 }> = ({ building, setBuilding, freerooms }) => {
   const ref = useRef();
-
+  
   return (
     <MainBox ref={ref} onClick={() => setBuilding(building)}>
       <StyledImage
