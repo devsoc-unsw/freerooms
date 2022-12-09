@@ -1,11 +1,6 @@
 import React from "react";
-import axios from "axios";
-import useSWR from "swr";
-import { API_URL } from "../config";
 import {
-  RoomStatus,
   Building,
-  BuildingReturnData,
   BuildingStatus,
   RoomsReturnData,
 } from "../types";
@@ -19,7 +14,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 import CloseIcon from "@mui/icons-material/Close";
 import Button from "../components/Button";
 
-import { DateTime } from "luxon";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -46,6 +40,8 @@ const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
 
 const StyledImage = styled(Image)<ImageProps>(({ theme }) => ({
   borderRadius: 10,
+  width: "100%",
+  height: "auto"
 }));
 
 const StatusBox = styled(Box)<BoxProps>(({ theme }) => ({
