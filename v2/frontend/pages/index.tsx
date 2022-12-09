@@ -2,40 +2,44 @@
   This is the home page (list view of all the buildings)
 */
 
-import React from "react";
-import { server } from "../config";
-import { DateTime } from "luxon";
-import {
-  RoomStatus,
-  Building,
-  BuildingReturnData,
-  Filters,
-  RoomsReturnData,
-  RoomsRequestParams,
-} from "../types";
 
-import useSWR from "swr";
-import type { NextPage } from "next";
-import Head from "next/head";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import Image, { ImageProps } from "next/image";
-
-import Drawer from "@mui/material/Drawer";
-import Box from "@mui/material/Box";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import { styled } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
+import Drawer from "@mui/material/Drawer";
 import Stack from "@mui/material/Stack";
+import { styled } from "@mui/material/styles";
+import axios from "axios";
+import { DateTime } from "luxon";
+import type { NextPage } from "next";
+import Head from "next/head";
+import Image, { ImageProps } from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import React from "react";
+import useSWR from "swr";
 import SearchIcon from "@mui/icons-material/Search";
 import { BoxProps, Typography } from "@mui/material";
 import Select from "@mui/material";
 
 import Branding from "../components/Branding";
 import Button from "../components/Button";
+import FilterBar from "../components/FilterBar";
+import Landing from "../components/Landing";
+import SearchBar from "../components/SearchBar";
+import { API_URL } from "../config";
+import {
+  Building,
+  BuildingReturnData,
+  Filters,
+  RoomsRequestParams,
+  RoomsReturnData,
+  RoomStatus,
+} from "../types";
 import BuildingInfo from "../views/BuildingInfo";
+import CardList from "../views/CardList";
 import Sort from "../components/SortButton";
 import CardList from "../views/CardList";
 import MenuItem from "@mui/material/MenuItem";
@@ -44,8 +48,8 @@ import InputLabel from "@mui/material/InputLabel";
 import axios from "axios";
 
 const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
-  buildingData,
-}) => {
+                                                                buildingData,
+                                                              }) => {
   const router = useRouter();
   const { building } = router.query;
 
@@ -65,44 +69,45 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
   const [query, setQuery] = React.useState<string>("");
   const [datetime, setDatetime] = React.useState<Date | null>(new Date());
   const [filters, setFilters] = React.useState<Filters>({});
+  const [showLanding, setShowLanding] = React.useState(true);
 
-  const [roomStatusData, setRoomStatusData] = React.useState<
-    RoomsReturnData | undefined
-  >();
-  const fetchRoomStatus = () => {
-    const params: RoomsRequestParams = { ...filters };
-    if (datetime) {
-      params.datetime =
-        DateTime.fromJSDate(datetime).toFormat("yyyy-MM-dd'T'HH:mm");
-    }
-
-    axios
-      .get(server + "/rooms", { params: params })
-      .then((res) => {
-        setRoomStatusData(res.status == 200 ? res.data : {});
-      })
-      .catch((err) => setRoomStatusData({}));
-  };
+  const [roomStatusData, setRoomStatusData] = React.useState<RoomsReturnData | undefined>();
 
   React.useEffect(() => {
+    const fetchRoomStatus = () => {
+      const params: RoomsRequestParams = { ...filters };
+      if (datetime) {
+        params.datetime =
+          DateTime.fromJSDate(datetime).toFormat("yyyy-MM-dd'T'HH:mm");
+      }
+
+      axios
+        .get(API_URL + "/rooms", { params: params })
+        .then((res) => {
+          setRoomStatusData(res.status == 200 ? res.data : {});
+        })
+        .catch((err) => setRoomStatusData({}));
+    };
+
     setRoomStatusData(undefined);
     fetchRoomStatus();
   }, [filters, datetime]);
 
   const [currentBuilding, setCurrentBuilding] = React.useState<Building | null>(
-    null
+    null,
   );
 
   React.useEffect(() => {
     if (building) {
       const selectedBuilding = buildingData.buildings.find(
-        (b) => b.id === building
+        (b) => b.id === building,
       );
       if (selectedBuilding) {
         setCurrentBuilding(selectedBuilding);
         router.replace("/", undefined, { shallow: true });
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [building]);
 
   const drawerOpen = currentBuilding ? true : false;
@@ -125,60 +130,61 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
           open={drawerOpen}
           sx={(theme) => ({
             borderBottom: "1px solid #e0e0e0",
+            justifyContent: "space-around",
+            alignItems: "center"
           })}
         >
-          <Branding
-            onClick={() => {
-              setCurrentBuilding(null);
-            }}
-          />
-          {/* 
-          <StyledTabs
-            value={selection}
-            onChange={(_e: React.SyntheticEvent, newValue: string) => {
-              setSelection(newValue);
-            }}
-            centered
-            aria-label="upper or lower campus selector"
-            sx={(theme) => ({
-              marginLeft: theme.spacing(3),
-            })}
-          >
-            <StyledTab label="Upper Campus" value="upper" />
-            <StyledTab label="Lower Campus" value="lower" />
-          </StyledTabs>
-           */}
-          <div />
-          <ButtonGroup>
-            <Stack direction="row" spacing={1.5}>
-              <Button aria-label="Search">
-                <SearchIcon />
-              </Button>
-              <Button>Map</Button>
-              <FormControl sx={{ m: 1, minWidth: 180 }} size="small">
-                <InputLabel id="sort">Sort</InputLabel>
-                <Sort
-                  labelId="sort"
-                  id="sort"
-                  value={sort}
-                  label="sort"
-                  onChange={(event) => {
-                    setSort(event.target.value as string);
-                  }}
-                >
-                  <MenuItem value={"alphabetical"}>Name Ascending</MenuItem>
-                  <MenuItem value={"reverseAlphabetical"}>
-                    Name Descending
-                  </MenuItem>
-                  <MenuItem value={"lowerToUpper"}>Lower Campus</MenuItem>
-                  <MenuItem value={"upperToLower"}>Upper Campus</MenuItem>
-                  <MenuItem value={"mostRooms"}>Room Size</MenuItem>
-                </Sort>
-              </FormControl>
-            </Stack>
-          </ButtonGroup>
+          <div id={"header"}>
+            <div id={"headerBranding"}>
+              <Branding
+                onClick={() => {
+                  setCurrentBuilding(null);
+                  window.location.replace(window.location.href);
+                }}
+              />
+            </div>
+            {
+              showLanding ? null :
+                <div id={"headerSearch"}>
+                  <SearchBar setQuery={setQuery}></SearchBar>
+                  <FilterBar filters={filters} setFilters={setFilters}/>
+                  <div id={"headerButtons"}>
+                    <ButtonGroup>
+                      <Stack direction="row" spacing={1.5}>
+                        <Button>Map</Button>
+                      </Stack>
+                    </ButtonGroup>
+                  </div>
+                  <FormControl sx={{ m: 1, minWidth: 180 }} size="small">
+                    <InputLabel id="sort">Sort</InputLabel>
+                    <Sort
+                      labelId="sort"
+                      id="sort"
+                      value={sort}
+                      label="sort"
+                      onChange={(event) => {
+                        setSort(event.target.value as string);
+                      }}
+                    >
+                      <MenuItem value={"alphabetical"}>Name Ascending</MenuItem>
+                      <MenuItem value={"reverseAlphabetical"}>
+                        Name Descending
+                      </MenuItem>
+                      <MenuItem value={"lowerToUpper"}>Lower Campus</MenuItem>
+                      <MenuItem value={"upperToLower"}>Upper Campus</MenuItem>
+                      <MenuItem value={"mostRooms"}>Room Size</MenuItem>
+                    </Sort>
+                  </FormControl>
+                </div>
+            }
+          </div>
         </AppBar>
         <Main open={drawerOpen}>
+          {
+            showLanding ?
+              <Landing setShowLanding={setShowLanding} />
+              : null
+          }
           {/* selection === "upper" ? (
             <UpperBuildings setCurrentBuilding={setCurrentBuilding} />
           ) : (
@@ -187,13 +193,15 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
               {`${isError}`}
             </p>
           )*/}
-          <CardList
-            buildingData={buildingData}
-            setCurrentBuilding={setCurrentBuilding}
-            sort={sort}
-            query={query}
-            roomStatusData={roomStatusData}
-          />
+          <div id={"Home-Building-Tiles"}>
+            <CardList
+              buildingData={buildingData}
+              setCurrentBuilding={setCurrentBuilding}
+              sort={sort}
+              query={query}
+              roomStatusData={roomStatusData}
+            />
+          </div>
         </Main>
         <Drawer
           sx={{
@@ -225,9 +233,15 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
 export async function getStaticProps() {
   // fetches /buildings via **BUILD** time so we don't need to have
   // the client fetch buildings data every request
-  const res = await fetch(server + "/buildings");
-  const buildings: BuildingReturnData = await res.json();
-  // const buildings: BuildingReturnData = { buildings: [] };
+
+  let buildings: BuildingReturnData;
+  try {
+    const res = await fetch(API_URL + "/buildings");
+    buildings = await res.json();
+  } catch {
+    buildings = { buildings: [] };
+  }
+
   return {
     props: {
       buildingData: buildings,
@@ -241,7 +255,7 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   open?: boolean;
 }>(({ theme, open }) => ({
   display: "flex",
-  flexDirection: "row",
+  flexDirection: "column",
   flexGrow: 1,
   padding: theme.spacing(12, 0),
   transition: theme.transitions.create("margin", {
@@ -294,6 +308,14 @@ const ButtonGroup = styled(Box)(({ theme }) => ({
   justifyContent: "flex-end",
   alignItems: "center",
   paddingRight: theme.spacing(2),
+}));
+
+const StyledImage = styled(Image)<ImageProps>(({ theme }) => ({
+  borderRadius: 10,
+  transition: "all 0.1s ease-in-out",
+  "&:hover": {
+    opacity: 0.7,
+  },
 }));
 
 export default Home;

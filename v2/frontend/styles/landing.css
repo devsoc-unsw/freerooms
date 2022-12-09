@@ -1,0 +1,101 @@
+#FreeroomsTitle {
+    font-family: Josefin Sans, sans-serif;
+    text-align: left;
+    font-size: 5rem;
+    font-weight: 700;
+    margin: 0 0;
+    padding-bottom: 0;
+}
+
+#FreeroomsBlurb {
+    font-size: 1.5rem;
+}
+
+#FreeroomsCTA {
+    width: 15rem;
+    height: 3rem;
+}
+
+#FreeroomsCTA p {
+    font-size: 1rem;
+}
+
+#FreeroomsCTA svg {
+    width: 2rem;
+}
+#header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    max-width: 1300px;
+}
+#headerBranding {
+    display: flex;
+    justify-self: flex-start;
+    margin-right: 2rem;
+}
+
+#SearchBox {
+    width: 25rem;
+}
+
+#LandingScreenWhole {
+    padding-bottom: 15vh;
+    display: flex;
+    flex-direction: row;
+}
+#headerButtons {
+    margin: auto;
+    display: flex;
+    align-self: center;
+}
+@media (min-width: 800px) {
+    #headerSearch {
+        margin: auto;
+        display: flex;
+        flex-direction: row;
+        gap: 2vw;
+    }
+}
+@media (max-width: 800px) {
+    #FreeroomsTitle {
+        font-size: 4rem;
+    }
+    #FreeroomsBlurb {
+        font-size: 1rem;
+    }
+    #FreeroomsCTA {
+        width: 11rem;
+        height: 2rem;
+    }
+    #FreeroomsCTA p {
+        font-size: 0.75rem;
+    }
+    #FreeroomsCTA svg {
+        width: 1.5rem;
+    }
+    #header {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    #headerBranding {
+        margin: auto;
+    }
+    #headerSearch {
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    #SearchBox {
+        width: 70vw;
+    }
+    #LandingScreenWhole {
+        padding-bottom: 40vh;
+        flex-direction: column;
+    }
+    #landing-freerooms-logo {
+        display: none;
+    }
+}
