@@ -1,8 +1,6 @@
 /*
   This is the home page (list view of all the buildings)
 */
-
-
 import SearchIcon from "@mui/icons-material/Search";
 import { BoxProps, Typography } from "@mui/material";
 import Select from "@mui/material";
@@ -22,11 +20,10 @@ import { DateTime } from "luxon";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image, { ImageProps } from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
-import useSWR from "swr";
 
+import Mapping from "../components/BaseMap";
 import Branding from "../components/Branding";
 import Button from "../components/Button";
 import FilterBar from "../components/FilterBar";
@@ -40,14 +37,13 @@ import {
   Filters,
   RoomsRequestParams,
   RoomsReturnData,
-  RoomStatus,
 } from "../types";
 import BuildingInfo from "../views/BuildingInfo";
 import CardList from "../views/CardList";
 
 const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
-                                                                buildingData,
-                                                              }) => {
+  buildingData,
+}) => {
   const router = useRouter();
   const { building } = router.query;
 
@@ -68,8 +64,12 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
   const [datetime, setDatetime] = React.useState<Date | null>(new Date());
   const [filters, setFilters] = React.useState<Filters>({});
   const [showLanding, setShowLanding] = React.useState(true);
+  const [showMap, setShowMap] = React.useState(false);
+  const [buttonText, setButtonText] = React.useState<string>("Map View");
 
-  const [roomStatusData, setRoomStatusData] = React.useState<RoomsReturnData | undefined>();
+  const [roomStatusData, setRoomStatusData] = React.useState<
+    RoomsReturnData | undefined
+  >();
 
   React.useEffect(() => {
     const fetchRoomStatus = () => {
@@ -92,13 +92,13 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
   }, [filters, datetime]);
 
   const [currentBuilding, setCurrentBuilding] = React.useState<Building | null>(
-    null,
+    null
   );
 
   React.useEffect(() => {
     if (building) {
       const selectedBuilding = buildingData.buildings.find(
-        (b) => b.id === building,
+        (b) => b.id === building
       );
       if (selectedBuilding) {
         setCurrentBuilding(selectedBuilding);
@@ -109,6 +109,11 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
   }, [building]);
 
   const drawerOpen = currentBuilding ? true : false;
+
+  const handleShowMap = () => {
+    setShowMap((currState) => !currState);
+    setButtonText(buttonText == "Map View" ? "List View" : "Map View");
+  };
 
   return (
     <Container maxWidth={false}>
@@ -142,12 +147,11 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
                 }}
               />
             </div>
-
             <div id={"headerSearch"}>
               <div id={"headerButtons"}>
                 <ButtonGroup>
                   <Stack direction="row" spacing={1.5}>
-                    <Button>Map</Button>
+                    <Button onClick={handleShowMap}>{buttonText}</Button>
                   </Stack>
                 </ButtonGroup>
               </div>
@@ -155,11 +159,7 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
           </div>
         </AppBar>
         <Main open={drawerOpen}>
-          {
-            showLanding ?
-              <Landing setShowLanding={setShowLanding} />
-              : null
-          }
+          {showLanding ? <Landing setShowLanding={setShowLanding} /> : null}
           {/* selection === "upper" ? (
             <UpperBuildings setCurrentBuilding={setCurrentBuilding} />
           ) : (
@@ -193,13 +193,20 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
                 </Sort>
               </FormControl>
             </div>
-            <CardList
-              buildingData={buildingData}
-              setCurrentBuilding={setCurrentBuilding}
-              sort={sort}
-              query={query}
-              roomStatusData={roomStatusData}
-            />
+            {showMap ? (
+              <Mapping
+                setCurrentBuilding={setCurrentBuilding}
+                buildingData={buildingData}
+              />
+            ) : (
+              <CardList
+                buildingData={buildingData}
+                setCurrentBuilding={setCurrentBuilding}
+                sort={sort}
+                query={query}
+                roomStatusData={roomStatusData}
+              />
+            )}
           </div>
         </Main>
         <Drawer

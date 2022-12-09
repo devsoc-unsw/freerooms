@@ -52,6 +52,12 @@ a {
     }
 }
 
+#viewDiv {
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    width: 100%;
+}
 /*@media (max-width: 800px) {*/
 
 /*}*/

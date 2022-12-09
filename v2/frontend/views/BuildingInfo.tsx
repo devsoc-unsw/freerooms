@@ -3,6 +3,7 @@ import {
   Building,
   BuildingStatus,
   RoomsReturnData,
+  RoomStatus,
 } from "../types";
 
 import { styled } from "@mui/material/styles";
