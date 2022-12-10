@@ -35,6 +35,6 @@ npm install
 #### Run with npm
 
 ```
-npm start
+npm run start
 ```
 
