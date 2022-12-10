@@ -172,7 +172,7 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
             <div id={"Home-Options"} style={{ display: "flex", justifyContent: "space-between" }}>
               <FilterBar filters={filters} setFilters={setFilters} />
               <SearchBar setQuery={setQuery}></SearchBar>
-              <FormControl sx={{ m: 1, width: 140, margin: "auto"}} size="small">
+              <FormControl sx={{ m: 1, width: 140}} size="small">
                 <InputLabel id="sort">Sort</InputLabel>
                 <Sort
                   labelId="sort"
