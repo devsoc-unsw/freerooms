@@ -1,4 +1,4 @@
-# Freerooms by CSESOC
+# Freerooms by CSESoc
 
 A web application designed to aid UNSW students in finding vacant CATS rooms.
 
