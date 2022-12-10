@@ -38,12 +38,12 @@ const Landing = (props: { setShowLanding: (arg0: boolean) => void; }) => {
           let position: number;
           // @ts-ignore
           position = document.querySelector("#Home-Building-Tiles").getBoundingClientRect().top;
-          if (window.innerWidth > 800) {
+          if (window.innerWidth > 1050) {
             window.scrollBy({ left: 0, top: position - 100, behavior: "smooth" });
           } else {
             window.scrollBy({ left: 0, top: position - 250, behavior: "smooth" });
           }
-          await delay(600);
+          await delay(700);
           props.setShowLanding(false);
         }} id={"FreeroomsCTA"} style={{
           backgroundColor: "#111",
