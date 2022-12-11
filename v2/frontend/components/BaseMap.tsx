@@ -2,7 +2,7 @@ import { loadModules } from "esri-loader";
 import React, { useEffect } from "react";
 
 import { Building, BuildingReturnData } from "../types";
-import { clickedFeature,openFeature } from "./MarkerSymbol";
+import { clickedFeature, openFeature } from "./MarkerSymbol";
 
 const Mapping: React.FC<{
   buildingData: BuildingReturnData;
@@ -22,16 +22,16 @@ const Mapping: React.FC<{
     ])
       .then(
         ([
-          Map,
-          MapView,
-          esriConfig,
-          FeatureLayer,
-          Graphic,
-          Basemap,
-          VectorTileLayer,
-          Track,
-          Search,
-        ]) => {
+           Map,
+           MapView,
+           esriConfig,
+           FeatureLayer,
+           Graphic,
+           Basemap,
+           VectorTileLayer,
+           Track,
+           Search,
+         ]) => {
           const basemap = new Basemap({
             baseLayers: [
               new VectorTileLayer({
@@ -130,7 +130,7 @@ const Mapping: React.FC<{
 
               if (building) {
                 const buildingFound = buildingData.buildings.find(
-                  (b: Building) => b.name === building
+                  (b: Building) => b.name === building,
                 );
 
                 if (buildingFound) {
@@ -146,11 +146,12 @@ const Mapping: React.FC<{
               view.graphics.add(graphicLayer);
             }
           });
-        }
+        },
       )
       .catch((error) => {
         console.error(error);
       });
+// eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

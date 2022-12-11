@@ -1,18 +1,12 @@
 /*
   This is the home page (list view of all the buildings)
 */
-import SearchIcon from "@mui/icons-material/Search";
-import { BoxProps, Typography } from "@mui/material";
-import Select from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import axios from "axios";
@@ -27,9 +21,9 @@ import Mapping from "../components/BaseMap";
 import Branding from "../components/Branding";
 import Button from "../components/Button";
 import FilterBar from "../components/FilterBar";
-import SortBar from "../components/SortBar";
 import Landing from "../components/Landing";
 import SearchBar from "../components/SearchBar";
+import SortBar from "../components/SortBar";
 import Sort from "../components/SortButton";
 import { API_URL } from "../config";
 import {
