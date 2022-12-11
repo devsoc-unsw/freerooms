@@ -96,8 +96,9 @@ const SortBar: React.FC<{
 
   return (
     <>
-      <StyledSortButton onClick={() => toggle(open)}>
+      <StyledSortButton>
         <Stack
+          onClick={() => toggle(open)}
           direction="row"
           spacing={1.5}
           alignItems="center"

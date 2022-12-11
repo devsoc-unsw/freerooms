@@ -111,12 +111,13 @@ const FilterBar: React.FC<{
 
   return (
     <>
-      <StyledFilterButton onClick={() => toggle(open)}>
+      <StyledFilterButton>
         <Stack
+          onClick={() => toggle(open)}
           direction="row"
           spacing={1.5}
           alignItems="center"
-        // onBlur={(e: React.FocusEvent) => dismissHandler(e)}
+          // onBlur={(e: React.FocusEvent) => dismissHandler(e)}
         >
           <p>{open ? <FilterAltIcon style={{ color: '#F77F00' }} /> : <FilterAltIcon style={{ color: '#F77F00' }} />}</p>
           <p style={{ color: '#F77F00', fontWeight: 'bold' }}>Filters</p>
