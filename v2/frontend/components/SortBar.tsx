@@ -1,4 +1,3 @@
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -9,10 +8,9 @@ import Checkbox from '@mui/material/Checkbox';
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import { styled, Theme } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
 import React, { PropsWithChildren,useEffect, useRef, useState } from "react";
 
-import { Building, BuildingReturnData, DropDown, DropDownItem, Filters, SingleLevelDropDown } from "../types";
+import { DropDownItem } from "../types";
 
 const StyledSortButton = styled(Box)<BoxProps>(({ theme }) => ({
   height: 40,
