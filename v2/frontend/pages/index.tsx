@@ -1,18 +1,12 @@
 /*
   This is the home page (list view of all the buildings)
 */
-import SearchIcon from "@mui/icons-material/Search";
-import { BoxProps, Typography } from "@mui/material";
-import Select from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import axios from "axios";
@@ -29,6 +23,7 @@ import Button from "../components/Button";
 import FilterBar from "../components/FilterBar";
 import Landing from "../components/Landing";
 import SearchBar from "../components/SearchBar";
+import SortBar from "../components/SortBar";
 import Sort from "../components/SortButton";
 import { API_URL } from "../config";
 import {
@@ -160,38 +155,31 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
         </AppBar>
         <Main open={drawerOpen}>
           {showLanding ? <Landing setShowLanding={setShowLanding} /> : null}
-          {/* selection === "upper" ? (
-            <UpperBuildings setCurrentBuilding={setCurrentBuilding} />
-          ) : (
-            <p>
-              Todo: load lower campus buildings{buildings} {isLoading}{" "}
-              {`${isError}`}
-            </p>
-          )*/}
           <div id={"Home-Building-Tiles"}>
             <div id={"Home-Options"} style={{ display: "flex", justifyContent: "space-between" }}>
               <FilterBar filters={filters} setFilters={setFilters} />
               <SearchBar setQuery={setQuery}></SearchBar>
-              <FormControl sx={{ m: 1, width: 140}} size="small">
-                <InputLabel id="sort">Sort</InputLabel>
-                <Sort
-                  labelId="sort"
-                  id="sort"
-                  value={sort}
-                  label="sort"
-                  onChange={(event) => {
-                    setSort(event.target.value as string);
-                  }}
-                >
-                  <MenuItem value={"alphabetical"}>Name Ascending</MenuItem>
-                  <MenuItem value={"reverseAlphabetical"}>
-                    Name Descending
-                  </MenuItem>
-                  <MenuItem value={"lowerToUpper"}>Lower Campus</MenuItem>
-                  <MenuItem value={"upperToLower"}>Upper Campus</MenuItem>
-                  <MenuItem value={"mostRooms"}>Most Available Rooms</MenuItem>
-                </Sort>
-              </FormControl>
+              <SortBar filters={sort} setFilters={setSort}></SortBar>
+              {/*<FormControl sx={{ m: 1, width: 140}} size="small">*/}
+              {/*  <InputLabel id="sort">Sort</InputLabel>*/}
+              {/*  <Sort*/}
+              {/*    labelId="sort"*/}
+              {/*    id="sort"*/}
+              {/*    value={sort}*/}
+              {/*    label="sort"*/}
+              {/*    onChange={(event) => {*/}
+              {/*      setSort(event.target.value as string);*/}
+              {/*    }}*/}
+              {/*  >*/}
+              {/*    <MenuItem value={"alphabetical"}>Name Ascending</MenuItem>*/}
+              {/*    <MenuItem value={"reverseAlphabetical"}>*/}
+              {/*      Name Descending*/}
+              {/*    </MenuItem>*/}
+              {/*    <MenuItem value={"lowerToUpper"}>Lower Campus</MenuItem>*/}
+              {/*    <MenuItem value={"upperToLower"}>Upper Campus</MenuItem>*/}
+              {/*    <MenuItem value={"mostRooms"}>Most Available Rooms</MenuItem>*/}
+              {/*  </Sort>*/}
+              {/*</FormControl>*/}
             </div>
             {showMap ? (
               <Mapping

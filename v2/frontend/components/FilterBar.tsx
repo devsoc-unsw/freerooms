@@ -1,5 +1,5 @@
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import FilterListIcon from '@mui/icons-material/FilterList';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -111,15 +111,14 @@ const FilterBar: React.FC<{
 
   return (
     <>
-      <StyledFilterButton>
+      <StyledFilterButton onClick={() => toggle(open)}>
         <Stack
           direction="row"
-          onClick={() => toggle(open)}
           spacing={1.5}
           alignItems="center"
         // onBlur={(e: React.FocusEvent) => dismissHandler(e)}
         >
-          <p>{open ? <FilterListIcon style={{ color: '#F77F00' }} /> : <FilterListIcon style={{ color: '#F77F00' }} />}</p>
+          <p>{open ? <FilterAltIcon style={{ color: '#F77F00' }} /> : <FilterAltIcon style={{ color: '#F77F00' }} />}</p>
           <p style={{ color: '#F77F00', fontWeight: 'bold' }}>Filters</p>
         </Stack>
         {open && (
