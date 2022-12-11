@@ -27,6 +27,7 @@ import Mapping from "../components/BaseMap";
 import Branding from "../components/Branding";
 import Button from "../components/Button";
 import FilterBar from "../components/FilterBar";
+import SortBar from "../components/SortBar";
 import Landing from "../components/Landing";
 import SearchBar from "../components/SearchBar";
 import Sort from "../components/SortButton";
@@ -160,38 +161,31 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
         </AppBar>
         <Main open={drawerOpen}>
           {showLanding ? <Landing setShowLanding={setShowLanding} /> : null}
-          {/* selection === "upper" ? (
-            <UpperBuildings setCurrentBuilding={setCurrentBuilding} />
-          ) : (
-            <p>
-              Todo: load lower campus buildings{buildings} {isLoading}{" "}
-              {`${isError}`}
-            </p>
-          )*/}
           <div id={"Home-Building-Tiles"}>
             <div id={"Home-Options"} style={{ display: "flex", justifyContent: "space-between" }}>
               <FilterBar filters={filters} setFilters={setFilters} />
               <SearchBar setQuery={setQuery}></SearchBar>
-              <FormControl sx={{ m: 1, width: 140}} size="small">
-                <InputLabel id="sort">Sort</InputLabel>
-                <Sort
-                  labelId="sort"
-                  id="sort"
-                  value={sort}
-                  label="sort"
-                  onChange={(event) => {
-                    setSort(event.target.value as string);
-                  }}
-                >
-                  <MenuItem value={"alphabetical"}>Name Ascending</MenuItem>
-                  <MenuItem value={"reverseAlphabetical"}>
-                    Name Descending
-                  </MenuItem>
-                  <MenuItem value={"lowerToUpper"}>Lower Campus</MenuItem>
-                  <MenuItem value={"upperToLower"}>Upper Campus</MenuItem>
-                  <MenuItem value={"mostRooms"}>Most Available Rooms</MenuItem>
-                </Sort>
-              </FormControl>
+              <SortBar filters={sort} setFilters={setSort}></SortBar>
+              {/*<FormControl sx={{ m: 1, width: 140}} size="small">*/}
+              {/*  <InputLabel id="sort">Sort</InputLabel>*/}
+              {/*  <Sort*/}
+              {/*    labelId="sort"*/}
+              {/*    id="sort"*/}
+              {/*    value={sort}*/}
+              {/*    label="sort"*/}
+              {/*    onChange={(event) => {*/}
+              {/*      setSort(event.target.value as string);*/}
+              {/*    }}*/}
+              {/*  >*/}
+              {/*    <MenuItem value={"alphabetical"}>Name Ascending</MenuItem>*/}
+              {/*    <MenuItem value={"reverseAlphabetical"}>*/}
+              {/*      Name Descending*/}
+              {/*    </MenuItem>*/}
+              {/*    <MenuItem value={"lowerToUpper"}>Lower Campus</MenuItem>*/}
+              {/*    <MenuItem value={"upperToLower"}>Upper Campus</MenuItem>*/}
+              {/*    <MenuItem value={"mostRooms"}>Most Available Rooms</MenuItem>*/}
+              {/*  </Sort>*/}
+              {/*</FormControl>*/}
             </div>
             {showMap ? (
               <Mapping

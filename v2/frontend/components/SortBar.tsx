@@ -1,5 +1,5 @@
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import FilterListIcon from '@mui/icons-material/FilterList';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -12,9 +12,9 @@ import { styled, Theme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import React, { PropsWithChildren,useEffect, useRef, useState } from "react";
 
-import { Building, BuildingReturnData, DropDown, DropDownItem, Filters } from "../types";
+import { Building, BuildingReturnData, DropDown, DropDownItem, Filters, SingleLevelDropDown } from "../types";
 
-const StyledFilterButton = styled(Box)<BoxProps>(({ theme }) => ({
+const StyledSortButton = styled(Box)<BoxProps>(({ theme }) => ({
   height: 40,
   width: 140,
   padding: 20,
@@ -34,7 +34,7 @@ const StyledFilterButton = styled(Box)<BoxProps>(({ theme }) => ({
 const StyledDropDownMenu = styled(Box)<BoxProps>(({ theme }) => ({
   width: 250,
   top: 50,
-  left: 0,
+  right: 0,
   borderRadius: 10,
   display: "flex",
   flexDirection: "column",
@@ -67,9 +67,9 @@ const StyledAccordionDetails = styled(AccordionDetails)(({ theme }) => ({
   color: "#000"
 }));
 
-const FilterBar: React.FC<{
-  filters: Filters,
-  setFilters: (filters: Filters) => void
+const SortBar: React.FC<{
+  filters: string,
+  setFilters: (filters: string) => void
 }> = ({ filters, setFilters }) => {
 
   // Hide and close Dropdown
@@ -86,144 +86,72 @@ const FilterBar: React.FC<{
   };
 
   // Handle user selecting a filter, each dropdown select has an associated key
-  const handleSelect = (key: keyof Filters, item: DropDownItem) => {
-    if (filters[key] === item.value) {
-      // If the same as already selected, unset key
-      const { [key]: unsetKey, ...other } = filters;
-      setFilters(other);
+  const handleSelect = (key: string, item: DropDownItem) => {
+    if (filters.includes(item.value)) {
+      // If the same as already selected
+      return
     } else {
       // Otherwise, spread existing filters and set key
-      setFilters({ ...filters, [key]: item.value });
+      setFilters( item.value );
     }
   };
 
-  // Reveal dropdown items
-  const dropdownReveal = (dropdown: DropDown) => {
-    return <div>
-      {dropdown.items.map(item => (
-        <div onClick={() => handleSelect(dropdown.key, item)} key={item.value}>
-          <Checkbox checked={filters[dropdown.key] === item.value} />
-          {item.text}
-        </div>
-      ))}
-    </div>;
-  }
-
   return (
     <>
-      <StyledFilterButton onClick={() => toggle(open)}>
+      <StyledSortButton onClick={() => toggle(open)}>
         <Stack
           direction="row"
           spacing={1.5}
           alignItems="center"
         // onBlur={(e: React.FocusEvent) => dismissHandler(e)}
         >
-          <p>{open ? <FilterAltIcon style={{ color: '#F77F00' }} /> : <FilterAltIcon style={{ color: '#F77F00' }} />}</p>
-          <p style={{ color: '#F77F00', fontWeight: 'bold' }}>Filters</p>
+          <p>{open ? <FilterListIcon style={{ color: '#F77F00' }} /> : <FilterListIcon style={{ color: '#F77F00' }} />}</p>
+          <p style={{ color: '#F77F00', fontWeight: 'bold' }}>Sort</p>
         </Stack>
         {open && (
           <Container>
             <StyledDropDownMenu>
               <StyledHeader>
-                <h3>Filter</h3>
-                <p style={{ color: '#F77F00' }} onClick={() => setFilters({})}>Reset</p>
+                <h3>Sort</h3>
               </StyledHeader>
               {dropdowns.map(dropdown => (
-                <StyledAccordian key={dropdown.key}>
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                  >
+                <StyledAccordian key={dropdown.value}>
+                  <div onClick={() => handleSelect(dropdown.value, dropdown)} key={dropdown.value}>
+                    <Checkbox checked={filters.includes(dropdown.value)} />
                     {dropdown.text}
-                  </AccordionSummary>
-                  <StyledAccordionDetails>
-                    {dropdownReveal(dropdown)}
-                  </StyledAccordionDetails>
+                  </div>
                 </StyledAccordian>
               ))}
             </StyledDropDownMenu>
           </Container>
         )}
-      </StyledFilterButton>
+      </StyledSortButton>
     </>
   );
 };
 
 // Dropdowns and items.
-const dropdowns: DropDown[] = [
+const dropdowns: DropDownItem[] = [
   {
-    text: 'Room Usage',
-    key: 'usage',
-    items: [
-      {
-        text: 'Tutorial Classroom',
-        value: 'TUT'
-      },
-      {
-        text: 'Lecture Hall',
-        value: 'LEC'
-      }
-    ]
+    text: 'Alphabetical',
+    value: 'alphabetical'
   },
   {
-    text: 'Room Capacity',
-    key: 'capacity',
-    items: [
-      {
-        text: '25+',
-        value: '25'
-      },
-      {
-        text: '50+',
-        value: '50'
-      },
-      {
-        text: '100+',
-        value: '100'
-      },
-      {
-        text: '200+',
-        value: '200'
-      }
-    ]
+    text: 'Reverse Alphabetical',
+    value: 'reverseAlphabetical'
   },
   {
-    text: 'Duration Free',
-    key: 'duration',
-    items: [
-      {
-        text: '30+ minutes',
-        value: '30'
-      },
-      {
-        text: '1+ hours',
-        value: '60'
-      },
-      {
-        text: '2+ hours',
-        value: '120'
-      },
-      {
-        text: '3+ hours',
-        value: '180'
-      }
-    ]
+    text: 'Lower Campus',
+    value: 'lowerToUpper'
   },
   {
-    text: 'Location',
-    key: 'location',
-    items: [
-      {
-        text: 'Upper Campus',
-        value: 'upper'
-      },
-      {
-        text: 'Lower Campus',
-        value: 'lower'
-      }
-    ]
+    text: 'Upper Campus',
+    value: 'upperToLower'
+  },
+  {
+    text: 'Most Available Rooms',
+    value: 'mostRooms'
   },
 ];
 
-export default FilterBar;
+export default SortBar;
