@@ -27,15 +27,15 @@ const api = {
   },
   // Get a list of all rooms in a building.
   getRoomsInBuilding: handleError(async (location: string, date?: string) => {
-    const url = `${API_URL}/buildings/${location}`;
+    const url = `${API_URL}/rooms`;
     const qs = { params: { datetime: date } };
     const res = await axios.get(url, qs);
-    return res.data;
+    return { rooms: res.data[location] };
   }),
 
   // Get a list of all booked periods in the room for a given date.
   getRoomBookings: handleError(async (location: string, room: string) => {
-    const url = `${API_URL}/buildings/${location}/${room}`;
+    const url = `${API_URL}/rooms/${location}-${room}`;
     const res = await axios.get(url);
     return res.data;
   }),
