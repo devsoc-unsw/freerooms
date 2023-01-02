@@ -57,31 +57,23 @@ export const getScraperData = async (): Promise<ScraperData> => {
 };
 
 export const getBuildingData = async (): Promise<BuildingDatabase> => {
-  let data;
-
-  // If database.json missing, create it
-  if (!fs.existsSync('database.json')) {
-    data = await scrapeBuildingData();
-  } else {
-    const rawData = fs.readFileSync('database.json', 'utf8');
-    data = JSON.parse(rawData) as BuildingDatabase;
-  }
-
+  const rawData = fs.readFileSync('database.json', 'utf8');
+  const data = JSON.parse(rawData) as BuildingDatabase;
   return data;
 }
 
 // Spawn child process to scrape building data
 // or return promise to ongoing process
-let ongoingScraper: Promise<BuildingDatabase> | null = null;
-export const scrapeBuildingData = async (): Promise<BuildingDatabase> => {
+let ongoingScraper: Promise<void> | null = null;
+export const scrapeBuildingData = async (): Promise<void> => {
   if (ongoingScraper === null) {
     ongoingScraper = new Promise((resolve, reject) => {
       const dev = process.env.NODE_ENV !== "production";
-      const scraper_path = dev ? './scraper.ts' : 'dist/scraper.js';
+      const scraper_path = dev ? 'src/scraper.ts' : 'dist/scraper.js';
       const child = child_process.fork(scraper_path);
-      child.on('message', (msg: { data: BuildingDatabase, err?: string }) => {
+      child.on('message', (msg: { err?: any }) => {
         if (msg.err) reject(msg.err);
-        resolve(msg.data);
+        resolve();
       });
       child.on('error', () => {
         reject();

@@ -94,13 +94,12 @@ app.get(
   })
 );
 
-/*// After each request, check if database.json needs to be updated
+// After each request, check if database.json needs to be updated
 app.use(
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const timeNow = new Date();
-    const stat = fs.statSync('database.json', { throwIfNoEntry: false });
+    const stat = fs.statSync('database.json');
     if (
-      !stat ||
       timeNow.getFullYear() - stat.mtime.getFullYear() > 0 ||
       timeNow.getMonth() - stat.mtime.getMonth() > 0
     ) {
@@ -108,7 +107,7 @@ app.use(
     }
     next();
   })
-);*/
+);
 
 // Error-handling middleware
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
