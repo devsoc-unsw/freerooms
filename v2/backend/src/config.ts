@@ -1,4 +1,4 @@
-const DEV = process.env.NODE_ENV !== "production";
+const PROD = process.env.NODE_ENV === "production";
 
-export const SCRAPER_PATH = DEV ? "./src/scraper.ts" : "./dist/scraper.js";
-export const DATABASE_PATH = DEV ? "./database.json" : "./app/database.json";
+export const SCRAPER_PATH = PROD ? "./dist/scraper.js" : "./src/scraper.ts";
+export const DATABASE_PATH = PROD ? "./app/database.json" : "./database.json";
