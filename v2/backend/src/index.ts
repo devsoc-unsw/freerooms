@@ -9,6 +9,7 @@ import {
   getRoomAvailability
 } from "./service";
 import { Filters } from "./types";
+import { DATABASE_PATH } from "./config";
 
 const app = express();
 const PORT = 3000;
@@ -98,7 +99,7 @@ app.get(
 app.use(
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const timeNow = new Date();
-    const stat = fs.statSync('database.json');
+    const stat = fs.statSync(DATABASE_PATH);
     if (
       timeNow.getFullYear() - stat.mtime.getFullYear() > 0 ||
       timeNow.getMonth() - stat.mtime.getMonth() > 0

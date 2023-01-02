@@ -2,7 +2,9 @@ import axios from "axios";
 import * as fs from 'fs';
 import axiosRateLimit from "axios-rate-limit";
 import { JSDOM } from "jsdom";
+
 import { BuildingData, RoomData } from "./types";
+import { DATABASE_PATH } from "./config";
 
 const LEARNING_ENVIRONMENTS_URL = "https://www.learningenvironments.unsw.edu.au" 
 
@@ -17,7 +19,7 @@ const runScrapingJob = async () => {
     console.time("scraping time");
 
     const data = await scrapeAllBuildings();
-    fs.writeFileSync("database.json", JSON.stringify(data, null, 4));
+    fs.writeFileSync(DATABASE_PATH, JSON.stringify(data, null, 4));
 
     console.log("ending scraping job");
     console.timeEnd("scraping time");

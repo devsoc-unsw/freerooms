@@ -1,6 +1,8 @@
 import axios from "axios";
 import child_process from "child_process";
 import fs from "fs";
+
+import { DATABASE_PATH, SCRAPER_PATH } from "./config";
 import { ScraperData, BuildingDatabase, RoomStatus, Class } from "./types";
 
 /*
@@ -57,7 +59,7 @@ export const getScraperData = async (): Promise<ScraperData> => {
 };
 
 export const getBuildingData = async (): Promise<BuildingDatabase> => {
-  const rawData = fs.readFileSync('database.json', 'utf8');
+  const rawData = fs.readFileSync(DATABASE_PATH, 'utf8');
   const data = JSON.parse(rawData) as BuildingDatabase;
   return data;
 }
@@ -68,9 +70,7 @@ let ongoingScraper: Promise<void> | null = null;
 export const scrapeBuildingData = async (): Promise<void> => {
   if (ongoingScraper === null) {
     ongoingScraper = new Promise((resolve, reject) => {
-      const dev = process.env.NODE_ENV !== "production";
-      const scraper_path = dev ? 'src/scraper.ts' : 'dist/scraper.js';
-      const child = child_process.fork(scraper_path);
+      const child = child_process.fork(SCRAPER_PATH);
       child.on('message', (msg: { err?: any }) => {
         if (msg.err) reject(msg.err);
         resolve();
