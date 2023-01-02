@@ -1,16 +1,16 @@
 import { calculateStatus, getBuildingData, getScraperData, getWeek } from "./helpers";
-import { BuildingsReturnData, Filters, RoomAvailability, BuildingStatus, RoomsReturnData } from "./types";
+import { BuildingsResponse, Filters, RoomAvailability, BuildingStatus, RoomsResponse } from "./types";
 
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const UPPER = 19; // Buildings with grid 19+ are upper campus
 
-export const getAllBuildings = async (): Promise<BuildingsReturnData[]> => {
+export const getAllBuildings = async (): Promise<BuildingsResponse> => {
   const data = Object.values(await getBuildingData());
   if (!data) {
     throw new Error(`Buildings cannot be retrieved`);
   }
 
-  const res: BuildingsReturnData[] = [];
+  const res: BuildingsResponse = [];
   data.forEach(({ name, id, lat, long }) => {
     res.push({
       name: name,
@@ -25,13 +25,13 @@ export const getAllBuildings = async (): Promise<BuildingsReturnData[]> => {
 export const getAllRoomStatus = async (
   date: Date,
   filters: Filters
-): Promise<RoomsReturnData> => {
+): Promise<RoomsResponse> => {
   const week = await getWeek(date);
   const day = DAYS[date.getDay()];
 
   const buildingData = await getBuildingData();
   const scraperData = await getScraperData();
-  const result: RoomsReturnData = {};
+  const result: RoomsResponse = {};
   for (const buildingID in buildingData) {
     const roomLocation = +buildingID.substring(3) < UPPER ? 'lower' : 'upper';
     if (filters.location && filters.location != roomLocation) {

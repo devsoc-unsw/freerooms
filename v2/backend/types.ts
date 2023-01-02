@@ -33,8 +33,6 @@ export type BuildingData = {
   };
 };
 
-export type RoomUsage = "LEC" | "TUT";
-
 export type RoomData = {
   name: string;
   id: string;
@@ -42,29 +40,29 @@ export type RoomData = {
   usage: RoomUsage;
 };
 
+export type RoomUsage = "LEC" | "TUT";
+
 export type ScrapeResult<T extends RoomData | BuildingData> = T | undefined;
 
-export type Status = "free" | "soon" | "busy";
-
-export type RoomStatus = {
-  status: Status;
-  endtime: string;
+export type RoomsResponse = {
+  [buildingId: string]: BuildingStatus;
 };
 
 export type BuildingStatus = {
   [roomId: string]: RoomStatus;
 };
 
-export type RoomsReturnData = {
-  [buildingId: string]: BuildingStatus;
+export type RoomStatus = {
+  status: "free" | "soon" | "busy";
+  endtime: string;
 };
 
-export type BuildingsReturnData = {
+export type BuildingsResponse = Array<{
   name: string;
   id: string;
   lat: number;
   long: number;
-};
+}>;
 
 export type Location = "upper" | "lower";
 
@@ -74,4 +72,3 @@ export type Filters = {
   location?: Location;
   duration?: number;
 }
-
