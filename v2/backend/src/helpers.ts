@@ -1,7 +1,7 @@
 import axios from "axios";
 import child_process from "child_process";
 import fs from "fs";
-import { ScraperData, BuildingDatabase, RoomStatus, ClassList } from "./types";
+import { ScraperData, BuildingDatabase, RoomStatus, ClassList, Class } from "./types";
 
 /*
  * Definitions
@@ -117,15 +117,6 @@ export const getDate = (datetime: string): Date | null => {
   return isNaN(timestamp) ? null : new Date(datetime);
 };
 
-// Return a copy of provided date set to provided time
-// Time must be in the format HH:MM
-export const combineDateTime = (date: Date, time: string) => {
-  const newDate = new Date(date.valueOf());
-  const [hours, minutes] = time.split(':');
-  newDate.setHours(+hours, +minutes);
-  return newDate;
-}
-
 // Given a datetime and a list of the room's bookings for 
 // the corresponding date, calculate the status of the room
 // If room if not free for the given minimum duration, return null
@@ -139,34 +130,29 @@ export const calculateStatus = (
     endtime: "",
   };
 
-  // Filter out duplicates and sort by start time
-  const cleanClasses: ClassList = classes
-    .filter((cls, index, clsList) =>
-      index === clsList.findIndex((x) =>
-        x.start === cls.start && x.end === cls.end
-      )
-    )
-    .sort((a, b) => {
-      return combineDateTime(datetime, a.start).getTime() -
-        combineDateTime(datetime, b.start).getTime();
-    });
+  // Find the first two class that end after the given time
+  let firstAfter: Class | null = null;
+  let secondAfter: Class | null = null;
+  for (const cls of classes) {
+    const end = combineDateTime(datetime, cls.end);
+    if (end <= datetime) continue;
 
-  // Find first class that ends after current time
-  const afterIndex = cleanClasses.findIndex((cls) => (
-    datetime < combineDateTime(datetime, cls.end)
-  ));
+    if (!firstAfter || end < combineDateTime(datetime, firstAfter.end)) {
+      secondAfter = firstAfter;
+      firstAfter = cls;
+    } else if (!secondAfter || end < combineDateTime(datetime, secondAfter.end)) {
+      secondAfter = cls;
+    }
+  }
 
-  if (afterIndex === -1) {
+  if (!firstAfter) {
     // No such class, it is free indefinitely
     return roomStatus;
   }
 
-  const afterClass = cleanClasses[afterIndex];
-  const start = combineDateTime(datetime, afterClass.start);
-  const end = combineDateTime(datetime, afterClass.end);
+  const start = combineDateTime(datetime, firstAfter.start);
   if (datetime < start) {
-    // Class starts after current time
-    // Check if it meets minDuration filter
+    // Class starts after current time i.e. room is free, check if it meets minDuration filter
     const duration = (start.getTime() - datetime.getTime()) / (1000 * 60);
     return duration < minDuration ? null : roomStatus;
   } else {
@@ -174,10 +160,10 @@ export const calculateStatus = (
     if (minDuration > 0) return null;
     roomStatus.status = "busy";
 
+    const end = combineDateTime(datetime, firstAfter.end);
     if (end.getTime() - datetime.getTime() <= FIFTEEN_MIN) {
       // Ending soon, check the next class
-      const next = cleanClasses[afterIndex + 1];
-      if (!next || combineDateTime(datetime, next.start) > end) {
+      if (!secondAfter || combineDateTime(datetime, secondAfter.start) > end) {
         // No next class, or it starts after the current class ends
         roomStatus.status = "soon";
         roomStatus.endtime = end.toISOString();
@@ -186,4 +172,13 @@ export const calculateStatus = (
   }
 
   return roomStatus;
+}
+
+// Return a copy of provided date set to provided time
+// Time must be in the format HH:MM
+const combineDateTime = (date: Date, time: string) => {
+  const newDate = new Date(date.valueOf());
+  const [hours, minutes] = time.split(':');
+  newDate.setHours(+hours, +minutes);
+  return newDate;
 }
