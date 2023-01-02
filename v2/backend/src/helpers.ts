@@ -1,7 +1,7 @@
 import axios from "axios";
 import child_process from "child_process";
 import fs from "fs";
-import { ScraperData, BuildingDatabase, RoomStatus, ClassList, Class } from "./types";
+import { ScraperData, BuildingDatabase, RoomStatus, Class } from "./types";
 
 /*
  * Definitions
@@ -114,7 +114,7 @@ export const getDate = (datetime: string): Date | null => {
 // If room if not free for the given minimum duration, return null
 export const calculateStatus = (
   datetime: Date,
-  classes: ClassList,
+  classes: Class[],
   minDuration: number
 ): RoomStatus | null => {
   const roomStatus: RoomStatus = {

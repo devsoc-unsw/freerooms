@@ -7,11 +7,9 @@ export type ScraperData = {
 export type RoomAvailability = {
   name: string;
   [week: number]: {
-    [day: string]: ClassList;
+    [day: string]: Class[];
   };
 };
-
-export type ClassList = Class[];
 
 export type Class = {
   courseCode: string;
@@ -41,8 +39,6 @@ export type RoomData = {
 };
 
 export type RoomUsage = "LEC" | "TUT";
-
-export type ScrapeResult<T extends RoomData | BuildingData> = T | undefined;
 
 export type RoomsResponse = {
   [buildingId: string]: BuildingStatus;
