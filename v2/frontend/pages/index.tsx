@@ -36,9 +36,7 @@ import {
 import BuildingInfo from "../views/BuildingInfo";
 import CardList from "../views/CardList";
 
-const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
-  buildingData,
-}) => {
+const Home: NextPage<{}> = () => {
   const router = useRouter();
   const { building } = router.query;
 
@@ -52,6 +50,14 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
     router.push("/");
   };
   */
+
+  const [buildingData, setBuildingData] = React.useState<BuildingReturnData>({ buildings: [] });
+  React.useEffect(() => {
+    fetch(API_URL + "/buildings")
+      .then(res => res.json())
+      .then(data => setBuildingData(data as BuildingReturnData))
+      .catch(() => setBuildingData({ buildings: [] }));
+  });
 
   // State variables to be used by the various new features
   const [sort, setSort] = React.useState<string>("alphabetical");
@@ -223,25 +229,6 @@ const Home: NextPage<{ buildingData: BuildingReturnData }> = ({
     </Container>
   );
 };
-
-export async function getStaticProps() {
-  // fetches /buildings via **BUILD** time so we don't need to have
-  // the client fetch buildings data every request
-
-  let buildings: BuildingReturnData;
-  try {
-    const res = await fetch(API_URL + "/buildings");
-    buildings = await res.json();
-  } catch {
-    buildings = { buildings: [] };
-  }
-
-  return {
-    props: {
-      buildingData: buildings,
-    },
-  };
-}
 
 const drawerWidth = 400;
 
