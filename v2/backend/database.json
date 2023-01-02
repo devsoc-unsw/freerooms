@@ -2,7 +2,6 @@
     "K-G27": {
         "name": "AGSM",
         "id": "K-G27",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/agsm-building.jpg?itok=Kd8fcJMO",
         "lat": -33.918158,
         "long": 151.23567,
         "rooms": {
@@ -12,28 +11,28 @@
                 "capacity": 56,
                 "usage": "TUT"
             },
-            "G05": {
-                "id": "K-G27-G05",
-                "name": "AGSM Boral Theatre",
-                "capacity": 52,
-                "usage": "LEC"
-            },
             "G04": {
                 "id": "K-G27-G04",
                 "name": "Pioneer International Theatre",
                 "capacity": 57,
                 "usage": "LEC"
             },
-            "G07": {
-                "id": "K-G27-G07",
-                "name": "John B Reid Theatre",
-                "capacity": 131,
+            "G05": {
+                "id": "K-G27-G05",
+                "name": "AGSM Boral Theatre",
+                "capacity": 52,
                 "usage": "LEC"
             },
             "G06": {
                 "id": "K-G27-G06",
                 "name": "AGSM Colonial Theatre",
                 "capacity": 43,
+                "usage": "LEC"
+            },
+            "G07": {
+                "id": "K-G27-G07",
+                "name": "John B Reid Theatre",
+                "capacity": 131,
                 "usage": "LEC"
             },
             "LG06": {
@@ -53,7 +52,6 @@
     "K-J17": {
         "name": "Ainsworth Building",
         "id": "K-J17",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/ainsworth-building_0.jpg?itok=QyEuns2l",
         "lat": -33.918305,
         "long": 151.231412,
         "rooms": {
@@ -104,7 +102,6 @@
     "K-D26": {
         "name": "Biological Sciences (North)",
         "id": "K-D26",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/bio-sciences.JPG?h=73e7f248&itok=4NkTpHZz",
         "lat": -33.917256,
         "long": 151.235254,
         "rooms": {
@@ -119,22 +116,9 @@
     "K-G6": {
         "name": "Blockhouse",
         "id": "K-G6",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/blockhouse.jpg?itok=FLCXlVKy",
         "lat": -33.916921,
         "long": 151.226793,
         "rooms": {
-            "G16": {
-                "id": "K-G6-G16",
-                "name": "Blockhouse G16",
-                "capacity": 38,
-                "usage": "TUT"
-            },
-            "G6": {
-                "id": "K-G6-G6",
-                "name": "Blockhouse G6",
-                "capacity": 38,
-                "usage": "TUT"
-            },
             "G13": {
                 "id": "K-G6-G13",
                 "name": "Blockhouse G13",
@@ -152,13 +136,24 @@
                 "name": "Blockhouse G15",
                 "capacity": 38,
                 "usage": "TUT"
+            },
+            "G16": {
+                "id": "K-G6-G16",
+                "name": "Blockhouse G16",
+                "capacity": 38,
+                "usage": "TUT"
+            },
+            "G6": {
+                "id": "K-G6-G6",
+                "name": "Blockhouse G6",
+                "capacity": 38,
+                "usage": "TUT"
             }
         }
     },
     "K-E19": {
         "name": "Central Lecture Block",
         "id": "K-E19",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/clb.jpg?itok=Ba6dtuiQ",
         "lat": -33.917272,
         "long": 151.232478,
         "rooms": {
@@ -215,16 +210,9 @@
     "K-F10": {
         "name": "Chemical Sciences",
         "id": "K-F10",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/f10_1.jpg?itok=NYyK7dcZ",
         "lat": -33.917115,
         "long": 151.228732,
         "rooms": {
-            "M17": {
-                "id": "K-F10-M17",
-                "name": "ChemicalSc M17",
-                "capacity": 253,
-                "usage": "LEC"
-            },
             "M10": {
                 "id": "K-F10-M10",
                 "name": "Chemical Sc M10",
@@ -235,6 +223,12 @@
                 "id": "K-F10-M11",
                 "name": "Chemical Sc M11",
                 "capacity": 97,
+                "usage": "LEC"
+            },
+            "M17": {
+                "id": "K-F10-M17",
+                "name": "ChemicalSc M17",
+                "capacity": 253,
                 "usage": "LEC"
             },
             "M18": {
@@ -248,7 +242,6 @@
     "K-H20": {
         "name": "Civil Engineering Building",
         "id": "K-H20",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/civil-engineering.jpg?itok=jpqr98Sy",
         "lat": -33.918136,
         "long": 151.232687,
         "rooms": {
@@ -276,6 +269,12 @@
                 "capacity": 56,
                 "usage": "TUT"
             },
+            "G1": {
+                "id": "K-H20-G1",
+                "name": "Civil Engineering G1",
+                "capacity": 106,
+                "usage": "LEC"
+            },
             "G6": {
                 "id": "K-H20-G6",
                 "name": "Civil Engineering G6",
@@ -287,19 +286,12 @@
                 "name": "Civil Engineering G8",
                 "capacity": 64,
                 "usage": "TUT"
-            },
-            "G1": {
-                "id": "K-H20-G1",
-                "name": "Civil Engineering G1",
-                "capacity": 106,
-                "usage": "LEC"
             }
         }
     },
     "K-B16": {
         "name": "Colombo Building",
         "id": "K-B16",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/columbo.jpg?itok=1pK07Y2L",
         "lat": -33.916226,
         "long": 151.231301,
         "rooms": {
@@ -307,6 +299,12 @@
                 "id": "K-B16-LG01",
                 "name": "Colombo LG01",
                 "capacity": 48,
+                "usage": "TUT"
+            },
+            "LG02": {
+                "id": "K-B16-LG02",
+                "name": "Colombo LG02",
+                "capacity": 56,
                 "usage": "TUT"
             },
             "LG03": {
@@ -326,33 +324,26 @@
                 "name": "Colombo Theatre C",
                 "capacity": 154,
                 "usage": "LEC"
-            },
-            "LG02": {
-                "id": "K-B16-LG02",
-                "name": "Colombo LG02",
-                "capacity": 56,
-                "usage": "TUT"
             }
         }
     },
     "K-G17": {
         "name": "Electrical Engineering Bldg",
         "id": "K-G17",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/Electrical-Engineering-1_0.jpg?itok=lnfaYNQr",
         "lat": -33.917842,
         "long": 151.231483,
         "rooms": {
-            "G22": {
-                "id": "K-G17-G22",
-                "name": "Electrical Engineering G22",
-                "capacity": 148,
-                "usage": "LEC"
+            "G03": {
+                "id": "K-G17-G03",
+                "name": "Electrical Engineering G03",
+                "capacity": 54,
+                "usage": "TUT"
             },
-            "G23": {
-                "id": "K-G17-G23",
-                "name": "Electrical Engineering G23",
-                "capacity": 148,
-                "usage": "LEC"
+            "G04": {
+                "id": "K-G17-G04",
+                "name": "Electrical Engineering G04",
+                "capacity": 48,
+                "usage": "TUT"
             },
             "G09": {
                 "id": "K-G17-G09",
@@ -366,27 +357,44 @@
                 "capacity": 54,
                 "usage": "TUT"
             },
-            "G03": {
-                "id": "K-G17-G03",
-                "name": "Electrical Engineering G03",
-                "capacity": 54,
-                "usage": "TUT"
+            "G22": {
+                "id": "K-G17-G22",
+                "name": "Electrical Engineering G22",
+                "capacity": 148,
+                "usage": "LEC"
             },
-            "G04": {
-                "id": "K-G17-G04",
-                "name": "Electrical Engineering G04",
-                "capacity": 48,
-                "usage": "TUT"
+            "G23": {
+                "id": "K-G17-G23",
+                "name": "Electrical Engineering G23",
+                "capacity": 148,
+                "usage": "LEC"
             }
         }
     },
     "K-D16": {
         "name": "Goldstein Hall",
         "id": "K-D16",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/goldstein.jpg?itok=mVBqS5tj",
         "lat": -33.916604,
         "long": 151.231191,
         "rooms": {
+            "G01": {
+                "id": "K-D16-G01",
+                "name": "Goldstein G01",
+                "capacity": 38,
+                "usage": "TUT"
+            },
+            "G02": {
+                "id": "K-D16-G02",
+                "name": "Goldstein G02",
+                "capacity": 30,
+                "usage": "TUT"
+            },
+            "G03": {
+                "id": "K-D16-G03",
+                "name": "Goldstein G03",
+                "capacity": 40,
+                "usage": "TUT"
+            },
             "G04": {
                 "id": "K-D16-G04",
                 "name": "Goldstein G04",
@@ -399,16 +407,10 @@
                 "capacity": 24,
                 "usage": "TUT"
             },
-            "G01": {
-                "id": "K-D16-G01",
-                "name": "Goldstein G01",
-                "capacity": 38,
-                "usage": "TUT"
-            },
-            "G02": {
-                "id": "K-D16-G02",
-                "name": "Goldstein G02",
-                "capacity": 30,
+            "G06": {
+                "id": "K-D16-G06",
+                "name": "Goldstein G06",
+                "capacity": 28,
                 "usage": "TUT"
             },
             "G07": {
@@ -422,25 +424,12 @@
                 "name": "Goldstein G09",
                 "capacity": 42,
                 "usage": "TUT"
-            },
-            "G03": {
-                "id": "K-D16-G03",
-                "name": "Goldstein G03",
-                "capacity": 40,
-                "usage": "TUT"
-            },
-            "G06": {
-                "id": "K-D16-G06",
-                "name": "Goldstein G06",
-                "capacity": 28,
-                "usage": "TUT"
             }
         }
     },
     "K-F20": {
         "name": "John Goodsell Building",
         "id": "K-F20",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/john-goodsell.jpg?itok=L-pGHiiJ",
         "lat": -33.91741,
         "long": 151.23284,
         "rooms": {
@@ -461,7 +450,6 @@
     "K-G19": {
         "name": "John Niland Scientia",
         "id": "K-G19",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/scientia_1_fade.jpg.600x250_q90_crop-smart.jpg?itok=NwOLatu_",
         "lat": -33.918002,
         "long": 151.23243,
         "rooms": {
@@ -476,7 +464,6 @@
     "K-J14": {
         "name": "Keith Burrows Theatre",
         "id": "K-J14",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/keith.jpg?itok=Xa_PkGt2",
         "lat": -33.918101,
         "long": 151.2302,
         "rooms": {
@@ -491,7 +478,6 @@
     "K-F8": {
         "name": "Law Building",
         "id": "K-F8",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/UNSW_Law_2015_399-crop.jpg?itok=A5u3a-Zi",
         "lat": -33.917204,
         "long": 151.22796,
         "rooms": {
@@ -573,18 +559,6 @@
                 "capacity": 44,
                 "usage": "TUT"
             },
-            "G17": {
-                "id": "K-F8-G17",
-                "name": "Law Library G17",
-                "capacity": 44,
-                "usage": "TUT"
-            },
-            "G23": {
-                "id": "K-F8-G23",
-                "name": "Law Theatre G23",
-                "capacity": 90,
-                "usage": "LEC"
-            },
             "G02": {
                 "id": "K-F8-G02",
                 "name": "Law Theatre G02",
@@ -596,13 +570,24 @@
                 "name": "Law Theatre G04",
                 "capacity": 347,
                 "usage": "LEC"
+            },
+            "G17": {
+                "id": "K-F8-G17",
+                "name": "Law Library G17",
+                "capacity": 44,
+                "usage": "TUT"
+            },
+            "G23": {
+                "id": "K-F8-G23",
+                "name": "Law Theatre G23",
+                "capacity": 90,
+                "usage": "LEC"
             }
         }
     },
     "K-F21": {
         "name": "Library Stage 2",
         "id": "K-F21",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/library.jpg?itok=TD1ZihPh",
         "lat": -33.917702,
         "long": 151.233242,
         "rooms": {
@@ -623,7 +608,6 @@
     "K-F23": {
         "name": "Mathews Building",
         "id": "K-F23",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/matthews.jpg?itok=37YmCdzA",
         "lat": -33.917628,
         "long": 151.234366,
         "rooms": {
@@ -788,7 +772,6 @@
     "K-D23": {
         "name": "Mathews Theatres",
         "id": "K-D23",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/matthews-theatres.jpg?itok=oi3e7TBD",
         "lat": -33.917161,
         "long": 151.233983,
         "rooms": {
@@ -821,22 +804,9 @@
     "K-C20": {
         "name": "Morven Brown Building",
         "id": "K-C20",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/morven-brown_0.jpg?itok=ApUEzh74",
         "lat": -33.916827,
         "long": 151.233154,
         "rooms": {
-            "LG2": {
-                "id": "K-C20-LG2",
-                "name": "Morven Brown LG2",
-                "capacity": 32,
-                "usage": "TUT"
-            },
-            "LG30": {
-                "id": "K-C20-LG30",
-                "name": "Morven Brown LG30",
-                "capacity": 22,
-                "usage": "TUT"
-            },
             "G3": {
                 "id": "K-C20-G3",
                 "name": "Morven Brown G3",
@@ -860,13 +830,24 @@
                 "name": "Morven Brown G6",
                 "capacity": 42,
                 "usage": "TUT"
+            },
+            "LG2": {
+                "id": "K-C20-LG2",
+                "name": "Morven Brown LG2",
+                "capacity": 32,
+                "usage": "TUT"
+            },
+            "LG30": {
+                "id": "K-C20-LG30",
+                "name": "Morven Brown LG30",
+                "capacity": 22,
+                "usage": "TUT"
             }
         }
     },
     "K-J12": {
         "name": "Newton Building",
         "id": "K-J12",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/newton.jpg?itok=tKK_gLhs",
         "lat": -33.917927,
         "long": 151.22929,
         "rooms": {
@@ -887,7 +868,6 @@
     "K-K15": {
         "name": "Old Main Building",
         "id": "K-K15",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/old-main-buliding.JPG?itok=dCNjGsYv",
         "lat": -33.918674,
         "long": 151.230242,
         "rooms": {
@@ -938,7 +918,6 @@
     "K-K14": {
         "name": "Physics Theatre",
         "id": "K-K14",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/physics-theatre.jpg?itok=fVuJ6juY",
         "lat": -33.918494,
         "long": 151.230229,
         "rooms": {
@@ -953,7 +932,6 @@
     "K-E15": {
         "name": "Quadrangle Building",
         "id": "K-E15",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/The%20Quad-25.jpg?itok=AI_9fkbt",
         "lat": -33.917214,
         "long": 151.231209,
         "rooms": {
@@ -1011,22 +989,58 @@
                 "capacity": 20,
                 "usage": "TUT"
             },
-            "G053": {
-                "id": "K-E15-G053",
-                "name": "Quadrangle G053",
-                "capacity": 44,
+            "G025": {
+                "id": "K-E15-G025",
+                "name": "Quadrangle G025",
+                "capacity": 30,
                 "usage": "TUT"
             },
-            "G054": {
-                "id": "K-E15-G054",
-                "name": "Quadrangle G054",
-                "capacity": 24,
+            "G026": {
+                "id": "K-E15-G026",
+                "name": "Quadrangle G026",
+                "capacity": 30,
                 "usage": "TUT"
             },
-            "G055": {
-                "id": "K-E15-G055",
-                "name": "Quadrangle G055",
-                "capacity": 18,
+            "G027": {
+                "id": "K-E15-G027",
+                "name": "Quadrangle G027",
+                "capacity": 26,
+                "usage": "TUT"
+            },
+            "G031": {
+                "id": "K-E15-G031",
+                "name": "Quadrangle G031",
+                "capacity": 52,
+                "usage": "TUT"
+            },
+            "G032": {
+                "id": "K-E15-G032",
+                "name": "Quadrangle G032",
+                "capacity": 58,
+                "usage": "TUT"
+            },
+            "G033": {
+                "id": "K-E15-G033",
+                "name": "Quadrangle G033",
+                "capacity": 10,
+                "usage": "TUT"
+            },
+            "G034": {
+                "id": "K-E15-G034",
+                "name": "Quadrangle G034",
+                "capacity": 60,
+                "usage": "TUT"
+            },
+            "G040": {
+                "id": "K-E15-G040",
+                "name": "Quadrangle G040",
+                "capacity": 40,
+                "usage": "TUT"
+            },
+            "G042": {
+                "id": "K-E15-G042",
+                "name": "Quadrangle G042",
+                "capacity": 22,
                 "usage": "TUT"
             },
             "G044": {
@@ -1065,58 +1079,22 @@
                 "capacity": 26,
                 "usage": "TUT"
             },
-            "G031": {
-                "id": "K-E15-G031",
-                "name": "Quadrangle G031",
-                "capacity": 52,
+            "G053": {
+                "id": "K-E15-G053",
+                "name": "Quadrangle G053",
+                "capacity": 44,
                 "usage": "TUT"
             },
-            "G032": {
-                "id": "K-E15-G032",
-                "name": "Quadrangle G032",
-                "capacity": 58,
+            "G054": {
+                "id": "K-E15-G054",
+                "name": "Quadrangle G054",
+                "capacity": 24,
                 "usage": "TUT"
             },
-            "G040": {
-                "id": "K-E15-G040",
-                "name": "Quadrangle G040",
-                "capacity": 40,
-                "usage": "TUT"
-            },
-            "G042": {
-                "id": "K-E15-G042",
-                "name": "Quadrangle G042",
-                "capacity": 22,
-                "usage": "TUT"
-            },
-            "G034": {
-                "id": "K-E15-G034",
-                "name": "Quadrangle G034",
-                "capacity": 60,
-                "usage": "TUT"
-            },
-            "G025": {
-                "id": "K-E15-G025",
-                "name": "Quadrangle G025",
-                "capacity": 30,
-                "usage": "TUT"
-            },
-            "G026": {
-                "id": "K-E15-G026",
-                "name": "Quadrangle G026",
-                "capacity": 30,
-                "usage": "TUT"
-            },
-            "G027": {
-                "id": "K-E15-G027",
-                "name": "Quadrangle G027",
-                "capacity": 26,
-                "usage": "TUT"
-            },
-            "G033": {
-                "id": "K-E15-G033",
-                "name": "Quadrangle G033",
-                "capacity": 10,
+            "G055": {
+                "id": "K-E15-G055",
+                "name": "Quadrangle G055",
+                "capacity": 18,
                 "usage": "TUT"
             }
         }
@@ -1124,7 +1102,6 @@
     "K-F17": {
         "name": "Rex Vowels Theatre",
         "id": "K-F17",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/rex-vowels.jpg?itok=z19Iy-UC",
         "lat": -33.917668,
         "long": 151.231539,
         "rooms": {
@@ -1139,7 +1116,6 @@
     "K-M15": {
         "name": "Rupert Myers Building",
         "id": "K-M15",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/rupert-myers.jpg?itok=CTeVdJaF",
         "lat": -33.919238,
         "long": 151.230562,
         "rooms": {
@@ -1154,10 +1130,21 @@
     "K-E8": {
         "name": "Science & Engineering Building",
         "id": "K-E8",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/unsw_image1_john_gollings_2.jpg?itok=fB6sXV7c",
         "lat": -33.916679,
         "long": 151.227812,
         "rooms": {
+            "B24": {
+                "id": "K-E8-B24",
+                "name": "Science & Engineering B24",
+                "capacity": 32,
+                "usage": "TUT"
+            },
+            "B25": {
+                "id": "K-E8-B25",
+                "name": "Science & Engineering B25",
+                "capacity": 40,
+                "usage": "TUT"
+            },
             "B26": {
                 "id": "K-E8-B26",
                 "name": "Science & Engineering B26",
@@ -1187,25 +1174,12 @@
                 "name": "Science & Engineering G07",
                 "capacity": 68,
                 "usage": "LEC"
-            },
-            "B24": {
-                "id": "K-E8-B24",
-                "name": "Science & Engineering B24",
-                "capacity": 32,
-                "usage": "TUT"
-            },
-            "B25": {
-                "id": "K-E8-B25",
-                "name": "Science & Engineering B25",
-                "capacity": 40,
-                "usage": "TUT"
             }
         }
     },
     "K-F13": {
         "name": "Science Theatre",
         "id": "K-F13",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/science-theatre.JPG?itok=nsK3YwfO",
         "lat": -33.917342,
         "long": 151.229811,
         "rooms": {
@@ -1220,7 +1194,6 @@
     "K-C24": {
         "name": "Sir John Clancy Auditorium",
         "id": "K-C24",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/8748C4B7-9071-47A1-AD4E-EC68D1874B50.jpg?itok=Gac9ZP9U",
         "lat": -33.916816,
         "long": 151.234576,
         "rooms": {
@@ -1235,7 +1208,6 @@
     "K-E4": {
         "name": "Squarehouse",
         "id": "K-E4",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/squarehouse_0.jpg?itok=nI8heB1-",
         "lat": -33.916413,
         "long": 151.226369,
         "rooms": {
@@ -1316,7 +1288,6 @@
     "K-H13": {
         "name": "The Red Centre",
         "id": "K-H13",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/red_03.jpg?itok=b_njw-8t",
         "lat": -33.917898,
         "long": 151.230594,
         "rooms": {
@@ -1392,17 +1363,17 @@
                 "capacity": 26,
                 "usage": "TUT"
             },
-            "M010": {
-                "id": "K-H13-M010",
-                "name": "Red Centre West M010",
-                "capacity": 44,
-                "usage": "TUT"
-            },
             "G001": {
                 "id": "K-H13-G001",
                 "name": "Red Centre Theatre",
                 "capacity": 117,
                 "usage": "LEC"
+            },
+            "M010": {
+                "id": "K-H13-M010",
+                "name": "Red Centre West M010",
+                "capacity": 44,
+                "usage": "TUT"
             },
             "M032": {
                 "id": "K-H13-M032",
@@ -1415,10 +1386,27 @@
     "K-H6": {
         "name": "Tyree Energy Technology",
         "id": "K-H6",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/tyree.jpg?itok=k6rdFjlt",
         "lat": -33.917446,
         "long": 151.226608,
         "rooms": {
+            "G15": {
+                "id": "K-H6-G15",
+                "name": "Tyree Energy Technology G15",
+                "capacity": 56,
+                "usage": "TUT"
+            },
+            "G16": {
+                "id": "K-H6-G16",
+                "name": "Tyree Energy Technology G16",
+                "capacity": 180,
+                "usage": "LEC"
+            },
+            "G17": {
+                "id": "K-H6-G17",
+                "name": "Tyree Energy Technology G17",
+                "capacity": 70,
+                "usage": "TUT"
+            },
             "LG03": {
                 "id": "K-H6-LG03",
                 "name": "Michael Hintze Theatre",
@@ -1436,31 +1424,12 @@
                 "name": "Tyree Energy Technology LG07",
                 "capacity": 84,
                 "usage": "LEC"
-            },
-            "G16": {
-                "id": "K-H6-G16",
-                "name": "Tyree Energy Technology G16",
-                "capacity": 180,
-                "usage": "LEC"
-            },
-            "G17": {
-                "id": "K-H6-G17",
-                "name": "Tyree Energy Technology G17",
-                "capacity": 70,
-                "usage": "TUT"
-            },
-            "G15": {
-                "id": "K-H6-G15",
-                "name": "Tyree Energy Technology G15",
-                "capacity": 56,
-                "usage": "TUT"
             }
         }
     },
     "K-E12": {
         "name": "UNSW Business School",
         "id": "K-E12",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/ARC_funding_banner.jpg?itok=tY6IcfVW",
         "lat": -33.916825,
         "long": 151.2296,
         "rooms": {
@@ -1553,7 +1522,6 @@
     "K-H22": {
         "name": "Vallentine Annexe",
         "id": "K-H22",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/valentine.jpg?itok=9JmzseS7",
         "lat": -33.918136,
         "long": 151.233631,
         "rooms": {
@@ -1568,7 +1536,6 @@
     "K-G14": {
         "name": "Webster Building",
         "id": "K-G14",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/robert-webster-building.jpg?itok=1JLlJX3p",
         "lat": -33.917688,
         "long": 151.23067,
         "rooms": {
@@ -1613,7 +1580,6 @@
     "K-G15": {
         "name": "Webster Theatres",
         "id": "K-G15",
-        "img": "https://www.learningenvironments.unsw.edu.au/sites/default/files/styles/teaser_mobile/public/images/webster-theatres.jpg?itok=4qS1jah0",
         "lat": -33.917464,
         "long": 151.230697,
         "rooms": {

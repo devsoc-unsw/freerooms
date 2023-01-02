@@ -1,7 +1,9 @@
 import axios from "axios";
 import child_process from "child_process";
 import fs from "fs";
-import { ScraperData, BuildingDatabase, RoomStatus, ClassList, Class } from "./types";
+
+import { DATABASE_PATH, SCRAPER_PATH } from "./config";
+import { ScraperData, BuildingDatabase, RoomStatus, Class } from "./types";
 
 /*
  * Definitions
@@ -57,31 +59,21 @@ export const getScraperData = async (): Promise<ScraperData> => {
 };
 
 export const getBuildingData = async (): Promise<BuildingDatabase> => {
-  let data;
-
-  // If database.json missing, create it
-  if (!fs.existsSync('database.json')) {
-    data = await scrapeBuildingData();
-  } else {
-    const rawData = fs.readFileSync('database.json', 'utf8');
-    data = JSON.parse(rawData) as BuildingDatabase;
-  }
-
+  const rawData = fs.readFileSync(DATABASE_PATH, 'utf8');
+  const data = JSON.parse(rawData) as BuildingDatabase;
   return data;
 }
 
 // Spawn child process to scrape building data
 // or return promise to ongoing process
-let ongoingScraper: Promise<BuildingDatabase> | null = null;
-export const scrapeBuildingData = async (): Promise<BuildingDatabase> => {
+let ongoingScraper: Promise<void> | null = null;
+export const scrapeBuildingData = async (): Promise<void> => {
   if (ongoingScraper === null) {
     ongoingScraper = new Promise((resolve, reject) => {
-      const dev = process.env.NODE_ENV !== "production";
-      const scraper_path = dev ? './scraper.ts' : 'dist/scraper.js';
-      const child = child_process.fork(scraper_path);
-      child.on('message', (msg: { data: BuildingDatabase, err?: string }) => {
+      const child = child_process.fork(SCRAPER_PATH);
+      child.on('message', (msg: { err?: any }) => {
         if (msg.err) reject(msg.err);
-        resolve(msg.data);
+        resolve();
       });
       child.on('error', () => {
         reject();
@@ -122,7 +114,7 @@ export const getDate = (datetime: string): Date | null => {
 // If room if not free for the given minimum duration, return null
 export const calculateStatus = (
   datetime: Date,
-  classes: ClassList,
+  classes: Class[],
   minDuration: number
 ): RoomStatus | null => {
   const roomStatus: RoomStatus = {
