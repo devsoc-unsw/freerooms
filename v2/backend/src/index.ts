@@ -4,7 +4,7 @@ import fs from "fs";
 
 import { scrapeBuildingData } from "./helpers";
 import {
-  parseDate,
+  parseDate as parseDatetime,
   parseFilters,
   getAllRoomStatus,
   getAllBuildings,
@@ -36,12 +36,8 @@ app.get(
 app.get(
   "/api/rooms",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const datetime = parseDate(req);
-    if (datetime === null) {
-      throw new Error('Invalid datetime');
-    }
+    const datetime = parseDatetime(req);
     const filters = parseFilters(req);
-
     const data = await getAllRoomStatus(datetime, filters);
     res.send(data);
     next();
@@ -77,8 +73,8 @@ app.use(
 );
 
 // Error-handling middleware
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  console.log(`"${req.originalUrl}" ${err}`)
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  console.error(`"${req.originalUrl}" ${err}`)
 
   if (!res.writableEnded) {
     res.status(400).send(err.toString());

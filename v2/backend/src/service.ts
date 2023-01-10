@@ -24,14 +24,16 @@ export const getAllBuildings = async (): Promise<BuildingsResponse> => {
 };
 
 // Parses the provided datetime from the request params
-export const parseDate = (req: Request): Date | null => {
+export const parseDate = (req: Request): Date => {
   const datetimeString = req.query.datetime as string;
-  if (datetimeString) {
-    const timestamp = Date.parse(datetimeString);
-    return isNaN(timestamp) ? null : new Date(datetimeString);
-  } else {
+  if (!datetimeString) {
     return new Date();
   }
+  const timestamp = Date.parse(datetimeString);
+  if (isNaN(timestamp)) {
+    throw new Error('Invalid datetime');
+  }
+  return new Date(datetimeString);
 };
 
 // Parses the provided filters from the request params
