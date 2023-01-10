@@ -2,17 +2,17 @@ import express, { NextFunction, Request, RequestHandler, Response } from "expres
 import cors from "cors";
 import fs from "fs";
 
-import { getDate, scrapeBuildingData } from "./helpers";
+import { scrapeBuildingData } from "./helpers";
 import {
+  parseDate as parseDatetime,
+  parseFilters,
   getAllRoomStatus,
   getAllBuildings,
-  getRoomAvailability
+  getRoomBookings,
 } from "./service";
-import { Filters } from "./types";
-import { DATABASE_PATH } from "./config";
+import { DATABASE_PATH, PORT } from "./config";
 
 const app = express();
-const PORT = 3000;
 app.use(cors());
 
 // Wrapper for request handler functions to catch async exceptions
@@ -36,60 +36,22 @@ app.get(
 app.get(
   "/api/rooms",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const datetimeString = req.query.datetime as string;
-    const datetime = datetimeString ? getDate(datetimeString) : new Date();
-    if (datetime === null) {
-      throw new Error('Invalid datetime');
-    }
-
-    const filters: Filters = {};
-
-    if (req.query.capacity) {
-      const capacity = parseInt(req.query.capacity as string);
-      if (isNaN(capacity) || capacity < 0) {
-        throw new Error('Invalid capacity');
-      }
-      filters.capacity = capacity;
-    }
-
-    if (req.query.duration) {
-      const duration = parseInt(req.query.duration as string);
-      if (isNaN(duration) || duration < 0) {
-        throw new Error('Invalid duration');
-      }
-      filters.duration = duration;
-    }
-
-    if (req.query.usage) {
-      const usage = req.query.usage as string;
-      if (usage !== 'LEC' && usage !== 'TUT') {
-        throw new Error('Invalid usage: must be one of "LEC" or "TUT"');
-      }
-      filters.usage = usage;
-    }
-
-    if (req.query.location) {
-      const location = req.query.location as string;
-      if (location !== 'upper' && location !== 'lower') {
-        throw new Error('Invalid location: must be one of "upper" or "lower"');
-      }
-      filters.location = location;
-    }
-
+    const datetime = parseDatetime(req);
+    const filters = parseFilters(req);
     const data = await getAllRoomStatus(datetime, filters);
     res.send(data);
     next();
   })
 );
 
-// Route to get the availability of a particular room in a particular building
+// Route to get the bookings of a particular room in a particular building
 app.get(
   "/api/rooms/:roomID",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const { roomID } = req.params;
     const [campus, buildingGrid, roomNumber] = roomID.split('-');
 
-    const data = await getRoomAvailability(`${campus}-${buildingGrid}`, roomNumber);
+    const data = await getRoomBookings(`${campus}-${buildingGrid}`, roomNumber);
     res.send(data);
     next();
   })
@@ -111,11 +73,11 @@ app.use(
 );
 
 // Error-handling middleware
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  console.log(`"${req.originalUrl}" ${err}`)
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  console.error(`"${req.originalUrl}" ${err.stack ?? err}`)
 
   if (!res.writableEnded) {
-    res.status(400).send(err.toString());
+    res.status(400).send(err);
   }
   next();
 });

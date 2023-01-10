@@ -1,10 +1,10 @@
-export type ScraperData = {
+export type TimetableData = {
   [buildingId: string]: {
-    [roomId: string]: RoomAvailability;
+    [roomId: string]: RoomBookings;
   };
 };
 
-export type RoomAvailability = {
+export type RoomBookings = {
   name: string;
   [week: number]: {
     [day: string]: Class[];
