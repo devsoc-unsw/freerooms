@@ -1,3 +1,4 @@
+import { Request } from "express";
 import { calculateStatus, getBuildingData, getScraperData, getWeek } from "./helpers";
 import { BuildingsResponse, Filters, RoomAvailability, BuildingStatus, RoomsResponse } from "./types";
 
@@ -20,6 +21,56 @@ export const getAllBuildings = async (): Promise<BuildingsResponse> => {
     });
   });
   return res;
+};
+
+// Parses the provided datetime from the request params
+export const parseDate = (req: Request): Date | null => {
+  const datetimeString = req.query.datetime as string;
+  if (datetimeString) {
+    const timestamp = Date.parse(datetimeString);
+    return isNaN(timestamp) ? null : new Date(datetimeString);
+  } else {
+    return new Date();
+  }
+};
+
+// Parses the provided filters from the request params
+export const parseFilters = (req: Request): Filters => {
+  const filters: Filters = {};
+
+  if (req.query.capacity) {
+    const capacity = parseInt(req.query.capacity as string);
+    if (isNaN(capacity) || capacity < 0) {
+      throw new Error('Invalid capacity');
+    }
+    filters.capacity = capacity;
+  }
+
+  if (req.query.duration) {
+    const duration = parseInt(req.query.duration as string);
+    if (isNaN(duration) || duration < 0) {
+      throw new Error('Invalid duration');
+    }
+    filters.duration = duration;
+  }
+
+  if (req.query.usage) {
+    const usage = req.query.usage as string;
+    if (usage !== 'LEC' && usage !== 'TUT') {
+      throw new Error('Invalid usage: must be one of "LEC" or "TUT"');
+    }
+    filters.usage = usage;
+  }
+
+  if (req.query.location) {
+    const location = req.query.location as string;
+    if (location !== 'upper' && location !== 'lower') {
+      throw new Error('Invalid location: must be one of "upper" or "lower"');
+    }
+    filters.location = location;
+  }
+
+  return filters;
 };
 
 export const getAllRoomStatus = async (

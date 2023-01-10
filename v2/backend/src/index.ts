@@ -2,13 +2,14 @@ import express, { NextFunction, Request, RequestHandler, Response } from "expres
 import cors from "cors";
 import fs from "fs";
 
-import { getDate, scrapeBuildingData } from "./helpers";
+import { scrapeBuildingData } from "./helpers";
 import {
+  parseDate,
+  parseFilters,
   getAllRoomStatus,
   getAllBuildings,
-  getRoomAvailability
+  getRoomAvailability,
 } from "./service";
-import { Filters } from "./types";
 import { DATABASE_PATH } from "./config";
 
 const app = express();
@@ -36,45 +37,11 @@ app.get(
 app.get(
   "/api/rooms",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const datetimeString = req.query.datetime as string;
-    const datetime = datetimeString ? getDate(datetimeString) : new Date();
+    const datetime = parseDate(req);
     if (datetime === null) {
       throw new Error('Invalid datetime');
     }
-
-    const filters: Filters = {};
-
-    if (req.query.capacity) {
-      const capacity = parseInt(req.query.capacity as string);
-      if (isNaN(capacity) || capacity < 0) {
-        throw new Error('Invalid capacity');
-      }
-      filters.capacity = capacity;
-    }
-
-    if (req.query.duration) {
-      const duration = parseInt(req.query.duration as string);
-      if (isNaN(duration) || duration < 0) {
-        throw new Error('Invalid duration');
-      }
-      filters.duration = duration;
-    }
-
-    if (req.query.usage) {
-      const usage = req.query.usage as string;
-      if (usage !== 'LEC' && usage !== 'TUT') {
-        throw new Error('Invalid usage: must be one of "LEC" or "TUT"');
-      }
-      filters.usage = usage;
-    }
-
-    if (req.query.location) {
-      const location = req.query.location as string;
-      if (location !== 'upper' && location !== 'lower') {
-        throw new Error('Invalid location: must be one of "upper" or "lower"');
-      }
-      filters.location = location;
-    }
+    const filters = parseFilters(req);
 
     const data = await getAllRoomStatus(datetime, filters);
     res.send(data);

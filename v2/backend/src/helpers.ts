@@ -103,12 +103,6 @@ export const getWeek = async (date: Date) => {
   return Math.ceil(daysPastTerm / 7);
 };
 
-// Parses the provided datetime from the request params
-export const getDate = (datetime: string): Date | null => {
-  let timestamp = Date.parse(datetime);
-  return isNaN(timestamp) ? null : new Date(datetime);
-};
-
 // Given a datetime and a list of the room's bookings for 
 // the corresponding date, calculate the status of the room
 // If room if not free for the given minimum duration, return null
