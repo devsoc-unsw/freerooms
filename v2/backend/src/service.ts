@@ -1,6 +1,6 @@
 import { Request } from "express";
 import { calculateStatus, getBuildingData, getTimetableData, getWeek } from "./helpers";
-import { BuildingsResponse, Filters, RoomAvailability, BuildingStatus, RoomsResponse } from "./types";
+import { BuildingsResponse, Filters, RoomBookings, BuildingStatus, RoomsResponse } from "./types";
 
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const UPPER = 19; // Buildings with grid 19+ are upper campus
@@ -86,9 +86,9 @@ export const getAllRoomStatus = async (
   const timetableData = await getTimetableData();
   const result: RoomsResponse = {};
   for (const buildingID in buildingData) {
+    // Skip building if it does not match filter
     const roomLocation = +buildingID.substring(3) < UPPER ? 'lower' : 'upper';
     if (filters.location && filters.location != roomLocation) {
-      // Skip building if it does not match filter
       result[buildingID] = {};
       continue;
     }
@@ -97,21 +97,22 @@ export const getAllRoomStatus = async (
     const buildingStatus: BuildingStatus = {};
     for (const roomNumber in buildingRooms) {
       const roomData = buildingRooms[roomNumber];
+
+      // Skip room if it does not match filter
       if (
         (filters.capacity && roomData.capacity < filters.capacity) ||
         (filters.usage && roomData.usage != filters.usage)
       ) {
-        // Skip room if it does not match filter
         continue;
       }
-  
+      
+      // If no data for this room on this day, it is free
       if (
         !(buildingID in timetableData) ||
         !(roomNumber in timetableData[buildingID]) ||
         !(week in timetableData[buildingID][roomNumber]) ||
         !(day in timetableData[buildingID][roomNumber][week])
       ) {
-        // If no data for this room on this day, it is free
         buildingStatus[roomNumber] = {
           status: "free",
           endtime: "",
@@ -131,10 +132,10 @@ export const getAllRoomStatus = async (
   return result;
 };
 
-export const getRoomAvailability = async (
+export const getRoomBookings = async (
   buildingID: string,
   roomNumber: string
-): Promise<RoomAvailability> => {
+): Promise<RoomBookings> => {
   // Check if room exists in database
   const buildingData = await getBuildingData();
   if (!(buildingID in buildingData)) {
@@ -144,13 +145,9 @@ export const getRoomAvailability = async (
     throw new Error(`Room ID ${buildingID}-${roomNumber} does not exist`);
   }
 
+  // If in timetable, return bookings, otherwise just return name from database
   const timetableData = await getTimetableData();
-  if (
-    !(buildingID in timetableData) ||
-    !(roomNumber in timetableData[buildingID])
-  ) {
-    return { name: buildingData[buildingID].rooms[roomNumber].name };
-  } else {
-    return timetableData[buildingID][roomNumber];
-  }
+  return !(buildingID in timetableData) || !(roomNumber in timetableData[buildingID])
+   ? { name: buildingData[buildingID].rooms[roomNumber].name }
+   : timetableData[buildingID][roomNumber];
 };

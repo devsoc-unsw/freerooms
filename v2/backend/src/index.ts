@@ -8,7 +8,7 @@ import {
   parseFilters,
   getAllRoomStatus,
   getAllBuildings,
-  getRoomAvailability,
+  getRoomBookings,
 } from "./service";
 import { DATABASE_PATH, PORT } from "./config";
 
@@ -44,14 +44,14 @@ app.get(
   })
 );
 
-// Route to get the availability of a particular room in a particular building
+// Route to get the bookings of a particular room in a particular building
 app.get(
   "/api/rooms/:roomID",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const { roomID } = req.params;
     const [campus, buildingGrid, roomNumber] = roomID.split('-');
 
-    const data = await getRoomAvailability(`${campus}-${buildingGrid}`, roomNumber);
+    const data = await getRoomBookings(`${campus}-${buildingGrid}`, roomNumber);
     res.send(data);
     next();
   })
