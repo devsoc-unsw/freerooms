@@ -10,10 +10,9 @@ import {
   getAllBuildings,
   getRoomAvailability,
 } from "./service";
-import { DATABASE_PATH } from "./config";
+import { DATABASE_PATH, PORT } from "./config";
 
 const app = express();
-const PORT = 3000;
 app.use(cors());
 
 // Wrapper for request handler functions to catch async exceptions
