@@ -1,5 +1,5 @@
 import { Request } from "express";
-import { calculateStatus, getBuildingData, getScraperData, getWeek } from "./helpers";
+import { calculateStatus, getBuildingData, getTimetableData, getWeek } from "./helpers";
 import { BuildingsResponse, Filters, RoomAvailability, BuildingStatus, RoomsResponse } from "./types";
 
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -83,7 +83,7 @@ export const getAllRoomStatus = async (
   const day = DAYS[date.getDay()];
 
   const buildingData = await getBuildingData();
-  const scraperData = await getScraperData();
+  const timetableData = await getTimetableData();
   const result: RoomsResponse = {};
   for (const buildingID in buildingData) {
     const roomLocation = +buildingID.substring(3) < UPPER ? 'lower' : 'upper';
@@ -106,10 +106,10 @@ export const getAllRoomStatus = async (
       }
   
       if (
-        !(buildingID in scraperData) ||
-        !(roomNumber in scraperData[buildingID]) ||
-        !(week in scraperData[buildingID][roomNumber]) ||
-        !(day in scraperData[buildingID][roomNumber][week])
+        !(buildingID in timetableData) ||
+        !(roomNumber in timetableData[buildingID]) ||
+        !(week in timetableData[buildingID][roomNumber]) ||
+        !(day in timetableData[buildingID][roomNumber][week])
       ) {
         // If no data for this room on this day, it is free
         buildingStatus[roomNumber] = {
@@ -119,7 +119,7 @@ export const getAllRoomStatus = async (
         continue;
       }
   
-      const classes = scraperData[buildingID][roomNumber][week][day];
+      const classes = timetableData[buildingID][roomNumber][week][day];
       const status = calculateStatus(date, classes, filters.duration || 0);
       if (status !== null) {
         buildingStatus[roomNumber] = status;
@@ -144,13 +144,13 @@ export const getRoomAvailability = async (
     throw new Error(`Room ID ${buildingID}-${roomNumber} does not exist`);
   }
 
-  const scraperData = await getScraperData();
+  const timetableData = await getTimetableData();
   if (
-    !(buildingID in scraperData) ||
-    !(roomNumber in scraperData[buildingID])
+    !(buildingID in timetableData) ||
+    !(roomNumber in timetableData[buildingID])
   ) {
     return { name: buildingData[buildingID].rooms[roomNumber].name };
   } else {
-    return scraperData[buildingID][roomNumber];
+    return timetableData[buildingID][roomNumber];
   }
 };

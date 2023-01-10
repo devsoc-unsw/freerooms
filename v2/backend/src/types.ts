@@ -1,4 +1,4 @@
-export type ScraperData = {
+export type TimetableData = {
   [buildingId: string]: {
     [roomId: string]: RoomAvailability;
   };

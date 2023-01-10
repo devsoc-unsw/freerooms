@@ -3,58 +3,41 @@ import child_process from "child_process";
 import fs from "fs";
 
 import { DATABASE_PATH, SCRAPER_PATH } from "./config";
-import { ScraperData, BuildingDatabase, RoomStatus, Class } from "./types";
+import { TimetableData, BuildingDatabase, RoomStatus, Class } from "./types";
 
-/*
- * Definitions
- */
-const API = "https://timetable.csesoc.app"
 
-const TERM_DATE_FETCH = `${API}/api/startdate/freerooms`;
-const TERM_ID_FETCH = `${API}/api/currentterm`;
-
-const TERM_ID_LENGTH = 2;
-const DATE_REGEX = /(\d{2})\/(\d{2})\/(\d{4})/;
-
+const TIMETABLE_API = "https://timetable.csesoc.app/api"
+const DATE_REGEX = new RegExp(/\d{2}\/\d{2}\/\d{4}/);
+const TIME_REGEX = new RegExp(/\d{2}:\d{2}/);
 const FIFTEEN_MIN = 15 * 1000 * 60;
 
-/*
- * Implementation
- */
-export const getStartDate = async () => {
-  const termDateFetch = await axios.get(TERM_DATE_FETCH);
-  const termDateRes = await termDateFetch.data;
+
+// Fetch start date of current term from the Timetable API
+// Result is in DD/MM/YYYY format
+export const getStartDate = async (): Promise<string> => {
+  const termDateFetch = await axios.get(`${TIMETABLE_API}/startdate/freerooms`);
+  const termDateRes = termDateFetch.data as string;
 
   if (DATE_REGEX.test(termDateRes)) {
     return termDateRes;
   } else {
-    throw new Error(`Start Date retrieved incorrectly`);
+    throw new Error(`Start date retrieved incorrectly`);
   }
 }
 
-export const getScraperData = async (): Promise<ScraperData> => {
-  const termIdFetch = await axios.get(TERM_ID_FETCH);
-  const termIdRes = await termIdFetch.data;
-
-  let termNum;
-  let termYear;
-
-  if (termIdRes.length === TERM_ID_LENGTH) {
-    termNum = `T${parseInt(termIdRes.substring(1))}`;
-  } else {
-    termNum = `Summer`;
-  }
+// Fetch timetable data from the Timetable API
+export const getTimetableData = async (): Promise<TimetableData> => {
+  const termNumRes = await axios.get(`${TIMETABLE_API}/currentterm`);
+  const termNum = termNumRes.data as string;
 
   const termDateRes = await getStartDate();
-  if (termDateRes != null) {
-    termYear = termDateRes.substring(6);
-  }
+  const termYear = termDateRes.substring(6);
 
   const termId = `${termYear}-${termNum}`;
-  const SCRAPER_URL = `${API}/api/terms/${termId}/freerooms`;
+  const SCRAPER_URL = `${TIMETABLE_API}/terms/${termId}/freerooms`;
 
   const res = await axios.get(SCRAPER_URL);
-  const data = (await res.data) as ScraperData;
+  const data = (await res.data) as TimetableData;
   return data;
 };
 
@@ -87,25 +70,22 @@ export const scrapeBuildingData = async (): Promise<void> => {
   return ongoingScraper;
 }
 
-// Gets the week number from the date
-export const getWeek = async (date: Date) => {
-  // In 'DD/MM/YYYY' format
+// Gets the week number from the date (based off current term)
+export const getWeek = async (date: Date): Promise<number> => {
   const termStart = await getStartDate();
   const [day, month, year] = termStart.split('/');
-  const termStartDate = new Date(+year, +month - 1, day);
-  const today = date;
+  const termStartDate = new Date(+year, +month - 1, +day);
 
-  const diff = today.getTime() - termStartDate.getTime();
-
-  let daysPastTerm = diff / (1000 * 60 * 60 * 24);
+  const diff = date.getTime() - termStartDate.getTime();
+  const daysPastStart = diff / (1000 * 60 * 60 * 24);
 
   // Ceil is used because week numbers start from 1 not 0
-  return Math.ceil(daysPastTerm / 7);
+  return Math.ceil(daysPastStart / 7);
 };
 
 // Given a datetime and a list of the room's bookings for 
 // the corresponding date, calculate the status of the room
-// If room if not free for the given minimum duration, return null
+// If room is not free for the given minimum duration, return null
 export const calculateStatus = (
   datetime: Date,
   classes: Class[],
@@ -116,7 +96,7 @@ export const calculateStatus = (
     endtime: "",
   };
 
-  // Find the first two class that end after the given time
+  // Find the first two classes that end after the given time
   let firstAfter: Class | null = null;
   let secondAfter: Class | null = null;
   for (const cls of classes) {
@@ -163,6 +143,10 @@ export const calculateStatus = (
 // Return a copy of provided date set to provided time
 // Time must be in the format HH:MM
 const combineDateTime = (date: Date, time: string) => {
+  if (!TIME_REGEX.test(time)) {
+    throw new Error("Invalid time format");
+  }
+
   const newDate = new Date(date.valueOf());
   const [hours, minutes] = time.split(':');
   newDate.setHours(+hours, +minutes);
