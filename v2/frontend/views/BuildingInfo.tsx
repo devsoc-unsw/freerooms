@@ -1,25 +1,22 @@
+import CloseIcon from "@mui/icons-material/Close";
+import { Typography } from "@mui/material";
+import Box, { BoxProps } from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
+import { styled } from "@mui/material/styles";
+import TextField, { TextFieldProps } from "@mui/material/TextField";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import Image, { ImageProps } from "next/image";
 import React from "react";
+
+import Button from "../components/Button";
 import {
   Building,
   BuildingStatus,
   RoomsReturnData,
-  RoomStatus,
 } from "../types";
-
-import { styled } from "@mui/material/styles";
-import Image, { ImageProps } from "next/image";
-import Box, { BoxProps } from "@mui/material/Box";
-import StatusDot from "../components/StatusDot";
-import { Typography } from "@mui/material";
-import CircularProgress from "@mui/material/CircularProgress";
-import CloseIcon from "@mui/icons-material/Close";
-import Button from "../components/Button";
-
-import TextField, { TextFieldProps } from "@mui/material/TextField";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 
 const INITIALISING = -2;
 const FAILED = -1;
@@ -205,45 +202,5 @@ const BuildingInfo: React.FC<{
     </MainBox>
   );
 };
-
-/* 
-(
-<>
-  {roomsError
-    ? null
-    : () => {
-        const rooms =
-          rooms && rooms["rooms"]
-            ? Object.values(rooms["rooms"])
-            : null;
-
-        return (
-          <StatusDot
-            colour={
-              rooms
-                ? rooms.filter(
-                    (r: { status: string }) => r.status === "free"
-                  ).length >= 5
-                  ? "green"
-                  : rooms.filter(
-                      (room: { status: string }) =>
-                        room.status === "free"
-                    ).length !== 0
-                  ? "orange"
-                  : "red"
-                : "red"
-            }
-          />
-        );
-      }}
-  <Typography
-    sx={{ fontSize: 14, fontWeight: 500, opacity: 0.8 }}
-  >
-    {rooms && !roomsError
-      ? `${Object.values(rooms["rooms"]).length}`
-      : "data unavailable"}
-  </Typography>
-</>
-)*/
 
 export default BuildingInfo;
