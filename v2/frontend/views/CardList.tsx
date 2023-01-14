@@ -77,7 +77,6 @@ const CardList: React.FC<{
   return (
     <FlipMoveGrid
       duration={500}
-      onStartAll={() => window.scrollTo(0, 0)}
     >
       {buildings.map((building) => (
         <FlippableCard
