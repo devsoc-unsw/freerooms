@@ -4,15 +4,13 @@ import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Box, { BoxProps } from '@mui/material/Box';
-import Button, { ButtonProps } from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
-import { styled, Theme } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
-import React, { PropsWithChildren,useEffect, useRef, useState } from "react";
+import { styled } from '@mui/material/styles';
+import React, { useState } from "react";
 
-import { Building, BuildingReturnData, DropDown, DropDownItem, Filters } from "../types";
+import { DropDown, DropDownItem, Filters } from "../types";
 
 const StyledFilterButton = styled(Box)<BoxProps>(({ theme }) => ({
   height: 40,
@@ -31,7 +29,7 @@ const StyledFilterButton = styled(Box)<BoxProps>(({ theme }) => ({
   zIndex: 10,
 }));
 
-const StyledDropDownMenu = styled(Box)<BoxProps>(({ theme }) => ({
+const StyledDropDownMenu = styled(Box)<BoxProps>(() => ({
   width: 250,
   top: 50,
   left: 0,
@@ -45,7 +43,7 @@ const StyledDropDownMenu = styled(Box)<BoxProps>(({ theme }) => ({
   borderColor: "#BCBCBC"
 }));
 
-const StyledHeader = styled(Box)<BoxProps>(({ theme }) => ({
+const StyledHeader = styled(Box)<BoxProps>(() => ({
   paddingLeft: 15,
   height: 60,
   display: "inline-flex",
@@ -117,7 +115,6 @@ const FilterBar: React.FC<{
           direction="row"
           spacing={1.5}
           alignItems="center"
-          // onBlur={(e: React.FocusEvent) => dismissHandler(e)}
         >
           <p>{open ? <FilterAltIcon style={{ color: '#F77F00' }} /> : <FilterAltIcon style={{ color: '#F77F00' }} />}</p>
           <p style={{ color: '#F77F00', fontWeight: 'bold' }}>Filters</p>
