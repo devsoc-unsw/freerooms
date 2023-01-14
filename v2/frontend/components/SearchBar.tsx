@@ -11,7 +11,7 @@ const SearchBar = ({ setQuery }: { setQuery: (query: string) => void }) => {
         id="input-with-sx"
         placeholder="Search for a building..."
         fullWidth
-        inputProps={{style: {height: "12px"}}}
+        inputProps={{ style: { height: "12px" } }}
 
         //entering the target
         onKeyDown={(event) => {

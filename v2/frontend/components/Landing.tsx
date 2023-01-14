@@ -13,9 +13,9 @@ const Landing = (props: { setShowLanding: (arg0: boolean) => void; }) => {
 
   useEffect(() => {
     props.setShowLanding(true);
-    window.scrollTo(0, 0)
+    window.scrollTo(0, 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []);
   return (
     <div id={"LandingScreenWhole"} style={{
       height: "95vh",
