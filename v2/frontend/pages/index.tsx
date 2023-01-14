@@ -24,13 +24,7 @@ import Landing from "../components/Landing";
 import SearchBar from "../components/SearchBar";
 import SortBar from "../components/SortBar";
 import { API_URL } from "../config";
-import {
-  Building,
-  BuildingReturnData,
-  Filters,
-  RoomsRequestParams,
-  RoomsReturnData,
-} from "../types";
+import { Building, BuildingReturnData, Filters, RoomsRequestParams, RoomsReturnData } from "../types";
 import BuildingInfo from "../views/BuildingInfo";
 import CardList from "../views/CardList";
 
@@ -80,13 +74,13 @@ const Home: NextPage<{}> = () => {
   }, [filters, datetime]);
 
   const [currentBuilding, setCurrentBuilding] = React.useState<Building | null>(
-    null
+    null,
   );
 
   React.useEffect(() => {
     if (building) {
       const selectedBuilding = buildingData.buildings.find(
-        (b) => b.id === building
+        (b) => b.id === building,
       );
       if (selectedBuilding) {
         setCurrentBuilding(selectedBuilding);
