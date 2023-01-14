@@ -12,11 +12,7 @@ import Image, { ImageProps } from "next/image";
 import React from "react";
 
 import Button from "../components/Button";
-import {
-  Building,
-  BuildingStatus,
-  RoomsReturnData,
-} from "../types";
+import { Building, BuildingStatus, RoomsReturnData } from "../types";
 
 const INITIALISING = -2;
 const FAILED = -1;
@@ -39,7 +35,7 @@ const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
 const StyledImage = styled(Image)<ImageProps>(({ theme }) => ({
   borderRadius: 10,
   width: "100%",
-  height: "auto"
+  height: "auto",
 }));
 
 const StatusBox = styled(Box)<BoxProps>(({ theme }) => ({
@@ -93,7 +89,7 @@ const BuildingInfo: React.FC<{
   if (!building) return <></>;
 
   const customTextField = (
-    params: JSX.IntrinsicAttributes & TextFieldProps
+    params: JSX.IntrinsicAttributes & TextFieldProps,
   ) => (
     <TextField
       {...params}

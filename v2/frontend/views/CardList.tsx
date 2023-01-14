@@ -48,7 +48,7 @@ const CardList: React.FC<{
     // If hideUnavailable is true, filter any that have no available rooms
     const displayedBuildings = [...buildingData.buildings].filter((building) =>
       building.name.toLowerCase().includes(query.toLowerCase()) &&
-      Object.keys(roomStatusData[building.id]).length > 0
+      Object.keys(roomStatusData[building.id]).length > 0,
     );
 
     // Sort the displayed buildings
@@ -87,11 +87,11 @@ const CardList: React.FC<{
       ))}
     </FlipMoveGrid>
   );
-}
+};
 
 const countFreerooms = (
   roomStatus: RoomsReturnData | undefined,
-  buildingId: string
+  buildingId: string,
 ): number => {
   if (roomStatus === undefined) return INITIALISING;
   if (!(buildingId in roomStatus)) return FAILED;
@@ -101,6 +101,6 @@ const countFreerooms = (
     if (room.status === "free") freerooms++;
   }
   return freerooms;
-}
+};
 
 export default CardList;
