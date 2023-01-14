@@ -1,6 +1,5 @@
 import Box, { BoxProps } from "@mui/material/Box";
-import { orange } from "@mui/material/colors";
-import { styled, SxProps, Theme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import Typography, { TypographyProps } from "@mui/material/Typography";
 import Image from "next/image";
 
