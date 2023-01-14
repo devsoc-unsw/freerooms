@@ -1,4 +1,3 @@
-
 import { styled } from "@mui/material/styles";
 import React from "react";
 import FlipMove from "react-flip-move";
@@ -9,7 +8,7 @@ import { Building, BuildingReturnData, RoomsReturnData } from "../types";
 const INITIALISING = -2;
 const FAILED = -1;
 
-const FlipMoveGrid = styled(FlipMove)(({ theme }) => ({
+const FlipMoveGrid = styled(FlipMove)(() => ({
   width: "100%",
   display: "grid",
   gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
