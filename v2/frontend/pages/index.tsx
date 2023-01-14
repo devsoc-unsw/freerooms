@@ -57,7 +57,7 @@ const Home: NextPage<{}> = () => {
       .then(res => res.json())
       .then(data => setBuildingData(data as BuildingReturnData))
       .catch(() => setBuildingData({ buildings: [] }));
-  });
+  }, []);
 
   // State variables to be used by the various new features
   const [sort, setSort] = React.useState<string>("alphabetical");
