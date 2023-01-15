@@ -73,7 +73,7 @@ const BuildingCard: React.FC<{
     <MainBox ref={ref} onClick={() => setBuilding(building)}>
       <StyledImage
         alt={`Image of ${building.id}`}
-        src={`/assets/building_photos/${building.id}.jpg`}
+        src={`/assets/building_photos/${building.id}.webp`}
         fill={true}
         style={{ objectFit: "cover" }}
         priority={true}

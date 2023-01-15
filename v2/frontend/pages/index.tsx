@@ -13,7 +13,6 @@ import axios from "axios";
 import { DateTime } from "luxon";
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image, { ImageProps } from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
 
@@ -24,32 +23,14 @@ import FilterBar from "../components/FilterBar";
 import Landing from "../components/Landing";
 import SearchBar from "../components/SearchBar";
 import SortBar from "../components/SortBar";
-import Sort from "../components/SortButton";
 import { API_URL } from "../config";
-import {
-  Building,
-  BuildingReturnData,
-  Filters,
-  RoomsRequestParams,
-  RoomsReturnData,
-} from "../types";
+import { Building, BuildingReturnData, Filters, RoomsRequestParams, RoomsReturnData } from "../types";
 import BuildingInfo from "../views/BuildingInfo";
 import CardList from "../views/CardList";
 
 const Home: NextPage<{}> = () => {
   const router = useRouter();
   const { building } = router.query;
-
-  /* commented these out for now because backend doesn't return upper/lower info
-  const [selection, setSelection] = React.useState<string>("upper");
-  React.useEffect(() => {
-    clearCurrentBuilding();
-  }, [selection]);
-  const clearCurrentBuilding = () => {
-    setCurrentBuilding(null);
-    router.push("/");
-  };
-  */
 
   const [buildingData, setBuildingData] = React.useState<BuildingReturnData>({ buildings: [] });
   React.useEffect(() => {
@@ -93,13 +74,13 @@ const Home: NextPage<{}> = () => {
   }, [filters, datetime]);
 
   const [currentBuilding, setCurrentBuilding] = React.useState<Building | null>(
-    null
+    null,
   );
 
   React.useEffect(() => {
     if (building) {
       const selectedBuilding = buildingData.buildings.find(
-        (b) => b.id === building
+        (b) => b.id === building,
       );
       if (selectedBuilding) {
         setCurrentBuilding(selectedBuilding);
@@ -109,7 +90,7 @@ const Home: NextPage<{}> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [building]);
 
-  const drawerOpen = currentBuilding ? true : false;
+  const drawerOpen = !!currentBuilding;
 
   const handleShowMap = () => {
     setShowMap((currState) => !currState);
@@ -166,26 +147,6 @@ const Home: NextPage<{}> = () => {
               <FilterBar filters={filters} setFilters={setFilters} />
               <SearchBar setQuery={setQuery}></SearchBar>
               <SortBar filters={sort} setFilters={setSort}></SortBar>
-              {/*<FormControl sx={{ m: 1, width: 140}} size="small">*/}
-              {/*  <InputLabel id="sort">Sort</InputLabel>*/}
-              {/*  <Sort*/}
-              {/*    labelId="sort"*/}
-              {/*    id="sort"*/}
-              {/*    value={sort}*/}
-              {/*    label="sort"*/}
-              {/*    onChange={(event) => {*/}
-              {/*      setSort(event.target.value as string);*/}
-              {/*    }}*/}
-              {/*  >*/}
-              {/*    <MenuItem value={"alphabetical"}>Name Ascending</MenuItem>*/}
-              {/*    <MenuItem value={"reverseAlphabetical"}>*/}
-              {/*      Name Descending*/}
-              {/*    </MenuItem>*/}
-              {/*    <MenuItem value={"lowerToUpper"}>Lower Campus</MenuItem>*/}
-              {/*    <MenuItem value={"upperToLower"}>Upper Campus</MenuItem>*/}
-              {/*    <MenuItem value={"mostRooms"}>Most Available Rooms</MenuItem>*/}
-              {/*  </Sort>*/}
-              {/*</FormControl>*/}
             </div>
             {showMap ? (
               <Mapping
@@ -291,12 +252,5 @@ const ButtonGroup = styled(Box)(({ theme }) => ({
   paddingRight: theme.spacing(2),
 }));
 
-const StyledImage = styled(Image)<ImageProps>(({ theme }) => ({
-  borderRadius: 10,
-  transition: "all 0.1s ease-in-out",
-  "&:hover": {
-    opacity: 0.7,
-  },
-}));
 
 export default Home;

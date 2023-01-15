@@ -1,14 +1,8 @@
-import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
-import { Dialog, DialogContent, Typography } from "@mui/material";
-import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
-import FormControl from "@mui/material/FormControl";
-import Input from "@mui/material/Input";
 import InputAdornment from "@mui/material/InputAdornment";
-import InputLabel from "@mui/material/InputLabel";
 import TextField from "@mui/material/TextField";
-import React, { useState } from "react";
+import React from "react";
 
 const SearchBar = ({ setQuery }: { setQuery: (query: string) => void }) => {
   return (
@@ -17,7 +11,8 @@ const SearchBar = ({ setQuery }: { setQuery: (query: string) => void }) => {
         id="input-with-sx"
         placeholder="Search for a building..."
         fullWidth
-        inputProps={{style: {height: "12px"}}}
+        inputProps={{ style: { height: "12px" } }}
+
         //entering the target
         onKeyDown={(event) => {
           const target = event.target as HTMLInputElement;

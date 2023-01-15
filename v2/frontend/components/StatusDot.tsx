@@ -1,8 +1,8 @@
 import Box from "@mui/material/Box";
 
 const StatusDot: React.FC<{ colour: "green" | "orange" | "red" }> = ({
-  colour,
-}) => {
+                                                                       colour,
+                                                                     }) => {
   return (
     <Box
       sx={(theme) => ({
@@ -13,8 +13,8 @@ const StatusDot: React.FC<{ colour: "green" | "orange" | "red" }> = ({
           colour === "green"
             ? theme.palette.success.light
             : colour === "orange"
-            ? theme.palette.warning.light
-            : theme.palette.error.light,
+              ? theme.palette.warning.light
+              : theme.palette.error.light,
         marginRight: theme.spacing(1.25),
       })}
     />

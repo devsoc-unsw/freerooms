@@ -1,4 +1,3 @@
-
 import { styled } from "@mui/material/styles";
 import React from "react";
 import FlipMove from "react-flip-move";
@@ -9,7 +8,7 @@ import { Building, BuildingReturnData, RoomsReturnData } from "../types";
 const INITIALISING = -2;
 const FAILED = -1;
 
-const FlipMoveGrid = styled(FlipMove)(({ theme }) => ({
+const FlipMoveGrid = styled(FlipMove)(() => ({
   width: "100%",
   display: "grid",
   gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
@@ -49,7 +48,7 @@ const CardList: React.FC<{
     // If hideUnavailable is true, filter any that have no available rooms
     const displayedBuildings = [...buildingData.buildings].filter((building) =>
       building.name.toLowerCase().includes(query.toLowerCase()) &&
-      Object.keys(roomStatusData[building.id]).length > 0
+      Object.keys(roomStatusData[building.id]).length > 0,
     );
 
     // Sort the displayed buildings
@@ -88,11 +87,11 @@ const CardList: React.FC<{
       ))}
     </FlipMoveGrid>
   );
-}
+};
 
 const countFreerooms = (
   roomStatus: RoomsReturnData | undefined,
-  buildingId: string
+  buildingId: string,
 ): number => {
   if (roomStatus === undefined) return INITIALISING;
   if (!(buildingId in roomStatus)) return FAILED;
@@ -102,6 +101,6 @@ const countFreerooms = (
     if (room.status === "free") freerooms++;
   }
   return freerooms;
-}
+};
 
 export default CardList;
