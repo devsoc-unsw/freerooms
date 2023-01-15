@@ -12,7 +12,7 @@ specifiers:
   jsdom: ^18.1.1
   nodemon: ^2.0.20
   ts-node: 10.9.1
-  typescript: 4.6.4
+  typescript: 4.9.4
 
 dependencies:
   axios: 0.27.2
@@ -27,8 +27,8 @@ devDependencies:
   '@types/jsdom': 16.2.15
   '@types/node': 18.11.18
   nodemon: 2.0.20
-  ts-node: 10.9.1_3gu3cpsgdevrxiez7yqes7oxsq
-  typescript: 4.6.4
+  ts-node: 10.9.1_awa2wsr5thmg3i7jqycphctjfq
+  typescript: 4.9.4
 
 packages:
 
@@ -1109,7 +1109,7 @@ packages:
       punycode: 2.1.1
     dev: false
 
-  /ts-node/10.9.1_3gu3cpsgdevrxiez7yqes7oxsq:
+  /ts-node/10.9.1_awa2wsr5thmg3i7jqycphctjfq:
     resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
     hasBin: true
     peerDependencies:
@@ -1135,7 +1135,7 @@ packages:
       create-require: 1.1.1
       diff: 4.0.2
       make-error: 1.3.6
-      typescript: 4.6.4
+      typescript: 4.9.4
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     dev: true
@@ -1155,8 +1155,8 @@ packages:
       mime-types: 2.1.35
     dev: false
 
-  /typescript/4.6.4:
-    resolution: {integrity: sha512-9ia/jWHIEbo49HfjrLGfKbZSuWo9iTMwXO+Ca3pRsSpbsMbc7/IU8NKdCZVRRBafVPGnoJeFL76ZOAA84I9fEg==}
+  /typescript/4.9.4:
+    resolution: {integrity: sha512-Uz+dTXYzxXXbsFpM86Wh3dKCxrQqUcVMxwU54orwlJjOpO3ao8L7j5lH+dWfTwgCwIuM9GQ2kvVotzYJMXTBZg==}
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: true
