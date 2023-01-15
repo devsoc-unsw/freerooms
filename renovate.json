@@ -24,5 +24,6 @@
       "matchPackagePatterns": ["@mantine/*"],
       "groupName": "mantine monorepo"
     }
-  ]
+  ],
+  "ignorePaths": ["./frontend/**"]
 }
