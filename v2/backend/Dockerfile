@@ -1,4 +1,4 @@
-FROM node:16.15-alpine as builder
+FROM node:16.19-alpine as builder
 RUN npm i -g pnpm
 
 # Set the current working directory inside the container
@@ -11,7 +11,7 @@ COPY . .
 
 RUN pnpm run build
 
-FROM node:16.15-alpine as runner
+FROM node:16.19-alpine as runner
 RUN npm i -g pnpm
 WORKDIR /app
 
