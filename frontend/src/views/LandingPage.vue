@@ -22,7 +22,7 @@
               class="white--text align-end"
               height="12.5em"
               width="100%"
-              :src="`./assets/building_photos/${buildingData.id}.jpg`"
+              :src="`./assets/building_photos/${buildingData.id}.webp`"
             ></v-img>
 
             <v-card-title class="text-center">

@@ -132,7 +132,7 @@ const BuildingInfo: React.FC<{
       >
         <StyledImage
           alt={`Image of building ${building.id}`}
-          src={`/assets/building_photos/${building.id}.jpg`}
+          src={`/assets/building_photos/${building.id}.webp`}
           width={946}
           height={648}
           style={{ objectFit: "cover" }}
