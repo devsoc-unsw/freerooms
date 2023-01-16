@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as fs from 'fs';
+import { load, CheerioAPI } from 'cheerio';
 import axiosRateLimit from "axios-rate-limit";
 import { JSDOM } from "jsdom";
 
@@ -46,26 +47,26 @@ async function scrapeAllBuildings() {
 // scrapeBuilding retrieves all information about a building given its url
 const scrapeBuilding = async (buildingName: string): Promise<BuildingData> => {
   const buildingInfoURL = `${LEARNING_ENVIRONMENTS_URL}${buildingName}`;
-  const buildingPage = await downloadPage(buildingInfoURL);
+  const $ = await downloadPage(buildingInfoURL);
 
   // scrape the details for all the rooms within this building
   const roomsInBuilding = []
-  for await (const room of getAllScrapeableRoomsFor(buildingInfoURL, buildingPage)) {
+  for await (const room of getAllScrapeableRoomsFor(buildingInfoURL, $)) {
     roomsInBuilding.push(scrapeRoom(room));
   }
 
   // start scraping the building now
-  const scrapedBuildingName = buildingPage?.querySelector("h1")?.innerHTML ?? "";
-  const humanizedName = scrapedBuildingName.trim().replace('&amp;', '&');
+  const scrapedBuildingName = $("h1").first().text();
+  const cleanName = scrapedBuildingName.trim();
 
-  const buildingImageUrl = buildingPage?.querySelector('#block-page-sidebar img[typeof="foaf:Image"]')?.getAttribute("src") ?? "";
-  const buildingId = buildingPage?.querySelector(".field--name-field-building-id .field-item")?.innerHTML ?? "";
+  // const buildingImageUrl = $('#block-page-sidebar img[typeof="foaf:Image"]').first().attr("src");
+  const buildingId = $(".field--name-field-building-id .field-item").first().text();
 
-  const googleMapsData = buildingPage?.querySelector("script[data-drupal-selector='drupal-settings-json']")?.innerHTML;
+  const googleMapsData = $("script[data-drupal-selector='drupal-settings-json']").first().text();
   const { lat, lng } = extractBuildingCoordinates(googleMapsData);
 
   return {
-    name: humanizedName,
+    name: cleanName,
     id: buildingId,
     lat: lat,
     long: lng,
@@ -80,11 +81,11 @@ const scrapeBuilding = async (buildingName: string): Promise<BuildingData> => {
 // scrapeRoom takes the name of a room and extracts all information about that room
 const scrapeRoom = async (roomName: string): Promise<RoomData> => {
   const roomInfoURL = `${LEARNING_ENVIRONMENTS_URL}/${roomName}`;
-  const roomPage = await downloadPage(roomInfoURL);
+  const $ = await downloadPage(roomInfoURL);
 
-  const { roomId, humanizedName } = parseRoomName(roomPage?.querySelector("h1")?.innerHTML);
-  const roomCapacity = roomPage?.querySelector(".field--name-field-room-capacity .field-item")?.innerHTML;
-  const usageOptions = parseRoomUsageOptions(roomPage?.querySelector(".field--name-field-room-usage .field-item")?.innerHTML);
+  const { roomId, cleanName: humanizedName } = parseRoomName($("h1").first().text());
+  const roomCapacity = $(".field--name-field-room-capacity .field-item").first().text();
+  const usageOptions = parseRoomUsageOptions($(".field--name-field-room-usage .field-item").first().text());
 
   return {
     id: roomId,
@@ -95,14 +96,14 @@ const scrapeRoom = async (roomName: string): Promise<RoomData> => {
 }
 
 // parseRoomName takes a room name extracted from a webpage and attempts to decompose it into a name and an ID
-const parseRoomName = (rawRoomName: string | undefined | null): { roomId: string, humanizedName: string } => {
+const parseRoomName = (rawRoomName: string | undefined | null): { roomId: string, cleanName: string } => {
   if (!rawRoomName) { throw new Error("expected a room name but found nothing, the page layout has potentially changed"); }
 
   const [roomId, rawName] = rawRoomName.trim().split(' - ');
-  const humanizedName = rawName.replace('&amp;', '&').replace('  ', ' ');
+  const cleanName = rawName.replace('  ', ' ');
 
   return ROOM_REGEX.test(roomId)
-    ? { roomId, humanizedName }
+    ? { roomId, cleanName: cleanName }
     : throwErr(`encountered an invalid room ID ${roomId}`);
 }
 
@@ -133,21 +134,21 @@ const extractBuildingCoordinates = (gmapsScriptData: string | undefined | null) 
 async function* getAllScrapeableEntitiesFromCards(
   cardClass: string,
   basePageUrl: string,
-  basePage: Document | undefined = undefined
+  basePage: CheerioAPI | undefined = undefined
 ) {
   let currentPageNumber = 0;
 
-  const isLastPage = (page: Document) => !page.querySelector('a[title="Go to next page"]');
+  const isLastPage = (page: CheerioAPI) => !page('a[title="Go to next page"]').length;
   const getCurrentPageURL = () => `${basePageUrl}?page=${currentPageNumber}`;
-  let currentPage = basePage == undefined
+  let $ = basePage == undefined
     ? await downloadPage(getCurrentPageURL())
     : basePage;
 
   while (true) {
-    const cards = Array.from(currentPage.getElementsByClassName(cardClass));
+    const cards = Array.from($(`.${cardClass}`));
 
     for (const card of cards) {
-      const entity = card.querySelector(".teaser-link a")?.getAttribute("href");
+      const entity = $(card).find(".teaser-link a").attr('href');
       if (entity) {
         yield entity;
       }
@@ -155,12 +156,12 @@ async function* getAllScrapeableEntitiesFromCards(
 
     // stop scraping if we have reached the last page, otherwise increment the page number and scrape the next page
     // sorry this is a bit messy :(
-    if (isLastPage(currentPage)) {
+    if (isLastPage($)) {
       break;
     }
 
     currentPageNumber += 1;
-    currentPage = await downloadPage(getCurrentPageURL());
+    $ = await downloadPage(getCurrentPageURL());
   }
 }
 
@@ -168,15 +169,15 @@ async function* getAllScrapeableEntitiesFromCards(
 // getAllScrapeableRoomsFor is an iterator function that returns all the rooms within a building that we can start a scraping job for    
 // throwErr is a small helper function to just clean up some of the code
 const getAllScrapeableBuildings = () => getAllScrapeableEntitiesFromCards("type-building", `${LEARNING_ENVIRONMENTS_URL}/physical-spaces/teaching-spaces`);
-const getAllScrapeableRoomsFor = (buildingURL: string, baseBuildingPage: Document) => getAllScrapeableEntitiesFromCards("type-room", buildingURL, baseBuildingPage);
+const getAllScrapeableRoomsFor = (buildingURL: string, baseBuildingPage: CheerioAPI) => getAllScrapeableEntitiesFromCards("type-room", buildingURL, baseBuildingPage);
 const throwErr = <T>(msg: string): T => { throw Error(msg); }
 
 // downloadPage reads and parses a html page
-const downloadCache: Record<string, Document> = {}
-const downloadPage = async (url: string): Promise<Document> => {
+const downloadCache: Record<string, CheerioAPI> = {}
+const downloadPage = async (url: string): Promise<CheerioAPI> => {
   if (downloadCache[url] == undefined) {
     const response = await axiosInstance.get(url);
-    downloadCache[url] = new JSDOM(response.data).window.document;
+    downloadCache[url] = load(response.data);
   }
 
   return downloadCache[url];
