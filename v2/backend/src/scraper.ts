@@ -2,7 +2,6 @@ import axios from "axios";
 import * as fs from 'fs';
 import { load, CheerioAPI } from 'cheerio';
 import axiosRateLimit from "axios-rate-limit";
-import { JSDOM } from "jsdom";
 
 import { BuildingData, RoomData } from "./types";
 import { DATABASE_PATH } from "./config";
