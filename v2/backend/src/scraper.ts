@@ -1,18 +1,12 @@
 import axios from "axios";
 import * as fs from 'fs';
 import { load, CheerioAPI } from 'cheerio';
-import axiosRateLimit from "axios-rate-limit";
 
 import { BuildingData, RoomData } from "./types";
 import { DATABASE_PATH } from "./config";
 
-const LEARNING_ENVIRONMENTS_URL = "https://www.learningenvironments.unsw.edu.au"
-
-// Global rate limited axios instance
-// Global regular expressions, pre-compile them for faster matching
-const axiosInstance = axiosRateLimit(axios.create(), { maxRPS: 50 });
+const LEARNING_ENVIRONMENTS_URL = "https://www.learningenvironments.unsw.edu.au";
 const ROOM_REGEX = new RegExp(/^[A-Z]-[A-Z][0-9]{1,2}-[A-Z]{0,2}[0-9]{1,4}[A-Z]{0,1}$/);
-
 
 const runScrapingJob = async () => {
   console.log("starting scraping job");
@@ -79,7 +73,7 @@ const scrapeBuilding = async (buildingName: string): Promise<BuildingData> => {
 
 // scrapeRoom takes the name of a room and extracts all information about that room
 const scrapeRoom = async (roomName: string): Promise<RoomData> => {
-  const roomInfoURL = `${LEARNING_ENVIRONMENTS_URL}/${roomName}`;
+  const roomInfoURL = `${LEARNING_ENVIRONMENTS_URL}${roomName}`;
   const $ = await downloadPage(roomInfoURL);
 
   const { roomId, cleanName: humanizedName } = parseRoomName($("h1").first().text());
@@ -175,7 +169,7 @@ const throwErr = <T>(msg: string): T => { throw Error(msg); }
 const downloadCache: Record<string, CheerioAPI> = {}
 const downloadPage = async (url: string): Promise<CheerioAPI> => {
   if (downloadCache[url] == undefined) {
-    const response = await axiosInstance.get(url);
+    const response = await axios.get(url);
     downloadCache[url] = load(response.data);
   }
 
