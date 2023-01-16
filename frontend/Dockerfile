@@ -1,4 +1,4 @@
-FROM node:16.15-alpine as builder
+FROM node:16.19-alpine as builder
 
 # Set the current working directory inside the container
 WORKDIR /app

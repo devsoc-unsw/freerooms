@@ -1,14 +1,11 @@
-import FilterListIcon from '@mui/icons-material/FilterList';
-import Accordion from '@mui/material/Accordion';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import Box, { BoxProps } from '@mui/material/Box';
-import Button, { ButtonProps } from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
-import Container from '@mui/material/Container';
-import Stack from '@mui/material/Stack';
-import { styled, Theme } from '@mui/material/styles';
-import React, { PropsWithChildren,useEffect, useRef, useState } from "react";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import Accordion from "@mui/material/Accordion";
+import Box, { BoxProps } from "@mui/material/Box";
+import Checkbox from "@mui/material/Checkbox";
+import Container from "@mui/material/Container";
+import Stack from "@mui/material/Stack";
+import { styled } from "@mui/material/styles";
+import React, { useState } from "react";
 
 import { DropDownItem } from "../types";
 
@@ -29,7 +26,7 @@ const StyledSortButton = styled(Box)<BoxProps>(({ theme }) => ({
   zIndex: 10,
 }));
 
-const StyledDropDownMenu = styled(Box)<BoxProps>(({ theme }) => ({
+const StyledDropDownMenu = styled(Box)<BoxProps>(() => ({
   width: 250,
   top: 50,
   right: 0,
@@ -40,29 +37,24 @@ const StyledDropDownMenu = styled(Box)<BoxProps>(({ theme }) => ({
   backgroundColor: "white",
   borderWidth: 1,
   borderStyle: "solid",
-  borderColor: "#BCBCBC"
+  borderColor: "#BCBCBC",
 }));
 
-const StyledHeader = styled(Box)<BoxProps>(({ theme }) => ({
+const StyledHeader = styled(Box)<BoxProps>(() => ({
   paddingLeft: 15,
   height: 60,
   display: "inline-flex",
-  gap: 135
+  gap: 135,
 }));
 
 const StyledAccordian = styled(Accordion)(({ theme }) => ({
-  backgroundColor: '#fff',
+  backgroundColor: "#fff",
   color: "#000",
   transition: "all 0.1s ease-in-out",
   "&:hover": {
     backgroundColor: theme.palette.primary.main,
     color: "#fff",
   },
-}));
-
-const StyledAccordionDetails = styled(AccordionDetails)(({ theme }) => ({
-  backgroundColor: "#eee",
-  color: "#000"
 }));
 
 const SortBar: React.FC<{
@@ -74,23 +66,16 @@ const SortBar: React.FC<{
   const [open, setOpen] = useState(false);
   const toggle = (open: boolean) => {
     setOpen(!open);
-  }
-
-  // Close dropdown if user clicks outside.
-  const dismissHandler = (event: React.FocusEvent) => {
-    if (event.currentTarget === event.target) {
-      setOpen(!open);
-    }
   };
 
   // Handle user selecting a filter, each dropdown select has an associated key
   const handleSelect = (key: string, item: DropDownItem) => {
     if (filters.includes(item.value)) {
       // If the same as already selected
-      return
+      return;
     } else {
       // Otherwise, spread existing filters and set key
-      setFilters( item.value );
+      setFilters(item.value);
     }
   };
 
@@ -102,10 +87,11 @@ const SortBar: React.FC<{
           direction="row"
           spacing={1.5}
           alignItems="center"
-        // onBlur={(e: React.FocusEvent) => dismissHandler(e)}
+          // onBlur={(e: React.FocusEvent) => dismissHandler(e)}
         >
-          <p>{open ? <FilterListIcon style={{ color: '#F77F00' }} /> : <FilterListIcon style={{ color: '#F77F00' }} />}</p>
-          <p style={{ color: '#F77F00', fontWeight: 'bold' }}>Sort</p>
+          <p>{open ? <FilterListIcon style={{ color: "#F77F00" }} /> :
+            <FilterListIcon style={{ color: "#F77F00" }} />}</p>
+          <p style={{ color: "#F77F00", fontWeight: "bold" }}>Sort</p>
         </Stack>
         {open && (
           <Container>
@@ -132,24 +118,24 @@ const SortBar: React.FC<{
 // Dropdowns and items.
 const dropdowns: DropDownItem[] = [
   {
-    text: 'Alphabetical',
-    value: 'alphabetical'
+    text: "Alphabetical",
+    value: "alphabetical",
   },
   {
-    text: 'Reverse Alphabetical',
-    value: 'reverseAlphabetical'
+    text: "Reverse Alphabetical",
+    value: "reverseAlphabetical",
   },
   {
-    text: 'Lower Campus',
-    value: 'lowerToUpper'
+    text: "Lower Campus",
+    value: "lowerToUpper",
   },
   {
-    text: 'Upper Campus',
-    value: 'upperToLower'
+    text: "Upper Campus",
+    value: "upperToLower",
   },
   {
-    text: 'Most Available Rooms',
-    value: 'mostRooms'
+    text: "Most Available Rooms",
+    value: "mostRooms",
   },
 ];
 

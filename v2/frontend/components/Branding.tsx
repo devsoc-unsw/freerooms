@@ -1,6 +1,5 @@
 import Box, { BoxProps } from "@mui/material/Box";
-import { orange } from "@mui/material/colors";
-import { styled, SxProps, Theme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import Typography, { TypographyProps } from "@mui/material/Typography";
 import Image from "next/image";
 
@@ -9,7 +8,7 @@ import Logo from "../public/assets/favicon/free_rooms_logo.png";
 const StyledText = styled(Typography)<TypographyProps>(({ theme }) => ({
   color: theme.palette.primary.main,
   fontWeight: 600,
-  fontFamily: "Josefin Sans"
+  fontFamily: "Josefin Sans",
 }));
 
 const StyledBox = styled(Box)<BoxProps>(({ theme }) => ({
@@ -36,7 +35,7 @@ const Branding = (props: BoxProps) => (
       }}
     >
       <StyledText sx={{ lineHeight: 1 }}>Freerooms</StyledText>
-      <StyledText sx={{ lineHeight: 1, marginTop: 0.5, fontFamily: "Arial", fontSize: "0.8rem"}}>22T3</StyledText>
+      <StyledText sx={{ lineHeight: 1, marginTop: 0.5, fontFamily: "Arial", fontSize: "0.8rem" }}>22T3</StyledText>
     </Box>
   </StyledBox>
 );
