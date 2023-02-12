@@ -12,7 +12,7 @@
               style="border-radius:10px"
             >
               <v-img
-                :src="`../assets/building_photos/${locationId}.png`"
+                :src="`../assets/building_photos/${locationId}.webp`"
               ></v-img>
             </v-avatar>
           </div>
