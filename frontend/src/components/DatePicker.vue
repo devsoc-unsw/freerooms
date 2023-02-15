@@ -20,8 +20,8 @@
     <v-date-picker
       mode="date"
       v-model="syncedDate"
-      min="2022-02-15"
-      max="2022-05-13"
+      min="2023-02-13"
+      max="2023-05-11"
       scrollable
     >
       <v-spacer></v-spacer>
