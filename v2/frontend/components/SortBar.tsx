@@ -2,7 +2,7 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import { ClickAwayListener } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import Box, { BoxProps } from "@mui/material/Box";
-import Checkbox from "@mui/material/Checkbox";
+import Radio from "@mui/material/Radio";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
@@ -90,7 +90,7 @@ const SortBar: React.FC<{
               {dropdowns.map(dropdown => (
                 <StyledAccordian key={dropdown.value}>
                   <div onClick={() => setSort(dropdown.value)} key={dropdown.value}>
-                    <Checkbox checked={sort === dropdown.value} />
+                    <Radio checked={sort === dropdown.value} />
                     {dropdown.text}
                   </div>
                 </StyledAccordian>
