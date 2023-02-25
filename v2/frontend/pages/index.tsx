@@ -146,7 +146,7 @@ const Home: NextPage<{}> = () => {
             <div id={"Home-Options"} style={{ display: "flex", justifyContent: "space-between" }}>
               <FilterBar filters={filters} setFilters={setFilters} />
               <SearchBar setQuery={setQuery}></SearchBar>
-              <SortBar filters={sort} setFilters={setSort}></SortBar>
+              <SortBar sort={sort} setSort={setSort}></SortBar>
             </div>
             {showMap ? (
               <Mapping

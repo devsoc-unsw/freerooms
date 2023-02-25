@@ -58,23 +58,12 @@ const StyledAccordian = styled(Accordion)(({ theme }) => ({
 }));
 
 const SortBar: React.FC<{
-  filters: string,
-  setFilters: (filters: string) => void
-}> = ({ filters, setFilters }) => {
+  sort: string,
+  setSort: (sort: string) => void
+}> = ({ sort, setSort }) => {
 
   // Hide and close Dropdown
   const [open, setOpen] = useState(false);
-
-  // Handle user selecting a filter, each dropdown select has an associated key
-  const handleSelect = (key: string, item: DropDownItem) => {
-    if (filters.includes(item.value)) {
-      // If the same as already selected
-      return;
-    } else {
-      // Otherwise, spread existing filters and set key
-      setFilters(item.value);
-    }
-  };
 
   return (
     <>
@@ -97,8 +86,8 @@ const SortBar: React.FC<{
               </StyledHeader>
               {dropdowns.map(dropdown => (
                 <StyledAccordian key={dropdown.value}>
-                  <div onClick={() => handleSelect(dropdown.value, dropdown)} key={dropdown.value}>
-                    <Checkbox checked={filters.includes(dropdown.value)} />
+                  <div onClick={() => setSort(dropdown.value)} key={dropdown.value}>
+                    <Checkbox checked={sort === dropdown.value} />
                     {dropdown.text}
                   </div>
                 </StyledAccordian>
