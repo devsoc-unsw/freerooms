@@ -1,4 +1,5 @@
 import FilterListIcon from "@mui/icons-material/FilterList";
+import { ClickAwayListener } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import Box, { BoxProps } from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
@@ -68,7 +69,7 @@ const SortBar: React.FC<{
   const [open, setOpen] = useState(false);
 
   return (
-    <>
+    <ClickAwayListener onClickAway={() => setOpen(false)}>
       <StyledSortButton onClick={() => setOpen(!open)}>
         <Stack
           direction="row"
@@ -98,7 +99,7 @@ const SortBar: React.FC<{
           </Container>
         )}
       </StyledSortButton>
-    </>
+    </ClickAwayListener>
   );
 };
 
