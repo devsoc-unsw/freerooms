@@ -38,8 +38,9 @@
 }
 
 #SearchBox {
-    width: 40rem;
-    margin: auto;
+    width: 50%;
+    margin: 10px;
+    flex-shrink: 3;
 }
 
 #LandingScreenWhole {
@@ -53,30 +54,11 @@
     align-self: center;
 }
 
-@media (min-width: 800px) {
-    #headerSearch {
-        display: flex;
-        flex-direction: row;
-    }
-}
-
 #Home-Options {
     margin: 1rem 0;
 }
 
-@media (max-width: 1050px) {
-    #Home-Options {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-    }
-}
-
-@media (max-width: 800px) {
-    #Home-Building-Tiles {
-        margin-top: 4rem;
-    }
-
+@media (max-width: 1000px) {
     #FreeroomsTitle {
         font-size: 4rem;
     }
@@ -98,24 +80,15 @@
         width: 1.5rem;
     }
 
-    #header {
-        display: flex;
-        flex-direction: column;
+    #Home-Options {
         gap: 1rem;
-    }
-
-    #headerBranding {
-        margin: auto;
-    }
-
-    #headerSearch {
-        margin: auto;
-        display: flex;
-        flex-direction: column;
+        flex-wrap: wrap;
     }
 
     #SearchBox {
-        width: 70vw;
+        margin: 0px;
+        width: 100%;
+        order: -1;
     }
 
     #LandingScreenWhole {
