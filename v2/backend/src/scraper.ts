@@ -7,6 +7,7 @@ import { DATABASE_PATH } from "./config";
 
 const LEARNING_ENVIRONMENTS_URL = "https://www.learningenvironments.unsw.edu.au";
 const ROOM_REGEX = new RegExp(/^[A-Z]-[A-Z][0-9]{1,2}-[A-Z]{0,2}[0-9]{1,4}[A-Z]{0,1}$/);
+const NSS_URL = "https://nss.cse.unsw.edu.au/tt/"
 
 const runScrapingJob = async () => {
   console.log("starting scraping job");
@@ -177,8 +178,38 @@ const downloadPage = async (url: string): Promise<CheerioAPI> => {
 }
 
 
+const runScrapingJob = async () => {
+  console.log("starting scraping job");
+  console.time("scraping time");
+
+  const data = await scrapeAllBuildings();
+  fs.writeFileSync(DATABASE_PATH, JSON.stringify(data, null, 4));
+
+  console.log("ending scraping job");
+  console.timeEnd("scraping time");
+}
+
+// scrapeAllBuildings scrapes all buildings UNSW has
+async function scrapeAllBuildings() {
+  const buildingsToScrape = getAllScrapeableBuildings();
+  const buildingPromises = [] as Promise<BuildingData>[];
+
+  for await (const buildingName of buildingsToScrape) {
+    buildingPromises.push(scrapeBuilding(buildingName));
+  }
+
+  return (
+    Object.fromEntries(
+      (await Promise.all(buildingPromises))
+        .map(building => [building.id, building])
+    )
+  );
+
+}
+
 // MAIN
 runScrapingJob();
+console.log("hello world");
 if (process.send) {
   process.send({ err: null });
   process.disconnect();
