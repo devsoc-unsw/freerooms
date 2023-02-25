@@ -50,11 +50,7 @@ const StyledHeader = styled(Box)<BoxProps>(() => ({
 const StyledAccordian = styled(Accordion)(({ theme }) => ({
   backgroundColor: "#fff",
   color: "#000",
-  transition: "all 0.1s ease-in-out",
-  "&:hover": {
-    backgroundColor: theme.palette.primary.main,
-    color: "#fff",
-  },
+  transition: "all 0.1s ease-in-out"
 }));
 
 const SortBar: React.FC<{
