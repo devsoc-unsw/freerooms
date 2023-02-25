@@ -24,6 +24,9 @@ const StyledSortButton = styled(Box)<BoxProps>(({ theme }) => ({
   borderStyle: "solid",
   borderColor: theme.palette.primary.main,
   zIndex: 10,
+  ":hover": {
+    cursor: "pointer"
+  }
 }));
 
 const StyledDropDownMenu = styled(Box)<BoxProps>(() => ({
@@ -38,6 +41,9 @@ const StyledDropDownMenu = styled(Box)<BoxProps>(() => ({
   borderWidth: 1,
   borderStyle: "solid",
   borderColor: "#BCBCBC",
+  ":hover": {
+    cursor: "auto"
+  }
 }));
 
 const StyledHeader = styled(Box)<BoxProps>(() => ({

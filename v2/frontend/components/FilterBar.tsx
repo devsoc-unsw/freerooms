@@ -27,6 +27,9 @@ const StyledFilterButton = styled(Box)<BoxProps>(({ theme }) => ({
   borderStyle: "solid",
   borderColor: theme.palette.primary.main,
   zIndex: 10,
+  ":hover": {
+    cursor: "pointer"
+  }
 }));
 
 const StyledDropDownMenu = styled(Box)<BoxProps>(() => ({
@@ -41,6 +44,9 @@ const StyledDropDownMenu = styled(Box)<BoxProps>(() => ({
   borderWidth: 1,
   borderStyle: "solid",
   borderColor: "#BCBCBC",
+  ":hover": {
+    cursor: "auto"
+  }
 }));
 
 const StyledHeader = styled(Box)<BoxProps>(() => ({
@@ -121,7 +127,7 @@ const FilterBar: React.FC<{
             <StyledDropDownMenu>
               <StyledHeader>
                 <h3>Filter</h3>
-                <p style={{ color: "#F77F00" }} onClick={() => setFilters({})}>Reset</p>
+                <p id="reset" style={{color: "#f77f00"}} onClick={() => setFilters({})}>Reset</p>
               </StyledHeader>
               {dropdowns.map(dropdown => (
                 <StyledAccordian key={dropdown.key}>
