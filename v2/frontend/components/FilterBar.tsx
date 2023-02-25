@@ -72,9 +72,6 @@ const FilterBar: React.FC<{
 
   // Hide and close Dropdown
   const [open, setOpen] = useState(false);
-  const toggle = (open: boolean) => {
-    setOpen(!open);
-  };
 
   // Close dropdown if user clicks outside.
   const dismissHandler = (event: React.FocusEvent) => {
@@ -109,9 +106,8 @@ const FilterBar: React.FC<{
 
   return (
     <>
-      <StyledFilterButton>
+      <StyledFilterButton onClick={() => setOpen(!open)}>
         <Stack
-          onClick={() => toggle(open)}
           direction="row"
           spacing={1.5}
           alignItems="center"
@@ -121,7 +117,7 @@ const FilterBar: React.FC<{
           <p style={{ color: "#F77F00", fontWeight: "bold" }}>Filters</p>
         </Stack>
         {open && (
-          <Container>
+          <Container onClick={e => e.stopPropagation()}>
             <StyledDropDownMenu>
               <StyledHeader>
                 <h3>Filter</h3>

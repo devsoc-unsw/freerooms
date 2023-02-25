@@ -64,9 +64,6 @@ const SortBar: React.FC<{
 
   // Hide and close Dropdown
   const [open, setOpen] = useState(false);
-  const toggle = (open: boolean) => {
-    setOpen(!open);
-  };
 
   // Handle user selecting a filter, each dropdown select has an associated key
   const handleSelect = (key: string, item: DropDownItem) => {
@@ -81,9 +78,8 @@ const SortBar: React.FC<{
 
   return (
     <>
-      <StyledSortButton>
+      <StyledSortButton onClick={() => setOpen(!open)}>
         <Stack
-          onClick={() => toggle(open)}
           direction="row"
           spacing={1.5}
           alignItems="center"
@@ -94,7 +90,7 @@ const SortBar: React.FC<{
           <p style={{ color: "#F77F00", fontWeight: "bold" }}>Sort</p>
         </Stack>
         {open && (
-          <Container>
+          <Container onClick={e => e.stopPropagation()}>
             <StyledDropDownMenu>
               <StyledHeader>
                 <h3>Sort</h3>
