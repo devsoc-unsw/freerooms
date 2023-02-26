@@ -89,7 +89,7 @@ const BuildingInfo: React.FC<{
   if (!building) return <></>;
 
   const customTextField = (
-    params: JSX.IntrinsicAttributes & TextFieldProps,
+    params: JSX.IntrinsicAttributes & TextFieldProps
   ) => (
     <TextField
       {...params}
@@ -168,16 +168,26 @@ const BuildingInfo: React.FC<{
         {rooms ? (
           Object.keys(rooms).map((roomId) => {
             const room = rooms[roomId];
+            const roomStatusColor = {
+              free: "#2AA300",
+              busy: "#D30000",
+              soon: "#ffa600",
+            };
+            const roomStatusMessage = {
+              free: "Avalaible",
+              busy: "Unavaliable",
+              soon: "Avaliable soon",
+            };
             return (
               <IndiviRoomBox key={roomId}>
                 {roomId}{" "}
                 <Typography
                   sx={{ fontSize: 16, fontWeight: 500 }}
                   style={{
-                    color: room["status"] === "free" ? "#2AA300" : "#D30000",
+                    color: roomStatusColor[room["status"]],
                   }}
                 >
-                  {room["status"] === "free" ? "Available" : "Unavailable"}
+                  {roomStatusMessage[room["status"]]}
                 </Typography>
               </IndiviRoomBox>
             );
