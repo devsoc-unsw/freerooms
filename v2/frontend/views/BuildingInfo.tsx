@@ -167,7 +167,17 @@ const BuildingInfo: React.FC<{
       <RoomBox>
         {rooms ? (
           Object.keys(rooms).map((roomId) => {
+            //const [rooms, setRooms] = React.useState<BuildingStatus | undefined>();
             const room = rooms[roomId];
+            const date = new Date(room["endtime"]);
+            //const hours = date.getHours();
+            //const minutes = String(date.getMinutes()).padStart(2, "0");
+            const hoursMinutes = date.toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: true,
+            });
+
             const roomStatusColor = {
               free: "#2AA300",
               busy: "#D30000",
@@ -176,7 +186,7 @@ const BuildingInfo: React.FC<{
             const roomStatusMessage = {
               free: "Available",
               busy: "Unavailable",
-              soon: "Available soon",
+              soon: "Available soon at " + hoursMinutes,
             };
             return (
               <IndiviRoomBox key={roomId}>
