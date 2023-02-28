@@ -174,9 +174,9 @@ const BuildingInfo: React.FC<{
               soon: "#ffa600",
             };
             const roomStatusMessage = {
-              free: "Avalaible",
-              busy: "Unavaliable",
-              soon: "Avaliable soon",
+              free: "Available",
+              busy: "Unavailable",
+              soon: "Available soon",
             };
             return (
               <IndiviRoomBox key={roomId}>
