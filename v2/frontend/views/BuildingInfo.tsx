@@ -167,11 +167,8 @@ const BuildingInfo: React.FC<{
       <RoomBox>
         {rooms ? (
           Object.keys(rooms).map((roomId) => {
-            //const [rooms, setRooms] = React.useState<BuildingStatus | undefined>();
             const room = rooms[roomId];
             const date = new Date(room["endtime"]);
-            //const hours = date.getHours();
-            //const minutes = String(date.getMinutes()).padStart(2, "0");
             const hoursMinutes = date.toLocaleTimeString("en-AU", {
               hour: "2-digit",
               minute: "2-digit",
