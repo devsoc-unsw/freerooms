@@ -12,7 +12,12 @@ import Image, { ImageProps } from "next/image";
 import React from "react";
 
 import Button from "../components/Button";
-import { Building, BuildingStatus, RoomsReturnData } from "../types";
+import {
+  Building,
+  BuildingStatus,
+  RoomsReturnData,
+  RoomAvailability,
+} from "../types";
 
 const INITIALISING = -2;
 const FAILED = -1;
@@ -100,6 +105,43 @@ const BuildingInfo: React.FC<{
     />
   );
 
+  const RoomAvailabilityMessages = (roomId: string) => {
+    if (rooms == undefined) {
+      throw new Error("No rooms");
+    }
+    const room = rooms[roomId];
+    const date = new Date(room["endtime"]);
+    const hoursMinutes = date.toLocaleTimeString("en-AU", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+
+    const roomStatusColor = {
+      free: "#2AA300",
+      busy: "#D30000",
+      soon: "#ffa600",
+    };
+    const roomStatusMessage = {
+      free: "Available",
+      busy: "Unavailable",
+      soon: "Available soon at " + hoursMinutes,
+    };
+    return (
+      <IndiviRoomBox key={roomId}>
+        {roomId}{" "}
+        <Typography
+          sx={{ fontSize: 16, fontWeight: 500 }}
+          style={{
+            color: roomStatusColor[room["status"]],
+          }}
+        >
+          {roomStatusMessage[room["status"]]}
+        </Typography>
+      </IndiviRoomBox>
+    );
+  };
+
   return (
     <MainBox>
       <AppBox>
@@ -166,39 +208,7 @@ const BuildingInfo: React.FC<{
 
       <RoomBox>
         {rooms ? (
-          Object.keys(rooms).map((roomId) => {
-            const room = rooms[roomId];
-            const date = new Date(room["endtime"]);
-            const hoursMinutes = date.toLocaleTimeString("en-AU", {
-              hour: "2-digit",
-              minute: "2-digit",
-              hour12: true,
-            });
-
-            const roomStatusColor = {
-              free: "#2AA300",
-              busy: "#D30000",
-              soon: "#ffa600",
-            };
-            const roomStatusMessage = {
-              free: "Available",
-              busy: "Unavailable",
-              soon: "Available soon at " + hoursMinutes,
-            };
-            return (
-              <IndiviRoomBox key={roomId}>
-                {roomId}{" "}
-                <Typography
-                  sx={{ fontSize: 16, fontWeight: 500 }}
-                  style={{
-                    color: roomStatusColor[room["status"]],
-                  }}
-                >
-                  {roomStatusMessage[room["status"]]}
-                </Typography>
-              </IndiviRoomBox>
-            );
-          })
+          Object.keys(rooms).map((roomId) => RoomAvailabilityMessages(roomId))
         ) : (
           <Typography
             sx={{
