@@ -747,7 +747,7 @@
                 "id": "K-F23-310",
                 "name": "Mathews 310",
                 "capacity": 48,
-                "usage": "LEC"
+                "usage": "TUT"
             },
             "311": {
                 "id": "K-F23-311",
@@ -759,7 +759,7 @@
                 "id": "K-F23-312",
                 "name": "Mathews 312",
                 "capacity": 44,
-                "usage": "LEC"
+                "usage": "TUT"
             },
             "313": {
                 "id": "K-F23-313",
@@ -1389,23 +1389,11 @@
         "lat": -33.917446,
         "long": 151.226608,
         "rooms": {
-            "G15": {
-                "id": "K-H6-G15",
-                "name": "Tyree Energy Technology G15",
-                "capacity": 56,
-                "usage": "TUT"
-            },
             "G16": {
                 "id": "K-H6-G16",
                 "name": "Tyree Energy Technology G16",
                 "capacity": 180,
                 "usage": "LEC"
-            },
-            "G17": {
-                "id": "K-H6-G17",
-                "name": "Tyree Energy Technology G17",
-                "capacity": 70,
-                "usage": "TUT"
             },
             "LG03": {
                 "id": "K-H6-LG03",
