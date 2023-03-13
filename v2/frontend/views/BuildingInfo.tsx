@@ -123,8 +123,8 @@ const BuildingInfo: React.FC<{
       soon: "#ffa600",
     };
     const roomStatusMessage = {
-      free: "Available",
-      busy: "Unavailable",
+      free: "Available until ",
+      busy: "Unavailable until ",
       soon: "Available soon at " + hoursMinutes,
     };
     return (
