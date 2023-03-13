@@ -118,7 +118,6 @@ export default class DbService {
     endTime: string
   ) {
     // Gets all the room bookings from start time
-    const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
     const data = await api.getRoomBookings(location, room, startTime);
 
     if (!data) {
@@ -150,28 +149,8 @@ export default class DbService {
         for (const booking of dayData) {
           if (!booking["start"] || !booking["end"]) continue;
 
-          const currentDay = startDate.getDate() + days.indexOf(day);
-          const hoursStart =
-            startDate.getHours() + parseInt(booking["start"].split(":")[0]);
-          const hoursEnd =
-            startDate.getHours() + parseInt(booking["end"].split(":")[0]);
-
-          const bookingStartDate = new Date(
-            startDate.getFullYear(),
-            startDate.getMonth(),
-            currentDay,
-            hoursStart,
-            0,
-            0
-          );
-          const bookingEndDate = new Date(
-            startDate.getFullYear(),
-            startDate.getMonth(),
-            currentDay,
-            hoursEnd,
-            0,
-            0
-          );
+          const bookingStartDate = new Date(booking['start']);
+          const bookingEndDate = new Date(booking['end']);
 
           const bookingEdit = booking;
           bookingEdit["start"] = DateTime.fromJSDate(bookingStartDate).toFormat(

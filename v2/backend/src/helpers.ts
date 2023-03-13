@@ -100,13 +100,13 @@ export const calculateStatus = (
   let firstAfter: Class | null = null;
   let secondAfter: Class | null = null;
   for (const cls of classes) {
-    const end = combineDateTime(datetime, cls.end);
+    const end = new Date(cls.end);
     if (end <= datetime) continue;
 
-    if (!firstAfter || end < combineDateTime(datetime, firstAfter.end)) {
+    if (!firstAfter || end < new Date(firstAfter.end)) {
       secondAfter = firstAfter;
       firstAfter = cls;
-    } else if (!secondAfter || end < combineDateTime(datetime, secondAfter.end)) {
+    } else if (!secondAfter || end < new Date(secondAfter.end)) {
       secondAfter = cls;
     }
   }
@@ -116,7 +116,7 @@ export const calculateStatus = (
     return roomStatus;
   }
 
-  const start = combineDateTime(datetime, firstAfter.start);
+  const start = new Date(firstAfter.start);
   if (datetime < start) {
     // Class starts after current time i.e. room is free, check if it meets minDuration filter
     const duration = (start.getTime() - datetime.getTime()) / (1000 * 60);
@@ -126,10 +126,10 @@ export const calculateStatus = (
     if (minDuration > 0) return null;
     roomStatus.status = "busy";
 
-    const end = combineDateTime(datetime, firstAfter.end);
+    const end = new Date(firstAfter.end);
     if (end.getTime() - datetime.getTime() <= FIFTEEN_MIN) {
       // Ending soon, check the next class
-      if (!secondAfter || combineDateTime(datetime, secondAfter.start) > end) {
+      if (!secondAfter || new Date(secondAfter.start) > end) {
         // No next class, or it starts after the current class ends
         roomStatus.status = "soon";
         roomStatus.endtime = end.toISOString();
@@ -138,17 +138,4 @@ export const calculateStatus = (
   }
 
   return roomStatus;
-}
-
-// Return a copy of provided date set to provided time
-// Time must be in the format HH:MM
-const combineDateTime = (date: Date, time: string) => {
-  if (!TIME_REGEX.test(time)) {
-    throw new Error("Invalid time format");
-  }
-
-  const newDate = new Date(date.valueOf());
-  const [hours, minutes] = time.split(':');
-  newDate.setHours(+hours, +minutes);
-  return newDate;
 }
