@@ -5,12 +5,10 @@ import fs from "fs";
 import { DATABASE_PATH, SCRAPER_PATH } from "./config";
 import { TimetableData, BuildingDatabase, RoomStatus, Class } from "./types";
 
-
-const TIMETABLE_API = "https://timetable.csesoc.app/api"
+const TIMETABLE_API = "https://timetable.csesoc.app/api";
 const DATE_REGEX = new RegExp(/\d{2}\/\d{2}\/\d{4}/);
 const TIME_REGEX = new RegExp(/\d{2}:\d{2}/);
 const FIFTEEN_MIN = 15 * 1000 * 60;
-
 
 // Fetch start date of current term from the Timetable API
 // Result is in DD/MM/YYYY format
@@ -23,7 +21,7 @@ export const getStartDate = async (): Promise<string> => {
   } else {
     throw new Error(`Start date retrieved incorrectly`);
   }
-}
+};
 
 // Fetch timetable data from the Timetable API
 export const getTimetableData = async (): Promise<TimetableData> => {
@@ -42,10 +40,10 @@ export const getTimetableData = async (): Promise<TimetableData> => {
 };
 
 export const getBuildingData = async (): Promise<BuildingDatabase> => {
-  const rawData = fs.readFileSync(DATABASE_PATH, 'utf8');
+  const rawData = fs.readFileSync(DATABASE_PATH, "utf8");
   const data = JSON.parse(rawData) as BuildingDatabase;
   return data;
-}
+};
 
 // Spawn child process to scrape building data
 // or return promise to ongoing process
@@ -54,26 +52,26 @@ export const scrapeBuildingData = async (): Promise<void> => {
   if (ongoingScraper === null) {
     ongoingScraper = new Promise((resolve, reject) => {
       const child = child_process.fork(SCRAPER_PATH);
-      child.on('message', (msg: { err?: any }) => {
+      child.on("message", (msg: { err?: any }) => {
         if (msg.err) reject(msg.err);
         resolve();
       });
-      child.on('error', () => {
+      child.on("error", () => {
         reject();
       });
-      child.on('exit', () => {
+      child.on("exit", () => {
         ongoingScraper = null;
       });
     });
   }
 
   return ongoingScraper;
-}
+};
 
 // Gets the week number from the date (based off current term)
 export const getWeek = async (date: Date): Promise<number> => {
   const termStart = await getStartDate();
-  const [day, month, year] = termStart.split('/');
+  const [day, month, year] = termStart.split("/");
   const termStartDate = new Date(+year, +month - 1, +day);
 
   const diff = date.getTime() - termStartDate.getTime();
@@ -83,7 +81,7 @@ export const getWeek = async (date: Date): Promise<number> => {
   return Math.ceil(daysPastStart / 7);
 };
 
-// Given a datetime and a list of the room's bookings for 
+// Given a datetime and a list of the room's bookings for
 // the corresponding date, calculate the status of the room
 // If room is not free for the given minimum duration, return null
 export const calculateStatus = (
@@ -106,7 +104,10 @@ export const calculateStatus = (
     if (!firstAfter || end < combineDateTime(datetime, firstAfter.end)) {
       secondAfter = firstAfter;
       firstAfter = cls;
-    } else if (!secondAfter || end < combineDateTime(datetime, secondAfter.end)) {
+    } else if (
+      !secondAfter ||
+      end < combineDateTime(datetime, secondAfter.end)
+    ) {
       secondAfter = cls;
     }
   }
@@ -120,6 +121,7 @@ export const calculateStatus = (
   if (datetime < start) {
     // Class starts after current time i.e. room is free, check if it meets minDuration filter
     const duration = (start.getTime() - datetime.getTime()) / (1000 * 60);
+    roomStatus.endtime = start.toISOString();
     return duration < minDuration ? null : roomStatus;
   } else {
     // Class starts before current time i.e. class occurring now
@@ -138,7 +140,7 @@ export const calculateStatus = (
   }
 
   return roomStatus;
-}
+};
 
 // Return a copy of provided date set to provided time
 // Time must be in the format HH:MM
@@ -148,7 +150,7 @@ const combineDateTime = (date: Date, time: string) => {
   }
 
   const newDate = new Date(date.valueOf());
-  const [hours, minutes] = time.split(':');
+  const [hours, minutes] = time.split(":");
   newDate.setHours(+hours, +minutes);
   return newDate;
-}
+};
