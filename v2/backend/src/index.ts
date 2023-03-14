@@ -4,7 +4,7 @@ import fs from "fs";
 
 import { scrapeBuildingData } from "./helpers";
 import {
-  parseDate as parseDatetime,
+  parseDatetime,
   parseFilters,
   getAllRoomStatus,
   getAllBuildings,
