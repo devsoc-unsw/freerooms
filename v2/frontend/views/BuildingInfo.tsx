@@ -128,7 +128,10 @@ const BuildingInfo: React.FC<{
         hoursMinutes == "Invalid Date"
           ? "Available"
           : "Available until " + hoursMinutes,
-      busy: "Unavailable until " + hoursMinutes,
+      busy:
+        hoursMinutes == "Invalid Date"
+          ? "Unavaliable"
+          : "Unavaliable until " + hoursMinutes,
       soon: "Available soon at " + hoursMinutes,
     };
     return (
