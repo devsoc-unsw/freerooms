@@ -19,7 +19,6 @@ specifiers:
   eslint-plugin-react-hooks: ^4.6.0
   eslint-plugin-simple-import-sort: ^8.0.0
   esri-loader: ^3.7.0
-  luxon: ^2.5.0
   next: 13.0.3
   react: 18.2.0
   react-dom: 18.2.0
@@ -34,12 +33,11 @@ dependencies:
   '@mui/icons-material': 5.10.14_d6yjyp77wjugdcf2ra4twma4um
   '@mui/material': 5.10.14_76qfvw3girayx34mq3xsrojrvu
   '@mui/system': 5.10.14_t7a3qt6bztgpt56wvkpy652kzi
-  '@mui/x-date-pickers': 5.0.8_76cz3iehuyrrsvfhnc4gtdor34
+  '@mui/x-date-pickers': 5.0.8_p6r6qp7wldbu5ojdsmv4yukx2q
   '@types/arcgis-js-api': 4.25.0
   axios: 0.26.1
   date-fns: 2.29.3
   esri-loader: 3.7.0
-  luxon: 2.5.0
   next: 13.0.3_7htunelgbw4lutvy2i42kzpsm4
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
@@ -295,7 +293,7 @@ packages:
       '@date-io/core': 2.16.0
     dev: false
 
-  /@date-io/luxon/2.16.1_luxon@2.5.0:
+  /@date-io/luxon/2.16.1:
     resolution: {integrity: sha512-aeYp5K9PSHV28946pC+9UKUi/xMMYoaGelrpDibZSgHu2VWHXrr7zWLEr+pMPThSs5vt8Ei365PO+84pCm37WQ==}
     peerDependencies:
       luxon: ^1.21.3 || ^2.x || ^3.x
@@ -304,7 +302,6 @@ packages:
         optional: true
     dependencies:
       '@date-io/core': 2.16.0
-      luxon: 2.5.0
     dev: false
 
   /@date-io/moment/2.16.1:
@@ -685,7 +682,7 @@ packages:
       react-is: 18.2.0
     dev: false
 
-  /@mui/x-date-pickers/5.0.8_76cz3iehuyrrsvfhnc4gtdor34:
+  /@mui/x-date-pickers/5.0.8_p6r6qp7wldbu5ojdsmv4yukx2q:
     resolution: {integrity: sha512-L+9WOyoxIPxj86dk4G/zyVsiakQjBX0MJTIPMNSRitxFi4I6T8KlasdpGUHfnni/EAjqR36w0d/BDwCjc/7gPQ==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -717,7 +714,7 @@ packages:
       '@date-io/core': 2.16.0
       '@date-io/date-fns': 2.16.0_date-fns@2.29.3
       '@date-io/dayjs': 2.16.0
-      '@date-io/luxon': 2.16.1_luxon@2.5.0
+      '@date-io/luxon': 2.16.1
       '@date-io/moment': 2.16.1
       '@emotion/react': 11.10.5_xmoe4iud7ugqpxbdhjwfliqbki
       '@emotion/styled': 11.10.5_pgx6xxo5rhctqopp5jzyz2lj5q
@@ -727,7 +724,6 @@ packages:
       '@types/react-transition-group': 4.4.5
       clsx: 1.2.1
       date-fns: 2.29.3
-      luxon: 2.5.0
       prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -2188,11 +2184,6 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       yallist: 4.0.0
-
-  /luxon/2.5.0:
-    resolution: {integrity: sha512-IDkEPB80Rb6gCAU+FEib0t4FeJ4uVOuX1CQ9GsvU3O+JAGIgu0J7sf1OarXKaKDygTZIoJyU6YdZzTFRu+YR0A==}
-    engines: {node: '>=12'}
-    dev: false
 
   /merge2/1.4.1:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}

@@ -10,7 +10,6 @@ import Drawer from "@mui/material/Drawer";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import axios from "axios";
-import { DateTime } from "luxon";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -57,8 +56,7 @@ const Home: NextPage<{}> = () => {
     const fetchRoomStatus = () => {
       const params: RoomsRequestParams = { ...filters };
       if (datetime) {
-        params.datetime =
-          DateTime.fromJSDate(datetime).toFormat("yyyy-MM-dd'T'HH:mm");
+        params.datetime = datetime.toISOString();
       }
 
       axios
