@@ -4,7 +4,7 @@ specifiers:
   '@types/cors': 2.8.13
   '@types/express': 4.17.17
   '@types/luxon': ^3.2.0
-  '@types/node': 18.15.3
+  '@types/node': 18.15.5
   axios: ^1.0.0
   cheerio: 1.0.0-rc.12
   cors: ^2.8.5
@@ -25,9 +25,9 @@ devDependencies:
   '@types/cors': 2.8.13
   '@types/express': 4.17.17
   '@types/luxon': 3.2.0
-  '@types/node': 18.15.3
+  '@types/node': 18.15.5
   nodemon: 2.0.21
-  ts-node: 10.9.1_cbfmry4sbbh4vatmdrsmatfg5a
+  ts-node: 10.9.1_345kigqis4fipgyy5xb3ndshmq
   typescript: 4.9.5
 
 packages:
@@ -75,25 +75,25 @@ packages:
     resolution: {integrity: sha512-ALYone6pm6QmwZoAgeyNksccT9Q4AWZQ6PvfwR37GT6r6FWUPguq6sUmNGSMV2Wr761oQoBxwGGa6DR5o1DC9g==}
     dependencies:
       '@types/connect': 3.4.35
-      '@types/node': 18.15.3
+      '@types/node': 18.15.5
     dev: true
 
   /@types/connect/3.4.35:
     resolution: {integrity: sha512-cdeYyv4KWoEgpBISTxWvqYsVy444DOqehiF3fM3ne10AmJ62RSyNkUnxMJXHQWRQQX2eR94m5y1IZyDwBjV9FQ==}
     dependencies:
-      '@types/node': 18.15.3
+      '@types/node': 18.15.5
     dev: true
 
   /@types/cors/2.8.13:
     resolution: {integrity: sha512-RG8AStHlUiV5ysZQKq97copd2UmVYw3/pRMLefISZ3S1hK104Cwm7iLQ3fTKx+lsUH2CE8FlLaYeEA2LSeqYUA==}
     dependencies:
-      '@types/node': 18.15.3
+      '@types/node': 18.15.5
     dev: true
 
   /@types/express-serve-static-core/4.17.33:
     resolution: {integrity: sha512-TPBqmR/HRYI3eC2E5hmiivIzv+bidAfXofM+sbonAGvyDhySGw9/PQZFt2BLOrjUUR++4eJVpx6KnLQK1Fk9tA==}
     dependencies:
-      '@types/node': 18.15.3
+      '@types/node': 18.15.5
       '@types/qs': 6.9.7
       '@types/range-parser': 1.2.4
     dev: true
@@ -115,8 +115,8 @@ packages:
     resolution: {integrity: sha512-Y4XFY5VJAuw0FgAqPNd6NNoV44jbq9Bz2L7Rh/J6jLTiHBSBJa9fxqQIvkIld4GsoDOcCbvzOUAbLPsSKKg+uA==}
     dev: true
 
-  /@types/node/18.15.3:
-    resolution: {integrity: sha512-p6ua9zBxz5otCmbpb5D3U4B5Nanw6Pk3PPyX05xnxbB/fRv71N7CPmORg7uAD5P70T0xmx1pzAx/FUfa5X+3cw==}
+  /@types/node/18.15.5:
+    resolution: {integrity: sha512-Ark2WDjjZO7GmvsyFFf81MXuGTA/d6oP38anyxWOL6EREyBKAxKoFHwBhaZxCfLRLpO8JgVXwqOwSwa7jRcjew==}
     dev: true
 
   /@types/qs/6.9.7:
@@ -131,7 +131,7 @@ packages:
     resolution: {integrity: sha512-NUo5XNiAdULrJENtJXZZ3fHtfMolzZwczzBbnAeBbqBwG+LaG6YaJtuwzwGSQZ2wsCrxjEhNNjAkKigy3n8teQ==}
     dependencies:
       '@types/mime': 3.0.1
-      '@types/node': 18.15.3
+      '@types/node': 18.15.5
     dev: true
 
   /abbrev/1.1.1:
@@ -918,7 +918,7 @@ packages:
       nopt: 1.0.10
     dev: true
 
-  /ts-node/10.9.1_cbfmry4sbbh4vatmdrsmatfg5a:
+  /ts-node/10.9.1_345kigqis4fipgyy5xb3ndshmq:
     resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
     hasBin: true
     peerDependencies:
@@ -937,7 +937,7 @@ packages:
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.3
-      '@types/node': 18.15.3
+      '@types/node': 18.15.5
       acorn: 8.8.2
       acorn-walk: 8.2.0
       arg: 4.1.3
