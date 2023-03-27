@@ -7,6 +7,7 @@ import Image from "next/image";
 import Logo from "../public/assets/favicon/free_rooms_logo.png";
 
 const StyledText = styled(Typography)<TypographyProps>(({ theme }) => ({
+  // TODO: should instead use theme.palette.primary.main
   color: orange[800],
   fontWeight: 600,
   fontFamily: "Josefin Sans",

@@ -54,6 +54,7 @@ const TitleBox = styled(Box)<BoxProps>(({ theme }) => ({
   bottom: 0,
   left: 0,
   right: 0,
+  // TODO: should use theme.palette.primary.main
   backgroundColor: orange[800],
   color: "white",
   padding: 15,
