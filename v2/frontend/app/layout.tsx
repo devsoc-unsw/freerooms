@@ -13,3 +13,8 @@ export default function RootLayout({
     </html>
   );
 }
+
+// export const metadata = {
+//   title: 'Home',
+//   description: 'Welcome to Next.js',
+// }

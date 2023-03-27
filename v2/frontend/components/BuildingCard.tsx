@@ -1,5 +1,6 @@
 import { Typography } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
+import { orange, pink } from "@mui/material/colors";
 import CircularProgress from "@mui/material/CircularProgress";
 import { styled } from "@mui/material/styles";
 import Image, { ImageProps } from "next/image";
@@ -53,7 +54,7 @@ const TitleBox = styled(Box)<BoxProps>(({ theme }) => ({
   bottom: 0,
   left: 0,
   right: 0,
-  backgroundColor: theme.palette.primary.main,
+  backgroundColor: orange[800],
   color: "white",
   padding: 15,
   paddingLeft: 20,

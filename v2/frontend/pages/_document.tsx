@@ -1,5 +1,5 @@
 import Document, { Head, Html, Main, NextScript } from "next/document";
-
+// TODO: figure out how to migrate this file to the app directory
 class MyDocument extends Document {
   render() {
     return (
