@@ -5,10 +5,7 @@ import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
-import axios from "axios";
-import { DateTime } from "luxon";
 import Head from "next/head";
-import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 
 

@@ -1,9 +1,5 @@
 'use client';
 
-/*
-  This is the home page (list view of all the buildings)
-*/
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -15,18 +11,17 @@ import { DateTime } from "luxon";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 
-import Mapping from "../components/BaseMap";
-import FilterBar from "../components/FilterBar";
-import Landing from "../components/Landing";
-import SearchBar from "../components/SearchBar";
-import SortBar from "../components/SortBar";
-import { API_URL } from "../config";
-import { Building, BuildingReturnData, Filters, RoomsRequestParams, RoomsReturnData } from "../types";
-import BuildingInfo from "../views/BuildingInfo";
-import CardList from "../views/CardList";
+import Mapping from "../../components/BaseMap";
+import FilterBar from "../../components/FilterBar";
+import SearchBar from "../../components/SearchBar";
+import SortBar from "../../components/SortBar";
+import { API_URL } from "../../config";
+import { Building, BuildingReturnData, Filters, RoomsRequestParams, RoomsReturnData } from "../../types";
+import BuildingInfo from "../../views/BuildingInfo";
+import CardList from "../../views/CardList";
 
 
-const Home = () => {
+const Page = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const building = searchParams.get("building");
@@ -44,9 +39,7 @@ const Home = () => {
     const [query, setQuery] = React.useState<string>("");
     const [datetime, setDatetime] = React.useState<Date | null>(new Date());
     const [filters, setFilters] = React.useState<Filters>({});
-    const [showLanding, setShowLanding] = React.useState(true);
     const [showMap, setShowMap] = React.useState(false);
-    const [buttonText, setButtonText] = React.useState<string>("Map View");
   
     const [roomStatusData, setRoomStatusData] = React.useState<
       RoomsReturnData | undefined
@@ -93,11 +86,9 @@ const Home = () => {
   
     return (
       <Container maxWidth={false}>
-        
         <Box sx={{ display: "flex" }}>
           <CssBaseline />
-          <Main open={drawerOpen}>
-            {showLanding ? <Landing setShowLanding={setShowLanding} /> : null}
+          <Tiles open={drawerOpen}>
             <div id={"Home-Building-Tiles"}>
               <div id={"Home-Options"} style={{ display: "flex", justifyContent: "space-between" }}>
                 <FilterBar filters={filters} setFilters={setFilters} />
@@ -119,7 +110,7 @@ const Home = () => {
                 />
               )}
             </div>
-          </Main>
+          </Tiles>
           <Drawer
             sx={{
               width: drawerWidth,
@@ -156,6 +147,16 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   flexDirection: "column",
   flexGrow: 1,
   padding: theme.spacing(12, 0),
+  maxHeight: "100vh",
+}));
+
+const Tiles = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
+  open?: boolean;
+}>(({ theme, open }) => ({
+  display: "flex",
+  flexDirection: "column",
+  flexGrow: 1,
+  padding: theme.spacing(12, 0),
   transition: theme.transitions.create("margin", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -170,43 +171,4 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   }),
 }));
 
-interface AppBarProps extends MuiAppBarProps {
-  open?: boolean;
-}
-
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "open",
-})<AppBarProps>(({ theme, open }) => ({
-  backgroundColor: theme.palette.background.default,
-  color: theme.palette.getContrastText(theme.palette.background.default),
-  boxShadow: "none",
-  display: "flex",
-  flexDirection: "row",
-  alignItems: "center",
-  justifyContent: "center",
-  padding: theme.spacing(2, 1),
-  transition: theme.transitions.create(["margin", "width"], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginRight: `${drawerWidth}px`,
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-}));
-
-const ButtonGroup = styled(Box)(({ theme }) => ({
-  flex: 1,
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "flex-end",
-  alignItems: "center",
-  paddingRight: theme.spacing(2),
-}));
-
-
-export default Home;
+export default Page;

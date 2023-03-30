@@ -3,19 +3,12 @@ import React, { useEffect } from "react";
 
 import parentLogo from "../public/assets/favicon/csesocgreyblue.png";
 import Logo from "../public/assets/favicon/free_rooms_logo.png";
+import { useRouter, useSearchParams } from "next/navigation";
 
-const Landing = (props: { setShowLanding: (arg0: boolean) => void; }) => {
-  function delay(milliseconds: number | undefined) {
-    return new Promise(resolve => {
-      setTimeout(resolve, milliseconds);
-    });
-  }
+const Landing = () => {
+  const router = useRouter();
+  
 
-  useEffect(() => {
-    props.setShowLanding(true);
-    window.scrollTo(0, 0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
   return (
     <div id={"LandingScreenWhole"} style={{
       height: "95vh",
@@ -34,18 +27,7 @@ const Landing = (props: { setShowLanding: (arg0: boolean) => void; }) => {
         <p id={"FreeroomsBlurb"} style={{ textAlign: "left", fontWeight: "700" }}>
           Check UNSW room bookings
         </p>
-        <button onClick={async () => {
-          let position: number;
-          // @ts-ignore
-          position = document.querySelector("#Home-Building-Tiles").getBoundingClientRect().top;
-          if (window.innerWidth > 1050) {
-            window.scrollBy({ left: 0, top: position - 100, behavior: "smooth" });
-          } else {
-            window.scrollBy({ left: 0, top: position - 250, behavior: "smooth" });
-          }
-          await delay(700);
-          props.setShowLanding(false);
-        }} id={"FreeroomsCTA"} style={{
+        <button onClick={() => router.push('/gallery')} id={"FreeroomsCTA"} style={{
           backgroundColor: "#111",
           color: "white",
           border: "none",
