@@ -9,18 +9,13 @@ import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
-import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import axios from "axios";
 import { DateTime } from "luxon";
-import type { NextPage } from "next";
-import Head from "next/head";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 
 import Mapping from "../components/BaseMap";
-import Branding from "../components/Branding";
-import Button from "../components/Button";
 import FilterBar from "../components/FilterBar";
 import Landing from "../components/Landing";
 import SearchBar from "../components/SearchBar";
@@ -96,54 +91,11 @@ const Home = () => {
   
     const drawerOpen = !!currentBuilding;
   
-    const handleShowMap = () => {
-      setShowMap((currState) => !currState);
-      setButtonText(buttonText == "Map View" ? "List View" : "Map View");
-    };
-  
     return (
       <Container maxWidth={false}>
-        <Head>
-          <title>Freerooms</title>
-          <meta
-            name="description"
-            content="A web application designed to aid UNSW students in finding vacant rooms."
-          />
-          <link rel="icon" href="/favicon.ico" />
-          <meta name="viewport" content="initial-scale=1, width=device-width" />
-        </Head>
+        
         <Box sx={{ display: "flex" }}>
           <CssBaseline />
-          <AppBar
-            position="fixed"
-            open={drawerOpen}
-            sx={(theme) => ({
-              borderBottom: "1px solid #e0e0e0",
-              alignItems: "center",
-              display: "flex",
-              justifyContent: "space-between",
-            })}
-          >
-            <div id={"header"}>
-              <div id={"headerBranding"}>
-                <Branding
-                  onClick={() => {
-                    setCurrentBuilding(null);
-                    window.location.replace(window.location.href);
-                  }}
-                />
-              </div>
-              <div id={"headerSearch"}>
-                <div id={"headerButtons"}>
-                  <ButtonGroup>
-                    <Stack direction="row" spacing={1.5}>
-                      <Button onClick={handleShowMap}>{buttonText}</Button>
-                    </Stack>
-                  </ButtonGroup>
-                </div>
-              </div>
-            </div>
-          </AppBar>
           <Main open={drawerOpen}>
             {showLanding ? <Landing setShowLanding={setShowLanding} /> : null}
             <div id={"Home-Building-Tiles"}>
