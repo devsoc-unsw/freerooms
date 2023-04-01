@@ -100,6 +100,8 @@ const Home: NextPage<{}> = () => {
     setButtonText(buttonText == "Map View" ? "List View" : "Map View");
   };
 
+  // @ts-ignore
+  // @ts-ignore
   return (
     <Container maxWidth={false}>
       <Head>
@@ -144,7 +146,7 @@ const Home: NextPage<{}> = () => {
           </div>
         </AppBar>
         <Main open={drawerOpen}>
-          {showLanding ? <Landing setShowLanding={setShowLanding} /> : null}
+          {/*{showLanding ? <Landing setShowLanding={setShowLanding} /> : null}*/}
           <div id={"Home-Building-Tiles"}>
             <div id={"Home-Options"} style={{ display: "flex", justifyContent: "space-between" }}>
               <FilterBar filters={filters} setFilters={setFilters} />
