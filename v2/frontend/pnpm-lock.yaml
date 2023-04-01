@@ -8,6 +8,7 @@ specifiers:
   '@mui/material': ^5.10.14
   '@mui/system': ^5.10.14
   '@mui/x-date-pickers': ^5.0.8
+  '@react-google-maps/api': ^2.18.1
   '@types/arcgis-js-api': ^4.25.0
   '@types/luxon': ^2.4.0
   '@types/node': 18.11.18
@@ -49,6 +50,7 @@ dependencies:
 
 devDependencies:
   '@babel/core': 7.17.12
+  '@react-google-maps/api': 2.18.1_biqbaboplfbrettd7655fr4n2y
   '@types/luxon': 2.4.0
   '@types/node': 18.11.18
   '@types/react': 17.0.52
@@ -463,6 +465,19 @@ packages:
       - supports-color
     dev: true
 
+  /@googlemaps/js-api-loader/1.15.1:
+    resolution: {integrity: sha512-AsnEgNsB7S/VdrHGEQUaUM2e5tmjFGKBAfzR/AqO8O7TPq/jQGvoRw5liPBw4EMF38RDsHmKDV89q/X+qiUREQ==}
+    dependencies:
+      fast-deep-equal: 3.1.3
+    dev: true
+
+  /@googlemaps/markerclusterer/2.0.15:
+    resolution: {integrity: sha512-/I6Esi5FtyeVHsezN9Kut8zRJoqe7KkTIJXGVqpKFf6BjC7qQ1xRajLMkOz0s8XKgLevbr+KdYjuvmj+LohOGg==}
+    dependencies:
+      fast-deep-equal: 3.1.3
+      supercluster: 7.1.5
+    dev: true
+
   /@humanwhocodes/config-array/0.9.5:
     resolution: {integrity: sha512-ObyMyWxZiCu/yTisA7uzx81s40xR2fD5Cg/2Kq7G02ajkNubJf6BopgDTmDyc3U7sXpNKM8cYOw7s7Tyr+DnCw==}
     engines: {node: '>=10.10.0'}
@@ -873,6 +888,30 @@ packages:
     resolution: {integrity: sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==}
     dev: false
 
+  /@react-google-maps/api/2.18.1_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-KVlUO/Shh+0g/3egWaKmY0sz6+0QOnYkBGvrBMJbz23519LauA+iJFc4NDCmWNHqD5Vhb/Bkg0kSJgq0Stz3Iw==}
+    peerDependencies:
+      react: ^16.8 || ^17 || ^18
+      react-dom: ^16.8 || ^17 || ^18
+    dependencies:
+      '@googlemaps/js-api-loader': 1.15.1
+      '@googlemaps/markerclusterer': 2.0.15
+      '@react-google-maps/infobox': 2.16.0
+      '@react-google-maps/marker-clusterer': 2.16.1
+      '@types/google.maps': 3.50.5
+      invariant: 2.2.4
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: true
+
+  /@react-google-maps/infobox/2.16.0:
+    resolution: {integrity: sha512-ZojiMS25388RcUHQPycUAerSqdHDom+3dHczVcXHdT/i8fka3O8InkHxXwMhvBoM143ips7mv2BPaYOAJ5f4Nw==}
+    dev: true
+
+  /@react-google-maps/marker-clusterer/2.16.1:
+    resolution: {integrity: sha512-jOuyqzWLeXvQcoAu6TCVWHAuko+sDt0JjawNHBGqUNLywMtTCvYP0L0PiqJZOUCUeRYGdUy0AKxQ+30vAkvwag==}
+    dev: true
+
   /@rushstack/eslint-patch/1.2.0:
     resolution: {integrity: sha512-sXo/qW2/pAcmT43VoRKOJbDOfV3cYpq3szSVfIThQXNt+E4DfKj361vaAt3c88U5tPUxzEswam7GW48PJqtKAg==}
     dev: true
@@ -885,6 +924,10 @@ packages:
   /@types/arcgis-js-api/4.25.0:
     resolution: {integrity: sha512-bXm03oiGgT0GSqK3CN59Qr2v7lJlsDrwr6NuvM6oWk9gBN10YF6xB3fGvSuqOpgSMVPj7P3FQQToE5qswv2Veg==}
     dev: false
+
+  /@types/google.maps/3.50.5:
+    resolution: {integrity: sha512-RuZf1MJtctGlpW+Gd4a/eGtAufUDjMf+eyN1l+B3fbe2YLScJbg8KEljJfb+6vnSPFAeM1/48geVIEg3vqOkxw==}
+    dev: true
 
   /@types/json5/0.0.29:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
@@ -1998,6 +2041,12 @@ packages:
       side-channel: 1.0.4
     dev: true
 
+  /invariant/2.2.4:
+    resolution: {integrity: sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==}
+    dependencies:
+      loose-envify: 1.4.0
+    dev: true
+
   /is-arrayish/0.2.1:
     resolution: {integrity: sha512-zz06S8t0ozoDXMG+ube26zeCTNXcKIPJZJi8hBrF4idCLms4CG9QtK7qBl1boi5ODzFpjswb5JPmHCbMpjaYzg==}
     dev: false
@@ -2149,6 +2198,10 @@ packages:
     dependencies:
       array-includes: 3.1.6
       object.assign: 4.1.4
+    dev: true
+
+  /kdbush/3.0.0:
+    resolution: {integrity: sha512-hRkd6/XW4HTsA9vjVpY9tuXJYLSlelnkTmVFu4M9/7MIYQtFcHpbugAU7UbOfjOiVSVYl2fqgBuJ32JUmRo5Ew==}
     dev: true
 
   /language-subtag-registry/0.3.22:
@@ -2778,6 +2831,12 @@ packages:
   /stylis/4.1.3:
     resolution: {integrity: sha512-GP6WDNWf+o403jrEp9c5jibKavrtLW+/qYGhFxFrG8maXhwTBI7gLLhiBb0o7uFccWN+EOS9aMO6cGHWAO07OA==}
     dev: false
+
+  /supercluster/7.1.5:
+    resolution: {integrity: sha512-EulshI3pGUM66o6ZdH3ReiFcvHpM3vAigyK+vcxdjpJyEbIIrtbmBdY23mGgnI24uXiGFvrGq9Gkum/8U7vJWg==}
+    dependencies:
+      kdbush: 3.0.0
+    dev: true
 
   /supports-color/5.5.0:
     resolution: {integrity: sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==}
