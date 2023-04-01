@@ -1,9 +1,9 @@
 import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect } from "react";
 
 import parentLogo from "../public/assets/favicon/csesocgreyblue.png";
 import Logo from "../public/assets/favicon/free_rooms_logo.png";
-import { useRouter, useSearchParams } from "next/navigation";
 
 const Landing = () => {
   const router = useRouter();
