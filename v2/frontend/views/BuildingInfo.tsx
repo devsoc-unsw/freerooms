@@ -4,7 +4,7 @@ import Box, { BoxProps } from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import { styled } from "@mui/material/styles";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
@@ -18,6 +18,7 @@ import {
   RoomsReturnData,
   RoomAvailability,
 } from "../types";
+import toSydneyTime from "../utils/toSydneyTime";
 
 const INITIALISING = -2;
 const FAILED = -1;
@@ -182,7 +183,7 @@ const BuildingInfo: React.FC<{
         />
       </div>
 
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
         <div
           style={{
             display: "flex",
@@ -194,13 +195,13 @@ const BuildingInfo: React.FC<{
           <DesktopDatePicker
             inputFormat="dd/MM/yyyy"
             value={datetime}
-            onChange={(newValue) => setDatetime(newValue)}
+            onChange={(newValue) => setDatetime(newValue && toSydneyTime(newValue))}
             renderInput={customTextField}
           />
           <div style={{ width: 10 }} />
           <TimePicker
             value={datetime}
-            onChange={(newValue) => setDatetime(newValue)}
+            onChange={(newValue) => setDatetime(newValue && toSydneyTime(newValue))}
             renderInput={customTextField}
           />
         </div>
