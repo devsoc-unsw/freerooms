@@ -1,11 +1,9 @@
 import axios from "axios";
 import child_process from "child_process";
 import fs from "fs";
-import { DateTime } from "luxon";
 
 import { DATABASE_PATH, SCRAPER_PATH } from "./config";
 import { TimetableData, BuildingDatabase, RoomStatus, Class } from "./types";
-
 
 const TIMETABLE_API = "https://timetable.csesoc.app/api"
 const DATE_REGEX = new RegExp(/\d{2}\/\d{2}\/\d{4}/);
@@ -29,7 +27,7 @@ export const getTimetableData = async (): Promise<TimetableData> => {
   const termNumRes = await axios.get(`${TIMETABLE_API}/currentterm`);
   const termNum = termNumRes.data as string;
 
-  const termId = `${DateTime.now().get('year')}-${termNum}`;
+  const termId = `${new Date().getFullYear()}-${termNum}`;
   const SCRAPER_URL = `${TIMETABLE_API}/terms/${termId}/freerooms`;
 
   const res = await axios.get(SCRAPER_URL);
@@ -67,28 +65,29 @@ export const scrapeBuildingData = async (): Promise<void> => {
 }
 
 // Gets the week number from the date (based off current term)
-export const getWeekAndDay = async (date: DateTime) => {
-  // Get a tz-aware datetime object for term start
+export const getWeekAndDay = async (date: Date) => {
+  // Get the term start date
   const termStart = await getStartDate();
-  const termStartDate = DateTime
-    .fromFormat(termStart, "dd/MM/yyyy")
-    .setZone("Australia/Sydney");
+  const [day, month, year] = termStart.split("/");
+  const termStartDate = new Date(+year, +month - 1, +day);
 
-  const diff = date.toMillis() - termStartDate.toMillis();
+  const diff = date.getTime() - termStartDate.getTime();
   const daysPastStart = diff / (1000 * 60 * 60 * 24);
 
   // Ceil is used because week numbers start from 1 not 0
-  return {
-    week: Math.ceil(daysPastStart / 7),
-    day: date.toFormat("EEE")
-  };
+  const week = Math.ceil(daysPastStart / 7);
+
+  // Get the day of the week in Australia time
+  const dayOfWeek = date.toLocaleDateString('en-GB', {weekday: 'short', timeZone: 'Australia/Sydney'});
+
+  return {week, day: dayOfWeek};
 };
 
 // Given a datetime and a list of the room's bookings for 
 // the corresponding date, calculate the status of the room
 // If room is not free for the given minimum duration, return null
 export const calculateStatus = (
-  datetime: DateTime,
+  datetime: Date,
   classes: Class[],
   minDuration: number
 ): RoomStatus | null => {
@@ -101,13 +100,13 @@ export const calculateStatus = (
   let firstAfter: Class | null = null;
   let secondAfter: Class | null = null;
   for (const cls of classes) {
-    const end = DateTime.fromISO(cls.end);
+    const end = new Date(cls.end);
     if (end <= datetime) continue;
 
-    if (!firstAfter || end < DateTime.fromISO(firstAfter.end)) {
+    if (!firstAfter || end < new Date(firstAfter.end)) {
       secondAfter = firstAfter;
       firstAfter = cls;
-    } else if (!secondAfter || end < DateTime.fromISO(secondAfter.end)) {
+    } else if (!secondAfter || end < new Date(secondAfter.end)) {
       secondAfter = cls;
     }
   }
@@ -117,23 +116,23 @@ export const calculateStatus = (
     return roomStatus;
   }
 
-  const start = DateTime.fromISO(firstAfter.start);
+  const start = new Date(firstAfter.start);
   if (datetime < start) {
     // Class starts after current time i.e. room is free, check if it meets minDuration filter
-    const duration = (start.toMillis() - datetime.toMillis()) / (1000 * 60);
+    const duration = (start.getTime() - datetime.getTime()) / (1000 * 60);
     return duration < minDuration ? null : roomStatus;
   } else {
     // Class starts before current time i.e. class occurring now
     if (minDuration > 0) return null;
     roomStatus.status = "busy";
 
-    const end = DateTime.fromISO(firstAfter.end);
-    if (end.toMillis() - datetime.toMillis() <= FIFTEEN_MIN) {
+    const end = new Date(firstAfter.end);
+    if (end.getTime() - datetime.getTime() <= FIFTEEN_MIN) {
       // Ending soon, check the next class
-      if (!secondAfter || DateTime.fromISO(secondAfter.start) > end) {
+      if (!secondAfter || new Date(secondAfter.start) > end) {
         // No next class, or it starts after the current class ends
         roomStatus.status = "soon";
-        roomStatus.endtime = end.toUTC().toISO();
+        roomStatus.endtime = firstAfter.end;
       }
     }
   }

@@ -1,7 +1,6 @@
 import { Request } from "express";
 import { calculateStatus, getBuildingData, getTimetableData, getWeekAndDay } from "./helpers";
 import { BuildingsResponse, Filters, RoomBookings, BuildingStatus, RoomsResponse } from "./types";
-import { DateTime } from "luxon";
 
 const ISO_REGEX = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/;
 const UPPER = 19; // Buildings with grid 19+ are upper campus
@@ -25,22 +24,22 @@ export const getAllBuildings = async (): Promise<BuildingsResponse> => {
 };
 
 // Parses the provided datetime from the request params
-export const parseDatetime = (req: Request): DateTime => {
+export const parseDatetime = (req: Request): Date => {
   const datetimeString = req.query.datetime as string;
   if (!datetimeString) {
-    return DateTime.now().setZone("Australia/Sydney");
+    return new Date();
   }
 
   if (!ISO_REGEX.test(datetimeString)) {
-    console.log(datetimeString);
     throw new Error("Date must be in ISO format");
   }
 
-  const datetime = DateTime.fromISO(datetimeString, {zone: "Australia/Sydney"});
-  if (datetime.invalidExplanation) {
-    throw new Error(datetime.invalidExplanation);
+  const ms = Date.parse(datetimeString);
+  if (isNaN(ms)) {
+    throw new Error("Invalid datetime");
   }
-  return datetime;
+
+  return new Date(ms);
 };
 
 // Parses the provided filters from the request params
@@ -83,7 +82,7 @@ export const parseFilters = (req: Request): Filters => {
 };
 
 export const getAllRoomStatus = async (
-  date: DateTime,
+  date: Date,
   filters: Filters
 ): Promise<RoomsResponse> => {
   const { week, day } = await getWeekAndDay(date);
