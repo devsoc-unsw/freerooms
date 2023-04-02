@@ -18,7 +18,7 @@
     "@mui/x-date-pickers": "^5.0.8",
     "@types/arcgis-js-api": "^4.25.0",
     "axios": "^0.26.1",
-    "dayjs": "^1.11.7",
+    "date-fns": "^2.29.3",
     "esri-loader": "^3.7.0",
     "next": "13.0.3",
     "react": "18.2.0",
