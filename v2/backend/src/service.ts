@@ -25,22 +25,22 @@ export const getAllBuildings = async (): Promise<BuildingsResponse> => {
 };
 
 // Parses the provided datetime from the request params
-export const parseDatetime = (req: Request): DateTime => {
+export const parseDatetime = (req: Request): Date => {
   const datetimeString = req.query.datetime as string;
   if (!datetimeString) {
-    return DateTime.now().setZone("Australia/Sydney");
+    return new Date();
   }
 
   if (!ISO_REGEX.test(datetimeString)) {
-    console.log(datetimeString);
     throw new Error("Date must be in ISO format");
   }
 
-  const datetime = DateTime.fromISO(datetimeString, {zone: "Australia/Sydney"});
-  if (datetime.invalidExplanation) {
-    throw new Error(datetime.invalidExplanation);
+  const ms = Date.parse(datetimeString);
+  if (isNaN(ms)) {
+    throw new Error("Invalid datetime");
   }
-  return datetime;
+
+  return new Date(ms);
 };
 
 // Parses the provided filters from the request params
@@ -83,7 +83,7 @@ export const parseFilters = (req: Request): Filters => {
 };
 
 export const getAllRoomStatus = async (
-  date: DateTime,
+  date: Date,
   filters: Filters
 ): Promise<RoomsResponse> => {
   const { week, day } = await getWeekAndDay(date);
