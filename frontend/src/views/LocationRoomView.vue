@@ -143,7 +143,12 @@ export default class LocationRoomView extends Vue {
     );
     this.allRooms = await this.dbService.getRoomsInBuilding(
       this.locationId,
+<<<<<<< HEAD
       toSydneyTime(new Date(this.date + 'T' + this.time)).toISOString()
+=======
+      DateTime.fromFormat(
+        this.date + this.time, "yyyy-MM-ddHH:mm").toUTC().toISO()
+>>>>>>> master
     );
     this.listedRooms = this.allRooms;
     this.availableRooms = this.filterRoomsAvailable(this.allRooms, "free");
@@ -159,7 +164,12 @@ export default class LocationRoomView extends Vue {
   async updateDateTime() {
     this.allRooms = await this.dbService.getRoomsInBuilding(
       this.locationId,
+<<<<<<< HEAD
       toSydneyTime(new Date(this.date + 'T' + this.time)).toISOString()
+=======
+      DateTime.fromFormat(
+        this.date + this.time, "yyyy-MM-ddHH:mm").toUTC().toISO()
+>>>>>>> master
     );
     this.listedRooms = this.allRooms;
     this.availableRooms = this.filterRoomsAvailable(this.allRooms, "free");

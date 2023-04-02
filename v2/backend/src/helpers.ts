@@ -1,6 +1,7 @@
 import axios from "axios";
 import child_process from "child_process";
 import fs from "fs";
+import { DateTime } from "luxon";
 
 import { DATABASE_PATH, SCRAPER_PATH } from "./config";
 import { TimetableData, BuildingDatabase, RoomStatus, Class } from "./types";
