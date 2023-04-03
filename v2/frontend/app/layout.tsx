@@ -66,7 +66,6 @@ export default function RootLayout({
                  <Branding
                     onClick={() => {
                       setCurrentBuilding(null);
-                      // window.location.replace(window.location.href);
                       router.push('/');
                     }}
                   />
