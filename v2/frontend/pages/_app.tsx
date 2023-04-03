@@ -1,6 +1,5 @@
 import "../styles/globals.css";
 
-// TODO: Figure out how to migrate this file to the app directory
 import { orange, pink } from "@mui/material/colors";
 import { createTheme } from "@mui/material/styles";
 import ThemeProvider from "@mui/system/ThemeProvider";

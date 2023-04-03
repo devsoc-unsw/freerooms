@@ -25,7 +25,7 @@ const Page = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const building = searchParams.get("building");
-  
+
     const [buildingData, setBuildingData] = React.useState<BuildingReturnData>({ buildings: [] });
     React.useEffect(() => {
       fetch(API_URL + "/buildings")
@@ -33,18 +33,18 @@ const Page = () => {
         .then(data => setBuildingData(data as BuildingReturnData))
         .catch(() => setBuildingData({ buildings: [] }));
     }, []);
-  
+
     // State variables to be used by the various new features
     const [sort, setSort] = React.useState<string>("alphabetical");
     const [query, setQuery] = React.useState<string>("");
     const [datetime, setDatetime] = React.useState<Date | null>(new Date());
     const [filters, setFilters] = React.useState<Filters>({});
     const [showMap, setShowMap] = React.useState(false);
-  
+
     const [roomStatusData, setRoomStatusData] = React.useState<
       RoomsReturnData | undefined
     >();
-  
+
     React.useEffect(() => {
       const fetchRoomStatus = () => {
         const params: RoomsRequestParams = { ...filters };
@@ -52,7 +52,7 @@ const Page = () => {
           params.datetime =
             DateTime.fromJSDate(datetime).toFormat("yyyy-MM-dd'T'HH:mm");
         }
-  
+
         axios
           .get(API_URL + "/rooms", { params: params })
           .then((res) => {
@@ -60,15 +60,15 @@ const Page = () => {
           })
           .catch((err) => setRoomStatusData({}));
       };
-  
+
       setRoomStatusData(undefined);
       fetchRoomStatus();
     }, [filters, datetime]);
-  
+
     const [currentBuilding, setCurrentBuilding] = React.useState<Building | null>(
       null,
     );
-  
+
     React.useEffect(() => {
       if (building) {
         const selectedBuilding = buildingData.buildings.find(
@@ -81,9 +81,9 @@ const Page = () => {
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [building]);
-  
+
     const drawerOpen = !!currentBuilding;
-  
+
     return (
       <Container maxWidth={false}>
         <Box sx={{ display: "flex" }}>

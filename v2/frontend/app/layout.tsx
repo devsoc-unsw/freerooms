@@ -7,6 +7,9 @@ import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import Head from "next/head";
 import React from "react";
+import { orange, pink } from "@mui/material/colors";
+import { createTheme } from "@mui/material/styles";
+import { useRouter, useSearchParams } from "next/navigation";
 
 
 import Branding from "../components/Branding";
@@ -34,6 +37,7 @@ export default function RootLayout({
     setButtonText(buttonText == "Map View" ? "List View" : "Map View");
   };
 
+  const router = useRouter();
 
   return (
     <html lang="en">
@@ -62,7 +66,8 @@ export default function RootLayout({
                  <Branding
                     onClick={() => {
                       setCurrentBuilding(null);
-                      window.location.replace(window.location.href);
+                      // window.location.replace(window.location.href);
+                      router.push('/');
                     }}
                   />
               </div>
@@ -124,3 +129,15 @@ const ButtonGroup = styled(Box)(({ theme }) => ({
   alignItems: "center",
   paddingRight: theme.spacing(2),
 }));
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: orange[800],
+    },
+    secondary: {
+      main: pink[500],
+    },
+  },
+});
+
