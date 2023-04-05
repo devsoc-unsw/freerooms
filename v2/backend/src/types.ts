@@ -38,7 +38,7 @@ export type RoomData = {
   usage: RoomUsage;
 };
 
-export type RoomUsage = "LEC" | "TUT";
+export type RoomUsage = 'LEC' | 'TUT';
 
 export type RoomsResponse = {
   [buildingId: string]: BuildingStatus;
@@ -49,7 +49,7 @@ export type BuildingStatus = {
 };
 
 export type RoomStatus = {
-  status: "free" | "soon" | "busy";
+  status: 'free' | 'soon' | 'busy';
   endtime: string;
 };
 
@@ -60,7 +60,7 @@ export type BuildingsResponse = Array<{
   long: number;
 }>;
 
-export type Location = "upper" | "lower";
+export type Location = 'upper' | 'lower';
 
 export type Filters = {
   capacity?: number,

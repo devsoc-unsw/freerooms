@@ -1,14 +1,14 @@
-import { Request } from "express";
-import { calculateStatus, getBuildingData, getTimetableData, getWeek } from "./helpers";
-import { BuildingsResponse, Filters, RoomBookings, BuildingStatus, RoomsResponse } from "./types";
+import { Request } from 'express';
+import { calculateStatus, getBuildingData, getTimetableData, getWeek } from './helpers';
+import { BuildingsResponse, Filters, RoomBookings, BuildingStatus, RoomsResponse } from './types';
 
-const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const UPPER = 19; // Buildings with grid 19+ are upper campus
 
 export const getAllBuildings = async (): Promise<BuildingsResponse> => {
   const data = Object.values(await getBuildingData());
   if (!data) {
-    throw new Error(`Buildings cannot be retrieved`);
+    throw new Error('Buildings cannot be retrieved');
   }
 
   const res: BuildingsResponse = [];
@@ -105,7 +105,7 @@ export const getAllRoomStatus = async (
       ) {
         continue;
       }
-      
+
       // If no data for this room on this day, it is free
       if (
         !(buildingID in timetableData) ||
@@ -114,12 +114,12 @@ export const getAllRoomStatus = async (
         !(day in timetableData[buildingID][roomNumber][week])
       ) {
         buildingStatus[roomNumber] = {
-          status: "free",
-          endtime: "",
+          status: 'free',
+          endtime: '',
         };
         continue;
       }
-  
+
       const classes = timetableData[buildingID][roomNumber][week][day];
       const status = calculateStatus(date, classes, filters.duration || 0);
       if (status !== null) {
@@ -148,6 +148,6 @@ export const getRoomBookings = async (
   // If in timetable, return bookings, otherwise just return name from database
   const timetableData = await getTimetableData();
   return !(buildingID in timetableData) || !(roomNumber in timetableData[buildingID])
-   ? { name: buildingData[buildingID].rooms[roomNumber].name }
-   : timetableData[buildingID][roomNumber];
+    ? { name: buildingData[buildingID].rooms[roomNumber].name }
+    : timetableData[buildingID][roomNumber];
 };

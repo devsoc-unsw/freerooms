@@ -1,16 +1,16 @@
-import express, { NextFunction, Request, RequestHandler, Response } from "express";
-import cors from "cors";
-import fs from "fs";
+import express, { NextFunction, Request, RequestHandler, Response } from 'express';
+import cors from 'cors';
+import fs from 'fs';
 
-import { scrapeBuildingData } from "./helpers";
+import { scrapeBuildingData } from './helpers';
 import {
   parseDate as parseDatetime,
   parseFilters,
   getAllRoomStatus,
   getAllBuildings,
   getRoomBookings,
-} from "./service";
-import { DATABASE_PATH, PORT } from "./config";
+} from './service';
+import { DATABASE_PATH, PORT } from './config';
 
 const app = express();
 app.use(cors());
@@ -19,11 +19,11 @@ app.use(cors());
 const asyncHandler = (fn: RequestHandler) =>
   (req: Request, res: Response, next: NextFunction) => {
     Promise.resolve(fn(req, res, next)).catch(next);
-  }
+  };
 
 // Route to get all the buildings
 app.get(
-  "/api/buildings",
+  '/api/buildings',
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const buildingData = await getAllBuildings();
     const data = { buildings: buildingData };
@@ -34,7 +34,7 @@ app.get(
 
 // Route to get status of all rooms
 app.get(
-  "/api/rooms",
+  '/api/rooms',
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const datetime = parseDatetime(req);
     const filters = parseFilters(req);
@@ -46,7 +46,7 @@ app.get(
 
 // Route to get the bookings of a particular room in a particular building
 app.get(
-  "/api/rooms/:roomID",
+  '/api/rooms/:roomID',
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const { roomID } = req.params;
     const [campus, buildingGrid, roomNumber] = roomID.split('-');
@@ -74,7 +74,7 @@ app.use(
 
 // Error-handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error(`"${req.originalUrl}" ${err.stack ?? err}`)
+  console.error(`"${req.originalUrl}" ${err.stack ?? err}`);
 
   if (!res.writableEnded) {
     res.status(400).send(err);
