@@ -19,6 +19,13 @@ const center = {
   lng: 151.23129,
 };
 
+const mapBounds = {
+  north: -33.914491,
+  south: -33.921608,
+  west: 151.225258,
+  east: 151.237736,
+};
+
 export const Map = () => {
   const [buildingData, setBuildingData] = useState<BuildingReturnData>({
     buildings: [],
@@ -66,7 +73,11 @@ export const Map = () => {
   return (
     <>
       <LoadScript
-        googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string}
+        googleMapsApiKey={
+          process.env.NODE_ENV === "development"
+            ? (process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY_DEV as string)
+            : (process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY_PROD as string)
+        }
       >
         <GoogleMap
           mapContainerStyle={containerStyle}
@@ -75,6 +86,10 @@ export const Map = () => {
             clickableIcons: false,
             disableDefaultUI: true,
             panControl: false,
+            restriction: {
+              latLngBounds: mapBounds,
+              strictBounds: false,
+            },
             styles: styleArray,
             zoomControl: false,
           }}
