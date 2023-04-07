@@ -59,6 +59,7 @@ const MarkerHover: React.FC<{ building: Building, freerooms: number, totalRooms:
     borderRadius: 20,
     overflow: "hidden",
     boxShadow: '1px 1px 5px black',
+    zIndex: 100,
   }));
 
   const StyledImage = styled(Image)<ImageProps>(({ theme }) => ({
