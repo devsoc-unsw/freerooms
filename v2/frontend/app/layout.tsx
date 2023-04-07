@@ -1,25 +1,24 @@
-'use client';
+"use client";
 
 import "../styles/globals.css";
+import "../styles/button.css";
+
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-import { styled } from "@mui/material/styles";
-import Head from "next/head";
-import React from "react";
 import { orange, pink } from "@mui/material/colors";
-import { createTheme } from "@mui/material/styles";
-import { useRouter, useSearchParams } from "next/navigation";
-
+import { createTheme, styled } from "@mui/material/styles";
+import Head from "next/head";
+import { usePathname, useRouter } from "next/navigation";
+import React from "react";
 
 import Branding from "../components/Branding";
-import Button from "../components/Button";
 import { Building } from "../types";
+
 export default function RootLayout({
-  // Layouts must accept a children prop.
-  // This will be populated with nested layouts or pages
-  children,
-}: {
+                                     // Layouts must accept a children prop.
+                                     // This will be populated with nested layouts or pages
+                                     children,
+                                   }: {
   children: React.ReactNode;
 }) {
 
@@ -31,6 +30,7 @@ export default function RootLayout({
   );
   const drawerOpen = !!currentBuilding;
 
+  const path = usePathname();
 
   const handleShowMap = () => {
     setShowMap((currState) => !currState);
@@ -41,50 +41,68 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <Head>
-          <title>Freerooms</title>
-          <meta
-            name="description"
-            content="A web application designed to aid UNSW students in finding vacant rooms."
+    <Head>
+      <title>Freerooms</title>
+      <meta
+        name="description"
+        content="A web application designed to aid UNSW students in finding vacant rooms."
+      />
+      <link rel="icon" href="/favicon.ico" />
+      <meta name="viewport" content="initial-scale=1, width=device-width" />
+    </Head>
+    <body>
+    <AppBar
+      position="fixed"
+      open={drawerOpen}
+      sx={(theme) => ({
+        borderBottom: "1px solid #e0e0e0",
+        alignItems: "center",
+        display: "flex",
+        justifyContent: "space-between",
+      })}
+    >
+      <div id={"header"}>
+        <div id={"headerBranding"}>
+          <Branding
+            onClick={() => {
+              setCurrentBuilding(null);
+              router.push("/");
+            }}
           />
-          <link rel="icon" href="/favicon.ico" />
-          <meta name="viewport" content="initial-scale=1, width=device-width" />
-      </Head>
-      <body>
-        <AppBar
-            position="fixed"
-            open={drawerOpen}
-            sx={(theme) => ({
-              borderBottom: "1px solid #e0e0e0",
-              alignItems: "center",
-              display: "flex",
-              justifyContent: "space-between",
-            })}
-          >
-            <div id={"header"}>
-              <div id={"headerBranding"}>
-                 <Branding
-                    onClick={() => {
-                      setCurrentBuilding(null);
-                      router.push('/');
-                    }}
-                  />
-              </div>
-              <div id={"headerSearch"}>
-                <div id={"headerButtons"}>
-                  <ButtonGroup>
-                    <Stack direction="row" spacing={1.5}>
-                      <Button onClick={handleShowMap}>{buttonText}</Button>
-                    </Stack>
-                  </ButtonGroup>
-                 </div>
+        </div>
+        {
+          path != "/" ?
+            <div id={"headerSearch"}>
+              <div id={"headerButtons"}>
+                <div className={"header-buttons"}>
+                  {
+                    path != "/browse" ?
+                      <a className={"button-gradient"} style={{ display: "flex", width: "5rem", height: "3rem" }}
+                         href={"/browse"} id={"FreeroomsCTA"}>
+                        <p style={{ fontWeight: "600", fontSize: "0.9rem" }}>Browse</p>
+                      </a>
+                      : null
+                  }
+                  {
+                    path != "/map" ?
+                      <a className={"button-gradient"} style={{ gap: "1rem", width: "5rem", height: "3rem" }}
+                         href={"/map"}
+                         id={"FreeroomsCTA"}>
+                        <p style={{ fontWeight: "600", fontSize: "0.9rem" }}>Map</p>
+                      </a>
+                      : null
+                  }
+                </div>
               </div>
             </div>
-        </AppBar>
-        <div>
-          {children}
-        </div>
-       </body>
+            : null
+        }
+      </div>
+    </AppBar>
+    <div>
+      {children}
+    </div>
+    </body>
     </html>
   );
 }
