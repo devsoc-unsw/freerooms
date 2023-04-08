@@ -1,5 +1,13 @@
+import BookingCalendar from "../../../components/BookingCalendar";
+
 export default async function Page({ params }: {
   params: {room: string};
 }) {
-  return <h1 style={{marginTop: "6rem"}}>{JSON.stringify(params)}</h1>;
+  return (
+    <>
+      <h1 style={{marginTop: "6rem"}}>{JSON.stringify(params)}</h1> 
+      <BookingCalendar />
+    </>
+    
+  );
 }
