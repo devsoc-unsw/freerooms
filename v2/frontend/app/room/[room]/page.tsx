@@ -1,13 +1,30 @@
-import BookingCalendar from "../../../components/BookingCalendar";
+"use client" 
 
-export default async function Page({ params }: {
+import React from 'react';
+import BookingCalendar from "../../../components/BookingCalendar";
+import Container from "@mui/material/Container";
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+
+
+
+
+export default function Page({ params }: {
   params: {room: string};
-}) {
+}) {	
   return (
-    <>
-      <h1 style={{marginTop: "6rem"}}>{JSON.stringify(params)}</h1> 
-      <BookingCalendar />
-    </>
+  
+    <Container maxWidth={false}>
+      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', paddingTop: 15}}>
+        <Typography variant='h4' component='h2'>
+          { `Bookings for ${params.room}`}
+        </Typography>
+	      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+					<BookingCalendar roomID={params.room} />
+	      </Box>
+      </Box>
+      
+    </Container>
     
   );
 }
