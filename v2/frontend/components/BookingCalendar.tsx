@@ -14,7 +14,7 @@ type Event = {
 }
 
 type BookingCalendarProps = {
-	events: Array<Event>
+	events: Event[];
 }
 
 const BookingCalendar : React.FC<BookingCalendarProps> = ({ events }) => {
