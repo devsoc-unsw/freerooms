@@ -6,32 +6,32 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import Box from '@mui/material/Box';
 import { DateTime, Settings } from 'luxon';
 
+type Event = {
+	id: number,
+	title: string,
+	start: Date,
+	end: Date
+}
 
-const defaultTimeZone = DateTime.local().zoneName;
+type BookingCalendarProps = {
+	events: Array<Event>
+}
 
-
-
-const BookingCalendar : React.FC = () => {
+const BookingCalendar : React.FC<BookingCalendarProps> = ({ events }) => {
 
 	const { defaultDate, getNow, localizer, myEvents, scrollToTime } = useMemo( () => {
-		Settings.defaultZone = defaultTimeZone;
+		Settings.defaultZone = DateTime.local().zoneName;
 		return {
 			defaultDate: DateTime.local().toJSDate(),
 			getNow: () => DateTime.local().toJSDate(),
 			localizer: luxonLocalizer(DateTime),
-			myEvents: [{
-				id: 0,
-				title: "Example Event",
-				allDay: true,
-				start: new Date(2023, 4, 8),
-				end: new Date(2023, 4, 8),
-			}],
+			myEvents: events,
 			scrollToTime: DateTime.local().toJSDate()
 		}
 	}, []);
 
 	return (
-		<Fragment>
+		<>
 			<Box sx={{ height: 600, width: '80%'}}>
 				<Calendar
 					defaultDate={defaultDate}
@@ -42,7 +42,7 @@ const BookingCalendar : React.FC = () => {
 					scrollToTime={scrollToTime}
 				/>
 			</Box>
-		</Fragment>
+		</>
 	)
 }
 
