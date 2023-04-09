@@ -1,20 +1,11 @@
 import { getAllBuildings, getAllRoomStatus, getRoomBookings } from "../src/service"; 
 
-// TODO:
-
-// TODO:
-// -- Transition to Endpoint Related Testing, with parseFilters, parseDate
-// -- Replace Hard Coding Tests with Actual Outputs
-
-// 1. getAllRoomsStatus Tests
-// 2. getRoomBookings, Async
-// 3. getAllBuildings
-// 4. 
+/**
+ * Tests REMOVED for non black-box nature. 
 
 describe("getAllBuildings", ()=> {
     test("Data, 01/04/23", async() => {
         const data = await getAllBuildings();
-        console.log(data);
         expect(data).toStrictEqual([
             { name: 'AGSM', id: 'K-G27', lat: -33.918158, long: 151.23567 },
             {
@@ -214,12 +205,4 @@ describe("getAllBuildings", ()=> {
     });
 })
 
-describe("getAllRoomsStatus", ()=> {
-    test("", ()=> {
-
-    });
-});
-
-describe("getRoomBookings", ()=> {
-
-});
+*/

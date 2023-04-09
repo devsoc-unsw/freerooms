@@ -99,6 +99,7 @@ import SortFilter from "../components/SortFilter.vue";
 import ToggleFilter from "../components/ToggleFilter.vue";
 import DatePicker from "../components/DatePicker.vue";
 import TimePicker from "../components/TimePicker.vue";
+import toSydneyTime from "../utils/toSydneyTime";
 
 @Component({
   components: {
@@ -142,7 +143,7 @@ export default class LocationRoomView extends Vue {
     );
     this.allRooms = await this.dbService.getRoomsInBuilding(
       this.locationId,
-      `${this.date} ${this.time}`
+      toSydneyTime(new Date(this.date + 'T' + this.time)).toISOString()
     );
     this.listedRooms = this.allRooms;
     this.availableRooms = this.filterRoomsAvailable(this.allRooms, "free");
@@ -158,7 +159,7 @@ export default class LocationRoomView extends Vue {
   async updateDateTime() {
     this.allRooms = await this.dbService.getRoomsInBuilding(
       this.locationId,
-      `${this.date} ${this.time}`
+      toSydneyTime(new Date(this.date + 'T' + this.time)).toISOString()
     );
     this.listedRooms = this.allRooms;
     this.availableRooms = this.filterRoomsAvailable(this.allRooms, "free");
