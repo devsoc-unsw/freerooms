@@ -112,6 +112,7 @@ const BuildingInfo: React.FC<{
     }
     const room = rooms[roomId];
     const date = new Date(room["endtime"]);
+    console.log("END TIME: ", room["endtime"]);
     const hoursMinutes = date.toLocaleTimeString("en-AU", {
       hour: "2-digit",
       minute: "2-digit",
@@ -124,8 +125,14 @@ const BuildingInfo: React.FC<{
       soon: "#ffa600",
     };
     const roomStatusMessage = {
-      free: "Available until ",
-      busy: "Unavailable until ",
+      free:
+        hoursMinutes == "Invalid Date"
+          ? "Available"
+          : "Available until " + hoursMinutes,
+      busy:
+        hoursMinutes == "Invalid Date"
+          ? "Unavaliable"
+          : "Unavaliable until " + hoursMinutes,
       soon: "Available soon at " + hoursMinutes,
     };
     return (
