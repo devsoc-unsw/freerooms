@@ -1,3 +1,4 @@
+import Box from "@mui/material/Box";
 import {
   GoogleMap,
   LoadScript,
@@ -7,15 +8,16 @@ import {
 import React, { useEffect, useState } from "react";
 
 import { API_URL } from "../config";
-import { BuildingReturnData } from "../types";
-import { MarkerSymbol } from "./MarkerSymbol";
+import { Building, BuildingReturnData, RoomsReturnData } from "../types";
+import { getNumFreerooms } from "../utils/utils";
+import MarkerSymbol from "./MarkerSymbol";
 
 const containerStyle = {
   height: "700px", // TODO: Make this responsive
 };
 
 const center = {
-  lat: -33.91717,
+  lat: -33.91767,
   lng: 151.23129,
 };
 
@@ -26,10 +28,34 @@ const mapBounds = {
   east: 151.237736,
 };
 
-export const Map = () => {
+const LocationMarker = () => {
+  return (
+    <>
+      <Box
+        sx={() => ({
+          width: 10,
+          height: 10,
+          borderRadius: "50%",
+          border: "2px solid white",
+          backgroundColor: "#4ABDFA",
+        })}
+      />
+    </>
+  );
+};
+
+interface MapProps {
+  setCurrentBuilding: (building: Building) => void;
+  roomStatusData: RoomsReturnData | undefined;
+}
+
+export const Map = ({ setCurrentBuilding, roomStatusData }: MapProps) => {
   const [buildingData, setBuildingData] = useState<BuildingReturnData>({
     buildings: [],
   });
+
+  const [userLat, setUserLat] = useState<number>();
+  const [userLng, setUserLng] = useState<number>();
 
   const getBuildingData = () => {
     fetch(API_URL + "/buildings")
@@ -44,7 +70,6 @@ export const Map = () => {
     getBuildingData();
   }, []);
 
-  // TODO: Get all of the free rooms available in a building
   const styleArray = [
     {
       featureType: "all",
@@ -70,6 +95,23 @@ export const Map = () => {
     },
   ];
 
+  // Get current location of user
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position: GeolocationPosition) => {
+        const pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+        setUserLat(pos.lat);
+        setUserLng(pos.lng);
+      }
+    );
+  }
+
+  // TODO: Create a test marker symbol to see which coordinates are mapped to what (i.e. see what the offsets are)
+
+  // TODO: MarkerSymbol component to handle failure cases for getNumFreerooms()
   return (
     <>
       <LoadScript
@@ -93,20 +135,35 @@ export const Map = () => {
             styles: styleArray,
             zoomControl: false,
           }}
-          zoom={17}
+          zoom={17.5}
         >
           {buildingData.buildings.map((building, index) => (
             <OverlayViewF
               key={index}
               mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
-              position={{ lat: building.lat, lng: building.long }}
+              position={{
+                lat: building.lat,
+                lng: building.long,
+              }}
             >
               <MarkerSymbol
-                buildingLabel={building.name}
-                freerooms={0}
+                building={building}
+                freerooms={getNumFreerooms(roomStatusData, building.id)}
+                setBuilding={setCurrentBuilding}
               ></MarkerSymbol>
             </OverlayViewF>
           ))}
+          {userLat && userLng && (
+            <OverlayViewF
+              mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+              position={{
+                lat: userLat,
+                lng: userLng,
+              }}
+            >
+              <LocationMarker />
+            </OverlayViewF>
+          )}
         </GoogleMap>
       </LoadScript>
     </>

@@ -160,7 +160,10 @@ const Home: NextPage<{}> = () => {
               <SortBar filters={sort} setFilters={setSort}></SortBar>
             </div>
             {showMap ? (
-              <Map />
+              <Map
+                roomStatusData={roomStatusData}
+                setCurrentBuilding={setCurrentBuilding}
+              />
             ) : (
               <CardList
                 buildingData={buildingData}
