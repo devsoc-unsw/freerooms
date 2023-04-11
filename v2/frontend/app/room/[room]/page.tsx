@@ -5,9 +5,10 @@ import BookingCalendar from "../../../components/BookingCalendar";
 import Container from "@mui/material/Container";
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import type  { ClassList, Class, RoomAvailability } from '../../../types';
+import type  {  RoomAvailability } from '../../../types';
 import { API_URL } from "../../../config";
-import { DateTime, Settings } from 'luxon';
+import { DateTime } from 'luxon';
+
 
 
 type Event = {
@@ -20,7 +21,6 @@ type RoomDetails = {
 	name : string;
 	bookings: Array<Event>
 }
-
 
 export default function Page({ params }: {
   params: {room: string};
@@ -51,7 +51,7 @@ export default function Page({ params }: {
 	}, []);
 
   return (
-  
+    
     <Container maxWidth={false}>
       <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', paddingTop: 15}}>
         <Typography variant='h4' component='h2'>
