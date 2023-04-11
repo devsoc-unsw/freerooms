@@ -71,7 +71,6 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
         </Box>
 				</LocalizationProvider>
 				<Calendar
-					// defaultDate={defaultDate}
 					date={date}
 					onNavigate={(newDate) => handleDateChange(newDate)}
 					defaultView={Views.WEEK}
