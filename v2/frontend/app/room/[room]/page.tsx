@@ -1,16 +1,15 @@
 "use client" 
 
-import React from 'react';
-import BookingCalendar from "../../../components/BookingCalendar";
-import Container from "@mui/material/Container";
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import type  {  RoomAvailability } from '../../../types';
-import { API_URL } from "../../../config";
-import { DateTime } from 'luxon';
-import DialogTitle from '@mui/material/DialogTitle';
-import Dialog from '@mui/material/Dialog';
 import { CircularProgress } from '@mui/material';
+import Box from '@mui/material/Box';
+import Container from "@mui/material/Container";
+import Typography from '@mui/material/Typography';
+import { DateTime } from 'luxon';
+import React from 'react';
+
+import BookingCalendar from "../../../components/BookingCalendar";
+import { API_URL } from "../../../config";
+import type  {  RoomAvailability } from '../../../types';
 
 
 type Event = {
