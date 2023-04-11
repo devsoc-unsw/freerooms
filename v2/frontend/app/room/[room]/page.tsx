@@ -32,6 +32,10 @@ export default function Page({ params }: {
 		setRoomName(name);
 		setEvents(bookings);
 	}
+	
+	const handleError = () => {
+		setEvents([]);
+	}
 
 	React.useEffect( () => {
 		const fetchRoomBookings = () => {
@@ -39,7 +43,7 @@ export default function Page({ params }: {
 			.then( res => res.json() )
 			.then( json => extractBookings(json))
 			.then( allBookings => handleRoomDetails(allBookings))
-			.catch(() => setEvents([]));
+			.catch(() => handleError());
 		}
 		
 		fetchRoomBookings();
@@ -66,7 +70,10 @@ export default function Page({ params }: {
 const extractBookings = ( bookings : RoomAvailability ) => {
 	
 	let allBookings : Array<Event> = [];
-	for( let week = 1; week < 10; ++week) {
+	for( let week = 1; week <= 10; ++week) {
+		if(!( week in bookings ) ) {
+			continue;
+		}
 		const bookingsForCurrWeek = bookings[week];
 		Object.keys(bookingsForCurrWeek).forEach(( day ) => {
 			const bookingForCurrDay = bookingsForCurrWeek[day];
