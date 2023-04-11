@@ -8,6 +8,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import Link from 'next/link';
 import Image, { ImageProps } from "next/image";
 import React from "react";
 
@@ -168,18 +169,21 @@ const BuildingInfo: React.FC<{
         {rooms ? (
           Object.keys(rooms).map((roomId) => {
             const room = rooms[roomId];
+            console.log(`Room: ${building.id}-${roomId}`);
             return (
-              <IndiviRoomBox key={roomId}>
-                {roomId}{" "}
-                <Typography
-                  sx={{ fontSize: 16, fontWeight: 500 }}
-                  style={{
-                    color: room["status"] === "free" ? "#2AA300" : "#D30000",
-                  }}
-                >
-                  {room["status"] === "free" ? "Available" : "Unavailable"}
-                </Typography>
-              </IndiviRoomBox>
+              <Link href={`/room/${building.id}-${roomId}`}>
+                <IndiviRoomBox key={roomId}>
+	                {roomId}{" "}
+	                <Typography
+	                  sx={{ fontSize: 16, fontWeight: 500 }}
+	                  style={{
+	                    color: room["status"] === "free" ? "#2AA300" : "#D30000",
+	                  }}
+	                >
+	                  {room["status"] === "free" ? "Available" : "Unavailable"}
+	                </Typography>
+                </IndiviRoomBox>
+              </Link>
             );
           })
         ) : (
