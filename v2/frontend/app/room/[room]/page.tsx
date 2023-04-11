@@ -8,7 +8,9 @@ import Typography from '@mui/material/Typography';
 import type  {  RoomAvailability } from '../../../types';
 import { API_URL } from "../../../config";
 import { DateTime } from 'luxon';
-
+import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from '@mui/material/Dialog';
+import { CircularProgress } from '@mui/material';
 
 
 type Event = {
@@ -53,15 +55,20 @@ export default function Page({ params }: {
   return (
     
     <Container maxWidth={false}>
-      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', paddingTop: 15}}>
-        <Typography variant='h4' component='h2'>
-          { `Bookings for ${roomName}`}
-        </Typography>
-	      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-					<BookingCalendar events={events} />
-	      </Box>
+      { roomName == "" ? (
+        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', paddingTop: 15, color: 'orange'}}>
+          <CircularProgress color={"inherit"} />
+        </Box>
+      ) : (
+        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', paddingTop: 15}}>
+	        <Typography variant='h4' component='h2'>
+	          { `Bookings for ${roomName}`}
+	        </Typography>
+		      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+						<BookingCalendar events={events} />
+		      </Box>
       </Box>
-      
+      )}
     </Container>
     
   );
