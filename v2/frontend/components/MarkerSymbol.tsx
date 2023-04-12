@@ -11,8 +11,10 @@ import { Building } from "../types";
 const MarkerSymbol: React.FC<{ 
   building: Building; 
   freerooms: number; 
+  totalRooms: number;
+  distance: number;
   setBuilding: (building: Building) => void;
-}> = ({ building, freerooms, setBuilding }) => {
+}> = ({ building, freerooms, totalRooms, distance, setBuilding }) => {
   
   const [showPopup, setShowPopup] = React.useState(false);
 
@@ -42,14 +44,20 @@ const MarkerSymbol: React.FC<{
         />
         { showPopup && (
         <div style={{ position: 'absolute', bottom: -3}}>
-          <MarkerHover building={building} freerooms={freerooms} totalRooms={7} distance={100}/> 
+          <MarkerHover building={building} freerooms={freerooms} totalRooms={totalRooms} distance={distance}/> 
         </div>
         )}
       </div>
   );
 };
 
-const MarkerHover: React.FC<{ building: Building, freerooms: number, totalRooms: number, distance: number }> = ({ building, freerooms, totalRooms, distance }) => {
+const MarkerHover: React.FC<{ 
+  building: Building;
+  freerooms: number;
+  totalRooms: number;
+  distance: number
+}> = ({ building, freerooms, totalRooms, distance }) => {
+  
   const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
     position: "absolute",
     flex: 1,
