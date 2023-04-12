@@ -18,7 +18,7 @@ const MarkerSymbol: React.FC<{
 
   return (
       <div 
-        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative'}}
+        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', transform: 'translate(-50%, -50%)' }}
         onMouseEnter={() => setShowPopup(true)}
         onMouseLeave={() => setShowPopup(false)}
       >
