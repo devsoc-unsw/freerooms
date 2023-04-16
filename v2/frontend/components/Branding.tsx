@@ -1,4 +1,5 @@
 import Box, { BoxProps } from "@mui/material/Box";
+import { orange, pink } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
 import Typography, { TypographyProps } from "@mui/material/Typography";
 import Image from "next/image";
@@ -6,7 +7,8 @@ import Image from "next/image";
 import Logo from "../public/assets/favicon/free_rooms_logo.png";
 
 const StyledText = styled(Typography)<TypographyProps>(({ theme }) => ({
-  color: theme.palette.primary.main,
+  // TODO: should instead use theme.palette.primary.main
+  color: orange[800],
   fontWeight: 600,
   fontFamily: "Josefin Sans",
 }));

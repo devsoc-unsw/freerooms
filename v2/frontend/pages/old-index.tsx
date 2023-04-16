@@ -1,3 +1,5 @@
+'use client'
+
 /*
   This is the home page (list view of all the buildings)
 */
@@ -12,11 +14,12 @@ import { styled } from "@mui/material/styles";
 import axios from "axios";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
 import React from "react";
 
 import Mapping from "../components/BaseMap";
 import Branding from "../components/Branding";
+// TODO: for some reason these buttons are blue now
 import Button from "../components/Button";
 import FilterBar from "../components/FilterBar";
 import Landing from "../components/Landing";
@@ -28,8 +31,8 @@ import BuildingInfo from "../views/BuildingInfo";
 import CardList from "../views/CardList";
 
 const Home: NextPage<{}> = () => {
-  const router = useRouter();
-  const { building } = router.query;
+  // const router = useRouter();
+  const building = useSearchParams().get("");
 
   const [buildingData, setBuildingData] = React.useState<BuildingReturnData>({ buildings: [] });
   React.useEffect(() => {
@@ -82,7 +85,7 @@ const Home: NextPage<{}> = () => {
       );
       if (selectedBuilding) {
         setCurrentBuilding(selectedBuilding);
-        router.replace("/", undefined, { shallow: true });
+        // router.replace("/", undefined, { shallow: true });
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -95,6 +98,8 @@ const Home: NextPage<{}> = () => {
     setButtonText(buttonText == "Map View" ? "List View" : "Map View");
   };
 
+  // @ts-ignore
+  // @ts-ignore
   return (
     <Container maxWidth={false}>
       <Head>
@@ -139,7 +144,7 @@ const Home: NextPage<{}> = () => {
           </div>
         </AppBar>
         <Main open={drawerOpen}>
-          {showLanding ? <Landing setShowLanding={setShowLanding} /> : null}
+          {/*{showLanding ? <Landing setShowLanding={setShowLanding} /> : null}*/}
           <div id={"Home-Building-Tiles"}>
             {showMap ? (
               <Mapping
