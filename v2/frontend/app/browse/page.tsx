@@ -48,8 +48,7 @@ const Page = () => {
     const fetchRoomStatus = () => {
       const params: RoomsRequestParams = { ...filters };
       if (datetime) {
-        params.datetime =
-          DateTime.fromJSDate(datetime).toFormat("yyyy-MM-dd'T'HH:mm");
+        params.datetime = datetime.toISOString();
       }
 
       axios
@@ -99,7 +98,10 @@ const Page = () => {
             <div id={"Home-Options"} style={{ display: "flex", justifyContent: "space-between" }}>
               <FilterBar filters={filters} setFilters={setFilters} />
               <SearchBar setQuery={setQuery}></SearchBar>
-              <SortBar filters={sort} setFilters={setSort}></SortBar>
+              <SortBar
+                // filters={sort}
+                // setFilters={setSort}
+                setSort={setSort} sort={sort}></SortBar>
             </div>
             {
               buildingData.buildings.length == 0 ?
