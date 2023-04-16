@@ -21,7 +21,7 @@
     "date-fns": "^2.29.3",
     "esri-loader": "^3.7.0",
     "luxon": "^2.5.0",
-    "next": "13.0.3",
+    "next": "13.2.0",
     "react": "18.2.0",
     "react-big-calendar": "^1.6.9",
     "react-dom": "18.2.0",
