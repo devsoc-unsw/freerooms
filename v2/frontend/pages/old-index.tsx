@@ -32,6 +32,7 @@ import CardList from "../views/CardList";
 
 const Home: NextPage<{}> = () => {
   // const router = useRouter();
+  // @ts-ignore
   const building = useSearchParams().get("");
 
   const [buildingData, setBuildingData] = React.useState<BuildingReturnData>({ buildings: [] });
