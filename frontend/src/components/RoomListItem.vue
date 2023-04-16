@@ -57,7 +57,7 @@ export default class RoomListItem extends Vue {
       case "free":
         return "Available now";
       case "soon":
-        return `Available after ${date.toLocaleString(DateTime.TIME_SIMPLE)}`;
+        return `Available after ${date.setZone("Australia/Sydney").toLocaleString(DateTime.TIME_SIMPLE)}`;
       case "busy":
         return "Unavailable now";
       default:

@@ -12,7 +12,6 @@ const SearchBar = ({ setQuery }: { setQuery: (query: string) => void }) => {
         placeholder="Search for a building..."
         fullWidth
         inputProps={{ style: { height: "12px" } }}
-
         //entering the target
         onKeyDown={(event) => {
           const target = event.target as HTMLInputElement;

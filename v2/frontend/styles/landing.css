@@ -24,6 +24,10 @@
     width: 2rem;
 }
 
+#FreeroomsCTA:hover {
+    cursor: pointer;
+}
+
 #header {
     display: flex;
     flex-direction: row;
@@ -57,6 +61,15 @@
 #Home-Options {
     margin: 1rem 0;
 }
+
+#reset {
+    color: "#f77f00";
+}
+
+#reset:hover {
+    cursor: pointer;
+}
+
 
 @media (max-width: 830px) {
     #FreeroomsTitle {

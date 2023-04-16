@@ -37,7 +37,16 @@ const Branding = (props: BoxProps) => (
       }}
     >
       <StyledText sx={{ lineHeight: 1 }}>Freerooms</StyledText>
-      <StyledText sx={{ lineHeight: 1, marginTop: 0.5, fontFamily: "Arial", fontSize: "0.8rem" }}>22T3</StyledText>
+      <StyledText
+        sx={{
+          lineHeight: 1,
+          marginTop: 0.5,
+          fontFamily: "Arial",
+          fontSize: "0.8rem",
+        }}
+      >
+        23T1
+      </StyledText>
     </Box>
   </StyledBox>
 );

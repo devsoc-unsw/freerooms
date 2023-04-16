@@ -12,7 +12,6 @@ import Drawer from "@mui/material/Drawer";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import axios from "axios";
-import { DateTime } from "luxon";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useSearchParams } from "next/navigation";
@@ -60,8 +59,7 @@ const Home: NextPage<{}> = () => {
     const fetchRoomStatus = () => {
       const params: RoomsRequestParams = { ...filters };
       if (datetime) {
-        params.datetime =
-          DateTime.fromJSDate(datetime).toFormat("yyyy-MM-dd'T'HH:mm");
+        params.datetime = datetime.toISOString();
       }
 
       axios
@@ -148,24 +146,26 @@ const Home: NextPage<{}> = () => {
         <Main open={drawerOpen}>
           {/*{showLanding ? <Landing setShowLanding={setShowLanding} /> : null}*/}
           <div id={"Home-Building-Tiles"}>
-            <div id={"Home-Options"} style={{ display: "flex", justifyContent: "space-between" }}>
-              <FilterBar filters={filters} setFilters={setFilters} />
-              <SearchBar setQuery={setQuery}></SearchBar>
-              <SortBar filters={sort} setFilters={setSort}></SortBar>
-            </div>
             {showMap ? (
               <Mapping
                 setCurrentBuilding={setCurrentBuilding}
                 buildingData={buildingData}
               />
             ) : (
-              <CardList
-                buildingData={buildingData}
-                setCurrentBuilding={setCurrentBuilding}
-                sort={sort}
-                query={query}
-                roomStatusData={roomStatusData}
-              />
+              <>
+                <div id={"Home-Options"} style={{ display: "flex", justifyContent: "space-between" }}>
+                  <FilterBar filters={filters} setFilters={setFilters} />
+                  <SearchBar setQuery={setQuery}></SearchBar>
+                  <SortBar sort={sort} setSort={setSort}></SortBar>
+                </div>
+                <CardList
+                  buildingData={buildingData}
+                  setCurrentBuilding={setCurrentBuilding}
+                  sort={sort}
+                  query={query}
+                  roomStatusData={roomStatusData}
+                />
+              </>
             )}
           </div>
         </Main>
