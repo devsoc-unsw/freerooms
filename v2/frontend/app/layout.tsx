@@ -7,13 +7,13 @@ import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import { orange, pink } from "@mui/material/colors";
 import { createTheme, styled } from "@mui/material/styles";
+import ThemeProvider from "@mui/system/ThemeProvider";
 import Head from "next/head";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 
 import Branding from "../components/Branding";
 import { Building } from "../types";
-import ThemeProvider from "@mui/system/ThemeProvider";
 
 export default function RootLayout({
                                      // Layouts must accept a children prop.
