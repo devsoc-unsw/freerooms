@@ -14,6 +14,16 @@ const classes = [
 
 
 // -----------------------------------------------------------
+// --------------------------HELPERS--------------------------
+
+
+function minutesAfterNow(num: number): String  {
+    return new Date().setMinutes(new Date().getMinutes() + num).toString();
+}
+
+const ONE_DAY_MINUTES = 1440
+
+// -----------------------------------------------------------
 // getBuildingData
 // Currently broken :( (Async issue with testing promises/non-blackbox)
 /*
@@ -294,17 +304,17 @@ describe("Variable Classes", () => {
                 {
                     courseCode: '2521',
                     start: new Date().toString(),
-                    end : (new Date().setHours(new Date().getMinutes() + 60)).toString(),
+                    end : minutesAfterNow(60),
                 }, 
                 {
                     courseCode: '2521',
                     start: new Date().toString(),
-                    end : (new Date().setHours(new Date().getMinutes() + 120)).toString(),
+                    end : minutesAfterNow(120),
                 },
                 {
                     courseCode: '2521',
                     start: new Date().toString(),
-                    end : (new Date().setHours(new Date().getMinutes() + 180)).toString(),
+                    end : minutesAfterNow(180),
                 }
             ],
             minDuration: 0,
@@ -327,18 +337,18 @@ describe("Multi-class calculateStatus", () => {
             classes: [
                 {
                     courseCode: '2521',
-                    start: new Date().toString(),
-                    end : (new Date().setHours(new Date().getMinutes() + 60)).toString(),
+                    start: minutesAfterNow(0),
+                    end : minutesAfterNow(60),
                 }, 
                 {
                     courseCode: '2521',
-                    start: new Date().toString(),
-                    end : (new Date().setHours(new Date().getMinutes() + 120)).toString(),
+                    start: minutesAfterNow(0),
+                    end : minutesAfterNow(120),
                 },
                 {
                     courseCode: '2521',
-                    start: new Date().toString(),
-                    end : (new Date().setHours(new Date().getMinutes() + 180)).toString(),
+                    start: minutesAfterNow(0),
+                    end : minutesAfterNow(180),
                 }
             ],
             minDuration: 0,
@@ -354,18 +364,18 @@ describe("Multi-class calculateStatus", () => {
             classes: [
                 {
                     courseCode: '2521',
-                    start: new Date().toString(),
-                    end : (new Date().setHours(new Date().getMinutes() + 120)).toString(),
+                    start: minutesAfterNow(0),
+                    end : minutesAfterNow(120),
                 }, 
                 {
                     courseCode: '2521',
-                    start: new Date().toString(),
-                    end : (new Date().setHours(new Date().getMinutes() + 480)).toString(),
+                    start: minutesAfterNow(0),
+                    end : minutesAfterNow(480),
                 },
                 {
                     courseCode: '2521',
-                    start: new Date().toString(),
-                    end : (new Date().setDate(new Date().getDate() + 1)).toString(),
+                    start: minutesAfterNow(0),
+                    end : minutesAfterNow(ONE_DAY_MINUTES),
                 }
             ],
             minDuration: 0,
@@ -389,13 +399,13 @@ describe("Datetime before the start.", () => {
             classes: [
                 {
                     courseCode: '1531',
-                    start: new Date().toString(),
-                    end : (new Date().setHours(new Date().getMinutes() + 60)).toString(),
+                    start: minutesAfterNow(0),
+                    end : minutesAfterNow(60),
                 }, 
                 {
                     courseCode: '1531',
-                    start: (new Date().setHours(new Date().getMinutes() + 120)).toString(),
-                    end : (new Date().setHours(new Date().getMinutes() + 240)).toString(),
+                    start: minutesAfterNow(120),
+                    end : minutesAfterNow(240),
                 },
             ],
             minDuration: 60,
@@ -412,18 +422,18 @@ describe("Datetime before the start.", () => {
             classes: [
                 {
                     courseCode: '1531',
-                    start: (new Date().setHours(new Date().getMinutes() + 60)).toString(),
-                    end : (new Date().setHours(new Date().getMinutes() + 120)).toString(),
+                    start: minutesAfterNow(60),
+                    end : minutesAfterNow(120),
                 }, 
                 {
                     courseCode: '1531',
-                    start: (new Date().setHours(new Date().getMinutes() + 120)).toString(),
-                    end : (new Date().setHours(new Date().getMinutes() + 240)).toString(),
+                    start: minutesAfterNow(120),
+                    end : minutesAfterNow(240),
                 },
                 {
                     courseCode: '1531',
-                    start: (new Date().setHours(new Date().getMinutes() + 240)).toString(),
-                    end : (new Date().setHours(new Date().getMinutes() + 480)).toString(),
+                    start: minutesAfterNow(240),
+                    end : minutesAfterNo(480),
                 },
             ],
             minDuration: 60,
@@ -439,6 +449,36 @@ describe("Datetime before the start.", () => {
 })
 
 // 3. Datetime >= start
+
+describe("Datetime After Start.", () => {
+    test.each([
+        // Datetime after start
+        {
+            datetime: new Date().setHours(new Date().getHours() + 1),
+            classes: [
+                {
+                    courseCode: '2511',
+                    start: minutesAfterNow(0),
+                    end : minutesAfterNow(30),
+                }, 
+                {
+                    courseCode: '2521',
+                    start: minutesAfterNow(30),
+                    end : minutesAfterNow(45),
+                },
+            ],
+            minDuration: 0,
+            expected: {
+                status : "free",
+                endtime : ""
+            },
+        }, 
+    ]) ('calculateStatus($datetime, $classes, $minDuration) === $expected', ({ datetime, classes, minDuration, expected}) => {
+        expect(calculateStatus(datetime, classes, minDuration)).toStrictEqual(expected);
+    });
+})
+
+
 //      4. Minduration > 0 
 //      5. Check endtime - datetime <= FIFTEEN_MIN
 
