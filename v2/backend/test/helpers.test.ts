@@ -317,7 +317,96 @@ describe("Variable Classes", () => {
 })
 // TODO Test with Real Classes
 // 1. Find first two classes after
+describe("Multi-class calculateStatus", () => {
+    test.each([
+        // Three classes; All start at the same time, but with different end times.
+        {
+            datetime: new Date(),
+            classes: [
+                {
+                    courseCode: '2521',
+                    start: new Date().toString(),
+                    end : (new Date().setHours(new Date().getMinutes() + 60)).toString(),
+                }, 
+                {
+                    courseCode: '2521',
+                    start: new Date().toString(),
+                    end : (new Date().setHours(new Date().getMinutes() + 120)).toString(),
+                },
+                {
+                    courseCode: '2521',
+                    start: new Date().toString(),
+                    end : (new Date().setHours(new Date().getMinutes() + 180)).toString(),
+                }
+            ],
+            minDuration: 0,
+            expected: {
+                status : "free",
+                endtime : ""
+            },
+        },
+        // Multi-Classes, ending days after
+        {   
+            
+            datetime: new Date(),
+            classes: [
+                {
+                    courseCode: '2521',
+                    start: new Date().toString(),
+                    end : (new Date().setHours(new Date().getMinutes() + 120)).toString(),
+                }, 
+                {
+                    courseCode: '2521',
+                    start: new Date().toString(),
+                    end : (new Date().setHours(new Date().getMinutes() + 480)).toString(),
+                },
+                {
+                    courseCode: '2521',
+                    start: new Date().toString(),
+                    end : (new Date().setDate(new Date().getDate() + 1)).toString(),
+                }
+            ],
+            minDuration: 0,
+            expected: {
+                status : "free",
+                endtime : ""
+            },
+        },
+    ]) ('calculateStatus($datetime, $classes, $minDuration) === $expected', ({ datetime, classes, minDuration, expected}) => {
+        expect(calculateStatus(datetime, classes, minDuration)).toStrictEqual(expected);
+    });
+})
+
+// TODO: More tests
 // 2. Datetime < start
+describe("Datetime before the start.", () => {
+    test.each([
+        // Two classes; An hour of free time between now, end of first and beginning of second.
+        {
+            datetime: new Date(),
+            classes: [
+                {
+                    courseCode: '1531',
+                    start: new Date().toString(),
+                    end : (new Date().setHours(new Date().getMinutes() + 60)).toString(),
+                }, 
+                {
+                    courseCode: '1531',
+                    start: (new Date().setHours(new Date().getMinutes() + 120)).toString(),
+                    end : (new Date().setHours(new Date().getMinutes() + 240)).toString(),
+                },
+            ],
+            minDuration: 60,
+            expected: {
+                status : "free",
+                endtime : ""
+            },
+        },
+    ]) ('calculateStatus($datetime, $classes, $minDuration) === $expected', ({ datetime, classes, minDuration, expected}) => {
+        expect(calculateStatus(datetime, classes, minDuration)).toStrictEqual(expected);
+    });
+})
+
 // 3. Datetime >= start
 //      4. Minduration > 0 
 //      5. Check endtime - datetime <= FIFTEEN_MIN
