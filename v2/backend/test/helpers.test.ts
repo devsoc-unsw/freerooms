@@ -291,8 +291,18 @@ describe("Variable Classes", () => {
             classes: [
                 {
                     courseCode: '2521',
-                    start: "3",
-                    end : "s",
+                    start: new Date().toString(),
+                    end : (new Date().setHours(new Date().getMinutes() + 60)).toString(),
+                }, 
+                {
+                    courseCode: '2521',
+                    start: new Date().toString(),
+                    end : (new Date().setHours(new Date().getMinutes() + 120)).toString(),
+                },
+                {
+                    courseCode: '2521',
+                    start: new Date().toString(),
+                    end : (new Date().setHours(new Date().getMinutes() + 180)).toString(),
                 }
             ],
             minDuration: 0,
