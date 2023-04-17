@@ -276,7 +276,9 @@ describe("getBuildingData", () => {
  */
 describe("Variable Classes", () => {
     console.log(new Date());
+    
     test.each([
+        // No Classes Whatsoever
         {
             datetime: new Date(),
             classes: [],
@@ -398,10 +400,39 @@ describe("Datetime before the start.", () => {
             ],
             minDuration: 60,
             expected: {
-                status : "free",
+                status : "busy",
+                // TODO: What is the endtime?
                 endtime : ""
             },
-        },
+        }, 
+        // 3 Classes Afterwards, all beginning after datetime.
+        // Should not be free!
+        {
+            datetime: new Date(),
+            classes: [
+                {
+                    courseCode: '1531',
+                    start: (new Date().setHours(new Date().getMinutes() + 60)).toString(),
+                    end : (new Date().setHours(new Date().getMinutes() + 120)).toString(),
+                }, 
+                {
+                    courseCode: '1531',
+                    start: (new Date().setHours(new Date().getMinutes() + 120)).toString(),
+                    end : (new Date().setHours(new Date().getMinutes() + 240)).toString(),
+                },
+                {
+                    courseCode: '1531',
+                    start: (new Date().setHours(new Date().getMinutes() + 240)).toString(),
+                    end : (new Date().setHours(new Date().getMinutes() + 480)).toString(),
+                },
+            ],
+            minDuration: 60,
+            expected: {
+                status : "busy",
+                // TODO: Fix endtime...
+                endtime : ""
+            },
+        }, 
     ]) ('calculateStatus($datetime, $classes, $minDuration) === $expected', ({ datetime, classes, minDuration, expected}) => {
         expect(calculateStatus(datetime, classes, minDuration)).toStrictEqual(expected);
     });
