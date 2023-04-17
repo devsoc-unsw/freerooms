@@ -1,5 +1,6 @@
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 import RoomIcon from '@mui/icons-material/Room';
+import { Fade } from '@mui/material';
 import { Typography } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
@@ -39,14 +40,17 @@ const MarkerSymbol: React.FC<{
                 : freerooms !==0
                   ? theme.palette.warning.light
                   : theme.palette.error.light,
+            "&:hover": {
+              cursor: "pointer",
+            },
           })}
           onClick={() => setBuilding(building)}
         />
-        { showPopup && (
-        <div style={{ position: 'absolute', bottom: -3}}>
-          <MarkerHover building={building} freerooms={freerooms} totalRooms={totalRooms} distance={distance}/> 
-        </div>
-        )}
+        <Fade in={showPopup} timeout={200}>
+          <div style={{ position: 'absolute', bottom: -3}}>
+            <MarkerHover building={building} freerooms={freerooms} totalRooms={totalRooms} distance={distance}/> 
+          </div>
+        </Fade>
       </div>
   );
 };
