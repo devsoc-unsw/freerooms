@@ -1,5 +1,6 @@
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 import RoomIcon from '@mui/icons-material/Room';
+import { Fade } from '@mui/material';
 import { Typography } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
@@ -11,14 +12,16 @@ import { Building } from "../types";
 const MarkerSymbol: React.FC<{ 
   building: Building; 
   freerooms: number; 
+  totalRooms: number;
+  distance: number;
   setBuilding: (building: Building) => void;
-}> = ({ building, freerooms, setBuilding }) => {
+}> = ({ building, freerooms, totalRooms, distance, setBuilding }) => {
   
   const [showPopup, setShowPopup] = React.useState(false);
 
   return (
       <div 
-        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative'}}
+        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', transform: 'translate(-50%, -50%)' }}
         onMouseEnter={() => setShowPopup(true)}
         onMouseLeave={() => setShowPopup(false)}
       >
@@ -37,19 +40,28 @@ const MarkerSymbol: React.FC<{
                 : freerooms !==0
                   ? theme.palette.warning.light
                   : theme.palette.error.light,
+            "&:hover": {
+              cursor: "pointer",
+            },
           })}
           onClick={() => setBuilding(building)}
         />
-        { showPopup && (
-        <div style={{ position: 'absolute', bottom: -3}}>
-          <MarkerHover building={building} freerooms={freerooms} totalRooms={7} distance={100}/> 
-        </div>
-        )}
+        <Fade in={showPopup} timeout={200}>
+          <div style={{ position: 'absolute', bottom: -3}}>
+            <MarkerHover building={building} freerooms={freerooms} totalRooms={totalRooms} distance={distance}/> 
+          </div>
+        </Fade>
       </div>
   );
 };
 
-const MarkerHover: React.FC<{ building: Building, freerooms: number, totalRooms: number, distance: number }> = ({ building, freerooms, totalRooms, distance }) => {
+const MarkerHover: React.FC<{ 
+  building: Building;
+  freerooms: number;
+  totalRooms: number;
+  distance: number
+}> = ({ building, freerooms, totalRooms, distance }) => {
+  
   const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
     position: "absolute",
     flex: 1,
