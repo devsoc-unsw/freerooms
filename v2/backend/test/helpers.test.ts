@@ -305,7 +305,13 @@ describe("Variable Classes", () => {
         expect(calculateStatus(datetime, classes, minDuration)).toStrictEqual(expected);
     });
 })
+// TODO Test with Real Classes
+// 1. Find first two classes after
+// 2. Datetime < start
+// 3. Datetime >= start
+//      4. Minduration > 0 
+//      5. Check endtime - datetime <= FIFTEEN_MIN
 
 describe("calculateStatus", ()=> {
-
+    test 
 })  
