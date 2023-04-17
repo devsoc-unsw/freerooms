@@ -33,10 +33,10 @@ const LocationMarker = () => {
     <>
       <Box
         sx={() => ({
-          width: 10,
-          height: 10,
+          width: 18,
+          height: 18,
           borderRadius: "50%",
-          border: "2px solid white",
+          border: "4px solid #BEDCF9",
           backgroundColor: "#4ABDFA",
         })}
       />
@@ -126,14 +126,14 @@ export const Map = ({ setCurrentBuilding, roomStatusData }: MapProps) => {
           center={center}
           options={{
             clickableIcons: false,
-            disableDefaultUI: true,
+            // disableDefaultUI: true,
             panControl: false,
             restriction: {
               latLngBounds: mapBounds,
               strictBounds: false,
             },
             styles: styleArray,
-            zoomControl: false,
+            // zoomControl: false,
           }}
           zoom={17.5}
         >
