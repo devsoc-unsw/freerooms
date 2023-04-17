@@ -13,6 +13,7 @@ import React from "react";
 
 import Branding from "../components/Branding";
 import { Building } from "../types";
+import ThemeProvider from "@mui/system/ThemeProvider";
 
 export default function RootLayout({
                                      // Layouts must accept a children prop.
@@ -36,6 +37,18 @@ export default function RootLayout({
     setShowMap((currState) => !currState);
     setButtonText(buttonText == "Map View" ? "List View" : "Map View");
   };
+
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: orange[800],
+      },
+      secondary: {
+        main: pink[500],
+      },
+    },
+  });
+
 
   const router = useRouter();
 
@@ -99,9 +112,11 @@ export default function RootLayout({
         }
       </div>
     </AppBar>
-    <div>
-      {children}
-    </div>
+    <ThemeProvider theme={theme}>
+      <div>
+        {children}
+      </div>
+    </ThemeProvider>
     </body>
     </html>
   );
