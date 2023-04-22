@@ -1,11 +1,12 @@
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import { ClickAwayListener } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Box, { BoxProps } from "@mui/material/Box";
-import Checkbox from "@mui/material/Checkbox";
 import Container from "@mui/material/Container";
+import Radio from "@mui/material/Radio";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import React, { useState } from "react";
@@ -27,6 +28,9 @@ const StyledFilterButton = styled(Box)<BoxProps>(({ theme }) => ({
   borderStyle: "solid",
   borderColor: theme.palette.primary.main,
   zIndex: 10,
+  ":hover": {
+    cursor: "pointer"
+  }
 }));
 
 const StyledDropDownMenu = styled(Box)<BoxProps>(() => ({
@@ -41,6 +45,9 @@ const StyledDropDownMenu = styled(Box)<BoxProps>(() => ({
   borderWidth: 1,
   borderStyle: "solid",
   borderColor: "#BCBCBC",
+  ":hover": {
+    cursor: "auto"
+  }
 }));
 
 const StyledHeader = styled(Box)<BoxProps>(() => ({
@@ -72,9 +79,6 @@ const FilterBar: React.FC<{
 
   // Hide and close Dropdown
   const [open, setOpen] = useState(false);
-  const toggle = (open: boolean) => {
-    setOpen(!open);
-  };
 
   // Close dropdown if user clicks outside.
   const dismissHandler = (event: React.FocusEvent) => {
@@ -100,7 +104,7 @@ const FilterBar: React.FC<{
     return <div>
       {dropdown.items.map(item => (
         <div onClick={() => handleSelect(dropdown.key, item)} key={item.value}>
-          <Checkbox checked={filters[dropdown.key] === item.value} />
+          <Radio checked={filters[dropdown.key] === item.value} />
           {item.text}
         </div>
       ))}
@@ -108,10 +112,9 @@ const FilterBar: React.FC<{
   };
 
   return (
-    <>
-      <StyledFilterButton>
+    <ClickAwayListener onClickAway={() => setOpen(false)}>
+      <StyledFilterButton onClick={() => setOpen(!open)}>
         <Stack
-          onClick={() => toggle(open)}
           direction="row"
           spacing={1.5}
           alignItems="center"
@@ -121,11 +124,11 @@ const FilterBar: React.FC<{
           <p style={{ color: "#F77F00", fontWeight: "bold" }}>Filters</p>
         </Stack>
         {open && (
-          <Container>
+          <Container onClick={e => e.stopPropagation()}>
             <StyledDropDownMenu>
               <StyledHeader>
                 <h3>Filter</h3>
-                <p style={{ color: "#F77F00" }} onClick={() => setFilters({})}>Reset</p>
+                <p id="reset" style={{color: "#f77f00"}} onClick={() => setFilters({})}>Reset</p>
               </StyledHeader>
               {dropdowns.map(dropdown => (
                 <StyledAccordian key={dropdown.key}>
@@ -145,7 +148,7 @@ const FilterBar: React.FC<{
           </Container>
         )}
       </StyledFilterButton>
-    </>
+    </ClickAwayListener>
   );
 };
 

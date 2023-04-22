@@ -1,8 +1,9 @@
 import { Request } from "express";
-import { calculateStatus, getBuildingData, getTimetableData, getWeek } from "./helpers";
+import { calculateStatus, getBuildingData, getTimetableData, getWeekAndDay } from "./helpers";
 import { BuildingsResponse, Filters, RoomBookings, BuildingStatus, RoomsResponse } from "./types";
+import { DateTime } from "luxon";
 
-const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const ISO_REGEX = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/;
 const UPPER = 19; // Buildings with grid 19+ are upper campus
 
 export const getAllBuildings = async (): Promise<BuildingsResponse> => {
@@ -24,16 +25,22 @@ export const getAllBuildings = async (): Promise<BuildingsResponse> => {
 };
 
 // Parses the provided datetime from the request params
-export const parseDate = (req: Request): Date => {
+export const parseDatetime = (req: Request): Date => {
   const datetimeString = req.query.datetime as string;
   if (!datetimeString) {
     return new Date();
   }
-  const timestamp = Date.parse(datetimeString);
-  if (isNaN(timestamp)) {
-    throw new Error('Invalid datetime');
+
+  if (!ISO_REGEX.test(datetimeString)) {
+    throw new Error("Date must be in ISO format");
   }
-  return new Date(datetimeString);
+
+  const ms = Date.parse(datetimeString);
+  if (isNaN(ms)) {
+    throw new Error("Invalid datetime");
+  }
+
+  return new Date(ms);
 };
 
 // Parses the provided filters from the request params
@@ -79,8 +86,7 @@ export const getAllRoomStatus = async (
   date: Date,
   filters: Filters
 ): Promise<RoomsResponse> => {
-  const week = await getWeek(date);
-  const day = DAYS[date.getDay()];
+  const { week, day } = await getWeekAndDay(date);
 
   const buildingData = await getBuildingData();
   const timetableData = await getTimetableData();

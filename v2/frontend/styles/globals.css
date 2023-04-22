@@ -9,12 +9,6 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
-@media (max-width: 600px) {
-    body {
-        margin-top: 8rem;
-    }
-}
-
 a {
     color: inherit;
     text-decoration: none;

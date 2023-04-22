@@ -1,16 +1,14 @@
 import axios from "axios";
 import child_process from "child_process";
 import fs from "fs";
+import { DateTime } from "luxon";
 
 import { DATABASE_PATH, SCRAPER_PATH } from "./config";
 import { TimetableData, BuildingDatabase, RoomStatus, Class } from "./types";
 
-
 const TIMETABLE_API = "https://timetable.csesoc.app/api"
 const DATE_REGEX = new RegExp(/\d{2}\/\d{2}\/\d{4}/);
-const TIME_REGEX = new RegExp(/\d{2}:\d{2}/);
 const FIFTEEN_MIN = 15 * 1000 * 60;
-
 
 // Fetch start date of current term from the Timetable API
 // Result is in DD/MM/YYYY format
@@ -30,10 +28,7 @@ export const getTimetableData = async (): Promise<TimetableData> => {
   const termNumRes = await axios.get(`${TIMETABLE_API}/currentterm`);
   const termNum = termNumRes.data as string;
 
-  const termDateRes = await getStartDate();
-  const termYear = termDateRes.substring(6);
-
-  const termId = `${termYear}-${termNum}`;
+  const termId = `${new Date().getFullYear()}-${termNum}`;
   const SCRAPER_URL = `${TIMETABLE_API}/terms/${termId}/freerooms`;
 
   const res = await axios.get(SCRAPER_URL);
@@ -71,16 +66,22 @@ export const scrapeBuildingData = async (): Promise<void> => {
 }
 
 // Gets the week number from the date (based off current term)
-export const getWeek = async (date: Date): Promise<number> => {
+export const getWeekAndDay = async (date: Date) => {
+  // Get the term start date
   const termStart = await getStartDate();
-  const [day, month, year] = termStart.split('/');
+  const [day, month, year] = termStart.split("/");
   const termStartDate = new Date(+year, +month - 1, +day);
 
   const diff = date.getTime() - termStartDate.getTime();
   const daysPastStart = diff / (1000 * 60 * 60 * 24);
 
   // Ceil is used because week numbers start from 1 not 0
-  return Math.ceil(daysPastStart / 7);
+  const week = Math.ceil(daysPastStart / 7);
+
+  // Get the day of the week in Australia time
+  const dayOfWeek = date.toLocaleDateString('en-GB', {weekday: 'short', timeZone: 'Australia/Sydney'});
+
+  return {week, day: dayOfWeek};
 };
 
 // Given a datetime and a list of the room's bookings for 
@@ -100,13 +101,13 @@ export const calculateStatus = (
   let firstAfter: Class | null = null;
   let secondAfter: Class | null = null;
   for (const cls of classes) {
-    const end = combineDateTime(datetime, cls.end);
+    const end = new Date(cls.end);
     if (end <= datetime) continue;
 
-    if (!firstAfter || end < combineDateTime(datetime, firstAfter.end)) {
+    if (!firstAfter || end < new Date(firstAfter.end)) {
       secondAfter = firstAfter;
       firstAfter = cls;
-    } else if (!secondAfter || end < combineDateTime(datetime, secondAfter.end)) {
+    } else if (!secondAfter || end < new Date(secondAfter.end)) {
       secondAfter = cls;
     }
   }
@@ -116,7 +117,7 @@ export const calculateStatus = (
     return roomStatus;
   }
 
-  const start = combineDateTime(datetime, firstAfter.start);
+  const start = new Date(firstAfter.start);
   if (datetime < start) {
     // Class starts after current time i.e. room is free, check if it meets minDuration filter
     const duration = (start.getTime() - datetime.getTime()) / (1000 * 60);
@@ -126,29 +127,16 @@ export const calculateStatus = (
     if (minDuration > 0) return null;
     roomStatus.status = "busy";
 
-    const end = combineDateTime(datetime, firstAfter.end);
+    const end = new Date(firstAfter.end);
     if (end.getTime() - datetime.getTime() <= FIFTEEN_MIN) {
       // Ending soon, check the next class
-      if (!secondAfter || combineDateTime(datetime, secondAfter.start) > end) {
+      if (!secondAfter || new Date(secondAfter.start) > end) {
         // No next class, or it starts after the current class ends
         roomStatus.status = "soon";
-        roomStatus.endtime = end.toISOString();
+        roomStatus.endtime = firstAfter.end;
       }
     }
   }
 
   return roomStatus;
-}
-
-// Return a copy of provided date set to provided time
-// Time must be in the format HH:MM
-const combineDateTime = (date: Date, time: string) => {
-  if (!TIME_REGEX.test(time)) {
-    throw new Error("Invalid time format");
-  }
-
-  const newDate = new Date(date.valueOf());
-  const [hours, minutes] = time.split(':');
-  newDate.setHours(+hours, +minutes);
-  return newDate;
 }
