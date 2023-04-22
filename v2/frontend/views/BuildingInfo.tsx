@@ -9,14 +9,15 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import Image, { ImageProps } from "next/image";
+import Link from 'next/link';
 import React from "react";
 
 import Button from "../components/Button";
 import {
   Building,
   BuildingStatus,
-  RoomsReturnData,
   RoomAvailability,
+  RoomsReturnData,
 } from "../types";
 import toSydneyTime from "../utils/toSydneyTime";
 

@@ -1,3 +1,5 @@
+'use client'
+
 import { loadModules } from "esri-loader";
 import React, { useEffect } from "react";
 

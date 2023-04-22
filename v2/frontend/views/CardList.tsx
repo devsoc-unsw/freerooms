@@ -74,18 +74,21 @@ const CardList: React.FC<{
   }, [query, sort, roomStatusData]);
 
   return (
-    <FlipMoveGrid
-      duration={500}
-    >
-      {buildings.map((building) => (
-        <FlippableCard
-          key={building.id}
-          building={building}
-          setBuilding={setCurrentBuilding}
-          freerooms={countFreerooms(roomStatusData, building.id)}
-        />
-      ))}
-    </FlipMoveGrid>
+    <>
+      {
+        // @ts-ignore
+        <FlipMoveGrid duration={500}>
+          {buildings.map((building) => (
+            <FlippableCard
+              key={building.id}
+              building={building}
+              setBuilding={setCurrentBuilding}
+              freerooms={countFreerooms(roomStatusData, building.id)}
+            />
+          ))}
+        </FlipMoveGrid>
+      }
+    </>
   );
 };
 

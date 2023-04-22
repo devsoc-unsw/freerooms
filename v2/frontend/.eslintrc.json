@@ -1,5 +1,8 @@
 {
-  "extends": ["next/core-web-vitals", "plugin:react-hooks/recommended"],
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:react-hooks/recommended"
+  ],
   "plugins": ["simple-import-sort"],
   "rules": {
     "simple-import-sort/imports": "error",
