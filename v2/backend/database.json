@@ -2,8 +2,8 @@
     "K-G27": {
         "name": "AGSM",
         "id": "K-G27",
-        "lat": -33.918158,
-        "long": 151.23567,
+        "lat": -33.91852,
+        "long": 151.235664,
         "rooms": {
             "G03": {
                 "id": "K-G27-G03",
@@ -52,8 +52,8 @@
     "K-J17": {
         "name": "Ainsworth Building",
         "id": "K-J17",
-        "lat": -33.918305,
-        "long": 151.231412,
+        "lat": -33.918527,
+        "long": 151.23126,
         "rooms": {
             "101": {
                 "id": "K-J17-101",
@@ -99,11 +99,109 @@
             }
         }
     },
+    "K-H13": {
+        "name": "Anita B. Lawrence Centre",
+        "id": "K-H13",
+        "lat": -33.917876,
+        "long": 151.230057,
+        "rooms": {
+            "1040": {
+                "id": "K-H13-1040",
+                "name": "H13 Lawrence East 1040",
+                "capacity": 56,
+                "usage": "TUT"
+            },
+            "1041": {
+                "id": "K-H13-1041",
+                "name": "H13 Lawrence East 1041",
+                "capacity": 48,
+                "usage": "TUT"
+            },
+            "1042": {
+                "id": "K-H13-1042",
+                "name": "H13 Lawrence East 1042",
+                "capacity": 48,
+                "usage": "TUT"
+            },
+            "1043": {
+                "id": "K-H13-1043",
+                "name": "H13 Lawrence East 1043",
+                "capacity": 48,
+                "usage": "TUT"
+            },
+            "2035": {
+                "id": "K-H13-2035",
+                "name": "H13 Lawrence West 2035",
+                "capacity": 26,
+                "usage": "TUT"
+            },
+            "2060": {
+                "id": "K-H13-2060",
+                "name": "H13 Lawrence East 2060",
+                "capacity": 48,
+                "usage": "TUT"
+            },
+            "2061": {
+                "id": "K-H13-2061",
+                "name": "H13 Lawrence East 2061",
+                "capacity": 48,
+                "usage": "TUT"
+            },
+            "2062": {
+                "id": "K-H13-2062",
+                "name": "H13 Lawrence East 2062",
+                "capacity": 48,
+                "usage": "TUT"
+            },
+            "2063": {
+                "id": "K-H13-2063",
+                "name": "H13 Lawrence East 2063",
+                "capacity": 48,
+                "usage": "TUT"
+            },
+            "3037": {
+                "id": "K-H13-3037",
+                "name": "H13 Lawrence West 3037",
+                "capacity": 26,
+                "usage": "TUT"
+            },
+            "4034": {
+                "id": "K-H13-4034",
+                "name": "H13 Lawrence West 4034",
+                "capacity": 26,
+                "usage": "TUT"
+            },
+            "4037": {
+                "id": "K-H13-4037",
+                "name": "H13 Lawrence West 4037",
+                "capacity": 26,
+                "usage": "TUT"
+            },
+            "G001": {
+                "id": "K-H13-G001",
+                "name": "H13 Lawrence Theatre",
+                "capacity": 117,
+                "usage": "LEC"
+            },
+            "M010": {
+                "id": "K-H13-M010",
+                "name": "H13 Lawrence West M010",
+                "capacity": 44,
+                "usage": "TUT"
+            },
+            "M032": {
+                "id": "K-H13-M032",
+                "name": "H13 Lawrence East M032",
+                "capacity": 89,
+                "usage": "LEC"
+            }
+        }
+    },
     "K-D26": {
         "name": "Biological Sciences (North)",
         "id": "K-D26",
-        "lat": -33.917256,
-        "long": 151.235254,
+        "lat": -33.917381,
+        "long": 151.235403,
         "rooms": {
             "G07": {
                 "id": "K-D26-G07",
@@ -116,8 +214,8 @@
     "K-G6": {
         "name": "Blockhouse",
         "id": "K-G6",
-        "lat": -33.916921,
-        "long": 151.226793,
+        "lat": -33.916937,
+        "long": 151.226826,
         "rooms": {
             "G13": {
                 "id": "K-G6-G13",
@@ -151,99 +249,11 @@
             }
         }
     },
-    "K-E19": {
-        "name": "Central Lecture Block",
-        "id": "K-E19",
-        "lat": -33.917272,
-        "long": 151.232478,
-        "rooms": {
-            "103": {
-                "id": "K-E19-103",
-                "name": "Central Lecture Block 6",
-                "capacity": 231,
-                "usage": "LEC"
-            },
-            "104": {
-                "id": "K-E19-104",
-                "name": "Central Lecture Block 7",
-                "capacity": 497,
-                "usage": "LEC"
-            },
-            "105": {
-                "id": "K-E19-105",
-                "name": "Central Lecture Block 8",
-                "capacity": 231,
-                "usage": "LEC"
-            },
-            "G02": {
-                "id": "K-E19-G02",
-                "name": "Central Lecture Block 1",
-                "capacity": 113,
-                "usage": "LEC"
-            },
-            "G03": {
-                "id": "K-E19-G03",
-                "name": "Central Lecture Block 2",
-                "capacity": 112,
-                "usage": "LEC"
-            },
-            "G04": {
-                "id": "K-E19-G04",
-                "name": "Central Lecture Block 3",
-                "capacity": 102,
-                "usage": "LEC"
-            },
-            "G05": {
-                "id": "K-E19-G05",
-                "name": "Central Lecture Block 4",
-                "capacity": 112,
-                "usage": "LEC"
-            },
-            "G06": {
-                "id": "K-E19-G06",
-                "name": "Central Lecture Block 5",
-                "capacity": 113,
-                "usage": "LEC"
-            }
-        }
-    },
-    "K-F10": {
-        "name": "Chemical Sciences",
-        "id": "K-F10",
-        "lat": -33.917115,
-        "long": 151.228732,
-        "rooms": {
-            "M10": {
-                "id": "K-F10-M10",
-                "name": "Chemical Sc M10",
-                "capacity": 98,
-                "usage": "LEC"
-            },
-            "M11": {
-                "id": "K-F10-M11",
-                "name": "Chemical Sc M11",
-                "capacity": 97,
-                "usage": "LEC"
-            },
-            "M17": {
-                "id": "K-F10-M17",
-                "name": "ChemicalSc M17",
-                "capacity": 253,
-                "usage": "LEC"
-            },
-            "M18": {
-                "id": "K-F10-M18",
-                "name": "Chemical Sc M18",
-                "capacity": 205,
-                "usage": "LEC"
-            }
-        }
-    },
     "K-H20": {
         "name": "Civil Engineering Building",
         "id": "K-H20",
-        "lat": -33.918136,
-        "long": 151.232687,
+        "lat": -33.918234,
+        "long": 151.232835,
         "rooms": {
             "101": {
                 "id": "K-H20-101",
@@ -292,8 +302,8 @@
     "K-B16": {
         "name": "Colombo Building",
         "id": "K-B16",
-        "lat": -33.916226,
-        "long": 151.231301,
+        "lat": -33.915902,
+        "long": 151.231367,
         "rooms": {
             "LG01": {
                 "id": "K-B16-LG01",
@@ -330,8 +340,8 @@
     "K-G17": {
         "name": "Electrical Engineering Bldg",
         "id": "K-G17",
-        "lat": -33.917842,
-        "long": 151.231483,
+        "lat": -33.91779,
+        "long": 151.2315,
         "rooms": {
             "G03": {
                 "id": "K-G17-G03",
@@ -374,8 +384,8 @@
     "K-D16": {
         "name": "Goldstein Hall",
         "id": "K-D16",
-        "lat": -33.916604,
-        "long": 151.231191,
+        "lat": -33.916585,
+        "long": 151.231394,
         "rooms": {
             "G01": {
                 "id": "K-D16-G01",
@@ -430,8 +440,8 @@
     "K-F20": {
         "name": "John Goodsell Building",
         "id": "K-F20",
-        "lat": -33.91741,
-        "long": 151.23284,
+        "lat": -33.917492,
+        "long": 151.232712,
         "rooms": {
             "LG19": {
                 "id": "K-F20-LG19",
@@ -450,8 +460,8 @@
     "K-G19": {
         "name": "John Niland Scientia",
         "id": "K-G19",
-        "lat": -33.918002,
-        "long": 151.23243,
+        "lat": -33.918,
+        "long": 151.23239,
         "rooms": {
             "LG02": {
                 "id": "K-G19-LG02",
@@ -461,11 +471,43 @@
             }
         }
     },
+    "K-F10": {
+        "name": "June Griffith Building",
+        "id": "K-F10",
+        "lat": -33.917108,
+        "long": 151.228826,
+        "rooms": {
+            "M10": {
+                "id": "K-F10-M10",
+                "name": "F10 June Griffith M10",
+                "capacity": 98,
+                "usage": "LEC"
+            },
+            "M11": {
+                "id": "K-F10-M11",
+                "name": "F10 June Griffith M11",
+                "capacity": 97,
+                "usage": "LEC"
+            },
+            "M17": {
+                "id": "K-F10-M17",
+                "name": "F10 June Griffith M17",
+                "capacity": 253,
+                "usage": "LEC"
+            },
+            "M18": {
+                "id": "K-F10-M18",
+                "name": "F10 June Griffith M18",
+                "capacity": 205,
+                "usage": "LEC"
+            }
+        }
+    },
     "K-J14": {
         "name": "Keith Burrows Theatre",
         "id": "K-J14",
-        "lat": -33.918101,
-        "long": 151.2302,
+        "lat": -33.918207,
+        "long": 151.230109,
         "rooms": {
             "G5": {
                 "id": "K-J14-G5",
@@ -478,8 +520,8 @@
     "K-F8": {
         "name": "Law Building",
         "id": "K-F8",
-        "lat": -33.917204,
-        "long": 151.22796,
+        "lat": -33.917004,
+        "long": 151.227791,
         "rooms": {
             "101": {
                 "id": "K-F8-101",
@@ -588,8 +630,8 @@
     "K-F21": {
         "name": "Library Stage 2",
         "id": "K-F21",
-        "lat": -33.917702,
-        "long": 151.233242,
+        "lat": -33.917528,
+        "long": 151.233439,
         "rooms": {
             "176A": {
                 "id": "K-F21-176A",
@@ -608,8 +650,8 @@
     "K-F23": {
         "name": "Mathews Building",
         "id": "K-F23",
-        "lat": -33.917628,
-        "long": 151.234366,
+        "lat": -33.917741,
+        "long": 151.234563,
         "rooms": {
             "101": {
                 "id": "K-F23-101",
@@ -772,8 +814,8 @@
     "K-D23": {
         "name": "Mathews Theatres",
         "id": "K-D23",
-        "lat": -33.917161,
-        "long": 151.233983,
+        "lat": -33.917178,
+        "long": 151.234177,
         "rooms": {
             "201": {
                 "id": "K-D23-201",
@@ -804,8 +846,8 @@
     "K-C20": {
         "name": "Morven Brown Building",
         "id": "K-C20",
-        "lat": -33.916827,
-        "long": 151.233154,
+        "lat": -33.916792,
+        "long": 151.232828,
         "rooms": {
             "G3": {
                 "id": "K-C20-G3",
@@ -848,8 +890,8 @@
     "K-J12": {
         "name": "Newton Building",
         "id": "K-J12",
-        "lat": -33.917927,
-        "long": 151.22929,
+        "lat": -33.918363,
+        "long": 151.229791,
         "rooms": {
             "306": {
                 "id": "K-J12-306",
@@ -868,8 +910,8 @@
     "K-K15": {
         "name": "Old Main Building",
         "id": "K-K15",
-        "lat": -33.918674,
-        "long": 151.230242,
+        "lat": -33.918489,
+        "long": 151.230731,
         "rooms": {
             "149": {
                 "id": "K-K15-149",
@@ -915,11 +957,67 @@
             }
         }
     },
+    "K-E19": {
+        "name": "Patricia O'Shane Building",
+        "id": "K-E19",
+        "lat": -33.917077,
+        "long": 151.232811,
+        "rooms": {
+            "103": {
+                "id": "K-E19-103",
+                "name": "E19 Patricia O'Shane 103 (previously CLB 6)",
+                "capacity": 231,
+                "usage": "LEC"
+            },
+            "104": {
+                "id": "K-E19-104",
+                "name": "E19 Patricia O'Shane 104 (previously CLB 7)",
+                "capacity": 497,
+                "usage": "LEC"
+            },
+            "105": {
+                "id": "K-E19-105",
+                "name": "E19 Patricia O'Shane 105 (previously CLB 8)",
+                "capacity": 231,
+                "usage": "LEC"
+            },
+            "G02": {
+                "id": "K-E19-G02",
+                "name": "E19 Patricia O'Shane G02 (previously CLB 1)",
+                "capacity": 113,
+                "usage": "LEC"
+            },
+            "G03": {
+                "id": "K-E19-G03",
+                "name": "E19 Patricia O'Shane G03 (previously CLB 2)",
+                "capacity": 112,
+                "usage": "LEC"
+            },
+            "G04": {
+                "id": "K-E19-G04",
+                "name": "E19 Patricia O'Shane G04 (previously CLB 3)",
+                "capacity": 102,
+                "usage": "LEC"
+            },
+            "G05": {
+                "id": "K-E19-G05",
+                "name": "E19 Patricia O'Shane G05 (previously CLB 4)",
+                "capacity": 112,
+                "usage": "LEC"
+            },
+            "G06": {
+                "id": "K-E19-G06",
+                "name": "E19 Patricia O'Shane G06 (previously CLB 5)",
+                "capacity": 113,
+                "usage": "LEC"
+            }
+        }
+    },
     "K-K14": {
         "name": "Physics Theatre",
         "id": "K-K14",
-        "lat": -33.918494,
-        "long": 151.230229,
+        "lat": -33.918514,
+        "long": 151.230082,
         "rooms": {
             "19": {
                 "id": "K-K14-19",
@@ -932,8 +1030,8 @@
     "K-E15": {
         "name": "Quadrangle Building",
         "id": "K-E15",
-        "lat": -33.917214,
-        "long": 151.231209,
+        "lat": -33.917264,
+        "long": 151.230955,
         "rooms": {
             "1001": {
                 "id": "K-E15-1001",
@@ -1102,8 +1200,8 @@
     "K-F17": {
         "name": "Rex Vowels Theatre",
         "id": "K-F17",
-        "lat": -33.917668,
-        "long": 151.231539,
+        "lat": -33.917536,
+        "long": 151.231493,
         "rooms": {
             "LG3": {
                 "id": "K-F17-LG3",
@@ -1116,8 +1214,8 @@
     "K-M15": {
         "name": "Rupert Myers Building",
         "id": "K-M15",
-        "lat": -33.919238,
-        "long": 151.230562,
+        "lat": -33.919533,
+        "long": 151.230552,
         "rooms": {
             "1001": {
                 "id": "K-M15-1001",
@@ -1130,8 +1228,8 @@
     "K-E8": {
         "name": "Science & Engineering Building",
         "id": "K-E8",
-        "lat": -33.916679,
-        "long": 151.227812,
+        "lat": -33.91654,
+        "long": 151.227689,
         "rooms": {
             "B24": {
                 "id": "K-E8-B24",
@@ -1180,8 +1278,8 @@
     "K-F13": {
         "name": "Science Theatre",
         "id": "K-F13",
-        "lat": -33.917342,
-        "long": 151.229811,
+        "lat": -33.917204,
+        "long": 151.229831,
         "rooms": {
             "G09": {
                 "id": "K-F13-G09",
@@ -1194,8 +1292,8 @@
     "K-C24": {
         "name": "Sir John Clancy Auditorium",
         "id": "K-C24",
-        "lat": -33.916816,
-        "long": 151.234576,
+        "lat": -33.91696,
+        "long": 151.234542,
         "rooms": {
             "G17": {
                 "id": "K-C24-G17",
@@ -1208,8 +1306,8 @@
     "K-E4": {
         "name": "Squarehouse",
         "id": "K-E4",
-        "lat": -33.916413,
-        "long": 151.226369,
+        "lat": -33.916185,
+        "long": 151.226284,
         "rooms": {
             "114": {
                 "id": "K-E4-114",
@@ -1285,109 +1383,11 @@
             }
         }
     },
-    "K-H13": {
-        "name": "The Red Centre",
-        "id": "K-H13",
-        "lat": -33.917898,
-        "long": 151.230594,
-        "rooms": {
-            "1040": {
-                "id": "K-H13-1040",
-                "name": "Red Centre Central Wing 1040",
-                "capacity": 56,
-                "usage": "TUT"
-            },
-            "1041": {
-                "id": "K-H13-1041",
-                "name": "Red Centre Central Wing 1041",
-                "capacity": 48,
-                "usage": "TUT"
-            },
-            "1042": {
-                "id": "K-H13-1042",
-                "name": "Red Centre Central Wing 1042",
-                "capacity": 48,
-                "usage": "TUT"
-            },
-            "1043": {
-                "id": "K-H13-1043",
-                "name": "Red Centre Central Wing 1043",
-                "capacity": 48,
-                "usage": "TUT"
-            },
-            "2035": {
-                "id": "K-H13-2035",
-                "name": "Red Centre West 2035",
-                "capacity": 26,
-                "usage": "TUT"
-            },
-            "2060": {
-                "id": "K-H13-2060",
-                "name": "Red Centre Central Wing 2060",
-                "capacity": 48,
-                "usage": "TUT"
-            },
-            "2061": {
-                "id": "K-H13-2061",
-                "name": "Red Centre Central Wing 2061",
-                "capacity": 48,
-                "usage": "TUT"
-            },
-            "2062": {
-                "id": "K-H13-2062",
-                "name": "Red Centre Central Wing 2062",
-                "capacity": 48,
-                "usage": "TUT"
-            },
-            "2063": {
-                "id": "K-H13-2063",
-                "name": "Red Centre Central Wing 2063",
-                "capacity": 48,
-                "usage": "TUT"
-            },
-            "3037": {
-                "id": "K-H13-3037",
-                "name": "Red Centre West 3037",
-                "capacity": 26,
-                "usage": "TUT"
-            },
-            "4034": {
-                "id": "K-H13-4034",
-                "name": "Red Centre West 4034",
-                "capacity": 26,
-                "usage": "TUT"
-            },
-            "4037": {
-                "id": "K-H13-4037",
-                "name": "Red Centre West 4037",
-                "capacity": 26,
-                "usage": "TUT"
-            },
-            "G001": {
-                "id": "K-H13-G001",
-                "name": "Red Centre Theatre",
-                "capacity": 117,
-                "usage": "LEC"
-            },
-            "M010": {
-                "id": "K-H13-M010",
-                "name": "Red Centre West M010",
-                "capacity": 44,
-                "usage": "TUT"
-            },
-            "M032": {
-                "id": "K-H13-M032",
-                "name": "Red Centre Central Wing M032",
-                "capacity": 89,
-                "usage": "LEC"
-            }
-        }
-    },
     "K-H6": {
         "name": "Tyree Energy Technology",
         "id": "K-H6",
-        "lat": -33.917446,
-        "long": 151.226608,
+        "lat": -33.917721,
+        "long": 151.226897,
         "rooms": {
             "G16": {
                 "id": "K-H6-G16",
@@ -1418,8 +1418,8 @@
     "K-E12": {
         "name": "UNSW Business School",
         "id": "K-E12",
-        "lat": -33.916825,
-        "long": 151.2296,
+        "lat": -33.9168,
+        "long": 151.229611,
         "rooms": {
             "105": {
                 "id": "K-E12-105",
@@ -1510,8 +1510,8 @@
     "K-H22": {
         "name": "Vallentine Annexe",
         "id": "K-H22",
-        "lat": -33.918136,
-        "long": 151.233631,
+        "lat": -33.918306,
+        "long": 151.233301,
         "rooms": {
             "121": {
                 "id": "K-H22-121",
@@ -1524,8 +1524,8 @@
     "K-G14": {
         "name": "Webster Building",
         "id": "K-G14",
-        "lat": -33.917688,
-        "long": 151.23067,
+        "lat": -33.91764,
+        "long": 151.230611,
         "rooms": {
             "127": {
                 "id": "K-G14-127",
@@ -1568,8 +1568,8 @@
     "K-G15": {
         "name": "Webster Theatres",
         "id": "K-G15",
-        "lat": -33.917464,
-        "long": 151.230697,
+        "lat": -33.917435,
+        "long": 151.230668,
         "rooms": {
             "190": {
                 "id": "K-G15-190",

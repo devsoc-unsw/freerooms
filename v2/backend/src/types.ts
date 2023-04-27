@@ -68,3 +68,12 @@ export type Filters = {
   location?: Location;
   duration?: number;
 }
+
+export type LocationData = {
+  buildings: Array<{
+    name: string;
+    id: string;
+    lat: number;
+    long: number;
+  }>;
+}
