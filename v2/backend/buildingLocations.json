@@ -1,0 +1,208 @@
+{
+  "buildings":[
+    {
+      "name":"AGSM",
+      "id":"K-G27",
+      "lat":-33.918520,
+      "long":151.235664
+    },
+    {
+      "name":"Ainsworth Building",
+      "id":"K-J17",
+      "lat":-33.918527,
+      "long":151.231260
+    },
+    {
+      "name":"Biological Sciences (North)",
+      "id":"K-D26",
+      "lat":-33.917381,
+      "long":151.235403
+    },
+    {
+      "name":"Blockhouse",
+      "id":"K-G6",
+      "lat":-33.916937,
+      "long":151.226826
+    },
+    {
+      "name":"Central Lecture Block",
+      "id":"K-E19",
+      "lat":-33.917077,
+      "long":151.232811
+    },
+    {
+      "name":"Chemical Sciences",
+      "id":"K-F10",
+      "lat":-33.917108,
+      "long":151.228826
+    },
+    {
+      "name":"Civil Engineering Building",
+      "id":"K-H20",
+      "lat":-33.918234,
+      "long":151.232835
+    },
+    {
+      "name":"Colombo Building",
+      "id":"K-B16",
+      "lat":-33.915902,
+      "long":151.231367
+    },
+    {
+      "name":"Electrical Engineering Bldg",
+      "id":"K-G17",
+      "lat":-33.917790,
+      "long":151.231500
+    },
+    {
+      "name":"Goldstein Hall",
+      "id":"K-D16",
+      "lat":-33.916585,
+      "long":151.231394
+    },
+    {
+      "name":"John Goodsell Building",
+      "id":"K-F20",
+      "lat":-33.917492,
+      "long":151.232712
+    },
+    {
+      "name":"John Niland Scientia",
+      "id":"K-G19",
+      "lat":-33.918000,
+      "long":151.232390
+    },
+    {
+      "name":"Keith Burrows Theatre",
+      "id":"K-J14",
+      "lat":-33.918207,
+      "long":151.230109
+    },
+    {
+      "name":"Law Building",
+      "id":"K-F8",
+      "lat":-33.917004,
+      "long":151.227791
+    },
+    {
+      "name":"Library Stage 2",
+      "id":"K-F21",
+      "lat":-33.917528,
+      "long":151.233439
+    },
+    {
+      "name":"Mathews Building",
+      "id":"K-F23",
+      "lat":-33.917741,
+      "long":151.234563
+    },
+    {
+      "name":"Mathews Theatres",
+      "id":"K-D23",
+      "lat":-33.917178,
+      "long":151.234177
+    },
+    {
+      "name":"Morven Brown Building",
+      "id":"K-C20",
+      "lat":-33.916792,
+      "long":151.232828
+    },
+    {
+      "name":"Newton Building",
+      "id":"K-J12",
+      "lat":-33.918363,
+      "long":151.229791
+    },
+    {
+      "name":"Old Main Building",
+      "id":"K-K15",
+      "lat":-33.918489,
+      "long":151.230731
+    },
+    {
+      "name":"Physics Theatre",
+      "id":"K-K14",
+      "lat":-33.918514,
+      "long":151.230082
+    },
+    {
+      "name":"Quadrangle Building",
+      "id":"K-E15",
+      "lat":-33.917264,
+      "long":151.230955
+    },
+    {
+      "name":"Rex Vowels Theatre",
+      "id":"K-F17",
+      "lat":-33.917536,
+      "long":151.231493
+    },
+    {
+      "name":"Rupert Myers Building",
+      "id":"K-M15",
+      "lat":-33.919533,
+      "long":151.230552
+    },
+    {
+      "name":"Science & Engineering Building",
+      "id":"K-E8",
+      "lat":-33.916540,
+      "long":151.227689
+    },
+    {
+      "name":"Science Theatre",
+      "id":"K-F13",
+      "lat":-33.917204,
+      "long":151.229831
+    },
+    {
+      "name":"Sir John Clancy Auditorium",
+      "id":"K-C24",
+      "lat":-33.916960,
+      "long":151.234542
+    },
+    {
+      "name":"Squarehouse",
+      "id":"K-E4",
+      "lat":-33.916185,
+      "long":151.226284
+    },
+    {
+      "name":"The Red Centre",
+      "id":"K-H13",
+      "lat":-33.917876,
+      "long":151.230057
+    },
+    {
+      "name":"Tyree Energy Technology",
+      "id":"K-H6",
+      "lat":-33.917721,
+      "long":151.226897
+    },
+    {
+      "name":"UNSW Business School",
+      "id":"K-E12",
+      "lat":-33.916800,
+      "long":151.229611
+    },
+    {
+      "name":"Vallentine Annexe",
+      "id":"K-H22",
+      "lat":-33.918306,
+      "long":151.233301
+    },
+    {
+      "name":"Webster Building",
+      "id":"K-G14",
+      "lat":-33.917640,
+      "long":151.230611
+    },
+    {
+      "name":"Webster Theatres",
+      "id":"K-G15",
+      "lat":-33.917435,
+      "long":151.230668
+    }
+  ]
+}
