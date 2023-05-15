@@ -45,11 +45,11 @@ const LocationMarker = () => {
 };
 
 interface MapProps {
-  setCurrentBuilding: (building: Building) => void;
   roomStatusData: RoomsReturnData | undefined;
+  setCurrentBuilding: (building: Building) => void;
 }
 
-export const Map = ({ setCurrentBuilding, roomStatusData }: MapProps) => {
+export const Map = ({ roomStatusData, setCurrentBuilding }: MapProps) => {
   const [buildingData, setBuildingData] = useState<BuildingReturnData>({
     buildings: [],
   });
@@ -96,20 +96,20 @@ export const Map = ({ setCurrentBuilding, roomStatusData }: MapProps) => {
   ];
 
   // Get current location of user
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      (position: GeolocationPosition) => {
-        const pos = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        };
-        setUserLat(pos.lat);
-        setUserLng(pos.lng);
-      }
-    );
-  }
-
-  // TODO: Create a test marker symbol to see which coordinates are mapped to what (i.e. see what the offsets are)
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position: GeolocationPosition) => {
+          const pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+          setUserLat(pos.lat);
+          setUserLng(pos.lng);
+        }
+      );
+    }
+  }, []);
 
   // TODO: MarkerSymbol component to handle failure cases for getNumFreerooms()
   return (
