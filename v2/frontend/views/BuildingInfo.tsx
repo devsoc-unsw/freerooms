@@ -4,15 +4,22 @@ import Box, { BoxProps } from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import { styled } from "@mui/material/styles";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import Link from 'next/link';
 import Image, { ImageProps } from "next/image";
 import React from "react";
 
 import Button from "../components/Button";
-import { Building, BuildingStatus, RoomsReturnData } from "../types";
+import {
+  Building,
+  BuildingStatus,
+  RoomsReturnData,
+  RoomAvailability,
+} from "../types";
+import toSydneyTime from "../utils/toSydneyTime";
 
 const INITIALISING = -2;
 const FAILED = -1;
@@ -89,7 +96,7 @@ const BuildingInfo: React.FC<{
   if (!building) return <></>;
 
   const customTextField = (
-    params: JSX.IntrinsicAttributes & TextFieldProps,
+    params: JSX.IntrinsicAttributes & TextFieldProps
   ) => (
     <TextField
       {...params}
@@ -99,6 +106,43 @@ const BuildingInfo: React.FC<{
       }}
     />
   );
+
+  const RoomAvailabilityMessages = (roomId: string) => {
+    if (rooms == undefined) {
+      throw new Error("No rooms");
+    }
+    const room = rooms[roomId];
+    const date = new Date(room["endtime"]);
+    const hoursMinutes = date.toLocaleTimeString("en-AU", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+
+    const roomStatusColor = {
+      free: "#2AA300",
+      busy: "#D30000",
+      soon: "#ffa600",
+    };
+    const roomStatusMessage = {
+      free: "Available",
+      busy: "Unavailable",
+      soon: "Available soon at " + hoursMinutes,
+    };
+    return (
+      <IndiviRoomBox key={roomId}>
+        {roomId}{" "}
+        <Typography
+          sx={{ fontSize: 16, fontWeight: 500 }}
+          style={{
+            color: roomStatusColor[room["status"]],
+          }}
+        >
+          {roomStatusMessage[room["status"]]}
+        </Typography>
+      </IndiviRoomBox>
+    );
+  };
 
   return (
     <MainBox>
@@ -152,13 +196,13 @@ const BuildingInfo: React.FC<{
           <DesktopDatePicker
             inputFormat="dd/MM/yyyy"
             value={datetime}
-            onChange={(newValue) => setDatetime(newValue)}
+            onChange={(newValue) => setDatetime(newValue && toSydneyTime(newValue))}
             renderInput={customTextField}
           />
           <div style={{ width: 10 }} />
           <TimePicker
             value={datetime}
-            onChange={(newValue) => setDatetime(newValue)}
+            onChange={(newValue) => setDatetime(newValue && toSydneyTime(newValue))}
             renderInput={customTextField}
           />
         </div>
@@ -166,22 +210,7 @@ const BuildingInfo: React.FC<{
 
       <RoomBox>
         {rooms ? (
-          Object.keys(rooms).map((roomId) => {
-            const room = rooms[roomId];
-            return (
-              <IndiviRoomBox key={roomId}>
-                {roomId}{" "}
-                <Typography
-                  sx={{ fontSize: 16, fontWeight: 500 }}
-                  style={{
-                    color: room["status"] === "free" ? "#2AA300" : "#D30000",
-                  }}
-                >
-                  {room["status"] === "free" ? "Available" : "Unavailable"}
-                </Typography>
-              </IndiviRoomBox>
-            );
-          })
+          Object.keys(rooms).map((roomId) => RoomAvailabilityMessages(roomId))
         ) : (
           <Typography
             sx={{

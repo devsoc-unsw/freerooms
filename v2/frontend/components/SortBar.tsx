@@ -1,8 +1,9 @@
 import FilterListIcon from "@mui/icons-material/FilterList";
+import { ClickAwayListener } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import Box, { BoxProps } from "@mui/material/Box";
-import Checkbox from "@mui/material/Checkbox";
 import Container from "@mui/material/Container";
+import Radio from "@mui/material/Radio";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import React, { useState } from "react";
@@ -24,6 +25,9 @@ const StyledSortButton = styled(Box)<BoxProps>(({ theme }) => ({
   borderStyle: "solid",
   borderColor: theme.palette.primary.main,
   zIndex: 10,
+  ":hover": {
+    cursor: "pointer"
+  }
 }));
 
 const StyledDropDownMenu = styled(Box)<BoxProps>(() => ({
@@ -38,6 +42,9 @@ const StyledDropDownMenu = styled(Box)<BoxProps>(() => ({
   borderWidth: 1,
   borderStyle: "solid",
   borderColor: "#BCBCBC",
+  ":hover": {
+    cursor: "auto"
+  }
 }));
 
 const StyledHeader = styled(Box)<BoxProps>(() => ({
@@ -50,40 +57,21 @@ const StyledHeader = styled(Box)<BoxProps>(() => ({
 const StyledAccordian = styled(Accordion)(({ theme }) => ({
   backgroundColor: "#fff",
   color: "#000",
-  transition: "all 0.1s ease-in-out",
-  "&:hover": {
-    backgroundColor: theme.palette.primary.main,
-    color: "#fff",
-  },
+  transition: "all 0.1s ease-in-out"
 }));
 
 const SortBar: React.FC<{
-  filters: string,
-  setFilters: (filters: string) => void
-}> = ({ filters, setFilters }) => {
+  sort: string,
+  setSort: (sort: string) => void
+}> = ({ sort, setSort }) => {
 
   // Hide and close Dropdown
   const [open, setOpen] = useState(false);
-  const toggle = (open: boolean) => {
-    setOpen(!open);
-  };
-
-  // Handle user selecting a filter, each dropdown select has an associated key
-  const handleSelect = (key: string, item: DropDownItem) => {
-    if (filters.includes(item.value)) {
-      // If the same as already selected
-      return;
-    } else {
-      // Otherwise, spread existing filters and set key
-      setFilters(item.value);
-    }
-  };
 
   return (
-    <>
-      <StyledSortButton>
+    <ClickAwayListener onClickAway={() => setOpen(false)}>
+      <StyledSortButton onClick={() => setOpen(!open)}>
         <Stack
-          onClick={() => toggle(open)}
           direction="row"
           spacing={1.5}
           alignItems="center"
@@ -94,15 +82,15 @@ const SortBar: React.FC<{
           <p style={{ color: "#F77F00", fontWeight: "bold" }}>Sort</p>
         </Stack>
         {open && (
-          <Container>
+          <Container onClick={e => e.stopPropagation()}>
             <StyledDropDownMenu>
               <StyledHeader>
                 <h3>Sort</h3>
               </StyledHeader>
               {dropdowns.map(dropdown => (
                 <StyledAccordian key={dropdown.value}>
-                  <div onClick={() => handleSelect(dropdown.value, dropdown)} key={dropdown.value}>
-                    <Checkbox checked={filters.includes(dropdown.value)} />
+                  <div onClick={() => setSort(dropdown.value)} key={dropdown.value}>
+                    <Radio checked={sort === dropdown.value} />
                     {dropdown.text}
                   </div>
                 </StyledAccordian>
@@ -111,7 +99,7 @@ const SortBar: React.FC<{
           </Container>
         )}
       </StyledSortButton>
-    </>
+    </ClickAwayListener>
   );
 };
 

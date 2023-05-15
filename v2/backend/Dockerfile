@@ -1,4 +1,4 @@
-FROM node:16.19-alpine as builder
+FROM node:16.20-alpine as builder
 RUN npm i -g pnpm
 
 # Set the current working directory inside the container
@@ -11,7 +11,7 @@ COPY . .
 
 RUN pnpm run build
 
-FROM node:16.19-alpine as runner
+FROM node:16.20-alpine as runner
 RUN npm i -g pnpm
 WORKDIR /app
 
@@ -19,7 +19,7 @@ COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --production
 
 COPY --from=builder /app/dist ./dist
-COPY database.json ./
+COPY database.json buildingLocations.json ./
 
 EXPOSE 3000
 

@@ -1,3 +1,5 @@
+"use client";
+
 /*
   This is the home page (list view of all the buildings)
 */
@@ -10,13 +12,13 @@ import Drawer from "@mui/material/Drawer";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import axios from "axios";
-import { DateTime } from "luxon";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
 import React from "react";
 
 import Branding from "../components/Branding";
+// TODO: for some reason these buttons are blue now
 import Button from "../components/Button";
 import FilterBar from "../components/FilterBar";
 import Landing from "../components/Landing";
@@ -35,8 +37,9 @@ import BuildingInfo from "../views/BuildingInfo";
 import CardList from "../views/CardList";
 
 const Home: NextPage<{}> = () => {
-  const router = useRouter();
-  const { building } = router.query;
+  // const router = useRouter();
+  // @ts-ignore
+  const building = useSearchParams().get("");
 
   const [buildingData, setBuildingData] = React.useState<BuildingReturnData>({
     buildings: [],
@@ -65,8 +68,7 @@ const Home: NextPage<{}> = () => {
     const fetchRoomStatus = () => {
       const params: RoomsRequestParams = { ...filters };
       if (datetime) {
-        params.datetime =
-          DateTime.fromJSDate(datetime).toFormat("yyyy-MM-dd'T'HH:mm");
+        params.datetime = datetime.toISOString();
       }
 
       axios
@@ -92,7 +94,7 @@ const Home: NextPage<{}> = () => {
       );
       if (selectedBuilding) {
         setCurrentBuilding(selectedBuilding);
-        router.replace("/", undefined, { shallow: true });
+        // router.replace("/", undefined, { shallow: true });
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -105,6 +107,8 @@ const Home: NextPage<{}> = () => {
     setButtonText(buttonText == "Map View" ? "List View" : "Map View");
   };
 
+  // @ts-ignore
+  // @ts-ignore
   return (
     <Container maxWidth={false}>
       <Head>
@@ -149,29 +153,31 @@ const Home: NextPage<{}> = () => {
           </div>
         </AppBar>
         <Main open={drawerOpen}>
-          {showLanding ? <Landing setShowLanding={setShowLanding} /> : null}
+          {/*{showLanding ? <Landing setShowLanding={setShowLanding} /> : null}*/}
           <div id={"Home-Building-Tiles"}>
-            <div
-              id={"Home-Options"}
-              style={{ display: "flex", justifyContent: "space-between" }}
-            >
-              <FilterBar filters={filters} setFilters={setFilters} />
-              <SearchBar setQuery={setQuery}></SearchBar>
-              <SortBar filters={sort} setFilters={setSort}></SortBar>
-            </div>
             {showMap ? (
               <Map
                 roomStatusData={roomStatusData}
                 setCurrentBuilding={setCurrentBuilding}
               />
             ) : (
-              <CardList
-                buildingData={buildingData}
-                setCurrentBuilding={setCurrentBuilding}
-                sort={sort}
-                query={query}
-                roomStatusData={roomStatusData}
-              />
+              <>
+                <div
+                  id={"Home-Options"}
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <FilterBar filters={filters} setFilters={setFilters} />
+                  <SearchBar setQuery={setQuery}></SearchBar>
+                  <SortBar sort={sort} setSort={setSort}></SortBar>
+                </div>
+                <CardList
+                  buildingData={buildingData}
+                  setCurrentBuilding={setCurrentBuilding}
+                  sort={sort}
+                  query={query}
+                  roomStatusData={roomStatusData}
+                />
+              </>
             )}
           </div>
         </Main>
