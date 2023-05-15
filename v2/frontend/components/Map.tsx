@@ -13,7 +13,7 @@ import { getNumFreerooms, getTotalRooms } from "../utils/utils";
 import MarkerSymbol from "./MarkerSymbol";
 
 const containerStyle = {
-  height: "700px", // TODO: Make this responsive
+  height: "calc(100vh - 86.5px)", // 86.5px is the height of the header
 };
 
 const center = {
@@ -113,7 +113,8 @@ export const Map = ({ roomStatusData, setCurrentBuilding }: MapProps) => {
 
   // TODO: MarkerSymbol component to handle failure cases for getNumFreerooms()
   return (
-    <>
+    // 86.5 is the height of the header
+    <div style={{ position: "relative", top: "86.5px" }}>
       <LoadScript
         googleMapsApiKey={
           process.env.NODE_ENV === "development"
@@ -137,9 +138,9 @@ export const Map = ({ roomStatusData, setCurrentBuilding }: MapProps) => {
           }}
           zoom={17.5}
         >
-          {buildingData.buildings.map((building, index) => (
+          {buildingData.buildings.map((building) => (
             <OverlayViewF
-              key={index}
+              key={building.id}
               mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
               position={{
                 lat: building.lat,
@@ -169,6 +170,6 @@ export const Map = ({ roomStatusData, setCurrentBuilding }: MapProps) => {
           )}
         </GoogleMap>
       </LoadScript>
-    </>
+    </div>
   );
 };
