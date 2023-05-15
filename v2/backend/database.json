@@ -2,8 +2,8 @@
     "K-G27": {
         "name": "AGSM",
         "id": "K-G27",
-        "lat": -33.91852,
-        "long": 151.235664,
+        "lat": -33.91833,
+        "long": 151.2357,
         "rooms": {
             "G03": {
                 "id": "K-G27-G03",
@@ -52,8 +52,8 @@
     "K-J17": {
         "name": "Ainsworth Building",
         "id": "K-J17",
-        "lat": -33.918527,
-        "long": 151.23126,
+        "lat": -33.91835,
+        "long": 151.23131,
         "rooms": {
             "101": {
                 "id": "K-J17-101",
@@ -102,7 +102,7 @@
     "K-H13": {
         "name": "Anita B. Lawrence Centre",
         "id": "K-H13",
-        "lat": -33.917876,
+        "lat": -33.91785,
         "long": 151.230057,
         "rooms": {
             "1040": {
@@ -200,7 +200,7 @@
     "K-D26": {
         "name": "Biological Sciences (North)",
         "id": "K-D26",
-        "lat": -33.917381,
+        "lat": -33.91734,
         "long": 151.235403,
         "rooms": {
             "G07": {
@@ -214,7 +214,7 @@
     "K-G6": {
         "name": "Blockhouse",
         "id": "K-G6",
-        "lat": -33.916937,
+        "lat": -33.91695,
         "long": 151.226826,
         "rooms": {
             "G13": {
@@ -252,8 +252,8 @@
     "K-H20": {
         "name": "Civil Engineering Building",
         "id": "K-H20",
-        "lat": -33.918234,
-        "long": 151.232835,
+        "lat": -33.91821,
+        "long": 151.23275,
         "rooms": {
             "101": {
                 "id": "K-H20-101",
@@ -303,7 +303,7 @@
         "name": "Colombo Building",
         "id": "K-B16",
         "lat": -33.915902,
-        "long": 151.231367,
+        "long": 151.23136,
         "rooms": {
             "LG01": {
                 "id": "K-B16-LG01",
@@ -341,7 +341,7 @@
         "name": "Electrical Engineering Bldg",
         "id": "K-G17",
         "lat": -33.91779,
-        "long": 151.2315,
+        "long": 151.23165,
         "rooms": {
             "G03": {
                 "id": "K-G17-G03",
@@ -384,8 +384,8 @@
     "K-D16": {
         "name": "Goldstein Hall",
         "id": "K-D16",
-        "lat": -33.916585,
-        "long": 151.231394,
+        "lat": -33.91657,
+        "long": 151.23165,
         "rooms": {
             "G01": {
                 "id": "K-D16-G01",
@@ -440,8 +440,8 @@
     "K-F20": {
         "name": "John Goodsell Building",
         "id": "K-F20",
-        "lat": -33.917492,
-        "long": 151.232712,
+        "lat": -33.917485,
+        "long": 151.23265,
         "rooms": {
             "LG19": {
                 "id": "K-F20-LG19",
@@ -460,7 +460,7 @@
     "K-G19": {
         "name": "John Niland Scientia",
         "id": "K-G19",
-        "lat": -33.918,
+        "lat": -33.91795,
         "long": 151.23239,
         "rooms": {
             "LG02": {
@@ -474,8 +474,8 @@
     "K-F10": {
         "name": "June Griffith Building",
         "id": "K-F10",
-        "lat": -33.917108,
-        "long": 151.228826,
+        "lat": -33.91721,
+        "long": 151.22881,
         "rooms": {
             "M10": {
                 "id": "K-F10-M10",
@@ -506,8 +506,8 @@
     "K-J14": {
         "name": "Keith Burrows Theatre",
         "id": "K-J14",
-        "lat": -33.918207,
-        "long": 151.230109,
+        "lat": -33.91815,
+        "long": 151.23012,
         "rooms": {
             "G5": {
                 "id": "K-J14-G5",
@@ -520,7 +520,7 @@
     "K-F8": {
         "name": "Law Building",
         "id": "K-F8",
-        "lat": -33.917004,
+        "lat": -33.91699,
         "long": 151.227791,
         "rooms": {
             "101": {
@@ -631,7 +631,7 @@
         "name": "Library Stage 2",
         "id": "K-F21",
         "lat": -33.917528,
-        "long": 151.233439,
+        "long": 151.23348,
         "rooms": {
             "176A": {
                 "id": "K-F21-176A",
@@ -650,8 +650,8 @@
     "K-F23": {
         "name": "Mathews Building",
         "id": "K-F23",
-        "lat": -33.917741,
-        "long": 151.234563,
+        "lat": -33.9177,
+        "long": 151.23424,
         "rooms": {
             "101": {
                 "id": "K-F23-101",
@@ -814,8 +814,8 @@
     "K-D23": {
         "name": "Mathews Theatres",
         "id": "K-D23",
-        "lat": -33.917178,
-        "long": 151.234177,
+        "lat": -33.91728,
+        "long": 151.23403,
         "rooms": {
             "201": {
                 "id": "K-D23-201",
@@ -846,7 +846,7 @@
     "K-C20": {
         "name": "Morven Brown Building",
         "id": "K-C20",
-        "lat": -33.916792,
+        "lat": -33.91675,
         "long": 151.232828,
         "rooms": {
             "G3": {
@@ -890,8 +890,8 @@
     "K-J12": {
         "name": "Newton Building",
         "id": "K-J12",
-        "lat": -33.918363,
-        "long": 151.229791,
+        "lat": -33.91823,
+        "long": 151.22918,
         "rooms": {
             "306": {
                 "id": "K-J12-306",
@@ -960,8 +960,8 @@
     "K-E19": {
         "name": "Patricia O'Shane Building",
         "id": "K-E19",
-        "lat": -33.917077,
-        "long": 151.232811,
+        "lat": -33.9171205,
+        "long": 151.232465,
         "rooms": {
             "103": {
                 "id": "K-E19-103",
@@ -1016,8 +1016,8 @@
     "K-K14": {
         "name": "Physics Theatre",
         "id": "K-K14",
-        "lat": -33.918514,
-        "long": 151.230082,
+        "lat": -33.91851,
+        "long": 151.23007,
         "rooms": {
             "19": {
                 "id": "K-K14-19",
@@ -1030,8 +1030,8 @@
     "K-E15": {
         "name": "Quadrangle Building",
         "id": "K-E15",
-        "lat": -33.917264,
-        "long": 151.230955,
+        "lat": -33.91725,
+        "long": 151.231,
         "rooms": {
             "1001": {
                 "id": "K-E15-1001",
@@ -1200,7 +1200,7 @@
     "K-F17": {
         "name": "Rex Vowels Theatre",
         "id": "K-F17",
-        "lat": -33.917536,
+        "lat": -33.91752,
         "long": 151.231493,
         "rooms": {
             "LG3": {
@@ -1214,7 +1214,7 @@
     "K-M15": {
         "name": "Rupert Myers Building",
         "id": "K-M15",
-        "lat": -33.919533,
+        "lat": -33.919525,
         "long": 151.230552,
         "rooms": {
             "1001": {
@@ -1228,7 +1228,7 @@
     "K-E8": {
         "name": "Science & Engineering Building",
         "id": "K-E8",
-        "lat": -33.91654,
+        "lat": -33.9165,
         "long": 151.227689,
         "rooms": {
             "B24": {
@@ -1418,7 +1418,7 @@
     "K-E12": {
         "name": "UNSW Business School",
         "id": "K-E12",
-        "lat": -33.9168,
+        "lat": -33.91675,
         "long": 151.229611,
         "rooms": {
             "105": {
@@ -1510,7 +1510,7 @@
     "K-H22": {
         "name": "Vallentine Annexe",
         "id": "K-H22",
-        "lat": -33.918306,
+        "lat": -33.918315,
         "long": 151.233301,
         "rooms": {
             "121": {
@@ -1524,8 +1524,8 @@
     "K-G14": {
         "name": "Webster Building",
         "id": "K-G14",
-        "lat": -33.91764,
-        "long": 151.230611,
+        "lat": -33.91755,
+        "long": 151.23013,
         "rooms": {
             "127": {
                 "id": "K-G14-127",
