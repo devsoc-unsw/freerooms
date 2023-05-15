@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react";
 
 import { API_URL } from "../config";
 import { Building, BuildingReturnData, RoomsReturnData } from "../types";
-import { getNumFreerooms } from "../utils/utils";
+import { getNumFreerooms, getTotalRooms } from "../utils/utils";
 import MarkerSymbol from "./MarkerSymbol";
 
 const containerStyle = {
@@ -22,8 +22,8 @@ const center = {
 };
 
 const mapBounds = {
-  north: -33.914491,
-  south: -33.921608,
+  north: -33.915318,
+  south: -33.91995,
   west: 151.225258,
   east: 151.237736,
 };
@@ -149,6 +149,9 @@ export const Map = ({ setCurrentBuilding, roomStatusData }: MapProps) => {
               <MarkerSymbol
                 building={building}
                 freerooms={getNumFreerooms(roomStatusData, building.id)}
+                totalRooms={getTotalRooms(roomStatusData, building.id)}
+                // userCoords={{ lat: userLat, lng: userLng }}
+                distance={100} // TODO: Stop this from being hardcoded
                 setBuilding={setCurrentBuilding}
               ></MarkerSymbol>
             </OverlayViewF>

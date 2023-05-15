@@ -16,3 +16,13 @@ export const getNumFreerooms = (
   }
   return freerooms;
 };
+
+export const getTotalRooms = (
+  roomStatus: RoomsReturnData | undefined,
+  buildingId: string
+): number => {
+  if (roomStatus === undefined) return INITIALISING;
+  if (!(buildingId in roomStatus)) return FAILED;
+
+  return Object.values(roomStatus[buildingId]).length;
+};
