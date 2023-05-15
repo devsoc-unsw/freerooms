@@ -1,5 +1,6 @@
 import Box from "@mui/material/Box";
 import {
+  DistanceMatrixService,
   GoogleMap,
   LoadScript,
   OverlayView,
@@ -23,7 +24,7 @@ const center = {
 
 const mapBounds = {
   north: -33.915318,
-  south: -33.91995,
+  south: -33.9202,
   west: 151.225258,
   east: 151.237736,
 };
@@ -54,6 +55,8 @@ export const Map = ({ roomStatusData, setCurrentBuilding }: MapProps) => {
     buildings: [],
   });
 
+  const [distance, setDistance] = useState<number>();
+  // Default values: center coordinates of map
   const [userLat, setUserLat] = useState<number>();
   const [userLng, setUserLng] = useState<number>();
 
@@ -128,7 +131,8 @@ export const Map = ({ roomStatusData, setCurrentBuilding }: MapProps) => {
           options={{
             clickableIcons: false,
             // disableDefaultUI: true,
-            panControl: false,
+            fullscreenControl: false,
+            mapTypeControl: false,
             restriction: {
               latLngBounds: mapBounds,
               strictBounds: false,
@@ -139,23 +143,39 @@ export const Map = ({ roomStatusData, setCurrentBuilding }: MapProps) => {
           zoom={17.5}
         >
           {buildingData.buildings.map((building) => (
-            <OverlayViewF
-              key={building.id}
-              mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
-              position={{
-                lat: building.lat,
-                lng: building.long,
-              }}
-            >
-              <MarkerSymbol
-                building={building}
-                freerooms={getNumFreerooms(roomStatusData, building.id)}
-                totalRooms={getTotalRooms(roomStatusData, building.id)}
-                // userCoords={{ lat: userLat, lng: userLng }}
-                distance={100} // TODO: Stop this from being hardcoded
-                setBuilding={setCurrentBuilding}
-              ></MarkerSymbol>
-            </OverlayViewF>
+            <>
+              <DistanceMatrixService
+                options={{
+                  origins: [
+                    {
+                      lat: userLat ? userLat : center.lat,
+                      lng: userLng ? userLng : center.lng,
+                    },
+                  ],
+                  destinations: [{ lat: building.lat, lng: building.long }],
+                  travelMode: google.maps.TravelMode.WALKING,
+                }}
+                callback={(response) => {
+                  console.log(response);
+                }}
+              />
+              <OverlayViewF
+                key={building.id}
+                mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+                position={{
+                  lat: building.lat,
+                  lng: building.long,
+                }}
+              >
+                <MarkerSymbol
+                  building={building}
+                  freerooms={getNumFreerooms(roomStatusData, building.id)}
+                  totalRooms={getTotalRooms(roomStatusData, building.id)}
+                  distance={distance}
+                  setBuilding={setCurrentBuilding}
+                ></MarkerSymbol>
+              </OverlayViewF>
+            </>
           ))}
           {userLat && userLng && (
             <OverlayViewF
