@@ -2,7 +2,12 @@
 
 🥾Have you ever wandered around campus, searching for an empty study room?🚪 Have you ever wanted to study somewhere other than the weird smelling ASB🏢, the loud corridors of Ainsworth 🏦 or the poorly decorated main library? 📚 If you are a director or exec, have you ever wanted to find a room for your in-person meetings or society event? Whether you're in need of a quiet study nook or a large space for your society's next big event, Freerooms has got you covered!
 
-🌐💡 We embrace the latest technologies to make Freerooms the best platform out there. Get hands-on experience with cutting-edge tools like React/Next.js (frontend), React Native (mobile app), Node (backend) and TypeScript (everything), and more! 🤓👨‍💻
+🌐💡 We embrace the latest technologies to make Freerooms the best platform out there:
+- React/Next.js (frontend)
+- React Native (mobile app)
+- Node/Express (backend)
+- TypeScript (everything)
+and more! 🤓👨‍💻
 
 You can find a live build of Freerooms at [https://freerooms.csesoc.app](https://freerooms.csesoc.app/).
 
