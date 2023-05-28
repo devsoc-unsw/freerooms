@@ -1,5 +1,7 @@
 # Freerooms by CSESoc
 
+Freerooms is a tool designed to help UNSW students find empty rooms on campus.
+
 🥾Have you ever wandered around campus, searching for an empty study room?🚪 Have you ever wanted to study somewhere other than the weird smelling ASB🏢, the loud corridors of Ainsworth 🏦 or the poorly decorated main library? 📚 If you are a director or exec, have you ever wanted to find a room for your in-person meetings or society event? Whether you're in need of a quiet study nook or a large space for your society's next big event, Freerooms has got you covered!
 
 🌐💡 We embrace the latest technologies to make Freerooms the best platform out there:
