@@ -2,12 +2,19 @@ import { calculateStatus } from '../src/helpers';
 // -----------------------------------------------------------
 // --------------------------DATA-----------------------------
 
+// Randomly selected base date - midday on May 26, 2023
+const BASE_DATE = new Date('2023-05-26T12:00:00.000');
+
 // -----------------------------------------------------------
 // --------------------------HELPERS--------------------------
 
-function minutesAfterNow(num: number): string {
+function baseDate(): Date {
+  return new Date(BASE_DATE);
+}
+
+function minutesFromBase(num: number): string {
   return new Date(
-    new Date().setMinutes(new Date().getMinutes() + num)
+    baseDate().setMinutes(baseDate().getMinutes() + num)
   ).toISOString();
 }
 
@@ -25,12 +32,12 @@ const ONE_DAY_MINUTES = 1440;
  */
 
 describe('Variable Classes', () => {
-  console.log(new Date());
+  console.log(baseDate());
 
   test.each([
     // No Classes Whatsoever
     {
-      datetime: new Date(),
+      datetime: baseDate(),
       classes: [],
       minDuration: 0,
       expected: {
@@ -39,22 +46,22 @@ describe('Variable Classes', () => {
       },
     },
     {
-      datetime: new Date(),
+      datetime: baseDate(),
       classes: [
         {
           courseCode: '2521',
-          start: new Date().toString(),
-          end: minutesAfterNow(60),
+          start: baseDate().toISOString(),
+          end: minutesFromBase(60),
         },
         {
           courseCode: '2521',
-          start: new Date().toString(),
-          end: minutesAfterNow(120),
+          start: baseDate().toISOString(),
+          end: minutesFromBase(120),
         },
         {
           courseCode: '2521',
-          start: new Date().toString(),
-          end: minutesAfterNow(180),
+          start: baseDate().toISOString(),
+          end: minutesFromBase(180),
         },
       ],
       minDuration: 0,
@@ -79,22 +86,22 @@ describe('Multi-class calculateStatus', () => {
   test.each([
     // Three classes; All start at the same time, but with different end times.
     {
-      datetime: new Date(),
+      datetime: baseDate(),
       classes: [
         {
           courseCode: '2521',
-          start: minutesAfterNow(0),
-          end: minutesAfterNow(60),
+          start: minutesFromBase(0),
+          end: minutesFromBase(60),
         },
         {
           courseCode: '2521',
-          start: minutesAfterNow(0),
-          end: minutesAfterNow(120),
+          start: minutesFromBase(0),
+          end: minutesFromBase(120),
         },
         {
           courseCode: '2521',
-          start: minutesAfterNow(0),
-          end: minutesAfterNow(180),
+          start: minutesFromBase(0),
+          end: minutesFromBase(180),
         },
       ],
       minDuration: 0,
@@ -106,22 +113,22 @@ describe('Multi-class calculateStatus', () => {
     // Multi-Classes, ending days after
     {
 
-      datetime: new Date(),
+      datetime: baseDate(),
       classes: [
         {
           courseCode: '2521',
-          start: minutesAfterNow(0),
-          end: minutesAfterNow(120),
+          start: minutesFromBase(0),
+          end: minutesFromBase(120),
         },
         {
           courseCode: '2521',
-          start: minutesAfterNow(0),
-          end: minutesAfterNow(480),
+          start: minutesFromBase(0),
+          end: minutesFromBase(480),
         },
         {
           courseCode: '2521',
-          start: minutesAfterNow(0),
-          end: minutesAfterNow(ONE_DAY_MINUTES),
+          start: minutesFromBase(0),
+          end: minutesFromBase(ONE_DAY_MINUTES),
         },
       ],
       minDuration: 0,
@@ -146,17 +153,17 @@ describe('Datetime before the start.', () => {
   test.each([
     // Two classes; An hour of free time between now, end of first and beginning of second.
     {
-      datetime: new Date(),
+      datetime: baseDate(),
       classes: [
         {
           courseCode: '1531',
-          start: minutesAfterNow(0),
-          end: minutesAfterNow(60),
+          start: minutesFromBase(0),
+          end: minutesFromBase(60),
         },
         {
           courseCode: '1531',
-          start: minutesAfterNow(120),
-          end: minutesAfterNow(240),
+          start: minutesFromBase(120),
+          end: minutesFromBase(240),
         },
       ],
       minDuration: 60,
@@ -169,22 +176,22 @@ describe('Datetime before the start.', () => {
     // 3 Classes Afterwards, all beginning after datetime.
     // Should not be free!
     {
-      datetime: new Date(),
+      datetime: baseDate(),
       classes: [
         {
           courseCode: '1531',
-          start: minutesAfterNow(60),
-          end: minutesAfterNow(120),
+          start: minutesFromBase(60),
+          end: minutesFromBase(120),
         },
         {
           courseCode: '1531',
-          start: minutesAfterNow(120),
-          end: minutesAfterNow(240),
+          start: minutesFromBase(120),
+          end: minutesFromBase(240),
         },
         {
           courseCode: '1531',
-          start: minutesAfterNow(240),
-          end: minutesAfterNow(480),
+          start: minutesFromBase(240),
+          end: minutesFromBase(480),
         },
       ],
       minDuration: 60,
@@ -210,17 +217,17 @@ describe('Datetime After Start.', () => {
   test.each([
     // Datetime after start
     {
-      datetime: new Date(new Date().setHours(new Date().getHours() + 1)),
+      datetime: new Date(baseDate().setHours(baseDate().getHours() + 1)),
       classes: [
         {
           courseCode: '2511',
-          start: minutesAfterNow(0),
-          end: minutesAfterNow(30),
+          start: minutesFromBase(0),
+          end: minutesFromBase(30),
         },
         {
           courseCode: '2521',
-          start: minutesAfterNow(30),
-          end: minutesAfterNow(45),
+          start: minutesFromBase(30),
+          end: minutesFromBase(45),
         },
       ],
       minDuration: 0,
