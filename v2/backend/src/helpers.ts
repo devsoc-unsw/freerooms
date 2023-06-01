@@ -66,7 +66,7 @@ export const scrapeBuildingData = async (): Promise<void> => {
 }
 
 // Gets the week number from the date (based off current term)
-export const getWeekAndDay = async (date: Date) => { 
+export const getWeekAndDay = async (date: Date) => {
   // Get the term start date
   const termStart = await getStartDate();
   const [day, month, year] = termStart.split("/");
@@ -84,7 +84,7 @@ export const getWeekAndDay = async (date: Date) => {
   return {week, day: dayOfWeek};
 };
 
-// Given a datetime and a list of the room's bookings for 
+// Given a datetime and a list of the room's bookings for
 // the corresponding date, calculate the status of the room
 // If room is not free for the given minimum duration, return null
 export const calculateStatus = (
@@ -94,7 +94,7 @@ export const calculateStatus = (
 ): RoomStatus | null => {
   const roomStatus: RoomStatus = {
     status: "free",
-    endtime: (new Date().setFullYear(new Date().getFullYear() + 1)).toString()
+    endtime: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString()
   };
 
   // Find the first two classes that end after the given time
