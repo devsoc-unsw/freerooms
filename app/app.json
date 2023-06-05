@@ -1,0 +1,33 @@
+{
+  "expo": {
+    "name": "FreeroomsMobile",
+    "slug": "FreeroomsMobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/free_rooms_logo.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/free_rooms_logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
