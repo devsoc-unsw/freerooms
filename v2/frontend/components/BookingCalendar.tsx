@@ -1,6 +1,6 @@
 'use client'
 
-import "react-big-calendar/lib/css/react-big-calendar.css";
+import "../styles/calendar/css/react-big-calendar.css";
 
 import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
