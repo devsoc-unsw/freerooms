@@ -94,7 +94,7 @@ export const calculateStatus = (
 ): RoomStatus | null => {
   const roomStatus: RoomStatus = {
     status: "free",
-    endtime: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString()
+    endtime: new Date(datetime.setFullYear(datetime.getFullYear() + 1)).toISOString()
   };
 
   // Find the first two classes that end after the given time
