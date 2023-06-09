@@ -11,7 +11,7 @@ import Stack from "@mui/material/Stack";
 import { createTheme, styled } from "@mui/material/styles";
 import ThemeProvider from "@mui/system/ThemeProvider";
 import Head from "next/head";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 
 import Branding from "../components/Branding";
@@ -31,6 +31,8 @@ export default function RootLayout({
   const drawerOpen = !!currentBuilding;
 
   const router = useRouter();
+
+  const path = usePathname();
 
   return (
     <html lang="en">
@@ -64,10 +66,16 @@ export default function RootLayout({
         />
       </div>
       <Stack direction="row" spacing={1}>
-        <IconButton aria-label="Browse buildings" href="/browse">
+        <IconButton
+          aria-label="Browse buildings"
+          href={path !== "/browse" ? "/browse" : undefined}
+        >
           <GridIcon/>
         </IconButton>
-        <IconButton aria-label="Go to map" href="/browse">
+        <IconButton
+          aria-label="Go to map"
+          href={path !== "/map" ? "/map" : undefined}
+        >
           <MapIcon/>
         </IconButton>
       </Stack>
