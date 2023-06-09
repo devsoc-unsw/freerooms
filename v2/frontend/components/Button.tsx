@@ -12,6 +12,7 @@ const StyledButton = styled(Button)<ButtonProps>(({ theme }) => ({
     backgroundColor: theme.palette.primary.main,
     color: "#fff",
   },
+  mx: theme.spacing(1)
 }));
 
 export default StyledButton;

@@ -26,14 +26,6 @@
     background-image: linear-gradient(144deg, #ED7014, #ED820E 50%, #FC6A03);
 }
 
-.header-buttons {
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-    margin-right: 2rem;
-    justify-items: center;
-}
-
 @media (max-width: 300px) {
     .header-buttons {
         display: flex;
