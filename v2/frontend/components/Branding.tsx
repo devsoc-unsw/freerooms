@@ -7,10 +7,13 @@ import Image from "next/image";
 import Logo from "../public/assets/favicon/free_rooms_logo.png";
 
 const StyledText = styled(Typography)<TypographyProps>(({ theme }) => ({
-  // TODO: should instead use theme.palette.primary.main
-  color: orange[800],
+  color: theme.palette.primary.main,
   fontWeight: 600,
   fontFamily: "Josefin Sans",
+  fontSize: "2rem",
+  [theme.breakpoints.down('sm')]: {
+    display: "none"
+  }
 }));
 
 const StyledBox = styled(Box)<BoxProps>(({ theme }) => ({
@@ -22,7 +25,7 @@ const StyledBox = styled(Box)<BoxProps>(({ theme }) => ({
   "&:hover": {
     cursor: "pointer",
     opacity: 0.7,
-  },
+  }
 }));
 
 const Branding = (props: BoxProps) => (
@@ -37,16 +40,6 @@ const Branding = (props: BoxProps) => (
       }}
     >
       <StyledText sx={{ lineHeight: 1 }}>Freerooms</StyledText>
-      <StyledText
-        sx={{
-          lineHeight: 1,
-          marginTop: 0.5,
-          fontFamily: "Arial",
-          fontSize: "0.8rem",
-        }}
-      >
-        23T1
-      </StyledText>
     </Box>
   </StyledBox>
 );
