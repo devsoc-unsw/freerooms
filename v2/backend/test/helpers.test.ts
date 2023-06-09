@@ -53,7 +53,7 @@ describe('Variable Classes', () => {
       minDuration: 0,
       expected: {
         status: "free",
-        endtime: yearFromBase().toISOString(),
+        endtime: "",
       },
     },
     {
@@ -78,7 +78,7 @@ describe('Variable Classes', () => {
       minDuration: 0,
       expected: {
         status: "free",
-        endtime: yearFromBase().toISOString(),
+        endtime: "",
         
       },
     },
@@ -88,25 +88,8 @@ describe('Variable Classes', () => {
     minDuration,
     expected,
   }) => {
-    console.log(calculateStatus(datetime, classes, minDuration));
-    console.log(expected);
-    const res = calculateStatus(datetime, classes, minDuration);
-
-    if (res?.status === expected.status) {
-        console.log("Same status");
-    } else {
-        console.log("Not same status");
-    }
-
-    if (res?.endtime === expected.endtime) {
-        console.log("Same endtime");
-    } else {
-        console.log("Not same endtime");
-    }
-
-    // expect(res?.status).toEqual(expected.status);
-    expect(res?.endtime).toEqual(expected.endtime);
-    // expect(calculateStatus(datetime, classes, minDuration)).toStrictEqual(expected);
+   
+    expect(calculateStatus(datetime, classes, minDuration)).toEqual(expected);
   });
 });
 

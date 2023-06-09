@@ -114,6 +114,7 @@ export const calculateStatus = (
 
   if (!firstAfter) {
     // No such class, it is free indefinitely
+    roomStatus.endtime = '';
     return roomStatus;
   }
 
