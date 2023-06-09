@@ -2,7 +2,6 @@ import Box from "@mui/material/Box";
 import {
   DistanceMatrixService,
   GoogleMap,
-  LoadScript,
   OverlayView,
   OverlayViewF,
   useJsApiLoader,
@@ -120,9 +119,6 @@ export const Map = ({ roomStatusData, setCurrentBuilding }: MapProps) => {
         : (process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY_PROD as string),
   });
 
-  // TODO: MarkerSymbol component to handle failure cases for getNumFreerooms()
-
-  // TODO: Calculate distances
   const [distances, setDistances] = useState<number[]>([]);
 
   useEffect(() => {
@@ -150,7 +146,7 @@ export const Map = ({ roomStatusData, setCurrentBuilding }: MapProps) => {
       service.getDistanceMatrix(
         {
           origins: [origin],
-          destinations: destinations.slice(25, buildingData.buildings.length),
+          destinations: destinations.slice(25),
           travelMode: google.maps.TravelMode.WALKING,
         },
         getDistance
