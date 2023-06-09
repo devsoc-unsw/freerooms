@@ -15,7 +15,15 @@ const MarkerSymbol: React.FC<{
   totalRooms: number;
   distance: number | undefined;
   setBuilding: (building: Building) => void;
-}> = ({ building, freerooms, totalRooms, distance, setBuilding }) => {
+  setCurrentHover: (building: Building | null) => void;
+}> = ({
+  building,
+  freerooms,
+  totalRooms,
+  distance,
+  setBuilding,
+  setCurrentHover,
+}) => {
   const [showPopup, setShowPopup] = React.useState(false);
 
   return (
@@ -27,8 +35,14 @@ const MarkerSymbol: React.FC<{
         position: "relative",
         transform: "translate(-50%, -50%)",
       }}
-      onMouseEnter={() => setShowPopup(true)}
-      onMouseLeave={() => setShowPopup(false)}
+      onMouseEnter={() => {
+        setShowPopup(true);
+        setCurrentHover(building);
+      }}
+      onMouseLeave={() => {
+        setShowPopup(false);
+        setCurrentHover(null);
+      }}
     >
       <Typography sx={{ fontSize: 10, fontWeight: 500 }}>
         {building.name}
@@ -46,7 +60,6 @@ const MarkerSymbol: React.FC<{
               ? theme.palette.warning.light
               : theme.palette.error.light,
           position: "relative",
-          zIndex: 1,
           "&:hover": {
             cursor: "pointer",
           },
@@ -54,7 +67,7 @@ const MarkerSymbol: React.FC<{
         onClick={() => setBuilding(building)}
       />
       <Fade in={showPopup} timeout={200}>
-        <div style={{ position: "relative", bottom: -3, zIndex: 2 }}>
+        <div style={{ position: "relative", bottom: -3 }}>
           <MarkerHover
             building={building}
             freerooms={freerooms}

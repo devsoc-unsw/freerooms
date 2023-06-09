@@ -57,6 +57,7 @@ export const Map = ({ roomStatusData, setCurrentBuilding }: MapProps) => {
 
   const [userLat, setUserLat] = useState<number>();
   const [userLng, setUserLng] = useState<number>();
+  const [currentHover, setCurrentHover] = useState<Building | null>();
 
   const getBuildingData = () => {
     fetch(API_URL + "/buildings")
@@ -223,6 +224,9 @@ export const Map = ({ roomStatusData, setCurrentBuilding }: MapProps) => {
                   lat: building.lat,
                   lng: building.long,
                 }}
+                zIndex={
+                  currentHover === null || currentHover !== building ? 1 : 2
+                }
               >
                 <MarkerSymbol
                   building={building}
@@ -230,6 +234,7 @@ export const Map = ({ roomStatusData, setCurrentBuilding }: MapProps) => {
                   totalRooms={getTotalRooms(roomStatusData, building.id)}
                   distance={distances[index]}
                   setBuilding={setCurrentBuilding}
+                  setCurrentHover={setCurrentHover}
                 ></MarkerSymbol>
               </OverlayViewF>
             </Fragment>
