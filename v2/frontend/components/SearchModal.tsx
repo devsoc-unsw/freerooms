@@ -3,6 +3,7 @@ import RoomIcon from '@mui/icons-material/MeetingRoom';
 import SearchIcon from "@mui/icons-material/Search";
 import {
   Autocomplete,
+  capitalize,
   FilterOptionsState,
   Modal,
   Paper,
@@ -16,6 +17,8 @@ import { matchSorter } from "match-sorter";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 
+import useBuildings from "../hooks/useBuildings";
+import { setCurrentBuilding } from "../redux/currentBuildingSlice";
 import { useDispatch } from "../redux/hooks";
 import { Building } from "../types";
 
@@ -36,83 +39,51 @@ type RoomSearchOption = {
   room: { id: string }; // TODO: Add room type when rooms are merged
 }
 
-type SearchOption = BuildingSearchOption | RoomSearchOption;
-
-const options: SearchOption[] = [
-  {
-    type: "room",
-    searchKeys: ["Quadrangle G042", "Quad G042", "K-E15-G042"],
-    room: { id: "K-E15-G042" }
-  },
-  {
-    type: "room",
-    searchKeys: ["Mathews Theatre A", "MathewsThA", "K-D23-201"],
-    room: { id: "K-D23-201" }
-  },
-  {
-    type: "building",
-    searchKeys: ["Ainsworth Building", "K-J17"],
-    building: { name: "Mathews Theatre A", id: "K-D23-201", lat: 0, long: 0 }
-  },
-  {
-    type: "building",
-    searchKeys: ["Patricia O'Shane", "K-E19"],
-    building: { name: "Patricia O'Shane", id: "K-E19", lat: 0, long: 0 }
-  },
-  {
-    type: "room",
-    searchKeys: ["Quadrangle G042a", "Quad G042", "K-E15-G042"],
-    room: { id: "K-E15-G042" }
-  },
-  {
-    type: "room",
-    searchKeys: ["Mathews Theatre Aa", "MathewsThA", "K-D23-201"],
-    room: { id: "K-D23-201" }
-  },
-  {
-    type: "building",
-    searchKeys: ["Ainsworth Buildinga", "K-J17"],
-    building: { name: "Mathews Theatre A", id: "K-D23-201", lat: 0, long: 0 }
-  },
-  {
-    type: "building",
-    searchKeys: ["Patricia O'Shanea", "K-E19"],
-    building: { name: "Patricia O'Shane", id: "K-E19", lat: 0, long: 0 }
-  },
-  {
-    type: "room",
-    searchKeys: ["Quadrangle G042b", "Quad G042", "K-E15-G042"],
-    room: { id: "K-E15-G042" }
-  },
-  {
-    type: "room",
-    searchKeys: ["Mathews Theatre Ab", "MathewsThA", "K-D23-201"],
-    room: { id: "K-D23-201" }
-  },
-  {
-    type: "building",
-    searchKeys: ["Ainsworth Buildingb", "K-J17"],
-    building: { name: "Mathews Theatre A", id: "K-D23-201", lat: 0, long: 0 }
-  },
-  {
-    type: "building",
-    searchKeys: ["Patricia O'Shaneb", "K-E19"],
-    building: { name: "Patricia O'Shane", id: "K-E19", lat: 0, long: 0 }
-  },
-];
+// First search key should always be name
+type SearchOption = (BuildingSearchOption | RoomSearchOption) & {
+  recent?: boolean;
+};
 
 const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const path = usePathname();
 
+  // Fetch options
+  const { buildings } = useBuildings();
+  const options = React.useMemo(() => {
+    const buildingOptions: BuildingSearchOption[] = buildings
+      ? buildings.map(building => ({
+        type: "building",
+        searchKeys: [building.name, building.id],
+        building
+      }))
+      : [];
+
+    // TODO: Actually populate with room options
+    const roomOptions: RoomSearchOption[] = [{
+      type: "room",
+      searchKeys: ["Ainsworth 202", "Ainswth202", "K-J17-202"],
+      room: { id: "K-J17-202" }
+    }];
+
+    return [...roomOptions, ...buildingOptions]
+  }, [buildings])
+
   const filterOptions = (
     options: SearchOption[],
     { inputValue }: FilterOptionsState<SearchOption>
   ) => {
-    return inputValue
-      ? matchSorter(options, inputValue, { keys: ['searchKeys'] })
-      : [];
+    if (inputValue) {
+      const filtered = matchSorter(options, inputValue, { keys: ['searchKeys'] });
+
+      // Make sure buildings come before rooms
+      const buildings = filtered.filter(opt => opt.type === "building");
+      const rooms = filtered.filter(opt => opt.type === "room");
+      return [...buildings, ...rooms];
+    } else {
+      return [];
+    }
   }
 
   const handleSelect = (
@@ -124,10 +95,11 @@ const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
     setOpen(false);
     if (option.type === "room") {
       router.push("/room/" + option.room.id);
-    } else { // option.type === "building
+    } else if (option.type === "building") {
       if (path !== "/browse" && path !== "/map") {
         router.push("/browse");
       }
+      dispatch(setCurrentBuilding(option.building))
     }
   }
 
@@ -142,10 +114,12 @@ const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
           maxWidth: 600,
           margin: '10% auto'
         }}
+        autoFocus
         disablePortal
         freeSolo
         options={options}
         filterOptions={filterOptions}
+        groupBy={option => option.recent ? "Recent" : capitalize(option.type) + "s"}
         renderInput={(params) => (
           <Paper>
             <TextField
