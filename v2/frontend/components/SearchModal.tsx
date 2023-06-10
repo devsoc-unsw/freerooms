@@ -21,6 +21,7 @@ import useBuildings from "../hooks/useBuildings";
 import { setCurrentBuilding } from "../redux/currentBuildingSlice";
 import { useDispatch } from "../redux/hooks";
 import { Building } from "../types";
+import { useLocalStorage } from "usehooks-ts";
 
 interface SearchProps {
   open: boolean;
@@ -48,6 +49,13 @@ const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const path = usePathname();
+
+  const [recentSearches, setRecentSearches] = useLocalStorage<SearchOption[]>(
+    "recentSearches", []
+  );
+  const addRecentSearch = (option: SearchOption) => {
+    setRecentSearches(prevState => [option, ...prevState].slice(0, 3));
+  }
 
   // Fetch options
   const { buildings } = useBuildings();
@@ -82,7 +90,8 @@ const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
       const rooms = filtered.filter(opt => opt.type === "room");
       return [...buildings, ...rooms];
     } else {
-      return [];
+      // Return recent searches
+      return recentSearches.map(option => ({ ...option, recent: true }));
     }
   }
 
@@ -93,6 +102,11 @@ const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
     if (!option || typeof option === "string") return;
 
     setOpen(false);
+
+    if (!option.recent) {
+      addRecentSearch(option);
+    }
+
     if (option.type === "room") {
       router.push("/room/" + option.room.id);
     } else if (option.type === "building") {
@@ -114,7 +128,7 @@ const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
           maxWidth: 600,
           margin: '10% auto'
         }}
-        autoFocus
+        disableCloseOnSelect
         disablePortal
         freeSolo
         options={options}

@@ -1,7 +1,6 @@
 "use server";
 
 import "../styles/globals.css";
-import "../styles/button.css";
 
 import { Metadata } from "next";
 import React from "react";

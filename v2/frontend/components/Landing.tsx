@@ -1,9 +1,8 @@
-import "../styles/button.css";
-
 import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
 import MapIcon from '@mui/icons-material/Map';
 import { Typography } from "@mui/material";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 import Button from "../components/Button";
@@ -11,6 +10,7 @@ import parentLogo from "../public/assets/favicon/csesocgreyblue.png";
 import Logo from "../public/assets/favicon/free_rooms_logo.png";
 
 const Landing = () => {
+  const router = useRouter();
   return (
     <div id={"LandingScreenWhole"} style={{
       height: "95vh",
@@ -30,10 +30,10 @@ const Landing = () => {
           UNSW room bookings
         </p>
         <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-          <Button href="/browse" sx={{ width: "13rem" }} endIcon={<GridViewRoundedIcon/>}>
+          <Button onClick={() => router.push("/browse")} sx={{ width: "13rem" }} endIcon={<GridViewRoundedIcon/>}>
             <Typography fontWeight="bold">Browse</Typography>
           </Button>
-          <Button href="/map" sx={{ width: "13rem" }} endIcon={<MapIcon/>}>
+          <Button onClick={() => router.push("/map")} sx={{ width: "13rem" }} endIcon={<MapIcon/>}>
             <Typography fontWeight="bold">Map</Typography>
           </Button>
         </div>
