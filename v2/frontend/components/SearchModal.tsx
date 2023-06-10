@@ -131,26 +131,31 @@ const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
         disableCloseOnSelect
         disablePortal
         freeSolo
+        openOnFocus
         options={options}
         filterOptions={filterOptions}
         groupBy={option => option.recent ? "Recent" : capitalize(option.type) + "s"}
         renderInput={(params) => (
-          <Paper>
-            <TextField
-              {...params}
-              autoFocus
-              placeholder="Search a building or room..."
-              fullWidth
-              InputProps={{
-                ...params.InputProps,
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </Paper>
+          <TextField
+            {...params}
+            variant="standard"
+            autoFocus
+            placeholder="Search a building or room..."
+            fullWidth
+            InputProps={{
+              ...params.InputProps,
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+              sx: {
+                backgroundColor: "background.paper",
+                borderRadius: "10px 10px 0 0",
+                padding: 2
+              }
+            }}
+          />
         )}
         getOptionLabel={option => typeof option === "string" ? option : option.searchKeys[0]}
         renderOption={(props, option) => (
@@ -159,6 +164,9 @@ const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
           </li>
         )}
         onChange={handleSelect}
+        slotProps={{
+          paper: { sx: { borderRadius: "0 0 10px 10px" } }
+        }}
       />
     </Modal>
   )
