@@ -1,25 +1,12 @@
 'use client'
-import { useEffect, useState } from "react";
 
 import Mapping from "../../components/BaseMap";
-import { API_URL } from "../../config";
-import { BuildingReturnData } from "../../types";
 
 export default function Page() {
-  const [buildingData, setBuildingData] = useState<BuildingReturnData>({ buildings: [] });
-
-  useEffect(() => {
-    fetch(API_URL + "/buildings")
-      .then(res => res.json())
-      .then(data => setBuildingData(data as BuildingReturnData))
-      .catch(() => setBuildingData({ buildings: [] }));
-  }, []);
 
   return (
     <>
-      <Mapping
-        buildingData={buildingData}
-      />
+      <Mapping/>
     </>
   );
 }

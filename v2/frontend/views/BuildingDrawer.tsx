@@ -14,10 +14,10 @@ import Image, { ImageProps } from "next/image";
 import React from "react";
 
 import Button from "../components/Button";
+import useBuildingStatus from "../hooks/useBuildingStatus";
 import { selectCurrentBuilding, setCurrentBuilding } from "../redux/currentBuildingSlice";
 import { selectDatetime, setDatetime } from "../redux/datetimeSlice";
 import { useDispatch, useSelector } from "../redux/hooks";
-import { BuildingStatus } from "../types";
 import toSydneyTime from "../utils/toSydneyTime";
 
 const AppBox = styled(Box)(({ theme }) => ({
@@ -76,23 +76,11 @@ const BuildingDrawer = () => {
   const dispatch = useDispatch();
   const datetime = useSelector(selectDatetime);
   const building = useSelector(selectCurrentBuilding);
-  const drawerOpen = !!building;
-
-  const roomStatusData = undefined;
+  const { status: rooms } = useBuildingStatus(building?.id ?? "");
+  
+  if (!building) return <></>;
 
   const onClose = () => dispatch(setCurrentBuilding(null));
-  
-  const [rooms, setRooms] = React.useState<BuildingStatus | undefined>();
-
-  React.useEffect(() => {
-    setRooms(undefined);
-    if (!building) return;
-    if (roomStatusData && building.id in roomStatusData) {
-      setRooms(roomStatusData[building.id]);
-    }
-  }, [building, roomStatusData]);
-
-  if (!building) return <></>;
 
   const customTextField = (
     params: JSX.IntrinsicAttributes & TextFieldProps
@@ -155,7 +143,7 @@ const BuildingDrawer = () => {
       }}
       variant="persistent"
       anchor="right"
-      open={drawerOpen}
+      open={true}
     >
       <Divider />
       <MainBox>

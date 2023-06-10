@@ -4,19 +4,15 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import { styled } from "@mui/material/styles";
-import axios from "axios";
 import React, { CSSProperties } from "react";
 import { ClipLoader } from "react-spinners";
 
 import FilterBar from "../../components/FilterBar";
 import SearchBar from "../../components/SearchBar";
 import SortBar from "../../components/SortBar";
-import { API_URL } from "../../config";
+import useBuildings from "../../hooks/useBuildings";
 import { selectCurrentBuilding, setCurrentBuilding } from "../../redux/currentBuildingSlice";
-import { selectDatetime } from "../../redux/datetimeSlice";
-import { selectFilters } from "../../redux/filtersSlice";
 import { useDispatch, useSelector } from "../../redux/hooks";
-import { BuildingReturnData, RoomsRequestParams, RoomsReturnData } from "../../types";
 import CardList from "../../views/CardList";
 
 
@@ -24,43 +20,13 @@ const Page = () => {
   // Get global state from Redux
   const dispatch = useDispatch();
   const currentBuilding = useSelector(selectCurrentBuilding);
-  const datetime = useSelector(selectDatetime);
-  const filters = useSelector(selectFilters);
-  
-  const [buildingData, setBuildingData] = React.useState<BuildingReturnData>({ buildings: [] });
-  React.useEffect(() => {
-    fetch(API_URL + "/buildings")
-      .then(res => res.json())
-      .then(data => setBuildingData(data as BuildingReturnData))
-      .catch(() => setBuildingData({ buildings: [] }));
-  }, []);
 
-  // State variables to be used by the various new features
+  // Fetch data from backend
+  const { buildings } = useBuildings();
+
+  // Local state variables
   const [sort, setSort] = React.useState<string>("alphabetical");
   const [query, setQuery] = React.useState<string>("");
-
-  const [roomStatusData, setRoomStatusData] = React.useState<
-    RoomsReturnData | undefined
-  >();
-
-  React.useEffect(() => {
-    const fetchRoomStatus = () => {
-      const params: RoomsRequestParams = { ...filters };
-      if (datetime) {
-        params.datetime = datetime.toISOString();
-      }
-
-      axios
-        .get(API_URL + "/rooms", { params: params })
-        .then((res) => {
-          setRoomStatusData(res.status == 200 ? res.data : {});
-        })
-        .catch((err) => setRoomStatusData({}));
-    };
-
-    setRoomStatusData(undefined);
-    fetchRoomStatus();
-  }, [filters, datetime]);
 
   const drawerOpen = !!currentBuilding;
 
@@ -85,21 +51,21 @@ const Page = () => {
                 setSort={setSort} sort={sort}></SortBar>
             </div>
             {
-              buildingData.buildings.length == 0 ?
-                <ClipLoader
+              buildings?.length
+                ? <CardList
+                  buildings={buildings}
+                  setCurrentBuilding={building => dispatch(setCurrentBuilding(building))}
+                  sort={sort}
+                  query={query}
+                />
+                : <ClipLoader
                   color={"#000000"}
                   loading={true}
                   cssOverride={override}
                   size={150}
                   aria-label="Loading Spinner"
                   data-testid="loader"
-                /> : <CardList
-                buildingData={buildingData}
-                setCurrentBuilding={(bldg) => dispatch(setCurrentBuilding(bldg))}
-                sort={sort}
-                query={query}
-                roomStatusData={roomStatusData}
-              />
+                />
             }
           </div>
         </Tiles>

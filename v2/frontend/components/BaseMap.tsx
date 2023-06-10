@@ -3,15 +3,15 @@
 import { loadModules } from "esri-loader";
 import React, { useEffect } from "react";
 
+import useBuildings from "../hooks/useBuildings";
 import { setCurrentBuilding } from "../redux/currentBuildingSlice";
 import { useDispatch } from "../redux/hooks";
-import { Building, BuildingReturnData } from "../types";
+import { Building } from "../types";
 import { clickedFeature, openFeature } from "./MarkerSymbol";
 
-const Mapping: React.FC<{
-  buildingData: BuildingReturnData;
-}> = ({ buildingData }) => {
+const Mapping = () => {
   const dispatch = useDispatch();
+  const { buildings } = useBuildings();
 
   useEffect(() => {
     loadModules([
@@ -133,8 +133,8 @@ const Mapping: React.FC<{
             if (attributes) {
               const building = attributes.building_name;
 
-              if (building) {
-                const buildingFound = buildingData.buildings.find(
+              if (buildings && building) {
+                const buildingFound = buildings.find(
                   (b: Building) => b.name === building,
                 );
 

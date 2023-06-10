@@ -6,11 +6,11 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 
 interface DatetimeSlice {
-  value: Date;
+  value: string;
 }
 
 const initialState: DatetimeSlice = {
-  value: new Date()
+  value: new Date().toISOString()
 }
 
 export const datetimeSlice = createSlice({
@@ -18,7 +18,7 @@ export const datetimeSlice = createSlice({
   initialState,
   reducers: {
     setDatetime: (state, action: PayloadAction<Date>) => {
-      state.value = action.payload;
+      state.value = action.payload.toISOString();
     }
   }
 });
@@ -26,6 +26,6 @@ export const datetimeSlice = createSlice({
 export const { setDatetime } = datetimeSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectDatetime = (state: RootState) => state.datetime.value;
+export const selectDatetime = (state: RootState) => new Date(state.datetime.value);
 
 export default datetimeSlice.reducer;

@@ -8,7 +8,7 @@ import { DateTime } from 'luxon';
 import React from 'react';
 
 import BookingCalendar from "../../../components/BookingCalendar";
-import { API_URL } from "../../../config";
+import useBookings from "../../../hooks/useBookings";
 import { setCurrentBuilding } from "../../../redux/currentBuildingSlice";
 import { useDispatch } from '../../../redux/hooks';
 import type  {  RoomAvailability } from '../../../types';
@@ -43,18 +43,15 @@ export default function Page({ params }: {
 		setEvents([]);
 	}
 
+	const { bookings, error } = useBookings(params.room);
+
 	React.useEffect( () => {
-		const fetchRoomBookings = () => {
-			fetch( `${API_URL}/rooms/${params.room}`)
-			.then( res => res.json() )
-			.then( json => extractBookings(json))
-			.then( allBookings => handleRoomDetails(allBookings))
-			.catch(() => handleError());
+		if (bookings) {
+			handleRoomDetails(extractBookings(bookings));
+		} else if (error) {
+			handleError();
 		}
-		
-		fetchRoomBookings();
-		
-	}, []);
+	}, [bookings, error]);
 
   return (
     

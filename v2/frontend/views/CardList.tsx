@@ -3,7 +3,8 @@ import React from "react";
 import FlipMove from "react-flip-move";
 
 import BuildingCard from "../components/BuildingCard";
-import { Building, BuildingReturnData, RoomsReturnData } from "../types";
+import useStatus from "../hooks/useStatus";
+import { Building, RoomsReturnData } from "../types";
 
 const INITIALISING = -2;
 const FAILED = -1;
@@ -28,15 +29,16 @@ const FlippableCard = React.forwardRef<HTMLDivElement, {
     />
   </div>
 ));
+FlippableCard.displayName = "FlippableCard";
 
 const CardList: React.FC<{
-  buildingData: BuildingReturnData;
+  buildings: Building[];
   setCurrentBuilding: (building: Building) => void;
   sort: string;
   query: string;
-  roomStatusData: RoomsReturnData | undefined;
-}> = ({ buildingData, setCurrentBuilding, sort, query, roomStatusData }) => {
-  const [buildings, setBuildings] = React.useState<Building[]>([...buildingData.buildings]);
+}> = ({ buildings, setCurrentBuilding, sort, query }) => {
+  const [displayedBuildings, setDisplayedBuildings] = React.useState(buildings);
+  const { status: roomStatusData } = useStatus();
 
   React.useEffect(() => {
     if (
@@ -46,13 +48,13 @@ const CardList: React.FC<{
 
     // Filter any out that dont start with query
     // If hideUnavailable is true, filter any that have no available rooms
-    const displayedBuildings = [...buildingData.buildings].filter((building) =>
+    const newDisplayedBuildings = buildings.filter((building) =>
       building.name.toLowerCase().includes(query.toLowerCase()) &&
       Object.keys(roomStatusData[building.id]).length > 0,
     );
 
     // Sort the displayed buildings
-    displayedBuildings.sort((a, b) => {
+    newDisplayedBuildings.sort((a, b) => {
       switch (sort) {
         case "lowerToUpper":
           return a.long - b.long;
@@ -70,15 +72,15 @@ const CardList: React.FC<{
       }
     });
 
-    setBuildings(displayedBuildings);
-  }, [query, sort, roomStatusData]);
+    setDisplayedBuildings(newDisplayedBuildings);
+  }, [query, sort, roomStatusData, buildings]);
 
   return (
     <>
       {
         // @ts-ignore
         <FlipMoveGrid duration={500}>
-          {buildings.map((building) => (
+          {displayedBuildings.map((building) => (
             <FlippableCard
               key={building.id}
               building={building}

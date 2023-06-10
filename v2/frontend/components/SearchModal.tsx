@@ -16,8 +16,8 @@ import { matchSorter } from "match-sorter";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 
-import { Building } from "../types";
 import { useDispatch } from "../redux/hooks";
+import { Building } from "../types";
 
 interface SearchProps {
   open: boolean;
