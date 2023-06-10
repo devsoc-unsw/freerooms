@@ -6,7 +6,6 @@ import {
   capitalize,
   FilterOptionsState,
   Modal,
-  Paper,
   Typography,
 } from "@mui/material";
 import { SvgIconProps } from "@mui/material";
@@ -130,6 +129,7 @@ const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
         }}
         disableCloseOnSelect
         disablePortal
+        disableClearable
         freeSolo
         openOnFocus
         options={options}
