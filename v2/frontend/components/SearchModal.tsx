@@ -13,10 +13,11 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { matchSorter } from "match-sorter";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 
 import { Building } from "../types";
+import { useDispatch } from "../redux/hooks";
 
 interface SearchProps {
   open: boolean;
@@ -102,6 +103,8 @@ const options: SearchOption[] = [
 
 const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const path = usePathname();
 
   const filterOptions = (
     options: SearchOption[],
@@ -122,7 +125,9 @@ const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
     if (option.type === "room") {
       router.push("/room/" + option.room.id);
     } else { // option.type === "building
-      // TODO: Set current building with global state manager
+      if (path !== "/browse" && path !== "/map") {
+        router.push("/browse");
+      }
     }
   }
 
