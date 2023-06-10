@@ -10,6 +10,14 @@ const store = configureStore({
     datetime: datetimeReducer,
     filters: filtersReducer
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        // Allow Date object in store
+        ignoredActions: ['datetime/setDatetime'],
+        ignoredPaths: ['datetime'],
+      },
+    }),
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
