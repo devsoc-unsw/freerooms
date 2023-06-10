@@ -10,8 +10,8 @@ import { styled } from "@mui/material/styles";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-import { selectCurrentBuilding, setCurrentBuilding } from "../redux/currentBuildingSlice";
-import { useDispatch, useSelector } from "../redux/hooks";
+import { selectCurrentBuilding } from "../redux/currentBuildingSlice";
+import { useSelector } from "../redux/hooks";
 import Branding from "./Branding";
 import IconButton from "./IconButton";
 

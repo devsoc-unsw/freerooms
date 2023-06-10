@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import Mapping from "../../components/BaseMap";
 import { API_URL } from "../../config";
-import { Building, BuildingReturnData } from "../../types";
+import { BuildingReturnData } from "../../types";
 
 export default function Page() {
   const [buildingData, setBuildingData] = useState<BuildingReturnData>({ buildings: [] });

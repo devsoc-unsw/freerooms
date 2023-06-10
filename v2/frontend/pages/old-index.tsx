@@ -27,7 +27,7 @@ import SearchBar from "../components/SearchBar";
 import SortBar from "../components/SortBar";
 import { API_URL } from "../config";
 import { Building, BuildingReturnData, Filters, RoomsRequestParams, RoomsReturnData } from "../types";
-import BuildingInfo from "../views/BuildingInfo";
+import BuildingDrawer from "../views/BuildingDrawer";
 import CardList from "../views/CardList";
 
 const Home: NextPage<{}> = () => {
@@ -184,7 +184,7 @@ const Home: NextPage<{}> = () => {
           open={drawerOpen}
         >
           <Divider />
-          <BuildingInfo
+          <BuildingDrawer
             building={currentBuilding}
             onClose={() => setCurrentBuilding(null)}
             datetime={datetime}
