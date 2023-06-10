@@ -16,12 +16,12 @@ import TextField from "@mui/material/TextField";
 import { matchSorter } from "match-sorter";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
+import { useLocalStorage } from "usehooks-ts";
 
 import useBuildings from "../hooks/useBuildings";
 import { setCurrentBuilding } from "../redux/currentBuildingSlice";
 import { useDispatch } from "../redux/hooks";
 import { Building } from "../types";
-import { useLocalStorage } from "usehooks-ts";
 
 interface SearchProps {
   open: boolean;
