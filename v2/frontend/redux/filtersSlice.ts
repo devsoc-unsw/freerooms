@@ -1,5 +1,5 @@
 /**
- * Redux slice to manage the selected datetime
+ * Redux slice to manage the selected filters
  */
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
@@ -37,7 +37,6 @@ const filtersSlice = createSlice({
 
 export const { setFilter, unsetFilter, clearFilters } = filtersSlice.actions;
 
-// Other code such as selectors can use the imported `RootState` type
 export const selectFilters = (state: RootState) => state.filters.value;
 
 export default filtersSlice.reducer;

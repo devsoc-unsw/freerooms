@@ -25,7 +25,6 @@ const datetimeSlice = createSlice({
 
 export const { setDatetime } = datetimeSlice.actions;
 
-// Other code such as selectors can use the imported `RootState` type
 export const selectDatetime = (state: RootState) => state.datetime.value;
 
 export default datetimeSlice.reducer;

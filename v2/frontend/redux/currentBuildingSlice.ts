@@ -26,7 +26,6 @@ const currentBuildingSlice = createSlice({
 
 export const { setCurrentBuilding } = currentBuildingSlice.actions;
 
-// Other code such as selectors can use the imported `RootState` type
 export const selectCurrentBuilding = (state: RootState) => state.currentBuilding.value;
 
 export default currentBuildingSlice.reducer;
