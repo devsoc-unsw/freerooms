@@ -1,10 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 import currentBuildingReducer from "./currentBuildingSlice";
+import datetimeReducer from "./datetimeSlice";
+import filtersReducer from "./filtersSlice";
 
 const store = configureStore({
   reducer: {
     currentBuilding: currentBuildingReducer,
+    datetime: datetimeReducer,
+    filters: filtersReducer
   },
 })
 

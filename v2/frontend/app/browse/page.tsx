@@ -13,12 +13,20 @@ import SearchBar from "../../components/SearchBar";
 import SortBar from "../../components/SortBar";
 import { API_URL } from "../../config";
 import { selectCurrentBuilding, setCurrentBuilding } from "../../redux/currentBuildingSlice";
+import { selectDatetime } from "../../redux/datetimeSlice";
+import { selectFilters } from "../../redux/filtersSlice";
 import { useDispatch, useSelector } from "../../redux/hooks";
-import { BuildingReturnData, Filters, RoomsRequestParams, RoomsReturnData } from "../../types";
+import { BuildingReturnData, RoomsRequestParams, RoomsReturnData } from "../../types";
 import CardList from "../../views/CardList";
 
 
 const Page = () => {
+  // Get global state from Redux
+  const dispatch = useDispatch();
+  const currentBuilding = useSelector(selectCurrentBuilding);
+  const datetime = useSelector(selectDatetime);
+  const filters = useSelector(selectFilters);
+  
   const [buildingData, setBuildingData] = React.useState<BuildingReturnData>({ buildings: [] });
   React.useEffect(() => {
     fetch(API_URL + "/buildings")
@@ -30,8 +38,6 @@ const Page = () => {
   // State variables to be used by the various new features
   const [sort, setSort] = React.useState<string>("alphabetical");
   const [query, setQuery] = React.useState<string>("");
-  const [datetime, setDatetime] = React.useState<Date | null>(new Date());
-  const [filters, setFilters] = React.useState<Filters>({});
 
   const [roomStatusData, setRoomStatusData] = React.useState<
     RoomsReturnData | undefined
@@ -56,9 +62,6 @@ const Page = () => {
     fetchRoomStatus();
   }, [filters, datetime]);
 
-  const dispatch = useDispatch();
-  const currentBuilding = useSelector(selectCurrentBuilding);
-
   const drawerOpen = !!currentBuilding;
 
   const override: CSSProperties = {
@@ -74,7 +77,7 @@ const Page = () => {
         <Tiles open={drawerOpen}>
           <div id={"Home-Building-Tiles"}>
             <div id={"Home-Options"} style={{ display: "flex", justifyContent: "space-between" }}>
-              <FilterBar filters={filters} setFilters={setFilters} />
+              <FilterBar/>
               <SearchBar setQuery={setQuery}></SearchBar>
               <SortBar
                 // filters={sort}
