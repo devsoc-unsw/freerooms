@@ -14,7 +14,7 @@ const initialState: CurrentBuildingState = {
   value: null
 }
 
-export const currentBuildingSlice = createSlice({
+const currentBuildingSlice = createSlice({
   name: "currentBuilding",
   initialState,
   reducers: {

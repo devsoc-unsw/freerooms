@@ -13,7 +13,7 @@ const initialState: DatetimeSlice = {
   value: new Date()
 }
 
-export const datetimeSlice = createSlice({
+const datetimeSlice = createSlice({
   name: "datetime",
   initialState,
   reducers: {

@@ -14,21 +14,17 @@ const initialState: FiltersState = {
   value: {}
 };
 
-interface SetFilterPayload {
-  key: keyof Filters;
-  value: string;
-}
-
-export const filtersSlice = createSlice({
+const filtersSlice = createSlice({
   name: "filters",
   initialState,
   reducers: {
-    setFilter: (state, action: PayloadAction<SetFilterPayload>) => {
+    setFilter: (state, action: PayloadAction<{ key: keyof Filters, value: string }>) => {
       const { key, value } = action.payload;
       state.value[key] = value;
     },
     unsetFilter: (state, action: PayloadAction<keyof Filters>) => {
       if (Object.keys(state).includes(action.payload)) {
+        // otherFilters contains all keys besides action.payload
         const { [action.payload]: unset, ...otherFilters } = state.value;
         state.value = otherFilters;
       }
