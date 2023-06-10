@@ -2,11 +2,12 @@
 
 import GridIcon from "@mui/icons-material/GridViewRounded";
 import MapIcon from "@mui/icons-material/Map";
+import SearchIcon from "@mui/icons-material/Search";
 import MuiAppBar from "@mui/material/AppBar";
 import { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar/AppBar";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 import { Building } from "../types";
@@ -16,11 +17,15 @@ import IconButton from "./IconButton";
 interface NavBarProps {
   setCurrentBuilding: (building: Building | null) => void;
   drawerOpen: boolean;
+  setSearchOpen: (open: boolean) => void;
 }
 
-const NavBar: React.FC<NavBarProps> = ({ setCurrentBuilding, drawerOpen }) => {
+const NavBar: React.FC<NavBarProps> = ({
+  setCurrentBuilding,
+  drawerOpen,
+  setSearchOpen
+}) => {
   const router = useRouter();
-  const pathname = usePathname();
   return (
     <AppBar
       position="sticky"
@@ -41,6 +46,12 @@ const NavBar: React.FC<NavBarProps> = ({ setCurrentBuilding, drawerOpen }) => {
         />
       </div>
       <Stack direction="row" spacing={1}>
+        <IconButton
+          aria-label="Open search"
+          onClick={() => setSearchOpen(true)}
+        >
+          <SearchIcon/>
+        </IconButton>
         <IconButton
           aria-label="Browse buildings"
           onClick={() => router.push("/browse")}
@@ -74,7 +85,7 @@ const AppBar = styled(MuiAppBar, {
   flexDirection: "row",
   alignItems: "center",
   justifyContent: "center",
-  padding: theme.spacing(1, 2),
+  padding: theme.spacing(0.5, 2),
   transition: theme.transitions.create(["margin", "width"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
