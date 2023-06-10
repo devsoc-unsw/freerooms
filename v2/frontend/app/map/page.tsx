@@ -15,14 +15,9 @@ export default function Page() {
       .catch(() => setBuildingData({ buildings: [] }));
   }, []);
 
-  const [currentBuilding, setCurrentBuilding] = useState<Building | null>(
-    null,
-  );
-
   return (
     <>
       <Mapping
-        setCurrentBuilding={setCurrentBuilding}
         buildingData={buildingData}
       />
     </>

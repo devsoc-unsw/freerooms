@@ -3,12 +3,8 @@
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
-import Divider from "@mui/material/Divider";
-import Drawer from "@mui/material/Drawer";
 import { styled } from "@mui/material/styles";
 import axios from "axios";
-import { DateTime } from "luxon";
-import { useRouter, useSearchParams } from "next/navigation";
 import React, { CSSProperties } from "react";
 import { ClipLoader } from "react-spinners";
 
@@ -16,17 +12,13 @@ import FilterBar from "../../components/FilterBar";
 import SearchBar from "../../components/SearchBar";
 import SortBar from "../../components/SortBar";
 import { API_URL } from "../../config";
-import { Building, BuildingReturnData, Filters, RoomsRequestParams, RoomsReturnData } from "../../types";
-import BuildingInfo from "../../views/BuildingInfo";
+import { selectCurrentBuilding, setCurrentBuilding } from "../../redux/currentBuildingSlice";
+import { useDispatch, useSelector } from "../../redux/hooks";
+import { BuildingReturnData, Filters, RoomsRequestParams, RoomsReturnData } from "../../types";
 import CardList from "../../views/CardList";
 
 
 const Page = () => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  // @ts-ignore
-  const building = searchParams.get("building");
-
   const [buildingData, setBuildingData] = React.useState<BuildingReturnData>({ buildings: [] });
   React.useEffect(() => {
     fetch(API_URL + "/buildings")
@@ -64,22 +56,8 @@ const Page = () => {
     fetchRoomStatus();
   }, [filters, datetime]);
 
-  const [currentBuilding, setCurrentBuilding] = React.useState<Building | null>(
-    null,
-  );
-
-  React.useEffect(() => {
-    if (building) {
-      const selectedBuilding = buildingData.buildings.find(
-        (b) => b.id === building,
-      );
-      if (selectedBuilding) {
-        setCurrentBuilding(selectedBuilding);
-        router.replace("/");
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [building]);
+  const dispatch = useDispatch();
+  const currentBuilding = useSelector(selectCurrentBuilding);
 
   const drawerOpen = !!currentBuilding;
 
@@ -87,7 +65,6 @@ const Page = () => {
     display: "block",
     margin: "20vh auto",
     borderColor: "red",
-
   };
 
   return (
@@ -115,7 +92,7 @@ const Page = () => {
                   data-testid="loader"
                 /> : <CardList
                 buildingData={buildingData}
-                setCurrentBuilding={setCurrentBuilding}
+                setCurrentBuilding={(bldg) => dispatch(setCurrentBuilding(bldg))}
                 sort={sort}
                 query={query}
                 roomStatusData={roomStatusData}
@@ -123,44 +100,12 @@ const Page = () => {
             }
           </div>
         </Tiles>
-        <Drawer
-          sx={{
-            width: drawerWidth,
-            flexShrink: 0,
-            "& .MuiDrawer-paper": {
-              width: drawerWidth,
-              boxSizing: "border-box",
-            },
-          }}
-          variant="persistent"
-          anchor="right"
-          open={drawerOpen}
-        >
-          <Divider />
-          <BuildingInfo
-            building={currentBuilding}
-            onClose={() => setCurrentBuilding(null)}
-            datetime={datetime}
-            setDatetime={setDatetime}
-            roomStatusData={roomStatusData}
-          />
-        </Drawer>
       </Box>
     </Container>
   );
 };
 
 const drawerWidth = 400;
-
-const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
-  open?: boolean;
-}>(({ theme, open }) => ({
-  display: "flex",
-  flexDirection: "column",
-  flexGrow: 1,
-  padding: theme.spacing(12, 0),
-  maxHeight: "100vh",
-}));
 
 const Tiles = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   open?: boolean;
@@ -173,13 +118,13 @@ const Tiles = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  marginRight: `-${drawerWidth}px`,
   ...(open && {
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    marginRight: 0,
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginRight: `${drawerWidth}px`,
   }),
 }));
 

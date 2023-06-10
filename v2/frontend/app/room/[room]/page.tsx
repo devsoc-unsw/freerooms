@@ -9,6 +9,8 @@ import React from 'react';
 
 import BookingCalendar from "../../../components/BookingCalendar";
 import { API_URL } from "../../../config";
+import { setCurrentBuilding } from "../../../redux/currentBuildingSlice";
+import { useDispatch } from '../../../redux/hooks';
 import type  {  RoomAvailability } from '../../../types';
 
 
@@ -25,7 +27,10 @@ type RoomDetails = {
 
 export default function Page({ params }: {
   params: {room: string};
-}) {	
+}) {
+	// There should be no current building on room pages
+	const dispatch = useDispatch();
+	dispatch(setCurrentBuilding(null));
 
 	const [ events, setEvents ] = React.useState<Array<Event>>([]);
 	const [ roomName, setRoomName ] = React.useState<string>("");

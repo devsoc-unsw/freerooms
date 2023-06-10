@@ -10,26 +10,26 @@ import { styled } from "@mui/material/styles";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-import { Building } from "../types";
+import { selectCurrentBuilding, setCurrentBuilding } from "../redux/currentBuildingSlice";
+import { useDispatch, useSelector } from "../redux/hooks";
 import Branding from "./Branding";
 import IconButton from "./IconButton";
 
 interface NavBarProps {
-  setCurrentBuilding: (building: Building | null) => void;
-  drawerOpen: boolean;
   setSearchOpen: (open: boolean) => void;
 }
 
 const NavBar: React.FC<NavBarProps> = ({
-  setCurrentBuilding,
-  drawerOpen,
   setSearchOpen
 }) => {
   const router = useRouter();
+  const currentBuilding = useSelector(selectCurrentBuilding);
+  const drawerOpen = !!currentBuilding;
+
   return (
     <AppBar
       position="sticky"
-      open={drawerOpen}
+      drawerOpen={drawerOpen}
       sx={{
         borderBottom: "1px solid #e0e0e0",
         alignItems: "center",
@@ -40,7 +40,6 @@ const NavBar: React.FC<NavBarProps> = ({
       <div id={"headerBranding"}>
         <Branding
           onClick={() => {
-            setCurrentBuilding(null);
             router.push("/");
           }}
         />
@@ -70,14 +69,14 @@ const NavBar: React.FC<NavBarProps> = ({
 }
 
 interface AppBarProps extends MuiAppBarProps {
-  open?: boolean;
+  drawerOpen?: boolean;
 }
 
 const drawerWidth = 400;
 
 const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "open",
-})<AppBarProps>(({ theme, open }) => ({
+  shouldForwardProp: (prop) => prop !== "drawerOpen",
+})<AppBarProps>(({ theme, drawerOpen }) => ({
   backgroundColor: theme.palette.background.default,
   color: theme.palette.getContrastText(theme.palette.background.default),
   boxShadow: "none",
@@ -90,7 +89,7 @@ const AppBar = styled(MuiAppBar, {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  ...(open && {
+  ...(drawerOpen && {
     width: `calc(100% - ${drawerWidth}px)`,
     marginRight: `${drawerWidth}px`,
     transition: theme.transitions.create(["margin", "width"], {
