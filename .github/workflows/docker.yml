@@ -38,7 +38,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GH_TOKEN }}
       - name: Build and push Docker image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: ${{ matrix.context }}
           push: ${{ github.event_name != 'pull_request' }}
@@ -61,7 +61,7 @@ jobs:
           repository: csesoc/deployment
           token: ${{ secrets.GH_TOKEN }}
       - name: Install yq - portable yaml processor
-        uses: mikefarah/yq@v4.33.3
+        uses: mikefarah/yq@v4.34.1
       - name: Update deployment
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
