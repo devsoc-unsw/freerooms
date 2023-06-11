@@ -92,9 +92,9 @@ const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
 
   const handleSelect = (
     event: React.SyntheticEvent,
-    option: string | SearchOption | null
+    option: SearchOption | null
   ) => {
-    if (!option || typeof option === "string") return;
+    if (!option) return;
 
     setOpen(false);
 
@@ -126,7 +126,6 @@ const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
         disableCloseOnSelect
         disablePortal
         disableClearable
-        freeSolo
         openOnFocus
         options={options}
         filterOptions={filterOptions}
@@ -145,6 +144,7 @@ const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
                   <SearchIcon />
                 </InputAdornment>
               ),
+              endAdornment: undefined,
               sx: {
                 backgroundColor: "background.paper",
                 borderRadius: "10px 10px 0 0",
@@ -153,7 +153,7 @@ const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
             }}
           />
         )}
-        getOptionLabel={option => typeof option === "string" ? option : option.searchKeys[0]}
+        getOptionLabel={option => option.searchKeys[0]}
         renderOption={(props, option) => (
           <li {...props} key={option.searchKeys[0]}>
             <SearchResult option={option}/>
