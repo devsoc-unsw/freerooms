@@ -15,6 +15,7 @@ const MarkerSymbol: React.FC<{
   totalRooms: number;
   distance: number | undefined;
   setBuilding: (building: Building) => void;
+  currentHover: Building | null;
   setCurrentHover: (building: Building | null) => void;
 }> = ({
   building,
@@ -22,9 +23,13 @@ const MarkerSymbol: React.FC<{
   totalRooms,
   distance,
   setBuilding,
+  currentHover,
   setCurrentHover,
 }) => {
   const [showPopup, setShowPopup] = React.useState(false);
+  React.useEffect(() => {
+    setShowPopup(currentHover?.id === building.id);
+  }, [currentHover, building]);
 
   return (
     <div
@@ -36,11 +41,9 @@ const MarkerSymbol: React.FC<{
         transform: "translate(-50%, -50%)",
       }}
       onMouseEnter={() => {
-        setShowPopup(true);
         setCurrentHover(building);
       }}
       onMouseLeave={() => {
-        setShowPopup(false);
         setCurrentHover(null);
       }}
     >

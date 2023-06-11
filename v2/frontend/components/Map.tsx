@@ -57,7 +57,7 @@ export const Map = ({ roomStatusData, setCurrentBuilding }: MapProps) => {
 
   const [userLat, setUserLat] = useState<number>();
   const [userLng, setUserLng] = useState<number>();
-  const [currentHover, setCurrentHover] = useState<Building | null>();
+  const [currentHover, setCurrentHover] = useState<Building | null>(null);
 
   const getBuildingData = () => {
     fetch(API_URL + "/buildings")
@@ -234,6 +234,7 @@ export const Map = ({ roomStatusData, setCurrentBuilding }: MapProps) => {
                   totalRooms={getTotalRooms(roomStatusData, building.id)}
                   distance={distances[index]}
                   setBuilding={setCurrentBuilding}
+                  currentHover={currentHover}
                   setCurrentHover={setCurrentHover}
                 ></MarkerSymbol>
               </OverlayViewF>
