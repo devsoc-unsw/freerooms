@@ -26,11 +26,6 @@ const MarkerSymbol: React.FC<{
   currentHover,
   setCurrentHover,
 }) => {
-  const [showPopup, setShowPopup] = React.useState(false);
-  React.useEffect(() => {
-    setShowPopup(currentHover?.id === building.id);
-  }, [currentHover, building]);
-
   return (
     <div
       style={{
@@ -69,7 +64,7 @@ const MarkerSymbol: React.FC<{
         })}
         onClick={() => setBuilding(building)}
       />
-      <Fade in={showPopup} timeout={200}>
+      <Fade in={currentHover?.id === building.id} timeout={200}>
         <div style={{ position: "relative", bottom: -3 }}>
           <MarkerHover
             building={building}

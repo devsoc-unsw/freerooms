@@ -7,6 +7,7 @@ import {
   useJsApiLoader,
 } from "@react-google-maps/api";
 import React, { Fragment, useEffect, useState } from "react";
+import { useDebounce } from "usehooks-ts";
 
 import { API_URL, GOOGLE_API_KEY } from "../config";
 import { Building, BuildingReturnData, RoomsReturnData } from "../types";
@@ -58,6 +59,9 @@ export const Map = ({ roomStatusData, setCurrentBuilding }: MapProps) => {
   const [userLat, setUserLat] = useState<number>();
   const [userLng, setUserLng] = useState<number>();
   const [currentHover, setCurrentHover] = useState<Building | null>(null);
+
+  // Use debounce to allow moving from marker to popup without popup hiding
+  const debouncedCurrentHover = useDebounce(currentHover, 50);
 
   const getBuildingData = () => {
     fetch(API_URL + "/buildings")
@@ -222,7 +226,7 @@ export const Map = ({ roomStatusData, setCurrentBuilding }: MapProps) => {
                   lng: building.long,
                 }}
                 zIndex={
-                  currentHover === null || currentHover !== building ? 1 : 2
+                  debouncedCurrentHover?.id === building.id ? 2 : 1
                 }
               >
                 <MarkerSymbol
@@ -231,7 +235,7 @@ export const Map = ({ roomStatusData, setCurrentBuilding }: MapProps) => {
                   totalRooms={getTotalRooms(roomStatusData, building.id)}
                   distance={distances[index]}
                   setBuilding={setCurrentBuilding}
-                  currentHover={currentHover}
+                  currentHover={debouncedCurrentHover}
                   setCurrentHover={setCurrentHover}
                 ></MarkerSymbol>
               </OverlayViewF>
