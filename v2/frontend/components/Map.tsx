@@ -8,7 +8,7 @@ import {
 } from "@react-google-maps/api";
 import React, { Fragment, useEffect, useState } from "react";
 
-import { API_URL } from "../config";
+import { API_URL, GOOGLE_API_KEY } from "../config";
 import { Building, BuildingReturnData, RoomsReturnData } from "../types";
 import { getNumFreerooms, getTotalRooms } from "../utils/utils";
 import MarkerSymbol from "./MarkerSymbol";
@@ -114,10 +114,7 @@ export const Map = ({ roomStatusData, setCurrentBuilding }: MapProps) => {
   }, []);
 
   const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey:
-      process.env.NODE_ENV === "development"
-        ? (process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY_DEV as string)
-        : (process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY_PROD as string),
+    googleMapsApiKey: GOOGLE_API_KEY
   });
 
   const [distances, setDistances] = useState<number[]>([]);
