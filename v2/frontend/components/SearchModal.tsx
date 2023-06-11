@@ -1,17 +1,13 @@
 import BuildingIcon from '@mui/icons-material/Apartment';
 import RoomIcon from '@mui/icons-material/MeetingRoom';
 import SearchIcon from "@mui/icons-material/Search";
-import {
-  Autocomplete,
-  capitalize,
-  FilterOptionsState,
-  Modal,
-  Typography,
-} from "@mui/material";
-import { SvgIconProps } from "@mui/material";
+import { FilterOptionsState, SvgIconProps } from "@mui/material";
+import Autocomplete from "@mui/material/Autocomplete";
 import InputAdornment from "@mui/material/InputAdornment";
+import Modal from "@mui/material/Modal";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import { matchSorter } from "match-sorter";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
@@ -33,13 +29,13 @@ type SearchOption = (BuildingSearchOption | RoomSearchOption) & {
 };
 
 type BuildingSearchOption = {
-  type: "building";
+  type: "Building";
   searchKeys: string[];
   building: Building;
 }
 
 type RoomSearchOption = {
-  type: "room";
+  type: "Room";
   searchKeys: string[];
   room: { id: string }; // TODO: Add room type when rooms are merged
 }
@@ -61,7 +57,7 @@ const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
   const options = React.useMemo(() => {
     const buildingOptions: BuildingSearchOption[] = buildings
       ? buildings.map(building => ({
-        type: "building",
+        type: "Building",
         searchKeys: [building.name, building.id],
         building
       }))
@@ -69,7 +65,7 @@ const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
 
     // TODO: Actually populate with room options
     const roomOptions: RoomSearchOption[] = [{
-      type: "room",
+      type: "Room",
       searchKeys: ["Ainsworth 202", "Ainswth202", "K-J17-202"],
       room: { id: "K-J17-202" }
     }];
@@ -85,8 +81,8 @@ const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
       const filtered = matchSorter(options, inputValue, { keys: ['searchKeys'] });
 
       // Make sure buildings come before rooms
-      const buildings = filtered.filter(opt => opt.type === "building");
-      const rooms = filtered.filter(opt => opt.type === "room");
+      const buildings = filtered.filter(opt => opt.type === "Building");
+      const rooms = filtered.filter(opt => opt.type === "Room");
       return [...buildings, ...rooms];
     } else {
       // Return recent searches
@@ -106,9 +102,9 @@ const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
       addRecentSearch(option);
     }
 
-    if (option.type === "room") {
+    if (option.type === "Room") {
       router.push("/room/" + option.room.id);
-    } else if (option.type === "building") {
+    } else { // option.type === "Building"
       if (path !== "/browse" && path !== "/map") {
         router.push("/browse");
       }
@@ -134,7 +130,7 @@ const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
         openOnFocus
         options={options}
         filterOptions={filterOptions}
-        groupBy={option => option.recent ? "Recent" : capitalize(option.type) + "s"}
+        groupBy={option => option.recent ? "Recent" : option.type + "s"}
         renderInput={(params) => (
           <TextField
             {...params}
@@ -183,7 +179,7 @@ const SearchResult: React.FC<{ option: SearchOption }> = ({ option }) => {
   return (
    <Stack direction="row" padding={0.5} spacing={2}>
      <Stack alignItems="center" justifyContent="center">
-       {option.type === "building" ? <BuildingIcon {...iconProps} /> : <RoomIcon {...iconProps} />}
+       {option.type === "Room" ? <RoomIcon {...iconProps} /> : <BuildingIcon {...iconProps} />}
      </Stack>
      <Stack direction="column">
        <Typography>{name}</Typography>
