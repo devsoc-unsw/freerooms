@@ -1,11 +1,11 @@
 "use client";
 
 import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import { styled } from "@mui/material/styles";
-import React, { CSSProperties } from "react";
-import { ClipLoader } from "react-spinners";
+import React from "react";
 
 import FilterBar from "../../components/FilterBar";
 import SearchBar from "../../components/SearchBar";
@@ -30,12 +30,6 @@ const Page = () => {
 
   const drawerOpen = !!currentBuilding;
 
-  const override: CSSProperties = {
-    display: "block",
-    margin: "20vh auto",
-    borderColor: "red",
-  };
-
   return (
     <Container maxWidth={false}>
       <Box sx={{ display: "flex" }}>
@@ -58,14 +52,15 @@ const Page = () => {
                   sort={sort}
                   query={query}
                 />
-                : <ClipLoader
-                  color={"#000000"}
-                  loading={true}
-                  cssOverride={override}
-                  size={150}
-                  aria-label="Loading Spinner"
-                  data-testid="loader"
-                />
+                : <Box sx={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  display: "block"
+                }}>
+                  <CircularProgress color="primary" size={150} />
+                </Box>
             }
           </div>
         </Tiles>
