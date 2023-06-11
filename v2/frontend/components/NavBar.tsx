@@ -7,7 +7,7 @@ import MuiAppBar from "@mui/material/AppBar";
 import { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar/AppBar";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 
 import { selectCurrentBuilding } from "../redux/currentBuildingSlice";
@@ -23,6 +23,7 @@ const NavBar: React.FC<NavBarProps> = ({
   setSearchOpen
 }) => {
   const router = useRouter();
+  const path = usePathname();
   const currentBuilding = useSelector(selectCurrentBuilding);
   const drawerOpen = !!currentBuilding;
 
@@ -53,12 +54,14 @@ const NavBar: React.FC<NavBarProps> = ({
         </IconButton>
         <IconButton
           aria-label="Browse buildings"
+          active={path === "/browse"}
           onClick={() => router.push("/browse")}
         >
           <GridIcon/>
         </IconButton>
         <IconButton
           aria-label="Go to map"
+          active={path === "/map"}
           onClick={() => router.push("/map")}
         >
           <MapIcon/>
