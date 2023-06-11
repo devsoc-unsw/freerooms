@@ -1,8 +1,7 @@
 'use client';
 
-import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import CssBaseline from "@mui/material/CssBaseline";
+import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import React from "react";
 
@@ -18,12 +17,11 @@ const Home = () => {
 
   return (
     <Container maxWidth={false}>
-      <Box sx={{ display: "flex" }}>
-        <CssBaseline />
+      <Stack>
         <Main>
           <Landing />
         </Main>
-      </Box>
+      </Stack>
     </Container>
   );
 };

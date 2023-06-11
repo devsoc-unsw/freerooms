@@ -1,6 +1,7 @@
 "use client"
 
 import { orange } from "@mui/material/colors";
+import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme } from "@mui/material/styles";
 import ThemeProvider from "@mui/system/ThemeProvider";
 import React from "react";
@@ -24,6 +25,7 @@ const ClientLayout: React.FC<{
 }> = ({ children }) => {
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <ReduxProvider store={store}>
         <App>
           {children}
