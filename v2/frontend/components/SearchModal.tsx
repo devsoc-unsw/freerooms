@@ -27,6 +27,11 @@ interface SearchProps {
   setOpen: (open: boolean) => void;
 }
 
+// First element in searchKeys should always be name
+type SearchOption = (BuildingSearchOption | RoomSearchOption) & {
+  recent?: boolean;
+};
+
 type BuildingSearchOption = {
   type: "building";
   searchKeys: string[];
@@ -38,11 +43,6 @@ type RoomSearchOption = {
   searchKeys: string[];
   room: { id: string }; // TODO: Add room type when rooms are merged
 }
-
-// First search key should always be name
-type SearchOption = (BuildingSearchOption | RoomSearchOption) & {
-  recent?: boolean;
-};
 
 const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
   const router = useRouter();
@@ -138,10 +138,10 @@ const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
         renderInput={(params) => (
           <TextField
             {...params}
-            variant="standard"
             autoFocus
-            placeholder="Search a building or room..."
             fullWidth
+            variant="outlined"
+            placeholder="Search a building or room..."
             InputProps={{
               ...params.InputProps,
               startAdornment: (
