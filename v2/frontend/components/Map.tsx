@@ -1,12 +1,11 @@
 import Box from "@mui/material/Box";
 import {
-  DistanceMatrixService,
   GoogleMap,
   OverlayView,
   OverlayViewF,
   useJsApiLoader,
 } from "@react-google-maps/api";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDebounce } from "usehooks-ts";
 
 import { API_URL, GOOGLE_API_KEY } from "../config";
@@ -29,6 +28,10 @@ const mapBounds = {
   west: 151.225258,
   east: 151.237736,
 };
+
+const isInBounds = (lat: number, lng: number) =>
+  lat >= mapBounds.south && lat <= mapBounds.north &&
+  lng >= mapBounds.west && lng <= mapBounds.east;
 
 const LocationMarker = () => {
   return (
@@ -118,62 +121,22 @@ export const Map = ({ roomStatusData, setCurrentBuilding }: MapProps) => {
   }, []);
 
   const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: GOOGLE_API_KEY
+    googleMapsApiKey: GOOGLE_API_KEY,
+    libraries: ["geometry"]
   });
 
   const [distances, setDistances] = useState<number[]>([]);
 
   useEffect(() => {
-    if (userLat && userLng) {
-      const origin = {
-        lat: userLat,
-        lng: userLng,
-      };
-
-      const destinations = buildingData.buildings.map((building) => {
-        return { lat: building.lat, lng: building.long };
-      });
-
-      // Split into multiple calls due to API usage restraints
-      const service = new google.maps.DistanceMatrixService();
-      service.getDistanceMatrix(
-        {
-          origins: [origin],
-          destinations: destinations.slice(0, 25),
-          travelMode: google.maps.TravelMode.WALKING,
-        },
-        getDistance
-      );
-
-      service.getDistanceMatrix(
-        {
-          origins: [origin],
-          destinations: destinations.slice(25),
-          travelMode: google.maps.TravelMode.WALKING,
-        },
-        getDistance
-      );
+    if (userLat && userLng && isInBounds(userLat, userLng)) {
+      setDistances(buildingData.buildings.map((building) =>
+        Math.round(google.maps.geometry.spherical.computeDistanceBetween(
+          { lat: building.lat, lng: building.long },
+          { lat: userLat, lng: userLng },
+        ))
+      ));
     }
-
-    function getDistance(response: any, status: any) {
-      if (response && status === "OK") {
-        // Distances computed for all buildings already - restart array
-        if (distances.length === buildingData.buildings.length) {
-          setDistances([]);
-        }
-
-        const length = response.rows[0].elements.length;
-        for (let i = 0; i < length; i++) {
-          response &&
-            setDistances([
-              ...distances,
-              response.rows[0].elements[i].distance.value,
-            ]);
-        }
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userLat, userLng]);
+  }, [buildingData.buildings, userLat, userLng]);
 
   const renderMap = () => {
     return (
@@ -197,51 +160,29 @@ export const Map = ({ roomStatusData, setCurrentBuilding }: MapProps) => {
           zoom={17.5}
         >
           {buildingData.buildings.map((building, index) => (
-            <Fragment key={building.id}>
-              {userLat && userLng && (
-                <DistanceMatrixService
-                  options={{
-                    origins: [
-                      {
-                        lat: userLat,
-                        lng: userLng,
-                      },
-                    ],
-                    destinations: [{ lat: building.lat, lng: building.long }],
-                    travelMode: google.maps.TravelMode.WALKING,
-                  }}
-                  callback={(response) => {
-                    response &&
-                      distances.push(
-                        response.rows[0].elements[0].distance.value
-                      );
-                  }}
-                />
-              )}
-              <OverlayViewF
-                key={building.id}
-                mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
-                position={{
-                  lat: building.lat,
-                  lng: building.long,
-                }}
-                zIndex={
-                  debouncedCurrentHover?.id === building.id ? 2 : 1
-                }
-              >
-                <MarkerSymbol
-                  building={building}
-                  freerooms={getNumFreerooms(roomStatusData, building.id)}
-                  totalRooms={getTotalRooms(roomStatusData, building.id)}
-                  distance={distances[index]}
-                  setBuilding={setCurrentBuilding}
-                  currentHover={debouncedCurrentHover}
-                  setCurrentHover={setCurrentHover}
-                ></MarkerSymbol>
-              </OverlayViewF>
-            </Fragment>
+            <OverlayViewF
+              key={building.id}
+              mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+              position={{
+                lat: building.lat,
+                lng: building.long,
+              }}
+              zIndex={
+                debouncedCurrentHover?.id === building.id ? 2 : 1
+              }
+            >
+              <MarkerSymbol
+                building={building}
+                freerooms={getNumFreerooms(roomStatusData, building.id)}
+                totalRooms={getTotalRooms(roomStatusData, building.id)}
+                distance={distances[index]}
+                setBuilding={setCurrentBuilding}
+                currentHover={debouncedCurrentHover}
+                setCurrentHover={setCurrentHover}
+              ></MarkerSymbol>
+            </OverlayViewF>
           ))}
-          {userLat && userLng && (
+          {userLat && userLng && isInBounds(userLat, userLng) && (
             <OverlayViewF
               mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
               position={{
