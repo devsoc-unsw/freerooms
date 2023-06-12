@@ -9,6 +9,7 @@ import Container from "@mui/material/Container";
 import Radio from "@mui/material/Radio";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
 
 import { clearFilters, selectFilters, setFilter, unsetFilter } from "../redux/filtersSlice";
@@ -56,6 +57,7 @@ const StyledHeader = styled(Box)<BoxProps>(() => ({
   paddingLeft: 15,
   height: 60,
   display: "inline-flex",
+  alignItems: "center",
   gap: 135,
 }));
 
@@ -122,9 +124,13 @@ const FilterBar = () => {
             <StyledDropDownMenu>
               <StyledHeader>
                 <h3>Filter</h3>
-                <p id="reset" style={{color: "#f77f00"}} onClick={() => dispatch(clearFilters())}>
+                <Typography
+                  color="primary"
+                  sx={{ "&:hover": { cursor: "pointer" } }}
+                  onClick={() => dispatch(clearFilters())}
+                >
                   Reset
-                </p>
+                </Typography>
               </StyledHeader>
               {dropdowns.map(dropdown => (
                 <StyledAccordian key={dropdown.key}>

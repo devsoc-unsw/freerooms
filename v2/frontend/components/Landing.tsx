@@ -1,8 +1,11 @@
 import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
 import MapIcon from '@mui/icons-material/Map';
-import { Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import { styled } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import React from "react";
 
 import Button from "../components/Button";
@@ -10,39 +13,62 @@ import parentLogo from "../public/assets/favicon/csesocgreyblue.png";
 import Logo from "../public/assets/favicon/free_rooms_logo.png";
 
 const Landing = () => {
-  const router = useRouter();
   return (
-    <div id={"LandingScreenWhole"} style={{
-      height: "95vh",
-      width: "80vw",
-      maxWidth: "100rem",
-      margin: "auto",
-      justifyContent: "center",
-    }}>
-      <div style={{ width: "auto", display: "flex", flexDirection: "column", margin: "auto" }}>
-        <div style={{ width: "auto", margin: 0, justifyContent: "flex-start", display: "flex", flexDirection: "row" }}>
-          <Image style={{ margin: 0, padding: 0 }} alt={"CSESOC Logo"} width={110} height={25} src={parentLogo} />
-        </div>
-        <h1 id={"FreeroomsTitle"}>
+    <LandingScreenContainer direction="row" justifyContent="center">
+      <Stack direction="column" spacing={2} sx={{ margin: "auto" }}>
+        <Stack style={{ width: "auto" }}>
+          <Image alt={"CSESOC Logo"} width={110} height={25} src={parentLogo} />
+        </Stack>
+        <GradientText
+          variant="h1"
+          fontFamily="Josefin Sans, sans-serif"
+          fontSize={{ xs: "4rem", md: "5rem" }}
+        >
           Freerooms
-        </h1>
-        <p id={"FreeroomsBlurb"} style={{ textAlign: "left", fontWeight: "700" }}>
+        </GradientText>
+        <GradientText fontSize={{ xs: "1rem", md: "1.5rem" }}>
           UNSW room bookings
-        </p>
-        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-          <Button onClick={() => router.push("/browse")} sx={{ width: "13rem" }} endIcon={<GridViewRoundedIcon/>}>
+        </GradientText>
+        <Stack direction="column" spacing={2}>
+          <Button LinkComponent={Link} href="/browse" sx={{ width: "13rem" }} endIcon={<GridViewRoundedIcon/>}>
             <Typography fontWeight="bold">Browse</Typography>
           </Button>
-          <Button onClick={() => router.push("/map")} sx={{ width: "13rem" }} endIcon={<MapIcon/>}>
+          <Button LinkComponent={Link} href="/map" sx={{ width: "13rem" }} endIcon={<MapIcon/>}>
             <Typography fontWeight="bold">Map</Typography>
           </Button>
-        </div>
-      </div>
-      <div id={"landing-freerooms-logo"} style={{ width: "auto", margin: "auto" }}>
+        </Stack>
+      </Stack>
+      <Box margin="auto" display={{ xs: "none", md: "block" }} >
         <Image width={400} height={400} alt={"Freerooms Logo"} src={Logo} />
-      </div>
-    </div>
+      </Box>
+    </LandingScreenContainer>
   );
 };
+
+const GradientText = styled(Typography)({
+  "-webkit-background-clip": "text",
+  "-webkit-text-fill-color": "transparent",
+  backgroundImage: "linear-gradient(to left, #d26038, #f5915a)",
+  animation: "gradient 10s ease infinite",
+  backgroundSize: "400% 400%",
+  fontWeight: 700,
+  "@keyframes gradient": {
+    "0%": {
+      backgroundPosition: "0% 50%"
+    },
+    "50%": {
+      backgroundPosition: "100% 50%"
+    },
+    "100%": {
+      backgroundPosition: "0% 50%"
+    }
+  }
+})
+
+const LandingScreenContainer = styled(Stack)(({ theme }) => ({
+  height: "100%",
+  width: "80%",
+  margin: "auto"
+}))
 
 export default Landing;

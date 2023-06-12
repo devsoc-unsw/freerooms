@@ -17,21 +17,16 @@ const Home = () => {
 
   return (
     <Container maxWidth={false}>
-      <Stack>
-        <Main>
-          <Landing />
-        </Main>
-      </Stack>
+      <Main>
+        <Landing />
+      </Main>
     </Container>
   );
 };
 
-const Main = styled("main")(({ theme }) => ({
-  display: "flex",
-  flexDirection: "column",
+const Main = styled(Stack)(({ theme }) => ({
   flexGrow: 1,
   padding: theme.spacing(12, 0),
-  maxHeight: "100vh",
 }));
 
 export default Home;

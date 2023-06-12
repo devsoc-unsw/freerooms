@@ -22,6 +22,10 @@ const theme = createTheme({
   },
 });
 
+
+/**
+ * Any global components like providers or configs should go here
+ */
 const ClientLayout: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
@@ -68,6 +72,7 @@ const Main = styled("main", {
   }),
   width: '100%',
   marginRight: 0,
+  maxHeight: "100vh",
   ...(drawerOpen && {
     width: `calc(100% - ${drawerWidth}px)`,
     marginRight: drawerWidth,

@@ -3,6 +3,7 @@
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Container from "@mui/material/Container";
+import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import React from "react";
 
@@ -28,35 +29,36 @@ const Page = () => {
 
   return (
     <Container maxWidth={false}>
-      <Box sx={{ display: "flex" }}>
-        <Tiles>
-          <div id={"Home-Building-Tiles"}>
-            <div id={"Home-Options"} style={{ display: "flex", justifyContent: "space-between" }}>
-              <FilterBar />
-              <SearchBar setQuery={setQuery} />
-              <SortBar setSort={setSort} sort={sort} />
-            </div>
-            {
-              buildings?.length
-                ? <CardList
-                  buildings={buildings}
-                  setCurrentBuilding={building => dispatch(setCurrentBuilding(building))}
-                  sort={sort}
-                  query={query}
-                />
-                : <Box sx={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                  display: "block"
-                }}>
-                  <CircularProgress color="primary" size={150} />
-                </Box>
-            }
-          </div>
-        </Tiles>
-      </Box>
+      <Tiles>
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          my={1}
+          flexWrap={{ xs: "wrap", sm: "nowrap" }}
+        >
+          <FilterBar />
+          <SearchBar setQuery={setQuery} />
+          <SortBar setSort={setSort} sort={sort} />
+        </Stack>
+        {
+          buildings?.length
+            ? <CardList
+              buildings={buildings}
+              setCurrentBuilding={building => dispatch(setCurrentBuilding(building))}
+              sort={sort}
+              query={query}
+            />
+            : <Box sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              display: "block"
+            }}>
+              <CircularProgress color="primary" size={150} />
+            </Box>
+        }
+      </Tiles>
     </Container>
   );
 };
