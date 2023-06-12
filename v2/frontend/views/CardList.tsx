@@ -4,9 +4,7 @@ import FlipMove from "react-flip-move";
 
 import BuildingCard from "../components/BuildingCard";
 import { Building, BuildingReturnData, RoomsReturnData } from "../types";
-
-const INITIALISING = -2;
-const FAILED = -1;
+import { getNumFreerooms } from "../utils/utils";
 
 const FlipMoveGrid = styled(FlipMove)(() => ({
   width: "100%",
@@ -15,11 +13,15 @@ const FlipMoveGrid = styled(FlipMove)(() => ({
   gridGap: "20px",
 }));
 
-const FlippableCard = React.forwardRef<HTMLDivElement, {
-  building: Building;
-  setBuilding: (bldg: Building) => void;
-  freerooms: number;
-}>(({ building, setBuilding, freerooms }, ref) => (
+// eslint-disable-next-line react/display-name
+const FlippableCard = React.forwardRef<
+  HTMLDivElement,
+  {
+    building: Building;
+    setBuilding: (bldg: Building) => void;
+    freerooms: number;
+  }
+>(({ building, setBuilding, freerooms }, ref) => (
   <div ref={ref}>
     <BuildingCard
       building={building}
@@ -36,19 +38,20 @@ const CardList: React.FC<{
   query: string;
   roomStatusData: RoomsReturnData | undefined;
 }> = ({ buildingData, setCurrentBuilding, sort, query, roomStatusData }) => {
-  const [buildings, setBuildings] = React.useState<Building[]>([...buildingData.buildings]);
+  const [buildings, setBuildings] = React.useState<Building[]>([
+    ...buildingData.buildings,
+  ]);
 
   React.useEffect(() => {
-    if (
-      roomStatusData === undefined ||
-      Object.keys(roomStatusData).length == 0
-    ) return;
+    if (roomStatusData === undefined || Object.keys(roomStatusData).length == 0)
+      return;
 
     // Filter any out that dont start with query
     // If hideUnavailable is true, filter any that have no available rooms
-    const displayedBuildings = [...buildingData.buildings].filter((building) =>
-      building.name.toLowerCase().includes(query.toLowerCase()) &&
-      Object.keys(roomStatusData[building.id]).length > 0,
+    const displayedBuildings = [...buildingData.buildings].filter(
+      (building) =>
+        building.name.toLowerCase().includes(query.toLowerCase()) &&
+        Object.keys(roomStatusData[building.id]).length > 0
     );
 
     // Sort the displayed buildings
@@ -61,7 +64,10 @@ const CardList: React.FC<{
         case "nearest":
         // idk lol
         case "mostRooms":
-          return countFreerooms(roomStatusData, b.id) - countFreerooms(roomStatusData, a.id);
+          return (
+            getNumFreerooms(roomStatusData, b.id) -
+            getNumFreerooms(roomStatusData, a.id)
+          );
         case "reverseAlphabetical":
           return b.name.localeCompare(a.name);
         default:
@@ -71,39 +77,21 @@ const CardList: React.FC<{
     });
 
     setBuildings(displayedBuildings);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query, sort, roomStatusData]);
 
   return (
-    <>
-      {
-        // @ts-ignore
-        <FlipMoveGrid duration={500}>
-          {buildings.map((building) => (
-            <FlippableCard
-              key={building.id}
-              building={building}
-              setBuilding={setCurrentBuilding}
-              freerooms={countFreerooms(roomStatusData, building.id)}
-            />
-          ))}
-        </FlipMoveGrid>
-      }
-    </>
+    <FlipMoveGrid duration={500}>
+      {buildings.map((building) => (
+        <FlippableCard
+          key={building.id}
+          building={building}
+          setBuilding={setCurrentBuilding}
+          freerooms={getNumFreerooms(roomStatusData, building.id)}
+        />
+      ))}
+    </FlipMoveGrid>
   );
-};
-
-const countFreerooms = (
-  roomStatus: RoomsReturnData | undefined,
-  buildingId: string,
-): number => {
-  if (roomStatus === undefined) return INITIALISING;
-  if (!(buildingId in roomStatus)) return FAILED;
-
-  let freerooms = 0;
-  for (const room of Object.values(roomStatus[buildingId])) {
-    if (room.status === "free") freerooms++;
-  }
-  return freerooms;
 };
 
 export default CardList;
