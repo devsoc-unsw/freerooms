@@ -20,6 +20,9 @@ interface NavBarProps {
   setSearchOpen: (open: boolean) => void;
 }
 
+// This isn't actually enforced so update this if u change the navbar
+export const navHeight = 65;
+
 const NavBar: React.FC<NavBarProps> = ({
   setSearchOpen
 }) => {
@@ -29,7 +32,7 @@ const NavBar: React.FC<NavBarProps> = ({
 
   return (
     <AppBar
-      position="sticky"
+      position="fixed"
       drawerOpen={drawerOpen}
       sx={{
         borderBottom: "1px solid #e0e0e0",

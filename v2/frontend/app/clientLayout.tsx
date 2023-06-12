@@ -7,7 +7,7 @@ import ThemeProvider from "@mui/system/ThemeProvider";
 import React from "react";
 import { Provider as ReduxProvider } from 'react-redux'
 
-import NavBar from "../components/NavBar";
+import NavBar, { navHeight } from "../components/NavBar";
 import SearchModal from "../components/SearchModal";
 import { selectCurrentBuilding } from "../redux/currentBuildingSlice";
 import { useSelector } from "../redux/hooks";
@@ -70,6 +70,7 @@ const Main = styled("main", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
+  marginTop: navHeight,
   width: '100%',
   marginRight: 0,
   maxHeight: "100vh",
