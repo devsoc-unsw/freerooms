@@ -3,6 +3,7 @@ import React from "react";
 import FlipMove from "react-flip-move";
 
 import BuildingCard from "../components/BuildingCard";
+import { getNumFreerooms } from "../utils/utils";
 import useStatus from "../hooks/useStatus";
 import { Building, RoomsReturnData } from "../types";
 
@@ -41,10 +42,8 @@ const CardList: React.FC<{
   const { status: roomStatusData } = useStatus();
 
   React.useEffect(() => {
-    if (
-      roomStatusData === undefined ||
-      Object.keys(roomStatusData).length == 0
-    ) return;
+    if (roomStatusData === undefined || Object.keys(roomStatusData).length == 0)
+      return;
 
     // Filter any out that dont start with query
     // If hideUnavailable is true, filter any that have no available rooms
@@ -63,7 +62,10 @@ const CardList: React.FC<{
         case "nearest":
         // idk lol
         case "mostRooms":
-          return countFreerooms(roomStatusData, b.id) - countFreerooms(roomStatusData, a.id);
+          return (
+            getNumFreerooms(roomStatusData, b.id) -
+            getNumFreerooms(roomStatusData, a.id)
+          );
         case "reverseAlphabetical":
           return b.name.localeCompare(a.name);
         default:
@@ -76,36 +78,17 @@ const CardList: React.FC<{
   }, [query, sort, roomStatusData, buildings]);
 
   return (
-    <>
-      {
-        // @ts-ignore
-        <FlipMoveGrid duration={500}>
-          {displayedBuildings.map((building) => (
-            <FlippableCard
-              key={building.id}
-              building={building}
-              setBuilding={setCurrentBuilding}
-              freerooms={countFreerooms(roomStatusData, building.id)}
-            />
-          ))}
-        </FlipMoveGrid>
-      }
-    </>
+    <FlipMoveGrid duration={500}>
+      {displayedBuildings.map((building) => (
+        <FlippableCard
+          key={building.id}
+          building={building}
+          setBuilding={setCurrentBuilding}
+          freerooms={getNumFreerooms(roomStatusData, building.id)}
+        />
+      ))}
+    </FlipMoveGrid>
   );
-};
-
-const countFreerooms = (
-  roomStatus: RoomsReturnData | undefined,
-  buildingId: string,
-): number => {
-  if (roomStatus === undefined) return INITIALISING;
-  if (!(buildingId in roomStatus)) return FAILED;
-
-  let freerooms = 0;
-  for (const room of Object.values(roomStatus[buildingId])) {
-    if (room.status === "free") freerooms++;
-  }
-  return freerooms;
 };
 
 export default CardList;
