@@ -8,8 +8,10 @@ import {
 import React, { useEffect, useState } from "react";
 import { useDebounce } from "usehooks-ts";
 
-import { API_URL, GOOGLE_API_KEY } from "../config";
-import { Building, BuildingReturnData, RoomsReturnData } from "../types";
+import { GOOGLE_API_KEY } from "../config";
+import useBuildings from "../hooks/useBuildings";
+import useStatus from "../hooks/useStatus";
+import { Building } from "../types";
 import { getNumFreerooms, getTotalRooms } from "../utils/utils";
 import MarkerSymbol from "./MarkerSymbol";
 
@@ -49,16 +51,10 @@ const LocationMarker = () => {
   );
 };
 
-interface MapProps {
-  roomStatusData: RoomsReturnData | undefined;
-  currentBuilding: Building | null;
-  setCurrentBuilding: (building: Building) => void;
-}
-
-export const Map = ({ roomStatusData, currentBuilding, setCurrentBuilding }: MapProps) => {
-  const [buildingData, setBuildingData] = useState<BuildingReturnData>({
-    buildings: [],
-  });
+export const Map = () => {
+  // Fetch data
+  const { buildings } = useBuildings();
+  const { status: roomStatusData } = useStatus();
 
   const [userLat, setUserLat] = useState<number>();
   const [userLng, setUserLng] = useState<number>();
@@ -66,19 +62,6 @@ export const Map = ({ roomStatusData, currentBuilding, setCurrentBuilding }: Map
 
   // Use debounce to allow moving from marker to popup without popup hiding
   const debouncedCurrentHover = useDebounce(currentHover, 50);
-
-  const getBuildingData = () => {
-    fetch(API_URL + "/buildings")
-      .then((res) => res.json())
-      .then((data) => {
-        setBuildingData(data as BuildingReturnData);
-      })
-      .catch(() => setBuildingData({ buildings: [] }));
-  };
-
-  useEffect(() => {
-    getBuildingData();
-  }, []);
 
   const styleArray = [
     {
@@ -129,15 +112,15 @@ export const Map = ({ roomStatusData, currentBuilding, setCurrentBuilding }: Map
   const [distances, setDistances] = useState<number[]>([]);
 
   useEffect(() => {
-    if (userLat && userLng && isInBounds(userLat, userLng)) {
-      setDistances(buildingData.buildings.map((building) =>
+    if (buildings && userLat && userLng && isInBounds(userLat, userLng)) {
+      setDistances(buildings.map((building) =>
         Math.round(google.maps.geometry.spherical.computeDistanceBetween(
           { lat: building.lat, lng: building.long },
           { lat: userLat, lng: userLng },
         ))
-      ));
+      ))
     }
-  }, [buildingData.buildings, userLat, userLng]);
+  }, [buildings, userLat, userLng]);
 
   const renderMap = () => {
     return (
@@ -160,7 +143,7 @@ export const Map = ({ roomStatusData, currentBuilding, setCurrentBuilding }: Map
           }}
           zoom={17.5}
         >
-          {buildingData.buildings.map((building, index) => (
+          {buildings && buildings.map((building, index) => (
             <OverlayViewF
               key={building.id}
               mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
@@ -177,11 +160,9 @@ export const Map = ({ roomStatusData, currentBuilding, setCurrentBuilding }: Map
                 freerooms={getNumFreerooms(roomStatusData, building.id)}
                 totalRooms={getTotalRooms(roomStatusData, building.id)}
                 distance={distances[index]}
-                currentBuilding={currentBuilding}
-                setBuilding={setCurrentBuilding}
                 currentHover={debouncedCurrentHover}
                 setCurrentHover={setCurrentHover}
-              ></MarkerSymbol>
+              />
             </OverlayViewF>
           ))}
           {userLat && userLng && isInBounds(userLat, userLng) && (

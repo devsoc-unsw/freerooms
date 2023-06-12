@@ -3,12 +3,9 @@ import React from "react";
 import FlipMove from "react-flip-move";
 
 import BuildingCard from "../components/BuildingCard";
-import { getNumFreerooms } from "../utils/utils";
 import useStatus from "../hooks/useStatus";
-import { Building, RoomsReturnData } from "../types";
-
-const INITIALISING = -2;
-const FAILED = -1;
+import { Building } from "../types";
+import { getNumFreerooms } from "../utils/utils";
 
 const FlipMoveGrid = styled(FlipMove)(() => ({
   width: "100%",

@@ -8,6 +8,8 @@ import { styled } from "@mui/material/styles";
 import Image, { ImageProps } from "next/image";
 import React, { useEffect } from "react";
 
+import { selectCurrentBuilding, setCurrentBuilding } from "../redux/currentBuildingSlice";
+import { useDispatch, useSelector } from "../redux/hooks";
 import { Building } from "../types";
 
 const MarkerSymbol: React.FC<{
@@ -15,8 +17,6 @@ const MarkerSymbol: React.FC<{
   freerooms: number;
   totalRooms: number;
   distance: number | undefined;
-  currentBuilding: Building | null;
-  setBuilding: (building: Building) => void;
   currentHover: Building | null;
   setCurrentHover: (building: Building | null) => void;
 }> = ({
@@ -24,11 +24,12 @@ const MarkerSymbol: React.FC<{
   freerooms,
   totalRooms,
   distance,
-  currentBuilding,
-  setBuilding,
   currentHover,
   setCurrentHover,
 }) => {
+  const currentBuilding = useSelector(selectCurrentBuilding);
+  const dispatch = useDispatch();
+
   const [showPopup, setShowPopup] = React.useState(false);
   React.useEffect(() => {
     setShowPopup(currentHover?.id === building.id);
@@ -60,7 +61,11 @@ const MarkerSymbol: React.FC<{
         setCurrentHover(null);
       }}
     >
-      <Typography sx={{ fontSize: 11, fontWeight: 500, textShadow: '-.5px -.5px 1px #f2f2f2, .5px -.5px 1px #f2f2f2, -.5px .5px 1px #f2f2f2, .5px .5px 1px #f2f2f2' }}>
+      <Typography sx={{
+        fontSize: 11,
+        fontWeight: 500,
+        textShadow: '-.5px -.5px 1px #f2f2f2, .5px -.5px 1px #f2f2f2, -.5px .5px 1px #f2f2f2, .5px .5px 1px #f2f2f2'
+      }}>
         {building.name}
       </Typography>
       <Box
@@ -76,7 +81,7 @@ const MarkerSymbol: React.FC<{
             cursor: "pointer",
           },
         })}
-        onClick={() => setBuilding(building)}
+        onClick={() => dispatch(setCurrentBuilding(building))}
       />
       <Fade in={showPopup} timeout={200}>
         <div style={{ position: "relative", bottom: -3 }}>
