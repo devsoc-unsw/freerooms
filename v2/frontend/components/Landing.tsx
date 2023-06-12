@@ -46,8 +46,8 @@ const Landing = () => {
 };
 
 const GradientText = styled(Typography)({
-  "-webkit-background-clip": "text",
-  "-webkit-text-fill-color": "transparent",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
   backgroundImage: "linear-gradient(to left, #d26038, #f5915a)",
   animation: "gradient 10s ease infinite",
   backgroundSize: "400% 400%",

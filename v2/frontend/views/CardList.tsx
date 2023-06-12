@@ -1,10 +1,12 @@
+import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
 import { styled } from "@mui/material/styles";
 import React from "react";
 import FlipMove from "react-flip-move";
 
 import BuildingCard from "../components/BuildingCard";
+import useBuildings from "../hooks/useBuildings";
 import useStatus from "../hooks/useStatus";
-import { Building } from "../types";
 import { getNumFreerooms } from "../utils/utils";
 
 const FlipMoveGrid = styled(FlipMove)(() => ({
@@ -15,31 +17,25 @@ const FlipMoveGrid = styled(FlipMove)(() => ({
 }));
 
 const FlippableCard = React.forwardRef<HTMLDivElement, {
-  building: Building;
-  setBuilding: (bldg: Building) => void;
-  freerooms: number;
-}>(({ building, setBuilding, freerooms }, ref) => (
+  buildingId: string;
+}>(({ buildingId }, ref) => (
   <div ref={ref}>
-    <BuildingCard
-      building={building}
-      setBuilding={setBuilding}
-      freerooms={freerooms}
-    />
+    <BuildingCard buildingId={buildingId} />
   </div>
 ));
 FlippableCard.displayName = "FlippableCard";
 
 const CardList: React.FC<{
-  buildings: Building[];
-  setCurrentBuilding: (building: Building) => void;
   sort: string;
   query: string;
-}> = ({ buildings, setCurrentBuilding, sort, query }) => {
+}> = ({ sort, query }) => {
+  const { buildings } = useBuildings();
+
   const [displayedBuildings, setDisplayedBuildings] = React.useState(buildings);
   const { status: roomStatusData } = useStatus();
 
   React.useEffect(() => {
-    if (roomStatusData === undefined || Object.keys(roomStatusData).length == 0)
+    if (!buildings || !roomStatusData || Object.keys(roomStatusData).length == 0)
       return;
 
     // Filter any out that dont start with query
@@ -60,8 +56,8 @@ const CardList: React.FC<{
         // idk lol
         case "mostRooms":
           return (
-            getNumFreerooms(roomStatusData, b.id) -
-            getNumFreerooms(roomStatusData, a.id)
+            getNumFreerooms(roomStatusData[b.id]) -
+            getNumFreerooms(roomStatusData[a.id])
           );
         case "reverseAlphabetical":
           return b.name.localeCompare(a.name);
@@ -75,16 +71,21 @@ const CardList: React.FC<{
   }, [query, sort, roomStatusData, buildings]);
 
   return (
-    <FlipMoveGrid duration={500}>
-      {displayedBuildings.map((building) => (
-        <FlippableCard
-          key={building.id}
-          building={building}
-          setBuilding={setCurrentBuilding}
-          freerooms={getNumFreerooms(roomStatusData, building.id)}
-        />
-      ))}
-    </FlipMoveGrid>
+    displayedBuildings
+      ? <FlipMoveGrid duration={500}>
+        {displayedBuildings.map((building) => (
+          <FlippableCard key={building.id} buildingId={building.id} />
+        ))}
+      </FlipMoveGrid>
+      : <Box sx={{
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        display: "block"
+      }}>
+        <CircularProgress color="primary" size={150} />
+      </Box>
   );
 };
 

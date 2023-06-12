@@ -6,38 +6,49 @@ import { Typography } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 import Image, { ImageProps } from "next/image";
-import React, { useEffect } from "react";
+import React from "react";
 
+import useBuilding from "../hooks/useBuilding";
+import useBuildingStatus from "../hooks/useBuildingStatus";
 import { selectCurrentBuilding, setCurrentBuilding } from "../redux/currentBuildingSlice";
 import { useDispatch, useSelector } from "../redux/hooks";
-import { Building } from "../types";
+import { Building, BuildingStatus } from "../types";
+import { getNumFreerooms, getTotalRooms } from "../utils/utils";
 
-const MarkerSymbol: React.FC<{
-  building: Building;
-  freerooms: number;
-  totalRooms: number;
+const MapMarker: React.FC<{
+  buildingId: string;
   distance: number | undefined;
   currentHover: Building | null;
   setCurrentHover: (building: Building | null) => void;
 }> = ({
-  building,
-  freerooms,
-  totalRooms,
+  buildingId,
   distance,
   currentHover,
   setCurrentHover,
 }) => {
-  const currentBuilding = useSelector(selectCurrentBuilding);
-  const dispatch = useDispatch();
+  // Get building data
+  const { building } = useBuilding(buildingId);
+  const { status: liveStatus } = useBuildingStatus(buildingId);
 
-  const isCurrentBuilding = currentBuilding?.id === building.id;
+  // This one uses stale data so markers don't disappear
+  const [status, setStatus] = React.useState<BuildingStatus>();
+  React.useEffect(() => {
+    if (liveStatus) setStatus(liveStatus);
+  }, [liveStatus]);
+  const freerooms = getNumFreerooms(status);
+  const totalRooms = getTotalRooms(status)
+
+  const dispatch = useDispatch();
+  const currentBuilding = useSelector(selectCurrentBuilding);
+  const isCurrentBuilding = currentBuilding?.id === building?.id;
+
   const [showPopup, setShowPopup] = React.useState(false);
   React.useEffect(() => {
-    setShowPopup(currentHover?.id === building.id);
+    setShowPopup(currentHover?.id === building?.id);
   }, [currentHover, building]);
 
   const [colour, setColour] = React.useState("#e57373");
-  useEffect(() => {
+  React.useEffect(() => {
     freerooms >= 5
     ? setColour("#66bb6a")
     : freerooms !== 0
@@ -46,7 +57,7 @@ const MarkerSymbol: React.FC<{
 
   }, [freerooms])
 
-  console.log("rendering");
+  if (!building) return <></>;
 
   return (
     <div
@@ -193,4 +204,4 @@ const MarkerHover: React.FC<{
   );
 };
 
-export default MarkerSymbol;
+export default MapMarker;

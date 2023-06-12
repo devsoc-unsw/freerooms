@@ -10,10 +10,8 @@ import { useDebounce } from "usehooks-ts";
 
 import { GOOGLE_API_KEY } from "../config";
 import useBuildings from "../hooks/useBuildings";
-import useStatus from "../hooks/useStatus";
-import { Building, RoomsReturnData } from "../types";
-import { getNumFreerooms, getTotalRooms } from "../utils/utils";
-import MarkerSymbol from "./MarkerSymbol";
+import { Building } from "../types";
+import MapMarker from "./MapMarker";
 
 const center = {
   lat: -33.91767,
@@ -50,15 +48,6 @@ const LocationMarker = () => {
 export const Map = () => {
   // Fetch data
   const { buildings } = useBuildings();
-  const { status } = useStatus();
-
-  // This one uses stale data so markers don't disappear
-  const [roomStatusData, setRoomStatusData] = useState<RoomsReturnData | undefined>(undefined);
-  useEffect(() => {
-    if (status) {
-      setRoomStatusData(status)
-    }
-  }, [status]);
 
   const [userLat, setUserLat] = useState<number>();
   const [userLng, setUserLng] = useState<number>();
@@ -149,7 +138,7 @@ export const Map = () => {
           }}
           zoom={17.5}
         >
-          {roomStatusData && buildings && buildings.map((building, index) => (
+          {buildings && buildings.map((building, index) => (
             <OverlayViewF
               key={building.id}
               mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
@@ -159,10 +148,8 @@ export const Map = () => {
               }}
               zIndex={debouncedCurrentHover?.id === building.id ? 2 : 1}
             >
-              <MarkerSymbol
-                building={building}
-                freerooms={getNumFreerooms(roomStatusData, building.id)}
-                totalRooms={getTotalRooms(roomStatusData, building.id)}
+              <MapMarker
+                buildingId={building.id}
                 distance={distances[index]}
                 currentHover={debouncedCurrentHover}
                 setCurrentHover={setCurrentHover}

@@ -1,28 +1,24 @@
-import { RoomsReturnData } from "../types";
+import { BuildingStatus, RoomsReturnData } from "../types";
 
 const INITIALISING = -2;
 const FAILED = -1;
 
 export const getNumFreerooms = (
-  roomStatus: RoomsReturnData | undefined,
-  buildingId: string
+  buildingStatus: BuildingStatus | undefined
 ): number => {
-  if (roomStatus === undefined) return INITIALISING;
-  if (!(buildingId in roomStatus)) return FAILED;
+  if (buildingStatus === undefined) return INITIALISING;
 
   let freerooms = 0;
-  for (const room of Object.values(roomStatus[buildingId])) {
+  for (const room of Object.values(buildingStatus)) {
     if (room.status === "free") freerooms++;
   }
   return freerooms;
 };
 
 export const getTotalRooms = (
-  roomStatus: RoomsReturnData | undefined,
-  buildingId: string
+  buildingStatus: BuildingStatus | undefined
 ): number => {
-  if (roomStatus === undefined) return INITIALISING;
-  if (!(buildingId in roomStatus)) return FAILED;
+  if (buildingStatus === undefined) return INITIALISING;
 
-  return Object.values(roomStatus[buildingId]).length;
+  return Object.values(buildingStatus).length;
 };
