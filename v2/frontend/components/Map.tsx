@@ -10,7 +10,9 @@ import { useDebounce } from "usehooks-ts";
 
 import { GOOGLE_API_KEY } from "../config";
 import useBuildings from "../hooks/useBuildings";
+import useUserLocation from "../hooks/useUserLocation";
 import { Building } from "../types";
+import calculateDistance from "../utils/calculateDistance";
 import MapMarker from "./MapMarker";
 import { navHeight } from "./NavBar";
 
@@ -50,11 +52,8 @@ export const Map = () => {
   // Fetch data
   const { buildings } = useBuildings();
 
-  const [userLat, setUserLat] = useState<number>();
-  const [userLng, setUserLng] = useState<number>();
-  const [currentHover, setCurrentHover] = useState<Building | null>(null);
-
   // Use debounce to allow moving from marker to popup without popup hiding
+  const [currentHover, setCurrentHover] = useState<Building | null>(null);
   const debouncedCurrentHover = useDebounce(currentHover, 50);
 
   const styleArray = [
@@ -83,24 +82,10 @@ export const Map = () => {
   ];
 
   // Get current location of user
-  useEffect(() => {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (position: GeolocationPosition) => {
-          const pos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
-          setUserLat(pos.lat);
-          setUserLng(pos.lng);
-        }
-      );
-    }
-  }, []);
+  const { userLat, userLng } = useUserLocation();
 
   const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: GOOGLE_API_KEY,
-    libraries: ["geometry"]
+    googleMapsApiKey: GOOGLE_API_KEY
   });
 
   const [distances, setDistances] = useState<number[]>([]);
@@ -108,10 +93,7 @@ export const Map = () => {
   useEffect(() => {
     if (buildings && userLat && userLng && isInBounds(userLat, userLng)) {
       setDistances(buildings.map((building) =>
-        Math.round(google.maps.geometry.spherical.computeDistanceBetween(
-          { lat: building.lat, lng: building.long },
-          { lat: userLat, lng: userLng },
-        ))
+        calculateDistance(userLat, userLng, building.lat, building.long)
       ))
     }
   }, [buildings, userLat, userLng]);

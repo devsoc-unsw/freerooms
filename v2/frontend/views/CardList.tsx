@@ -7,6 +7,8 @@ import FlipMove from "react-flip-move";
 import BuildingCard from "../components/BuildingCard";
 import useBuildings from "../hooks/useBuildings";
 import useStatus from "../hooks/useStatus";
+import useUserLocation from "../hooks/useUserLocation";
+import calculateDistance from "../utils/calculateDistance";
 import { getNumFreerooms } from "../utils/utils";
 
 const FlipMoveGrid = styled(FlipMove)(() => ({
@@ -34,6 +36,8 @@ const CardList: React.FC<{
   const [displayedBuildings, setDisplayedBuildings] = React.useState(buildings);
   const { status: roomStatusData } = useStatus();
 
+  const { userLat, userLng } = useUserLocation();
+
   React.useEffect(() => {
     if (!buildings || !roomStatusData || Object.keys(roomStatusData).length == 0)
       return;
@@ -53,7 +57,10 @@ const CardList: React.FC<{
         case "upperToLower":
           return b.long - a.long;
         case "nearest":
-        // idk lol
+          return userLat && userLng ? (
+            calculateDistance(userLat, userLng, a.lat, a.long) -
+            calculateDistance(userLat, userLng, b.lat, b.long)
+          ) : 0;
         case "mostRooms":
           return (
             getNumFreerooms(roomStatusData[b.id]) -
