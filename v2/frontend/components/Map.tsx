@@ -15,10 +15,6 @@ import { Building } from "../types";
 import { getNumFreerooms, getTotalRooms } from "../utils/utils";
 import MarkerSymbol from "./MarkerSymbol";
 
-const containerStyle = {
-  height: "calc(100vh - 86.5px)", // 86.5px is the height of the header
-};
-
 const center = {
   lat: -33.91767,
   lng: 151.23129,
@@ -122,12 +118,14 @@ export const Map = () => {
     }
   }, [buildings, userLat, userLng]);
 
+  const headerHeight = 65;
+
   const renderMap = () => {
     return (
       // 86.5 is the height of the header
-      <div style={{ position: "relative", top: "86.5px" }}>
+      <div style={{ position: "relative" }}>
         <GoogleMap
-          mapContainerStyle={containerStyle}
+          mapContainerStyle={{ height: `calc(100vh - ${headerHeight}px)` }}
           center={center}
           options={{
             clickableIcons: false,
@@ -151,9 +149,7 @@ export const Map = () => {
                 lat: building.lat,
                 lng: building.long,
               }}
-              zIndex={
-                debouncedCurrentHover?.id === building.id ? 2 : 1
-              }
+              zIndex={debouncedCurrentHover?.id === building.id ? 2 : 1}
             >
               <MarkerSymbol
                 building={building}
