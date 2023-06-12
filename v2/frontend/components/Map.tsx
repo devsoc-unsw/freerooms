@@ -48,10 +48,11 @@ const LocationMarker = () => {
 
 interface MapProps {
   roomStatusData: RoomsReturnData | undefined;
+  currentBuilding: Building | null;
   setCurrentBuilding: (building: Building) => void;
 }
 
-export const Map = ({ roomStatusData, setCurrentBuilding }: MapProps) => {
+export const Map = ({ roomStatusData, currentBuilding, setCurrentBuilding }: MapProps) => {
   const [buildingData, setBuildingData] = useState<BuildingReturnData>({
     buildings: [],
   });
@@ -234,6 +235,7 @@ export const Map = ({ roomStatusData, setCurrentBuilding }: MapProps) => {
                   freerooms={getNumFreerooms(roomStatusData, building.id)}
                   totalRooms={getTotalRooms(roomStatusData, building.id)}
                   distance={distances[index]}
+                  currentBuilding={currentBuilding}
                   setBuilding={setCurrentBuilding}
                   currentHover={debouncedCurrentHover}
                   setCurrentHover={setCurrentHover}
