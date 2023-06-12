@@ -30,6 +30,7 @@ const MarkerSymbol: React.FC<{
   const currentBuilding = useSelector(selectCurrentBuilding);
   const dispatch = useDispatch();
 
+  const isCurrentBuilding = currentBuilding?.id === building.id;
   const [showPopup, setShowPopup] = React.useState(false);
   React.useEffect(() => {
     setShowPopup(currentHover?.id === building.id);
@@ -44,6 +45,8 @@ const MarkerSymbol: React.FC<{
     : setColour("#f44336")
 
   }, [freerooms])
+
+  console.log("rendering");
 
   return (
     <div
@@ -73,9 +76,9 @@ const MarkerSymbol: React.FC<{
           width: 18,
           height: 18,
           borderRadius: "50%",
-          border: currentBuilding === building ? `5px solid ${colour}` : '4px solid white',
-          backgroundColor: currentBuilding === building ? 'white': colour,
-          boxShadow: currentBuilding === building ? `0px 0px 6px 4px ${alpha(colour, 0.5)}` : '',
+          border: isCurrentBuilding ? `5px solid ${colour}` : '4px solid white',
+          backgroundColor: isCurrentBuilding ? 'white': colour,
+          boxShadow: isCurrentBuilding ? `0px 0px 6px 4px ${alpha(colour, 0.5)}` : '',
           position: "relative",
           "&:hover": {
             cursor: "pointer",
