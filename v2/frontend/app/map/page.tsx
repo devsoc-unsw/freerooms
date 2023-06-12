@@ -55,6 +55,7 @@ export default function Page() {
     <>
       <Map
         roomStatusData={roomStatusData}
+        currentBuilding={currentBuilding}
         setCurrentBuilding={setCurrentBuilding}
       />
     </>

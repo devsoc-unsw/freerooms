@@ -1,11 +1,12 @@
 import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 import RoomIcon from "@mui/icons-material/Room";
+import { alpha } from "@mui/material";
 import { Fade } from "@mui/material";
 import { Typography } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 import Image, { ImageProps } from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Building } from "../types";
 
@@ -14,6 +15,7 @@ const MarkerSymbol: React.FC<{
   freerooms: number;
   totalRooms: number;
   distance: number | undefined;
+  currentBuilding: Building | null;
   setBuilding: (building: Building) => void;
   currentHover: Building | null;
   setCurrentHover: (building: Building | null) => void;
@@ -22,10 +24,26 @@ const MarkerSymbol: React.FC<{
   freerooms,
   totalRooms,
   distance,
+  currentBuilding,
   setBuilding,
   currentHover,
   setCurrentHover,
 }) => {
+  const [showPopup, setShowPopup] = React.useState(false);
+  React.useEffect(() => {
+    setShowPopup(currentHover?.id === building.id);
+  }, [currentHover, building]);
+
+  const [colour, setColour] = React.useState("#e57373");
+  useEffect(() => {
+    freerooms >= 5
+    ? setColour("#66bb6a")
+    : freerooms !== 0
+    ? setColour("#ffa726")
+    : setColour("#f44336")
+
+  }, [freerooms])
+
   return (
     <div
       style={{
@@ -42,7 +60,7 @@ const MarkerSymbol: React.FC<{
         setCurrentHover(null);
       }}
     >
-      <Typography sx={{ fontSize: 10, fontWeight: 500 }}>
+      <Typography sx={{ fontSize: 11, fontWeight: 500, textShadow: '-.5px -.5px 1px #f2f2f2, .5px -.5px 1px #f2f2f2, -.5px .5px 1px #f2f2f2, .5px .5px 1px #f2f2f2' }}>
         {building.name}
       </Typography>
       <Box
@@ -50,13 +68,9 @@ const MarkerSymbol: React.FC<{
           width: 18,
           height: 18,
           borderRadius: "50%",
-          border: "4px solid white",
-          backgroundColor:
-            freerooms >= 5
-              ? theme.palette.success.light
-              : freerooms !== 0
-              ? theme.palette.warning.light
-              : theme.palette.error.light,
+          border: currentBuilding === building ? `5px solid ${colour}` : '4px solid white',
+          backgroundColor: currentBuilding === building ? 'white': colour,
+          boxShadow: currentBuilding === building ? `0px 0px 6px 4px ${alpha(colour, 0.5)}` : '',
           position: "relative",
           "&:hover": {
             cursor: "pointer",
@@ -64,7 +78,7 @@ const MarkerSymbol: React.FC<{
         })}
         onClick={() => setBuilding(building)}
       />
-      <Fade in={currentHover?.id === building.id} timeout={200}>
+      <Fade in={showPopup} timeout={200}>
         <div style={{ position: "relative", bottom: -3 }}>
           <MarkerHover
             building={building}
@@ -92,7 +106,7 @@ const MarkerHover: React.FC<{
     width: 300,
     borderRadius: 20,
     overflow: "hidden",
-    boxShadow: "1px 1px 5px black",
+    boxShadow: "1px 1px 5px #1f1f1f",
   }));
 
   const StyledImage = styled(Image)<ImageProps>(({ theme }) => ({

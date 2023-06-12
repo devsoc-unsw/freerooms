@@ -158,6 +158,7 @@ const Home: NextPage<{}> = () => {
             {showMap ? (
               <Map
                 roomStatusData={roomStatusData}
+                currentBuilding={currentBuilding}
                 setCurrentBuilding={setCurrentBuilding}
               />
             ) : (
