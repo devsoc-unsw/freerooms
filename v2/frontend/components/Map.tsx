@@ -11,7 +11,7 @@ import { useDebounce } from "usehooks-ts";
 import { GOOGLE_API_KEY } from "../config";
 import useBuildings from "../hooks/useBuildings";
 import useStatus from "../hooks/useStatus";
-import { Building } from "../types";
+import { Building, RoomsReturnData } from "../types";
 import { getNumFreerooms, getTotalRooms } from "../utils/utils";
 import MarkerSymbol from "./MarkerSymbol";
 
@@ -50,7 +50,15 @@ const LocationMarker = () => {
 export const Map = () => {
   // Fetch data
   const { buildings } = useBuildings();
-  const { status: roomStatusData } = useStatus();
+  const { status } = useStatus();
+
+  // This one uses stale data so markers don't disappear
+  const [roomStatusData, setRoomStatusData] = useState<RoomsReturnData | undefined>(undefined);
+  useEffect(() => {
+    if (status) {
+      setRoomStatusData(status)
+    }
+  }, [status]);
 
   const [userLat, setUserLat] = useState<number>();
   const [userLng, setUserLng] = useState<number>();
@@ -125,7 +133,7 @@ export const Map = () => {
       // 86.5 is the height of the header
       <div style={{ position: "relative" }}>
         <GoogleMap
-          mapContainerStyle={{ height: `calc(100vh - ${headerHeight}px)` }}
+          mapContainerStyle={{ height: `calc(100vh - ${headerHeight}px)`, }}
           center={center}
           options={{
             clickableIcons: false,

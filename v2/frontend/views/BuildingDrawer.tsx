@@ -70,7 +70,7 @@ const IndiviRoomBox = styled(Box)<BoxProps>(({ theme }) => ({
   margin: theme.spacing(1.5, 1),
 }));
 
-const drawerWidth = 400;
+export const drawerWidth = 400;
 
 const BuildingDrawer = () => {
   const dispatch = useDispatch();

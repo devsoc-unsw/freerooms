@@ -3,7 +3,6 @@
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Container from "@mui/material/Container";
-import CssBaseline from "@mui/material/CssBaseline";
 import { styled } from "@mui/material/styles";
 import React from "react";
 
@@ -11,15 +10,14 @@ import FilterBar from "../../components/FilterBar";
 import SearchBar from "../../components/SearchBar";
 import SortBar from "../../components/SortBar";
 import useBuildings from "../../hooks/useBuildings";
-import { selectCurrentBuilding, setCurrentBuilding } from "../../redux/currentBuildingSlice";
-import { useDispatch, useSelector } from "../../redux/hooks";
+import { setCurrentBuilding } from "../../redux/currentBuildingSlice";
+import { useDispatch } from "../../redux/hooks";
 import CardList from "../../views/CardList";
 
 
 const Page = () => {
   // Get global state from Redux
   const dispatch = useDispatch();
-  const currentBuilding = useSelector(selectCurrentBuilding);
 
   // Fetch data from backend
   const { buildings } = useBuildings();
@@ -28,21 +26,15 @@ const Page = () => {
   const [sort, setSort] = React.useState<string>("alphabetical");
   const [query, setQuery] = React.useState<string>("");
 
-  const drawerOpen = !!currentBuilding;
-
   return (
     <Container maxWidth={false}>
       <Box sx={{ display: "flex" }}>
-        <CssBaseline />
-        <Tiles open={drawerOpen}>
+        <Tiles>
           <div id={"Home-Building-Tiles"}>
             <div id={"Home-Options"} style={{ display: "flex", justifyContent: "space-between" }}>
-              <FilterBar/>
-              <SearchBar setQuery={setQuery}></SearchBar>
-              <SortBar
-                // filters={sort}
-                // setFilters={setSort}
-                setSort={setSort} sort={sort}></SortBar>
+              <FilterBar />
+              <SearchBar setQuery={setQuery} />
+              <SortBar setSort={setSort} sort={sort} />
             </div>
             {
               buildings?.length
@@ -69,27 +61,11 @@ const Page = () => {
   );
 };
 
-const drawerWidth = 400;
-
-const Tiles = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
-  open?: boolean;
-}>(({ theme, open }) => ({
+const Tiles = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   flexGrow: 1,
-  padding: theme.spacing(0, 0, 1, 0),
-  transition: theme.transitions.create("margin", {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginRight: `${drawerWidth}px`,
-  }),
+  padding: theme.spacing(0, 0, 1, 0)
 }));
 
 export default Page;

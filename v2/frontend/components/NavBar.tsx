@@ -12,6 +12,7 @@ import React from "react";
 
 import { selectCurrentBuilding } from "../redux/currentBuildingSlice";
 import { useSelector } from "../redux/hooks";
+import { drawerWidth } from "../views/BuildingDrawer";
 import Branding from "./Branding";
 import IconButton from "./IconButton";
 
@@ -67,8 +68,6 @@ const NavBar: React.FC<NavBarProps> = ({
 interface AppBarProps extends MuiAppBarProps {
   drawerOpen?: boolean;
 }
-
-const drawerWidth = 400;
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "drawerOpen",
