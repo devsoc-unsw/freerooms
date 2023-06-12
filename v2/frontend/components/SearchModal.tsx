@@ -1,7 +1,7 @@
 import BuildingIcon from '@mui/icons-material/Apartment';
 import RoomIcon from '@mui/icons-material/MeetingRoom';
 import SearchIcon from "@mui/icons-material/Search";
-import { FilterOptionsState, SvgIconProps } from "@mui/material";
+import { AutocompleteRenderInputParams, FilterOptionsState, SvgIconProps } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import InputAdornment from "@mui/material/InputAdornment";
 import Modal from "@mui/material/Modal";
@@ -119,49 +119,27 @@ const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
       sx={{ backdropFilter: "blur(3px)" }}
     >
       <Autocomplete
-        sx={{
-          maxWidth: 600,
-          margin: '10% auto'
-        }}
         disableCloseOnSelect
         disablePortal
         disableClearable
         openOnFocus
+        onChange={handleSelect}
         options={options}
+        getOptionLabel={option => option.searchKeys[0]}
         filterOptions={filterOptions}
         groupBy={option => option.recent ? "Recent" : option.type + "s"}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            autoFocus
-            fullWidth
-            variant="outlined"
-            placeholder="Search a building or room..."
-            InputProps={{
-              ...params.InputProps,
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-              endAdornment: undefined,
-              sx: {
-                backgroundColor: "background.paper",
-                borderRadius: "10px 10px 0 0",
-                padding: 2
-              }
-            }}
-          />
-        )}
-        getOptionLabel={option => option.searchKeys[0]}
+        renderInput={(params) => <InputBox {...params} />}
         renderOption={(props, option) => (
           <li {...props} key={option.searchKeys[0]}>
             <SearchResult option={option}/>
           </li>
         )}
-        onChange={handleSelect}
         slotProps={{
           paper: { sx: { borderRadius: "0 0 10px 10px" } }
+        }}
+        sx={{
+          maxWidth: 600,
+          margin: '10% auto'
         }}
       />
     </Modal>
@@ -188,6 +166,32 @@ const SearchResult: React.FC<{ option: SearchOption }> = ({ option }) => {
        </Typography>
      </Stack>
    </Stack>
+  )
+}
+
+const InputBox = (params: AutocompleteRenderInputParams) => {
+  return (
+    <TextField
+      {...params}
+      autoFocus
+      fullWidth
+      variant="standard"
+      placeholder="Search a building or room..."
+      InputProps={{
+        ...params.InputProps,
+        startAdornment: (
+          <InputAdornment position="start">
+            <SearchIcon />
+          </InputAdornment>
+        ),
+        endAdornment: undefined,
+        sx: {
+          backgroundColor: "background.paper",
+          borderRadius: "10px 10px 0 0",
+        },
+        slotProps: { root: { style: { padding: 10 } } }
+      }}
+    />
   )
 }
 
