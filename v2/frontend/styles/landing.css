@@ -28,19 +28,6 @@
     cursor: pointer;
 }
 
-#header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100vw;
-}
-
-#headerBranding {
-    display: flex;
-    justify-self: flex-start;
-    margin-right: 2rem;
-}
-
 #SearchBox {
     width: 50%;
     margin: 10px;
@@ -53,17 +40,12 @@
     flex-direction: row;
 }
 
-#headerButtons {
-    display: flex;
-    align-self: center;
-}
-
 #Home-Options {
     margin: 1rem 0;
 }
 
 #reset {
-    color: "#f77f00";
+    color: #f77f00;
 }
 
 #reset:hover {
@@ -99,7 +81,7 @@
     }
 
     #SearchBox {
-        margin: 0px;
+        margin: 0;
         width: 100%;
         order: -1;
     }

@@ -7,7 +7,7 @@ import MuiAppBar from "@mui/material/AppBar";
 import { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar/AppBar";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import React from "react";
 
 import { selectCurrentBuilding } from "../redux/currentBuildingSlice";
@@ -22,7 +22,6 @@ interface NavBarProps {
 const NavBar: React.FC<NavBarProps> = ({
   setSearchOpen
 }) => {
-  const router = useRouter();
   const path = usePathname();
   const currentBuilding = useSelector(selectCurrentBuilding);
   const drawerOpen = !!currentBuilding;
@@ -38,13 +37,7 @@ const NavBar: React.FC<NavBarProps> = ({
         justifyContent: "space-between",
       }}
     >
-      <div id={"headerBranding"}>
-        <Branding
-          onClick={() => {
-            router.push("/");
-          }}
-        />
-      </div>
+      <Branding />
       <Stack direction="row" spacing={1}>
         <IconButton
           aria-label="Open search"
@@ -55,14 +48,14 @@ const NavBar: React.FC<NavBarProps> = ({
         <IconButton
           aria-label="Browse buildings"
           active={path === "/browse"}
-          onClick={() => router.push("/browse")}
+          href="/browse"
         >
           <GridIcon/>
         </IconButton>
         <IconButton
           aria-label="Go to map"
           active={path === "/map"}
-          onClick={() => router.push("/map")}
+          href="/map"
         >
           <MapIcon/>
         </IconButton>

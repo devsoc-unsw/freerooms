@@ -1,8 +1,8 @@
 import Box, { BoxProps } from "@mui/material/Box";
-import { orange, pink } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
 import Typography, { TypographyProps } from "@mui/material/Typography";
 import Image from "next/image";
+import Link from "next/link";
 
 import Logo from "../public/assets/favicon/free_rooms_logo.png";
 
@@ -29,19 +29,14 @@ const StyledBox = styled(Box)<BoxProps>(({ theme }) => ({
 }));
 
 const Branding = (props: BoxProps) => (
-  <StyledBox {...props}>
-    <div>
-      <Image width={50} src={Logo} alt="Freerooms Logo" priority />
-    </div>
-    <Box
-      style={{
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
+  <Link href="/">
+    <StyledBox {...props}>
+      <div>
+        <Image width={50} src={Logo} alt="Freerooms Logo" priority />
+      </div>
       <StyledText sx={{ lineHeight: 1 }}>Freerooms</StyledText>
-    </Box>
-  </StyledBox>
+    </StyledBox>
+  </Link>
 );
 
 export default Branding;
