@@ -143,7 +143,7 @@ export const Map = () => {
           }}
           zoom={17.5}
         >
-          {buildings && buildings.map((building, index) => (
+          {roomStatusData && buildings && buildings.map((building, index) => (
             <OverlayViewF
               key={building.id}
               mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
