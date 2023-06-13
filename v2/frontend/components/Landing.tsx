@@ -31,10 +31,10 @@ const Landing = () => {
         </GradientText>
         <Stack direction="column" spacing={2}>
           <Button LinkComponent={Link} href="/browse" sx={{ width: "13rem" }} endIcon={<GridViewRoundedIcon/>}>
-            <Typography fontWeight="bold">Browse</Typography>
+            <Typography fontWeight="bold" sx={{display: "flex", margin: "auto"}}>Browse</Typography>
           </Button>
           <Button LinkComponent={Link} href="/map" sx={{ width: "13rem" }} endIcon={<MapIcon/>}>
-            <Typography fontWeight="bold">Map</Typography>
+            <Typography fontWeight="bold" sx={{display: "flex", margin: "auto"}}>Map</Typography>
           </Button>
         </Stack>
       </Stack>
