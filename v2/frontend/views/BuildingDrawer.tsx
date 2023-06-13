@@ -2,27 +2,23 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Typography } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
+import Divider from "@mui/material/Divider";
+import Drawer from "@mui/material/Drawer";
 import { styled } from "@mui/material/styles";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-import Link from 'next/link';
 import Image, { ImageProps } from "next/image";
 import React from "react";
 
 import Button from "../components/Button";
-import {
-  Building,
-  BuildingStatus,
-  RoomsReturnData,
-  RoomAvailability,
-} from "../types";
+import useBuildingStatus from "../hooks/useBuildingStatus";
+import { selectCurrentBuilding, setCurrentBuilding } from "../redux/currentBuildingSlice";
+import { selectDatetime, setDatetime } from "../redux/datetimeSlice";
+import { useDispatch, useSelector } from "../redux/hooks";
 import toSydneyTime from "../utils/toSydneyTime";
-
-const INITIALISING = -2;
-const FAILED = -1;
 
 const AppBox = styled(Box)(({ theme }) => ({
   boxShadow: "none",
@@ -74,26 +70,17 @@ const IndiviRoomBox = styled(Box)<BoxProps>(({ theme }) => ({
   margin: theme.spacing(1.5, 1),
 }));
 
-const BuildingInfo: React.FC<{
-  building: Building | null;
-  onClose?: () => void;
-  datetime: Date | null;
-  setDatetime: (datetime: Date | null) => void;
-  roomStatusData: RoomsReturnData | undefined;
-}> = ({ building, onClose, datetime, setDatetime, roomStatusData }) => {
-  const [sort, setSort] = React.useState<"name" | "available">("name");
-  const [rooms, setRooms] = React.useState<BuildingStatus | undefined>();
-  const [roomsError, setRoomsError] = React.useState<string | undefined>();
+export const drawerWidth = 400;
 
-  React.useEffect(() => {
-    setRooms(undefined);
-    if (!building) return;
-    if (roomStatusData && building.id in roomStatusData) {
-      setRooms(roomStatusData[building.id]);
-    }
-  }, [building, roomStatusData]);
-
+const BuildingDrawer = () => {
+  const dispatch = useDispatch();
+  const datetime = useSelector(selectDatetime);
+  const building = useSelector(selectCurrentBuilding);
+  const { status: rooms } = useBuildingStatus(building?.id ?? "");
+  
   if (!building) return <></>;
+
+  const onClose = () => dispatch(setCurrentBuilding(null));
 
   const customTextField = (
     params: JSX.IntrinsicAttributes & TextFieldProps
@@ -145,87 +132,102 @@ const BuildingInfo: React.FC<{
   };
 
   return (
-    <MainBox>
-      <AppBox>
+    <Drawer
+      sx={{
+        width: drawerWidth,
+        flexShrink: 0,
+        "& .MuiDrawer-paper": {
+          width: drawerWidth,
+          boxSizing: "border-box",
+        },
+      }}
+      variant="persistent"
+      anchor="right"
+      open={true}
+    >
+      <Divider />
+      <MainBox>
+        <AppBox>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
+              {building!.name}
+            </Typography>
+            <StatusBox>
+              {!rooms ? (
+                // loading
+                <CircularProgress size={20} thickness={5} disableShrink />
+              ) : null}
+            </StatusBox>
+          </div>
+          <Button aria-label="Close" onClick={onClose}>
+            <CloseIcon />
+          </Button>
+        </AppBox>
+
         <div
           style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
-            {building!.name}
-          </Typography>
-          <StatusBox>
-            {!rooms ? (
-              // loading
-              <CircularProgress size={20} thickness={5} disableShrink />
-            ) : null}
-          </StatusBox>
-        </div>
-        <Button aria-label="Close" onClick={onClose}>
-          <CloseIcon />
-        </Button>
-      </AppBox>
-
-      <div
-        style={{
-          margin: 10,
-        }}
-      >
-        <StyledImage
-          alt={`Image of building ${building.id}`}
-          src={`/assets/building_photos/${building.id}.webp`}
-          width={946}
-          height={648}
-          style={{ objectFit: "cover" }}
-          priority={true}
-        />
-      </div>
-
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
             margin: 10,
           }}
         >
-          <DesktopDatePicker
-            inputFormat="dd/MM/yyyy"
-            value={datetime}
-            onChange={(newValue) => setDatetime(newValue && toSydneyTime(newValue))}
-            renderInput={customTextField}
-          />
-          <div style={{ width: 10 }} />
-          <TimePicker
-            value={datetime}
-            onChange={(newValue) => setDatetime(newValue && toSydneyTime(newValue))}
-            renderInput={customTextField}
+          <StyledImage
+            alt={`Image of building ${building.id}`}
+            src={`/assets/building_photos/${building.id}.webp`}
+            width={946}
+            height={648}
+            style={{ objectFit: "cover" }}
+            priority={true}
           />
         </div>
-      </LocalizationProvider>
 
-      <RoomBox>
-        {rooms ? (
-          Object.keys(rooms).map((roomId) => RoomAvailabilityMessages(roomId))
-        ) : (
-          <Typography
-            sx={{
-              fontSize: 16,
-              fontWeight: 500,
-              textAlign: "center",
-              padding: 10,
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              margin: 10,
             }}
           >
-            Loading...
-          </Typography>
-        )}
-      </RoomBox>
-    </MainBox>
+            <DesktopDatePicker
+              inputFormat="dd/MM/yyyy"
+              value={datetime}
+              onChange={(value) => value && dispatch(setDatetime(toSydneyTime(value)))}
+              renderInput={customTextField}
+            />
+            <div style={{ width: 10 }} />
+            <TimePicker
+              value={datetime}
+              onChange={(value) => value && dispatch(setDatetime(toSydneyTime(value)))}
+              renderInput={customTextField}
+            />
+          </div>
+        </LocalizationProvider>
+
+        <RoomBox>
+          {rooms ? (
+            Object.keys(rooms).map((roomId) => RoomAvailabilityMessages(roomId))
+          ) : (
+            <Typography
+              sx={{
+                fontSize: 16,
+                fontWeight: 500,
+                textAlign: "center",
+                padding: 10,
+              }}
+            >
+              Loading...
+            </Typography>
+          )}
+        </RoomBox>
+      </MainBox>
+    </Drawer>
   );
 };
 
-export default BuildingInfo;
+export default BuildingDrawer;

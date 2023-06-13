@@ -64,11 +64,3 @@ export type Filters = {
   location?: string;
   duration?: string;
 }
-
-export type RoomsRequestParams = {
-  datetime?: string,
-  capacity?: string,
-  usage?: string,
-  location?: string,
-  duration?: string
-}

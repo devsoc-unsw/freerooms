@@ -106,6 +106,14 @@ const SortBar: React.FC<{
 // Dropdowns and items.
 const dropdowns: DropDownItem[] = [
   {
+    text: "Most Available Rooms",
+    value: "mostRooms",
+  },
+  {
+    text: "Nearest",
+    value: "nearest",
+  },
+  {
     text: "Alphabetical",
     value: "alphabetical",
   },
@@ -120,10 +128,6 @@ const dropdowns: DropDownItem[] = [
   {
     text: "Upper Campus",
     value: "upperToLower",
-  },
-  {
-    text: "Most Available Rooms",
-    value: "mostRooms",
   },
 ];
 

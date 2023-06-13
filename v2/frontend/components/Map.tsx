@@ -8,14 +8,13 @@ import {
 import React, { useEffect, useState } from "react";
 import { useDebounce } from "usehooks-ts";
 
-import { API_URL, GOOGLE_API_KEY } from "../config";
-import { Building, BuildingReturnData, RoomsReturnData } from "../types";
-import { getNumFreerooms, getTotalRooms } from "../utils/utils";
-import MarkerSymbol from "./MarkerSymbol";
-
-const containerStyle = {
-  height: "calc(100vh - 86.5px)", // 86.5px is the height of the header
-};
+import { GOOGLE_API_KEY } from "../config";
+import useBuildings from "../hooks/useBuildings";
+import useUserLocation from "../hooks/useUserLocation";
+import { Building } from "../types";
+import calculateDistance from "../utils/calculateDistance";
+import MapMarker from "./MapMarker";
+import { navHeight } from "./NavBar";
 
 const center = {
   lat: -33.91767,
@@ -49,36 +48,13 @@ const LocationMarker = () => {
   );
 };
 
-interface MapProps {
-  roomStatusData: RoomsReturnData | undefined;
-  currentBuilding: Building | null;
-  setCurrentBuilding: (building: Building) => void;
-}
-
-export const Map = ({ roomStatusData, currentBuilding, setCurrentBuilding }: MapProps) => {
-  const [buildingData, setBuildingData] = useState<BuildingReturnData>({
-    buildings: [],
-  });
-
-  const [userLat, setUserLat] = useState<number>();
-  const [userLng, setUserLng] = useState<number>();
-  const [currentHover, setCurrentHover] = useState<Building | null>(null);
+export const Map = () => {
+  // Fetch data
+  const { buildings } = useBuildings();
 
   // Use debounce to allow moving from marker to popup without popup hiding
+  const [currentHover, setCurrentHover] = useState<Building | null>(null);
   const debouncedCurrentHover = useDebounce(currentHover, 50);
-
-  const getBuildingData = () => {
-    fetch(API_URL + "/buildings")
-      .then((res) => res.json())
-      .then((data) => {
-        setBuildingData(data as BuildingReturnData);
-      })
-      .catch(() => setBuildingData({ buildings: [] }));
-  };
-
-  useEffect(() => {
-    getBuildingData();
-  }, []);
 
   const styleArray = [
     {
@@ -106,45 +82,28 @@ export const Map = ({ roomStatusData, currentBuilding, setCurrentBuilding }: Map
   ];
 
   // Get current location of user
-  useEffect(() => {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (position: GeolocationPosition) => {
-          const pos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
-          setUserLat(pos.lat);
-          setUserLng(pos.lng);
-        }
-      );
-    }
-  }, []);
+  const { userLat, userLng } = useUserLocation();
 
   const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: GOOGLE_API_KEY,
-    libraries: ["geometry"]
+    googleMapsApiKey: GOOGLE_API_KEY
   });
 
   const [distances, setDistances] = useState<number[]>([]);
 
   useEffect(() => {
-    if (userLat && userLng && isInBounds(userLat, userLng)) {
-      setDistances(buildingData.buildings.map((building) =>
-        Math.round(google.maps.geometry.spherical.computeDistanceBetween(
-          { lat: building.lat, lng: building.long },
-          { lat: userLat, lng: userLng },
-        ))
-      ));
+    if (buildings && userLat && userLng && isInBounds(userLat, userLng)) {
+      setDistances(buildings.map((building) =>
+        calculateDistance(userLat, userLng, building.lat, building.long)
+      ))
     }
-  }, [buildingData.buildings, userLat, userLng]);
+  }, [buildings, userLat, userLng]);
 
   const renderMap = () => {
     return (
       // 86.5 is the height of the header
-      <div style={{ position: "relative", top: "86.5px" }}>
+      <div style={{ position: "relative" }}>
         <GoogleMap
-          mapContainerStyle={containerStyle}
+          mapContainerStyle={{ height: `calc(100vh - ${navHeight}px)`, }}
           center={center}
           options={{
             clickableIcons: false,
@@ -160,7 +119,7 @@ export const Map = ({ roomStatusData, currentBuilding, setCurrentBuilding }: Map
           }}
           zoom={17.5}
         >
-          {buildingData.buildings.map((building, index) => (
+          {buildings && buildings.map((building, index) => (
             <OverlayViewF
               key={building.id}
               mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
@@ -168,20 +127,14 @@ export const Map = ({ roomStatusData, currentBuilding, setCurrentBuilding }: Map
                 lat: building.lat,
                 lng: building.long,
               }}
-              zIndex={
-                debouncedCurrentHover?.id === building.id ? 2 : 1
-              }
+              zIndex={debouncedCurrentHover?.id === building.id ? 2 : 1}
             >
-              <MarkerSymbol
-                building={building}
-                freerooms={getNumFreerooms(roomStatusData, building.id)}
-                totalRooms={getTotalRooms(roomStatusData, building.id)}
+              <MapMarker
+                buildingId={building.id}
                 distance={distances[index]}
-                currentBuilding={currentBuilding}
-                setBuilding={setCurrentBuilding}
                 currentHover={debouncedCurrentHover}
                 setCurrentHover={setCurrentHover}
-              ></MarkerSymbol>
+              />
             </OverlayViewF>
           ))}
           {userLat && userLng && isInBounds(userLat, userLng) && (

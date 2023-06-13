@@ -6,36 +6,49 @@ import { Typography } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 import Image, { ImageProps } from "next/image";
-import React, { useEffect } from "react";
+import React from "react";
 
-import { Building } from "../types";
+import useBuilding from "../hooks/useBuilding";
+import useBuildingStatus from "../hooks/useBuildingStatus";
+import { selectCurrentBuilding, setCurrentBuilding } from "../redux/currentBuildingSlice";
+import { useDispatch, useSelector } from "../redux/hooks";
+import { Building, BuildingStatus } from "../types";
+import { getNumFreerooms, getTotalRooms } from "../utils/utils";
 
-const MarkerSymbol: React.FC<{
-  building: Building;
-  freerooms: number;
-  totalRooms: number;
+const MapMarker: React.FC<{
+  buildingId: string;
   distance: number | undefined;
-  currentBuilding: Building | null;
-  setBuilding: (building: Building) => void;
   currentHover: Building | null;
   setCurrentHover: (building: Building | null) => void;
 }> = ({
-  building,
-  freerooms,
-  totalRooms,
+  buildingId,
   distance,
-  currentBuilding,
-  setBuilding,
   currentHover,
   setCurrentHover,
 }) => {
+  // Get building data
+  const { building } = useBuilding(buildingId);
+  const { status: liveStatus } = useBuildingStatus(buildingId);
+
+  // This one uses stale data so markers don't disappear
+  const [status, setStatus] = React.useState<BuildingStatus>();
+  React.useEffect(() => {
+    if (liveStatus) setStatus(liveStatus);
+  }, [liveStatus]);
+  const freerooms = getNumFreerooms(status);
+  const totalRooms = getTotalRooms(status)
+
+  const dispatch = useDispatch();
+  const currentBuilding = useSelector(selectCurrentBuilding);
+  const isCurrentBuilding = currentBuilding?.id === building?.id;
+
   const [showPopup, setShowPopup] = React.useState(false);
   React.useEffect(() => {
-    setShowPopup(currentHover?.id === building.id);
+    setShowPopup(currentHover?.id === building?.id);
   }, [currentHover, building]);
 
   const [colour, setColour] = React.useState("#e57373");
-  useEffect(() => {
+  React.useEffect(() => {
     freerooms >= 5
     ? setColour("#66bb6a")
     : freerooms !== 0
@@ -43,6 +56,8 @@ const MarkerSymbol: React.FC<{
     : setColour("#f44336")
 
   }, [freerooms])
+
+  if (!building) return <></>;
 
   return (
     <div
@@ -60,7 +75,11 @@ const MarkerSymbol: React.FC<{
         setCurrentHover(null);
       }}
     >
-      <Typography sx={{ fontSize: 11, fontWeight: 500, textShadow: '-.5px -.5px 1px #f2f2f2, .5px -.5px 1px #f2f2f2, -.5px .5px 1px #f2f2f2, .5px .5px 1px #f2f2f2' }}>
+      <Typography sx={{
+        fontSize: 11,
+        fontWeight: 500,
+        textShadow: '-.5px -.5px 1px #f2f2f2, .5px -.5px 1px #f2f2f2, -.5px .5px 1px #f2f2f2, .5px .5px 1px #f2f2f2'
+      }}>
         {building.name}
       </Typography>
       <Box
@@ -68,15 +87,15 @@ const MarkerSymbol: React.FC<{
           width: 18,
           height: 18,
           borderRadius: "50%",
-          border: currentBuilding === building ? `5px solid ${colour}` : '4px solid white',
-          backgroundColor: currentBuilding === building ? 'white': colour,
-          boxShadow: currentBuilding === building ? `0px 0px 6px 4px ${alpha(colour, 0.5)}` : '',
+          border: isCurrentBuilding ? `5px solid ${colour}` : '4px solid white',
+          backgroundColor: isCurrentBuilding ? 'white': colour,
+          boxShadow: isCurrentBuilding ? `0px 0px 6px 4px ${alpha(colour, 0.5)}` : '',
           position: "relative",
           "&:hover": {
             cursor: "pointer",
           },
         })}
-        onClick={() => setBuilding(building)}
+        onClick={() => dispatch(setCurrentBuilding(building))}
       />
       <Fade in={showPopup} timeout={200}>
         <div style={{ position: "relative", bottom: -3 }}>
@@ -185,4 +204,4 @@ const MarkerHover: React.FC<{
   );
 };
 
-export default MarkerSymbol;
+export default MapMarker;

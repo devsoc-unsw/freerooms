@@ -9,8 +9,11 @@ import Container from "@mui/material/Container";
 import Radio from "@mui/material/Radio";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
 
+import { clearFilters, selectFilters, setFilter, unsetFilter } from "../redux/filtersSlice";
+import { useDispatch, useSelector } from "../redux/hooks";
 import { DropDown, DropDownItem, Filters } from "../types";
 
 const StyledFilterButton = styled(Box)<BoxProps>(({ theme }) => ({
@@ -54,6 +57,7 @@ const StyledHeader = styled(Box)<BoxProps>(() => ({
   paddingLeft: 15,
   height: 60,
   display: "inline-flex",
+  alignItems: "center",
   gap: 135,
 }));
 
@@ -72,30 +76,22 @@ const StyledAccordionDetails = styled(AccordionDetails)(({ theme }) => ({
   color: "#000",
 }));
 
-const FilterBar: React.FC<{
-  filters: Filters,
-  setFilters: (filters: Filters) => void
-}> = ({ filters, setFilters }) => {
+const FilterBar = () => {
+  // Get filters from Redux
+  const dispatch = useDispatch();
+  const filters = useSelector(selectFilters);
 
   // Hide and close Dropdown
   const [open, setOpen] = useState(false);
-
-  // Close dropdown if user clicks outside.
-  const dismissHandler = (event: React.FocusEvent) => {
-    if (event.currentTarget === event.target) {
-      setOpen(!open);
-    }
-  };
 
   // Handle user selecting a filter, each dropdown select has an associated key
   const handleSelect = (key: keyof Filters, item: DropDownItem) => {
     if (filters[key] === item.value) {
       // If the same as already selected, unset key
-      const { [key]: unsetKey, ...other } = filters;
-      setFilters(other);
+      dispatch(unsetFilter(key))
     } else {
       // Otherwise, spread existing filters and set key
-      setFilters({ ...filters, [key]: item.value });
+      dispatch(setFilter({ key, value: item.value }))
     }
   };
 
@@ -128,7 +124,13 @@ const FilterBar: React.FC<{
             <StyledDropDownMenu>
               <StyledHeader>
                 <h3>Filter</h3>
-                <p id="reset" style={{color: "#f77f00"}} onClick={() => setFilters({})}>Reset</p>
+                <Typography
+                  color="primary"
+                  sx={{ "&:hover": { cursor: "pointer" } }}
+                  onClick={() => dispatch(clearFilters())}
+                >
+                  Reset
+                </Typography>
               </StyledHeader>
               {dropdowns.map(dropdown => (
                 <StyledAccordian key={dropdown.key}>
