@@ -8,7 +8,7 @@ import TextField, { TextFieldProps } from "@mui/material/TextField";
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
 import { DateTime, Settings } from 'luxon';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Calendar, luxonLocalizer, Views } from 'react-big-calendar';
 
 type Event = {
@@ -16,6 +16,8 @@ type Event = {
 	start: Date,
 	end: Date,
 }
+
+type ViewTypes = "month" | "week" | "day" | "work_week" | "agenda"; 
 
 const customDatePickerComponent = (
 	params: JSX.IntrinsicAttributes & TextFieldProps,
@@ -33,7 +35,18 @@ const customDatePickerComponent = (
 
 const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 
-	const { defaultDate, getNow, localizer, myEvents, scrollToTime } = useMemo( () => {
+
+	const [ currView, setCurrView ] = React.useState<ViewTypes>(Views.WEEK)
+
+	React.useEffect(() => {
+		// If calendar loaded in Mobile Screen - set to Day View
+		if( window.innerWidth < 600 ) {
+			setCurrView(Views.DAY);
+		}
+
+	}, []);
+
+	const { defaultDate, getNow, localizer, myEvents, scrollToTime } = React.useMemo( () => {
 		Settings.defaultZone = DateTime.local().zoneName;
 		return {
 			defaultDate: DateTime.local().toJSDate(),
@@ -79,6 +92,8 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 					getNow={getNow}
 					localizer={localizer}
 					scrollToTime={scrollToTime}
+					view={currView}
+					onView={(newView) => setCurrView(newView)}
 				/>
 			</Box>
 		</>
