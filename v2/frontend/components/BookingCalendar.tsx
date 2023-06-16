@@ -10,6 +10,7 @@ import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
 import { DateTime, Settings } from 'luxon';
 import React from 'react';
 import { Calendar, luxonLocalizer, Views } from 'react-big-calendar';
+import debounce from 'lodash.debounce';
 
 type Event = {
 	title: string;
@@ -36,12 +37,29 @@ const customDatePickerComponent = (
 const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 
 
+	const WINDOWBREAKPOINT = 900;
+
 	const [ currView, setCurrView ] = React.useState<ViewTypes>(Views.WEEK)
+	
 
 	React.useEffect(() => {
 		// If calendar loaded in Mobile Screen - set to Day View
-		if( window.innerWidth < 600 ) {
-			setCurrView(Views.DAY);
+
+		// Check window width on resize
+		const handleResize = () => {
+			if( window.innerWidth < WINDOWBREAKPOINT ) {
+				setCurrView(Views.DAY);
+			} else {
+				setCurrView(Views.WEEK);
+			}
+		}
+
+		const debouncedHandleResize = debounce(handleResize, 500);
+
+		window.addEventListener("resize", debouncedHandleResize);
+
+		return () => {
+			window.removeEventListener('resize', debouncedHandleResize);
 		}
 
 	}, []);

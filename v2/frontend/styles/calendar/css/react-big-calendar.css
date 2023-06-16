@@ -127,7 +127,7 @@ button.rbc-input::-moz-focus-inner {
 
 .rbc-toolbar {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   margin-bottom: 10px;
@@ -208,6 +208,11 @@ button.rbc-input::-moz-focus-inner {
 }
 .rbc-btn-group + .rbc-btn-group, .rbc-btn-group + button {
   margin-left: 10px;
+}
+@media (max-width: 900px) {
+  .rbc-btn-group {
+    display: none;
+  }
 }
 
 .rbc-event, .rbc-day-slot .rbc-background-event {
