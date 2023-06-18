@@ -7,6 +7,7 @@ import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import { orange, pink } from "@mui/material/colors";
 import { createTheme, styled } from "@mui/material/styles";
+import ThemeProvider from "@mui/system/ThemeProvider";
 import Head from "next/head";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
@@ -36,6 +37,18 @@ export default function RootLayout({
     setShowMap((currState) => !currState);
     setButtonText(buttonText == "Map View" ? "List View" : "Map View");
   };
+
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: orange[800],
+      },
+      secondary: {
+        main: pink[500],
+      },
+    },
+  });
+
 
   const router = useRouter();
 
@@ -99,9 +112,11 @@ export default function RootLayout({
         }
       </div>
     </AppBar>
-    <div>
-      {children}
-    </div>
+    <ThemeProvider theme={theme}>
+      <div>
+        {children}
+      </div>
+    </ThemeProvider>
     </body>
     </html>
   );

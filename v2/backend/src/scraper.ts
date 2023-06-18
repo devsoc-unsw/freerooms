@@ -2,8 +2,8 @@ import axios from "axios";
 import * as fs from 'fs';
 import { load, CheerioAPI } from 'cheerio';
 
-import { BuildingData, RoomData } from "./types";
-import { DATABASE_PATH } from "./config";
+import { BuildingData, BuildingDatabase, LocationData, RoomData } from "./types";
+import { DATABASE_PATH, BLDG_LOCATION_PATH } from "./config";
 
 const LEARNING_ENVIRONMENTS_URL = "https://www.learningenvironments.unsw.edu.au";
 const ROOM_REGEX = new RegExp(/^[A-Z]-[A-Z][0-9]{1,2}-[A-Z]{0,2}[0-9]{1,4}[A-Z]{0,1}$/);
@@ -13,14 +13,29 @@ const runScrapingJob = async () => {
   console.time("scraping time");
 
   const data = await scrapeAllBuildings();
+  overrideLocations(data);
   fs.writeFileSync(DATABASE_PATH, JSON.stringify(data, null, 4));
 
   console.log("ending scraping job");
   console.timeEnd("scraping time");
 }
 
+// Manually override the building locations in the database
+const overrideLocations = (data: BuildingDatabase) => {
+  const rawLocations = fs.readFileSync(BLDG_LOCATION_PATH, 'utf8');
+  const locations = JSON.parse(rawLocations) as LocationData;
+
+  // For each building in location data, replace the location in original data
+  for (const building of locations.buildings) {
+    if (building.id in data) {
+      data[building.id].lat = building.lat;
+      data[building.id].long = building.long;
+    }
+  }
+}
+
 // scrapeAllBuildings scrapes all buildings UNSW has
-async function scrapeAllBuildings() {
+const scrapeAllBuildings = async (): Promise<BuildingDatabase> => {
   const buildingsToScrape = getAllScrapeableBuildings();
   const buildingPromises = [] as Promise<BuildingData>[];
 

@@ -19,7 +19,7 @@ COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --production
 
 COPY --from=builder /app/dist ./dist
-COPY database.json ./
+COPY database.json buildingLocations.json ./
 
 EXPOSE 3000
 

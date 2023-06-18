@@ -19,6 +19,7 @@
     "@types/arcgis-js-api": "^4.25.0",
     "axios": "^0.26.1",
     "date-fns": "^2.29.3",
+    "date-fns-tz": "^2.0.0",
     "esri-loader": "^3.7.0",
     "lodash.debounce": "^4.0.8",
     "luxon": "^2.5.0",
