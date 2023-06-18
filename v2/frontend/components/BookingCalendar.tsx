@@ -88,7 +88,7 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 
 	return (
 		<>
-			<Box sx={{ height: 600, width: '70%', paddingTop: 5 }}>
+			<Box sx={{ height: 800, width: '70%', paddingTop: 5 }}>
 				<LocalizationProvider dateAdapter={AdapterLuxon}>
 				<Box sx={{ width: "100%", display: "flex", flexDirection: "row", justifyContent: "flex-start", alignItems: "Center", paddingBottom: 5 }}>
 					<Typography variant='body1' sx={{ paddingRight: 2 }}>
@@ -103,6 +103,7 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
         </Box>
 				</LocalizationProvider>
 				<Calendar
+					dayLayoutAlgorithm={'no-overlap'}
 					date={date}
 					onNavigate={(newDate) => handleDateChange(newDate)}
 					defaultView={Views.WEEK}

@@ -442,7 +442,7 @@ button.rbc-input::-moz-focus-inner {
 
 .rbc-timeslot-group {
   border-bottom: 1px solid #ddd;
-  min-height: 40px;
+  min-height: 48px;
   display: flex;
   flex-flow: column nowrap;
 }
@@ -573,6 +573,7 @@ button.rbc-input::-moz-focus-inner {
   text-align: right;
 }
 .rbc-time-view .rbc-allday-cell {
+  display: none;
   box-sizing: content-box;
   width: 100%;
   height: 100%;
