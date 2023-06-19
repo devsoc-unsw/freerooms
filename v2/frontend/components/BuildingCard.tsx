@@ -1,12 +1,15 @@
 import { Typography } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
-import { orange, pink } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
 import Image, { ImageProps } from "next/image";
-import React, { useRef } from "react";
+import React from "react";
 
-import { Building } from "../types";
+import useBuilding from "../hooks/useBuilding";
+import useBuildingStatus from "../hooks/useBuildingStatus";
+import { setCurrentBuilding } from "../redux/currentBuildingSlice";
+import { useDispatch } from "../redux/hooks";
+import { getNumFreerooms } from "../utils/utils";
 import StatusDot from "./StatusDot";
 
 const INITIALISING = -2;
@@ -54,8 +57,7 @@ const TitleBox = styled(Box)<BoxProps>(({ theme }) => ({
   bottom: 0,
   left: 0,
   right: 0,
-  // TODO: should use theme.palette.primary.main
-  backgroundColor: orange[800],
+  backgroundColor: theme.palette.primary.main,
   color: "white",
   padding: 15,
   paddingLeft: 20,
@@ -65,17 +67,22 @@ const TitleBox = styled(Box)<BoxProps>(({ theme }) => ({
 }));
 
 const BuildingCard: React.FC<{
-  building: Building;
-  setBuilding: (building: Building) => void;
-  freerooms: number;
-}> = ({ building, setBuilding, freerooms }) => {
-  const ref = useRef();
+  buildingId: string;
+}> = ({ buildingId }) => {
+  const dispatch = useDispatch();
+  
+  const { building } = useBuilding(buildingId);
+  const { status } = useBuildingStatus(buildingId);
+  
+  if (!building) return <></>;
+  
+  const freerooms = getNumFreerooms(status);
 
   return (
-    <MainBox ref={ref} onClick={() => setBuilding(building)}>
+    <MainBox onClick={() => dispatch(setCurrentBuilding(building))}>
       <StyledImage
-        alt={`Image of ${building.id}`}
-        src={`/assets/building_photos/${building.id}.webp`}
+        alt={`Image of ${buildingId}`}
+        src={`/assets/building_photos/${buildingId}.webp`}
         fill={true}
         style={{ objectFit: "cover" }}
         priority={true}
