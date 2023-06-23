@@ -141,11 +141,9 @@ export const calculateStatus = (
       if (!secondAfter || new Date(secondAfter.start) > end) {
         // No next class, or it starts after the current class ends
         roomStatus.status = "soon";
-        roomStatus.endtime = firstAfter.end;
       }
-    } else {
-        roomStatus.endtime = firstAfter.end;
-    }
+    } 
+    roomStatus.endtime = firstAfter.end;
   }
 
   return roomStatus;
