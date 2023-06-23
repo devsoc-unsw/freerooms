@@ -100,6 +100,15 @@ export const calculateStatus = (
   // Find the first two classes that end after the given time
   let firstAfter: Class | null = null;
   let secondAfter: Class | null = null;
+  // Sort classes by end time, then start time.
+  classes.sort((a, b) => {
+    if (a.start != b.start) {
+      return a.start < b.start ? -1 : 1
+    } else {
+      return a.end < b.end ? -1 : 1 
+    }
+  })
+
   for (const cls of classes) {
     const end = new Date(cls.end);
     if (end <= datetime) continue;
@@ -134,7 +143,10 @@ export const calculateStatus = (
     // Class starts before current time i.e. class occurring now
     if (minDuration > 0) return null;
     roomStatus.status = "busy";
-
+    // TODO: 
+    // Loop until you find the first class where there is time free!
+    // i.e. find the first empty gap from now.
+    // Case where there are no free times....
     const end = new Date(firstAfter.end);
     if (end.getTime() - datetime.getTime() <= FIFTEEN_MIN) {
       // Ending soon, check the next class
