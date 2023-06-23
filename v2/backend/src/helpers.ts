@@ -114,6 +114,8 @@ export const calculateStatus = (
 
   if (!firstAfter) {
     // No such class, it is free indefinitely
+    // Instead, endtime should be first time unavailable, UNLESS
+    // There exists no times today where it is unavailable, and endtime is ""
     return roomStatus;
   }
 
@@ -121,7 +123,13 @@ export const calculateStatus = (
   if (datetime < start) {
     // Class starts after current time i.e. room is free, check if it meets minDuration filter
     const duration = (start.getTime() - datetime.getTime()) / (1000 * 60);
-    return duration < minDuration ? null : roomStatus;
+    if (duration < minDuration) {
+        return null;
+    } else {
+        // Add endtime of the free class i.e. the beginning of the firstClass after.
+        roomStatus.endtime = firstAfter.start
+        return roomStatus;
+    }
   } else {
     // Class starts before current time i.e. class occurring now
     if (minDuration > 0) return null;
@@ -135,6 +143,8 @@ export const calculateStatus = (
         roomStatus.status = "soon";
         roomStatus.endtime = firstAfter.end;
       }
+    } else {
+        roomStatus.endtime = firstAfter.end;
     }
   }
 
