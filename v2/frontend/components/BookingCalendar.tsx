@@ -6,11 +6,15 @@ import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import TextField, { TextFieldProps } from "@mui/material/TextField";
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import debounce from 'lodash.debounce';
-import { DateTime, Settings } from 'luxon';
 import React from 'react';
-import { Calendar, luxonLocalizer, Views } from 'react-big-calendar';
+import { Calendar, dateFnsLocalizer, Views } from 'react-big-calendar';
+import { format, parse, startOfWeek, getDay } from "date-fns";
+import { enAU } from 'date-fns/locale';
+
+import { selectDatetime } from "../redux/datetimeSlice";
+import {  useSelector } from "../redux/hooks";
 
 type Event = {
 	title: string;
@@ -36,9 +40,10 @@ const customDatePickerComponent = (
 
 const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 
+	
+
 
 	const WINDOWBREAKPOINT = 900;
-
 	const [ currView, setCurrView ] = React.useState<ViewTypes>(Views.WEEK)
 	
 
@@ -65,23 +70,23 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 	}, []);
 
 	const { defaultDate, getNow, localizer, myEvents, scrollToTime } = React.useMemo( () => {
-		Settings.defaultZone = DateTime.local().zoneName;
 		return {
-			defaultDate: DateTime.local().toJSDate(),
-			getNow: () => DateTime.local().toJSDate(),
-			localizer: luxonLocalizer(DateTime),
+			defaultDate: new Date(),
+			getNow: () => new Date(),
+			localizer: dateFnsLocalizer({ format, parse, startOfWeek, getDay, locales: enAU }),
 			myEvents: events,
-			scrollToTime: DateTime.local().toJSDate()
+			scrollToTime: new Date()
 		}
-	}, [events]);
+	}, [events]); 
 	
-	const [ date, setDate ] = React.useState<Date>(DateTime.local().toJSDate());
+
+ 	const datetime = useSelector(selectDatetime);
+	const [ date, setDate ] = React.useState<Date>(datetime);
 	const handleDateChange = (newDate : Date| null ) => {
-		console.log(newDate);
 		if( newDate == null ) {
-			setDate(DateTime.local().toJSDate());
+			setDate(datetime);
 		} else {
-			setDate(new Date(newDate));
+			setDate(newDate);
 		}
 	}
 	
@@ -89,18 +94,18 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 	return (
 		<>
 			<Box sx={{ height: 800, width: '70%', paddingTop: 5 }}>
-				<LocalizationProvider dateAdapter={AdapterLuxon}>
-				<Box sx={{ width: "100%", display: "flex", flexDirection: "row", justifyContent: "flex-start", alignItems: "Center", paddingBottom: 5 }}>
-					<Typography variant='body1' sx={{ paddingRight: 2 }}>
-	          { "Select a Date:" }
-	        </Typography>
-					<DatePicker
-            inputFormat="dd/MM/yyyy"
-            value={date}
-            onChange={(newDate) => { handleDateChange(newDate) }}
-            renderInput={customDatePickerComponent}
-          />
-        </Box>
+				<LocalizationProvider dateAdapter={AdapterDateFns}>
+					<Box sx={{ width: "100%", display: "flex", flexDirection: "row", justifyContent: "flex-start", alignItems: "Center", paddingBottom: 5 }}>
+						<Typography variant='body1' sx={{ paddingRight: 2 }}>
+						{ "Select a Date:" }
+						</Typography>
+						<DatePicker
+							inputFormat="dd/MM/yyyy"
+							value={date}
+							onChange={(newDate) => { handleDateChange(newDate) }}
+							renderInput={customDatePickerComponent}
+						/>
+					</Box>
 				</LocalizationProvider>
 				<Calendar
 					dayLayoutAlgorithm={'no-overlap'}
