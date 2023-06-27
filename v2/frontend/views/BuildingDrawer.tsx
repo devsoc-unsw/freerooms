@@ -70,6 +70,12 @@ const IndiviRoomBox = styled(Box)<BoxProps>(({ theme }) => ({
   color: "black",
   padding: theme.spacing(2, 3),
   margin: theme.spacing(1.5, 1),
+	'&:hover': {
+		border: "1px solid",	
+		borderColor: theme.palette.primary.main,
+		cursor: "pointer",	
+	}
+  
 }));
 
 export const drawerWidth = 400;
