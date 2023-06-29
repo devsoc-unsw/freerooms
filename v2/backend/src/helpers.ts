@@ -100,7 +100,7 @@ export const calculateStatus = (
   // Find the first two classes that end after the given time
   let firstAfter: Class | null = null;
   let secondAfter: Class | null = null;
-  // Sort classes by end time, then start time.
+  // Sort classes by start time, then end time.
   classes.sort((a, b) => {
     if (a.start != b.start) {
       return a.start < b.start ? -1 : 1
@@ -163,7 +163,7 @@ export const calculateStatus = (
         right = new Date(classes[i].start)
         left = new Date(classes[i-1].end)
 
-        if (datetime.getTime() - left.getTime() > 0 && right.getTime() - datetime.getTime() > 0) {
+        if (datetime > left && datetime < right) {
             roomStatus.endtime = classes[i-1].end;
             return roomStatus;
         }
