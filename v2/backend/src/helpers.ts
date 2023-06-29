@@ -1,7 +1,6 @@
 import axios from "axios";
 import child_process from "child_process";
 import fs from "fs";
-import { DateTime } from "luxon";
 
 import { DATABASE_PATH, SCRAPER_PATH } from "./config";
 import { TimetableData, BuildingDatabase, RoomStatus, Class } from "./types";
@@ -97,80 +96,60 @@ export const calculateStatus = (
     endtime: "",
   };
 
-  // Find the first two classes that end after the given time
-  let firstAfter: Class | null = null;
-  let secondAfter: Class | null = null;
-  // Sort classes by end time, then start time.
+  // Sort classes by start time, then end time.
   classes.sort((a, b) => {
     if (a.start != b.start) {
-      return a.start < b.start ? -1 : 1
+      return new Date(a.start) < new Date(b.start) ? -1 : 1;
     } else {
-      return a.end < b.end ? -1 : 1 
+      return new Date(a.end) < new Date(b.end) ? -1 : 1 ;
     }
-  })
+  });
 
-  for (const cls of classes) {
-    const end = new Date(cls.end);
-    if (end <= datetime) continue;
-
-    if (!firstAfter || end < new Date(firstAfter.end)) {
-      secondAfter = firstAfter;
-      firstAfter = cls;
-    } else if (!secondAfter || end < new Date(secondAfter.end)) {
-      secondAfter = cls;
-    }
-  }
+  // Find the first class that *ends* after the current time
+  const firstAfter = classes.find(cls => new Date(cls.end) >= datetime);
 
   if (!firstAfter) {
     // No such class, it is free indefinitely
-    // Instead, endtime should be first time unavailable, UNLESS
     // There exists no times today where it is unavailable, and endtime is ""
     return roomStatus;
   }
 
   const start = new Date(firstAfter.start);
   if (datetime < start) {
-    // Class starts after current time i.e. room is free, check if it meets minDuration filter
+    // Class starts after current time
     const duration = (start.getTime() - datetime.getTime()) / (1000 * 60);
     if (duration < minDuration) {
+        // Doesn't meet min duration filter
         return null;
     } else {
         // Add endtime of the free class i.e. the beginning of the firstClass after.
         roomStatus.endtime = firstAfter.start
-        return roomStatus;
     }
   } else {
     // Class starts before current time i.e. class occurring now
     if (minDuration > 0) return null;
-    roomStatus.status = "busy";
-
-    const end = new Date(firstAfter.end);
-    if (end.getTime() - datetime.getTime() <= FIFTEEN_MIN) {
-      // Ending soon, check the next class
-      if (!secondAfter || new Date(secondAfter.start) > end) {
-        // No next class, or it starts after the current class ends
-        roomStatus.status = "soon";
-        roomStatus.endtime = firstAfter.end;
-        return roomStatus;
-      }
-    } 
 
     // Find the first gap between classes where class is free.
-    let left;
-    let right;
-    for (let i = 1; i < classes.length; i++) {
-
-        right = new Date(classes[i].start)
-        left = new Date(classes[i-1].end)
-
-        if (datetime.getTime() - left.getTime() > 0 && right.getTime() - datetime.getTime() > 0) {
-            roomStatus.endtime = classes[i-1].end;
-            return roomStatus;
+    let i = 1;
+    for (; i < classes.length; i++) {
+        const currStart = new Date(classes[i].start);
+        const prevEnd = new Date(classes[i - 1].end);
+        if (prevEnd > datetime && currStart > prevEnd) {
+            roomStatus.endtime = classes[i - 1].end;
+            break;
         }
     }
+    if (i == classes.length) {
+      // There exist no gaps at all; Thus the endtime is the endtime of the last class.
+      roomStatus.endtime = classes[classes.length - 1].end;
+    }
 
-    // There exist no gaps at all; Thus the endtime is the endtime of the last class.
-    roomStatus.endtime = classes[classes.length - 1].end;
+    // Determine if the end time is soon or not
+    if (new Date(roomStatus.endtime).getTime() - datetime.getTime() <= FIFTEEN_MIN) {
+      roomStatus.status = "soon";
+    } else {
+      roomStatus.status = "busy";
+    }
   }
 
   return roomStatus;
