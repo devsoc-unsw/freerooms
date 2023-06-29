@@ -143,19 +143,28 @@ export const calculateStatus = (
     // Class starts before current time i.e. class occurring now
     if (minDuration > 0) return null;
     roomStatus.status = "busy";
-    // TODO: 
-    // Loop until you find the first class where there is time free!
-    // i.e. find the first empty gap from now.
-    // Case where there are no free times....
+
     const end = new Date(firstAfter.end);
     if (end.getTime() - datetime.getTime() <= FIFTEEN_MIN) {
       // Ending soon, check the next class
       if (!secondAfter || new Date(secondAfter.start) > end) {
         // No next class, or it starts after the current class ends
         roomStatus.status = "soon";
+        roomStatus.endtime = firstAfter.end;
+        return roomStatus;
       }
     } 
-    roomStatus.endtime = firstAfter.end;
+
+    // Loop until you find the first class where there is time free!
+    // Then, the previous class endtime must be when the class is free!
+    for (let i = 1; i < classes.length; i++) {
+        const cls = classes[i];
+        const currStart = new Date(cls.start);
+        if (currStart.getTime() - datetime.getTime() > 0) {
+            roomStatus.endtime = classes[i-1].end;
+            return roomStatus;
+        }
+    }
   }
 
   return roomStatus;
