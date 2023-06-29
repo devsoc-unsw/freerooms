@@ -161,7 +161,7 @@ export const calculateStatus = (
         const cls = classes[i];
         const currStart = new Date(cls.start);
         if (currStart.getTime() - datetime.getTime() > 0) {
-            roomStatus.endtime = classes[i-1].end;
+            roomStatus.endtime = (i == classes.length - 1) ? classes[i].end : classes[i-1].end;
             return roomStatus;
         }
     }
