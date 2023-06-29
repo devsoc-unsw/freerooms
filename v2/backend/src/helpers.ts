@@ -155,16 +155,22 @@ export const calculateStatus = (
       }
     } 
 
-    // Loop until you find the first class where there is time free!
-    // Then, the previous class endtime must be when the class is free!
+    // Find the first gap between classes where class is free.
+    let left;
+    let right;
     for (let i = 1; i < classes.length; i++) {
-        const cls = classes[i];
-        const currStart = new Date(cls.start);
-        if (currStart.getTime() - datetime.getTime() > 0) {
-            roomStatus.endtime = (i == classes.length - 1) ? classes[i].end : classes[i-1].end;
+
+        right = new Date(classes[i].start)
+        left = new Date(classes[i-1].end)
+
+        if (datetime.getTime() - left.getTime() > 0 && right.getTime() - datetime.getTime() > 0) {
+            roomStatus.endtime = classes[i-1].end;
             return roomStatus;
         }
     }
+
+    // There exist no gaps at all; Thus the endtime is the endtime of the last class.
+    roomStatus.endtime = classes[classes.length - 1].end;
   }
 
   return roomStatus;
