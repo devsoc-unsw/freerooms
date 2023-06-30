@@ -18,6 +18,7 @@ import useBuildingStatus from "../hooks/useBuildingStatus";
 import { selectCurrentBuilding, setCurrentBuilding } from "../redux/currentBuildingSlice";
 import { selectDatetime, setDatetime } from "../redux/datetimeSlice";
 import { useDispatch, useSelector } from "../redux/hooks";
+import { RoomStatus } from "../types";
 import toSydneyTime from "../utils/toSydneyTime";
 
 const AppBox = styled(Box)(({ theme }) => ({
@@ -94,12 +95,11 @@ const BuildingDrawer = () => {
     />
   );
 
-  const RoomAvailabilityMessages = (roomId: string) => {
-    if (rooms == undefined) {
-      throw new Error("No rooms");
-    }
-    const room = rooms[roomId];
-    const date = new Date(room["endtime"]);
+  const RoomAvailabilityBox: React.FC<{
+    roomNumber: string;
+    roomStatus: RoomStatus;
+  }> = ({ roomNumber, roomStatus }) => {
+    const date = new Date(roomStatus.endtime);
     const hoursMinutes = date.toLocaleTimeString("en-AU", {
       hour: "2-digit",
       minute: "2-digit",
@@ -112,20 +112,26 @@ const BuildingDrawer = () => {
       soon: "#ffa600",
     };
     const roomStatusMessage = {
-      free: "Available",
-      busy: "Unavailable",
+      free:
+        hoursMinutes == "Invalid Date"
+          ? "Available"
+          : "Available until " + hoursMinutes,
+      busy:
+        hoursMinutes == "Invalid Date"
+          ? "Unavailable"
+          : "Unavailable until " + hoursMinutes,
       soon: "Available soon at " + hoursMinutes,
     };
     return (
-      <IndiviRoomBox key={roomId}>
-        {roomId}{" "}
+      <IndiviRoomBox>
+        {roomNumber}{" "}
         <Typography
           sx={{ fontSize: 16, fontWeight: 500 }}
           style={{
-            color: roomStatusColor[room["status"]],
+            color: roomStatusColor[roomStatus.status],
           }}
         >
-          {roomStatusMessage[room["status"]]}
+          {roomStatusMessage[roomStatus.status]}
         </Typography>
       </IndiviRoomBox>
     );
@@ -211,7 +217,13 @@ const BuildingDrawer = () => {
 
         <RoomBox>
           {rooms ? (
-            Object.keys(rooms).map((roomId) => RoomAvailabilityMessages(roomId))
+            Object.keys(rooms).map((roomNumber) => (
+              <RoomAvailabilityBox
+                key={roomNumber}
+                roomNumber={roomNumber}
+                roomStatus={rooms[roomNumber]}
+              />
+            ))
           ) : (
             <Typography
               sx={{
