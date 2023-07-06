@@ -15,6 +15,7 @@
 - Benjamin Hung (@Benicillin1610)
 - Richard Xue (@Vinegarette)
 - Agnes Clemente (@agnesclemente)
+- Nicole Chun (@crocyoiin)
 
 ## 2022
 ### Leads
