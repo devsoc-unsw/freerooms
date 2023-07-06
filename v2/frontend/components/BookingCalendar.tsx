@@ -1,8 +1,6 @@
 'use client'
 
-//import "../styles/calendar/css/react-big-calendar.css";
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-
 import { styled } from '@mui/material/styles';
 import { Typography } from '@mui/material';
 import ToggleButton, { ToggleButtonProps } from '@mui/material/ToggleButton';
@@ -12,22 +10,15 @@ import Stack from '@mui/material/Stack';
 import TextField, { TextFieldProps } from "@mui/material/TextField";
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import debounce from 'lodash.debounce';
+import { useDebounce } from "usehooks-ts";
 import React from 'react';
 import { Calendar, dateFnsLocalizer, Views } from 'react-big-calendar';
 import type { View } from 'react-big-calendar';
-import { format, parse, startOfWeek, getDay } from "date-fns";
+import { format, parse, startOfWeek, getDay, isToday } from "date-fns";
 import { enAU } from 'date-fns/locale';
-import type { ToolbarProps, NavigateAction } from 'react-big-calendar';
-
+import type { Event, ToolbarProps, NavigateAction, EventProps } from 'react-big-calendar';
 import { selectDatetime } from "../redux/datetimeSlice";
 import {  useSelector } from "../redux/hooks";
-
-type Event = {
-	title: string;
-	start: Date,
-	end: Date,
-}
 
 const customDatePickerComponent = (
 	params: JSX.IntrinsicAttributes & TextFieldProps,
@@ -52,6 +43,13 @@ const ToolBarContainer = styled(Box)<BoxProps>(({theme}) => ({
 	},
 }))
 
+const ToolBarButtonContainer = styled(Box)<BoxProps>(( {theme} ) => ({
+	display: "flex",
+	flexDirection: "row",
+	justifyContent: "space-between",
+	alignContent: "center"
+}))
+
 const ToolBarButton = styled(Button)<ButtonProps>(( {theme} ) => ({
 	borderRadius: '5px',
 	border: "1px solid",
@@ -61,6 +59,8 @@ const ToolBarButton = styled(Button)<ButtonProps>(( {theme} ) => ({
 	fontSize: '12px',
 	marginBottom: '10px',
 	textTransform: 'capitalize',
+	marginLeft: "2px",
+	marginRight: "2px",
 	"&:hover": {
 		backgroundColor: theme.palette.primary.main,
 		borderColor: theme.palette.primary.main,
@@ -71,6 +71,8 @@ const ToolBarButton = styled(Button)<ButtonProps>(( {theme} ) => ({
 
 const ViewToggleButton = styled(ToggleButton)<ToggleButtonProps>(( {theme} ) => ({
 	marginBottom: '10px',
+	marginLeft: "2px",
+	marginRight: "2px",
 	textTransform: 'capitalize',
 	fontSize: '12px',
 	paddingTop: '5px',
@@ -97,6 +99,7 @@ const ViewToggleButton = styled(ToggleButton)<ToggleButtonProps>(( {theme} ) => 
 }))
 
 
+
 const CustomToolBar : React.FC<ToolbarProps> = ({ date, view, onNavigate, onView }) => {
 
 	const navigationControls : { [ index : string ] : NavigateAction } = {
@@ -106,72 +109,56 @@ const CustomToolBar : React.FC<ToolbarProps> = ({ date, view, onNavigate, onView
 	};
 
 	const viewControls : { [ index : string ] : View } = {
-		"Month" : "month",
 		"Week" : "week",
-		"Day" : "day", 
-		"Agenda" : "agenda"
+		"Day" : "day",
 	}
 
 	return (
 		<ToolBarContainer>
-			<Stack
-				direction='row'
-				spacing={1}
-				useFlexGap
-			>
+			<ToolBarButtonContainer>
 				{ Object.entries(navigationControls).map(([displayText, navKey], index ) => <ToolBarButton key={index} onClick={() => onNavigate(navKey)}>{displayText}</ToolBarButton>) }
-			</Stack>
+			</ToolBarButtonContainer>
 			
-			<Typography sx={{ align: 'center', display: 'flex', alignItems: 'center', fontSize: '16px',  }}>{date.toDateString()}</Typography>
-			<Stack
-				direction='row'
-				spacing={1}
-				useFlexGap
-				sx={{
-				}}
-			>
+			<Typography sx={{ variant: 'body2', align: 'center', display: 'flex', alignItems: 'center', fontSize: '16px',  }}>{date.toDateString()}</Typography>
+			<ToolBarButtonContainer>
 				{ Object.entries(viewControls).map(([displayText, viewKey], index ) => <ViewToggleButton value={viewKey} key={index} selected={view == viewKey} onClick={() => onView(viewKey)}>{displayText}</ViewToggleButton>) }
-			</Stack>
+			</ToolBarButtonContainer>
 		</ToolBarContainer>
 	)
 }
 
-
 const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
-
-	
-
 
 	const WINDOWBREAKPOINT = 900;
 	const [ currView, setCurrView ] = React.useState<View>(Views.WEEK)
+	const [ currWindowWidth, setCurrWindowWidth ] = React.useState(window.innerWidth);
+	const debouncedWindowWidth = useDebounce(currWindowWidth, 500 );
+
 	
-
+	// change ( debounced ) currWindowWidth on window resize
 	React.useEffect(() => {
-		// If calendar loaded in Mobile Screen - set to Day View
+		// Track window size
+		const handleResize = () => setCurrWindowWidth(window.innerWidth);
+		window.addEventListener("resize", handleResize);
+		return () => window.removeEventListener('resize', handleResize);
+	}, []);
 
-		// Check window width on resize
+	// Update calendar view when currWindowWidth update
+	React.useEffect( () => {
 		const handleResize = () => {
-			if( window.innerWidth < WINDOWBREAKPOINT ) {
+			if( debouncedWindowWidth < WINDOWBREAKPOINT ) {
 				setCurrView(Views.DAY);
 			} else {
 				setCurrView(Views.WEEK);
 			}
 		}
-
-		const debouncedHandleResize = debounce(handleResize, 500);
-
-		window.addEventListener("resize", debouncedHandleResize);
-
-		return () => {
-			window.removeEventListener('resize', debouncedHandleResize);
-		}
-
-	}, []);
+		handleResize();
+	}, [debouncedWindowWidth]);
 
 	const { components, getNow, localizer, myEvents, scrollToTime } = React.useMemo( () => {
 		return {
 			components: {
-				toolbar: CustomToolBar, 
+				toolbar: CustomToolBar,
 			},
 			getNow: () => new Date(),
 			localizer: dateFnsLocalizer({ format, parse, startOfWeek, getDay, locales: enAU }),
@@ -209,6 +196,7 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 					</Box>
 				</LocalizationProvider>
 				<Calendar
+					elementProps={{ style: { color: 'blue' }}}
 					components={components}
 					dayLayoutAlgorithm={'no-overlap'}
 					date={date}
@@ -220,6 +208,9 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 					scrollToTime={scrollToTime}
 					view={currView}
 					onView={(newView) => setCurrView(newView)}
+					eventPropGetter={() => { return { style: { backgroundColor:'#f57c00', borderColor: '#f57c00'}}}}
+					slotGroupPropGetter={() => {return { style: { minHeight: "50px" }}}}
+					dayPropGetter={(date) => { return { style : { backgroundColor: isToday(date) ? "#fff3e0" : "white" }}}}
 				/>
 			</Box>
 		</>
