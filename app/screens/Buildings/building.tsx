@@ -1,19 +1,19 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { 
+import {
 	StyleSheet,
 	Text,
 	View,
 	SafeAreaView,
 	StatusBar,
 	ScrollView,
-	Pressable, 
+	Pressable,
 	Button,
 } from "react-native";
 
 import type { BuildingStackScreenProps } from '../types';
 import { FreeRoomsAPIContext } from '../../contexts';
 
-
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function Building({ route, navigation } : BuildingStackScreenProps<"Building"> ) {
 
@@ -27,8 +27,15 @@ export default function Building({ route, navigation } : BuildingStackScreenProp
 
 	useEffect(() => {
 		navigation.setOptions({
+			headerTitle: () => (
+				<Text style={ styles.main_heading }>
+					{route.params.buildingName}
+				</Text>
+			),
 			headerRight: () => (
-				<Button onPress={handleFilterPress} title="Filter Rooms" />
+				<Pressable onPress={handleFilterPress} >
+					<Ionicons name="filter-outline" size={25} color='white' />
+				</Pressable>
 			)
 		})
 	}, [navigation])
@@ -95,9 +102,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   main_heading: {
-    fontSize: 25,
-    fontWeight: 'bold',
-    paddingBottom: 20,
+	color: 'white',
+	fontWeight: '600',
+	fontSize: 18,
   },
   subHeading: {
     fontSize: 15,

@@ -11,6 +11,8 @@ import {
 import type { BuildingStackScreenProps  } from '../types';
 import { FreeRoomsAPIContext } from '../../contexts';
 
+import Ionicons from '@expo/vector-icons/Ionicons';
+
 export default function BuildingList({ route, navigation } : BuildingStackScreenProps<"All Buildings">) {
 
 	const handleFilterPress = () => {
@@ -23,7 +25,9 @@ export default function BuildingList({ route, navigation } : BuildingStackScreen
 	useEffect(() => {
 		navigation.setOptions({
 			headerRight: () => (
-				<Button onPress={handleFilterPress} title="Filter Buildings" />
+				<Pressable onPress={handleFilterPress} >
+					<Ionicons name="filter-outline" size={25} color='white' />
+				</Pressable>
 			)			
 		});
 		
