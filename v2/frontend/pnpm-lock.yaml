@@ -38,9 +38,6 @@ dependencies:
   esri-loader:
     specifier: ^3.7.0
     version: 3.7.0
-  lodash.debounce:
-    specifier: ^4.0.8
-    version: 4.0.8
   luxon:
     specifier: ^2.5.0
     version: 2.5.2
@@ -82,9 +79,6 @@ devDependencies:
   '@react-google-maps/api':
     specifier: ^2.18.1
     version: 2.18.1(react-dom@18.2.0)(react@18.2.0)
-  '@types/lodash.debounce':
-    specifier: ^4.0.7
-    version: 4.0.7
   '@types/luxon':
     specifier: ^2.4.0
     version: 2.4.0
@@ -1007,16 +1001,6 @@ packages:
 
   /@types/json5@0.0.29:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
-    dev: true
-
-  /@types/lodash.debounce@4.0.7:
-    resolution: {integrity: sha512-X1T4wMZ+gT000M2/91SYj0d/7JfeNZ9PeeOldSNoE/lunLeQXKvkmIumI29IaKMotU/ln/McOIvgzZcQ/3TrSA==}
-    dependencies:
-      '@types/lodash': 4.14.195
-    dev: true
-
-  /@types/lodash@4.14.195:
-    resolution: {integrity: sha512-Hwx9EUgdwf2GLarOjQp5ZH8ZmblzcbTBC2wtQWNKARBSxM9ezRIAUpeDTgoQRAFB0+8CNWXVA9+MaSOzOF3nPg==}
     dev: true
 
   /@types/luxon@2.4.0:
@@ -2513,10 +2497,6 @@ packages:
 
   /lodash-es@4.17.21:
     resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
-    dev: false
-
-  /lodash.debounce@4.0.8:
-    resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==}
     dev: false
 
   /lodash.merge@4.6.2:
