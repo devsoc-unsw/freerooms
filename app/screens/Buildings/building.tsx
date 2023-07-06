@@ -20,10 +20,10 @@ export default function Building({ route, navigation } : BuildingStackScreenProp
 	const handleFilterPress = () => {
 		navigation.navigate("Room Filter");
 	}
-	
+
 	const { rooms, onRefresh } = useContext(FreeRoomsAPIContext);
 	const roomsOfCurrBuilding = rooms[route.params.buildingId];
-	
+
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -44,47 +44,56 @@ export default function Building({ route, navigation } : BuildingStackScreenProp
 		<SafeAreaView style={ styles.container }>
 			<ScrollView style={ styles.scrollView }>
 				<View style={ styles.container }>
-					<Text style={ styles.main_heading }>{`${route.params.buildingName} (${route.params.buildingId})`}</Text>
-					<View style={ styles.textContainer }>
-						<Text style={{ paddingBottom: 10, }}>
-							Rooms
-						</Text>
-					</View>
 					{ Object.keys(roomsOfCurrBuilding).map( (roomId, index) => <Card key={index} nav={navigation} roomName={roomId} {...roomsOfCurrBuilding[roomId]} /> )}
 				</View>
 			</ScrollView>
 		</SafeAreaView>
-		
+
 	)
 }
 
 function Card({ nav, roomName, status, endtime }) {
-	
+
 	const handlePress = () => {
 		nav.navigate("Room");
 	}
-	
+
 	return (
-		
-			<View style={{
-					width: '100%',
-					alignItems: 'flex-start',
-					padding: 10,
-					borderWidth: 1,
-					borderRadius: 10,
-					borderColor: 'lightgray',
-					backgroundColor: 'orange',
-					marginVertical: 10,
-			}}>
-				<Pressable onPress={handlePress} style={{ width: '100%'}} >
+
+		<Pressable onPress={handlePress} style={{ width: '100%'}} >
+			<View style={styles.textContainer}>
+				<View style={{
+				}}>
 					<Text style={styles.subHeading}>
 						{ roomName }
 					</Text>
-					<Text style={styles.textBody}>
-						{ `Current Status: ${status}` }{ status == "busy" && endtime != "" ? ` until ${endtime}` : null }
+				</View>
+				<View style={{
+					display: 'flex',
+					flexDirection: 'row',
+					justifyContent: 'space-around',
+				}}>
+					<Text style={{
+						paddingRight: 10,
+						paddingTop: 2,
+						fontSize: 18,
+						fontWeight: '600',
+						color: status === "free"
+							? "#66bb6a"
+							: status === "busy" && endtime != ""
+								? "#ffa726"
+								: "#f44336"
+					}}>
+						{ status === "free"
+							? "Available"
+							: status === "busy" && endtime != ""
+								? `Available at ${endtime}`
+								: "Unavailable" }
 					</Text>
-				</Pressable>
+					<Ionicons name="chevron-forward-outline" size={25} color='grey' />
+				</View>
 			</View>
+		</Pressable>
 	);
 }
 
@@ -99,7 +108,7 @@ const styles = StyleSheet.create({
   scrollView: {
     paddingTop: 20,
     width: '100%',
-    paddingHorizontal: 10,
+    paddingHorizontal: 13,
   },
   main_heading: {
 	color: 'white',
@@ -107,15 +116,30 @@ const styles = StyleSheet.create({
 	fontSize: 18,
   },
   subHeading: {
-    fontSize: 15,
-    fontWeight: 'bold',
-    paddingBottom: 10,
+	paddingTop: 0,
+	fontSize: 18,
+	fontWeight: 'bold',
   },
   textBody: {
     fontSize: 10,
   },
   textContainer: {
-    flex: 1, 
-    padding: 10, 
+	display: 'flex',
+	flexDirection: 'row',
+	justifyContent: 'space-between',
+	alignItems: 'center',
+	paddingHorizontal: 20,
+	paddingVertical: 18,
+	borderRadius: 15,
+	backgroundColor: 'white',
+	marginVertical: 10,
+	shadowColor: "#000",
+	shadowOffset: {
+		width: 0,
+		height: 2,
+	},
+	shadowOpacity: 0.25,
+	shadowRadius: 5,
+	elevation: 5,
   },
 });
