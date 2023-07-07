@@ -43,7 +43,7 @@ export default function Building({ route, navigation } : BuildingStackScreenProp
 	return (
 		<SafeAreaView style={ styles.container }>
 			<ScrollView style={ styles.scrollView }>
-				<View style={ styles.container }>
+				<View style={[styles.container, {paddingBottom: 20} ]}>
 					{ Object.keys(roomsOfCurrBuilding).map( (roomId, index) => <Card key={index} nav={navigation} roomName={roomId} {...roomsOfCurrBuilding[roomId]} /> )}
 				</View>
 			</ScrollView>
@@ -58,40 +58,47 @@ function Card({ nav, roomName, status, endtime }) {
 		nav.navigate("Room");
 	}
 
+	const date = new Date(endtime);
+    const hoursMinutes = date.toLocaleTimeString("en-AU", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+
+	const roomStatusColor = {
+		free: "#2AA300",
+		busy: "#D30000",
+		soon: "#ffa600",
+	};
+
+	const roomStatusMessage = {
+		free: "Available",
+		busy: "Unavailable",
+		soon: "Available soon at " + hoursMinutes,
+	};
+
 	return (
 
-		<Pressable onPress={handlePress} style={{ width: '100%'}} >
+		<Pressable onPress={handlePress} style={({ pressed }) => [
+			styles.roomButton,
+			pressed ? { backgroundColor: '#f5f5f5', shadowRadius: 2, } : {},
+		]}>
+			<View>
+				<Text style={styles.subHeading}>
+					{ roomName }
+				</Text>
+			</View>
 			<View style={styles.textContainer}>
-				<View style={{
+				<Text style={{
+					paddingRight: 5,
+					paddingTop: 3.5,
+					fontSize: 17,
+					fontWeight: '600',
+					color: roomStatusColor[status],
 				}}>
-					<Text style={styles.subHeading}>
-						{ roomName }
-					</Text>
-				</View>
-				<View style={{
-					display: 'flex',
-					flexDirection: 'row',
-					justifyContent: 'space-around',
-				}}>
-					<Text style={{
-						paddingRight: 10,
-						paddingTop: 2,
-						fontSize: 18,
-						fontWeight: '600',
-						color: status === "free"
-							? "#66bb6a"
-							: status === "busy" && endtime != ""
-								? "#ffa726"
-								: "#f44336"
-					}}>
-						{ status === "free"
-							? "Available"
-							: status === "busy" && endtime != ""
-								? `Available at ${endtime}`
-								: "Unavailable" }
-					</Text>
-					<Ionicons name="chevron-forward-outline" size={25} color='grey' />
-				</View>
+					{roomStatusMessage[status]}
+				</Text>
+				<Ionicons name="chevron-forward-outline" size={25} color='grey' />
 			</View>
 		</Pressable>
 	);
@@ -106,7 +113,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   scrollView: {
-    paddingTop: 20,
+    paddingTop: 13,
     width: '100%',
     paddingHorizontal: 13,
   },
@@ -116,14 +123,16 @@ const styles = StyleSheet.create({
 	fontSize: 18,
   },
   subHeading: {
-	paddingTop: 0,
 	fontSize: 18,
 	fontWeight: 'bold',
   },
-  textBody: {
-    fontSize: 10,
-  },
   textContainer: {
+	display: 'flex',
+	flexDirection: 'row',
+	justifyContent: 'space-around',
+  },
+  roomButton: {
+	width: '100%',
 	display: 'flex',
 	flexDirection: 'row',
 	justifyContent: 'space-between',
@@ -132,7 +141,7 @@ const styles = StyleSheet.create({
 	paddingVertical: 18,
 	borderRadius: 15,
 	backgroundColor: 'white',
-	marginVertical: 10,
+	marginVertical: 8,
 	shadowColor: "#000",
 	shadowOffset: {
 		width: 0,
@@ -140,6 +149,5 @@ const styles = StyleSheet.create({
 	},
 	shadowOpacity: 0.25,
 	shadowRadius: 5,
-	elevation: 5,
   },
 });
