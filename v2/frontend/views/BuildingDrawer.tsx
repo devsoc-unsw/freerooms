@@ -12,6 +12,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import Image, { ImageProps } from "next/image";
 import React from "react";
+import Link from "next/link";
+
 
 import Button from "../components/Button";
 import useBuildingStatus from "../hooks/useBuildingStatus";
@@ -69,6 +71,12 @@ const IndiviRoomBox = styled(Box)<BoxProps>(({ theme }) => ({
   color: "black",
   padding: theme.spacing(2, 3),
   margin: theme.spacing(1.5, 1),
+	'&:hover': {
+		border: "1px solid",	
+		borderColor: theme.palette.primary.main,
+		cursor: "pointer",	
+	}
+  
 }));
 
 export const drawerWidth = 400;
@@ -123,7 +131,8 @@ const BuildingDrawer = () => {
       soon: "Available soon at " + hoursMinutes,
     };
     return (
-      <IndiviRoomBox>
+      <Link href={`/room/${building.id}-${roomNumber}`}>
+        <IndiviRoomBox>
         {roomNumber}{" "}
         <Typography
           sx={{ fontSize: 16, fontWeight: 500 }}
@@ -134,6 +143,7 @@ const BuildingDrawer = () => {
           {roomStatusMessage[roomStatus.status]}
         </Typography>
       </IndiviRoomBox>
+      </Link>  
     );
   };
 
