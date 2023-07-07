@@ -5,7 +5,6 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { Typography } from '@mui/material';
 import Box, { BoxProps } from '@mui/material/Box';
 import Button, { ButtonProps } from "@mui/material/Button";
-import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import TextField, { TextFieldProps } from "@mui/material/TextField";
 import ToggleButton, { ToggleButtonProps } from '@mui/material/ToggleButton';
@@ -15,7 +14,7 @@ import { format, getDay, isToday,parse, startOfWeek } from "date-fns";
 import { enAU } from 'date-fns/locale';
 import React from 'react';
 import type { View } from 'react-big-calendar';
-import type { Event, EventProps,NavigateAction, ToolbarProps } from 'react-big-calendar';
+import type { Event,NavigateAction, ToolbarProps } from 'react-big-calendar';
 import { Calendar, dateFnsLocalizer, Views } from 'react-big-calendar';
 import { useDebounce } from "usehooks-ts";
 
