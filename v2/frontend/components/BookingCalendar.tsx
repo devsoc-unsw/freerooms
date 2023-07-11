@@ -2,13 +2,15 @@
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 import Box, { BoxProps } from '@mui/material/Box';
 import Button, { ButtonProps } from "@mui/material/Button";
+import ButtonGroup from "@mui/material/ButtonGroup";
 import Stack from "@mui/material/Stack";
 import { styled } from '@mui/material/styles';
 import TextField, { TextFieldProps } from "@mui/material/TextField";
 import ToggleButton, { ToggleButtonProps } from '@mui/material/ToggleButton';
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { format, getDay, isToday,parse, startOfWeek } from "date-fns";
@@ -43,64 +45,36 @@ const ToolBarContainer = styled(Box)<BoxProps>(({theme}) => ({
 	[theme.breakpoints.down('md')]: {
 		display: 'none',
 	},
-}))
-
-const ToolBarButtonContainer = styled(Box)<BoxProps>(( {theme} ) => ({
-	display: "flex",
-	flexDirection: "row",
-	justifyContent: "space-between",
-	alignContent: "center"
+	marginBottom: 15,
 }))
 
 const ToolBarButton = styled(Button)<ButtonProps>(( {theme} ) => ({
-	borderRadius: '5px',
 	border: "1px solid",
 	borderColor: 'lightgray',
 	color: "black",
 	size: 'small',
 	fontSize: '12px',
-	marginBottom: '10px',
-	textTransform: 'capitalize',
-	marginLeft: "2px",
-	marginRight: "2px",
+	textTransform: 'none',
 	"&:hover": {
 		backgroundColor: theme.palette.primary.main,
 		borderColor: theme.palette.primary.main,
 		color: "#fff",
-	  },
-	
+	},
 }))
 
 const ViewToggleButton = styled(ToggleButton)<ToggleButtonProps>(( {theme} ) => ({
-	marginBottom: '10px',
-	marginLeft: "2px",
-	marginRight: "2px",
-	textTransform: 'capitalize',
-	fontSize: '12px',
-	paddingTop: '5px',
-	paddingBottom: '5px',
-	width: '65px',
-	borderRadius: '5px',
 	border: "1px solid",
 	borderColor: 'lightgray',
-	"&:hover": {
-		backgroundColor:theme.palette.primary.main,
-		borderColor: theme.palette.primary.main,
-		color: "#fff",
-	},
-	"&.Mui-selected": {
+	color: "black",
+	size: 'small',
+	fontSize: '12px',
+	textTransform: 'none',
+	"&:hover, &.Mui-selected, &.Mui-selected:hover": {
 		backgroundColor: theme.palette.primary.main,
 		borderColor: theme.palette.primary.main,
 		color: "#fff",
 	},
-	"&.Mui-selected:hover" : {
-		backgroundColor: theme.palette.primary.main,
-		borderColor: theme.palette.primary.main,
-		color: "#fff",
-	}
 }))
-
-
 
 const CustomToolBar : React.FC<ToolbarProps> = ({ date, view, onNavigate, onView }) => {
 
@@ -117,14 +91,14 @@ const CustomToolBar : React.FC<ToolbarProps> = ({ date, view, onNavigate, onView
 
 	return (
 		<ToolBarContainer>
-			<ToolBarButtonContainer>
+			<ButtonGroup sx={{ height: 30 }}>
 				{ Object.entries(navigationControls).map(([displayText, navKey], index ) => <ToolBarButton key={index} onClick={() => onNavigate(navKey)}>{displayText}</ToolBarButton>) }
-			</ToolBarButtonContainer>
+			</ButtonGroup>
 			
-			<Typography sx={{ variant: 'body2', align: 'center', display: 'flex', alignItems: 'center', fontSize: '16px',  }}>{date.toDateString()}</Typography>
-			<ToolBarButtonContainer>
-				{ Object.entries(viewControls).map(([displayText, viewKey], index ) => <ViewToggleButton value={viewKey} key={index} selected={view == viewKey} onClick={() => onView(viewKey)}>{displayText}</ViewToggleButton>) }
-			</ToolBarButtonContainer>
+			<Typography variant="h6">{date.toDateString()}</Typography>
+			<ToggleButtonGroup value={view} exclusive sx={{ height: 30 }}>
+				{ Object.entries(viewControls).map(([displayText, viewKey], index ) => <ViewToggleButton value={viewKey} key={index} onClick={() => onView(viewKey)}>{displayText}</ViewToggleButton>) }
+			</ToggleButtonGroup>
 		</ToolBarContainer>
 	)
 }
@@ -212,7 +186,6 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 					</Box>
 				</LocalizationProvider>
 				<Calendar
-					elementProps={{ style: { color: 'blue' }}}
 					components={components}
 					dayLayoutAlgorithm={'no-overlap'}
 					date={date}
