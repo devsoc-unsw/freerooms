@@ -180,9 +180,24 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 		}
 	}
 
+	const calendarStyles = {
+		'& .rbc-allday-cell': {
+			display: 'none'
+		},
+		'& .rbc-time-view .rbc-header': {
+			borderBottom: 'none'
+		}
+	}
+
 	return (
 		<>
-			<Stack sx={{ height: "100%",  width: "100%", px: 15, pt: 3 }}>
+			<Stack sx={{
+				height: "100%",
+				width: "100%",
+				px: 15,
+				pt: 3,
+				...calendarStyles
+			}}>
 				<LocalizationProvider dateAdapter={AdapterDateFns}>
 					<Box sx={{ width: "100%", display: "flex", flexDirection: "row", justifyContent: "flex-start", alignItems: "Center", paddingBottom: 5 }}>
 						<Typography variant='body1' sx={{ paddingRight: 2 }}>
@@ -214,6 +229,7 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 					dayPropGetter={(date) => { return { style : { backgroundColor: isToday(date) ? "#fff3e0" : "white" }}}}
 					min={new Date(new Date().setHours(9, 0, 0, 0))}
 					max={new Date(new Date().setHours(22, 0, 0, 0))}
+					showMultiDayTimes={false}
 				/>
 			</Stack>
 		</>
