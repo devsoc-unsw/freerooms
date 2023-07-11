@@ -14,7 +14,7 @@ import Typography from "@mui/material/Typography";
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { format, getDay, isToday,parse, startOfWeek } from "date-fns";
-import { da, enAU } from "date-fns/locale";
+import { enAU } from "date-fns/locale";
 import React from "react";
 import type { DateRange, View } from "react-big-calendar";
 import type { Event,NavigateAction, ToolbarProps } from 'react-big-calendar';
@@ -157,11 +157,17 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 	}
 
 	const calendarStyles = {
-		'&.rbc-allday-cell': {
+		'& .rbc-allday-cell': {
 			display: 'none'
 		},
-		'&.rbc-time-view .rbc-header': {
+		'& .rbc-time-view .rbc-header': {
 			borderBottom: 'none'
+		},
+		'& .rbc-events-container': {
+			marginX: "1px !important"
+		},
+		'& .rbc-header': {
+			paddingY: 0.5
 		}
 	}
 
