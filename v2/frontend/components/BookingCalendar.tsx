@@ -2,7 +2,7 @@
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
-import { Typography } from '@mui/material';
+import { Typography } from "@mui/material";
 import Box, { BoxProps } from '@mui/material/Box';
 import Button, { ButtonProps } from "@mui/material/Button";
 import { styled } from '@mui/material/styles';
@@ -11,8 +11,8 @@ import ToggleButton, { ToggleButtonProps } from '@mui/material/ToggleButton';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { format, getDay, isToday,parse, startOfWeek } from "date-fns";
-import { enAU } from 'date-fns/locale';
-import React from 'react';
+import { da, enAU } from "date-fns/locale";
+import React from "react";
 import type { View } from 'react-big-calendar';
 import type { Event,NavigateAction, ToolbarProps } from 'react-big-calendar';
 import { Calendar, dateFnsLocalizer, Views } from 'react-big-calendar';
@@ -166,23 +166,22 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 			myEvents: events,
 			scrollToTime: new Date()
 		}
-	}, [events]); 
-	
+	}, [events]);
+
 
  	const datetime = useSelector(selectDatetime);
 	const [ date, setDate ] = React.useState<Date>(datetime);
-	const handleDateChange = (newDate : Date| null ) => {
-		if( newDate == null ) {
+	const handleDateChange = (newDate : Date | null) => {
+		if (newDate == null) {
 			setDate(datetime);
 		} else {
 			setDate(newDate);
 		}
 	}
-	
 
 	return (
 		<>
-			<Box sx={{ height: 800, width: '70%', paddingTop: 5 }}>
+			<Box sx={{ height: 800, width: 1000, paddingTop: 5 }}>
 				<LocalizationProvider dateAdapter={AdapterDateFns}>
 					<Box sx={{ width: "100%", display: "flex", flexDirection: "row", justifyContent: "flex-start", alignItems: "Center", paddingBottom: 5 }}>
 						<Typography variant='body1' sx={{ paddingRight: 2 }}>
@@ -212,6 +211,8 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 					eventPropGetter={() => { return { style: { backgroundColor:'#f57c00', borderColor: '#f57c00'}}}}
 					slotGroupPropGetter={() => {return { style: { minHeight: "50px" }}}}
 					dayPropGetter={(date) => { return { style : { backgroundColor: isToday(date) ? "#fff3e0" : "white" }}}}
+					min={new Date(new Date().setHours(9, 0, 0, 0))}
+					max={new Date(new Date().setHours(22, 0, 0, 0))}
 				/>
 			</Box>
 		</>
