@@ -22,7 +22,7 @@ dependencies:
     version: 5.13.2(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@types/react@18.2.11)(react@18.2.0)
   '@mui/x-date-pickers':
     specifier: ^5.0.8
-    version: 5.0.20(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@mui/material@5.13.4)(@mui/system@5.13.2)(date-fns@2.30.0)(luxon@2.5.2)(react-dom@18.2.0)(react@18.2.0)
+    version: 5.0.20(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@mui/material@5.13.4)(@mui/system@5.13.2)(date-fns@2.30.0)(react-dom@18.2.0)(react@18.2.0)
   '@reduxjs/toolkit':
     specifier: ^1.9.5
     version: 1.9.5(react-redux@8.0.7)(react@18.2.0)
@@ -38,9 +38,6 @@ dependencies:
   esri-loader:
     specifier: ^3.7.0
     version: 3.7.0
-  luxon:
-    specifier: ^2.5.0
-    version: 2.5.2
   match-sorter:
     specifier: ^6.3.1
     version: 6.3.1
@@ -323,7 +320,7 @@ packages:
       '@date-io/core': 2.16.0
     dev: false
 
-  /@date-io/luxon@2.16.1(luxon@2.5.2):
+  /@date-io/luxon@2.16.1:
     resolution: {integrity: sha512-aeYp5K9PSHV28946pC+9UKUi/xMMYoaGelrpDibZSgHu2VWHXrr7zWLEr+pMPThSs5vt8Ei365PO+84pCm37WQ==}
     peerDependencies:
       luxon: ^1.21.3 || ^2.x || ^3.x
@@ -332,7 +329,6 @@ packages:
         optional: true
     dependencies:
       '@date-io/core': 2.16.0
-      luxon: 2.5.2
     dev: false
 
   /@date-io/moment@2.16.1:
@@ -735,7 +731,7 @@ packages:
       react-is: 18.2.0
     dev: false
 
-  /@mui/x-date-pickers@5.0.20(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@mui/material@5.13.4)(@mui/system@5.13.2)(date-fns@2.30.0)(luxon@2.5.2)(react-dom@18.2.0)(react@18.2.0):
+  /@mui/x-date-pickers@5.0.20(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@mui/material@5.13.4)(@mui/system@5.13.2)(date-fns@2.30.0)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-ERukSeHIoNLbI1C2XRhF9wRhqfsr+Q4B1SAw2ZlU7CWgcG8UBOxgqRKDEOVAIoSWL+DWT6GRuQjOKvj6UXZceA==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -767,7 +763,7 @@ packages:
       '@date-io/core': 2.16.0
       '@date-io/date-fns': 2.16.0(date-fns@2.30.0)
       '@date-io/dayjs': 2.16.0
-      '@date-io/luxon': 2.16.1(luxon@2.5.2)
+      '@date-io/luxon': 2.16.1
       '@date-io/moment': 2.16.1
       '@emotion/react': 11.11.1(@types/react@18.2.11)(react@18.2.0)
       '@emotion/styled': 11.11.0(@emotion/react@11.11.1)(@types/react@18.2.11)(react@18.2.0)
@@ -777,7 +773,6 @@ packages:
       '@types/react-transition-group': 4.4.6
       clsx: 1.2.1
       date-fns: 2.30.0
-      luxon: 2.5.2
       prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -2523,11 +2518,6 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       yallist: 4.0.0
-
-  /luxon@2.5.2:
-    resolution: {integrity: sha512-Yg7/RDp4nedqmLgyH0LwgGRvMEKVzKbUdkBYyCosbHgJ+kaOUx0qzSiSatVc3DFygnirTPYnMM2P5dg2uH1WvA==}
-    engines: {node: '>=12'}
-    dev: false
 
   /luxon@3.3.0:
     resolution: {integrity: sha512-An0UCfG/rSiqtAIiBPO0Y9/zAnHUZxAMiCpTd5h2smgsj7GGmcenvrvww2cqNA8/4A5ZrD1gJpHN2mIHZQF+Mg==}

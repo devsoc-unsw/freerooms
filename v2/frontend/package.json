@@ -21,7 +21,6 @@
     "date-fns": "^2.29.3",
     "date-fns-tz": "^2.0.0",
     "esri-loader": "^3.7.0",
-    "luxon": "^2.5.0",
     "match-sorter": "^6.3.1",
     "next": "13.2.0",
     "react": "18.2.0",
