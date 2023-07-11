@@ -1,6 +1,5 @@
 "use client" 
 
-import { CircularProgress } from '@mui/material';
 import Box from '@mui/material/Box';
 import Container from "@mui/material/Container";
 import Typography from '@mui/material/Typography';
@@ -8,6 +7,7 @@ import { DateTime } from 'luxon';
 import React from 'react';
 
 import BookingCalendar from "../../../components/BookingCalendar";
+import LoadingCircle from "../../../components/LoadingCircle";
 import useBookings from "../../../hooks/useBookings";
 import { setCurrentBuilding } from "../../../redux/currentBuildingSlice";
 import { useDispatch } from '../../../redux/hooks';
@@ -56,11 +56,9 @@ export default function Page({ params }: {
   return (
     
     <Container maxWidth={false}>
-      { roomName == "" ? (
-        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', paddingTop: 15, color: 'orange'}}>
-          <CircularProgress color={"inherit"} />
-        </Box>
-      ) : (
+      { !roomName
+				? <LoadingCircle/>
+				: (
         <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', paddingTop: 15}}>
 	        <Typography variant='h4' component='h2'>
 	          { `Bookings for ${roomName}`}
