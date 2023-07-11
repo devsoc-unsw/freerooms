@@ -16,9 +16,9 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { format, getDay, isToday,parse, startOfWeek } from "date-fns";
 import { da, enAU } from "date-fns/locale";
 import React from "react";
-import type { View } from 'react-big-calendar';
+import type { DateRange, View } from "react-big-calendar";
 import type { Event,NavigateAction, ToolbarProps } from 'react-big-calendar';
-import { Calendar, dateFnsLocalizer, Views } from 'react-big-calendar';
+import { Calendar, dateFnsLocalizer, DateLocalizer, Views } from "react-big-calendar";
 import { useDebounce } from "usehooks-ts";
 
 import { selectDatetime } from "../redux/datetimeSlice";
@@ -157,12 +157,32 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 	}
 
 	const calendarStyles = {
-		'& .rbc-allday-cell': {
+		'&.rbc-allday-cell': {
 			display: 'none'
 		},
-		'& .rbc-time-view .rbc-header': {
+		'&.rbc-time-view .rbc-header': {
 			borderBottom: 'none'
 		}
+	}
+
+	const formatTime = (date: Date, culture: string | undefined, localizer?: DateLocalizer) => {
+		if (!localizer) {
+			throw new Error("No date localizer");
+		}
+		let res = localizer.format(date, "h", culture);
+		if (date.getMinutes() !== 0) {
+			res += localizer.format(date, ":m", culture);
+		}
+		res += localizer.format(date, " a", culture);
+		return res;
+	}
+
+	const formatTimeRange = (
+		{ start, end }: DateRange,
+		culture: string | undefined,
+		localizer?: DateLocalizer
+	) => {
+		return formatTime(start, culture, localizer) + " - " + formatTime(end, culture, localizer);
 	}
 
 	return (
@@ -205,6 +225,10 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 					min={new Date(new Date().setHours(9, 0, 0, 0))}
 					max={new Date(new Date().setHours(22, 0, 0, 0))}
 					showMultiDayTimes={false}
+					formats={{
+						timeGutterFormat: formatTime,
+						eventTimeRangeFormat: formatTimeRange
+					}}
 				/>
 			</Stack>
 		</>
