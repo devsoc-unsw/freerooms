@@ -61,7 +61,7 @@ export default function Page({ params }: {
 				: (
         <Stack justifyContent="center" alignItems="center" width="100%" py={5} height={`calc(100vh - ${navHeight}px)`}>
 	        <Typography variant='h4' component='h2'>
-	          { `Bookings for ${roomName}`}
+	          { `${roomName} (${params.room})`}
 	        </Typography>
 					<BookingCalendar events={events} />
       </Stack>

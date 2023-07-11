@@ -2,7 +2,6 @@
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
-import Typography from "@mui/material/Typography";
 import Box, { BoxProps } from '@mui/material/Box';
 import Button, { ButtonProps } from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
@@ -11,6 +10,7 @@ import { styled } from '@mui/material/styles';
 import TextField, { TextFieldProps } from "@mui/material/TextField";
 import ToggleButton, { ToggleButtonProps } from '@mui/material/ToggleButton';
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import Typography from "@mui/material/Typography";
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { format, getDay, isToday,parse, startOfWeek } from "date-fns";
@@ -49,10 +49,8 @@ const ToolBarContainer = styled(Box)<BoxProps>(({theme}) => ({
 }))
 
 const ToolBarButton = styled(Button)<ButtonProps>(( {theme} ) => ({
-	border: "1px solid",
-	borderColor: 'lightgray',
+	borderColor: "rgba(0, 0, 0, 0.12)",
 	color: "black",
-	size: 'small',
 	fontSize: '12px',
 	textTransform: 'none',
 	"&:hover": {
@@ -63,10 +61,7 @@ const ToolBarButton = styled(Button)<ButtonProps>(( {theme} ) => ({
 }))
 
 const ViewToggleButton = styled(ToggleButton)<ToggleButtonProps>(( {theme} ) => ({
-	border: "1px solid",
-	borderColor: 'lightgray',
 	color: "black",
-	size: 'small',
 	fontSize: '12px',
 	textTransform: 'none',
 	"&:hover, &.Mui-selected, &.Mui-selected:hover": {
@@ -92,12 +87,19 @@ const CustomToolBar : React.FC<ToolbarProps> = ({ date, view, onNavigate, onView
 	return (
 		<ToolBarContainer>
 			<ButtonGroup sx={{ height: 30 }}>
-				{ Object.entries(navigationControls).map(([displayText, navKey], index ) => <ToolBarButton key={index} onClick={() => onNavigate(navKey)}>{displayText}</ToolBarButton>) }
+				{Object.entries(navigationControls).map(([displayText, navKey], index) =>
+					<ToolBarButton key={index} onClick={() => onNavigate(navKey)}>
+						{displayText}
+					</ToolBarButton>
+				)}
 			</ButtonGroup>
-			
 			<Typography variant="h6">{date.toDateString()}</Typography>
 			<ToggleButtonGroup value={view} exclusive sx={{ height: 30 }}>
-				{ Object.entries(viewControls).map(([displayText, viewKey], index ) => <ViewToggleButton value={viewKey} key={index} onClick={() => onView(viewKey)}>{displayText}</ViewToggleButton>) }
+				{Object.entries(viewControls).map(([displayText, viewKey], index) =>
+					<ViewToggleButton value={viewKey} key={index} onClick={() => onView(viewKey)}>
+						{displayText}
+					</ViewToggleButton>
+				)}
 			</ToggleButtonGroup>
 		</ToolBarContainer>
 	)
@@ -197,9 +199,9 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 					scrollToTime={scrollToTime}
 					view={currView}
 					onView={(newView) => setCurrView(newView)}
-					eventPropGetter={() => { return { style: { backgroundColor:'#f57c00', borderColor: '#f57c00'}}}}
-					slotGroupPropGetter={() => {return { style: { minHeight: "50px" }}}}
-					dayPropGetter={(date) => { return { style : { backgroundColor: isToday(date) ? "#fff3e0" : "white" }}}}
+					eventPropGetter={() => ({ style: { backgroundColor:'#f57c00', borderColor: '#f57c00'}})}
+					slotGroupPropGetter={() => ({ style: { minHeight: "50px" }})}
+					dayPropGetter={(date) => ({ style : { backgroundColor: isToday(date) ? "#fff3e0" : "white" }})}
 					min={new Date(new Date().setHours(9, 0, 0, 0))}
 					max={new Date(new Date().setHours(22, 0, 0, 0))}
 					showMultiDayTimes={false}
