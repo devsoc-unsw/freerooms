@@ -5,6 +5,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { Typography } from "@mui/material";
 import Box, { BoxProps } from '@mui/material/Box';
 import Button, { ButtonProps } from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
 import { styled } from '@mui/material/styles';
 import TextField, { TextFieldProps } from "@mui/material/TextField";
 import ToggleButton, { ToggleButtonProps } from '@mui/material/ToggleButton';
@@ -181,7 +182,7 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 
 	return (
 		<>
-			<Box sx={{ height: 800, width: 1000, paddingTop: 5 }}>
+			<Stack sx={{ height: "100%",  width: "100%", px: 15, pt: 3 }}>
 				<LocalizationProvider dateAdapter={AdapterDateFns}>
 					<Box sx={{ width: "100%", display: "flex", flexDirection: "row", justifyContent: "flex-start", alignItems: "Center", paddingBottom: 5 }}>
 						<Typography variant='body1' sx={{ paddingRight: 2 }}>
@@ -214,7 +215,7 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 					min={new Date(new Date().setHours(9, 0, 0, 0))}
 					max={new Date(new Date().setHours(22, 0, 0, 0))}
 				/>
-			</Box>
+			</Stack>
 		</>
 	)
 }
