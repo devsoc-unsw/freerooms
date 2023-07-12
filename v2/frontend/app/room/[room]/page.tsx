@@ -60,8 +60,8 @@ export default function Page({ params }: {
 				? <LoadingCircle/>
 				: (
         <Stack justifyContent="center" alignItems="center" width="100%" py={5} height={`calc(100vh - ${navHeight}px)`}>
-	        <Typography variant='h4' component='h2'>
-	          { `${roomName} (${params.room})`}
+	        <Typography variant='h4' fontWeight={550}>
+	          {roomName}
 	        </Typography>
 					<BookingCalendar events={events} />
       </Stack>
