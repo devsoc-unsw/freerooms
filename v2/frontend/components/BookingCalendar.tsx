@@ -220,7 +220,7 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 			<Stack sx={{
 				height: "100%",
 				width: "100%",
-				px: 15,
+				px: { xs: 5, md: 15 },
 				pt: 3,
 				...calendarStyles
 			}}>
