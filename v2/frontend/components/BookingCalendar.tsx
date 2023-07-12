@@ -2,30 +2,30 @@
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
-import Box, { BoxProps } from '@mui/material/Box';
+import Box from '@mui/material/Box';
 import Button, { ButtonProps } from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Stack from "@mui/material/Stack";
-import { styled, useTheme } from "@mui/material/styles";
+import { styled, SxProps, useTheme } from "@mui/material/styles";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
 import ToggleButton, { ToggleButtonProps } from '@mui/material/ToggleButton';
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { format, getDay, isToday,parse, startOfWeek } from "date-fns";
+import { format, getDay, isToday, parse, startOfWeek } from "date-fns";
 import { enAU } from "date-fns/locale";
 import React from "react";
 import type { DateRange, View } from "react-big-calendar";
-import type { Event,NavigateAction, ToolbarProps } from 'react-big-calendar';
+import type { Event, NavigateAction, ToolbarProps } from 'react-big-calendar';
 import { Calendar, dateFnsLocalizer, DateLocalizer, Views } from "react-big-calendar";
-import { useDebounce } from "usehooks-ts";
 
 import { selectDatetime } from "../redux/datetimeSlice";
-import {  useSelector } from "../redux/hooks";
+import { useSelector } from "../redux/hooks";
 
-const customDatePickerComponent = (
-	params: JSX.IntrinsicAttributes & TextFieldProps,
+const DatePickerTextField = (
+	params: React.JSX.IntrinsicAttributes & TextFieldProps,
 ) => (
 	<TextField
 		{...params}
@@ -39,18 +39,7 @@ const customDatePickerComponent = (
 	/>
 );
 
-const ToolBarContainer = styled(Box)<BoxProps>(({theme}) => ({
-	display: 'flex',
-	flexDirection: 'row',
-	justifyContent: 'space-between',
-	alignContent: 'center',
-	[theme.breakpoints.down('md')]: {
-		display: 'none',
-	},
-	marginBottom: 15,
-}))
-
-const ToolBarButton = styled(Button)<ButtonProps>(( {theme} ) => ({
+const ToolBarButton = styled(Button)<ButtonProps>(({ theme }) => ({
 	borderColor: "rgba(0, 0, 0, 0.12)",
 	color: "black",
 	fontSize: '12px',
@@ -62,7 +51,7 @@ const ToolBarButton = styled(Button)<ButtonProps>(( {theme} ) => ({
 	},
 }))
 
-const ViewToggleButton = styled(ToggleButton)<ToggleButtonProps>(( {theme} ) => ({
+const ViewToggleButton = styled(ToggleButton)<ToggleButtonProps>(({ theme }) => ({
 	color: "black",
 	fontSize: '12px',
 	textTransform: 'none',
@@ -73,21 +62,29 @@ const ViewToggleButton = styled(ToggleButton)<ToggleButtonProps>(( {theme} ) => 
 	},
 }))
 
-const CustomToolBar : React.FC<ToolbarProps> = ({ date, view, onNavigate, onView }) => {
-
-	const navigationControls : { [ index : string ] : NavigateAction } = {
+const CustomToolBar: React.FC<ToolbarProps> = ({ view, onNavigate, onView }) => {
+	const navigationControls: { [index: string]: NavigateAction } = {
 		"Previous" : "PREV",
 		"Today" : "TODAY",
 		"Next" : "NEXT" ,
 	};
 
-	const viewControls : { [ index : string ] : View } = {
+	const viewControls : { [index: string]: View } = {
 		"Week" : "week",
 		"Day" : "day",
 	}
 
 	return (
-		<ToolBarContainer>
+		<Stack
+			direction="row"
+			justifyContent="space-between"
+			mb={2}
+			sx={theme => ({
+				[theme.breakpoints.down('md')]: {
+					display: 'none',
+				},
+			})}
+		>
 			<ButtonGroup sx={{ height: 30 }}>
 				{Object.entries(navigationControls).map(([displayText, navKey], index) =>
 					<ToolBarButton key={index} onClick={() => onNavigate(navKey)}>
@@ -102,39 +99,27 @@ const CustomToolBar : React.FC<ToolbarProps> = ({ date, view, onNavigate, onView
 					</ViewToggleButton>
 				)}
 			</ToggleButtonGroup>
-		</ToolBarContainer>
+		</Stack>
 	)
 }
 
 const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 
-	const WINDOWBREAKPOINT = 900;
-	const [ currView, setCurrView ] = React.useState<View>(Views.WEEK)
-	const [ currWindowWidth, setCurrWindowWidth ] = React.useState(window.innerWidth);
-	const debouncedWindowWidth = useDebounce(currWindowWidth, 500 );
-
-	
-	// change ( debounced ) currWindowWidth on window resize
+	// Enforce day view on mobile
+	const [currView, setCurrView] = React.useState<View>(Views.WEEK);
+	const theme = useTheme();
+	const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 	React.useEffect(() => {
-		// Track window size
-		const handleResize = () => setCurrWindowWidth(window.innerWidth);
-		window.addEventListener("resize", handleResize);
-		return () => window.removeEventListener('resize', handleResize);
-	}, []);
+		setCurrView(isMobile ? Views.DAY : Views.WEEK);
+	}, [isMobile]);
 
-	// Update calendar view when currWindowWidth update
-	React.useEffect( () => {
-		const handleResize = () => {
-			if( debouncedWindowWidth < WINDOWBREAKPOINT ) {
-				setCurrView(Views.DAY);
-			} else {
-				setCurrView(Views.WEEK);
-			}
-		}
-		handleResize();
-	}, [debouncedWindowWidth]);
+	const datetime = useSelector(selectDatetime);
+	const [date, setDate] = React.useState<Date>(datetime);
+	const handleDateChange = (newDate: Date | null) => {
+		setDate(newDate ?? datetime);
+	}
 
-	const { components, getNow, localizer, myEvents, scrollToTime } = React.useMemo( () => {
+	const { components, getNow, localizer, myEvents, scrollToTime } = React.useMemo(() => {
 		return {
 			components: {
 				toolbar: CustomToolBar,
@@ -142,23 +127,11 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 			getNow: () => new Date(),
 			localizer: dateFnsLocalizer({ format, parse, startOfWeek, getDay, locales: enAU }),
 			myEvents: events,
-			scrollToTime: new Date()
+			scrollToTime: datetime
 		}
-	}, [events]);
+	}, [datetime, events]);
 
-
- 	const datetime = useSelector(selectDatetime);
-	const [ date, setDate ] = React.useState<Date>(datetime);
-	const handleDateChange = (newDate : Date | null) => {
-		if (newDate == null) {
-			setDate(datetime);
-		} else {
-			setDate(newDate);
-		}
-	}
-
-	const theme = useTheme();
-	const calendarStyles = {
+	const calendarStyles: SxProps = {
 		'& .rbc-allday-cell': {
 			display: 'none'
 		},
@@ -169,7 +142,8 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 			marginX: "1px !important"
 		},
 		'& .rbc-header': {
-			paddingY: 0.5
+			paddingY: 0.5,
+			fontSize: 16
 		},
 		'& .rbc-event-content': {
 			fontWeight: 500
@@ -239,7 +213,7 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 							inputFormat="iii, d MMM yyyy"
 							value={date}
 							onChange={(newDate) => { handleDateChange(newDate) }}
-							renderInput={customDatePickerComponent}
+							renderInput={DatePickerTextField}
 						/>
 					</LocalizationProvider>
 				</Stack>
@@ -248,19 +222,19 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 						components={components}
 						dayLayoutAlgorithm={'no-overlap'}
 						date={date}
-						onNavigate={(newDate) => handleDateChange(newDate)}
+						onNavigate={handleDateChange}
 						defaultView={Views.WEEK}
 						events={myEvents}
 						getNow={getNow}
 						localizer={localizer}
 						scrollToTime={scrollToTime}
 						view={currView}
-						onView={(newView) => setCurrView(newView)}
-						eventPropGetter={() => ({ style: { backgroundColor:'#f57c00', borderColor: '#f57c00'}})}
+						onView={setCurrView}
+						eventPropGetter={() => ({ style: { backgroundColor: '#f57c00', borderColor: '#f57c00'}})}
 						slotGroupPropGetter={() => ({ style: { minHeight: "50px" }})}
-						dayPropGetter={(date) => ({ style : { backgroundColor: isToday(date) ? "#fff3e0" : "white" }})}
-						min={new Date(new Date().setHours(9, 0, 0, 0))}
-						max={new Date(new Date().setHours(22, 0, 0, 0))}
+						dayPropGetter={(date) => ({ style: { backgroundColor: isToday(date) ? "#fff3e0" : "white" }})}
+						min={new Date(0, 0, 0, 9)}
+						max={new Date(0, 0, 0, 22)}
 						showMultiDayTimes={false}
 						formats={{
 							timeGutterFormat: formatTime,
