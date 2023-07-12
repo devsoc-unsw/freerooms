@@ -23,17 +23,18 @@ import { useDebounce } from "usehooks-ts";
 
 import { selectDatetime } from "../redux/datetimeSlice";
 import {  useSelector } from "../redux/hooks";
-import { Paper } from "@mui/material";
 
 const customDatePickerComponent = (
 	params: JSX.IntrinsicAttributes & TextFieldProps,
 ) => (
 	<TextField
 		{...params}
+		size="small"
 		sx={{
-			size: "Small",
 			svg: { color: "#000000" },
 			input: { color: "#000000" },
+			width: { xs: '100%', md: 200 },
+			borderColor: "rgba(0, 0, 0, 0.12)",
 		}}
 	/>
 );
@@ -94,7 +95,6 @@ const CustomToolBar : React.FC<ToolbarProps> = ({ date, view, onNavigate, onView
 					</ToolBarButton>
 				)}
 			</ButtonGroup>
-			<Typography variant="h6">{date.toDateString()}</Typography>
 			<ToggleButtonGroup value={view} exclusive sx={{ height: 30 }}>
 				{Object.entries(viewControls).map(([displayText, viewKey], index) =>
 					<ViewToggleButton value={viewKey} key={index} onClick={() => onView(viewKey)}>
@@ -179,12 +179,9 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 			border: 'none',
 			borderRadius: '12px',
 		},
-		'& .rbc-header:last-child, & .rbc-time-header-content, & .rbc-time-header-cell, & .rbc-time-header': {
+		'& .rbc-header:last-child, & .rbc-time-header': {
 			borderTopRightRadius: '12px',
 			borderRight: 'none'
-		},
-		'& .rbc-time-column:last-child': {
-			borderBottomRightRadius: '12px',
 		},
 		'& .rbc-time-content': {
 			[theme.breakpoints.down('md')]: {
@@ -217,49 +214,59 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 
 	return (
 		<>
-			<Stack sx={{
-				height: "100%",
-				width: "100%",
-				px: { xs: 5, md: 15 },
-				pt: 3,
-				...calendarStyles
-			}}>
-				<LocalizationProvider dateAdapter={AdapterDateFns}>
-					<Box sx={{ width: "100%", display: "flex", flexDirection: "row", justifyContent: "flex-start", alignItems: "Center", paddingBottom: 5 }}>
-						<Typography variant='body1' sx={{ paddingRight: 2 }}>
-						{ "Select a Date:" }
-						</Typography>
+			<Stack
+				justifyContent="flex-start"
+				sx={{
+					height: "100%",
+					width: "100%",
+					px: { xs: 5, md: 15 },
+					pt: 3,
+					...calendarStyles
+				}}
+			>
+				<Stack
+					direction={{ xs: "column", md: "row"}}
+					justifyContent="space-between"
+					flexGrow={0}
+					sx={{ width: "100%", pb: 2 }}
+				>
+					<Typography variant="h5" fontWeight="bold">
+						Room Bookings
+					</Typography>
+					<LocalizationProvider dateAdapter={AdapterDateFns}>
 						<DatePicker
-							inputFormat="dd/MM/yyyy"
+							inputFormat="iii, d MMM yyyy"
 							value={date}
 							onChange={(newDate) => { handleDateChange(newDate) }}
 							renderInput={customDatePickerComponent}
 						/>
-					</Box>
-				</LocalizationProvider>
-				<Calendar
-					components={components}
-					dayLayoutAlgorithm={'no-overlap'}
-					date={date}
-					onNavigate={(newDate) => handleDateChange(newDate)}
-					defaultView={Views.WEEK}
-					events={myEvents}
-					getNow={getNow}
-					localizer={localizer}
-					scrollToTime={scrollToTime}
-					view={currView}
-					onView={(newView) => setCurrView(newView)}
-					eventPropGetter={() => ({ style: { backgroundColor:'#f57c00', borderColor: '#f57c00'}})}
-					slotGroupPropGetter={() => ({ style: { minHeight: "50px" }})}
-					dayPropGetter={(date) => ({ style : { backgroundColor: isToday(date) ? "#fff3e0" : "white" }})}
-					min={new Date(new Date().setHours(9, 0, 0, 0))}
-					max={new Date(new Date().setHours(22, 0, 0, 0))}
-					showMultiDayTimes={false}
-					formats={{
-						timeGutterFormat: formatTime,
-						eventTimeRangeFormat: formatTimeRange
-					}}
-				/>
+					</LocalizationProvider>
+				</Stack>
+				<Box overflow="auto" p={0.5}>
+					<Calendar
+						components={components}
+						dayLayoutAlgorithm={'no-overlap'}
+						date={date}
+						onNavigate={(newDate) => handleDateChange(newDate)}
+						defaultView={Views.WEEK}
+						events={myEvents}
+						getNow={getNow}
+						localizer={localizer}
+						scrollToTime={scrollToTime}
+						view={currView}
+						onView={(newView) => setCurrView(newView)}
+						eventPropGetter={() => ({ style: { backgroundColor:'#f57c00', borderColor: '#f57c00'}})}
+						slotGroupPropGetter={() => ({ style: { minHeight: "50px" }})}
+						dayPropGetter={(date) => ({ style : { backgroundColor: isToday(date) ? "#fff3e0" : "white" }})}
+						min={new Date(new Date().setHours(9, 0, 0, 0))}
+						max={new Date(new Date().setHours(22, 0, 0, 0))}
+						showMultiDayTimes={false}
+						formats={{
+							timeGutterFormat: formatTime,
+							eventTimeRangeFormat: formatTimeRange
+						}}
+					/>
+				</Box>
 			</Stack>
 		</>
 	)
