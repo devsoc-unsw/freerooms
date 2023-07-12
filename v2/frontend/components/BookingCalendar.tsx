@@ -6,7 +6,7 @@ import Box, { BoxProps } from '@mui/material/Box';
 import Button, { ButtonProps } from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Stack from "@mui/material/Stack";
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from "@mui/material/styles";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
 import ToggleButton, { ToggleButtonProps } from '@mui/material/ToggleButton';
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
@@ -23,6 +23,7 @@ import { useDebounce } from "usehooks-ts";
 
 import { selectDatetime } from "../redux/datetimeSlice";
 import {  useSelector } from "../redux/hooks";
+import { Paper } from "@mui/material";
 
 const customDatePickerComponent = (
 	params: JSX.IntrinsicAttributes & TextFieldProps,
@@ -156,6 +157,7 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 		}
 	}
 
+	const theme = useTheme();
 	const calendarStyles = {
 		'& .rbc-allday-cell': {
 			display: 'none'
@@ -168,7 +170,29 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 		},
 		'& .rbc-header': {
 			paddingY: 0.5
-		}
+		},
+		'& .rbc-event-content': {
+			fontWeight: 500
+		},
+		'& .rbc-time-view': {
+			boxShadow: '0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)',
+			border: 'none',
+			borderRadius: '12px',
+		},
+		'& .rbc-header:last-child, & .rbc-time-header-content, & .rbc-time-header-cell, & .rbc-time-header': {
+			borderTopRightRadius: '12px',
+			borderRight: 'none'
+		},
+		'& .rbc-time-column:last-child': {
+			borderBottomRightRadius: '12px',
+		},
+		'& .rbc-time-content': {
+			[theme.breakpoints.down('md')]: {
+				borderTop: 'none',
+			},
+			borderBottomLeftRadius: '12px',
+			borderBottomRightRadius: '12px',
+		},
 	}
 
 	const formatTime = (date: Date, culture: string | undefined, localizer?: DateLocalizer) => {
