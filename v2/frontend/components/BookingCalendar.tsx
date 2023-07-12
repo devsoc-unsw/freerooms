@@ -194,7 +194,7 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 				sx={{
 					height: "100%",
 					width: "100%",
-					px: { xs: 5, md: 15 },
+					px: { xs: 3, md: 15 },
 					pt: 3,
 					...calendarStyles
 				}}
@@ -202,7 +202,7 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 				<Stack
 					direction={{ xs: "column", md: "row"}}
 					justifyContent="space-between"
-					flexGrow={0}
+					spacing={1}
 					sx={{ width: "100%", pb: 2 }}
 				>
 					<Typography variant="h5" fontWeight="bold">
