@@ -184,11 +184,12 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 			borderRight: 'none'
 		},
 		'& .rbc-time-content': {
-			[theme.breakpoints.down('md')]: {
-				borderTop: 'none',
-			},
 			borderBottomLeftRadius: '12px',
 			borderBottomRightRadius: '12px',
+			...(currView === "day" ? {
+				borderTop: 'none',
+				borderTopRightRadius: '12px',
+			} : {})
 		},
 	}
 
