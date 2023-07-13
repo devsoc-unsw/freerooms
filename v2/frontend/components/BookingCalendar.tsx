@@ -62,14 +62,14 @@ const ViewToggleButton = styled(ToggleButton)(({ theme }) => ({
 
 const CustomToolBar: React.FC<ToolbarProps> = ({ view, onNavigate, onView }) => {
 	const navigationControls: { [index: string]: NavigateAction } = {
-		"Previous" : "PREV",
-		"Today" : "TODAY",
-		"Next" : "NEXT" ,
+		"Previous": "PREV",
+		"Today": "TODAY",
+		"Next": "NEXT" ,
 	};
 
-	const viewControls : { [index: string]: View } = {
-		"Week" : "week",
-		"Day" : "day",
+	const viewControls: { [index: string]: View } = {
+		"Week": "week",
+		"Day": "day",
 	}
 
 	return (
@@ -189,18 +189,17 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 		<>
 			<Stack
 				justifyContent="flex-start"
-				sx={{
-					height: "100%",
-					width: "100%",
-					px: { xs: 3, md: 15 },
-					pt: 3,
-				}}
+				height="100%"
+				width="100%"
+				px={{ xs: 3, md: 15 }}
+				pt={3}
 			>
 				<Stack
 					direction={{ xs: "column", md: "row"}}
 					justifyContent="space-between"
 					spacing={1}
-					sx={{ width: "100%", pb: 2 }}
+					width="100%"
+					pb={2}
 				>
 					<Typography variant="h5" fontWeight="bold">
 						Room Bookings
