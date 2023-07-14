@@ -11,9 +11,8 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import Image, { ImageProps } from "next/image";
-import React from "react";
 import Link from "next/link";
-
+import React from "react";
 
 import Button from "../components/Button";
 import useBuildingStatus from "../hooks/useBuildingStatus";
@@ -32,17 +31,17 @@ const AppBox = styled(Box)(({ theme }) => ({
   padding: theme.spacing(3, 2, 2, 3),
 }));
 
-const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
+const MainBox = styled(Box)<BoxProps>({
   position: "relative",
   flex: 1,
   backgroundColor: "#FAFAFA",
-}));
+});
 
-const StyledImage = styled(Image)<ImageProps>(({ theme }) => ({
+const StyledImage = styled(Image)<ImageProps>({
   borderRadius: 10,
   width: "100%",
   height: "auto",
-}));
+});
 
 const StatusBox = styled(Box)<BoxProps>(({ theme }) => ({
   display: "flex",
@@ -74,9 +73,8 @@ const IndiviRoomBox = styled(Box)<BoxProps>(({ theme }) => ({
 	'&:hover': {
 		border: "1px solid",	
 		borderColor: theme.palette.primary.main,
-		cursor: "pointer",	
+		cursor: "pointer",
 	}
-  
 }));
 
 export const drawerWidth = 400;
@@ -133,16 +131,17 @@ const BuildingDrawer = () => {
     return (
       <Link href={`/room/${building.id}-${roomNumber}`}>
         <IndiviRoomBox>
-        {roomNumber}{" "}
-        <Typography
-          sx={{ fontSize: 16, fontWeight: 500 }}
-          style={{
-            color: roomStatusColor[roomStatus.status],
-          }}
-        >
-          {roomStatusMessage[roomStatus.status]}
-        </Typography>
-      </IndiviRoomBox>
+          {roomNumber}{" "}
+          <Typography
+            sx={{
+              fontSize: 16,
+              fontWeight: 500,
+              color: roomStatusColor[roomStatus.status],
+            }}
+          >
+            {roomStatusMessage[roomStatus.status]}
+          </Typography>
+        </IndiviRoomBox>
       </Link>  
     );
   };

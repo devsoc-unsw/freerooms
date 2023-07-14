@@ -1,13 +1,13 @@
 "use client" 
 
-import { CircularProgress } from '@mui/material';
-import Box from '@mui/material/Box';
 import Container from "@mui/material/Container";
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { DateTime } from 'luxon';
 import React from 'react';
 
 import BookingCalendar from "../../../components/BookingCalendar";
+import LoadingCircle from "../../../components/LoadingCircle";
+import { navHeight } from "../../../components/NavBar";
 import useBookings from "../../../hooks/useBookings";
 import { setCurrentBuilding } from "../../../redux/currentBuildingSlice";
 import { useDispatch } from '../../../redux/hooks';
@@ -56,19 +56,15 @@ export default function Page({ params }: {
   return (
     
     <Container maxWidth={false}>
-      { roomName == "" ? (
-        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', paddingTop: 15, color: 'orange'}}>
-          <CircularProgress color={"inherit"} />
-        </Box>
-      ) : (
-        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', paddingTop: 15}}>
-	        <Typography variant='h4' component='h2'>
-	          { `Bookings for ${roomName}`}
+      { !roomName
+				? <LoadingCircle/>
+				: (
+        <Stack justifyContent="center" alignItems="center" width="100%" py={5} height={`calc(100vh - ${navHeight}px)`}>
+	        <Typography variant='h4' fontWeight={550}>
+	          {roomName}
 	        </Typography>
-		      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-						<BookingCalendar events={events} />
-		      </Box>
-      </Box>
+					<BookingCalendar events={events} />
+      </Stack>
       )}
     </Container>
     
@@ -88,8 +84,8 @@ const extractBookings = ( bookings : RoomAvailability ) => {
 			bookingForCurrDay.forEach((booking) => {
 				allBookings.push({
 					title: booking.courseCode,
-					start: DateTime.fromISO(booking.start).toJSDate(),
-					end: DateTime.fromISO(booking.end).toJSDate(),
+					start: new Date(booking.start),
+					end: new Date(booking.end),
 				})
 			});
 		})
