@@ -1,5 +1,5 @@
-import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
-import MapIcon from '@mui/icons-material/Map';
+import GridViewRoundedIcon from "@mui/icons-material/GridViewRounded";
+import MapIcon from "@mui/icons-material/Map";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
@@ -11,14 +11,13 @@ import React from "react";
 import Button from "../components/Button";
 import parentLogo from "../public/assets/favicon/csesocgreyblue.png";
 import Logo from "../public/assets/favicon/free_rooms_logo.png";
+import Gif from "../public/assets/favicon/free_rooms_logo.gif";
 
 const Landing = () => {
   return (
     <LandingScreenContainer direction="row" justifyContent="center">
       <Stack direction="column" spacing={2} sx={{ margin: "auto" }}>
-        <Stack style={{ width: "auto" }}>
-          <Image alt={"CSESOC Logo"} width={110} height={25} src={parentLogo} />
-        </Stack>
+        <Stack style={{ width: "auto" }}></Stack>
         <GradientText
           variant="h1"
           fontFamily="Josefin Sans, sans-serif"
@@ -30,16 +29,36 @@ const Landing = () => {
           UNSW room bookings
         </GradientText>
         <Stack direction="column" spacing={2}>
-          <LandingButton LinkComponent={Link} href="/browse" sx={{ width: "13rem" }} endIcon={<GridViewRoundedIcon/>}>
-            <Typography fontWeight="bold" sx={{display: "flex", margin: "auto"}}>Browse</Typography>
-          </LandingButton>
-          <LandingButton LinkComponent={Link} href="/map" sx={{ width: "13rem" }} endIcon={<MapIcon/>}>
-            <Typography fontWeight="bold" sx={{display: "flex", margin: "auto"}}>Map</Typography>
-          </LandingButton>
+          <Button
+            LinkComponent={Link}
+            href="/browse"
+            sx={{ width: "13rem" }}
+            endIcon={<GridViewRoundedIcon />}
+          >
+            <Typography
+              fontWeight="bold"
+              sx={{ display: "flex", margin: "auto" }}
+            >
+              Browse
+            </Typography>
+          </Button>
+          <Button
+            LinkComponent={Link}
+            href="/map"
+            sx={{ width: "13rem" }}
+            endIcon={<MapIcon />}
+          >
+            <Typography
+              fontWeight="bold"
+              sx={{ display: "flex", margin: "auto" }}
+            >
+              Map
+            </Typography>
+          </Button>
         </Stack>
       </Stack>
-      <Box margin="auto" display={{ xs: "none", md: "block" }} >
-        <Image width={400} height={400} alt={"Freerooms Logo"} src={Logo} />
+      <Box margin="auto" display={{ xs: "none", md: "block" }}>
+        <Image width={400} height={400} alt={"Freerooms Logo"} src={Gif} />
       </Box>
     </LandingScreenContainer>
   );
@@ -54,27 +73,21 @@ const GradientText = styled(Typography)({
   fontWeight: 700,
   "@keyframes gradient": {
     "0%": {
-      backgroundPosition: "0% 50%"
+      backgroundPosition: "0% 50%",
     },
     "50%": {
-      backgroundPosition: "100% 50%"
+      backgroundPosition: "100% 50%",
     },
     "100%": {
-      backgroundPosition: "0% 50%"
-    }
-  }
-})
+      backgroundPosition: "0% 50%",
+    },
+  },
+});
 
 const LandingScreenContainer = styled(Stack)(({ theme }) => ({
   height: "100%",
   width: "80%",
-  margin: "auto"
-}))
-
-const LandingButton = styled(Button)(({ theme }) => ({
-  mx: theme.spacing(1),
-  justifyContent: "space-between",
-  padding: theme.spacing(1.5, 7)
-}))
+  margin: "auto",
+}));
 
 export default Landing;
