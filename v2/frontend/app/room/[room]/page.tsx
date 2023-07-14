@@ -7,7 +7,6 @@ import React from 'react';
 
 import BookingCalendar from "../../../components/BookingCalendar";
 import LoadingCircle from "../../../components/LoadingCircle";
-import { navHeight } from "../../../components/NavBar";
 import useBookings from "../../../hooks/useBookings";
 import { setCurrentBuilding } from "../../../redux/currentBuildingSlice";
 import { useDispatch } from '../../../redux/hooks';
@@ -55,11 +54,11 @@ export default function Page({ params }: {
 
   return (
     
-    <Container maxWidth={false}>
+    <Container maxWidth={false} sx={{ height: "100%" }}>
       { !roomName
 				? <LoadingCircle/>
 				: (
-        <Stack justifyContent="center" alignItems="center" width="100%" py={5} height={`calc(100vh - ${navHeight}px)`}>
+        <Stack justifyContent="center" alignItems="center" width="100%" py={5} height="100%">
 	        <Typography variant='h4' fontWeight={550}>
 	          {roomName}
 	        </Typography>

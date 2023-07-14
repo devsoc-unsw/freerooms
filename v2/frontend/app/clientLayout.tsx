@@ -70,10 +70,10 @@ const Main = styled("main", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  marginTop: navHeight,
+  paddingTop: navHeight,
   width: '100%',
   marginRight: 0,
-  maxHeight: "100vh",
+  height: "100%",
   ...(drawerOpen && {
     width: `calc(100% - ${drawerWidth}px)`,
     marginRight: drawerWidth,
