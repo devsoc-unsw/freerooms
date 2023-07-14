@@ -112,7 +112,7 @@ const StyledCalendar = styled(Calendar)(({ view }) => ({
 		margin: "1px !important"
 	},
 	'& .rbc-header': {
-		paddingY: 0.5,
+		padding: "5px 0",
 		fontSize: 16
 	},
 	'& .rbc-event-content': {
