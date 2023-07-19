@@ -1,5 +1,6 @@
 import GridViewRoundedIcon from "@mui/icons-material/GridViewRounded";
 import MapIcon from "@mui/icons-material/Map";
+import { Accordion } from "@mui/material";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
@@ -10,57 +11,63 @@ import React from "react";
 
 import Button from "../components/Button";
 import parentLogo from "../public/assets/favicon/csesocgreyblue.png";
-import Logo from "../public/assets/favicon/free_rooms_logo.png";
 import Gif from "../public/assets/favicon/free_rooms_logo.gif";
+import Logo from "../public/assets/favicon/free_rooms_logo.png";
+import Faq from "./Faq";
 
 const Landing = () => {
   return (
-    <LandingScreenContainer direction="row" justifyContent="center">
-      <Stack direction="column" spacing={2} sx={{ margin: "auto" }}>
-        <Stack style={{ width: "auto" }}></Stack>
-        <GradientText
-          variant="h1"
-          fontFamily="Josefin Sans, sans-serif"
-          fontSize={{ xs: "4rem", md: "5rem" }}
-        >
-          Freerooms
-        </GradientText>
-        <GradientText fontSize={{ xs: "1rem", md: "1.5rem" }}>
-          UNSW room bookings
-        </GradientText>
-        <Stack direction="column" spacing={2}>
-          <Button
-            LinkComponent={Link}
-            href="/browse"
-            sx={{ width: "13rem" }}
-            endIcon={<GridViewRoundedIcon />}
+    <div>
+      <LandingScreenContainer direction="row" justifyContent="center">
+        <Stack direction="column" spacing={2} sx={{ margin: "auto" }}>
+          <Stack style={{ width: "auto" }}></Stack>
+          <GradientText
+            variant="h1"
+            fontFamily="Josefin Sans, sans-serif"
+            fontSize={{ xs: "4rem", md: "5rem" }}
           >
-            <Typography
-              fontWeight="bold"
-              sx={{ display: "flex", margin: "auto" }}
+            Freerooms
+          </GradientText>
+          <GradientText fontSize={{ xs: "1rem", md: "1.5rem" }}>
+            UNSW room bookings
+          </GradientText>
+          <Stack direction="column" spacing={2}>
+            <Button
+              LinkComponent={Link}
+              href="/browse"
+              sx={{ width: "13rem" }}
+              endIcon={<GridViewRoundedIcon />}
             >
-              Browse
-            </Typography>
-          </Button>
-          <Button
-            LinkComponent={Link}
-            href="/map"
-            sx={{ width: "13rem" }}
-            endIcon={<MapIcon />}
-          >
-            <Typography
-              fontWeight="bold"
-              sx={{ display: "flex", margin: "auto" }}
+              <Typography
+                fontWeight="bold"
+                sx={{ display: "flex", margin: "auto" }}
+              >
+                Browse
+              </Typography>
+            </Button>
+            <Button
+              LinkComponent={Link}
+              href="/map"
+              sx={{ width: "13rem" }}
+              endIcon={<MapIcon />}
             >
-              Map
-            </Typography>
-          </Button>
+              <Typography
+                fontWeight="bold"
+                sx={{ display: "flex", margin: "auto" }}
+              >
+                Map
+              </Typography>
+            </Button>
+          </Stack>
         </Stack>
-      </Stack>
-      <Box margin="auto" display={{ xs: "none", md: "block" }}>
-        <Image width={400} height={400} alt={"Freerooms Logo"} src={Gif} />
-      </Box>
-    </LandingScreenContainer>
+        <Box margin="auto" display={{ xs: "none", md: "block" }}>
+          <Image width={400} height={400} alt={"Freerooms Logo"} src={Gif} />
+        </Box>
+      </LandingScreenContainer>
+      <LandingScreenContainer>
+        <Faq />
+      </LandingScreenContainer>
+    </div>
   );
 };
 
