@@ -8,7 +8,7 @@ const Faq = () => {
   
   return (
     <div>
-      <h1 style={{ textAlign: 'center', fontSize: '3rem', marginBottom: '0rem' }}>
+      <h1 style={{ textAlign: 'center', fontSize: '3rem', marginBottom: '0rem', marginTop: '10rem' }}>
         Frequently Asked Questions
       </h1>
       <Image 
@@ -18,7 +18,7 @@ const Faq = () => {
         marginTop: '-0.5rem',
         width: '15%', 
         marginLeft: '60%',
-        marginBottom: '4rem' 
+        marginBottom: '5rem' 
       }} 
       />
       <div
