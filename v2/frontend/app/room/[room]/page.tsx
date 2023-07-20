@@ -3,9 +3,11 @@
 import Container from "@mui/material/Container";
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 import React from 'react';
 
 import BookingCalendar from "../../../components/BookingCalendar";
+import Button from "../../../components/Button";
 import LoadingCircle from "../../../components/LoadingCircle";
 import useBookings from "../../../hooks/useBookings";
 import { setCurrentBuilding } from "../../../redux/currentBuildingSlice";
@@ -54,14 +56,48 @@ export default function Page({ params }: {
 
   return (
     
-    <Container maxWidth={false} sx={{ height: "100%" }}>
+    <Container maxWidth={false} sx={{ height: "100%"}}>
       { !roomName
 				? <LoadingCircle/>
 				: (
         <Stack justifyContent="center" alignItems="center" width="100%" py={5} height="100%">
-	        <Typography variant='h4' fontWeight={550}>
-	          {roomName}
-	        </Typography>
+			<Box
+				width={"100%"}
+				display={"flex"}
+				flexDirection={"row"}
+				alignItems={'center'}
+				justifyContent={"space-between"}
+				px={{ xs: 3, md: 15 }}
+			>
+				<Stack direction={"column"} spacing={1}>
+					<Typography variant='subtitle2'>
+						<Typography display="inline" variant="subtitle2" fontWeight={"bold"}>{"CATS "}</Typography> 
+						 | 
+						<Typography display="inline" variant="subtitle2"fontWeight={"bold"} color={"#d26038"}>{" ID Required"}</Typography> 
+					</Typography>
+					<Typography variant='h4' fontWeight={550}> {roomName} </Typography>
+					<Stack direction={"row"} spacing={3}>
+						<Typography variant="body1" fontWeight={"bold"}>
+							ID: <Typography display={"inline"} variant="body1">K-J17-G01</Typography>
+						</Typography>
+						<Typography variant="body1" fontWeight={"bold"}>
+							Alias: <Typography display={"inline"} variant="body1">StringsME3</Typography>
+						</Typography>
+						<Typography variant="body1" fontWeight={"bold"}>
+							Type: <Typography display={"inline"} variant="body1">Computer Lab</Typography>
+						</Typography>
+					</Stack>
+				</Stack>
+				<Stack direction={"row"} spacing={1} >
+					<Button sx={{ px: 2, py: 1}}>
+						<Typography variant={"body2"} fontWeight={"bold"}>Make a Booking</Typography>
+					</Button>
+					<Button sx={{ px: 2, py: 1}}>
+						<Typography variant={"body2"} fontWeight={"bold"}>Add Photos</Typography>
+					</Button>
+				</Stack>
+			</Box>
+	       
 					<BookingCalendar events={events} />
       </Stack>
       )}
