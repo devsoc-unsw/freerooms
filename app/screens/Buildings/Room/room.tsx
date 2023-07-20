@@ -5,27 +5,36 @@ import {
 } from "react-native";
 
 import {Calendar, LocaleConfig, Agenda, AgendaList} from 'react-native-calendars';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import AgendaScreen from "./agenda";
 
 import { FlatList } from "react-native";
 import type { BuildingStackScreenProps } from "../../types";
 import { TabRouter } from "@react-navigation/native";
 
-
+interface RouteParams {
+	roomName: string;
+	status: string
+}
 
 export default function Room({ route, navigation } : BuildingStackScreenProps<"Room"> ) {
-	console.log(route);
+	const [routeParams, setRouteParams] = useState<RouteParams>(null)
+	useEffect(() => {
+		setRouteParams(route.params)
+	}, [route]);
 	return (
-		<AgendaScreen/>
+		<>
+			<View style={ styles.container }>
+				<Text style={ styles.main_heading }>{routeParams?.roomName}</Text>
+				<Text style={styles.avaliable}> {routeParams?.status == "free" ? "Available" : "Unvailable"} </Text>
+				<Elements></Elements>
+				<CalendarDay/>
+			</View>
+			<AgendaScreen/>
+		</>
 
-		// <View style={ styles.container }>
-		// 	<Text style={ styles.main_heading }>{route.params.roomName}</Text>
-		// 	<Text style={styles.avaliable}> {route.params.status == "free" ? "Available" : "Unvailable"} </Text>
-		// 	<Elements></Elements>
-		// 	<CalendarDay/>
 
-		// </View>
+
 	);
 }
 
