@@ -1,4 +1,5 @@
-import { 
+import {
+	Button,
 	StyleSheet,
 	Text,
 	View,
@@ -19,9 +20,12 @@ interface RouteParams {
 
 export default function Room({ route, navigation } : BuildingStackScreenProps<"Room"> ) {
 	const [routeParams, setRouteParams] = useState<RouteParams>(null)
+	const [nav, setNav] = useState(null)
 	useEffect(() => {
 		setRouteParams(route.params)
-	}, [route]);
+		setNav(navigation)
+	}, [route, navigation]);
+
 	return (
 		<>
 			<View style={ styles.container }>
@@ -30,6 +34,7 @@ export default function Room({ route, navigation } : BuildingStackScreenProps<"R
 				<Elements></Elements>
 				<CalendarDay/>
 			</View>
+			<Button title={"back"} onPress={()=>{nav?.goBack()}}>BACK</Button>
 			<AgendaScreen/>
 		</>
 
