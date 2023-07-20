@@ -13,6 +13,7 @@ import Room from "./Room/room";
 import RoomFilter from "./Room/room_filter";
 
 import type { BuildingStackParamList } from "../types";
+import Agenda from "./Room/Agenda/agenda";
 
 const Stack = createNativeStackNavigator<BuildingStackParamList>();
 export default function Buildings() {
@@ -68,6 +69,7 @@ export default function Buildings() {
 			>
 				<Stack.Screen name="Building Filter" component={BuildingFilter} />
 			</Stack.Group>
+			<Stack.Screen name="Agenda" component={Agenda} />
 		</Stack.Navigator>
 	)
 }

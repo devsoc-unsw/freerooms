@@ -34,7 +34,7 @@ export default function Room({ route, navigation } : BuildingStackScreenProps<"R
 				<Elements></Elements>
 				<CalendarDay/>
 			</View>
-			<Button title={"back"} onPress={()=>{nav?.goBack()}}>BACK</Button>
+			<Button title={"back"} onPress={()=>{nav?.navigate("Agenda")}}>BACK</Button>
 			<AgendaScreen/>
 		</>
 
