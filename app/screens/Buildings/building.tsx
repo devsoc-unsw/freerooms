@@ -54,7 +54,7 @@ export default function Building({ route, navigation } : BuildingStackScreenProp
 function Card({ nav, roomName, status, endtime }) {
 	
 	const handlePress = () => {
-		nav.navigate("Room");
+		nav.navigate("Room", {roomName: roomName, status: status});
 	}
 	
 	return (

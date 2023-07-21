@@ -1,0 +1,4050 @@
+[
+    {
+        "abbr": "Col LG01",
+        "name": "Colombo LG01",
+        "id": "K-B16-LG01",
+        "type": "TUSM",
+        "capacity": 48,
+        "school": " "
+    },
+    {
+        "abbr": "Col LG02",
+        "name": "Colombo LG02",
+        "id": "K-B16-LG02",
+        "type": "TUSM",
+        "capacity": 56,
+        "school": " "
+    },
+    {
+        "abbr": "ColomboThA",
+        "name": "Colombo Theatre A",
+        "id": "K-B16-LG03",
+        "type": "LCTR",
+        "capacity": 223,
+        "school": " "
+    },
+    {
+        "abbr": "ColomboThB",
+        "name": "Colombo Theatre B",
+        "id": "K-B16-LG04",
+        "type": "LCTR",
+        "capacity": 154,
+        "school": " "
+    },
+    {
+        "abbr": "ColomboThC",
+        "name": "Colombo Theatre C",
+        "id": "K-B16-LG05",
+        "type": "LCTR",
+        "capacity": 154,
+        "school": " "
+    },
+    {
+        "abbr": "38 BotanyS",
+        "name": "38 Botany UNSW Med Lifestyle",
+        "id": "K-BS38-LC",
+        "type": "LAB",
+        "capacity": 12,
+        "school": "MED"
+    },
+    {
+        "abbr": "MorvB 103",
+        "name": "Morven Brown 103 (Arts LangLb)",
+        "id": "K-C20-103",
+        "type": "CMLB",
+        "capacity": 30,
+        "school": "HUMSLANG"
+    },
+    {
+        "abbr": "MorvB 105",
+        "name": "Morven Brown 105 (Arts LangLb)",
+        "id": "K-C20-105",
+        "type": "LAB",
+        "capacity": 20,
+        "school": "HUMSLANG"
+    },
+    {
+        "abbr": "MorvB 106",
+        "name": "Morven Brown 106 (Arts LangLb)",
+        "id": "K-C20-106",
+        "type": "LAB",
+        "capacity": 25,
+        "school": "HUMSLANG"
+    },
+    {
+        "abbr": "MorvB 107",
+        "name": "Morven Brown 107 (TRC SPSS Lb)",
+        "id": "K-C20-107",
+        "type": "CMLB",
+        "capacity": 20,
+        "school": "ARTSC"
+    },
+    {
+        "abbr": "MorvB G3",
+        "name": "Morven Brown G3",
+        "id": "K-C20-G3",
+        "type": "TUSM",
+        "capacity": 38,
+        "school": " "
+    },
+    {
+        "abbr": "MorvB G4",
+        "name": "Morven Brown G4",
+        "id": "K-C20-G4",
+        "type": "TUSM",
+        "capacity": 36,
+        "school": " "
+    },
+    {
+        "abbr": "MorvB G5",
+        "name": "Morven Brown G5",
+        "id": "K-C20-G5",
+        "type": "TUSM",
+        "capacity": 22,
+        "school": " "
+    },
+    {
+        "abbr": "MorvB G6",
+        "name": "Morven Brown G6",
+        "id": "K-C20-G6",
+        "type": "TUSM",
+        "capacity": 42,
+        "school": " "
+    },
+    {
+        "abbr": "MorvB LG2",
+        "name": "Morven Brown LG2",
+        "id": "K-C20-LG2",
+        "type": "TUSM",
+        "capacity": 32,
+        "school": " "
+    },
+    {
+        "abbr": "MorvB LG28",
+        "name": "Morven Brown LG28 (SWKTS)",
+        "id": "K-C20-LG28",
+        "type": "TUSM",
+        "capacity": 30,
+        "school": "POLS"
+    },
+    {
+        "abbr": "MorvB LG30",
+        "name": "Morven Brown LG30",
+        "id": "K-C20-LG30",
+        "type": "TUSM",
+        "capacity": 22,
+        "school": " "
+    },
+    {
+        "abbr": "Clancy Aud",
+        "name": "Sir John Clancy Auditorium",
+        "id": "K-C24-G17",
+        "type": "AUD",
+        "capacity": 945,
+        "school": " "
+    },
+    {
+        "abbr": "ExPhysGym",
+        "name": "Ex Phys Teaching Gym",
+        "id": "K-C27-110",
+        "type": "LAB",
+        "capacity": 25,
+        "school": "MED"
+    },
+    {
+        "abbr": "ExPhysLab",
+        "name": "Ex Phys Teaching Lab",
+        "id": "K-C27-111",
+        "type": "LAB",
+        "capacity": 40,
+        "school": "MED"
+    },
+    {
+        "abbr": "Wurth 115",
+        "name": "Wallace Wurth 115",
+        "id": "K-C27-115",
+        "type": "LAB",
+        "capacity": 110,
+        "school": "MED"
+    },
+    {
+        "abbr": "Wurth 116",
+        "name": "Wallace Wurth 116",
+        "id": "K-C27-116",
+        "type": "LAB",
+        "capacity": 78,
+        "school": "MED"
+    },
+    {
+        "abbr": "Wurth 120",
+        "name": "Wallace Wurth 120",
+        "id": "K-C27-120",
+        "type": "LAB",
+        "capacity": 78,
+        "school": "MED"
+    },
+    {
+        "abbr": "Wurth 122",
+        "name": "Wallace Wurth 122",
+        "id": "K-C27-122",
+        "type": "LAB",
+        "capacity": 64,
+        "school": "BABS"
+    },
+    {
+        "abbr": "Wurth 123",
+        "name": "Wallace Wurth 123",
+        "id": "K-C27-123",
+        "type": "LAB",
+        "capacity": 64,
+        "school": "BABS"
+    },
+    {
+        "abbr": "Wurth G01",
+        "name": "Wallace Wurth G01",
+        "id": "K-C27-G01",
+        "type": "TUSM",
+        "capacity": 42,
+        "school": "MED"
+    },
+    {
+        "abbr": "Wurth G02",
+        "name": "Wallace Wurth G02",
+        "id": "K-C27-G02",
+        "type": "TUSM",
+        "capacity": 42,
+        "school": "MED"
+    },
+    {
+        "abbr": "Wurth G03",
+        "name": "Wallace Wurth G03",
+        "id": "K-C27-G03",
+        "type": "TUSM",
+        "capacity": 15,
+        "school": "MED"
+    },
+    {
+        "abbr": "Wurth G04",
+        "name": "Wallace Wurth G04",
+        "id": "K-C27-G04",
+        "type": "TUSM",
+        "capacity": 15,
+        "school": "MED"
+    },
+    {
+        "abbr": "Wurth G05",
+        "name": "Wallace Wurth G05",
+        "id": "K-C27-G05",
+        "type": "TUSM",
+        "capacity": 15,
+        "school": "MED"
+    },
+    {
+        "abbr": "WurthG06",
+        "name": "Wallace Wurth G06",
+        "id": "K-C27-G06",
+        "type": "TUSM",
+        "capacity": 72,
+        "school": "MED"
+    },
+    {
+        "abbr": "WurthG07",
+        "name": "Wallace Wurth G07",
+        "id": "K-C27-G07",
+        "type": "TUSM",
+        "capacity": 74,
+        "school": "MED"
+    },
+    {
+        "abbr": "Wurth G08",
+        "name": "Wallace Wurth G08",
+        "id": "K-C27-G08",
+        "type": "CMLB",
+        "capacity": 72,
+        "school": "MED"
+    },
+    {
+        "abbr": "Wurth G10",
+        "name": "Wallace Wurth G10",
+        "id": "K-C27-G10",
+        "type": "TUSM",
+        "capacity": 15,
+        "school": "MED"
+    },
+    {
+        "abbr": "Wurth G11",
+        "name": "Wallace Wurth G11",
+        "id": "K-C27-G11",
+        "type": "TUSM",
+        "capacity": 15,
+        "school": "MED"
+    },
+    {
+        "abbr": "Wurth G12",
+        "name": "Wallace Wurth G12",
+        "id": "K-C27-G12",
+        "type": "TUSM",
+        "capacity": 15,
+        "school": "MED"
+    },
+    {
+        "abbr": "Wurth G13",
+        "name": "Wallace Wurth G13",
+        "id": "K-C27-G13",
+        "type": "TUSM",
+        "capacity": 15,
+        "school": "MED"
+    },
+    {
+        "abbr": "Wurth G14",
+        "name": "Wallace Wurth G14",
+        "id": "K-C27-G14",
+        "type": "TUSM",
+        "capacity": 15,
+        "school": "MED"
+    },
+    {
+        "abbr": "Wurth G15",
+        "name": "Wallace Wurth G15",
+        "id": "K-C27-G15",
+        "type": "TUSM",
+        "capacity": 15,
+        "school": "MED"
+    },
+    {
+        "abbr": "WurthG16",
+        "name": "Wallace Wurth G16 Hybrid Lab",
+        "id": "K-C27-G16",
+        "type": "LAB",
+        "capacity": 36,
+        "school": "MED"
+    },
+    {
+        "abbr": "WurthG17",
+        "name": "Wallace Wurth G17 Hybrid Lab",
+        "id": "K-C27-G17",
+        "type": "LAB",
+        "capacity": 30,
+        "school": "MED"
+    },
+    {
+        "abbr": "Wurth G28",
+        "name": "Ex Phys Consultation Room",
+        "id": "K-C27-G28",
+        "type": "LAB",
+        "capacity": 4,
+        "school": "MED"
+    },
+    {
+        "abbr": "Wurth G29",
+        "name": "Ex Phys Testing Room A",
+        "id": "K-C27-G29",
+        "type": "LAB",
+        "capacity": 10,
+        "school": "MED"
+    },
+    {
+        "abbr": "Wurth G30",
+        "name": "Ex Phys Test Room B",
+        "id": "K-C27-G30",
+        "type": "LAB",
+        "capacity": 10,
+        "school": "MED"
+    },
+    {
+        "abbr": "Wurth G31",
+        "name": "Ex Phys Clinical Teaching Room",
+        "id": "K-C27-G31",
+        "type": "LAB",
+        "capacity": 5,
+        "school": "MED"
+    },
+    {
+        "abbr": "Cl Rm G32",
+        "name": "Ex Phys Clinical Teaching Room",
+        "id": "K-C27-G32",
+        "type": "LAB",
+        "capacity": 5,
+        "school": "MED"
+    },
+    {
+        "abbr": "Cl Rm G33",
+        "name": "Ex Phys Clinical Teaching Room",
+        "id": "K-C27-G33",
+        "type": "LAB",
+        "capacity": 5,
+        "school": "MED"
+    },
+    {
+        "abbr": "Cl Rm G34",
+        "name": "Ex Phys Clinical Teaching Room",
+        "id": "K-C27-G34",
+        "type": "LAB",
+        "capacity": 5,
+        "school": "MED"
+    },
+    {
+        "abbr": "Cl Rm G35",
+        "name": "Ex Phys Clinical Teaching Room",
+        "id": "K-C27-G35",
+        "type": "LAB",
+        "capacity": 5,
+        "school": "MED"
+    },
+    {
+        "abbr": "Cl Rm G36",
+        "name": "Ex Phys Clinical Teaching Room",
+        "id": "K-C27-G36",
+        "type": "LAB",
+        "capacity": 5,
+        "school": "MED"
+    },
+    {
+        "abbr": "Cl Rm G37",
+        "name": "Ex Phys Clinical Teaching Room",
+        "id": "K-C27-G37",
+        "type": "LAB",
+        "capacity": 5,
+        "school": "MED"
+    },
+    {
+        "abbr": "Cl Rm G39",
+        "name": "Clinical Skills Teaching Room",
+        "id": "K-C27-G39",
+        "type": "LAB",
+        "capacity": 30,
+        "school": "MED"
+    },
+    {
+        "abbr": "Cl Rm GQ12",
+        "name": "Ex Phys Clinical Teaching Room",
+        "id": "K-C27-GQ12",
+        "type": "LAB",
+        "capacity": 40,
+        "school": "MED"
+    },
+    {
+        "abbr": "WurthLG02",
+        "name": "Wallace Wurth LG02",
+        "id": "K-C27-LG02",
+        "type": "TUSM",
+        "capacity": 74,
+        "school": "MED"
+    },
+    {
+        "abbr": "WurthLG03",
+        "name": "Wallace Wurth LG03",
+        "id": "K-C27-LG03",
+        "type": "LCTR",
+        "capacity": 125,
+        "school": "MED"
+    },
+    {
+        "abbr": "Studio One",
+        "name": "Studio One - Theatre",
+        "id": "K-D10-G07",
+        "type": "SDIO",
+        "capacity": 70,
+        "school": "ENGL"
+    },
+    {
+        "abbr": "Gold G01",
+        "name": "Goldstein G01",
+        "id": "K-D16-G01",
+        "type": "TUSM",
+        "capacity": 38,
+        "school": " "
+    },
+    {
+        "abbr": "Gold G02",
+        "name": "Goldstein G02",
+        "id": "K-D16-G02",
+        "type": "TUSM",
+        "capacity": 30,
+        "school": " "
+    },
+    {
+        "abbr": "Gold G03",
+        "name": "Goldstein G03",
+        "id": "K-D16-G03",
+        "type": "TUSM",
+        "capacity": 40,
+        "school": " "
+    },
+    {
+        "abbr": "Gold G04",
+        "name": "Goldstein G04",
+        "id": "K-D16-G04",
+        "type": "TUSM",
+        "capacity": 18,
+        "school": " "
+    },
+    {
+        "abbr": "Gold G05",
+        "name": "Goldstein G05",
+        "id": "K-D16-G05",
+        "type": "TUSM",
+        "capacity": 24,
+        "school": " "
+    },
+    {
+        "abbr": "Gold G06",
+        "name": "Goldstein G06",
+        "id": "K-D16-G06",
+        "type": "TUSM",
+        "capacity": 28,
+        "school": " "
+    },
+    {
+        "abbr": "Gold G07",
+        "name": "Goldstein G07",
+        "id": "K-D16-G07",
+        "type": "TUSM",
+        "capacity": 24,
+        "school": " "
+    },
+    {
+        "abbr": "Gold G09",
+        "name": "Goldstein G09",
+        "id": "K-D16-G09",
+        "type": "TUSM",
+        "capacity": 42,
+        "school": " "
+    },
+    {
+        "abbr": "UGC",
+        "name": "Undercroft Goldstein College",
+        "id": "K-D16-U",
+        "type": "EXAM",
+        "capacity": 139,
+        "school": "ADMIN"
+    },
+    {
+        "abbr": "MathewsThA",
+        "name": "Mathews Theatre A",
+        "id": "K-D23-201",
+        "type": "LCTR",
+        "capacity": 472,
+        "school": " "
+    },
+    {
+        "abbr": "MathewsThB",
+        "name": "Mathews Theatre B",
+        "id": "K-D23-203",
+        "type": "LCTR",
+        "capacity": 246,
+        "school": " "
+    },
+    {
+        "abbr": "MathewsThC",
+        "name": "Mathews Theatre C",
+        "id": "K-D23-303",
+        "type": "LCTR",
+        "capacity": 110,
+        "school": " "
+    },
+    {
+        "abbr": "MathewsThD",
+        "name": "Mathews Theatre D",
+        "id": "K-D23-304",
+        "type": "LCTR",
+        "capacity": 110,
+        "school": " "
+    },
+    {
+        "abbr": "TchLab 10",
+        "name": "D26 Teaching Lab 10",
+        "id": "K-D26-102",
+        "type": "LAB",
+        "capacity": 64,
+        "school": "BABS"
+    },
+    {
+        "abbr": "AnatLab8a",
+        "name": "BiologicalSci TeachLab 8A Lvl1",
+        "id": "K-D26-103",
+        "type": "LCTR",
+        "capacity": 100,
+        "school": "MED"
+    },
+    {
+        "abbr": "AnatLab7",
+        "name": "BiologicalSci TeachLab 7 Lvl1",
+        "id": "K-D26-106",
+        "type": "LAB",
+        "capacity": 100,
+        "school": "MED"
+    },
+    {
+        "abbr": "AnatLab8B",
+        "name": "BiologicalSci TeachLab 8B Lvl1",
+        "id": "K-D26-110",
+        "type": "LAB",
+        "capacity": 50,
+        "school": "MED"
+    },
+    {
+        "abbr": "TchLab 2",
+        "name": "BiologicalSci TeachLab2 Ground",
+        "id": "K-D26-G01",
+        "type": "LAB",
+        "capacity": 50,
+        "school": "BEES"
+    },
+    {
+        "abbr": "TchLab 1",
+        "name": "BiologicalSci TeachLab1 Ground",
+        "id": "K-D26-G04",
+        "type": "LAB",
+        "capacity": 96,
+        "school": "BEES"
+    },
+    {
+        "abbr": "Biosci G07",
+        "name": "Bioscience G07",
+        "id": "K-D26-G07",
+        "type": "TUSM",
+        "capacity": 63,
+        "school": " "
+    },
+    {
+        "abbr": "Biosci G29",
+        "name": "Bioscience G29",
+        "id": "K-D26-G29",
+        "type": "CMLB",
+        "capacity": 48,
+        "school": "BEES"
+    },
+    {
+        "abbr": "Io Myers",
+        "name": "Io Myers Studio",
+        "id": "K-D9-THTR",
+        "type": "OTHR",
+        "capacity": 100,
+        "school": "MEDIA"
+    },
+    {
+        "abbr": "MetMicroMS",
+        "name": "Met Micro E10 104",
+        "id": "K-E10-104",
+        "type": "LAB",
+        "capacity": 18,
+        "school": "MATSCEN"
+    },
+    {
+        "abbr": "MetPolMSE",
+        "name": "Met Pol E10 107",
+        "id": "K-E10-107",
+        "type": "LAB",
+        "capacity": 18,
+        "school": "MATSCEN"
+    },
+    {
+        "abbr": "MetCutMSE",
+        "name": "Met Cut E10 110",
+        "id": "K-E10-110",
+        "type": "LAB",
+        "capacity": 18,
+        "school": "MATSCEN"
+    },
+    {
+        "abbr": "FnacMSE111",
+        "name": "Sintering & Heat Treat E10 111",
+        "id": "K-E10-111",
+        "type": "LAB",
+        "capacity": 15,
+        "school": "MATSCEN"
+    },
+    {
+        "abbr": "MechTestMS",
+        "name": "Mech Test E10 113",
+        "id": "K-E10-113",
+        "type": "LAB",
+        "capacity": 15,
+        "school": "MATSCEN"
+    },
+    {
+        "abbr": "CompLabMSE",
+        "name": "Comp Lab E10 123",
+        "id": "K-E10-123",
+        "type": "CMLB",
+        "capacity": 24,
+        "school": "MATSCEN"
+    },
+    {
+        "abbr": "TchLbMS125",
+        "name": "Teach Lab E10 125",
+        "id": "K-E10-125",
+        "type": "LAB",
+        "capacity": 18,
+        "school": "MATSCEN"
+    },
+    {
+        "abbr": "TchLbMS127",
+        "name": "Teach Lab E10 127",
+        "id": "K-E10-127",
+        "type": "LAB",
+        "capacity": 18,
+        "school": "MATSCEN"
+    },
+    {
+        "abbr": "TchLbMS129",
+        "name": "Teach Lab E10 129",
+        "id": "K-E10-129",
+        "type": "LAB",
+        "capacity": 18,
+        "school": "MATSCEN"
+    },
+    {
+        "abbr": "TchLbMS131",
+        "name": "Teach Lab E10 131",
+        "id": "K-E10-131",
+        "type": "LAB",
+        "capacity": 18,
+        "school": "MATSCEN"
+    },
+    {
+        "abbr": "MatSc433",
+        "name": "MatSci Lab 433",
+        "id": "K-E10-433",
+        "type": "LAB",
+        "capacity": 17,
+        "school": "MATSCEN"
+    },
+    {
+        "abbr": "DemoMSE",
+        "name": "MechTestTeachLab E10 G12",
+        "id": "K-E10-G12",
+        "type": "LAB",
+        "capacity": 15,
+        "school": "MATSCEN"
+    },
+    {
+        "abbr": "DemoMSE",
+        "name": "Demo Foundry E10 G14",
+        "id": "K-E10-G14",
+        "type": "LAB",
+        "capacity": 12,
+        "school": "MATSCEN"
+    },
+    {
+        "abbr": "BUS 105",
+        "name": "UNSW Business School 105",
+        "id": "K-E12-105",
+        "type": "LCTR",
+        "capacity": 38,
+        "school": " "
+    },
+    {
+        "abbr": "BUS 107",
+        "name": "UNSW Business School 107",
+        "id": "K-E12-107",
+        "type": "TUSM",
+        "capacity": 28,
+        "school": " "
+    },
+    {
+        "abbr": "BUS 114",
+        "name": "UNSW Business School 114",
+        "id": "K-E12-114",
+        "type": "TUSM",
+        "capacity": 28,
+        "school": " "
+    },
+    {
+        "abbr": "BUS 115",
+        "name": "UNSW Business School  115",
+        "id": "K-E12-115",
+        "type": "LCTR",
+        "capacity": 53,
+        "school": " "
+    },
+    {
+        "abbr": "BUS 118",
+        "name": "UNSW Business School 118",
+        "id": "K-E12-118",
+        "type": "TUSM",
+        "capacity": 28,
+        "school": " "
+    },
+    {
+        "abbr": "BUS 119",
+        "name": "UNSW Business School 119",
+        "id": "K-E12-119",
+        "type": "LCTR",
+        "capacity": 53,
+        "school": " "
+    },
+    {
+        "abbr": "BUS 130",
+        "name": "UNSW Business School 130",
+        "id": "K-E12-130",
+        "type": "LCTR",
+        "capacity": 38,
+        "school": " "
+    },
+    {
+        "abbr": "BUS 205",
+        "name": "UNSW Business School  205",
+        "id": "K-E12-205",
+        "type": "LCTR",
+        "capacity": 38,
+        "school": " "
+    },
+    {
+        "abbr": "BUS 207",
+        "name": "UNSW Business School 207",
+        "id": "K-E12-207",
+        "type": "TUSM",
+        "capacity": 28,
+        "school": " "
+    },
+    {
+        "abbr": "BUS 215",
+        "name": "UNSW Business School  215",
+        "id": "K-E12-215",
+        "type": "TUSM",
+        "capacity": 28,
+        "school": " "
+    },
+    {
+        "abbr": "BUS 216",
+        "name": "UNSW Business School  216",
+        "id": "K-E12-216",
+        "type": "LCTR",
+        "capacity": 53,
+        "school": " "
+    },
+    {
+        "abbr": "BUS 219",
+        "name": "UNSW Business School  219",
+        "id": "K-E12-219",
+        "type": "TUSM",
+        "capacity": 28,
+        "school": " "
+    },
+    {
+        "abbr": "BUS 220",
+        "name": "UNSW Business School  220",
+        "id": "K-E12-220",
+        "type": "LCTR",
+        "capacity": 53,
+        "school": " "
+    },
+    {
+        "abbr": "BUS 232",
+        "name": "UNSW Business School  232",
+        "id": "K-E12-232",
+        "type": "LCTR",
+        "capacity": 38,
+        "school": " "
+    },
+    {
+        "abbr": "BUS G21 IL",
+        "name": "UNSW Business School G21 i-Lab",
+        "id": "K-E12-G21",
+        "type": "TUSM",
+        "capacity": 64,
+        "school": "COMM"
+    },
+    {
+        "abbr": "BUS G23",
+        "name": "UNSW Business School G23",
+        "id": "K-E12-G23",
+        "type": "TUSM",
+        "capacity": 49,
+        "school": "COMM"
+    },
+    {
+        "abbr": "BUS G24",
+        "name": "UNSW Business School G24",
+        "id": "K-E12-G24",
+        "type": "TUSM",
+        "capacity": 49,
+        "school": "COMM"
+    },
+    {
+        "abbr": "BUS G26",
+        "name": "UNSW Business School  G26",
+        "id": "K-E12-G26",
+        "type": "TUSM",
+        "capacity": 70,
+        "school": "COMM"
+    },
+    {
+        "abbr": "Quad 1001",
+        "name": "Quadrangle 1001",
+        "id": "K-E15-1001",
+        "type": "TUSM",
+        "capacity": 28,
+        "school": " "
+    },
+    {
+        "abbr": "MacauleyTh",
+        "name": "Macauley Theatre",
+        "id": "K-E15-1027",
+        "type": "LCTR",
+        "capacity": 114,
+        "school": " "
+    },
+    {
+        "abbr": "Quad 1042",
+        "name": "Quadrangle 1042",
+        "id": "K-E15-1042",
+        "type": "TUSM",
+        "capacity": 22,
+        "school": " "
+    },
+    {
+        "abbr": "Quad 1043",
+        "name": "Quadrangle 1043",
+        "id": "K-E15-1043",
+        "type": "TUSM",
+        "capacity": 60,
+        "school": " "
+    },
+    {
+        "abbr": "Quad 1045",
+        "name": "Quadrangle 1045",
+        "id": "K-E15-1045",
+        "type": "TUSM",
+        "capacity": 30,
+        "school": " "
+    },
+    {
+        "abbr": "Quad 1046",
+        "name": "Quadrangle 1046",
+        "id": "K-E15-1046",
+        "type": "TUSM",
+        "capacity": 30,
+        "school": " "
+    },
+    {
+        "abbr": "Quad 1047",
+        "name": "Quadrangle 1047",
+        "id": "K-E15-1047",
+        "type": "TUSM",
+        "capacity": 30,
+        "school": " "
+    },
+    {
+        "abbr": "Quad 1048",
+        "name": "Quadrangle 1048",
+        "id": "K-E15-1048",
+        "type": "TUSM",
+        "capacity": 30,
+        "school": " "
+    },
+    {
+        "abbr": "Quad 1049",
+        "name": "Quadrangle 1049",
+        "id": "K-E15-1049",
+        "type": "TUSM",
+        "capacity": 20,
+        "school": " "
+    },
+    {
+        "abbr": "Quad 2082",
+        "name": "Quadrangle 2082",
+        "id": "K-E15-2082",
+        "type": "CMLB",
+        "capacity": 24,
+        "school": "SISTM"
+    },
+    {
+        "abbr": "Quad G021",
+        "name": "Quadrangle G021",
+        "id": "K-E15-G021",
+        "type": "LAB",
+        "capacity": 33,
+        "school": "COMM"
+    },
+    {
+        "abbr": "Quad G025",
+        "name": "Quadrangle G025",
+        "id": "K-E15-G025",
+        "type": "TUSM",
+        "capacity": 30,
+        "school": " "
+    },
+    {
+        "abbr": "Quad G026",
+        "name": "Quadrangle G026",
+        "id": "K-E15-G026",
+        "type": "TUSM",
+        "capacity": 30,
+        "school": " "
+    },
+    {
+        "abbr": "Quad G027",
+        "name": "Quadrangle G027",
+        "id": "K-E15-G027",
+        "type": "TUSM",
+        "capacity": 26,
+        "school": " "
+    },
+    {
+        "abbr": "Quad G031",
+        "name": "Quadrangle G031",
+        "id": "K-E15-G031",
+        "type": "TUSM",
+        "capacity": 52,
+        "school": " "
+    },
+    {
+        "abbr": "Quad G032",
+        "name": "Quadrangle G032",
+        "id": "K-E15-G032",
+        "type": "TUSM",
+        "capacity": 58,
+        "school": " "
+    },
+    {
+        "abbr": "Quad G033",
+        "name": "Quadrangle G033",
+        "id": "K-E15-G033",
+        "type": "MEET",
+        "capacity": 10,
+        "school": " "
+    },
+    {
+        "abbr": "Quad G034",
+        "name": "Quadrangle G034",
+        "id": "K-E15-G034",
+        "type": "TUSM",
+        "capacity": 60,
+        "school": " "
+    },
+    {
+        "abbr": "Quad G040",
+        "name": "Quadrangle G040",
+        "id": "K-E15-G040",
+        "type": "TUSM",
+        "capacity": 40,
+        "school": " "
+    },
+    {
+        "abbr": "Quad G042",
+        "name": "Quadrangle G042",
+        "id": "K-E15-G042",
+        "type": "TUSM",
+        "capacity": 22,
+        "school": " "
+    },
+    {
+        "abbr": "Quad G044",
+        "name": "Quadrangle G044",
+        "id": "K-E15-G044",
+        "type": "TUSM",
+        "capacity": 51,
+        "school": " "
+    },
+    {
+        "abbr": "Quad G045",
+        "name": "Quadrangle G045",
+        "id": "K-E15-G045",
+        "type": "TUSM",
+        "capacity": 51,
+        "school": " "
+    },
+    {
+        "abbr": "Quad G046",
+        "name": "Quadrangle G046",
+        "id": "K-E15-G046",
+        "type": "TUSM",
+        "capacity": 30,
+        "school": " "
+    },
+    {
+        "abbr": "Quad G047",
+        "name": "Quadrangle G047",
+        "id": "K-E15-G047",
+        "type": "TUSM",
+        "capacity": 30,
+        "school": " "
+    },
+    {
+        "abbr": "Quad G048",
+        "name": "Quadrangle G048",
+        "id": "K-E15-G048",
+        "type": "TUSM",
+        "capacity": 20,
+        "school": " "
+    },
+    {
+        "abbr": "Quad G052",
+        "name": "Quadrangle G052",
+        "id": "K-E15-G052",
+        "type": "TUSM",
+        "capacity": 26,
+        "school": " "
+    },
+    {
+        "abbr": "Quad G053",
+        "name": "Quadrangle G053",
+        "id": "K-E15-G053",
+        "type": "TUSM",
+        "capacity": 44,
+        "school": " "
+    },
+    {
+        "abbr": "Quad G054",
+        "name": "Quadrangle G054",
+        "id": "K-E15-G054",
+        "type": "TUSM",
+        "capacity": 24,
+        "school": " "
+    },
+    {
+        "abbr": "Quad G055",
+        "name": "Quadrangle G055",
+        "id": "K-E15-G055",
+        "type": "TUSM",
+        "capacity": 18,
+        "school": " "
+    },
+    {
+        "abbr": "CLB 6",
+        "name": "Central Lecture Block 6",
+        "id": "K-E19-103",
+        "type": "LCTR",
+        "capacity": 231,
+        "school": " "
+    },
+    {
+        "abbr": "CLB 7",
+        "name": "Central Lecture Block 7",
+        "id": "K-E19-104",
+        "type": "LCTR",
+        "capacity": 497,
+        "school": " "
+    },
+    {
+        "abbr": "CLB 8",
+        "name": "Central Lecture Block 8",
+        "id": "K-E19-105",
+        "type": "LCTR",
+        "capacity": 231,
+        "school": " "
+    },
+    {
+        "abbr": "CLB 1",
+        "name": "Central Lecture Block 1",
+        "id": "K-E19-G02",
+        "type": "LCTR",
+        "capacity": 113,
+        "school": " "
+    },
+    {
+        "abbr": "CLB 2",
+        "name": "Central Lecture Block 2",
+        "id": "K-E19-G03",
+        "type": "LCTR",
+        "capacity": 112,
+        "school": " "
+    },
+    {
+        "abbr": "CLB 3",
+        "name": "Central Lecture Block 3",
+        "id": "K-E19-G04",
+        "type": "LCTR",
+        "capacity": 102,
+        "school": " "
+    },
+    {
+        "abbr": "CLB 4",
+        "name": "Central Lecture Block 4",
+        "id": "K-E19-G05",
+        "type": "LCTR",
+        "capacity": 112,
+        "school": " "
+    },
+    {
+        "abbr": "CLB 5",
+        "name": "Central Lecture Block 5",
+        "id": "K-E19-G06",
+        "type": "LCTR",
+        "capacity": 113,
+        "school": " "
+    },
+    {
+        "abbr": "TchLab 11",
+        "name": "BiologicalSci TeachLab 11 Lvl1",
+        "id": "K-E26-1101",
+        "type": "LAB",
+        "capacity": 64,
+        "school": "BEES"
+    },
+    {
+        "abbr": "TchLab 12",
+        "name": "BiologicalSci TeachLab 12 Lvl1",
+        "id": "K-E26-1102",
+        "type": "LAB",
+        "capacity": 64,
+        "school": "BABS"
+    },
+    {
+        "abbr": "TchLab 3",
+        "name": "BiologicalSci TeachLab3 Ground",
+        "id": "K-E26-G001",
+        "type": "LAB",
+        "capacity": 50,
+        "school": "BEES"
+    },
+    {
+        "abbr": "TchLab 4",
+        "name": "BiologicalSci TeachLab4 Ground",
+        "id": "K-E26-G002",
+        "type": "LAB",
+        "capacity": 56,
+        "school": "BEES"
+    },
+    {
+        "abbr": "TchLab 5",
+        "name": "BiologicalSci TeachLab5 Ground",
+        "id": "K-E26-G006",
+        "type": "LAB",
+        "capacity": 50,
+        "school": "BEES"
+    },
+    {
+        "abbr": "TchLab 6",
+        "name": "BiologicalSci TeachLab6 Ground",
+        "id": "K-E26-G007",
+        "type": "LAB",
+        "capacity": 84,
+        "school": "BEES"
+    },
+    {
+        "abbr": "SQR 103",
+        "name": "FBE Studio Squarehouse 103",
+        "id": "K-E4-103",
+        "type": "SDIO",
+        "capacity": 80,
+        "school": "BLTENS"
+    },
+    {
+        "abbr": "SQR 104",
+        "name": "FBE Studio Squarehouse 104",
+        "id": "K-E4-104",
+        "type": "SDIO",
+        "capacity": 100,
+        "school": "BLTENS"
+    },
+    {
+        "abbr": "Sqhouse109",
+        "name": "Squarehouse 109 (SAM Sem Room)",
+        "id": "K-E4-109",
+        "type": "TUSM",
+        "capacity": 38,
+        "school": "ENGL"
+    },
+    {
+        "abbr": "Sqhous109A",
+        "name": "Squarehouse 109A (SAM Sem Rm)",
+        "id": "K-E4-109A",
+        "type": "TUSM",
+        "capacity": 38,
+        "school": "ENGL"
+    },
+    {
+        "abbr": "Sqhouse114",
+        "name": "Squarehouse 114",
+        "id": "K-E4-114",
+        "type": "TUSM",
+        "capacity": 40,
+        "school": " "
+    },
+    {
+        "abbr": "Sqhouse115",
+        "name": "Squarehouse 115",
+        "id": "K-E4-115",
+        "type": "TUSM",
+        "capacity": 38,
+        "school": " "
+    },
+    {
+        "abbr": "Sqhouse203",
+        "name": "Squarehouse 203",
+        "id": "K-E4-203",
+        "type": "TUSM",
+        "capacity": 30,
+        "school": " "
+    },
+    {
+        "abbr": "Sqhouse205",
+        "name": "Squarehouse 205",
+        "id": "K-E4-205",
+        "type": "TUSM",
+        "capacity": 20,
+        "school": " "
+    },
+    {
+        "abbr": "Sqhouse206",
+        "name": "Squarehouse 206",
+        "id": "K-E4-206",
+        "type": "TUSM",
+        "capacity": 30,
+        "school": " "
+    },
+    {
+        "abbr": "Sqhouse207",
+        "name": "Squarehouse 207",
+        "id": "K-E4-207",
+        "type": "TUSM",
+        "capacity": 24,
+        "school": " "
+    },
+    {
+        "abbr": "Sqhouse208",
+        "name": "Squarehouse 208",
+        "id": "K-E4-208",
+        "type": "TUSM",
+        "capacity": 24,
+        "school": " "
+    },
+    {
+        "abbr": "Sqhouse211",
+        "name": "Squarehouse 211",
+        "id": "K-E4-211",
+        "type": "TUSM",
+        "capacity": 18,
+        "school": " "
+    },
+    {
+        "abbr": "Sqhouse214",
+        "name": "Squarehouse 214",
+        "id": "K-E4-214",
+        "type": "TUSM",
+        "capacity": 24,
+        "school": " "
+    },
+    {
+        "abbr": "Sqhouse215",
+        "name": "Squarehouse 215",
+        "id": "K-E4-215",
+        "type": "TUSM",
+        "capacity": 24,
+        "school": " "
+    },
+    {
+        "abbr": "Sqhouse217",
+        "name": "Squarehouse 217",
+        "id": "K-E4-217",
+        "type": "TUSM",
+        "capacity": 18,
+        "school": " "
+    },
+    {
+        "abbr": "Sqhouse218",
+        "name": "Squarehouse 218",
+        "id": "K-E4-218",
+        "type": "TUSM",
+        "capacity": 24,
+        "school": " "
+    },
+    {
+        "abbr": "GALLERY",
+        "name": "Squarehouse Grd Flr JC Gallery",
+        "id": "K-E4-G",
+        "type": "EXAM",
+        "capacity": 80,
+        "school": "ADMIN"
+    },
+    {
+        "abbr": "SqhouseG11",
+        "name": "Squarehouse G11",
+        "id": "K-E4-G11",
+        "type": "SDIO",
+        "capacity": 60,
+        "school": "BLTENS"
+    },
+    {
+        "abbr": "SqhouseG14",
+        "name": "Squarehouse G14",
+        "id": "K-E4-G14",
+        "type": "SDIO",
+        "capacity": 50,
+        "school": "BLTENS"
+    },
+    {
+        "abbr": "SqhouseG15",
+        "name": "Squarehouse G15",
+        "id": "K-E4-G15",
+        "type": "SDIO",
+        "capacity": 50,
+        "school": "BLTENS"
+    },
+    {
+        "abbr": "KENSINGTON",
+        "name": "Squarehouse Grd Flr Kensington",
+        "id": "K-E4-K",
+        "type": "EXAM",
+        "capacity": 250,
+        "school": "ADMIN"
+    },
+    {
+        "abbr": "KINGSFORD1",
+        "name": "Squarehouse Lev 1 Kingsford 1",
+        "id": "K-E4-K1",
+        "type": "EXAM",
+        "capacity": 124,
+        "school": "ADMIN"
+    },
+    {
+        "abbr": "KINGSFORD2",
+        "name": "Squarehouse Lev 1 Kingsford 2",
+        "id": "K-E4-K2",
+        "type": "EXAM",
+        "capacity": 93,
+        "school": "ADMIN"
+    },
+    {
+        "abbr": "RHAIR",
+        "name": "Roundhouse AIR",
+        "id": "K-E6-A",
+        "type": "EXAM",
+        "capacity": 70,
+        "school": "ADMIN"
+    },
+    {
+        "abbr": "RHD/WR",
+        "name": "Roundhouse Drawing and Wurth",
+        "id": "K-E6-DW",
+        "type": "EXAM",
+        "capacity": 139,
+        "school": "ADMIN"
+    },
+    {
+        "abbr": "RHHR",
+        "name": "Roundhouse Hutcheson Room",
+        "id": "K-E6-H",
+        "type": "EXAM",
+        "capacity": 74,
+        "school": "ADMIN"
+    },
+    {
+        "abbr": "RHMR",
+        "name": "Roundhouse Marsh",
+        "id": "K-E6-M",
+        "type": "EXAM",
+        "capacity": 123,
+        "school": "ADMIN"
+    },
+    {
+        "abbr": "SEB 103",
+        "name": "Science & Engineering 103",
+        "id": "K-E8-103",
+        "type": "LAB",
+        "capacity": 30,
+        "school": "CEIC"
+    },
+    {
+        "abbr": "SEB 109",
+        "name": "Science & Engineering 109",
+        "id": "K-E8-109",
+        "type": "LAB",
+        "capacity": 30,
+        "school": "CEIC"
+    },
+    {
+        "abbr": "SEB 123",
+        "name": "Science & Engineering 123",
+        "id": "K-E8-123",
+        "type": "LAB",
+        "capacity": 36,
+        "school": "CEIC"
+    },
+    {
+        "abbr": "SEB B24",
+        "name": "Science & Engineering B24",
+        "id": "K-E8-B24",
+        "type": "TUSM",
+        "capacity": 32,
+        "school": " "
+    },
+    {
+        "abbr": "SEB B25",
+        "name": "Science & Engineering B25",
+        "id": "K-E8-B25",
+        "type": "TUSM",
+        "capacity": 40,
+        "school": " "
+    },
+    {
+        "abbr": "SEB B26",
+        "name": "Science & Engineering B26",
+        "id": "K-E8-B26",
+        "type": "TUSM",
+        "capacity": 48,
+        "school": " "
+    },
+    {
+        "abbr": "SEB B27",
+        "name": "Science & Engineering B27",
+        "id": "K-E8-B27",
+        "type": "TUSM",
+        "capacity": 32,
+        "school": " "
+    },
+    {
+        "abbr": "SEB G02",
+        "name": "Science & Engineering G02",
+        "id": "K-E8-G02",
+        "type": "LCTR",
+        "capacity": 44,
+        "school": " "
+    },
+    {
+        "abbr": "SEB G05",
+        "name": "Science & Engineering G05",
+        "id": "K-E8-G05",
+        "type": "TUSM",
+        "capacity": 68,
+        "school": " "
+    },
+    {
+        "abbr": "SEB G07",
+        "name": "Science & Engineering G07",
+        "id": "K-E8-G07",
+        "type": "LCTR",
+        "capacity": 68,
+        "school": " "
+    },
+    {
+        "abbr": "ChemSc113A",
+        "name": "Chemical Sciences 113A",
+        "id": "K-F10-113A",
+        "type": "LAB",
+        "capacity": 48,
+        "school": "CHEM"
+    },
+    {
+        "abbr": "ChemSc131",
+        "name": "Chemical Sciences 131",
+        "id": "K-F10-131",
+        "type": "LAB",
+        "capacity": 24,
+        "school": "CHEM"
+    },
+    {
+        "abbr": "ChemSc 133",
+        "name": "Chemical Sciences 133",
+        "id": "K-F10-133",
+        "type": "LAB",
+        "capacity": 84,
+        "school": "CHEM"
+    },
+    {
+        "abbr": "ChemSci162",
+        "name": "Chemistry Lab Room 162",
+        "id": "K-F10-162",
+        "type": "LAB",
+        "capacity": 60,
+        "school": "CHEM"
+    },
+    {
+        "abbr": "ChemSc 165",
+        "name": "Chemical Sciences 165",
+        "id": "K-F10-165",
+        "type": "LAB",
+        "capacity": 36,
+        "school": "CHEM"
+    },
+    {
+        "abbr": "ChemSc 262",
+        "name": "Chemical Sciences 262",
+        "id": "K-F10-262",
+        "type": "LAB",
+        "capacity": 32,
+        "school": "CHEM"
+    },
+    {
+        "abbr": "ChemSci713",
+        "name": "ChemSci 713 Computer Lab",
+        "id": "K-F10-713",
+        "type": "CMLB",
+        "capacity": 24,
+        "school": "CEIC"
+    },
+    {
+        "abbr": "ChemSc M03",
+        "name": "Chemical Sciences M03",
+        "id": "K-F10-M03",
+        "type": "CMLB",
+        "capacity": 36,
+        "school": "CEIC"
+    },
+    {
+        "abbr": "ChemSc M10",
+        "name": "Chemical Sc M10",
+        "id": "K-F10-M10",
+        "type": "LCTR",
+        "capacity": 98,
+        "school": " "
+    },
+    {
+        "abbr": "ChemSc M11",
+        "name": "Chemical Sc M11",
+        "id": "K-F10-M11",
+        "type": "LCTR",
+        "capacity": 97,
+        "school": " "
+    },
+    {
+        "abbr": "ChemSc M17",
+        "name": "ChemicalSc M17",
+        "id": "K-F10-M17",
+        "type": "LCTR",
+        "capacity": 253,
+        "school": " "
+    },
+    {
+        "abbr": "ChemSc M18",
+        "name": "Chemical Sc M18",
+        "id": "K-F10-M18",
+        "type": "LCTR",
+        "capacity": 205,
+        "school": " "
+    },
+    {
+        "abbr": "Dalton G05",
+        "name": "Dalton G05",
+        "id": "K-F12-G05",
+        "type": "TUSM",
+        "capacity": 36,
+        "school": "CHEM"
+    },
+    {
+        "abbr": "Science Th",
+        "name": "Science Theatre",
+        "id": "K-F13-G09",
+        "type": "LCTR",
+        "capacity": 460,
+        "school": " "
+    },
+    {
+        "abbr": "Rex Vowels",
+        "name": "Rex Vowels Theatre",
+        "id": "K-F17-LG3",
+        "type": "LCTR",
+        "capacity": 292,
+        "school": " "
+    },
+    {
+        "abbr": "JGoods 119",
+        "name": "John Goodsell 119",
+        "id": "K-F20-119",
+        "type": "TUSM",
+        "capacity": 60,
+        "school": "EDUC"
+    },
+    {
+        "abbr": "JGoods 124",
+        "name": "John Goodsell 124",
+        "id": "K-F20-124",
+        "type": "TUSM",
+        "capacity": 15,
+        "school": "EDUC"
+    },
+    {
+        "abbr": "JGoodsLG19",
+        "name": "John Goodsell LG19",
+        "id": "K-F20-LG19",
+        "type": "TUSM",
+        "capacity": 42,
+        "school": " "
+    },
+    {
+        "abbr": "JGoodsLG21",
+        "name": "John Goodsell LG21",
+        "id": "K-F20-LG21",
+        "type": "TUSM",
+        "capacity": 42,
+        "school": " "
+    },
+    {
+        "abbr": "Lib 176A",
+        "name": "Library 176A",
+        "id": "K-F21-176A",
+        "type": "TUSM",
+        "capacity": 24,
+        "school": " "
+    },
+    {
+        "abbr": "Lib 176B",
+        "name": "Library 176B",
+        "id": "K-F21-176B",
+        "type": "TUSM",
+        "capacity": 24,
+        "school": " "
+    },
+    {
+        "abbr": "Mat 101",
+        "name": "Mathews 101",
+        "id": "K-F23-101",
+        "type": "TUSM",
+        "capacity": 56,
+        "school": " "
+    },
+    {
+        "abbr": "Mat 102",
+        "name": "Mathews 102",
+        "id": "K-F23-102",
+        "type": "TUSM",
+        "capacity": 56,
+        "school": " "
+    },
+    {
+        "abbr": "Mat 103",
+        "name": "Mathews 103",
+        "id": "K-F23-103",
+        "type": "TUSM",
+        "capacity": 84,
+        "school": " "
+    },
+    {
+        "abbr": "Mat 104",
+        "name": "Mathews 104",
+        "id": "K-F23-104",
+        "type": "TUSM",
+        "capacity": 54,
+        "school": " "
+    },
+    {
+        "abbr": "Mat 105",
+        "name": "Mathews 105",
+        "id": "K-F23-105",
+        "type": "TUSM",
+        "capacity": 54,
+        "school": " "
+    },
+    {
+        "abbr": "Mat 106",
+        "name": "Mathews 106",
+        "id": "K-F23-106",
+        "type": "TUSM",
+        "capacity": 40,
+        "school": " "
+    },
+    {
+        "abbr": "Mat 107",
+        "name": "Mathews  107",
+        "id": "K-F23-107",
+        "type": "TUSM",
+        "capacity": 32,
+        "school": " "
+    },
+    {
+        "abbr": "Mat 108",
+        "name": "Mathews 108",
+        "id": "K-F23-108",
+        "type": "TUSM",
+        "capacity": 40,
+        "school": " "
+    },
+    {
+        "abbr": "Mat 203",
+        "name": "Mathews 203",
+        "id": "K-F23-203",
+        "type": "CMLB",
+        "capacity": 25,
+        "school": "PSYC"
+    },
+    {
+        "abbr": "Mat 209",
+        "name": "Mathews 209",
+        "id": "K-F23-209",
+        "type": "CMLB",
+        "capacity": 30,
+        "school": "PSYC"
+    },
+    {
+        "abbr": "Mat 209A",
+        "name": "Mathews 209A",
+        "id": "K-F23-209A",
+        "type": "CMLB",
+        "capacity": 28,
+        "school": "PSYC"
+    },
+    {
+        "abbr": "Mat 210",
+        "name": "Mathews  210",
+        "id": "K-F23-210",
+        "type": "TUSM",
+        "capacity": 30,
+        "school": "COMM"
+    },
+    {
+        "abbr": "Mat 211",
+        "name": "Mathews 211 ASB comp lab (CML)",
+        "id": "K-F23-211",
+        "type": "CMLB",
+        "capacity": 35,
+        "school": "COMM"
+    },
+    {
+        "abbr": "Mat 214",
+        "name": "Mathews 214",
+        "id": "K-F23-214",
+        "type": "TUSM",
+        "capacity": 72,
+        "school": " "
+    },
+    {
+        "abbr": "Mat 226",
+        "name": "Mathews 226",
+        "id": "K-F23-226",
+        "type": "TUSM",
+        "capacity": 38,
+        "school": " "
+    },
+    {
+        "abbr": "Mat 227",
+        "name": "Mathews 227",
+        "id": "K-F23-227",
+        "type": "TUSM",
+        "capacity": 42,
+        "school": " "
+    },
+    {
+        "abbr": "Mat 228",
+        "name": "Mathews 228",
+        "id": "K-F23-228",
+        "type": "TUSM",
+        "capacity": 42,
+        "school": " "
+    },
+    {
+        "abbr": "Mat 230",
+        "name": "Mathews 230",
+        "id": "K-F23-230",
+        "type": "TUSM",
+        "capacity": 48,
+        "school": " "
+    },
+    {
+        "abbr": "Mat 231",
+        "name": "Mathews 231",
+        "id": "K-F23-231",
+        "type": "TUSM",
+        "capacity": 48,
+        "school": " "
+    },
+    {
+        "abbr": "Mat 232",
+        "name": "Mathews 232",
+        "id": "K-F23-232",
+        "type": "TUSM",
+        "capacity": 38,
+        "school": " "
+    },
+    {
+        "abbr": "Mat 301",
+        "name": "Mathews  301",
+        "id": "K-F23-301",
+        "type": "TUSM",
+        "capacity": 16,
+        "school": " "
+    },
+    {
+        "abbr": "Mat 302",
+        "name": "Mathews  302",
+        "id": "K-F23-302",
+        "type": "TUSM",
+        "capacity": 22,
+        "school": " "
+    },
+    {
+        "abbr": "Mat 303",
+        "name": "Mathews  303",
+        "id": "K-F23-303",
+        "type": "TUSM",
+        "capacity": 22,
+        "school": " "
+    },
+    {
+        "abbr": "Mat 306",
+        "name": "Mathews  306",
+        "id": "K-F23-306",
+        "type": "TUSM",
+        "capacity": 28,
+        "school": " "
+    },
+    {
+        "abbr": "Mat 307",
+        "name": "Mathews  307",
+        "id": "K-F23-307",
+        "type": "TUSM",
+        "capacity": 44,
+        "school": " "
+    },
+    {
+        "abbr": "Mat 308",
+        "name": "Mathews  308",
+        "id": "K-F23-308",
+        "type": "TUSM",
+        "capacity": 30,
+        "school": " "
+    },
+    {
+        "abbr": "Mat 309",
+        "name": "Mathews  309",
+        "id": "K-F23-309",
+        "type": "TUSM",
+        "capacity": 34,
+        "school": " "
+    },
+    {
+        "abbr": "Mat 310",
+        "name": "Mathews 310",
+        "id": "K-F23-310",
+        "type": "TUSM",
+        "capacity": 48,
+        "school": " "
+    },
+    {
+        "abbr": "Mat 311",
+        "name": "Mathews  311",
+        "id": "K-F23-311",
+        "type": "TUSM",
+        "capacity": 24,
+        "school": " "
+    },
+    {
+        "abbr": "Mat 312",
+        "name": "Mathews  312",
+        "id": "K-F23-312",
+        "type": "TUSM",
+        "capacity": 44,
+        "school": " "
+    },
+    {
+        "abbr": "Mat 313",
+        "name": "Mathews  313",
+        "id": "K-F23-313",
+        "type": "TUSM",
+        "capacity": 18,
+        "school": " "
+    },
+    {
+        "abbr": "Mat 419",
+        "name": "Mathews 419",
+        "id": "K-F23-419",
+        "type": "CMLB",
+        "capacity": 27,
+        "school": "PSYC"
+    },
+    {
+        "abbr": "Mat 927",
+        "name": "Mathews  927",
+        "id": "K-F23-927",
+        "type": "TUSM",
+        "capacity": 28,
+        "school": "PSYC"
+    },
+    {
+        "abbr": "Sam 241",
+        "name": "Samuels 241",
+        "id": "K-F25-241",
+        "type": "TUSM",
+        "capacity": 21,
+        "school": "MED"
+    },
+    {
+        "abbr": "Sam 305",
+        "name": "Samuels 305",
+        "id": "K-F25-305",
+        "type": "TUSM",
+        "capacity": 30,
+        "school": "MED"
+    },
+    {
+        "abbr": "Sam 306",
+        "name": "Samuels 306",
+        "id": "K-F25-306",
+        "type": "TUSM",
+        "capacity": 24,
+        "school": "MED"
+    },
+    {
+        "abbr": "Sam 513",
+        "name": "Samuels 513 (Biomed Eng Sem)",
+        "id": "K-F25-513",
+        "type": "MEET",
+        "capacity": 38,
+        "school": "GBIOM"
+    },
+    {
+        "abbr": "Sam 518",
+        "name": "Samuels 518 (Design Lab)",
+        "id": "K-F25-518",
+        "type": "LAB",
+        "capacity": 50,
+        "school": "GBIOM"
+    },
+    {
+        "abbr": "Sam 526",
+        "name": "Samuels 526 (Biomed Eng Conf)",
+        "id": "K-F25-526",
+        "type": "MEET",
+        "capacity": 15,
+        "school": "GBIOM"
+    },
+    {
+        "abbr": "Law 101",
+        "name": "Law Building 101",
+        "id": "K-F8-101",
+        "type": "TUSM",
+        "capacity": 44,
+        "school": " "
+    },
+    {
+        "abbr": "Law 111",
+        "name": "Law Library 111",
+        "id": "K-F8-111",
+        "type": "TUSM",
+        "capacity": 32,
+        "school": " "
+    },
+    {
+        "abbr": "Law 160",
+        "name": "Law 160 Moot Court",
+        "id": "K-F8-160",
+        "type": "LAB",
+        "capacity": 30,
+        "school": "LAW"
+    },
+    {
+        "abbr": "Law 162",
+        "name": "Law Building 162",
+        "id": "K-F8-162",
+        "type": "TUSM",
+        "capacity": 44,
+        "school": " "
+    },
+    {
+        "abbr": "Law 163",
+        "name": "Law Building 163",
+        "id": "K-F8-163",
+        "type": "TUSM",
+        "capacity": 44,
+        "school": " "
+    },
+    {
+        "abbr": "Law 201",
+        "name": "Law Building 201",
+        "id": "K-F8-201",
+        "type": "TUSM",
+        "capacity": 44,
+        "school": " "
+    },
+    {
+        "abbr": "Law 202",
+        "name": "Law Building 202",
+        "id": "K-F8-202",
+        "type": "TUSM",
+        "capacity": 44,
+        "school": " "
+    },
+    {
+        "abbr": "Law 203",
+        "name": "Law Building 203",
+        "id": "K-F8-203",
+        "type": "TUSM",
+        "capacity": 56,
+        "school": " "
+    },
+    {
+        "abbr": "Law 275",
+        "name": "Law Building 275",
+        "id": "K-F8-275",
+        "type": "TUSM",
+        "capacity": 44,
+        "school": " "
+    },
+    {
+        "abbr": "Law 276",
+        "name": "Law Building 276",
+        "id": "K-F8-276",
+        "type": "TUSM",
+        "capacity": 44,
+        "school": " "
+    },
+    {
+        "abbr": "Law 301",
+        "name": "Law Building 301",
+        "id": "K-F8-301",
+        "type": "TUSM",
+        "capacity": 44,
+        "school": " "
+    },
+    {
+        "abbr": "Law 302",
+        "name": "Law Building 302",
+        "id": "K-F8-302",
+        "type": "TUSM",
+        "capacity": 44,
+        "school": " "
+    },
+    {
+        "abbr": "Law 388",
+        "name": "Law Building 388",
+        "id": "K-F8-388",
+        "type": "TUSM",
+        "capacity": 44,
+        "school": " "
+    },
+    {
+        "abbr": "Law 389",
+        "name": "Law Building 389",
+        "id": "K-F8-389",
+        "type": "TUSM",
+        "capacity": 44,
+        "school": " "
+    },
+    {
+        "abbr": "Law Th G02",
+        "name": "Law Theatre G02",
+        "id": "K-F8-G02",
+        "type": "LCTR",
+        "capacity": 90,
+        "school": " "
+    },
+    {
+        "abbr": "Law Th G04",
+        "name": "Law Theatre G04",
+        "id": "K-F8-G04",
+        "type": "LCTR",
+        "capacity": 347,
+        "school": " "
+    },
+    {
+        "abbr": "Law G17",
+        "name": "Law Library G17",
+        "id": "K-F8-G17",
+        "type": "TUSM",
+        "capacity": 44,
+        "school": " "
+    },
+    {
+        "abbr": "Law Th G23",
+        "name": "Law Theatre G23",
+        "id": "K-F8-G23",
+        "type": "LCTR",
+        "capacity": 90,
+        "school": " "
+    },
+    {
+        "abbr": "NSGlob Th",
+        "name": "New South Global Theatre",
+        "id": "K-G14-127",
+        "type": "AUD",
+        "capacity": 225,
+        "school": " "
+    },
+    {
+        "abbr": "Webst 136",
+        "name": "Webster 136 (Multimedia Lab)",
+        "id": "K-G14-136",
+        "type": "CMLB",
+        "capacity": 25,
+        "school": "ENGL"
+    },
+    {
+        "abbr": "Webst 137",
+        "name": "Webster 137 (Multimedia Lab)",
+        "id": "K-G14-137",
+        "type": "CMLB",
+        "capacity": 25,
+        "school": "ENGL"
+    },
+    {
+        "abbr": "Webst 138",
+        "name": "Webster 138 (Multimedia Lab)",
+        "id": "K-G14-138",
+        "type": "CMLB",
+        "capacity": 25,
+        "school": "ENGL"
+    },
+    {
+        "abbr": "Webst 139",
+        "name": "Webster 139 (SAM Seminar)",
+        "id": "K-G14-139",
+        "type": "TUSM",
+        "capacity": 20,
+        "school": "ENGL"
+    },
+    {
+        "abbr": "Webst 140",
+        "name": "Webster 140 (Music Lab)",
+        "id": "K-G14-140",
+        "type": "LAB",
+        "capacity": 15,
+        "school": "MUSIC"
+    },
+    {
+        "abbr": "Webst 141",
+        "name": "Webster 141 (Music Keybd Lab)",
+        "id": "K-G14-141",
+        "type": "LAB",
+        "capacity": 15,
+        "school": "MUSIC"
+    },
+    {
+        "abbr": "Webst 250",
+        "name": "Webster 250",
+        "id": "K-G14-250",
+        "type": "TUSM",
+        "capacity": 42,
+        "school": " "
+    },
+    {
+        "abbr": "Webst 251",
+        "name": "Webster 251",
+        "id": "K-G14-251",
+        "type": "TUSM",
+        "capacity": 40,
+        "school": " "
+    },
+    {
+        "abbr": "Webst 252",
+        "name": "Webster 252",
+        "id": "K-G14-252",
+        "type": "TUSM",
+        "capacity": 24,
+        "school": " "
+    },
+    {
+        "abbr": "Webst 256",
+        "name": "Webster 256",
+        "id": "K-G14-256",
+        "type": "TUSM",
+        "capacity": 60,
+        "school": " "
+    },
+    {
+        "abbr": "Webst 302",
+        "name": "Webster 302",
+        "id": "K-G14-302",
+        "type": "TUSM",
+        "capacity": 36,
+        "school": " "
+    },
+    {
+        "abbr": "Webst 304",
+        "name": "Webster 304",
+        "id": "K-G14-304",
+        "type": "TUSM",
+        "capacity": 20,
+        "school": "MEDIA"
+    },
+    {
+        "abbr": "Webst 306",
+        "name": "Webster 306 (Music Sem Room)",
+        "id": "K-G14-306",
+        "type": "TUSM",
+        "capacity": 30,
+        "school": "MUSIC"
+    },
+    {
+        "abbr": "Webst 307",
+        "name": "Webster 307 (Multimedia Lab)",
+        "id": "K-G14-307",
+        "type": "CMLB",
+        "capacity": 25,
+        "school": "ENGL"
+    },
+    {
+        "abbr": "Webst 311A",
+        "name": "Webster 311A",
+        "id": "K-G14-311A",
+        "type": "CMLB",
+        "capacity": 20,
+        "school": "ENGL"
+    },
+    {
+        "abbr": "Webst 327",
+        "name": "Webster 327 (Theatrette)",
+        "id": "K-G14-327",
+        "type": "LCTR",
+        "capacity": 86,
+        "school": "ARTSC"
+    },
+    {
+        "abbr": "Webst 331",
+        "name": "Webster 331 (Rehearsal/Studio)",
+        "id": "K-G14-331",
+        "type": "SDIO",
+        "capacity": 20,
+        "school": "ENGL"
+    },
+    {
+        "abbr": "Webst 332",
+        "name": "Webster 332 Dance Studio",
+        "id": "K-G14-332",
+        "type": "SDIO",
+        "capacity": 40,
+        "school": "ENGL"
+    },
+    {
+        "abbr": "Webst 334",
+        "name": "Webster 334 (Rehearsal/Studio)",
+        "id": "K-G14-334",
+        "type": "SDIO",
+        "capacity": 100,
+        "school": "ENGL"
+    },
+    {
+        "abbr": "Webst 335",
+        "name": "Webster 335 (Rehearsal/Studio)",
+        "id": "K-G14-335",
+        "type": "SDIO",
+        "capacity": 60,
+        "school": "ENGL"
+    },
+    {
+        "abbr": "Webst G15",
+        "name": "Webster G15 (SAM Record Studio",
+        "id": "K-G14-G15",
+        "type": "CMLB",
+        "capacity": 20,
+        "school": "ENGL"
+    },
+    {
+        "abbr": "Webst G16",
+        "name": "Webster G16 (Music Rehearsal)",
+        "id": "K-G14-G16",
+        "type": "TUSM",
+        "capacity": 50,
+        "school": "MUSIC"
+    },
+    {
+        "abbr": "Webst G17",
+        "name": "Webster G17",
+        "id": "K-G14-G17",
+        "type": "LCTR",
+        "capacity": 96,
+        "school": "MUSIC"
+    },
+    {
+        "abbr": "Webst G18",
+        "name": "Webster G18",
+        "id": "K-G14-G18",
+        "type": "LCTR",
+        "capacity": 40,
+        "school": "MUSIC"
+    },
+    {
+        "abbr": "Webst ThA",
+        "name": "Webster Theatre A",
+        "id": "K-G15-190",
+        "type": "LCTR",
+        "capacity": 180,
+        "school": " "
+    },
+    {
+        "abbr": "Webst ThB",
+        "name": "Webster Theatre B",
+        "id": "K-G15-290",
+        "type": "LCTR",
+        "capacity": 189,
+        "school": " "
+    },
+    {
+        "abbr": "ElecEng108",
+        "name": "ElecEng108 Interactive Lab",
+        "id": "K-G17-108",
+        "type": "LAB",
+        "capacity": 48,
+        "school": "ELEC"
+    },
+    {
+        "abbr": "ElecEng109",
+        "name": "ElecEng 109 Control Lab",
+        "id": "K-G17-109",
+        "type": "LAB",
+        "capacity": 60,
+        "school": "ELEC"
+    },
+    {
+        "abbr": "ElecEng113",
+        "name": "ElecEng 113 High Voltage Lab",
+        "id": "K-G17-113",
+        "type": "LAB",
+        "capacity": 15,
+        "school": "ELEC"
+    },
+    {
+        "abbr": "ElecEng115",
+        "name": "ElecEng 115 Energy Systems Lab",
+        "id": "K-G17-115",
+        "type": "LAB",
+        "capacity": 60,
+        "school": "ELEC"
+    },
+    {
+        "abbr": "ElecEng119",
+        "name": "ElecEng 119 Digital Systems Lb",
+        "id": "K-G17-119",
+        "type": "LAB",
+        "capacity": 40,
+        "school": "ELEC"
+    },
+    {
+        "abbr": "ElecEng201",
+        "name": "ElecEng 201 Electronics Lab",
+        "id": "K-G17-201",
+        "type": "LAB",
+        "capacity": 64,
+        "school": "ELEC"
+    },
+    {
+        "abbr": "ElecEng205",
+        "name": "ElecEng 205 Electromagnetic La",
+        "id": "K-G17-205",
+        "type": "LAB",
+        "capacity": 32,
+        "school": "ELEC"
+    },
+    {
+        "abbr": "ElecEng206",
+        "name": "ElecEng 206 Networks Lab",
+        "id": "K-G17-206",
+        "type": "LAB",
+        "capacity": 23,
+        "school": "ELEC"
+    },
+    {
+        "abbr": "ElecEng214",
+        "name": "ElecEng 214 Electronics Lab",
+        "id": "K-G17-214",
+        "type": "LAB",
+        "capacity": 72,
+        "school": "ELEC"
+    },
+    {
+        "abbr": "ElecEng218",
+        "name": "EleclEng 218 Wireless Comm Lab",
+        "id": "K-G17-218",
+        "type": "LAB",
+        "capacity": 18,
+        "school": "ELEC"
+    },
+    {
+        "abbr": "ElecEng219",
+        "name": "ElecEng 219 Telecomm Lab",
+        "id": "K-G17-219",
+        "type": "LAB",
+        "capacity": 36,
+        "school": "ELEC"
+    },
+    {
+        "abbr": "ElecEng224",
+        "name": "ElecEng 224 Electronics Lab",
+        "id": "K-G17-224",
+        "type": "LAB",
+        "capacity": 32,
+        "school": "ELEC"
+    },
+    {
+        "abbr": "ElecEng225",
+        "name": "ElecEng 225 Electronics Lab",
+        "id": "K-G17-225",
+        "type": "LAB",
+        "capacity": 32,
+        "school": "ELEC"
+    },
+    {
+        "abbr": "ElecEng324",
+        "name": "ElecEng 324 Photonics Lab",
+        "id": "K-G17-324",
+        "type": "LAB",
+        "capacity": 20,
+        "school": "ELEC"
+    },
+    {
+        "abbr": "ElecEng332",
+        "name": "ElecEng Power Protection Lab",
+        "id": "K-G17-332",
+        "type": "LAB",
+        "capacity": 16,
+        "school": "ELEC"
+    },
+    {
+        "abbr": "ElecEng426",
+        "name": "ElecEng 426 Networks Lab",
+        "id": "K-G17-426",
+        "type": "LAB",
+        "capacity": 23,
+        "school": "ELEC"
+    },
+    {
+        "abbr": "ElecEngG03",
+        "name": "Electrical Engineering G03",
+        "id": "K-G17-G03",
+        "type": "TUSM",
+        "capacity": 54,
+        "school": " "
+    },
+    {
+        "abbr": "ElecEngG04",
+        "name": "Electrical Engineering G04",
+        "id": "K-G17-G04",
+        "type": "TUSM",
+        "capacity": 48,
+        "school": " "
+    },
+    {
+        "abbr": "ElecEngG09",
+        "name": "Electrical Engineering G09",
+        "id": "K-G17-G09",
+        "type": "TUSM",
+        "capacity": 54,
+        "school": " "
+    },
+    {
+        "abbr": "ElecEngG10",
+        "name": "Electrical Engineering G10",
+        "id": "K-G17-G10",
+        "type": "TUSM",
+        "capacity": 54,
+        "school": " "
+    },
+    {
+        "abbr": "ElecEngG14",
+        "name": "ElecEng G14 Electronics Lab",
+        "id": "K-G17-G14",
+        "type": "LAB",
+        "capacity": 48,
+        "school": "ELEC"
+    },
+    {
+        "abbr": "ElecEngG22",
+        "name": "Electrical Engineering G22",
+        "id": "K-G17-G22",
+        "type": "LCTR",
+        "capacity": 148,
+        "school": " "
+    },
+    {
+        "abbr": "ElecEngG23",
+        "name": "Electrical Engineering G23",
+        "id": "K-G17-G23",
+        "type": "LCTR",
+        "capacity": 148,
+        "school": " "
+    },
+    {
+        "abbr": "ElecEngG3",
+        "name": "ElecEng G3 EE&T Room",
+        "id": "K-G17-G3",
+        "type": "LCTR",
+        "capacity": 70,
+        "school": "ELEC"
+    },
+    {
+        "abbr": "ScientGall",
+        "name": "The Scientia - Gallery",
+        "id": "K-G19-G",
+        "type": "EXAM",
+        "capacity": 100,
+        "school": "ADMIN"
+    },
+    {
+        "abbr": "Ritchie Th",
+        "name": "Ritchie Theatre",
+        "id": "K-G19-LG02",
+        "type": "LCTR",
+        "capacity": 266,
+        "school": " "
+    },
+    {
+        "abbr": "ScientHong",
+        "name": "The Scientia - Hong Kong",
+        "id": "K-G19-LG07",
+        "type": "EXAM",
+        "capacity": 40,
+        "school": "ADMIN"
+    },
+    {
+        "abbr": "LeightonHl",
+        "name": "The Scientia - Leighton Hall",
+        "id": "K-G19-LH",
+        "type": "EXAM",
+        "capacity": 225,
+        "school": "ADMIN"
+    },
+    {
+        "abbr": "SCIENTIA-T",
+        "name": "The Scientia - Tyree",
+        "id": "K-G19-T",
+        "type": "EXAM",
+        "capacity": 150,
+        "school": "ADMIN"
+    },
+    {
+        "abbr": "AGSM G03",
+        "name": "AGSM Hugh Dixson Theatre",
+        "id": "K-G27-G03",
+        "type": "LCTR",
+        "capacity": 56,
+        "school": " "
+    },
+    {
+        "abbr": "PioneerTh",
+        "name": "Pioneer International Theatre",
+        "id": "K-G27-G04",
+        "type": "LCTR",
+        "capacity": 57,
+        "school": " "
+    },
+    {
+        "abbr": "AGSM G05",
+        "name": "AGSM Boral Theatre",
+        "id": "K-G27-G05",
+        "type": "LCTR",
+        "capacity": 52,
+        "school": " "
+    },
+    {
+        "abbr": "AGSM G06",
+        "name": "AGSM Colonial Theatre",
+        "id": "K-G27-G06",
+        "type": "LCTR",
+        "capacity": 43,
+        "school": " "
+    },
+    {
+        "abbr": "AGSM G07",
+        "name": "John B Reid Theatre",
+        "id": "K-G27-G07",
+        "type": "LCTR",
+        "capacity": 131,
+        "school": " "
+    },
+    {
+        "abbr": "AGSM LG06",
+        "name": "AGSM LG06",
+        "id": "K-G27-LG06",
+        "type": "TUSM",
+        "capacity": 30,
+        "school": " "
+    },
+    {
+        "abbr": "AGSM LG07",
+        "name": "AGSM LG07",
+        "id": "K-G27-LG07",
+        "type": "TUSM",
+        "capacity": 30,
+        "school": " "
+    },
+    {
+        "abbr": "Block 105",
+        "name": "Blockhouse 105",
+        "id": "K-G6-105",
+        "type": "TUSM",
+        "capacity": 19,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block 106",
+        "name": "Blockhouse 106",
+        "id": "K-G6-106",
+        "type": "TUSM",
+        "capacity": 19,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block 107",
+        "name": "Blockhouse 107",
+        "id": "K-G6-107",
+        "type": "TUSM",
+        "capacity": 19,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block 108",
+        "name": "Blockhouse 108",
+        "id": "K-G6-108",
+        "type": "TUSM",
+        "capacity": 19,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block 109",
+        "name": "Blockhouse 109",
+        "id": "K-G6-109",
+        "type": "TUSM",
+        "capacity": 19,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block 110",
+        "name": "Blockhouse 110",
+        "id": "K-G6-110",
+        "type": "TUSM",
+        "capacity": 19,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block 111",
+        "name": "Blockhouse 111",
+        "id": "K-G6-111",
+        "type": "TUSM",
+        "capacity": 19,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block 113",
+        "name": "Blockhouse 113",
+        "id": "K-G6-113",
+        "type": "TUSM",
+        "capacity": 19,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block 114",
+        "name": "Blockhouse 114",
+        "id": "K-G6-114",
+        "type": "TUSM",
+        "capacity": 20,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block 115",
+        "name": "Blockhouse 115",
+        "id": "K-G6-115",
+        "type": "TUSM",
+        "capacity": 20,
+        "school": "BLTENS"
+    },
+    {
+        "abbr": "Block 116",
+        "name": "Blockhouse 116",
+        "id": "K-G6-116",
+        "type": "TUSM",
+        "capacity": 19,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block 117",
+        "name": "Blockhouse 117",
+        "id": "K-G6-117",
+        "type": "TUSM",
+        "capacity": 19,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block 118",
+        "name": "Blockhouse 118",
+        "id": "K-G6-118",
+        "type": "TUSM",
+        "capacity": 19,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block 122",
+        "name": "Blockhouse 122",
+        "id": "K-G6-122",
+        "type": "TUSM",
+        "capacity": 20,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block 123",
+        "name": "Blockhouse 123",
+        "id": "K-G6-123",
+        "type": "TUSM",
+        "capacity": 19,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block 124",
+        "name": "Blockhouse 124",
+        "id": "K-G6-124",
+        "type": "TUSM",
+        "capacity": 20,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block 125",
+        "name": "Blockhouse 125",
+        "id": "K-G6-125",
+        "type": "TUSM",
+        "capacity": 20,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block 201",
+        "name": "Blockhouse 201",
+        "id": "K-G6-201",
+        "type": "TUSM",
+        "capacity": 19,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block 202",
+        "name": "Blockhouse 202",
+        "id": "K-G6-202",
+        "type": "TUSM",
+        "capacity": 19,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block 203",
+        "name": "Blockhouse 203",
+        "id": "K-G6-203",
+        "type": "TUSM",
+        "capacity": 19,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block 204",
+        "name": "Blockhouse 204",
+        "id": "K-G6-204",
+        "type": "TUSM",
+        "capacity": 19,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block 205",
+        "name": "Blockhouse 205",
+        "id": "K-G6-205",
+        "type": "TUSM",
+        "capacity": 19,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block 206",
+        "name": "Blockhouse 206",
+        "id": "K-G6-206",
+        "type": "TUSM",
+        "capacity": 19,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block 207",
+        "name": "Blockhouse 207",
+        "id": "K-G6-207",
+        "type": "TUSM",
+        "capacity": 19,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block 209",
+        "name": "Blockhouse 209",
+        "id": "K-G6-209",
+        "type": "TUSM",
+        "capacity": 19,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block 210",
+        "name": "Blockhouse 210",
+        "id": "K-G6-210",
+        "type": "TUSM",
+        "capacity": 20,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block 211",
+        "name": "Blockhouse 211",
+        "id": "K-G6-211",
+        "type": "TUSM",
+        "capacity": 20,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block 212",
+        "name": "Blockhouse 212",
+        "id": "K-G6-212",
+        "type": "TUSM",
+        "capacity": 19,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block 213",
+        "name": "Blockhouse 213",
+        "id": "K-G6-213",
+        "type": "TUSM",
+        "capacity": 19,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block 214",
+        "name": "Blockhouse 214",
+        "id": "K-G6-214",
+        "type": "TUSM",
+        "capacity": 19,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block 215",
+        "name": "Blockhouse 215",
+        "id": "K-G6-215",
+        "type": "TUSM",
+        "capacity": 19,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block 216",
+        "name": "Blockhouse 216",
+        "id": "K-G6-216",
+        "type": "TUSM",
+        "capacity": 19,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block 217",
+        "name": "Blockhouse 217",
+        "id": "K-G6-217",
+        "type": "TUSM",
+        "capacity": 19,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block 218",
+        "name": "Blockhouse 218",
+        "id": "K-G6-218",
+        "type": "TUSM",
+        "capacity": 19,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block 219",
+        "name": "Blockhouse 219",
+        "id": "K-G6-219",
+        "type": "TUSM",
+        "capacity": 19,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block G13",
+        "name": "Blockhouse G13",
+        "id": "K-G6-G13",
+        "type": "TUSM",
+        "capacity": 38,
+        "school": " "
+    },
+    {
+        "abbr": "Block G14",
+        "name": "Blockhouse G14",
+        "id": "K-G6-G14",
+        "type": "TUSM",
+        "capacity": 38,
+        "school": " "
+    },
+    {
+        "abbr": "Block G15",
+        "name": "Blockhouse G15",
+        "id": "K-G6-G15",
+        "type": "TUSM",
+        "capacity": 38,
+        "school": " "
+    },
+    {
+        "abbr": "Block G16",
+        "name": "Blockhouse G16",
+        "id": "K-G6-G16",
+        "type": "TUSM",
+        "capacity": 38,
+        "school": " "
+    },
+    {
+        "abbr": "Block G2",
+        "name": "Blockhouse G2",
+        "id": "K-G6-G2",
+        "type": "TUSM",
+        "capacity": 19,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block G3",
+        "name": "Blockhouse G3",
+        "id": "K-G6-G3",
+        "type": "TUSM",
+        "capacity": 19,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block G4",
+        "name": "Blockhouse G4",
+        "id": "K-G6-G4",
+        "type": "TUSM",
+        "capacity": 19,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block G5",
+        "name": "Blockhouse G5",
+        "id": "K-G6-G5",
+        "type": "TUSM",
+        "capacity": 19,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Block G6",
+        "name": "Blockhouse G6",
+        "id": "K-G6-G6",
+        "type": "TUSM",
+        "capacity": 38,
+        "school": " "
+    },
+    {
+        "abbr": "RedC 1004",
+        "name": "Red Centre West 1004",
+        "id": "K-H13-1004",
+        "type": "SDIO",
+        "capacity": 30,
+        "school": "BLTENS"
+    },
+    {
+        "abbr": "RedC 1005",
+        "name": "Red Centre West 1005",
+        "id": "K-H13-1005",
+        "type": "SDIO",
+        "capacity": 30,
+        "school": "BLTENS"
+    },
+    {
+        "abbr": "RedC 1006",
+        "name": "Red Centre West 1006",
+        "id": "K-H13-1006",
+        "type": "SDIO",
+        "capacity": 30,
+        "school": "BLTENS"
+    },
+    {
+        "abbr": "RedC 1040",
+        "name": "Red Centre Central Wing 1040",
+        "id": "K-H13-1040",
+        "type": "TUSM",
+        "capacity": 56,
+        "school": " "
+    },
+    {
+        "abbr": "RedC 1041",
+        "name": "Red Centre Central Wing 1041",
+        "id": "K-H13-1041",
+        "type": "TUSM",
+        "capacity": 48,
+        "school": " "
+    },
+    {
+        "abbr": "RedC 1042",
+        "name": "Red Centre Central Wing 1042",
+        "id": "K-H13-1042",
+        "type": "TUSM",
+        "capacity": 48,
+        "school": " "
+    },
+    {
+        "abbr": "RedC 1043",
+        "name": "Red Centre Central Wing 1043",
+        "id": "K-H13-1043",
+        "type": "TUSM",
+        "capacity": 48,
+        "school": " "
+    },
+    {
+        "abbr": "RedC 2001",
+        "name": "Red Centre West 2001",
+        "id": "K-H13-2001",
+        "type": "SDIO",
+        "capacity": 35,
+        "school": "BLTENS"
+    },
+    {
+        "abbr": "RedC 2033",
+        "name": "Red Centre West 2033",
+        "id": "K-H13-2033",
+        "type": "CMLB",
+        "capacity": 18,
+        "school": "BLTENS"
+    },
+    {
+        "abbr": "RedC 2034",
+        "name": "Red Centre West 2034",
+        "id": "K-H13-2034",
+        "type": "CMLB",
+        "capacity": 18,
+        "school": "BLTENS"
+    },
+    {
+        "abbr": "RedC 2035",
+        "name": "Red Centre West 2035",
+        "id": "K-H13-2035",
+        "type": "LCTR",
+        "capacity": 26,
+        "school": " "
+    },
+    {
+        "abbr": "RedC 2060",
+        "name": "Red Centre Central Wing 2060",
+        "id": "K-H13-2060",
+        "type": "TUSM",
+        "capacity": 48,
+        "school": " "
+    },
+    {
+        "abbr": "RedC 2061",
+        "name": "Red Centre Central Wing 2061",
+        "id": "K-H13-2061",
+        "type": "TUSM",
+        "capacity": 48,
+        "school": " "
+    },
+    {
+        "abbr": "RedC 2062",
+        "name": "Red Centre Central Wing 2062",
+        "id": "K-H13-2062",
+        "type": "TUSM",
+        "capacity": 48,
+        "school": " "
+    },
+    {
+        "abbr": "RedC 2063",
+        "name": "Red Centre Central Wing 2063",
+        "id": "K-H13-2063",
+        "type": "TUSM",
+        "capacity": 48,
+        "school": " "
+    },
+    {
+        "abbr": "RedC 3030",
+        "name": "Red Centre West 3030",
+        "id": "K-H13-3030",
+        "type": "SDIO",
+        "capacity": 30,
+        "school": "BLTENS"
+    },
+    {
+        "abbr": "RedC 3034",
+        "name": "Red Centre West 3034",
+        "id": "K-H13-3034",
+        "type": "CMLB",
+        "capacity": 24,
+        "school": "BLTENS"
+    },
+    {
+        "abbr": "RedC 3035",
+        "name": "Red Centre West 3035",
+        "id": "K-H13-3035",
+        "type": "CMLB",
+        "capacity": 18,
+        "school": "BLTENS"
+    },
+    {
+        "abbr": "RedC 3036",
+        "name": "Red Centre West 3036",
+        "id": "K-H13-3036",
+        "type": "CMLB",
+        "capacity": 18,
+        "school": "BLTENS"
+    },
+    {
+        "abbr": "RedC 3037",
+        "name": "Red Centre West 3037",
+        "id": "K-H13-3037",
+        "type": "LCTR",
+        "capacity": 26,
+        "school": " "
+    },
+    {
+        "abbr": "RedC 3085",
+        "name": "Red Centre Central Wing 3085",
+        "id": "K-H13-3085",
+        "type": "TUSM",
+        "capacity": 35,
+        "school": "MATH"
+    },
+    {
+        "abbr": "RedC 4030",
+        "name": "Red Centre West 4030",
+        "id": "K-H13-4030",
+        "type": "SDIO",
+        "capacity": 30,
+        "school": "BLTENS"
+    },
+    {
+        "abbr": "RedC 4034",
+        "name": "Red Centre West 4034",
+        "id": "K-H13-4034",
+        "type": "TUSM",
+        "capacity": 26,
+        "school": " "
+    },
+    {
+        "abbr": "RedC 4037",
+        "name": "Red Centre West 4037",
+        "id": "K-H13-4037",
+        "type": "TUSM",
+        "capacity": 26,
+        "school": " "
+    },
+    {
+        "abbr": "RedC 4082",
+        "name": "Red Centre Central Wing 4082",
+        "id": "K-H13-4082",
+        "type": "TUSM",
+        "capacity": 80,
+        "school": "MATH"
+    },
+    {
+        "abbr": "RedC 5006",
+        "name": "Red Centre West 5006",
+        "id": "K-H13-5006",
+        "type": "SDIO",
+        "capacity": 30,
+        "school": "BLTENS"
+    },
+    {
+        "abbr": "RedC 5007",
+        "name": "Red Centre West 5007",
+        "id": "K-H13-5007",
+        "type": "SDIO",
+        "capacity": 35,
+        "school": "BLTENS"
+    },
+    {
+        "abbr": "RedC 5008",
+        "name": "Red Centre West 5008",
+        "id": "K-H13-5008",
+        "type": "SDIO",
+        "capacity": 30,
+        "school": "BLTENS"
+    },
+    {
+        "abbr": "RedC 6001",
+        "name": "Red Centre West 6001",
+        "id": "K-H13-6001",
+        "type": "SDIO",
+        "capacity": 20,
+        "school": "BLTENS"
+    },
+    {
+        "abbr": "RedC 6002",
+        "name": "Red Centre West 6002",
+        "id": "K-H13-6002",
+        "type": "SDIO",
+        "capacity": 20,
+        "school": "BLTENS"
+    },
+    {
+        "abbr": "RedC 6003",
+        "name": "Red Centre West 6003",
+        "id": "K-H13-6003",
+        "type": "SDIO",
+        "capacity": 20,
+        "school": "BLTENS"
+    },
+    {
+        "abbr": "RedC 6004",
+        "name": "Red Centre West 6004",
+        "id": "K-H13-6004",
+        "type": "SDIO",
+        "capacity": 20,
+        "school": "BLTENS"
+    },
+    {
+        "abbr": "RedC 6005",
+        "name": "Red Centre West 6005",
+        "id": "K-H13-6005",
+        "type": "SDIO",
+        "capacity": 20,
+        "school": "BLTENS"
+    },
+    {
+        "abbr": "RedC 6007",
+        "name": "Red Centre West 6007",
+        "id": "K-H13-6007",
+        "type": "SDIO",
+        "capacity": 65,
+        "school": "BLTEN"
+    },
+    {
+        "abbr": "RC Theatre",
+        "name": "Red Centre Theatre",
+        "id": "K-H13-G001",
+        "type": "LCTR",
+        "capacity": 117,
+        "school": " "
+    },
+    {
+        "abbr": "RedC G12A",
+        "name": "Red Centre Central Wing G12A",
+        "id": "K-H13-G12A",
+        "type": "CMLB",
+        "capacity": 35,
+        "school": "MATH"
+    },
+    {
+        "abbr": "RedC G12B",
+        "name": "Red Centre Central Wing G12B",
+        "id": "K-H13-G12B",
+        "type": "CMLB",
+        "capacity": 40,
+        "school": "MATH"
+    },
+    {
+        "abbr": "RedC G12C",
+        "name": "Red Centre Central Wing G12C",
+        "id": "K-H13-G12C",
+        "type": "CMLB",
+        "capacity": 38,
+        "school": "MATH"
+    },
+    {
+        "abbr": "RedC G13D",
+        "name": "Red Centre Central Wing G13D",
+        "id": "K-H13-G13D",
+        "type": "CMLB",
+        "capacity": 39,
+        "school": "MATH"
+    },
+    {
+        "abbr": "RedC M010",
+        "name": "Red Centre West M010",
+        "id": "K-H13-M010",
+        "type": "LCTR",
+        "capacity": 44,
+        "school": " "
+    },
+    {
+        "abbr": "RedCM020",
+        "name": "Red Centre Central Wing M020",
+        "id": "K-H13-M020",
+        "type": "CMLB",
+        "capacity": 40,
+        "school": "MATH"
+    },
+    {
+        "abbr": "RedC M032",
+        "name": "Red Centre Central Wing M032",
+        "id": "K-H13-M032",
+        "type": "LCTR",
+        "capacity": 89,
+        "school": " "
+    },
+    {
+        "abbr": "CivEng 101",
+        "name": "Civil Engineering 101",
+        "id": "K-H20-101",
+        "type": "LCTR",
+        "capacity": 118,
+        "school": " "
+    },
+    {
+        "abbr": "CivEng 102",
+        "name": "Civil Engineering 102",
+        "id": "K-H20-102",
+        "type": "TUSM",
+        "capacity": 53,
+        "school": " "
+    },
+    {
+        "abbr": "CivEng 109",
+        "name": "Civil Engineering 109",
+        "id": "K-H20-109",
+        "type": "TUSM",
+        "capacity": 108,
+        "school": " "
+    },
+    {
+        "abbr": "CivEng 201",
+        "name": "Civil Engineering 201",
+        "id": "K-H20-201",
+        "type": "LAB",
+        "capacity": 57,
+        "school": "CVEN"
+    },
+    {
+        "abbr": "CivEng 701",
+        "name": "Civil Engineering 701",
+        "id": "K-H20-701",
+        "type": "TUSM",
+        "capacity": 56,
+        "school": " "
+    },
+    {
+        "abbr": "CivEng G1",
+        "name": "Civil Engineering G1",
+        "id": "K-H20-G1",
+        "type": "LCTR",
+        "capacity": 106,
+        "school": " "
+    },
+    {
+        "abbr": "CivEng G6",
+        "name": "Civil Engineering G6",
+        "id": "K-H20-G6",
+        "type": "TUSM",
+        "capacity": 36,
+        "school": " "
+    },
+    {
+        "abbr": "CivEng G8",
+        "name": "Civil Engineering G8",
+        "id": "K-H20-G8",
+        "type": "TUSM",
+        "capacity": 64,
+        "school": " "
+    },
+    {
+        "abbr": "Vall 121",
+        "name": "Vallentine Annexe 121",
+        "id": "K-H22-121",
+        "type": "TUSM",
+        "capacity": 109,
+        "school": " "
+    },
+    {
+        "abbr": "TETB 365",
+        "name": "Tyree Energy Technology 365",
+        "id": "K-H6-365",
+        "type": "LAB",
+        "capacity": 15,
+        "school": "ELEC"
+    },
+    {
+        "abbr": "TETB G16",
+        "name": "Tyree Energy Technology G16",
+        "id": "K-H6-G16",
+        "type": "TUSM",
+        "capacity": 180,
+        "school": " "
+    },
+    {
+        "abbr": "TETB G17",
+        "name": "Tyree Energy Technology G17",
+        "id": "K-H6-G17",
+        "type": "TUSM",
+        "capacity": 70,
+        "school": " "
+    },
+    {
+        "abbr": "TETB LG03",
+        "name": "Michael Hintze Theatre",
+        "id": "K-H6-LG03",
+        "type": "LCTR",
+        "capacity": 84,
+        "school": " "
+    },
+    {
+        "abbr": "TETB LG05",
+        "name": "Tyree Energy Technology LG05",
+        "id": "K-H6-LG05",
+        "type": "LCTR",
+        "capacity": 84,
+        "school": " "
+    },
+    {
+        "abbr": "TETB LG07",
+        "name": "Tyree Energy Technology LG07",
+        "id": "K-H6-LG07",
+        "type": "LCTR",
+        "capacity": 84,
+        "school": " "
+    },
+    {
+        "abbr": "TETB LG09",
+        "name": "Tyree Energy Tech Studio LG09",
+        "id": "K-H6-LG09",
+        "type": "SDIO",
+        "capacity": 60,
+        "school": "ENG"
+    },
+    {
+        "abbr": "TETB LG10",
+        "name": "Tyree Energy Tech Studio LG10",
+        "id": "K-H6-LG10",
+        "type": "SDIO",
+        "capacity": 60,
+        "school": "ENG"
+    },
+    {
+        "abbr": "TETB LG29",
+        "name": "Tyree Energy Technology LG29",
+        "id": "K-H6-LG29",
+        "type": "LAB",
+        "capacity": 16,
+        "school": "PETRO"
+    },
+    {
+        "abbr": "TETB LG34",
+        "name": "Tyree Energy Tech CMLB LG34",
+        "id": "K-H6-LG34",
+        "type": "CMLB",
+        "capacity": 36,
+        "school": "ENG"
+    },
+    {
+        "abbr": "TETB LG35",
+        "name": "Tyree Energy Tech CMLB LG35",
+        "id": "K-H6-LG35",
+        "type": "CMLB",
+        "capacity": 46,
+        "school": "ENG"
+    },
+    {
+        "abbr": "Newt 306",
+        "name": "Newton 306",
+        "id": "K-J12-306",
+        "type": "LCTR",
+        "capacity": 26,
+        "school": " "
+    },
+    {
+        "abbr": "Newt 307",
+        "name": "Newton 307",
+        "id": "K-J12-307",
+        "type": "LCTR",
+        "capacity": 30,
+        "school": " "
+    },
+    {
+        "abbr": "Burrows Th",
+        "name": "Keith Burrows Theatre",
+        "id": "K-J14-G5",
+        "type": "LCTR",
+        "capacity": 438,
+        "school": " "
+    },
+    {
+        "abbr": "Ainswth101",
+        "name": "Ainsworth 101",
+        "id": "K-J17-101",
+        "type": "TUSM",
+        "capacity": 50,
+        "school": " "
+    },
+    {
+        "abbr": "Ainswth102",
+        "name": "Ainsworth 102",
+        "id": "K-J17-102",
+        "type": "LCTR",
+        "capacity": 100,
+        "school": " "
+    },
+    {
+        "abbr": "Ainswth201",
+        "name": "Ainsworth 201",
+        "id": "K-J17-201",
+        "type": "TUSM",
+        "capacity": 50,
+        "school": " "
+    },
+    {
+        "abbr": "Ainswth202",
+        "name": "Ainsworth 202",
+        "id": "K-J17-202",
+        "type": "LCTR",
+        "capacity": 100,
+        "school": " "
+    },
+    {
+        "abbr": "Ainswth203",
+        "name": "Ainsworth 203",
+        "id": "K-J17-203",
+        "type": "CMLB",
+        "capacity": 100,
+        "school": "MECH"
+    },
+    {
+        "abbr": "Ainswth204",
+        "name": "Ainsworth 204",
+        "id": "K-J17-204",
+        "type": "CMLB",
+        "capacity": 100,
+        "school": "MECH"
+    },
+    {
+        "abbr": "StringsME3",
+        "name": "Strings Lab J17 302",
+        "id": "K-J17-302",
+        "type": "CMLB",
+        "capacity": 36,
+        "school": "COMPSC"
+    },
+    {
+        "abbr": "ViolaME302",
+        "name": "Viola  Lab J17 302A",
+        "id": "K-J17-302A",
+        "type": "CMLB",
+        "capacity": 18,
+        "school": "COMPSC"
+    },
+    {
+        "abbr": "CelloME302",
+        "name": "Cello Lab J17 302B",
+        "id": "K-J17-302B",
+        "type": "CMLB",
+        "capacity": 18,
+        "school": "COMPSC"
+    },
+    {
+        "abbr": "FluteME303",
+        "name": "Flute Lab J17 303",
+        "id": "K-J17-303",
+        "type": "CMLB",
+        "capacity": 25,
+        "school": "COMPSC"
+    },
+    {
+        "abbr": "Oboe ME304",
+        "name": "Oboe  Lab J17 304",
+        "id": "K-J17-304",
+        "type": "CMLB",
+        "capacity": 25,
+        "school": "COMPSC"
+    },
+    {
+        "abbr": "BrassME305",
+        "name": "Brass Lab J17 305",
+        "id": "K-J17-305",
+        "type": "CMLB",
+        "capacity": 34,
+        "school": "COMPSC"
+    },
+    {
+        "abbr": "BugleME305",
+        "name": "Bugle Lab J17 305A",
+        "id": "K-J17-305A",
+        "type": "CMLB",
+        "capacity": 18,
+        "school": "COMPSC"
+    },
+    {
+        "abbr": "Horn ME305",
+        "name": "Horn Lab J17 305B",
+        "id": "K-J17-305B",
+        "type": "CMLB",
+        "capacity": 18,
+        "school": "COMPSC"
+    },
+    {
+        "abbr": "SitarME306",
+        "name": "Sitar Lab J17 306",
+        "id": "K-J17-306",
+        "type": "CMLB",
+        "capacity": 25,
+        "school": "COMPSC"
+    },
+    {
+        "abbr": "KoraME307",
+        "name": "Kora Lab J17 307",
+        "id": "K-J17-307",
+        "type": "CMLB",
+        "capacity": 24,
+        "school": "COMPSC"
+    },
+    {
+        "abbr": "AinswthG01",
+        "name": "Ainsworth G01",
+        "id": "K-J17-G01",
+        "type": "TUSM",
+        "capacity": 50,
+        "school": " "
+    },
+    {
+        "abbr": "AinswthG02",
+        "name": "Ainsworth G02",
+        "id": "K-J17-G02",
+        "type": "LCTR",
+        "capacity": 100,
+        "school": " "
+    },
+    {
+        "abbr": "AinswthG03",
+        "name": "Ainsworth G03",
+        "id": "K-J17-G03",
+        "type": "LCTR",
+        "capacity": 350,
+        "school": " "
+    },
+    {
+        "abbr": "Wannex 102",
+        "name": "Willis Annexe Solids Lab 102",
+        "id": "K-J18-102",
+        "type": "LAB",
+        "capacity": 7,
+        "school": "MECH"
+    },
+    {
+        "abbr": "WAnnex202",
+        "name": "WAnnexe 202 AERO Lab",
+        "id": "K-J18-202",
+        "type": "LAB",
+        "capacity": 20,
+        "school": "MECH"
+    },
+    {
+        "abbr": "WAnnex204",
+        "name": "Willis Annexe MTRN Lab 204",
+        "id": "K-J18-204",
+        "type": "LAB",
+        "capacity": 9,
+        "school": "MECH"
+    },
+    {
+        "abbr": "WAnnex 212",
+        "name": "Willis Annexe MTRN Lab 212",
+        "id": "K-J18-212",
+        "type": "LAB",
+        "capacity": 24,
+        "school": "MECH"
+    },
+    {
+        "abbr": "WAnnex 213",
+        "name": "Willis Annexe MTRN Lab 213",
+        "id": "K-J18-213",
+        "type": "LAB",
+        "capacity": 24,
+        "school": "MECH"
+    },
+    {
+        "abbr": "UTL 214A-1",
+        "name": "Willis Annexe UTL 214A-1 North",
+        "id": "K-J18-214A",
+        "type": "LAB",
+        "capacity": 60,
+        "school": "MECH"
+    },
+    {
+        "abbr": "UTL 214A-2",
+        "name": "Willis Annexe UTL 214A-2 South",
+        "id": "K-J18-214B",
+        "type": "LAB",
+        "capacity": 60,
+        "school": "MECH"
+    },
+    {
+        "abbr": "UTL 214A-3",
+        "name": "Willis Annexe UTL 214A-3 East",
+        "id": "K-J18-214C",
+        "type": "LAB",
+        "capacity": 60,
+        "school": "MECH"
+    },
+    {
+        "abbr": "UTL 214A-4",
+        "name": "Willis Annexe UTL 214A-4 West",
+        "id": "K-J18-214D",
+        "type": "LAB",
+        "capacity": 60,
+        "school": "MECH"
+    },
+    {
+        "abbr": "PhysicsTh",
+        "name": "Physics Theatre",
+        "id": "K-K14-19",
+        "type": "LCTR",
+        "capacity": 369,
+        "school": " "
+    },
+    {
+        "abbr": "OMB G25",
+        "name": "Old Main G25",
+        "id": "K-K14-G25",
+        "type": "LAB",
+        "capacity": 21,
+        "school": "OPTOM"
+    },
+    {
+        "abbr": "PianoPhysU",
+        "name": "Piano Lab Physics Undercroft",
+        "id": "K-K14-LG18",
+        "type": "CMLB",
+        "capacity": 18,
+        "school": "COMPSC"
+    },
+    {
+        "abbr": "OrganPhysU",
+        "name": "Organ Lab Physics Undercroft",
+        "id": "K-K14-LG19",
+        "type": "CMLB",
+        "capacity": 21,
+        "school": "COMPSC"
+    },
+    {
+        "abbr": "ClavierPhU",
+        "name": "Clavier Lab Physics Undercroft",
+        "id": "K-K14-LG20",
+        "type": "CMLB",
+        "capacity": 21,
+        "school": "COMPSC"
+    },
+    {
+        "abbr": "OMB 112",
+        "name": "Old Main Building 112",
+        "id": "K-K15-112",
+        "type": "LAB",
+        "capacity": 72,
+        "school": "PHYS"
+    },
+    {
+        "abbr": "OMB 114",
+        "name": "Old Main Building 114",
+        "id": "K-K15-114",
+        "type": "LAB",
+        "capacity": 72,
+        "school": "PHYS"
+    },
+    {
+        "abbr": "OMB 115",
+        "name": "Old Main Building 115",
+        "id": "K-K15-115",
+        "type": "LAB",
+        "capacity": 24,
+        "school": "PHYS"
+    },
+    {
+        "abbr": "OMB 142",
+        "name": "Old Main 1 2nd & 3rd Year Lab",
+        "id": "K-K15-142",
+        "type": "LAB",
+        "capacity": 90,
+        "school": "PHYS"
+    },
+    {
+        "abbr": "OMB149",
+        "name": "Old Main Building 149",
+        "id": "K-K15-149",
+        "type": "LCTR",
+        "capacity": 149,
+        "school": " "
+    },
+    {
+        "abbr": "OMB 150",
+        "name": "Old Main Building 150",
+        "id": "K-K15-150",
+        "type": "TUSM",
+        "capacity": 60,
+        "school": " "
+    },
+    {
+        "abbr": "OMB151",
+        "name": "Old Main Building 151",
+        "id": "K-K15-151",
+        "type": "TUSM",
+        "capacity": 38,
+        "school": " "
+    },
+    {
+        "abbr": "OMB 229",
+        "name": "Old Main Building 229",
+        "id": "K-K15-229",
+        "type": "LCTR",
+        "capacity": 100,
+        "school": " "
+    },
+    {
+        "abbr": "OMB 230",
+        "name": "Old Main Building 230",
+        "id": "K-K15-230",
+        "type": "LCTR",
+        "capacity": 100,
+        "school": " "
+    },
+    {
+        "abbr": "OMB G31",
+        "name": "Old Main Building G31",
+        "id": "K-K15-G31",
+        "type": "LCTR",
+        "capacity": 111,
+        "school": " "
+    },
+    {
+        "abbr": "OMB G32",
+        "name": "Old Main Building G32",
+        "id": "K-K15-G32",
+        "type": "TUSM",
+        "capacity": 74,
+        "school": " "
+    },
+    {
+        "abbr": "OMB G49",
+        "name": "Old Main G49",
+        "id": "K-K15-G49",
+        "type": "LAB",
+        "capacity": 16,
+        "school": "COMPSC"
+    },
+    {
+        "abbr": "OPTM CL",
+        "name": "Optometry Computer Lab",
+        "id": "K-K15-LG21",
+        "type": "CMLB",
+        "capacity": 24,
+        "school": "OPTOM"
+    },
+    {
+        "abbr": "OMG LG46",
+        "name": "Old Main LG46",
+        "id": "K-K15-LG46",
+        "type": "LAB",
+        "capacity": 10,
+        "school": "PHYS"
+    },
+    {
+        "abbr": "Drum K17B8",
+        "name": "Drum Lab K17 (CSE) B08",
+        "id": "K-K17-B08",
+        "type": "CMLB",
+        "capacity": 25,
+        "school": "COMPSC"
+    },
+    {
+        "abbr": "BongoK17G7",
+        "name": "Bongo Lab K17 (CSE) G07A",
+        "id": "K-K17-G07A",
+        "type": "CMLB",
+        "capacity": 24,
+        "school": "COMPSC"
+    },
+    {
+        "abbr": "TablaK17G7",
+        "name": "Tabla Lab K17 (CSE) G07B",
+        "id": "K-K17-G07B",
+        "type": "CMLB",
+        "capacity": 26,
+        "school": "COMPSC"
+    },
+    {
+        "abbr": "CybSK17G11",
+        "name": "CyberSec Lab K17 (CSE) G11",
+        "id": "K-K17-G11",
+        "type": "CMLB",
+        "capacity": 20,
+        "school": "COMPSC"
+    },
+    {
+        "abbr": "LyreK17G12",
+        "name": "Lyre Lab K17 (CSE) G12",
+        "id": "K-K17-G12",
+        "type": "CMLB",
+        "capacity": 20,
+        "school": "COMPSC"
+    },
+    {
+        "abbr": "CHIK17G13",
+        "name": "CHI Lab K17 (CSE) G13",
+        "id": "K-K17-G13",
+        "type": "CMLB",
+        "capacity": 19,
+        "school": "COMPSC"
+    },
+    {
+        "abbr": "VR K17G14",
+        "name": "VR (Moog) Lab K17 (CSE) G14",
+        "id": "K-K17-G14",
+        "type": "CMLB",
+        "capacity": 25,
+        "school": "COMPSC"
+    },
+    {
+        "abbr": "L5 116",
+        "name": "L5 116",
+        "id": "K-L5-116",
+        "type": "TUSM",
+        "capacity": 38,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "L5 117",
+        "name": "L5 117",
+        "id": "K-L5-117",
+        "type": "TUSM",
+        "capacity": 20,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "L5 203",
+        "name": "L5 203",
+        "id": "K-L5-203",
+        "type": "TUSM",
+        "capacity": 19,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "L5 W304",
+        "name": "L5 W304",
+        "id": "K-L5-W304",
+        "type": "TUSM",
+        "capacity": 20,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "L5 W309",
+        "name": "L5 W309",
+        "id": "K-L5-W309",
+        "type": "TUSM",
+        "capacity": 20,
+        "school": "GLOBL"
+    },
+    {
+        "abbr": "Myers Thtr",
+        "name": "Rupert Myers Theatre",
+        "id": "K-M15-1001",
+        "type": "LCTR",
+        "capacity": 114,
+        "school": " "
+    },
+    {
+        "abbr": "Myers 2009",
+        "name": "Myers 2009 (PreClinical Lab)",
+        "id": "K-M15-2009",
+        "type": "LAB",
+        "capacity": 24,
+        "school": "OPTOM"
+    },
+    {
+        "abbr": "RMB 2013",
+        "name": "Optometry Preclinical Tute Rm",
+        "id": "K-M15-2013",
+        "type": "TUSM",
+        "capacity": 16,
+        "school": "OPTOM"
+    },
+    {
+        "abbr": "Myers 2030",
+        "name": "Myers 2030",
+        "id": "K-M15-2030",
+        "type": "TUSM",
+        "capacity": 20,
+        "school": "OPTOM"
+    },
+    {
+        "abbr": "Myers 3016",
+        "name": "Myers 3016 (Trans Lens Lab)",
+        "id": "K-M15-3016",
+        "type": "LAB",
+        "capacity": 12,
+        "school": "OPTOM"
+    },
+    {
+        "abbr": "RMB 3049",
+        "name": "Optometry Optics Laboratory",
+        "id": "K-M15-3049",
+        "type": "LAB",
+        "capacity": 24,
+        "school": "OPTOM"
+    },
+    {
+        "abbr": "RMB 3050",
+        "name": "Optometry Dispensing Lab",
+        "id": "K-M15-3050",
+        "type": "LAB",
+        "capacity": 24,
+        "school": "OPTOM"
+    },
+    {
+        "abbr": "RMB 3051",
+        "name": "Optometry BT Tutorial Room",
+        "id": "K-M15-3051",
+        "type": "LAB",
+        "capacity": 24,
+        "school": "OPTOM"
+    }
+]
