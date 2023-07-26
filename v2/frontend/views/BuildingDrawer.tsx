@@ -79,13 +79,13 @@ const IndiviRoomBox = styled(Box)<BoxProps>(({ theme }) => ({
 
 export const drawerWidth = 400;
 
-const BuildingDrawer = () => {
+const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
   const dispatch = useDispatch();
   const datetime = useSelector(selectDatetime);
   const building = useSelector(selectCurrentBuilding);
   const { status: rooms } = useBuildingStatus(building?.id ?? "");
-  
-  if (!building) return <></>;
+
+  if (!building || !open) return <></>;
 
   const onClose = () => dispatch(setCurrentBuilding(null));
 

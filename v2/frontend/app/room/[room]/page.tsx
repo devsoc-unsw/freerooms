@@ -8,8 +8,6 @@ import React from 'react';
 import BookingCalendar from "../../../components/BookingCalendar";
 import LoadingCircle from "../../../components/LoadingCircle";
 import useBookings from "../../../hooks/useBookings";
-import { setCurrentBuilding } from "../../../redux/currentBuildingSlice";
-import { useDispatch } from '../../../redux/hooks';
 import type  {  RoomAvailability } from '../../../types';
 
 
@@ -27,10 +25,6 @@ type RoomDetails = {
 export default function Page({ params }: {
   params: {room: string};
 }) {
-	// There should be no current building on room pages
-	const dispatch = useDispatch();
-	dispatch(setCurrentBuilding(null));
-
 	const [ events, setEvents ] = React.useState<Array<Event>>([]);
 	const [ roomName, setRoomName ] = React.useState<string>("");
 	const handleRoomDetails = ({ name, bookings } : RoomDetails ) => {
