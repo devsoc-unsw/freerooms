@@ -65,12 +65,8 @@ const Landing = () => {
           <Image width={400} height={400} alt={"Freerooms Logo"} src={Gif} />
         </Box>
       </LandingScreenContainer>
-      <LandingScreenContainer>
-        <UsageTips />
-      </LandingScreenContainer>
-      <LandingScreenContainer>
-        <Faq />
-      </LandingScreenContainer>
+      <UsageTips />
+      <Faq />
     </div>
   );
 };

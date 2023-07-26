@@ -1,3 +1,5 @@
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
+import MapIcon from '@mui/icons-material/Map';
 import Image from "next/image";
 import React from 'react'
 
@@ -16,27 +18,40 @@ const UsageTips = () => {
           marginTop: '10rem'
         }}
       />
-      <h1 style={{ textAlign: 'center', fontSize: '3rem', marginBottom: '4rem', marginTop: '-1.5rem' }}>
+      <h1 style={{ textAlign: 'center', fontSize: '3rem', marginBottom: '2rem', marginTop: '-1.5rem' }}>
         Usage Tips
       </h1>
       <div
         style={{
           position: 'relative',
-          marginLeft: '10%',
+          marginLeft: '8%',
           backgroundImage: `url(${background.src})`,
           backgroundRepeat: 'no-repeat',
-          backgroundSize: 'cover',
-          width: '80%',
-          height: '30rem',
+          backgroundSize: '75rem 37rem',
+          backgroundPosition: 'center',
+          width: '85%',
+          height: '37rem',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
           padding: '2rem',
         }}
       >
-        <UsageCard/>
-        <UsageCard/>
-        <UsageCard/>
+        <UsageCard
+          icon={<EventAvailableIcon style={{height: '3rem', width: '3rem'}}/>} 
+          heading="Timetable"
+          description="Check the timetable to see available rooms at UNSW and avoid scheduling conflicts."
+        />
+        <UsageCard
+          icon={<MapIcon style={{height: '3rem', width: '3rem'}}/>} 
+          heading="Timetable"
+          description="Check the timetable to see available rooms at UNSW and avoid scheduling conflicts."
+        />
+        <UsageCard
+          icon={<EventAvailableIcon style={{height: '3rem', width: '3rem'}}/>} 
+          heading="Insights"
+          description="Check the timetable to see available rooms at UNSW and avoid scheduling conflicts."
+        />
       </div>
     </div>
   );
