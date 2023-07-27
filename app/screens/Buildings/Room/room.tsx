@@ -7,11 +7,11 @@ import {
 
 import {Calendar, LocaleConfig, Agenda, AgendaList} from 'react-native-calendars';
 import React, {useEffect, useState} from 'react';
-import AgendaScreen from "./agenda";
 
 import { FlatList } from "react-native";
 import type { BuildingStackScreenProps } from "../../types";
 import { TabRouter } from "@react-navigation/native";
+import { getBookings } from "../../../services/freerooms_api/endpoints";
 
 interface RouteParams {
 	roomName: string;
@@ -26,6 +26,13 @@ export default function Room({ route, navigation } : BuildingStackScreenProps<"R
 		setNav(navigation)
 	}, [route, navigation]);
 
+	async function seeBookings() {
+		const bookingResponse = await getBookings("K-J17-G01");
+		nav?.navigate("Agenda", {roomData: bookingResponse }
+		
+		)
+	}
+
 	return (
 		<>
 			<View style={ styles.container }>
@@ -34,8 +41,8 @@ export default function Room({ route, navigation } : BuildingStackScreenProps<"R
 				<Elements></Elements>
 				<CalendarDay/>
 			</View>
-			<Button title={"back"} onPress={()=>{nav?.navigate("Agenda")}}>BACK</Button>
-			<AgendaScreen/>
+			<Button title={"See Bookings"} onPress={seeBookings}>See Bookings</Button>
+			
 		</>
 
 

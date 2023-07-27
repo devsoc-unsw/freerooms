@@ -17,6 +17,13 @@ export type Room_Dictionary = {
 	}
 };
 
+export type Book_Dictionary = {
+	name : string;
+	bookingType: string;
+	start: string;
+	end: string;
+}
+
 export type Room = {
 	roomNumber : string;
 	status: room_status;

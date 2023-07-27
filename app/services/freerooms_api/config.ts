@@ -4,6 +4,7 @@ const config = {
 	endpoints: {
 		getBuildings: "/api/buildings",
 		getRooms: "/api/rooms",
+		getBookings: "/api/rooms"
 	}
 };
 
