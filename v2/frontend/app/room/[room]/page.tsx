@@ -13,6 +13,10 @@ import useBookings from "../../../hooks/useBookings";
 import { setCurrentBuilding } from "../../../redux/currentBuildingSlice";
 import { useDispatch } from '../../../redux/hooks';
 import type  {  RoomAvailability } from '../../../types';
+import Image from "next/image";
+import roomImage from "../../../public/assets/building_photos/K-B16.webp";
+import type { StaticImageData } from "next/image";
+
 
 
 type Event = {
@@ -56,54 +60,81 @@ export default function Page({ params }: {
 
   return (
     
-    <Container maxWidth={false} sx={{ height: "100%"}}>
+    <Container maxWidth={false}>
       { !roomName
 				? <LoadingCircle/>
 				: (
-        <Stack justifyContent="center" alignItems="center" width="100%" py={5} height="100%">
-			<Box
-				width={"100%"}
-				display={"flex"}
-				flexDirection={"row"}
-				alignItems={'center'}
-				justifyContent={"space-between"}
-				px={{ xs: 3, md: 15 }}
-			>
-				<Stack direction={"column"} spacing={1}>
-					<Typography variant='subtitle2'>
-						<Typography display="inline" variant="subtitle2" fontWeight={"bold"}>{"CATS "}</Typography> 
-						 | 
-						<Typography display="inline" variant="subtitle2"fontWeight={"bold"} color={"#d26038"}>{" ID Required"}</Typography> 
-					</Typography>
-					<Typography variant='h4' fontWeight={550}> {roomName} </Typography>
-					<Stack direction={"row"} spacing={3}>
-						<Typography variant="body1" fontWeight={"bold"}>
-							ID: <Typography display={"inline"} variant="body1">K-J17-G01</Typography>
-						</Typography>
-						<Typography variant="body1" fontWeight={"bold"}>
-							Alias: <Typography display={"inline"} variant="body1">StringsME3</Typography>
-						</Typography>
-						<Typography variant="body1" fontWeight={"bold"}>
-							Type: <Typography display={"inline"} variant="body1">Computer Lab</Typography>
-						</Typography>
-					</Stack>
-				</Stack>
-				<Stack direction={"row"} spacing={1} >
-					<Button sx={{ px: 2, py: 1}}>
-						<Typography variant={"body2"} fontWeight={"bold"}>Make a Booking</Typography>
-					</Button>
-					<Button sx={{ px: 2, py: 1}}>
-						<Typography variant={"body2"} fontWeight={"bold"}>Add Photos</Typography>
-					</Button>
-				</Stack>
-			</Box>
-	       
-					<BookingCalendar events={events} />
+        <Stack justifyContent="center" alignItems="center" width="100%" py={5} height="100%" px={{ xs: 3, md: 15 }}>
+			<RoomPageHeader roomName={roomName} roomId={"K-J17-G01"} roomAlias={"StringsME3"} roomType={"Computer Lab"} idRequired={true} />
+			<RoomImage src={roomImage} /> 
+			<BookingCalendar events={events} />
       </Stack>
       )}
     </Container>
     
   );
+}
+
+const RoomPageHeader : React.FC<{ roomName: string, roomId:  string, roomAlias : string, roomType: string, idRequired: boolean }> = ({
+	roomName,
+	roomId, 
+	roomAlias, 
+	roomType, 
+	idRequired
+}) => {
+	return (
+		<Box
+			width={"100%"}
+			display={"flex"}
+			flexDirection={"row"}
+			alignItems={'center'}
+			justifyContent={"space-between"}
+		>
+			<Stack direction={"column"} spacing={1}>
+				{ idRequired ? (
+					<Typography variant='subtitle2'>
+						<Typography display="inline" variant="subtitle2" fontWeight={"bold"}>{"CATS "}</Typography> 
+							| 
+						<Typography display="inline" variant="subtitle2"fontWeight={"bold"} color={"#d26038"}>{" ID Required"}</Typography> 
+					</Typography>
+				) : null 
+				}
+				<Typography variant='h4' fontWeight={550}> {roomName} </Typography>
+				<Stack direction={"row"} spacing={3}>
+					<Typography variant="body1" fontWeight={"bold"}>
+						ID: <Typography display={"inline"} variant="body1">{roomId}</Typography>
+					</Typography>
+					<Typography variant="body1" fontWeight={"bold"}>
+						Alias: <Typography display={"inline"} variant="body1">{roomAlias}</Typography>
+					</Typography>
+					<Typography variant="body1" fontWeight={"bold"}>
+						Type: <Typography display={"inline"} variant="body1">{roomType}</Typography>
+					</Typography>
+				</Stack>
+			</Stack>
+			<Stack direction={"row"} spacing={1} >
+				<Button sx={{ px: 2, py: 1}}>
+					<Typography variant={"body2"} fontWeight={"bold"}>Make a Booking</Typography>
+				</Button>
+				<Button sx={{ px: 2, py: 1}}>
+					<Typography variant={"body2"} fontWeight={"bold"}>Add Photos</Typography>
+				</Button>
+			</Stack>
+		</Box>
+	);
+}
+
+const RoomImage : React.FC<{ src : StaticImageData }> = ({ src }) => {
+	return (
+		<Box width={"100%"} display="flex">
+			<Box minWidth={"100%"} minHeight={750} position="relative" >
+				<Image src={src} alt={"Room Image"} fill style={{ objectFit: "cover", borderRadius: 10 }}/>	
+			</Box>
+			<Button sx={{ px: 2, py: 1, position: 'relative', alignSelf: "flex-end", right: 170, bottom: 25, minWidth: 125 }}>
+				<Typography variant={"body2"} fontWeight={"bold"}>More Photos</Typography>
+			</Button>
+		</Box>
+	);
 }
 
 const extractBookings = ( bookings : RoomAvailability ) => {
