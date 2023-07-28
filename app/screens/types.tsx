@@ -20,6 +20,7 @@ export type BuildingStackParamList = {
 	Room: undefined;
 	"Room Filter": undefined;
 	"Building Filter": undefined;
+	"Agenda": undefined;
 }
 
 // Type for Screens in nested Navigator

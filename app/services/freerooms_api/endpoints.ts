@@ -1,4 +1,4 @@
-import type { Buildings, Room_Dictionary } from "./api_types";
+import type { Book_Dictionary, Buildings, Room_Dictionary } from "./api_types";
 import config from "./config";
 
 const domain = config.domain;
@@ -30,4 +30,21 @@ export async function getRooms() : Promise<Room_Dictionary> {
 	} catch {}
 	
 	return room_lookup;
+}
+
+export async function getBookings(roomId: string) : Promise<Book_Dictionary> {
+	const bookingsEndpoint = config.endpoints.getBookings;
+	const url = `${domain}${bookingsEndpoint}/${roomId}`;
+	let bookings:Book_Dictionary = {
+		name: "",
+		bookingType: "",
+		start: "",
+		end: ""
+	};
+	try {
+		const response = await fetch(url);
+		bookings = await response.json();
+		
+	} catch {}
+	return bookings;
 }

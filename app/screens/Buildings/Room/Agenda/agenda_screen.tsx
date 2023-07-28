@@ -1,15 +1,37 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Agenda, AgendaEntry, AgendaSchedule, DateData} from 'react-native-calendars';
+import { getBookings } from '../../../../services/freerooms_api/endpoints';
+import { Book_Dictionary } from '../../../../services/freerooms_api/api_types';
 
 interface State {
   items?: AgendaSchedule;
+}
+
+async function seeBookings() {
+  const bookingResponse = await getBookings("K-J17-G01");
+  let items = {};
+  const testData = bookingResponse[1]["Mon"];
+  
+  for (let i = 0; i < testData.length; i++) {
+    const date = testData[i]["end"].split('T')[0];
+    if (!items[date]) {
+      items[date] = [];
+    }
+    items[date].push({
+      name: testData[i]["courseCode"],
+      height: 60,
+      day: date + i,
+    })
+  }
+  return items;
 }
 
 export default class AgendaScreen extends Component<State> {
   state: State = {
     items: undefined,
   };
+  
 
   render() {
     return (
@@ -17,51 +39,41 @@ export default class AgendaScreen extends Component<State> {
         reservationsKeyExtractor={item => `${item.reservation?.day}`}
         items={this.state.items}
         loadItemsForMonth={this.loadItems}
-        selected={'2017-05-16'}
+        selected={'2023-05-29'}
         renderItem={this.renderItem}
         renderEmptyDate={this.renderEmptyDate}
         rowHasChanged={this.rowHasChanged}
         showClosingKnob={true}
-        // markingType={'period'}
-        // markedDates={{
-        //    '2017-05-08': {textColor: '#43515c'},
-        //    '2017-05-09': {textColor: '#43515c'},
-        //    '2017-05-14': {startingDay: true, endingDay: true, color: 'blue'},
-        //    '2017-05-21': {startingDay: true, color: 'blue'},
-        //    '2017-05-22': {endingDay: true, color: 'gray'},
-        //    '2017-05-24': {startingDay: true, color: 'gray'},
-        //    '2017-05-25': {color: 'gray'},
-        //    '2017-05-26': {endingDay: true, color: 'gray'}}}
-        // monthFormat={'yyyy'}
-        // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
-        //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
-        // hideExtraDays={false}
-        // showOnlySelectedDayItems
       />
     );
   }
 
   loadItems = (day: DateData) => {
     const items = this.state.items || {};
-
+    
     setTimeout(() => {
-      for (let i = -15; i < 85; i++) {
-        const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-        const strTime = this.timeToString(time);
+      const bookings = seeBookings();
+      const items = {"2023-05-29": [{"day": "2023-05-290", "height": 30, "name": "COMP1911"}, {"day": "2023-05-291", "height": 60, "name": "COMP2041"}, {"day": "2023-05-292", "height": 60, "name": "COMP6452"}, {"day": "2023-05-293", "height": 60, "name": "COMP6452"}, {"day": "2023-05-294", "height": 60, "name": "COMP9044"}]};
 
-        if (!items[strTime]) {
-          items[strTime] = [];
+      // for (let i = -15; i < 85; i++) {
+        
+      //   const time = day.timestamp + i * 24 * 60 * 60 * 1000;
+      //   const strTime = this.timeToString(time);
 
-          const numItems = 3;
-          for (let j = 0; j < numItems; j++) {
-            items[strTime].push({
-              name: 'Item for ' + '#' + j,
-              height: Math.max(50, Math.floor(Math.random() * 150)),
-              day: strTime + j,
-            });
-          }
-        }
-      }
+      //   if (!items[strTime]) {
+      //     items[strTime] = [];
+
+      //     const numItems = 3;
+      //     for (let j = 0; j < numItems; j++) {
+      //       items[strTime].push({
+      //         name: 'Item for ' + '#' + j,
+      //         height: Math.max(50, Math.floor(Math.random() * 150)),
+      //         day: strTime + j,
+      //       });
+      //     }
+      //   }
+      // }
+      console.log(bookings);
 
       const newItems: AgendaSchedule = {};
       Object.keys(items).forEach(key => {
@@ -70,6 +82,7 @@ export default class AgendaScreen extends Component<State> {
       this.setState({
         items: newItems,
       });
+      
     }, 1000);
   };
 
