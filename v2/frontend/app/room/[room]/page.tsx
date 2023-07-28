@@ -1,21 +1,21 @@
 "use client" 
 
+import Box from '@mui/material/Box';
 import Container from "@mui/material/Container";
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import type { StaticImageData } from "next/image";
+import Image from "next/image";
 import React from 'react';
 
 import BookingCalendar from "../../../components/BookingCalendar";
 import Button from "../../../components/Button";
 import LoadingCircle from "../../../components/LoadingCircle";
 import useBookings from "../../../hooks/useBookings";
+import roomImage from "../../../public/assets/building_photos/K-B16.webp";
 import { setCurrentBuilding } from "../../../redux/currentBuildingSlice";
 import { useDispatch } from '../../../redux/hooks';
 import type  {  RoomAvailability } from '../../../types';
-import Image from "next/image";
-import roomImage from "../../../public/assets/building_photos/K-B16.webp";
-import type { StaticImageData } from "next/image";
 
 
 
