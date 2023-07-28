@@ -1,11 +1,27 @@
 import { Image, StyleSheet, Text, View } from "react-native";
 
 import type { BuildingStackScreenProps } from "../../types";
+import { getBookings } from "../../../services/freerooms_api/endpoints";
+import { useEffect } from "react";
+import { useRoute } from "@react-navigation/native";
 
 export default function Room({
   route,
   navigation,
 }: BuildingStackScreenProps<"Room">) {
+  // ! route.params are undefined (issue with nested navigators)
+
+  let roomName;
+
+  async function fetchBooking() {
+    const res = await getBookings("K-J17-G01");
+    roomName = res.name;
+  }
+
+  useEffect(() => {
+    fetchBooking();
+  }, []);
+
   return (
     <View style={styles.container}>
       <Image
@@ -19,7 +35,7 @@ export default function Room({
             ID Required
           </Text>
         </Text>
-        <Text style={styles.largeText}>Strings Lab J17 302</Text>
+        <Text style={styles.largeText}>{roomName}</Text>
       </View>
       <View
         style={{ justifyContent: "flex-start", paddingTop: 20, width: "100%" }}
