@@ -60,7 +60,7 @@ export default function Page({ params }: {
 
   return (
     
-    <Container maxWidth={false}>
+    <Container maxWidth={'xl'}>
       { !roomName
 				? <LoadingCircle/>
 				: (
@@ -127,7 +127,7 @@ const RoomPageHeader : React.FC<{ roomName: string, roomId:  string, roomAlias :
 const RoomImage : React.FC<{ src : StaticImageData }> = ({ src }) => {
 	return (
 		<Box width={"100%"} display="flex">
-			<Box minWidth={"100%"} minHeight={750} position="relative" >
+			<Box minWidth={"100%"} minHeight={400} position="relative" >
 				<Image src={src} alt={"Room Image"} fill style={{ objectFit: "cover", borderRadius: 10 }}/>	
 			</Box>
 			<Button sx={{ px: 2, py: 1, position: 'relative', alignSelf: "flex-end", right: 170, bottom: 25, minWidth: 125 }}>
