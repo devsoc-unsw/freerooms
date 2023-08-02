@@ -14,6 +14,7 @@ import parentLogo from "../public/assets/favicon/csesocgreyblue.png";
 import Gif from "../public/assets/favicon/free_rooms_logo.gif";
 import Logo from "../public/assets/favicon/free_rooms_logo.png";
 import Faq from "./Faq";
+import Footer from "./Footer";
 import UsageTips from "./UsageTips";
 
 const Landing = () => {
@@ -65,8 +66,11 @@ const Landing = () => {
           <Image width={400} height={400} alt={"Freerooms Logo"} src={Gif} />
         </Box>
       </LandingScreenContainer>
-      <UsageTips />
+      <LandingScreenContainer>
+        <UsageTips />
+      </LandingScreenContainer>
       <Faq />
+      <Footer />
     </div>
   );
 };
