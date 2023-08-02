@@ -54,8 +54,8 @@ dependencies:
     specifier: 18.2.0
     version: 18.2.0(react@18.2.0)
   react-flip-move:
-    specifier: ^3.0.4
-    version: 3.0.4(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^3.0.5
+    version: 3.0.5(react-dom@18.2.0)(react@18.2.0)
   react-redux:
     specifier: ^8.0.7
     version: 8.0.7(@reduxjs/toolkit@1.9.5)(@types/react@18.0.33)(react-dom@18.2.0)(react@18.2.0)(redux@4.2.1)
@@ -2819,8 +2819,8 @@ packages:
       react: 18.2.0
       scheduler: 0.23.0
 
-  /react-flip-move@3.0.4(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-HyUVv9g3t/BS7Yz9HgrtYSWyRNdR2F81nkj+C5iRY675AwlqCLB5JU9mnZWg0cdVz7IM4iquoyZx70vzZv3Z8Q==}
+  /react-flip-move@3.0.5(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-Mf4XpbkUNZy9eu80iXXFIjToDvw+bnHxmKHVoositbMpV87O/EQswnXUqVovRHoTx/F+4dE+p//PyJnAT7OtPA==}
     peerDependencies:
       react: '>=16.3.x'
       react-dom: '>=16.3.x'
