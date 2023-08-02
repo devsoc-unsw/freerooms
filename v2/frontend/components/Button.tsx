@@ -3,7 +3,7 @@ import { styled } from "@mui/material/styles";
 
 const StyledButton = styled(Button)<ButtonProps>(({ theme }) => ({
   borderRadius: "10px",
-  padding: theme.spacing(1.5, 7),
+  padding: theme.spacing(1.5, 3),
   backgroundColor: "#eee",
   color: "#333",
   textTransform: "none",
@@ -12,8 +12,6 @@ const StyledButton = styled(Button)<ButtonProps>(({ theme }) => ({
     backgroundColor: theme.palette.primary.main,
     color: "#fff",
   },
-  mx: theme.spacing(1),
-  justifyContent: "space-between"
 }));
 
 export default StyledButton;
