@@ -2,28 +2,41 @@ import React, {Component} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Agenda, AgendaEntry, AgendaSchedule, DateData} from 'react-native-calendars';
 import { getBookings } from '../../../../services/freerooms_api/endpoints';
-import { Book_Dictionary } from '../../../../services/freerooms_api/api_types';
-
 interface State {
   items?: AgendaSchedule;
 }
 
-async function seeBookings() {
-  const bookingResponse = await getBookings("K-J17-G01");
-  let items = {};
-  const testData = bookingResponse[1]["Mon"];
+async function seeBookings(date) {
+  const items = {};
   
-  for (let i = 0; i < testData.length; i++) {
-    const date = testData[i]["end"].split('T')[0];
-    if (!items[date]) {
-      items[date] = [];
+
+  const bookingResponse = await getBookings("K-J17-G01");
+  
+  // need to put an error if bad name
+  // items might have no data if the room is has no timetable 
+  // eg K-G26-G03 
+  for (let key in bookingResponse) {
+    if (key == "name") {
+      continue;
     }
-    items[date].push({
-      name: testData[i]["courseCode"],
-      height: 60,
-      day: date + i,
-    })
+    for (let day in bookingResponse[key]) {
+      for (let no in bookingResponse[key][day]) {
+        const item = bookingResponse[key][day][no];
+        const date = item["end"].split('T')[0];
+        if (!items[date]) {
+          items[date] = [];
+        }
+        items[date].push({
+          name: item["courseCode"],
+          height: 60,
+          day: date,
+        })
+      }
+    }
   }
+  // put in day
+
+  console.log(items);
   return items;
 }
 
@@ -34,12 +47,13 @@ export default class AgendaScreen extends Component<State> {
   
 
   render() {
+    const date = new Date();
     return (
       <Agenda
         reservationsKeyExtractor={item => `${item.reservation?.day}`}
         items={this.state.items}
         loadItemsForMonth={this.loadItems}
-        selected={'2023-05-29'}
+        selected={date.toString()}
         renderItem={this.renderItem}
         renderEmptyDate={this.renderEmptyDate}
         rowHasChanged={this.rowHasChanged}
@@ -48,12 +62,16 @@ export default class AgendaScreen extends Component<State> {
     );
   }
 
-  loadItems = (day: DateData) => {
+  loadItems = async (day: DateData) => {
     const items = this.state.items || {};
+    if (Object.keys(items).length !== 0) {
+      return;
+    }
+
+    // this.props from room.tsx not my fault this is class based for some reason.
+    const bookings = await seeBookings(this.props);
     
     setTimeout(() => {
-      const bookings = seeBookings();
-      const items = {"2023-05-29": [{"day": "2023-05-290", "height": 30, "name": "COMP1911"}, {"day": "2023-05-291", "height": 60, "name": "COMP2041"}, {"day": "2023-05-292", "height": 60, "name": "COMP6452"}, {"day": "2023-05-293", "height": 60, "name": "COMP6452"}, {"day": "2023-05-294", "height": 60, "name": "COMP9044"}]};
 
       // for (let i = -15; i < 85; i++) {
         
@@ -73,12 +91,12 @@ export default class AgendaScreen extends Component<State> {
       //     }
       //   }
       // }
-      console.log(bookings);
 
       const newItems: AgendaSchedule = {};
-      Object.keys(items).forEach(key => {
-        newItems[key] = items[key];
+      Object.keys(bookings).forEach(key => {
+        newItems[key] = bookings[key];
       });
+      console.log(newItems);
       this.setState({
         items: newItems,
       });

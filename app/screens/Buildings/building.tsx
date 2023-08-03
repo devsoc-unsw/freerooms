@@ -43,7 +43,7 @@ export default function Building({ route, navigation } : BuildingStackScreenProp
 							Rooms
 						</Text>
 					</View>
-					{ Object.keys(roomsOfCurrBuilding).map( (roomId, index) => <Card key={index} nav={navigation} roomName={roomId} {...roomsOfCurrBuilding[roomId]} /> )}
+					{ Object.keys(roomsOfCurrBuilding).map( (roomId, index) => <Card key={index} nav={navigation} roomName={roomId} building={route.params.buildingId} {...roomsOfCurrBuilding[roomId]} /> )}
 				</View>
 			</ScrollView>
 		</SafeAreaView>
@@ -51,10 +51,11 @@ export default function Building({ route, navigation } : BuildingStackScreenProp
 	)
 }
 
-function Card({ nav, roomName, status, endtime }) {
+function Card({ nav, roomName, status, endtime, building }) {
 	
 	const handlePress = () => {
-		nav.navigate("Room", {roomName: roomName, status: status});
+		console.log(building);
+		nav.navigate("Room", {roomName: roomName, status: status, buildingId: building});
 	}
 	
 	return (

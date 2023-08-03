@@ -15,7 +15,8 @@ import { getBookings } from "../../../services/freerooms_api/endpoints";
 
 interface RouteParams {
 	roomName: string;
-	status: string
+	status: string;
+	buildingId: string;
 }
 
 export default function Room({ route, navigation } : BuildingStackScreenProps<"Room"> ) {
@@ -24,13 +25,13 @@ export default function Room({ route, navigation } : BuildingStackScreenProps<"R
 	useEffect(() => {
 		setRouteParams(route.params)
 		setNav(navigation)
+		
 	}, [route, navigation]);
 
 	async function seeBookings() {
-		const bookingResponse = await getBookings("K-J17-G01");
-		nav?.navigate("Agenda", {roomData: bookingResponse }
-		
-		)
+		const roomId  = routeParams.buildingId + "-" + routeParams.roomName;
+		console.log(roomId);
+		nav?.navigate("Agenda", {roomName: roomId})
 	}
 
 	return (
