@@ -38,7 +38,11 @@ export default function Buildings() {
 				/>
 				<Stack.Screen 
 					name="Building" 
-					component={Building} />
+					component={Building} 
+					options={({ navigation, route }) => ({
+						headerBackTitle: '',
+						headerTintColor: 'white',
+					})} />
 			</Stack.Group>
 			
 			{/* Room Screens */}
@@ -51,17 +55,17 @@ export default function Buildings() {
 			
 			{/* Filter Room  Modal  */}
 			<Stack.Group 
-				screenOptions={({ navigation, route }) => ({ 
+				screenOptions={({ navigation, route }) => ({
 					presentation: "modal",
 					})
 				}
 			>
 				<Stack.Screen name="Room Filter" component={RoomFilter} />
-			</Stack.Group>		
-			
+			</Stack.Group>
+
 			{/* Filter Building Modal  */}
-			<Stack.Group 
-				screenOptions={({ navigation, route }) => ({ 
+			<Stack.Group
+				screenOptions={({ navigation, route }) => ({
 					presentation: "modal",
 					})
 				}
@@ -80,9 +84,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   headerStyle: {
-    backgroundColor: 'white',
+    backgroundColor: '#ef6c00',
   },
   headerTitle: {
-    color: 'black',
+    color: 'white',
   }
 });
