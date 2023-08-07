@@ -10,25 +10,23 @@ import { styled } from "@mui/material/styles";
 import { usePathname } from "next/navigation";
 import React from "react";
 
-import { selectCurrentBuilding } from "../redux/currentBuildingSlice";
-import { useSelector } from "../redux/hooks";
 import { drawerWidth } from "../views/BuildingDrawer";
 import Branding from "./Branding";
 import IconButton from "./IconButton";
 
 interface NavBarProps {
   setSearchOpen: (open: boolean) => void;
+  drawerOpen: boolean;
 }
 
 // This isn't actually enforced so update this if u change the navbar
 export const navHeight = 65;
 
 const NavBar: React.FC<NavBarProps> = ({
-  setSearchOpen
+  setSearchOpen,
+  drawerOpen
 }) => {
   const path = usePathname();
-  const currentBuilding = useSelector(selectCurrentBuilding);
-  const drawerOpen = !!currentBuilding;
 
   return (
     <AppBar

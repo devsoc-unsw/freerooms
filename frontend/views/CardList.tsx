@@ -1,10 +1,9 @@
-import Box from "@mui/material/Box";
-import CircularProgress from "@mui/material/CircularProgress";
 import { styled } from "@mui/material/styles";
 import React from "react";
 import FlipMove from "react-flip-move";
 
 import BuildingCard from "../components/BuildingCard";
+import LoadingCircle from "../components/LoadingCircle";
 import useBuildings from "../hooks/useBuildings";
 import useStatus from "../hooks/useStatus";
 import useUserLocation from "../hooks/useUserLocation";
@@ -84,15 +83,7 @@ const CardList: React.FC<{
           <FlippableCard key={building.id} buildingId={building.id} />
         ))}
       </FlipMoveGrid>
-      : <Box sx={{
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        display: "block"
-      }}>
-        <CircularProgress color="primary" size={150} />
-      </Box>
+      : <LoadingCircle/>
   );
 };
 

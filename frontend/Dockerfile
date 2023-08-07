@@ -19,7 +19,13 @@ COPY . .
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
+<<<<<<< HEAD
 RUN pnpm run build
+=======
+FROM caddy:2.7.2-alpine
+COPY ./Caddyfile /etc/caddy/Caddyfile
+COPY --from=builder /app/dist /srv 
+>>>>>>> origin/master
 
 # If using npm comment out above and use below instead
 # RUN npm run build

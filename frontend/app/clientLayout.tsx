@@ -4,6 +4,7 @@ import { orange } from "@mui/material/colors";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, styled } from "@mui/material/styles";
 import ThemeProvider from "@mui/system/ThemeProvider";
+import { usePathname } from "next/navigation";
 import React from "react";
 import { Provider as ReduxProvider } from 'react-redux'
 
@@ -49,16 +50,17 @@ const App: React.FC<{
 }> = ({ children }) => {
   const [searchOpen, setSearchOpen] = React.useState(false);
   const currentBuilding = useSelector(selectCurrentBuilding);
-  const drawerOpen = !!currentBuilding;
+  const path = usePathname();
+  const drawerOpen = !!currentBuilding && (path == '/browse' || path == '/map');
 
   return (
     <>
-      <NavBar setSearchOpen={setSearchOpen}/>
+      <NavBar setSearchOpen={setSearchOpen} drawerOpen={drawerOpen}/>
       <SearchModal open={searchOpen} setOpen={setSearchOpen}/>
       <Main drawerOpen={drawerOpen}>
         {children}
       </Main>
-      <BuildingDrawer/>
+      <BuildingDrawer open={drawerOpen}/>
     </>
   )
 }
@@ -70,10 +72,10 @@ const Main = styled("main", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  marginTop: navHeight,
+  paddingTop: navHeight,
   width: '100%',
   marginRight: 0,
-  maxHeight: "100vh",
+  height: "100%",
   ...(drawerOpen && {
     width: `calc(100% - ${drawerWidth}px)`,
     marginRight: drawerWidth,

@@ -30,12 +30,12 @@ const Landing = () => {
           UNSW room bookings
         </GradientText>
         <Stack direction="column" spacing={2}>
-          <Button LinkComponent={Link} href="/browse" sx={{ width: "13rem" }} endIcon={<GridViewRoundedIcon/>}>
+          <LandingButton LinkComponent={Link} href="/browse" sx={{ width: "13rem" }} endIcon={<GridViewRoundedIcon/>}>
             <Typography fontWeight="bold" sx={{display: "flex", margin: "auto"}}>Browse</Typography>
-          </Button>
-          <Button LinkComponent={Link} href="/map" sx={{ width: "13rem" }} endIcon={<MapIcon/>}>
+          </LandingButton>
+          <LandingButton LinkComponent={Link} href="/map" sx={{ width: "13rem" }} endIcon={<MapIcon/>}>
             <Typography fontWeight="bold" sx={{display: "flex", margin: "auto"}}>Map</Typography>
-          </Button>
+          </LandingButton>
         </Stack>
       </Stack>
       <Box margin="auto" display={{ xs: "none", md: "block" }} >
@@ -69,6 +69,12 @@ const LandingScreenContainer = styled(Stack)(({ theme }) => ({
   height: "100%",
   width: "80%",
   margin: "auto"
+}))
+
+const LandingButton = styled(Button)(({ theme }) => ({
+  mx: theme.spacing(1),
+  justifyContent: "space-between",
+  padding: theme.spacing(1.5, 7)
 }))
 
 export default Landing;
