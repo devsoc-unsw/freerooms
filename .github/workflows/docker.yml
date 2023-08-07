@@ -68,7 +68,7 @@ jobs:
           git config user.email "technical@csesoc.org.au"
 
           branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
-          case branch in
+          case $branch in
           dev)
             build_type="staging"
             ;;
