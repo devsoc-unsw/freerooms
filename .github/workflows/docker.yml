@@ -46,48 +46,48 @@ jobs:
             ghcr.io/csesoc/freerooms-${{ matrix.name }}:${{ github.sha }}
             ghcr.io/csesoc/freerooms-${{ matrix.name }}:latest
           labels: ${{ steps.meta.outputs.labels }}
-#  deploy:
-#    name: Deploy (CD)
-#    runs-on: ubuntu-latest
-#    needs: [build]
-#    concurrency: staging
-#    if: ${{ github.event_name != 'pull_request' && (github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master')  }}
-#    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v3
-#        with:
-#          repository: csesoc/deployment
-#          token: ${{ secrets.GH_TOKEN }}
-#      - name: Install yq - portable yaml processor
-#        uses: mikefarah/yq@v4.34.2
-#      - name: Update deployment
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-#        run: |
-#          git config user.name "CSESoc CD"
-#          git config user.email "technical@csesoc.org.au"
-#
-#          branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
-#          case branch in
-#          dev)
-#            build_type="staging"
-#            ;;
-#
-#          master)
-#            build_type="production"
-#            ;;
-#          *)
-#            echo "Invalid branch '$branch'"
-#            exit 1
-#            ;;
-#          esac
-#
-#          git checkout -b update/freerooms-$build_type/${{ github.sha }}
-#          yq -i '.items[0].spec.template.spec.containers[0].image = "ghcr.io/csesoc/freerooms-backend:${{ github.sha }}"' apps/projects/freerooms/$build_type/deploy-backend.yml
-#          yq -i '.items[0].spec.template.spec.containers[0].image = "ghcr.io/csesoc/freerooms-frontend:${{ github.sha }}"' apps/projects/freerooms/$build_type/deploy-frontend.yml
-#
-#          git add . 
-#          git commit -m "feat(freerooms-$build_type): update images" 
-#          git push -u origin update/freerooms/${{ github.sha }}
-#          gh pr create --title "feat(freerooms-$build_type): update image" --body "Updates the image for the freerooms deployment to commit csesoc/Freerooms@${{ github.sha }}." > URL
-#          gh pr merge $(cat URL) --squash -d
+  deploy:
+    name: Deploy (CD)
+    runs-on: ubuntu-latest
+    needs: [build]
+    concurrency: staging
+    if: ${{ github.event_name != 'pull_request' && (github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master')  }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          repository: csesoc/deployment
+          token: ${{ secrets.GH_TOKEN }}
+      - name: Install yq - portable yaml processor
+        uses: mikefarah/yq@v4.34.2
+      - name: Update deployment
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          git config user.name "CSESoc CD"
+          git config user.email "technical@csesoc.org.au"
+
+          branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
+          case branch in
+          dev)
+            build_type="staging"
+            ;;
+
+          master)
+            build_type="production"
+            ;;
+          *)
+            echo "Invalid branch '$branch'"
+            exit 1
+            ;;
+          esac
+
+          git checkout -b update/freerooms-$build_type/${{ github.sha }}
+          yq -i '.items[0].spec.template.spec.containers[0].image = "ghcr.io/csesoc/freerooms-backend:${{ github.sha }}"' apps/projects/freerooms/$build_type/deploy-backend.yml
+          yq -i '.items[0].spec.template.spec.containers[0].image = "ghcr.io/csesoc/freerooms-frontend:${{ github.sha }}"' apps/projects/freerooms/$build_type/deploy-frontend.yml
+
+          git add . 
+          git commit -m "feat(freerooms-$build_type): update images" 
+          git push -u origin update/freerooms/${{ github.sha }}
+          gh pr create --title "feat(freerooms-$build_type): update image" --body "Updates the image for the freerooms deployment to commit csesoc/Freerooms@${{ github.sha }}." > URL
+          gh pr merge $(cat URL) --squash -d
