@@ -74,7 +74,7 @@ jobs:
             ;;
 
           master)
-            build_type="production"
+            build_type="prod"
             ;;
           *)
             echo "Invalid branch '$branch'"
