@@ -25,7 +25,5 @@
       "groupName": "mantine monorepo"
     }
   ],
-  "ignorePaths": [
-    "frontend/package.json"
-  ]
+  "baseBranches": ["dev"]
 }
