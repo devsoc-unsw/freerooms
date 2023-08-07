@@ -9,11 +9,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        component: [frontend, v2/frontend]
+        component: [frontend]
         include:
           - component: frontend
-            command: npm ci
-          - component: v2/frontend
             command: pnpm i --frozen-lockfile
     steps:
       - uses: actions/checkout@v3
@@ -34,13 +32,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        component: [frontend, v2/backend, v2/frontend]
+        component: [frontend, backend]
         include:
           - component: frontend
-            command: npm ci
-          - component: v2/frontend
             command: pnpm i --frozen-lockfile
-          - component: v2/backend
+          - component: backend
             command: pnpm i --frozen-lockfile
     steps:
       - uses: actions/checkout@v3
