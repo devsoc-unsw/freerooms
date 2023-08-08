@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build]
     concurrency: staging
-    if: ${{ github.event_name != 'pull_request' && (env.BRANCH_NAME == 'dev' || env.BRANCH_NAME == 'master')  }}
+    if: ${{ github.event_name != 'pull_request' && (github.ref_name == 'dev' || github.ref_name == 'master')  }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
