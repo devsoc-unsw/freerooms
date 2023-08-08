@@ -17,21 +17,38 @@ You can find a live build of Freerooms at [https://freerooms.csesoc.app](https:/
 
 - Check which rooms are free:
 
-<img src="docs/gallery.png" alt="Gallery" width="450px">
-<img src="docs/list.png" alt="Room List" width="450px">
+<img src="docs/browse.png" alt="Browse page" width="450px">
+
+- Sort and filter by a range of criteria:
+
+<img src="docs/sort.png" alt="Sort" width="150">
+<img src="docs/filter.png" alt="Filter" width="150px">
+
+- See which buildings around you have free rooms on the map:
+
+<img src="docs/map.png" alt="Map" width="450px">
 
 - See the timetable for each room:
 
 <img src="docs/timetable.png" alt="Room Timetable" width="450px">
 
+- Quickly search for specific buildings or rooms:
+
+<img src="docs/search.png" alt="Search modal" width="450px">
+
+
 ## Future Plans
 
 This project is rapidly expanding and our roadmap includes features such as:
 
-- **Map View**: Find and navigate to free rooms near you.
-- **Search, Sort and Filter**: Find the perfect room for your needs.
+- **Detailed Room Information**: Information such as a room's type, how to book it, and all its aliases.
+- **Society Bookings**: Use data about society bookings and other bookings besides scheduled classes.
 - **Mobile App**: Use Freerooms anytime, anywhere!
 
-# Our team
+# Local Setup
+
+See the [backend](backend), [frontend](frontend) and [app](app) directories for instructions on setting up and running Freerooms locally.
+
+# Our Team
 
 We are a team that is part of CSESoc Development. See [TEAM.md](./TEAM.md) for more information on the current and previous team that contributed to the development of Freerooms.
