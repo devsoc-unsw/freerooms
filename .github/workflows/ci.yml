@@ -2,6 +2,9 @@ name: CI
 on:
   push: {}
 
+env:
+  BRANCH_NAME: ${{ github.base_ref || github.ref_name }}
+
 jobs:
   lint:
     name: "Lint (${{ matrix.component }})"
@@ -49,7 +52,7 @@ jobs:
         run: ${{ matrix.command }}
         working-directory: ${{ matrix.component }}
       - name: Create staging .env file
-        if: ${{ github.ref_name == 'dev' && matrix.component == 'frontend' }}
+        if: ${{ env.BRANCH_NAME == 'dev' && matrix.component == 'frontend' }}
         run: echo "NEXT_PUBLIC_STAGING=true" >> .env
         working-directory: frontend
       - name: Build
