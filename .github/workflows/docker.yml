@@ -37,8 +37,9 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GH_TOKEN }}
       - name: Create staging .env file
-        if: ${{ github.ref_name == "dev" }}
-        run: echo "NEXT_PUBLIC_STAGING=true" >> frontend/.env
+        if: ${{ github.ref_name == 'dev' && matrix.content == 'frontend' }}
+        run: echo "NEXT_PUBLIC_STAGING=true" >> .env
+        working-directory: frontend
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
