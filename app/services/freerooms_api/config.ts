@@ -3,7 +3,7 @@ const config = {
 	domain: "https://freerooms.csesoc.app",
 	endpoints: {
 		getBuildings: "/api/buildings",
-		getRooms: "/api/rooms",
+		getRooms: "/api/rooms/status",
 	}
 };
 

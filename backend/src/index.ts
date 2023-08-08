@@ -21,7 +21,7 @@ const asyncHandler = (fn: RequestHandler) =>
     Promise.resolve(fn(req, res, next)).catch(next);
   }
 
-// Route to get all the buildings
+// Route to get info of all the buildings
 app.get(
   "/api/buildings",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
@@ -34,7 +34,7 @@ app.get(
 
 // Route to get status of all rooms
 app.get(
-  "/api/rooms",
+  "/api/rooms/status",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const datetime = parseDatetime(req);
     const filters = parseFilters(req);
@@ -44,9 +44,9 @@ app.get(
   })
 );
 
-// Route to get the bookings of a particular room in a particular building
+// Route to get the bookings of a particular room
 app.get(
-  "/api/rooms/:roomID",
+  "/api/rooms/bookings/:roomID",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const { roomID } = req.params;
     const [campus, buildingGrid, roomNumber] = roomID.split('-');
