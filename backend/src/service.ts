@@ -1,7 +1,13 @@
 import { Request } from "express";
 import { calculateStatus, getBuildingData, getTimetableData, getWeekAndDay } from "./helpers";
-import { BuildingsResponse, Filters, RoomBookings, BuildingStatus, RoomsResponse } from "./types";
-import { DateTime } from "luxon";
+import {
+  BuildingsResponse,
+  Filters,
+  RoomBookings,
+  BuildingStatus,
+  StatusResponse,
+  RoomsResponse,
+} from "./types";
 
 const ISO_REGEX = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/;
 const UPPER = 19; // Buildings with grid 19+ are upper campus
@@ -21,6 +27,21 @@ export const getAllBuildings = async (): Promise<BuildingsResponse> => {
       long: long,
     });
   });
+  return res;
+};
+
+export const getAllRooms = async (): Promise<RoomsResponse> => {
+  const data = Object.values(await getBuildingData());
+  if (!data) {
+    throw new Error(`Buildings cannot be retrieved`);
+  }
+
+  const res: RoomsResponse = {};
+  data.forEach(bldg =>
+    Object.values(bldg.rooms).forEach(room => {
+      res[room.id] = room;
+    })
+  );
   return res;
 };
 
@@ -85,12 +106,12 @@ export const parseFilters = (req: Request): Filters => {
 export const getAllRoomStatus = async (
   date: Date,
   filters: Filters
-): Promise<RoomsResponse> => {
+): Promise<StatusResponse> => {
   const { week, day } = await getWeekAndDay(date);
 
   const buildingData = await getBuildingData();
   const timetableData = await getTimetableData();
-  const result: RoomsResponse = {};
+  const result: StatusResponse = {};
   for (const buildingID in buildingData) {
     // Skip building if it does not match filter
     const roomLocation = +buildingID.substring(3) < UPPER ? 'lower' : 'upper';
