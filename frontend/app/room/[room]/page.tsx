@@ -10,16 +10,48 @@ import LoadingCircle from "../../../components/LoadingCircle";
 import useBookings from "../../../hooks/useBookings";
 import useRoom from "../../../hooks/useRoom";
 
+<<<<<<< HEAD
 export default function Page({ params }: {
   params: {room: string};
 }) {
 	const { bookings } = useBookings(params.room);
 	const { room } = useRoom(params.room);
+=======
+
+type Event = {
+	title: string;
+	start: Date,
+	end: Date,
+}
+
+export default function Page({ params }: {
+  params: {room: string};
+}) {
+	const { bookings, error: bookingsError } = useBookings(params.room);
+	const { room, error: roomError } = useRoom(params.room);
+	const [ events, setEvents ] = React.useState<Array<Event>>([]);
+
+	React.useEffect( () => {
+		if (bookings) {
+			setEvents(bookings.map(cls => ({
+				title: cls.courseCode,
+				start: new Date(cls.start),
+				end: new Date(cls.end)
+			})));
+		} else if (bookingsError) {
+			setEvents([]);
+		}
+	}, [bookings, bookingsError]);
+>>>>>>> a27b7d9 (feat(backend): create and adopt `/api/rooms` endpoint for room data (#401))
 
   return (
     
     <Container maxWidth={false} sx={{ height: "100%" }}>
+<<<<<<< HEAD
       { !room
+=======
+      { roomError || !room
+>>>>>>> a27b7d9 (feat(backend): create and adopt `/api/rooms` endpoint for room data (#401))
 				? <LoadingCircle/>
 				: (
         <Stack justifyContent="center" alignItems="center" width="100%" py={5} height="100%">

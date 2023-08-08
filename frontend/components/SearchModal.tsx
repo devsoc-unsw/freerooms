@@ -17,13 +17,37 @@ import useBuildings from "../hooks/useBuildings";
 import useRooms from "../hooks/useRooms";
 import { setCurrentBuilding } from "../redux/currentBuildingSlice";
 import { useDispatch } from "../redux/hooks";
+<<<<<<< HEAD
 import { BuildingSearchOption, RoomSearchOption, SearchOption } from "../types";
+=======
+import { Building, RoomData } from "../types";
+>>>>>>> a27b7d9 (feat(backend): create and adopt `/api/rooms` endpoint for room data (#401))
 
 interface SearchProps {
   open: boolean;
   setOpen: (open: boolean) => void;
 }
 
+<<<<<<< HEAD
+=======
+// First element in searchKeys should always be name
+type SearchOption = (BuildingSearchOption | RoomSearchOption) & {
+  recent?: boolean;
+};
+
+type BuildingSearchOption = {
+  type: "Building";
+  searchKeys: string[];
+  building: Building;
+}
+
+type RoomSearchOption = {
+  type: "Room";
+  searchKeys: string[];
+  room: RoomData;
+}
+
+>>>>>>> a27b7d9 (feat(backend): create and adopt `/api/rooms` endpoint for room data (#401))
 const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -51,7 +75,11 @@ const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
     const roomOptions: RoomSearchOption[] = rooms
       ? Object.values(rooms).map(room => ({
         type: "Room",
+<<<<<<< HEAD
         searchKeys: [room.name, room.abbr, room.id],
+=======
+        searchKeys: [room.name, room.id],
+>>>>>>> a27b7d9 (feat(backend): create and adopt `/api/rooms` endpoint for room data (#401))
         room
       }))
       : [];

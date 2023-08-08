@@ -8,11 +8,20 @@ import axios from "axios";
 import useSWRImmutable from 'swr/immutable'
 
 import { API_URL } from "../config";
+<<<<<<< HEAD
 
 const fetcher = (url: string) => axios.get(url).then(res => res.data).then(parseDates);
 
 const useBookings = (roomId: string) => {
   const { data, error } = useSWRImmutable<BookingsResponse>(
+=======
+import { Class } from "../types";
+
+const fetcher = (url: string) => axios.get(url).then(res => res.data.bookings);
+
+const useBookings = (roomId: string) => {
+  const { data, error } = useSWRImmutable<Class[]>(
+>>>>>>> a27b7d9 (feat(backend): create and adopt `/api/rooms` endpoint for room data (#401))
     API_URL + "/rooms/bookings/" + roomId,
     fetcher
   );

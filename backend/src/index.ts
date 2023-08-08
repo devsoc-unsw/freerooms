@@ -1,4 +1,9 @@
-import express, { NextFunction, Request, RequestHandler, Response } from "express";
+import express, {
+  NextFunction,
+  Request,
+  RequestHandler,
+  Response,
+} from "express";
 import cors from "cors";
 
 import {
@@ -15,10 +20,10 @@ const app = express();
 app.use(cors());
 
 // Wrapper for request handler functions to catch async exceptions
-const asyncHandler = (fn: RequestHandler) =>
-  (req: Request, res: Response, next: NextFunction) => {
+const asyncHandler =
+  (fn: RequestHandler) => (req: Request, res: Response, next: NextFunction) => {
     Promise.resolve(fn(req, res, next)).catch(next);
-  }
+  };
 
 // Route to get info of all the buildings
 app.get(
@@ -40,6 +45,17 @@ app.get(
   })
 );
 
+// Route to get info of all the rooms
+app.get(
+  "/api/rooms",
+  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const roomData = await getAllRooms();
+    const data = { rooms: roomData };
+    res.send(data);
+    next();
+  })
+);
+
 // Route to get status of all rooms
 app.get(
   "/api/rooms/status",
@@ -57,15 +73,17 @@ app.get(
   "/api/rooms/bookings/:roomID",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const { roomID } = req.params;
-    const data = await getRoomBookings(roomID);
-    res.send(data);
+    const [campus, buildingGrid, roomNumber] = roomID.split("-");
+
+    const data = await getRoomBookings(`${campus}-${buildingGrid}`, roomNumber);
+    res.send({ bookings: data });
     next();
   })
 );
 
 // Error-handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error(`"${req.originalUrl}" ${err.stack ?? err}`)
+  console.error(`"${req.originalUrl}" ${err.stack ?? err}`);
 
   if (!res.writableEnded) {
     res.status(400).send(err);
