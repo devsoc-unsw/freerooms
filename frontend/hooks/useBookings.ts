@@ -6,12 +6,12 @@ import axios from "axios";
 import useSWRImmutable from 'swr/immutable'
 
 import { API_URL } from "../config";
-import { RoomAvailability } from "../types";
+import { Class } from "../types";
 
-const fetcher = (url: string) => axios.get(url).then(res => res.data);
+const fetcher = (url: string) => axios.get(url).then(res => res.data.bookings);
 
 const useBookings = (roomId: string) => {
-  const { data, error } = useSWRImmutable<RoomAvailability>(
+  const { data, error } = useSWRImmutable<Class[]>(
     API_URL + "/rooms/bookings/" + roomId,
     fetcher
   );

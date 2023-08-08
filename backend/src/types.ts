@@ -40,7 +40,7 @@ export type RoomData = {
 
 export type RoomUsage = "LEC" | "TUT";
 
-export type RoomsResponse = {
+export type StatusResponse = {
   [buildingId: string]: BuildingStatus;
 };
 
@@ -59,6 +59,10 @@ export type BuildingsResponse = Array<{
   lat: number;
   long: number;
 }>;
+
+export type RoomsResponse = {
+  [roomId: string]: RoomData
+};
 
 export type Location = "upper" | "lower";
 
