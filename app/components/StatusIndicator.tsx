@@ -1,9 +1,9 @@
 import { View, Text, StyleSheet } from 'react-native';
-import { Rooms } from '../services/freerooms_api/api_types';
 import StatusDot from './StatusDot';
+import { BuildingStatus } from "@common/types";
 
 const StatusIndicator = ({rooms}) => {
-	const roomsOfCurrBuilding:Rooms = rooms;
+	  const roomsOfCurrBuilding: BuildingStatus = rooms;
     const totalRooms:number = rooms ? Object.keys(roomsOfCurrBuilding).length : null;
     const freeRooms:number = rooms ? Object.values(roomsOfCurrBuilding).filter(x => x.status == "free" ).length : null;
 

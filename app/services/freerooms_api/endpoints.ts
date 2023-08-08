@@ -1,24 +1,24 @@
-import type { Buildings, Room_Dictionary } from "./api_types";
+import { Building, BuildingsResponse, StatusResponse } from "@common/types";
 import config from "./config";
 
 const domain = config.domain;
-export async function getBuildings() : Promise<Buildings> {
+export async function getBuildings() : Promise<Building[]> {
 	
 	const buildingsEndpoint = config.endpoints.getBuildings;
 	
 	const url = `${domain}${buildingsEndpoint}`;
 	
-	let buildings : Buildings = [];
+	let buildings : Building[] = [];
 	try {
 		const response = await fetch(url);
-		const data : { buildings : Buildings } = await response.json();
+		const data : BuildingsResponse = await response.json();
 		buildings = data.buildings;
 	} catch {}
 	
 	return buildings;
 }
 
-export async function getRooms() : Promise<Room_Dictionary> {
+export async function getRooms() : Promise<StatusResponse> {
 
 	const roomsEndpoint = config.endpoints.getRooms;
 	const url = `${domain}${roomsEndpoint}`;
