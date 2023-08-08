@@ -1,11 +1,15 @@
 import { View, Text, StyleSheet } from 'react-native';
 import StatusDot from './StatusDot';
 import { BuildingStatus } from "@common/types";
+import React from "react";
 
-const StatusIndicator = ({rooms}) => {
-	  const roomsOfCurrBuilding: BuildingStatus = rooms;
-    const totalRooms:number = rooms ? Object.keys(roomsOfCurrBuilding).length : null;
-    const freeRooms:number = rooms ? Object.values(roomsOfCurrBuilding).filter(x => x.status == "free" ).length : null;
+interface StatusIndicatorProps {
+    rooms: BuildingStatus;
+}
+
+const StatusIndicator: React.FC<StatusIndicatorProps> = ({rooms}) => {
+    const totalRooms: number | null = rooms ? Object.keys(rooms).length : null;
+    const freeRooms: number | null = rooms ? Object.values(rooms).filter(x => x.status == "free" ).length : null;
 
     return (
         <View style={styles.container}>
