@@ -1,4 +1,4 @@
-import { BuildingStatus, RoomsReturnData } from "../types";
+import { BuildingStatus } from "@common/types";
 
 const INITIALISING = -2;
 const FAILED = -1;

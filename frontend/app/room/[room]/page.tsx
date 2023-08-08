@@ -27,7 +27,7 @@ export default function Page({ params }: {
 	React.useEffect( () => {
 		if (bookings) {
 			setEvents(bookings.map(cls => ({
-				title: cls.courseCode,
+				title: cls.name,
 				start: new Date(cls.start),
 				end: new Date(cls.end)
 			})));
