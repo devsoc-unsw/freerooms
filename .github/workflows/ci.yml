@@ -49,7 +49,7 @@ jobs:
         run: ${{ matrix.command }}
         working-directory: ${{ matrix.component }}
       - name: Create staging .env file
-        if: ${{ github.ref_name == 'dev' && matrix.content == 'frontend' }}
+        if: ${{ github.ref_name == 'dev' && matrix.context == 'frontend' }}
         run: echo "NEXT_PUBLIC_STAGING=true" >> .env
         working-directory: frontend
       - name: Build
