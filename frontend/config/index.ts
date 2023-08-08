@@ -4,7 +4,7 @@ export enum Env {
   STAGING = "staging"
 }
 
-const env = process.env.STAGING === "true"
+const env = process.env.NEXT_PUBLIC_STAGING === "true"
   ? Env.STAGING
   : process.env.NODE_ENV || Env.DEV;
 
