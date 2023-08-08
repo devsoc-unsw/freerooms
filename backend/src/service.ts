@@ -3,10 +3,10 @@ import { calculateStatus, getBuildingData, getTimetableData, getWeekAndDay } fro
 import {
   BuildingsResponse,
   Filters,
-  RoomBookings,
   BuildingStatus,
   StatusResponse,
   RoomsResponse,
+  Class,
 } from "./types";
 
 const ISO_REGEX = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/;
@@ -162,7 +162,7 @@ export const getAllRoomStatus = async (
 export const getRoomBookings = async (
   buildingID: string,
   roomNumber: string
-): Promise<RoomBookings> => {
+): Promise<Class[]> => {
   // Check if room exists in database
   const buildingData = await getBuildingData();
   if (!(buildingID in buildingData)) {
@@ -172,9 +172,21 @@ export const getRoomBookings = async (
     throw new Error(`Room ID ${buildingID}-${roomNumber} does not exist`);
   }
 
-  // If in timetable, return bookings, otherwise just return name from database
+  // Collate bookings from timetable data if exists
   const timetableData = await getTimetableData();
-  return !(buildingID in timetableData) || !(roomNumber in timetableData[buildingID])
-   ? { name: buildingData[buildingID].rooms[roomNumber].name }
-   : timetableData[buildingID][roomNumber];
+  if (!(buildingID in timetableData) || !(roomNumber in timetableData[buildingID])) {
+    return [];
+  }
+
+  const res: Class[] = [];
+  for (const week in timetableData[buildingID][roomNumber]) {
+    if (week === 'name') continue;
+
+    const weekData = timetableData[buildingID][roomNumber][week];
+    for (const day in weekData) {
+      res.push(...weekData[day]);
+    }
+  }
+
+  return res;
 };

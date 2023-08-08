@@ -63,7 +63,7 @@ app.get(
     const [campus, buildingGrid, roomNumber] = roomID.split('-');
 
     const data = await getRoomBookings(`${campus}-${buildingGrid}`, roomNumber);
-    res.send(data);
+    res.send({ bookings: data });
     next();
   })
 );
