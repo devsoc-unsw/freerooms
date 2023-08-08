@@ -4,10 +4,11 @@ RUN npm i -g pnpm
 # Set the current working directory inside the container
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
+COPY backend/package.json backend/pnpm-lock.yaml ./
 RUN pnpm install
 
-COPY . .
+COPY /backend .
+COPY common ../common
 
 RUN pnpm run build
 
@@ -15,11 +16,11 @@ FROM node:16.20-alpine as runner
 RUN npm i -g pnpm
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
+COPY backend/package.json backend/pnpm-lock.yaml ./
 RUN pnpm install --production
 
 COPY --from=builder /app/dist ./dist
-COPY database.json buildingLocations.json ./
+COPY backend/database.json backend/buildingLocations.json ./
 
 EXPOSE 3000
 
