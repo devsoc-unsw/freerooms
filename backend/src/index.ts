@@ -8,7 +8,8 @@ import {
   parseFilters,
   getAllRoomStatus,
   getAllBuildings,
-  getRoomBookings, getAllRooms,
+  getRoomBookings,
+  getAllRooms,
 } from "./service";
 import { DATABASE_PATH, PORT } from "./config";
 
@@ -26,8 +27,7 @@ app.get(
   "/api/buildings",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const buildingData = await getAllBuildings();
-    const data = { buildings: buildingData };
-    res.send(data);
+    res.send(buildingData);
     next();
   })
 );
@@ -37,8 +37,7 @@ app.get(
   "/api/rooms",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const roomData = await getAllRooms();
-    const data = { rooms: roomData };
-    res.send(data);
+    res.send(roomData);
     next();
   })
 );
@@ -63,7 +62,7 @@ app.get(
     const [campus, buildingGrid, roomNumber] = roomID.split('-');
 
     const data = await getRoomBookings(`${campus}-${buildingGrid}`, roomNumber);
-    res.send({ bookings: data });
+    res.send(data);
     next();
   })
 );

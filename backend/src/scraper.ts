@@ -2,7 +2,8 @@ import axios from "axios";
 import * as fs from 'fs';
 import { load, CheerioAPI } from 'cheerio';
 
-import { BuildingData, BuildingDatabase, LocationData, RoomData } from "./types";
+import { Room } from "@common/types";
+import { BuildingDatabase, LocationOverrideData } from "./types";
 import { DATABASE_PATH, BLDG_LOCATION_PATH } from "./config";
 
 const LEARNING_ENVIRONMENTS_URL = "https://www.learningenvironments.unsw.edu.au";
@@ -23,7 +24,7 @@ const runScrapingJob = async () => {
 // Manually override the building locations in the database
 const overrideLocations = (data: BuildingDatabase) => {
   const rawLocations = fs.readFileSync(BLDG_LOCATION_PATH, 'utf8');
-  const locations = JSON.parse(rawLocations) as LocationData;
+  const locations = JSON.parse(rawLocations) as LocationOverrideData;
 
   // For each building in location data, replace the location in original data
   for (const building of locations.buildings) {
@@ -37,7 +38,7 @@ const overrideLocations = (data: BuildingDatabase) => {
 // scrapeAllBuildings scrapes all buildings UNSW has
 const scrapeAllBuildings = async (): Promise<BuildingDatabase> => {
   const buildingsToScrape = getAllScrapeableBuildings();
-  const buildingPromises = [] as Promise<BuildingData>[];
+  const buildingPromises = [] as Promise<BuildingDatabase[string]>[];
 
   for await (const buildingName of buildingsToScrape) {
     buildingPromises.push(scrapeBuilding(buildingName));
@@ -53,7 +54,7 @@ const scrapeAllBuildings = async (): Promise<BuildingDatabase> => {
 }
 
 // scrapeBuilding retrieves all information about a building given its url
-const scrapeBuilding = async (buildingName: string): Promise<BuildingData> => {
+const scrapeBuilding = async (buildingName: string): Promise<BuildingDatabase[string]> => {
   const buildingInfoURL = `${LEARNING_ENVIRONMENTS_URL}${buildingName}`;
   const $ = await downloadPage(buildingInfoURL);
 
@@ -87,7 +88,7 @@ const scrapeBuilding = async (buildingName: string): Promise<BuildingData> => {
 
 
 // scrapeRoom takes the name of a room and extracts all information about that room
-const scrapeRoom = async (roomName: string): Promise<RoomData> => {
+const scrapeRoom = async (roomName: string): Promise<Room> => {
   const roomInfoURL = `${LEARNING_ENVIRONMENTS_URL}${roomName}`;
   const $ = await downloadPage(roomInfoURL);
 

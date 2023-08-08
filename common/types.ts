@@ -44,7 +44,9 @@ export type BuildingsResponse = {
 }
 
 export type RoomsResponse = {
-  rooms: Room[];
+  rooms: {
+    [roomId: string]: Room
+  };
 }
 
 export type StatusResponse = {

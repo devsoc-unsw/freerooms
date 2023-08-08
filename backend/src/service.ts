@@ -2,12 +2,12 @@ import { Request } from "express";
 import { calculateStatus, getBuildingData, getTimetableData, getWeekAndDay } from "./helpers";
 import {
   BuildingsResponse,
-  Filters,
-  BuildingStatus,
-  StatusResponse,
   RoomsResponse,
-  Class,
-} from "./types";
+  StatusResponse,
+  BookingsResponse,
+  BuildingStatus,
+} from "@common/types";
+import { Filters } from "./types";
 
 const ISO_REGEX = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/;
 const UPPER = 19; // Buildings with grid 19+ are upper campus
@@ -18,9 +18,9 @@ export const getAllBuildings = async (): Promise<BuildingsResponse> => {
     throw new Error(`Buildings cannot be retrieved`);
   }
 
-  const res: BuildingsResponse = [];
+  const res: BuildingsResponse = { buildings: [] };
   data.forEach(({ name, id, lat, long }) => {
-    res.push({
+    res.buildings.push({
       name: name,
       id: id,
       lat: lat,
@@ -36,10 +36,10 @@ export const getAllRooms = async (): Promise<RoomsResponse> => {
     throw new Error(`Buildings cannot be retrieved`);
   }
 
-  const res: RoomsResponse = {};
+  const res: RoomsResponse = { rooms: {} };
   data.forEach(bldg =>
     Object.values(bldg.rooms).forEach(room => {
-      res[room.id] = room;
+      res.rooms[room.id] = room;
     })
   );
   return res;
@@ -162,7 +162,7 @@ export const getAllRoomStatus = async (
 export const getRoomBookings = async (
   buildingID: string,
   roomNumber: string
-): Promise<Class[]> => {
+): Promise<BookingsResponse> => {
   // Check if room exists in database
   const buildingData = await getBuildingData();
   if (!(buildingID in buildingData)) {
@@ -174,17 +174,21 @@ export const getRoomBookings = async (
 
   // Collate bookings from timetable data if exists
   const timetableData = await getTimetableData();
+  const res: BookingsResponse = { bookings: [] };
   if (!(buildingID in timetableData) || !(roomNumber in timetableData[buildingID])) {
-    return [];
+    return res;
   }
 
-  const res: Class[] = [];
   for (const week in timetableData[buildingID][roomNumber]) {
     if (week === 'name') continue;
 
     const weekData = timetableData[buildingID][roomNumber][week];
     for (const day in weekData) {
-      res.push(...weekData[day]);
+      res.bookings.push(...weekData[day].map(cls => ({
+        name: cls.courseCode,
+        start: new Date(cls.start),
+        end: new Date(cls.end)
+      })));
     }
   }
 
