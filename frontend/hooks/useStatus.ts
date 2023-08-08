@@ -22,7 +22,7 @@ const useStatus = () => {
   const filters = useSelector(selectFilters);
 
   const { data, error } = useSWRImmutable<RoomsReturnData>(
-    [API_URL + "/rooms", datetime, filters],
+    [API_URL + "/rooms/status", datetime, filters],
     fetcher
   );
 
