@@ -28,6 +28,19 @@ export type RoomStatus = {
   endtime: string;
 };
 
+export type RoomUsage = "LEC" | "TUT";
+
+export type RoomData = {
+  name: string;
+  id: string;
+  capacity: number;
+  usage: RoomUsage;
+};
+
+export type RoomsResponse = {
+  [roomId: string]: RoomData
+};
+
 export type BuildingStatus = {
   [roomId: string]: RoomStatus;
 };
