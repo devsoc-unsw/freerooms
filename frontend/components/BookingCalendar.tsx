@@ -2,6 +2,7 @@
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
+import { Booking } from "@common/types";
 import Box from '@mui/material/Box';
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
@@ -18,7 +19,7 @@ import { format, getDay, isToday, parse, startOfWeek } from "date-fns";
 import { enAU } from "date-fns/locale";
 import React from "react";
 import type { DateRange, View } from "react-big-calendar";
-import type { Event, NavigateAction, ToolbarProps } from 'react-big-calendar';
+import type { NavigateAction, ToolbarProps } from 'react-big-calendar';
 import { Calendar, dateFnsLocalizer, DateLocalizer, Views } from "react-big-calendar";
 
 import { selectDatetime } from "../redux/datetimeSlice";
@@ -101,7 +102,7 @@ const CustomToolBar: React.FC<ToolbarProps> = ({ view, onNavigate, onView }) => 
 	)
 }
 
-const StyledCalendar = styled(Calendar)(({ view }) => ({
+const StyledCalendar = styled<typeof Calendar<Booking>>(Calendar)(({ view }) => ({
 	'& .rbc-allday-cell': {
 		display: 'none'
 	},
@@ -137,7 +138,7 @@ const StyledCalendar = styled(Calendar)(({ view }) => ({
 	}
 }))
 
-const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
+const BookingCalendar : React.FC<{ events : Array<Booking> }>= ({ events }) => {
 
 	// Enforce day view on mobile
 	const [currView, setCurrView] = React.useState<View>(Views.WEEK);
@@ -185,6 +186,15 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 		return formatTime(start, culture, localizer) + " - " + formatTime(end, culture, localizer);
 	}
 
+	// Only render booking type on day view (wide)
+	const titleAccessor = React.useCallback((booking: Booking): string => {
+		if (currView == Views.DAY) {
+			return `${booking.name} (${booking.bookingType})`;
+		} else {
+			return booking.name;
+		}
+	}, [currView]);
+
 	return (
 		<>
 			<Stack
@@ -221,6 +231,8 @@ const BookingCalendar : React.FC<{ events : Array<Event> }>= ({ events }) => {
 						onNavigate={handleDateChange}
 						defaultView={Views.WEEK}
 						events={myEvents}
+						titleAccessor={titleAccessor}
+						tooltipAccessor={({ name, bookingType }) => `${name} (${bookingType})`}
 						getNow={getNow}
 						localizer={localizer}
 						scrollToTime={scrollToTime}

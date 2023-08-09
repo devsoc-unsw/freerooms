@@ -9,44 +9,25 @@ import BookingCalendar from "../../../components/BookingCalendar";
 import LoadingCircle from "../../../components/LoadingCircle";
 import useBookings from "../../../hooks/useBookings";
 import useRoom from "../../../hooks/useRoom";
-
-
-type Event = {
-	title: string;
-	start: Date,
-	end: Date,
-}
+import { Booking } from "@common/types";
 
 export default function Page({ params }: {
   params: {room: string};
 }) {
-	const { bookings, error: bookingsError } = useBookings(params.room);
-	const { room, error: roomError } = useRoom(params.room);
-	const [ events, setEvents ] = React.useState<Array<Event>>([]);
-
-	React.useEffect( () => {
-		if (bookings) {
-			setEvents(bookings.map(({ name, start, end }) => ({
-				title: name,
-				start,
-				end
-			})));
-		} else if (bookingsError) {
-			setEvents([]);
-		}
-	}, [bookings, bookingsError]);
+	const { bookings } = useBookings(params.room);
+	const { room } = useRoom(params.room);
 
   return (
     
     <Container maxWidth={false} sx={{ height: "100%" }}>
-      { roomError || !room
+      { !room
 				? <LoadingCircle/>
 				: (
         <Stack justifyContent="center" alignItems="center" width="100%" py={5} height="100%">
 	        <Typography variant='h4' fontWeight={550}>
 	          {room.name}
 	        </Typography>
-					<BookingCalendar events={events} />
+					<BookingCalendar events={bookings ?? []} />
       </Stack>
       )}
     </Container>

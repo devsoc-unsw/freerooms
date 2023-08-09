@@ -51,7 +51,7 @@ const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
     const roomOptions: RoomSearchOption[] = rooms
       ? Object.values(rooms).map(room => ({
         type: "Room",
-        searchKeys: [room.name, room.id],
+        searchKeys: [room.name, room.abbr, room.id],
         room
       }))
       : [];
