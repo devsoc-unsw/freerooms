@@ -8,21 +8,21 @@ export type Building = {
   id: string;
   lat: number;
   long: number;
-  // aliases: string[];
+  aliases: string[];
 };
 
 export type Room = {
   name: string;
   id: string;
-  // abbr: string;
+  abbr: string;
   capacity: number;
   usage: string;
-  // school: string;
+  school: string;
 };
 
 export type Booking = {
   name: string;
-  // bookingType: string;
+  bookingType: string;
   start: Date;
   end: Date;
 };

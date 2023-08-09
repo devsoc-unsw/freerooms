@@ -1,39 +1,30 @@
 import { Request } from "express";
-import { calculateStatus, getBuildingData, getTimetableData, getWeekAndDay } from "./helpers";
-import {
-  BuildingsResponse,
-  RoomsResponse,
-  StatusResponse,
-  BookingsResponse,
-  BuildingStatus,
-} from "@common/types";
+
+import { calculateStatus, getBuildingRoomData, getBookingsForDate } from "./helpers";
+import { BuildingsResponse, StatusResponse, BookingsResponse, RoomsResponse } from "@common/types";
 import { Filters } from "./types";
+import { queryBookingsForRoom } from "./dbInterface";
 
 const ISO_REGEX = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/;
 const UPPER = 19; // Buildings with grid 19+ are upper campus
 
 export const getAllBuildings = async (): Promise<BuildingsResponse> => {
-  const data = Object.values(await getBuildingData());
+  const data = Object.values(await getBuildingRoomData());
   if (!data) {
     throw new Error(`Buildings cannot be retrieved`);
   }
 
   const res: BuildingsResponse = { buildings: [] };
-  data.forEach(({ name, id, lat, long }) => {
-    res.buildings.push({
-      name: name,
-      id: id,
-      lat: lat,
-      long: long,
-    });
+  data.forEach(({ name, id, lat, long, aliases }) => {
+    res.buildings.push({ name, id, lat, long, aliases });
   });
   return res;
 };
 
 export const getAllRooms = async (): Promise<RoomsResponse> => {
-  const data = Object.values(await getBuildingData());
+  const data = Object.values(await getBuildingRoomData());
   if (!data) {
-    throw new Error(`Buildings cannot be retrieved`);
+    throw new Error(`Rooms cannot be retrieved`);
   }
 
   const res: RoomsResponse = { rooms: {} };
@@ -107,21 +98,20 @@ export const getAllRoomStatus = async (
   date: Date,
   filters: Filters
 ): Promise<StatusResponse> => {
-  const { week, day } = await getWeekAndDay(date);
+  const bookings = await getBookingsForDate(date);
+  const buildingData = await getBuildingRoomData();
 
-  const buildingData = await getBuildingData();
-  const timetableData = await getTimetableData();
   const result: StatusResponse = {};
-  for (const buildingID in buildingData) {
+  for (const buildingId in buildingData) {
     // Skip building if it does not match filter
-    const roomLocation = +buildingID.substring(3) < UPPER ? 'lower' : 'upper';
+    const roomLocation = +buildingId.substring(3) < UPPER ? 'lower' : 'upper';
     if (filters.location && filters.location != roomLocation) {
-      result[buildingID] = {};
+      result[buildingId] = {};
       continue;
     }
 
-    const buildingRooms = buildingData[buildingID].rooms;
-    const buildingStatus: BuildingStatus = {};
+    const buildingRooms = buildingData[buildingId].rooms;
+    result[buildingId] = {};
     for (const roomNumber in buildingRooms) {
       const roomData = buildingRooms[roomNumber];
 
@@ -132,65 +122,24 @@ export const getAllRoomStatus = async (
       ) {
         continue;
       }
-      
-      // If no data for this room on this day, it is free
-      if (
-        !(buildingID in timetableData) ||
-        !(roomNumber in timetableData[buildingID]) ||
-        !(week in timetableData[buildingID][roomNumber]) ||
-        !(day in timetableData[buildingID][roomNumber][week])
-      ) {
-        buildingStatus[roomNumber] = {
-          status: "free",
-          endtime: "",
-        };
-        continue;
-      }
-  
-      const classes = timetableData[buildingID][roomNumber][week][day];
-      const status = calculateStatus(date, classes, filters.duration || 0);
+
+      const status = calculateStatus(date, bookings[roomData.id].bookings, filters.duration || 0);
       if (status !== null) {
-        buildingStatus[roomNumber] = status;
+        result[buildingId][roomNumber] = status;
       }
     }
-    result[buildingID] = buildingStatus;
   }
 
   return result;
 };
 
 export const getRoomBookings = async (
-  buildingID: string,
-  roomNumber: string
+  roomId: string
 ): Promise<BookingsResponse> => {
-  // Check if room exists in database
-  const buildingData = await getBuildingData();
-  if (!(buildingID in buildingData)) {
-    throw new Error(`Building ID ${buildingID} does not exist`);
-  }
-  if (!(roomNumber in buildingData[buildingID].rooms)) {
-    throw new Error(`Room ID ${buildingID}-${roomNumber} does not exist`);
+  const res = await queryBookingsForRoom(roomId);
+  if (res.rooms_by_pk === null) {
+    throw new Error(`Room ID ${roomId} does not exist`);
   }
 
-  // Collate bookings from timetable data if exists
-  const timetableData = await getTimetableData();
-  const res: BookingsResponse = { bookings: [] };
-  if (!(buildingID in timetableData) || !(roomNumber in timetableData[buildingID])) {
-    return res;
-  }
-
-  for (const week in timetableData[buildingID][roomNumber]) {
-    if (week === 'name') continue;
-
-    const weekData = timetableData[buildingID][roomNumber][week];
-    for (const day in weekData) {
-      res.bookings.push(...weekData[day].map(cls => ({
-        name: cls.courseCode,
-        start: new Date(cls.start),
-        end: new Date(cls.end)
-      })));
-    }
-  }
-
-  return res;
+  return res.rooms_by_pk;
 };
