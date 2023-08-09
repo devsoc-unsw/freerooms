@@ -1,9 +1,9 @@
 import { createContext } from "react";
-import type { Buildings, Room_Dictionary } from "./services/freerooms_api/api_types";
+import { Building, StatusResponse } from "@common/types";
 
 type ContextType = { 
-	buildings : Buildings;
-	rooms : Room_Dictionary,
+	buildings : Building[];
+	rooms : StatusResponse,
 	onRefresh : () => void;
 }
 

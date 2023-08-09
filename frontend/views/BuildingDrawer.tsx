@@ -1,3 +1,4 @@
+import { RoomStatus } from "@common/types";
 import CloseIcon from "@mui/icons-material/Close";
 import { Typography } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
@@ -19,7 +20,6 @@ import useBuildingStatus from "../hooks/useBuildingStatus";
 import { selectCurrentBuilding, setCurrentBuilding } from "../redux/currentBuildingSlice";
 import { selectDatetime, setDatetime } from "../redux/datetimeSlice";
 import { useDispatch, useSelector } from "../redux/hooks";
-import { RoomStatus } from "../types";
 import toSydneyTime from "../utils/toSydneyTime";
 
 const AppBox = styled(Box)(({ theme }) => ({

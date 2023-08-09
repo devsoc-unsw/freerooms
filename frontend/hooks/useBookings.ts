@@ -2,22 +2,23 @@
  * Data fetching hook for all bookings of a given room
  * Uses datetime and filters from Redux store
  */
+import { BookingsResponse } from "@common/types";
 import axios from "axios";
 import useSWRImmutable from 'swr/immutable'
 
 import { API_URL } from "../config";
-import { Class } from "../types";
+import parseDates from "../utils/parseDates";
 
-const fetcher = (url: string) => axios.get(url).then(res => res.data.bookings);
+const fetcher = (url: string) => axios.get(url).then(res => res.data).then(parseDates);
 
 const useBookings = (roomId: string) => {
-  const { data, error } = useSWRImmutable<Class[]>(
+  const { data, error } = useSWRImmutable<BookingsResponse>(
     API_URL + "/rooms/bookings/" + roomId,
     fetcher
   );
 
   return {
-    bookings: data,
+    bookings: data?.bookings,
     error
   };
 }

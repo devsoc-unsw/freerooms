@@ -3,7 +3,8 @@ import child_process from "child_process";
 import fs from "fs";
 
 import { DATABASE_PATH, SCRAPER_PATH } from "./config";
-import { TimetableData, BuildingDatabase, RoomStatus, Class } from "./types";
+import { TimetableData, BuildingDatabase, Class } from "./types";
+import { RoomStatus } from "@common/types";
 
 const TIMETABLE_API = "https://timetable.csesoc.app/api"
 const DATE_REGEX = new RegExp(/\d{2}\/\d{2}\/\d{4}/);

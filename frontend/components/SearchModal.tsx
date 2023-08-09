@@ -17,28 +17,11 @@ import useBuildings from "../hooks/useBuildings";
 import useRooms from "../hooks/useRooms";
 import { setCurrentBuilding } from "../redux/currentBuildingSlice";
 import { useDispatch } from "../redux/hooks";
-import { Building, RoomData } from "../types";
+import { BuildingSearchOption, RoomSearchOption, SearchOption } from "../types";
 
 interface SearchProps {
   open: boolean;
   setOpen: (open: boolean) => void;
-}
-
-// First element in searchKeys should always be name
-type SearchOption = (BuildingSearchOption | RoomSearchOption) & {
-  recent?: boolean;
-};
-
-type BuildingSearchOption = {
-  type: "Building";
-  searchKeys: string[];
-  building: Building;
-}
-
-type RoomSearchOption = {
-  type: "Room";
-  searchKeys: string[];
-  room: RoomData;
 }
 
 const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
