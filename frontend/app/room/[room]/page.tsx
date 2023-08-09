@@ -9,7 +9,6 @@ import BookingCalendar from "../../../components/BookingCalendar";
 import LoadingCircle from "../../../components/LoadingCircle";
 import useBookings from "../../../hooks/useBookings";
 import useRoom from "../../../hooks/useRoom";
-import { Booking } from "@common/types";
 
 export default function Page({ params }: {
   params: {room: string};
