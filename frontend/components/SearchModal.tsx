@@ -18,16 +18,21 @@ import useRooms from "../hooks/useRooms";
 import { setCurrentBuilding } from "../redux/currentBuildingSlice";
 import { useDispatch } from "../redux/hooks";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { BuildingSearchOption, RoomSearchOption, SearchOption } from "../types";
 =======
 import { Building, RoomData } from "../types";
 >>>>>>> a27b7d9 (feat(backend): create and adopt `/api/rooms` endpoint for room data (#401))
+=======
+import { BuildingSearchOption, RoomSearchOption, SearchOption } from "../types";
+>>>>>>> 599e782 (feat: use common folder for shared code (e.g. data types) (#402))
 
 interface SearchProps {
   open: boolean;
   setOpen: (open: boolean) => void;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 // First element in searchKeys should always be name
@@ -48,6 +53,8 @@ type RoomSearchOption = {
 }
 
 >>>>>>> a27b7d9 (feat(backend): create and adopt `/api/rooms` endpoint for room data (#401))
+=======
+>>>>>>> 599e782 (feat: use common folder for shared code (e.g. data types) (#402))
 const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
   const router = useRouter();
   const dispatch = useDispatch();

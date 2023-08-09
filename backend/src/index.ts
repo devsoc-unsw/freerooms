@@ -45,17 +45,6 @@ app.get(
   })
 );
 
-// Route to get info of all the rooms
-app.get(
-  "/api/rooms",
-  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const roomData = await getAllRooms();
-    const data = { rooms: roomData };
-    res.send(data);
-    next();
-  })
-);
-
 // Route to get status of all rooms
 app.get(
   "/api/rooms/status",
@@ -76,7 +65,7 @@ app.get(
     const [campus, buildingGrid, roomNumber] = roomID.split("-");
 
     const data = await getRoomBookings(`${campus}-${buildingGrid}`, roomNumber);
-    res.send({ bookings: data });
+    res.send(data);
     next();
   })
 );

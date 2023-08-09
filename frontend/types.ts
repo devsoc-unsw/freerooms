@@ -1,6 +1,7 @@
 import { Building, Room } from "@common/types";
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ///////////////////////////////////////////////////////////////
 // Dropdown types
 =======
@@ -64,6 +65,10 @@ export type BuildingReturnData = {
   buildings: Building[]
 }
 >>>>>>> a27b7d9 (feat(backend): create and adopt `/api/rooms` endpoint for room data (#401))
+=======
+///////////////////////////////////////////////////////////////
+// Dropdown types
+>>>>>>> 599e782 (feat: use common folder for shared code (e.g. data types) (#402))
 
 export type DropDown = {
   text: string,

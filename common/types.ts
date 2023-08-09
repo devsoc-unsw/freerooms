@@ -8,21 +8,36 @@ export type Building = {
   id: string;
   lat: number;
   long: number;
+<<<<<<< HEAD
   aliases: string[];
+=======
+  // aliases: string[];
+>>>>>>> 599e782 (feat: use common folder for shared code (e.g. data types) (#402))
 };
 
 export type Room = {
   name: string;
   id: string;
+<<<<<<< HEAD
   abbr: string;
   capacity: number;
   usage: string;
   school: string;
+=======
+  // abbr: string;
+  capacity: number;
+  usage: string;
+  // school: string;
+>>>>>>> 599e782 (feat: use common folder for shared code (e.g. data types) (#402))
 };
 
 export type Booking = {
   name: string;
+<<<<<<< HEAD
   bookingType: string;
+=======
+  // bookingType: string;
+>>>>>>> 599e782 (feat: use common folder for shared code (e.g. data types) (#402))
   start: Date;
   end: Date;
 };

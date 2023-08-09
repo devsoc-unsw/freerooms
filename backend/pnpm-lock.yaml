@@ -43,9 +43,12 @@ devDependencies:
   ts-node:
     specifier: 10.9.1
     version: 10.9.1(@types/node@18.17.3)(typescript@4.9.5)
+<<<<<<< HEAD
   tsc-alias:
     specifier: ^1.8.7
     version: 1.8.7
+=======
+>>>>>>> 599e782 (feat: use common folder for shared code (e.g. data types) (#402))
   tsconfig-paths:
     specifier: ^4.2.0
     version: 4.2.0
@@ -1049,6 +1052,7 @@ packages:
       yn: 3.1.1
     dev: true
 
+<<<<<<< HEAD
   /tsc-alias@1.8.7:
     resolution: {integrity: sha512-59Q/zUQa3miTf99mLbSqaW0hi1jt4WoG8Uhe5hSZJHQpSoFW9eEwvW7jlKMHXWvT+zrzy3SN9PE/YBhQ+WVydA==}
     hasBin: true
@@ -1061,6 +1065,8 @@ packages:
       plimit-lit: 1.5.0
     dev: true
 
+=======
+>>>>>>> 599e782 (feat: use common folder for shared code (e.g. data types) (#402))
   /tsconfig-paths@4.2.0:
     resolution: {integrity: sha512-NoZ4roiN7LnbKn9QqE1amc9DJfzvZXxF4xDavcOWt1BPkdx+m+0gJuPM+S0vCe7zTJMYUP0R8pO2XMr+Y8oLIg==}
     engines: {node: '>=6'}
