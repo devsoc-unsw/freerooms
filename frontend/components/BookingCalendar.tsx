@@ -3,7 +3,7 @@
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import { Booking } from "@common/types";
-import Box from '@mui/material/Box';
+import Box, { BoxProps } from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Stack from "@mui/material/Stack";
@@ -102,7 +102,7 @@ const CustomToolBar: React.FC<ToolbarProps> = ({ view, onNavigate, onView }) => 
 	)
 }
 
-const StyledCalendar = styled<typeof Calendar<Booking>>(Calendar)(({ view }) => ({
+const StyledCalendarContainer = styled(Box)<BoxProps & { view: View }>(({ view }) => ({
 	'& .rbc-allday-cell': {
 		display: 'none'
 	},
@@ -223,8 +223,8 @@ const BookingCalendar : React.FC<{ events : Array<Booking> }>= ({ events }) => {
 						/>
 					</LocalizationProvider>
 				</Stack>
-				<Box overflow="auto" p={0.5}>
-					<StyledCalendar
+				<StyledCalendarContainer overflow="auto" p={0.5} view={currView}>
+					<Calendar
 						components={components}
 						dayLayoutAlgorithm={'no-overlap'}
 						date={date}
@@ -249,7 +249,7 @@ const BookingCalendar : React.FC<{ events : Array<Booking> }>= ({ events }) => {
 							eventTimeRangeFormat: formatTimeRange
 						}}
 					/>
-				</Box>
+				</StyledCalendarContainer>
 			</Stack>
 		</>
 	)
