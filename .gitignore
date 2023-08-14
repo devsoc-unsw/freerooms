@@ -95,5 +95,6 @@ typings/
 # Frontend
 frontend/node_modules
 
-# IntelliJ IDE configs
-.idea/
+# IDE configs
+**/.idea/
+**/.vscode/

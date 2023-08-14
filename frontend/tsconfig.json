@@ -1,31 +1,36 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
     "strict": true,
-    "jsx": "preserve",
-    "importHelpers": true,
-    "moduleResolution": "node",
-    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "noImplicitReturns": true,
-    "sourceMap": true,
-    "baseUrl": ".",
-    "types": ["webpack-env", "vuetify"],
-    "paths": {
-      "@/*": ["src/*"]
-    },
-    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "tests/**/*.ts",
-    "tests/**/*.tsx"
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

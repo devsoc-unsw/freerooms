@@ -1,0 +1,37 @@
+{
+  "name": "freerooms-backend",
+  "version": "1.0.0",
+  "description": "Freerooms backend",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon src/index.ts",
+    "build": "tsc --project ./",
+    "scrape": "ts-node src/scraper.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/csesoc/Freerooms.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/csesoc/Freerooms/issues"
+  },
+  "homepage": "https://github.com/csesoc/Freerooms#readme",
+  "dependencies": {
+    "axios": "^1.0.0",
+    "cheerio": "1.0.0-rc.12",
+    "cors": "^2.8.5",
+    "express": "^4.18.1"
+  },
+  "devDependencies": {
+    "@types/cors": "2.8.13",
+    "@types/express": "4.17.17",
+    "@types/luxon": "^3.2.0",
+    "@types/node": "18.17.3",
+    "nodemon": "^2.0.20",
+    "ts-node": "10.9.1",
+    "typescript": "4.9.5"
+  }
+}
