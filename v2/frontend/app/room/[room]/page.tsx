@@ -7,6 +7,9 @@ import Typography from '@mui/material/Typography';
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import React from 'react';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import MenuIcon from '@mui/icons-material/Menu';
 
 import BookingCalendar from "../../../components/BookingCalendar";
 import Button from "../../../components/Button";
@@ -16,8 +19,7 @@ import roomImage from "../../../public/assets/building_photos/K-B16.webp";
 import { setCurrentBuilding } from "../../../redux/currentBuildingSlice";
 import { useDispatch } from '../../../redux/hooks';
 import type  {  RoomAvailability } from '../../../types';
-
-
+import { IconButton } from '@mui/material';
 
 type Event = {
 	title: string;
@@ -90,7 +92,8 @@ const RoomPageHeader : React.FC<{ roomName: string, roomId:  string, roomAlias :
 			alignItems={'center'}
 			justifyContent={"space-between"}
 		>
-			<Stack direction={"column"} spacing={1}>
+			<Stack direction={"column"} spacing={1} width="100%">
+				
 				{ idRequired ? (
 					<Typography variant='subtitle2'>
 						<Typography display="inline" variant="subtitle2" fontWeight={"bold"}>{"CATS "}</Typography> 
@@ -99,8 +102,19 @@ const RoomPageHeader : React.FC<{ roomName: string, roomId:  string, roomAlias :
 					</Typography>
 				) : null 
 				}
-				<Typography variant='h4' fontWeight={550}> {roomName} </Typography>
-				<Stack direction={"row"} spacing={3}>
+				<Box display="flex" justifyContent={"space-between"} alignItems={'center'} width={'100%'} >
+					<Typography variant='h4' fontWeight={550}> {roomName} </Typography>
+					<Stack direction={"row"} spacing={1}>
+						<Button sx={{ px: 2, py: 1}}>
+							<Typography variant={"body2"} fontWeight={"bold"}>Make a Booking</Typography>
+						</Button>
+						<Button sx={{ px: 2, py: 1}}>
+							<Typography variant={"body2"} fontWeight={"bold"}>Add Photos</Typography>
+						</Button>
+					</Stack> 
+					
+				</Box>
+				<Stack direction={"row"} spacing={3}  >
 					<Typography variant="body1" fontWeight={"bold"}>
 						ID: <Typography display={"inline"} variant="body1">{roomId}</Typography>
 					</Typography>
@@ -112,14 +126,46 @@ const RoomPageHeader : React.FC<{ roomName: string, roomId:  string, roomAlias :
 					</Typography>
 				</Stack>
 			</Stack>
-			<Stack direction={"row"} spacing={1} >
-				<Button sx={{ px: 2, py: 1}}>
-					<Typography variant={"body2"} fontWeight={"bold"}>Make a Booking</Typography>
-				</Button>
-				<Button sx={{ px: 2, py: 1}}>
-					<Typography variant={"body2"} fontWeight={"bold"}>Add Photos</Typography>
-				</Button>
-			</Stack>
+		</Box>
+	);
+}
+
+const ActionMenu : React.FC = () => {
+
+	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+ 	const open = Boolean(anchorEl);
+	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+		setAnchorEl(event.currentTarget);
+	};
+	const handleClose = () => {
+		setAnchorEl(null);
+	};
+
+
+	return (
+		<Box>
+			<IconButton
+				id="basic-button"
+				aria-controls={open ? 'basic-menu' : undefined}
+				aria-haspopup="true"
+				aria-expanded={open ? 'true' : undefined}
+				onClick={handleClick}
+      		>
+				<MenuIcon />
+      		</IconButton>
+      		<Menu
+				id="basic-menu"
+				anchorEl={anchorEl}
+				open={open}
+				onClose={handleClose}
+				MenuListProps={{
+				'aria-labelledby': 'basic-button',
+				}}
+			>
+				<MenuItem onClick={handleClose}>Make a Booking</MenuItem>
+				<MenuItem onClick={handleClose}>Map</MenuItem>
+				<MenuItem onClick={handleClose}>Add Photos</MenuItem>
+      		</Menu>
 		</Box>
 	);
 }
