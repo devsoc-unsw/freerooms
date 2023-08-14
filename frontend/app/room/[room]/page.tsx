@@ -10,19 +10,17 @@ import React from 'react';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MenuIcon from '@mui/icons-material/Menu';
+import { useTheme } from "@mui/material/styles";
 
 import BookingCalendar from "../../../components/BookingCalendar";
 import Button from "../../../components/Button";
 import LoadingCircle from "../../../components/LoadingCircle";
 import useBookings from "../../../hooks/useBookings";
-<<<<<<< HEAD:v2/frontend/app/room/[room]/page.tsx
 import roomImage from "../../../public/assets/building_photos/K-B16.webp";
 import { setCurrentBuilding } from "../../../redux/currentBuildingSlice";
 import { useDispatch } from '../../../redux/hooks';
-=======
->>>>>>> master:frontend/app/room/[room]/page.tsx
 import type  {  RoomAvailability } from '../../../types';
-import { IconButton } from '@mui/material';
+import { IconButton, useMediaQuery } from '@mui/material';
 
 type Event = {
 	title: string;
@@ -83,6 +81,9 @@ const RoomPageHeader : React.FC<{ roomName: string, roomId:  string, roomAlias :
 	roomType, 
 	idRequired
 }) => {
+	const theme = useTheme();
+	const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
 	return (
 		<Box
 			width={"100%"}
@@ -103,14 +104,17 @@ const RoomPageHeader : React.FC<{ roomName: string, roomId:  string, roomAlias :
 				}
 				<Box display="flex" justifyContent={"space-between"} alignItems={'center'} width={'100%'} >
 					<Typography variant='h4' fontWeight={550}> {roomName} </Typography>
-					<Stack direction={"row"} spacing={1}>
-						<Button sx={{ px: 2, py: 1}}>
-							<Typography variant={"body2"} fontWeight={"bold"}>Make a Booking</Typography>
-						</Button>
-						<Button sx={{ px: 2, py: 1}}>
-							<Typography variant={"body2"} fontWeight={"bold"}>Add Photos</Typography>
-						</Button>
-					</Stack> 
+					{ isMobile ?  <ActionMenu /> 
+					: ( 
+						<Stack direction={"row"} spacing={1}>
+							<Button sx={{ px: 2, py: 1}}>
+								<Typography variant={"body2"} fontWeight={"bold"}>Make a Booking</Typography>
+							</Button>
+							<Button sx={{ px: 2, py: 1}}>
+								<Typography variant={"body2"} fontWeight={"bold"}>Add Photos</Typography>
+							</Button>
+						</Stack> )
+					}	
 					
 				</Box>
 				<Stack direction={"row"} spacing={3}  >
