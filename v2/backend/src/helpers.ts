@@ -4,6 +4,7 @@ import fs from "fs";
 
 import { DATABASE_PATH, SCRAPER_PATH } from "./config";
 import { TimetableData, BuildingDatabase, RoomStatus, Class } from "./types";
+import multer, { Multer } from 'multer';
 
 const TIMETABLE_API = "https://timetable.csesoc.app/api"
 const DATE_REGEX = new RegExp(/\d{2}\/\d{2}\/\d{4}/);
@@ -153,4 +154,18 @@ export const calculateStatus = (
   }
 
   return roomStatus;
+}
+
+/**
+ * Given a roomID and a file, upload the file to the /images/roomID folder
+ * Reading for future serving, related to each room.
+ * TODO: Validate image type upon uploading.
+ * @param roomID 
+ * @param file 
+ */
+export const fileUpload = (
+    roomID: string,
+    file: string,
+): boolean  => {
+    return true;
 }

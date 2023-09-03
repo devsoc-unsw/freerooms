@@ -864,7 +864,7 @@
             "G5": {
                 "id": "K-C20-G5",
                 "name": "Morven Brown G5",
-                "capacity": 22,
+                "capacity": 26,
                 "usage": "TUT"
             },
             "G6": {
@@ -882,7 +882,7 @@
             "LG30": {
                 "id": "K-C20-LG30",
                 "name": "Morven Brown LG30",
-                "capacity": 22,
+                "capacity": 24,
                 "usage": "TUT"
             }
         }
@@ -965,49 +965,49 @@
         "rooms": {
             "103": {
                 "id": "K-E19-103",
-                "name": "E19 Patricia O'Shane 103 (previously CLB 6)",
+                "name": "E19 Patricia O’Shane 103 (previously CLB 6)",
                 "capacity": 231,
                 "usage": "LEC"
             },
             "104": {
                 "id": "K-E19-104",
-                "name": "E19 Patricia O'Shane 104 (previously CLB 7)",
+                "name": "E19 Patricia O’Shane 104 (previously CLB 7)",
                 "capacity": 497,
                 "usage": "LEC"
             },
             "105": {
                 "id": "K-E19-105",
-                "name": "E19 Patricia O'Shane 105 (previously CLB 8)",
+                "name": "E19 Patricia O’Shane 105 (previously CLB 8)",
                 "capacity": 231,
                 "usage": "LEC"
             },
             "G02": {
                 "id": "K-E19-G02",
-                "name": "E19 Patricia O'Shane G02 (previously CLB 1)",
+                "name": "E19 Patricia O’Shane G02 (previously CLB 1)",
                 "capacity": 113,
                 "usage": "LEC"
             },
             "G03": {
                 "id": "K-E19-G03",
-                "name": "E19 Patricia O'Shane G03 (previously CLB 2)",
+                "name": "E19 Patricia O’Shane G03 (previously CLB 2)",
                 "capacity": 112,
                 "usage": "LEC"
             },
             "G04": {
                 "id": "K-E19-G04",
-                "name": "E19 Patricia O'Shane G04 (previously CLB 3)",
+                "name": "E19 Patricia O’Shane G04 (previously CLB 3)",
                 "capacity": 102,
                 "usage": "LEC"
             },
             "G05": {
                 "id": "K-E19-G05",
-                "name": "E19 Patricia O'Shane G05 (previously CLB 4)",
+                "name": "E19 Patricia O’Shane G05 (previously CLB 4)",
                 "capacity": 112,
                 "usage": "LEC"
             },
             "G06": {
                 "id": "K-E19-G06",
-                "name": "E19 Patricia O'Shane G06 (previously CLB 5)",
+                "name": "E19 Patricia O’Shane G06 (previously CLB 5)",
                 "capacity": 113,
                 "usage": "LEC"
             }
