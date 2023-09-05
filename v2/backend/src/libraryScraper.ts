@@ -4,10 +4,46 @@ import { RoomBooking, Room } from "./types";
 
 import axios from "axios";
 import fs from "fs";
+import { setPriority } from 'os';
 
 const ROOM_URL = "https://unswlibrary-bookings.libcal.com/space/";
+const BOOKINGS_URL = "https://unswlibrary-bookings.libcal.com/spaces/availability/grid";
+const MAIN_LIBRARY_ID = 6581;
+const LAW_LIBRARY_ID = 6584;
 
-const POST_URL = "https://unswlibrary-bookings.libcal.com/spaces/availability/grid";
+const scrapeLibraryBookings = async() => {
+
+    // const browser = await launch();
+
+    const response = await downloadBookingsPage();
+    // const responseData = response.data;
+
+    const bookingData = parseBookingData(response.data['slots']);
+
+    const allRoomData: Room[] = [];
+    const allRoomBookings: RoomBooking[] = [];
+
+    console.log(bookingData);
+
+    // for (const roomID in bookingData) {
+    //     const roomData = await getRoomData(roomID);
+    //     allRoomData.push(roomData);
+
+    //     // for (const booking of bookingData[roomID]) {
+    //     //     const roomBooking: RoomBooking = {
+    //     //         bookingType: '?',
+    //     //         name: roomData.name,
+    //     //         roomId: roomID,
+    //     //         start: booking.start,
+    //     //         end: booking.end,
+    //     //     }
+    //     //     allRoomBookings.push(roomBooking);
+    //     // }
+    // }
+
+    // console.log(allRoomData);
+    // console.log(allRoomBookings);
+}
 
 const downloadBookingsPage = async() => {
 
@@ -29,7 +65,7 @@ const downloadBookingsPage = async() => {
         'Referer': 'https://unswlibrary-bookings.libcal.com/r/new/availability?lid=6581&zone=0&gid=0&capacity=-1'
     };
 
-    const response = await axios.post(POST_URL, new URLSearchParams(postData), {headers: headers});
+    const response = await axios.post(BOOKINGS_URL, new URLSearchParams(postData), {headers: headers});
     // const responseString = JSON.stringify(response.data, null, 4);
     // fs.writeFile('out.txt', responseString, (err) => {
     //     if (err) throw err;
@@ -70,68 +106,43 @@ const parseBookingData = (bookingData: ResponseData[]) => {
     return bookings;
 }
 
-const scrapeLibraryBookings = async() => {
-
-    // const browser = await launch();
-
-    const response = await downloadBookingsPage();
-    // const responseData = response.data;
-
-    const bookingData = parseBookingData(response.data['slots']);
-
-    const allRoomData: Room[] = [];
-    const allRoomBookings: RoomBooking[] = [];
-
-    for (const roomID in bookingData) {
-        // roomBookingData
-        const roomData = getRoomData(roomID);
-        allRoomData.push(roomData);
-
-        for (const booking of bookingData[roomID]) {
-            const roomBooking: RoomBooking = {
-                bookingType: '?',
-                name: roomData.name,
-                roomId: roomID,
-                start: booking.start,
-                end: booking.end,
-            }
-            allRoomBookings.push(roomBooking);
-        }
-    }
-}
-
 const downloadRoomPage = async(roomId: string) => {
-    try {
-        const response = await axios.get(ROOM_URL + roomId, {});
-        // const responseString = JSON.stringify(response.data, null, 4);
 
-        fs.writeFile('out.txt', response.data, (err) => {
-            if (err) throw err;
-        });
+    const response = await axios.get(ROOM_URL + roomId, {});
 
-        return response;
+    // fs.writeFile('out.txt', response.data, (err) => {
+    //     if (err) throw err;
+    // });
 
-    } catch (error) {
-        console.error("Error fetching availability:", error);
+    return response;
+
+}
+
+const getRoomData = async (roomId: string) => {
+
+    console.log("getRoomData called with: " + roomId);
+
+    const response = await downloadRoomPage(roomId);
+    const $ = load(response.data);
+
+    const $heading = $('h1#s-lc-public-header-title');
+
+    // Remove whitespace and split the name, location and capacity into newlines
+    const data = $heading.text().trim().split(/\s{2,}/g);
+    const capacity = Number(data[2].split(": ")[1]);
+
+    const roomData: Room = {
+        abbr: data[0],
+        name: data[0],
+        id: roomId,
+        usage: "?",
+        capacity: capacity,
+        school: "?"
     }
+
+    return roomData;
 }
 
-
-const scrape = async() => {
-
-    // const browser = await launch();
-
-    // const response = await downloadPage();
-
-    const response2 = await downloadRoomPage("45757");
-    // console.log(response.data);
-    // const $ = load(response);
-
-    // const $ = load(response);
-    // console.log($('table.fc-scrollgrid'));
-
-
-}
 
 // getRooms();
 scrapeLibraryBookings();
