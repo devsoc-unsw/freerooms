@@ -85,7 +85,18 @@ const scrapeLibraryBookings = async() => {
     for (const roomID in bookingData) {
         // roomBookingData
         const roomData = getRoomData(roomID);
+        allRoomData.push(roomData);
 
+        for (const booking of bookingData[roomID]) {
+            const roomBooking: RoomBooking = {
+                bookingType: '?',
+                name: roomData.name,
+                roomId: roomID,
+                start: booking.start,
+                end: booking.end,
+            }
+            allRoomBookings.push(roomBooking);
+        }
     }
 }
 
