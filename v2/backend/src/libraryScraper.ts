@@ -8,14 +8,12 @@ import { setPriority } from 'os';
 
 const ROOM_URL = "https://unswlibrary-bookings.libcal.com/space/";
 const BOOKINGS_URL = "https://unswlibrary-bookings.libcal.com/spaces/availability/grid";
-const MAIN_LIBRARY_ID = 6581;
-const LAW_LIBRARY_ID = 6584;
+const MAIN_LIBRARY_ID = '6581';
+const LAW_LIBRARY_ID = '6584';
 
 const scrapeLibraryBookings = async() => {
 
-    // const browser = await launch();
-
-    const response = await downloadBookingsPage();
+    const response = await downloadBookingsPage(MAIN_LIBRARY_ID);
     // const responseData = response.data;
 
     const bookingData = parseBookingData(response.data['slots']);
@@ -23,32 +21,30 @@ const scrapeLibraryBookings = async() => {
     const allRoomData: Room[] = [];
     const allRoomBookings: RoomBooking[] = [];
 
-    console.log(bookingData);
+    for (const roomID in bookingData) {
+        const roomData = await getRoomData(roomID);
+        allRoomData.push(roomData);
 
-    // for (const roomID in bookingData) {
-    //     const roomData = await getRoomData(roomID);
-    //     allRoomData.push(roomData);
+        for (const booking of bookingData[roomID]) {
+            const roomBooking: RoomBooking = {
+                bookingType: 'Study Room',
+                name: roomData.name,
+                roomId: roomID,
+                start: booking.start,
+                end: booking.end,
+            }
+            allRoomBookings.push(roomBooking);
+        }
+    }
 
-    //     // for (const booking of bookingData[roomID]) {
-    //     //     const roomBooking: RoomBooking = {
-    //     //         bookingType: '?',
-    //     //         name: roomData.name,
-    //     //         roomId: roomID,
-    //     //         start: booking.start,
-    //     //         end: booking.end,
-    //     //     }
-    //     //     allRoomBookings.push(roomBooking);
-    //     // }
-    // }
-
-    // console.log(allRoomData);
-    // console.log(allRoomBookings);
+    console.log(allRoomData);
+    console.log(allRoomBookings);
 }
 
-const downloadBookingsPage = async() => {
+const downloadBookingsPage = async(locationId: string) => {
 
     const postData = {
-        lid: '6581',
+        lid: locationId,
         gid: '0',
         eid: '-1',
         seat: '0',
@@ -66,10 +62,6 @@ const downloadBookingsPage = async() => {
     };
 
     const response = await axios.post(BOOKINGS_URL, new URLSearchParams(postData), {headers: headers});
-    // const responseString = JSON.stringify(response.data, null, 4);
-    // fs.writeFile('out.txt', responseString, (err) => {
-    //     if (err) throw err;
-    // })
 
     return response;
 }
@@ -77,30 +69,28 @@ const downloadBookingsPage = async() => {
 interface ResponseData {
     start: string,
     end: string,
-    itemID: string,
+    itemId: number,
     checksum: string,
     className: string | null
 }
 
 const parseBookingData = (bookingData: ResponseData[]) => {
-    // console.log(bookingData);
 
-    let bookings: { [key: string]: any[] } = {};
+    let bookings: { [key: number]: any[] } = {};
 
     for (const slot of bookingData) {
-        if (!(slot.itemID in bookings)) {
-            bookings[slot.itemID] = [];
+        if (!(slot.itemId in bookings)) {
+            bookings[slot.itemId] = [];
         }
 
-        if (slot.className != null) {
-            bookings[slot.itemID].push(
+        if (slot.className == "s-lc-eq-checkout") {
+            bookings[slot.itemId].push(
                 {
                     start: new Date(slot.start),
                     end: new Date(slot.end),
                 }
             )
         }
-
     }
 
     return bookings;
@@ -110,17 +100,11 @@ const downloadRoomPage = async(roomId: string) => {
 
     const response = await axios.get(ROOM_URL + roomId, {});
 
-    // fs.writeFile('out.txt', response.data, (err) => {
-    //     if (err) throw err;
-    // });
-
     return response;
 
 }
 
 const getRoomData = async (roomId: string) => {
-
-    console.log("getRoomData called with: " + roomId);
 
     const response = await downloadRoomPage(roomId);
     const $ = load(response.data);
@@ -135,14 +119,12 @@ const getRoomData = async (roomId: string) => {
         abbr: data[0],
         name: data[0],
         id: roomId,
-        usage: "?",
+        usage: "Study Room",
         capacity: capacity,
-        school: "?"
+        school: "Library"
     }
 
     return roomData;
 }
 
-
-// getRooms();
 scrapeLibraryBookings();
