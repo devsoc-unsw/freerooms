@@ -38,10 +38,14 @@ const CardList: React.FC<{
   const { userLat, userLng } = useUserLocation();
 
   React.useEffect(() => {
-    if (!buildings || !roomStatusData || Object.keys(roomStatusData).length == 0)
-      return;
+    if (!buildings) return;
 
-    // Filter any out that dont start with query
+    if (!roomStatusData || Object.keys(roomStatusData).length == 0) {
+      setDisplayedBuildings(buildings);
+      return;
+    }
+
+    // Filter any out that don't start with query
     // If hideUnavailable is true, filter any that have no available rooms
     const newDisplayedBuildings = buildings.filter((building) =>
       building.name.toLowerCase().includes(query.toLowerCase()) &&
@@ -61,7 +65,7 @@ const CardList: React.FC<{
             calculateDistance(userLat, userLng, b.lat, b.long)
           ) : 0;
         case "mostRooms":
-          return (
+          return roomStatusData && (
             getNumFreerooms(roomStatusData[b.id]) -
             getNumFreerooms(roomStatusData[a.id])
           );

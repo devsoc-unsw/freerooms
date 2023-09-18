@@ -22,7 +22,6 @@ COPY backend/package.json backend/pnpm-lock.yaml ./
 RUN pnpm install --production
 
 COPY --from=builder /app/backend/dist ./
-COPY backend/database.json backend/buildingLocations.json ./
 
 EXPOSE 3000
 
