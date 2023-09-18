@@ -1,13 +1,15 @@
 // Interface to the Hasura GraphQL API
 import { Booking } from "@common/types";
 import parseDates from "@common/parseDates";
-import { request, gql } from 'graphql-request'
-import { DATABASE_URL } from "./config";
+import { GraphQLClient, gql } from 'graphql-request'
+import { GRAPHQL_API } from "./config";
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core';
 import { parse } from 'graphql'
 
 ///////////////////////////////////////////////////////////////
 // Helper functions for making and processing GQL requests
+
+const client = new GraphQLClient(GRAPHQL_API);
 
 /**
  * Make a request to the GraphQL API
@@ -17,8 +19,8 @@ const doRequest = async <T>(
   variables: Record<string, string> = {}
 ): Promise<T> => {
   // Make the request
-  const query: TypedDocumentNode<T> = parse(gql`${queryStr}`)
-  const data = await request(DATABASE_URL, query, variables);
+  const query: TypedDocumentNode<T> = parse(gql`${queryStr}`);
+  const data = await client.request(query, variables);
 
   // Parse dates
   return parseDates(data);
@@ -91,13 +93,13 @@ type BuildingsAndRoomsRes = {
 export const queryBuildingsAndRooms = async (): Promise<BuildingsAndRoomsRes> => {
   const query = `
     query BuildingAndRooms {
-      buildings {
+      buildings(order_by: {name: asc}) {
         id
         name
         lat
         long
         aliases
-        rooms {
+        rooms(order_by: {id: asc}) {
           id
           name
           abbr

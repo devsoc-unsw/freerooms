@@ -6,8 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon src/index.ts",
-    "build": "tsc -p tsconfig.json && tsc-alias -p tsconfig.json",
-    "scrape": "ts-node src/scraper.ts"
+    "build": "tsc -p tsconfig.json && tsc-alias -p tsconfig.json"
   },
   "repository": {
     "type": "git",
