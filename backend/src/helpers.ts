@@ -1,8 +1,8 @@
 import { utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
 
-import { DATABASE_PATH, SCRAPER_PATH } from "./config";
-import { TimetableData, BuildingDatabase, Class } from "./types";
-import { RoomStatus } from "@common/types";
+import { RoomStatus, Booking, BookingsResponse } from "@common/types";
+import { queryBookingsInRange, queryBuildingsAndRooms } from "./dbInterface";
+import { BuildingDatabase } from "./types";
 
 const FIFTEEN_MIN = 15 * 1000 * 60;
 

@@ -17,9 +17,12 @@ const FlipMoveGrid = styled(FlipMove)(() => ({
   gridGap: "20px",
 }));
 
-const FlippableCard = React.forwardRef<HTMLDivElement, {
-  buildingId: string;
-}>(({ buildingId }, ref) => (
+const FlippableCard = React.forwardRef<
+  HTMLDivElement,
+  {
+    buildingId: string;
+  }
+>(({ buildingId }, ref) => (
   <div ref={ref}>
     <BuildingCard buildingId={buildingId} />
   </div>
@@ -38,20 +41,19 @@ const CardList: React.FC<{
   const { userLat, userLng } = useUserLocation();
 
   React.useEffect(() => {
-    if (!displayedBuildings && buildings) {
-      setDisplayedBuildings(buildings);
-      return;
-    }
+    if (!buildings) return;
 
-    if (!buildings || !roomStatusData || Object.keys(roomStatusData).length == 0) {
+    if (!roomStatusData || Object.keys(roomStatusData).length == 0) {
+      setDisplayedBuildings(buildings);
       return;
     }
 
     // Filter any out that don't start with query
     // If hideUnavailable is true, filter any that have no available rooms
-    const newDisplayedBuildings = buildings.filter((building) =>
-      building.name.toLowerCase().includes(query.toLowerCase()) &&
-      Object.keys(roomStatusData[building.id]).length > 0,
+    const newDisplayedBuildings = buildings.filter(
+      (building) =>
+        building.name.toLowerCase().includes(query.toLowerCase()) &&
+        Object.keys(roomStatusData[building.id]).length > 0
     );
 
     // Sort the displayed buildings
@@ -62,14 +64,15 @@ const CardList: React.FC<{
         case "upperToLower":
           return b.long - a.long;
         case "nearest":
-          return userLat && userLng ? (
-            calculateDistance(userLat, userLng, a.lat, a.long) -
-            calculateDistance(userLat, userLng, b.lat, b.long)
-          ) : 0;
+          return userLat && userLng
+            ? calculateDistance(userLat, userLng, a.lat, a.long) -
+                calculateDistance(userLat, userLng, b.lat, b.long)
+            : 0;
         case "mostRooms":
-          return roomStatusData && (
+          return (
+            roomStatusData &&
             getNumFreerooms(roomStatusData[b.id]) -
-            getNumFreerooms(roomStatusData[a.id])
+              getNumFreerooms(roomStatusData[a.id])
           );
         case "reverseAlphabetical":
           return b.name.localeCompare(a.name);
@@ -82,14 +85,14 @@ const CardList: React.FC<{
     setDisplayedBuildings(newDisplayedBuildings);
   }, [query, sort, roomStatusData, buildings]);
 
-  return (
-    displayedBuildings
-      ? <FlipMoveGrid duration={500}>
-        {displayedBuildings.map((building) => (
-          <FlippableCard key={building.id} buildingId={building.id} />
-        ))}
-      </FlipMoveGrid>
-      : <LoadingCircle/>
+  return displayedBuildings ? (
+    <FlipMoveGrid duration={500}>
+      {displayedBuildings.map((building) => (
+        <FlippableCard key={building.id} buildingId={building.id} />
+      ))}
+    </FlipMoveGrid>
+  ) : (
+    <LoadingCircle />
   );
 };
 

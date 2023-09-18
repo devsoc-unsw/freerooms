@@ -11,6 +11,7 @@ import useBookings from "../../../hooks/useBookings";
 import useRoom from "../../../hooks/useRoom";
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 export default function Page({ params }: {
   params: {room: string};
 }) {
@@ -43,15 +44,26 @@ export default function Page({ params }: {
 		}
 	}, [bookings, bookingsError]);
 >>>>>>> a27b7d9 (feat(backend): create and adopt `/api/rooms` endpoint for room data (#401))
+=======
+export default function Page({ params }: {
+  params: {room: string};
+}) {
+	const { bookings } = useBookings(params.room);
+	const { room } = useRoom(params.room);
+>>>>>>> 58b6c91 (feat: integrate with CSESoc GraphQL API (#403))
 
   return (
     
     <Container maxWidth={false} sx={{ height: "100%" }}>
 <<<<<<< HEAD
+<<<<<<< HEAD
       { !room
 =======
       { roomError || !room
 >>>>>>> a27b7d9 (feat(backend): create and adopt `/api/rooms` endpoint for room data (#401))
+=======
+      { !room
+>>>>>>> 58b6c91 (feat: integrate with CSESoc GraphQL API (#403))
 				? <LoadingCircle/>
 				: (
         <Stack justifyContent="center" alignItems="center" width="100%" py={5} height="100%">

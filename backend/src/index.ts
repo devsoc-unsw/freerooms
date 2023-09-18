@@ -62,9 +62,13 @@ app.get(
   "/api/rooms/bookings/:roomID",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const { roomID } = req.params;
+<<<<<<< HEAD
     const [campus, buildingGrid, roomNumber] = roomID.split("-");
 
     const data = await getRoomBookings(`${campus}-${buildingGrid}`, roomNumber);
+=======
+    const data = await getRoomBookings(roomID);
+>>>>>>> 58b6c91 (feat: integrate with CSESoc GraphQL API (#403))
     res.send(data);
     next();
   })

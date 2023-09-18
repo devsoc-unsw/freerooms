@@ -9,15 +9,20 @@ export type Building = {
   lat: number;
   long: number;
 <<<<<<< HEAD
+<<<<<<< HEAD
   aliases: string[];
 =======
   // aliases: string[];
 >>>>>>> 599e782 (feat: use common folder for shared code (e.g. data types) (#402))
+=======
+  aliases: string[];
+>>>>>>> 58b6c91 (feat: integrate with CSESoc GraphQL API (#403))
 };
 
 export type Room = {
   name: string;
   id: string;
+<<<<<<< HEAD
 <<<<<<< HEAD
   abbr: string;
   capacity: number;
@@ -29,15 +34,25 @@ export type Room = {
   usage: string;
   // school: string;
 >>>>>>> 599e782 (feat: use common folder for shared code (e.g. data types) (#402))
+=======
+  abbr: string;
+  capacity: number;
+  usage: string;
+  school: string;
+>>>>>>> 58b6c91 (feat: integrate with CSESoc GraphQL API (#403))
 };
 
 export type Booking = {
   name: string;
 <<<<<<< HEAD
+<<<<<<< HEAD
   bookingType: string;
 =======
   // bookingType: string;
 >>>>>>> 599e782 (feat: use common folder for shared code (e.g. data types) (#402))
+=======
+  bookingType: string;
+>>>>>>> 58b6c91 (feat: integrate with CSESoc GraphQL API (#403))
   start: Date;
   end: Date;
 };

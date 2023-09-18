@@ -3,9 +3,13 @@
  * Uses datetime and filters from Redux store
  */
 <<<<<<< HEAD
+<<<<<<< HEAD
 import parseDates from "@common/parseDates";
 =======
 >>>>>>> 599e782 (feat: use common folder for shared code (e.g. data types) (#402))
+=======
+import parseDates from "@common/parseDates";
+>>>>>>> 58b6c91 (feat: integrate with CSESoc GraphQL API (#403))
 import { BookingsResponse } from "@common/types";
 import axios from "axios";
 import useSWRImmutable from 'swr/immutable'
@@ -13,6 +17,9 @@ import useSWRImmutable from 'swr/immutable'
 import { API_URL } from "../config";
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 58b6c91 (feat: integrate with CSESoc GraphQL API (#403))
 
 const fetcher = (url: string) => axios.get(url).then(res => res.data).then(parseDates);
 

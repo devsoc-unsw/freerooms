@@ -83,10 +83,14 @@ const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
       ? Object.values(rooms).map(room => ({
         type: "Room",
 <<<<<<< HEAD
+<<<<<<< HEAD
         searchKeys: [room.name, room.abbr, room.id],
 =======
         searchKeys: [room.name, room.id],
 >>>>>>> a27b7d9 (feat(backend): create and adopt `/api/rooms` endpoint for room data (#401))
+=======
+        searchKeys: [room.name, room.abbr, room.id],
+>>>>>>> 58b6c91 (feat: integrate with CSESoc GraphQL API (#403))
         room
       }))
       : [];

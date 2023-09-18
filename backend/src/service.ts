@@ -1,4 +1,5 @@
 import { Request } from "express";
+<<<<<<< HEAD
 import {
   calculateStatus,
   getBuildingData,
@@ -12,7 +13,13 @@ import {
   BookingsResponse,
   BuildingStatus,
 } from "@common/types";
+=======
+
+import { calculateStatus, getBuildingRoomData, getBookingsForDate } from "./helpers";
+import { BuildingsResponse, StatusResponse, BookingsResponse, RoomsResponse } from "@common/types";
+>>>>>>> 58b6c91 (feat: integrate with CSESoc GraphQL API (#403))
 import { Filters } from "./types";
+import { queryBookingsForRoom } from "./dbInterface";
 
 const ISO_REGEX =
   /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/;
@@ -25,21 +32,16 @@ export const getAllBuildings = async (): Promise<BuildingsResponse> => {
   }
 
   const res: BuildingsResponse = { buildings: [] };
-  data.forEach(({ name, id, lat, long }) => {
-    res.buildings.push({
-      name: name,
-      id: id,
-      lat: lat,
-      long: long,
-    });
+  data.forEach(({ name, id, lat, long, aliases }) => {
+    res.buildings.push({ name, id, lat, long, aliases });
   });
   return res;
 };
 
 export const getAllRooms = async (): Promise<RoomsResponse> => {
-  const data = Object.values(await getBuildingData());
+  const data = Object.values(await getBuildingRoomData());
   if (!data) {
-    throw new Error(`Buildings cannot be retrieved`);
+    throw new Error(`Rooms cannot be retrieved`);
   }
 
   const res: RoomsResponse = { rooms: {} };
@@ -117,14 +119,17 @@ export const getAllRoomStatus = async (
   date: Date,
   filters: Filters
 ): Promise<StatusResponse> => {
-  const { week, day } = await getWeekAndDay(date);
+  const bookings = await getBookingsForDate(date);
+  const buildingData = await getBuildingRoomData();
 
-  const buildingData = await getBuildingData();
-  const timetableData = await getTimetableData();
   const result: StatusResponse = {};
-  for (const buildingID in buildingData) {
+  for (const buildingId in buildingData) {
     // Skip building if it does not match filter
+<<<<<<< HEAD
     const roomLocation = +buildingId.substring(3) < UPPER ? "lower" : "upper";
+=======
+    const roomLocation = +buildingId.substring(3) < UPPER ? 'lower' : 'upper';
+>>>>>>> 58b6c91 (feat: integrate with CSESoc GraphQL API (#403))
     if (filters.location && filters.location != roomLocation) {
       result[buildingId] = {};
       continue;
@@ -142,12 +147,18 @@ export const getAllRoomStatus = async (
         (filters.id != undefined && (roomData.school != " ") != filters.id) // id is required if managed by a school (non-CATS)
       )
         continue;
+<<<<<<< HEAD
 
       const status = calculateStatus(
         date,
         bookings[roomData.id].bookings,
         filters.duration || 0
       );
+=======
+      }
+
+      const status = calculateStatus(date, bookings[roomData.id].bookings, filters.duration || 0);
+>>>>>>> 58b6c91 (feat: integrate with CSESoc GraphQL API (#403))
       if (status !== null) {
         result[buildingId][roomNumber] = status;
       }
@@ -158,18 +169,14 @@ export const getAllRoomStatus = async (
 };
 
 export const getRoomBookings = async (
-  buildingID: string,
-  roomNumber: string
+  roomId: string
 ): Promise<BookingsResponse> => {
-  // Check if room exists in database
-  const buildingData = await getBuildingData();
-  if (!(buildingID in buildingData)) {
-    throw new Error(`Building ID ${buildingID} does not exist`);
-  }
-  if (!(roomNumber in buildingData[buildingID].rooms)) {
-    throw new Error(`Room ID ${buildingID}-${roomNumber} does not exist`);
+  const res = await queryBookingsForRoom(roomId);
+  if (res.rooms_by_pk === null) {
+    throw new Error(`Room ID ${roomId} does not exist`);
   }
 
+<<<<<<< HEAD
   // Collate bookings from timetable data if exists
   const timetableData = await getTimetableData();
   const res: BookingsResponse = { bookings: [] };
@@ -191,4 +198,7 @@ export const getRoomBookings = async (
   }
 
   return res;
+=======
+  return res.rooms_by_pk;
+>>>>>>> 58b6c91 (feat: integrate with CSESoc GraphQL API (#403))
 };
