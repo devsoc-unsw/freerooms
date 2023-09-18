@@ -43,7 +43,7 @@ const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
     const buildingOptions: BuildingSearchOption[] = buildings
       ? buildings.map(building => ({
         type: "Building",
-        searchKeys: [building.name, building.id],
+        searchKeys: [building.name, ...building.aliases, building.id],
         building
       }))
       : [];
