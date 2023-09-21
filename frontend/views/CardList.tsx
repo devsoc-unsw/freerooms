@@ -41,10 +41,12 @@ const CardList: React.FC<{
   const { userLat, userLng } = useUserLocation();
 
   React.useEffect(() => {
-    if (!buildings) return;
-
-    if (!roomStatusData || Object.keys(roomStatusData).length == 0) {
+    if (!displayedBuildings && buildings) {
       setDisplayedBuildings(buildings);
+      return;
+    }
+
+    if (!buildings || !roomStatusData || Object.keys(roomStatusData).length == 0) {
       return;
     }
 
