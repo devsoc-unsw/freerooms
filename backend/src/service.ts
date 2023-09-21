@@ -76,11 +76,7 @@ export const parseFilters = (req: Request): Filters => {
   }
 
   if (req.query.usage) {
-    const usage = req.query.usage as string;
-    if (usage !== 'LEC' && usage !== 'TUT') {
-      throw new Error('Invalid usage: must be one of "LEC" or "TUT"');
-    }
-    filters.usage = usage;
+    filters.usage = req.query.usage as string;
   }
 
   if (req.query.location) {
