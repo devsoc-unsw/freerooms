@@ -248,6 +248,20 @@ const dropdowns: DropDown[] = [
       },
     ],
   },
+  {
+    text: "ID Required",
+    key: "id",
+    items: [
+      {
+        text: "Not Required",
+        value: "false"
+      },
+      {
+        text: "Required",
+        value: "true"
+      },
+    ]
+  }
 ];
 
 export default FilterBar;

@@ -87,6 +87,14 @@ export const parseFilters = (req: Request): Filters => {
     filters.location = location;
   }
 
+  if (req.query.id) {
+    const id = req.query.id as string;
+    if (id !== 'true' && id !== 'false') {
+      throw new Error('Invalid ID required: must be one of "true" or "false"');
+    }
+    filters.id = id === 'true';
+  }
+
   return filters;
 };
 
@@ -114,10 +122,9 @@ export const getAllRoomStatus = async (
       // Skip room if it does not match filter
       if (
         (filters.capacity && roomData.capacity < filters.capacity) ||
-        (filters.usage && roomData.usage != filters.usage)
-      ) {
-        continue;
-      }
+        (filters.usage && roomData.usage != filters.usage) ||
+        (filters.id != undefined && ((roomData.school != " ") != filters.id)) // id is required if managed by a school (non-CATS)
+      ) continue;
 
       const status = calculateStatus(date, bookings[roomData.id].bookings, filters.duration || 0);
       if (status !== null) {
