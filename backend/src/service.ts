@@ -1,28 +1,11 @@
 import { Request } from "express";
-<<<<<<< HEAD
-import {
-  calculateStatus,
-  getBuildingData,
-  getTimetableData,
-  getWeekAndDay,
-} from "./helpers";
-import {
-  BuildingsResponse,
-  RoomsResponse,
-  StatusResponse,
-  BookingsResponse,
-  BuildingStatus,
-} from "@common/types";
-=======
 
 import { calculateStatus, getBuildingRoomData, getBookingsForDate } from "./helpers";
 import { BuildingsResponse, StatusResponse, BookingsResponse, RoomsResponse } from "@common/types";
->>>>>>> 58b6c91 (feat: integrate with CSESoc GraphQL API (#403))
 import { Filters } from "./types";
 import { queryBookingsForRoom } from "./dbInterface";
 
-const ISO_REGEX =
-  /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/;
+const ISO_REGEX = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/;
 const UPPER = 19; // Buildings with grid 19+ are upper campus
 
 export const getAllBuildings = async (): Promise<BuildingsResponse> => {
@@ -79,7 +62,7 @@ export const parseFilters = (req: Request): Filters => {
   if (req.query.capacity) {
     const capacity = parseInt(req.query.capacity as string);
     if (isNaN(capacity) || capacity < 0) {
-      throw new Error("Invalid capacity");
+      throw new Error('Invalid capacity');
     }
     filters.capacity = capacity;
   }
@@ -87,7 +70,7 @@ export const parseFilters = (req: Request): Filters => {
   if (req.query.duration) {
     const duration = parseInt(req.query.duration as string);
     if (isNaN(duration) || duration < 0) {
-      throw new Error("Invalid duration");
+      throw new Error('Invalid duration');
     }
     filters.duration = duration;
   }
@@ -98,7 +81,7 @@ export const parseFilters = (req: Request): Filters => {
 
   if (req.query.location) {
     const location = req.query.location as string;
-    if (location !== "upper" && location !== "lower") {
+    if (location !== 'upper' && location !== 'lower') {
       throw new Error('Invalid location: must be one of "upper" or "lower"');
     }
     filters.location = location;
@@ -106,10 +89,10 @@ export const parseFilters = (req: Request): Filters => {
 
   if (req.query.id) {
     const id = req.query.id as string;
-    if (id !== "true" && id !== "false") {
+    if (id !== 'true' && id !== 'false') {
       throw new Error('Invalid ID required: must be one of "true" or "false"');
     }
-    filters.id = id === "true";
+    filters.id = id === 'true';
   }
 
   return filters;
@@ -125,11 +108,7 @@ export const getAllRoomStatus = async (
   const result: StatusResponse = {};
   for (const buildingId in buildingData) {
     // Skip building if it does not match filter
-<<<<<<< HEAD
-    const roomLocation = +buildingId.substring(3) < UPPER ? "lower" : "upper";
-=======
     const roomLocation = +buildingId.substring(3) < UPPER ? 'lower' : 'upper';
->>>>>>> 58b6c91 (feat: integrate with CSESoc GraphQL API (#403))
     if (filters.location && filters.location != roomLocation) {
       result[buildingId] = {};
       continue;
@@ -144,21 +123,10 @@ export const getAllRoomStatus = async (
       if (
         (filters.capacity && roomData.capacity < filters.capacity) ||
         (filters.usage && roomData.usage != filters.usage) ||
-        (filters.id != undefined && (roomData.school != " ") != filters.id) // id is required if managed by a school (non-CATS)
-      )
-        continue;
-<<<<<<< HEAD
-
-      const status = calculateStatus(
-        date,
-        bookings[roomData.id].bookings,
-        filters.duration || 0
-      );
-=======
-      }
+        (filters.id != undefined && ((roomData.school != " ") != filters.id)) // id is required if managed by a school (non-CATS)
+      ) continue;
 
       const status = calculateStatus(date, bookings[roomData.id].bookings, filters.duration || 0);
->>>>>>> 58b6c91 (feat: integrate with CSESoc GraphQL API (#403))
       if (status !== null) {
         result[buildingId][roomNumber] = status;
       }
@@ -176,29 +144,5 @@ export const getRoomBookings = async (
     throw new Error(`Room ID ${roomId} does not exist`);
   }
 
-<<<<<<< HEAD
-  // Collate bookings from timetable data if exists
-  const timetableData = await getTimetableData();
-  const res: BookingsResponse = { bookings: [] };
-  if (!(buildingID in timetableData) || !(roomNumber in timetableData[buildingID])) {
-    return res;
-  }
-
-  for (const week in timetableData[buildingID][roomNumber]) {
-    if (week === "name") continue;
-
-    const weekData = timetableData[buildingID][roomNumber][week];
-    for (const day in weekData) {
-      res.bookings.push(...weekData[day].map(cls => ({
-        name: cls.courseCode,
-        start: new Date(cls.start),
-        end: new Date(cls.end)
-      })));
-    }
-  }
-
-  return res;
-=======
   return res.rooms_by_pk;
->>>>>>> 58b6c91 (feat: integrate with CSESoc GraphQL API (#403))
 };
