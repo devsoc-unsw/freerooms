@@ -17,7 +17,7 @@
     "@mui/system": "^5.10.14",
     "@mui/x-date-pickers": "^5.0.8",
     "@reduxjs/toolkit": "^1.9.5",
-    "axios": "^0.26.1",
+    "axios": "^1.0.0",
     "date-fns": "^2.29.3",
     "date-fns-tz": "^2.0.0",
     "esri-loader": "^3.7.0",
