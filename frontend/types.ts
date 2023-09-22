@@ -43,4 +43,5 @@ export type Filters = {
   usage?: string;
   location?: string;
   duration?: string;
+  id?: string;
 }

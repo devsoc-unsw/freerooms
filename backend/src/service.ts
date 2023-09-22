@@ -76,11 +76,7 @@ export const parseFilters = (req: Request): Filters => {
   }
 
   if (req.query.usage) {
-    const usage = req.query.usage as string;
-    if (usage !== 'LEC' && usage !== 'TUT') {
-      throw new Error('Invalid usage: must be one of "LEC" or "TUT"');
-    }
-    filters.usage = usage;
+    filters.usage = req.query.usage as string;
   }
 
   if (req.query.location) {
@@ -89,6 +85,14 @@ export const parseFilters = (req: Request): Filters => {
       throw new Error('Invalid location: must be one of "upper" or "lower"');
     }
     filters.location = location;
+  }
+
+  if (req.query.id) {
+    const id = req.query.id as string;
+    if (id !== 'true' && id !== 'false') {
+      throw new Error('Invalid ID required: must be one of "true" or "false"');
+    }
+    filters.id = id === 'true';
   }
 
   return filters;
@@ -118,10 +122,9 @@ export const getAllRoomStatus = async (
       // Skip room if it does not match filter
       if (
         (filters.capacity && roomData.capacity < filters.capacity) ||
-        (filters.usage && roomData.usage != filters.usage)
-      ) {
-        continue;
-      }
+        (filters.usage && roomData.usage != filters.usage) ||
+        (filters.id != undefined && ((roomData.school != " ") != filters.id)) // id is required if managed by a school (non-CATS)
+      ) continue;
 
       const status = calculateStatus(date, bookings[roomData.id].bookings, filters.duration || 0);
       if (status !== null) {

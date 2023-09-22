@@ -157,16 +157,36 @@ const FilterBar = () => {
 // Dropdowns and items.
 const dropdowns: DropDown[] = [
   {
-    text: "Room Usage",
+    text: "Room Type",
     key: "usage",
     items: [
       {
-        text: "Tutorial Classroom",
-        value: "TUT",
+        text: "Auditorium",
+        value: "AUD",
+      },
+      {
+        text: "Computer Lab",
+        value: "CMLB",
+      },
+      {
+        text: "Lab",
+        value: "LAB",
       },
       {
         text: "Lecture Hall",
-        value: "LEC",
+        value: "LCTR",
+      },
+      {
+        text: "Meeting Room",
+        value: "MEET",
+      },
+      {
+        text: "Studio",
+        value: "SDIO",
+      },
+      {
+        text: "Tutorial Room",
+        value: "TUSM",
       },
     ],
   },
@@ -228,6 +248,20 @@ const dropdowns: DropDown[] = [
       },
     ],
   },
+  {
+    text: "ID Required",
+    key: "id",
+    items: [
+      {
+        text: "Not Required",
+        value: "false"
+      },
+      {
+        text: "Required",
+        value: "true"
+      },
+    ]
+  }
 ];
 
 export default FilterBar;

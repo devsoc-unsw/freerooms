@@ -13,4 +13,5 @@ export type Filters = {
   usage?: string;
   location?: "upper" | "lower";
   duration?: number;
+  id?: boolean;
 }
