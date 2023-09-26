@@ -14,30 +14,14 @@ import React from "react";
 import { useLocalStorage } from "usehooks-ts";
 
 import useBuildings from "../hooks/useBuildings";
+import useRooms from "../hooks/useRooms";
 import { setCurrentBuilding } from "../redux/currentBuildingSlice";
 import { useDispatch } from "../redux/hooks";
-import { Building } from "../types";
+import { BuildingSearchOption, RoomSearchOption, SearchOption } from "../types";
 
 interface SearchProps {
   open: boolean;
   setOpen: (open: boolean) => void;
-}
-
-// First element in searchKeys should always be name
-type SearchOption = (BuildingSearchOption | RoomSearchOption) & {
-  recent?: boolean;
-};
-
-type BuildingSearchOption = {
-  type: "Building";
-  searchKeys: string[];
-  building: Building;
-}
-
-type RoomSearchOption = {
-  type: "Room";
-  searchKeys: string[];
-  room: { id: string }; // TODO: Add room type when rooms are merged
 }
 
 const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
@@ -54,24 +38,26 @@ const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
 
   // Fetch options
   const { buildings } = useBuildings();
+  const { rooms } = useRooms();
   const options = React.useMemo(() => {
     const buildingOptions: BuildingSearchOption[] = buildings
       ? buildings.map(building => ({
         type: "Building",
-        searchKeys: [building.name, building.id],
+        searchKeys: [building.name, ...building.aliases, building.id],
         building
       }))
       : [];
 
-    // TODO: Actually populate with room options
-    const roomOptions: RoomSearchOption[] = [{
-      type: "Room",
-      searchKeys: ["Ainsworth 202", "Ainswth202", "K-J17-202"],
-      room: { id: "K-J17-202" }
-    }];
+    const roomOptions: RoomSearchOption[] = rooms
+      ? Object.values(rooms).map(room => ({
+        type: "Room",
+        searchKeys: [room.name, room.abbr, room.id],
+        room
+      }))
+      : [];
 
     return [...roomOptions, ...buildingOptions]
-  }, [buildings])
+  }, [buildings, rooms])
 
   const filterOptions = (
     options: SearchOption[],

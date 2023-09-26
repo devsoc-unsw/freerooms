@@ -8,83 +8,28 @@ import React from 'react';
 import BookingCalendar from "../../../components/BookingCalendar";
 import LoadingCircle from "../../../components/LoadingCircle";
 import useBookings from "../../../hooks/useBookings";
-import type  {  RoomAvailability } from '../../../types';
-
-
-type Event = {
-	title: string;
-	start: Date,
-	end: Date,
-}
-
-type RoomDetails = {
-	name : string;
-	bookings: Array<Event>
-}
+import useRoom from "../../../hooks/useRoom";
 
 export default function Page({ params }: {
   params: {room: string};
 }) {
-	const [ events, setEvents ] = React.useState<Array<Event>>([]);
-	const [ roomName, setRoomName ] = React.useState<string>("");
-	const handleRoomDetails = ({ name, bookings } : RoomDetails ) => {
-		setRoomName(name);
-		setEvents(bookings);
-	}
-	
-	const handleError = () => {
-		setEvents([]);
-	}
-
-	const { bookings, error } = useBookings(params.room);
-
-	React.useEffect( () => {
-		if (bookings) {
-			handleRoomDetails(extractBookings(bookings));
-		} else if (error) {
-			handleError();
-		}
-	}, [bookings, error]);
+	const { bookings } = useBookings(params.room);
+	const { room } = useRoom(params.room);
 
   return (
     
     <Container maxWidth={false} sx={{ height: "100%" }}>
-      { !roomName
+      { !room
 				? <LoadingCircle/>
 				: (
         <Stack justifyContent="center" alignItems="center" width="100%" py={5} height="100%">
 	        <Typography variant='h4' fontWeight={550}>
-	          {roomName}
+	          {room.name}
 	        </Typography>
-					<BookingCalendar events={events} />
+					<BookingCalendar events={bookings ?? []} />
       </Stack>
       )}
     </Container>
     
   );
-}
-
-const extractBookings = ( bookings : RoomAvailability ) => {
-	
-	let allBookings : Array<Event> = [];
-	for( let week = 1; week <= 10; ++week) {
-		if(!( week in bookings ) ) {
-			continue;
-		}
-		const bookingsForCurrWeek = bookings[week];
-		Object.keys(bookingsForCurrWeek).forEach(( day ) => {
-			const bookingForCurrDay = bookingsForCurrWeek[day];
-			bookingForCurrDay.forEach((booking) => {
-				allBookings.push({
-					title: booking.courseCode,
-					start: new Date(booking.start),
-					end: new Date(booking.end),
-				})
-			});
-		})
-	}
-	
-	const roomDetails : RoomDetails = { name : bookings.name, bookings: allBookings };
-	
-	return roomDetails;
 }

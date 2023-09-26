@@ -1,9 +1,9 @@
 /**
  * Redux slice to manage the current building
  */
+import { Building } from "@common/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { Building } from "../types";
 import { RootState } from "./store";
 
 interface CurrentBuildingState {

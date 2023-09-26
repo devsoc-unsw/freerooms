@@ -2,26 +2,32 @@ import {
 	StyleSheet,
 	Text,
 	View,
-	SafeAreaView,
-	ScrollView,
 	Pressable,
 } from "react-native";
 
 import Ionicons from '@expo/vector-icons/Ionicons';
+import React from "react";
+import { RoomStatus } from "@common/types";
+import { BuildingStackScreenProps } from "../screens/types";
 
+interface RoomCardProps {
+	nav: BuildingStackScreenProps<"Building">['navigation'],
+	roomNumber: string,
+	status: RoomStatus
+}
 
-const RoomCard = ({ nav, roomName, status, endtime }) => {
+const RoomCard: React.FC<RoomCardProps> = ({ nav, roomNumber, status }) => {
 
 	const handlePress = () => {
 		nav.navigate("Room");
 	}
 
-	const date = new Date(endtime);
-    const hoursMinutes = date.toLocaleTimeString("en-AU", {
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-    });
+	const date = new Date(status.endtime);
+	const hoursMinutes = date.toLocaleTimeString("en-AU", {
+		hour: "numeric",
+		minute: "2-digit",
+		hour12: true,
+	});
 
 	const roomStatusColor = {
 		free: "#2AA300",
@@ -43,7 +49,7 @@ const RoomCard = ({ nav, roomName, status, endtime }) => {
 		]}>
 			<View>
 				<Text style={styles.subHeading}>
-					{ roomName }
+					{ roomNumber }
 				</Text>
 			</View>
 			<View style={styles.textContainer}>
@@ -52,9 +58,9 @@ const RoomCard = ({ nav, roomName, status, endtime }) => {
 					paddingTop: 3.5,
 					fontSize: 17,
 					fontWeight: '600',
-					color: roomStatusColor[status],
+					color: roomStatusColor[status.status],
 				}}>
-					{roomStatusMessage[status]}
+					{roomStatusMessage[status.status]}
 				</Text>
 				<Ionicons name="chevron-forward-outline" size={25} color='grey' />
 			</View>

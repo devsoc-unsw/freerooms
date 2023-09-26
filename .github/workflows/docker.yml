@@ -46,10 +46,10 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
-          context: ${{ matrix.context }}
+          context: .
           push: ${{ github.event_name != 'pull_request' }}
           platforms: linux/amd64
-          file: ${{ matrix.context }}/Dockerfile
+          file: ${{ matrix.context }}.dockerfile
           tags: |
             ghcr.io/csesoc/freerooms-${{ matrix.name }}:${{ github.sha }}
             ghcr.io/csesoc/freerooms-${{ matrix.name }}:latest

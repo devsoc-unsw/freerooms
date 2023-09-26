@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React from 'react';
 import { 
 	StyleSheet,
 	Text,
@@ -8,8 +8,17 @@ import {
 } from "react-native";
 
 import StatusIndicator from './StatusIndicator';
+import { BuildingStackScreenProps } from "../screens/types";
+import { StatusResponse } from "@common/types";
 
-const BuildingCard = ({ nav, name, id, rooms }) => {
+interface BuildingCardProps {
+  nav: BuildingStackScreenProps<"All Buildings">['navigation'],
+  name: string,
+  id: string,
+  rooms: StatusResponse
+}
+
+const BuildingCard: React.FC<BuildingCardProps> = ({ nav, name, id, rooms }) => {
 
 	const handlePress = (name: string, id : string ) => {
 		nav.navigate("Building", { buildingName: name , buildingId : id });

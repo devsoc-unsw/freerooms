@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { 
 	StyleSheet,
-	Text,
 	View,
 	SafeAreaView,
 	ScrollView,
@@ -39,7 +38,13 @@ export default function BuildingList({ route, navigation } : BuildingStackScreen
 				<View style={ styles.container }>
 					<View style={ styles.textContainer }>
 					</View>
-					{ buildings.map((building, index) => <BuildingCard key={index} nav={navigation} rooms={rooms} {...building} /> )}
+					{ buildings.map((building, index) =>
+						<BuildingCard
+							key={index}
+							nav={navigation}
+							rooms={rooms}
+							{...building}
+						/> )}
 				</View>
 			</ScrollView>
 		</SafeAreaView>

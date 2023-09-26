@@ -1,7 +1,11 @@
 import { View, StyleSheet } from 'react-native';
+import React from "react";
 
+interface StatusDotProps {
+    numRooms: number;
+}
 
-const StatusDot = ({numRooms}) => {
+const StatusDot: React.FC<StatusDotProps> = ({ numRooms }) => {
     const bg = numRooms >= 5 ? "green" : numRooms !== 0 ? "orange" : "red";
 
     return (
