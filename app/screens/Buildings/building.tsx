@@ -22,9 +22,9 @@ export default function Building({ route, navigation } : BuildingStackScreenProp
 	}
 	
 	const { rooms, onRefresh } = useContext(FreeRoomsAPIContext);
-	const roomsOfCurrBuilding = rooms[route.params.buildingId];
-	
 
+	const roomsOfCurrBuilding = rooms[route.params.buildingId];
+	console.log(roomsOfCurrBuilding);
 	useEffect(() => {
 		navigation.setOptions({
 			headerRight: () => (
@@ -43,7 +43,10 @@ export default function Building({ route, navigation } : BuildingStackScreenProp
 							Rooms
 						</Text>
 					</View>
-					{ Object.keys(roomsOfCurrBuilding).map( (roomId, index) => <Card key={index} nav={navigation} roomName={roomId} building={route.params.buildingId} {...roomsOfCurrBuilding[roomId]} /> )}
+					{ 
+											
+					Object.keys(roomsOfCurrBuilding).map( (roomId, index) => <Card key={index} nav={navigation} roomName={roomId} building={route.params.buildingId} {...roomsOfCurrBuilding[roomId]} />)
+					}
 				</View>
 			</ScrollView>
 		</SafeAreaView>
