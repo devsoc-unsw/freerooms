@@ -24,7 +24,6 @@ export default function Building({ route, navigation } : BuildingStackScreenProp
 	const { rooms, onRefresh } = useContext(FreeRoomsAPIContext);
 
 	const roomsOfCurrBuilding = rooms[route.params.buildingId];
-	console.log(roomsOfCurrBuilding);
 	useEffect(() => {
 		navigation.setOptions({
 			headerRight: () => (

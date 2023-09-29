@@ -4,7 +4,7 @@ const config = {
 	endpoints: {
 		getBuildings: "/api/buildings",
 		getRooms: "/api/rooms/status",
-		getBookings: "/api/rooms"
+		getBookings: "/api/rooms/bookings"
 	}
 };
 
