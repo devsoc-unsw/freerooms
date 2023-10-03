@@ -7,7 +7,7 @@ import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import Button from "../components/Button";
 import parentLogo from "../public/assets/favicon/csesocgreyblue.png";
@@ -18,9 +18,81 @@ import Footer from "./Footer";
 import UsageTips from "./UsageTips";
 
 const Landing = () => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [gifSource, setGifSource] = useState(Logo);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (isHovered) {
+        setGifSource(Gif);
+      } else {
+        setGifSource(Logo);
+      }
+    }, 100);
+
+    return () => clearInterval(intervalId);
+  }, [isHovered]);
   return (
     <div>
-      <LandingScreenContainer direction="row" justifyContent="center">
+      <LandingScreenContainer>
+        <Box margin="auto" display={{ xs: "none", md: "block" }}>
+          <Image
+            width={400}
+            height={400}
+            alt={"Freerooms Logo"}
+            src={gifSource}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          />
+        </Box>
+      </LandingScreenContainer>
+      <LandingScreenContainer>
+        <UsageTips />
+      </LandingScreenContainer>
+      <Faq />
+      <Footer />
+    </div>
+  );
+};
+
+const GradientText = styled(Typography)({
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+  backgroundImage: "linear-gradient(to left, #d26038, #f5915a)",
+  animation: "gradient 10s ease infinite",
+  backgroundSize: "400% 400%",
+  fontWeight: 700,
+  "@keyframes gradient": {
+    "0%": {
+      backgroundPosition: "0% 50%",
+    },
+    "50%": {
+      backgroundPosition: "100% 50%",
+    },
+    "100%": {
+      backgroundPosition: "0% 50%",
+    },
+  },
+});
+
+const LandingScreenContainer = styled(Stack)(({ theme }) => ({
+  height: "100%",
+  width: "80%",
+  margin: "auto",
+}));
+
+export default Landing;
+
+{
+  /* <LandingScreenContainer direction="row" justifyContent="center">
         <Stack direction="column" spacing={2} sx={{ margin: "auto" }}>
           <Stack style={{ width: "auto" }}></Stack>
           <GradientText
@@ -65,40 +137,5 @@ const Landing = () => {
         <Box margin="auto" display={{ xs: "none", md: "block" }}>
           <Image width={400} height={400} alt={"Freerooms Logo"} src={Gif} />
         </Box>
-      </LandingScreenContainer>
-      <LandingScreenContainer>
-        <UsageTips />
-      </LandingScreenContainer>
-      <Faq />
-      <Footer />
-    </div>
-  );
-};
-
-const GradientText = styled(Typography)({
-  WebkitBackgroundClip: "text",
-  WebkitTextFillColor: "transparent",
-  backgroundImage: "linear-gradient(to left, #d26038, #f5915a)",
-  animation: "gradient 10s ease infinite",
-  backgroundSize: "400% 400%",
-  fontWeight: 700,
-  "@keyframes gradient": {
-    "0%": {
-      backgroundPosition: "0% 50%",
-    },
-    "50%": {
-      backgroundPosition: "100% 50%",
-    },
-    "100%": {
-      backgroundPosition: "0% 50%",
-    },
-  },
-});
-
-const LandingScreenContainer = styled(Stack)(({ theme }) => ({
-  height: "100%",
-  width: "80%",
-  margin: "auto",
-}));
-
-export default Landing;
+      </LandingScreenContainer> */
+}
