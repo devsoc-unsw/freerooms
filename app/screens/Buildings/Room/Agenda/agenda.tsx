@@ -4,7 +4,7 @@ import AgendaScreen from "./agenda_screen";
 
 export default function Agenda({route, navigation}: BuildingStackScreenProps<"Agenda">) {
     return (
-        <AgendaScreen props={route.params.roomName}></AgendaScreen>
+        <AgendaScreen room={route.params.roomName}></AgendaScreen>
     )
 }
 
