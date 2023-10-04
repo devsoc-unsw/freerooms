@@ -1,10 +1,9 @@
-import { load, SelectorType } from 'cheerio';
+import { load } from 'cheerio';
 
 import { RoomBooking, Room } from "./types";
 
 import axios from "axios";
-import fs from "fs";
-import { setPriority } from 'os';
+// import fs from "fs";
 
 const ROOM_URL = "https://unswlibrary-bookings.libcal.com/space/";
 const BOOKINGS_URL = "https://unswlibrary-bookings.libcal.com/spaces/availability/grid";
@@ -27,7 +26,7 @@ const scrapeLibraryBookings = async() => {
 
         for (const booking of bookingData[roomID]) {
             const roomBooking: RoomBooking = {
-                bookingType: 'Study Room',
+                bookingType: 'LIBRARY',
                 name: roomData.name,
                 roomId: roomID,
                 start: booking.start,
@@ -41,7 +40,25 @@ const scrapeLibraryBookings = async() => {
     console.log(allRoomBookings);
 }
 
+// Formats a date into YYYY-MM-DD format
+const formatDate = (date: Date): string => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    const formattedDate = `${year}-${month}-${day}`;
+
+    return formattedDate;
+}
+
 const downloadBookingsPage = async(locationId: string) => {
+
+    const todaysDate = formatDate(new Date());
+
+    // Need to figure out the furthest in the future we can go
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const tomorrowsDate = formatDate(tomorrow);
 
     const postData = {
         lid: locationId,
@@ -50,8 +67,8 @@ const downloadBookingsPage = async(locationId: string) => {
         seat: '0',
         seatId: '0',
         zone: '0',
-        start: '2023-09-05',
-        end: '2023-09-06',
+        start: todaysDate,
+        end: tomorrowsDate,
         pageIndex: '0',
         pageSize: '18'
     };
@@ -119,9 +136,9 @@ const getRoomData = async (roomId: string) => {
         abbr: data[0],
         name: data[0],
         id: roomId,
-        usage: "Study Room",
+        usage: "LIBRARY",
         capacity: capacity,
-        school: "Library"
+        school: " "
     }
 
     return roomData;
