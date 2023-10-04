@@ -2,18 +2,21 @@ import { load } from 'cheerio';
 
 import { RoomBooking, Room } from "./types";
 
+import toSydneyTime from "./toSydneyTime";
+
 import axios from "axios";
 // import fs from "fs";
 
 const ROOM_URL = "https://unswlibrary-bookings.libcal.com/space/";
 const BOOKINGS_URL = "https://unswlibrary-bookings.libcal.com/spaces/availability/grid";
-const MAIN_LIBRARY_ID = '6581';
-const LAW_LIBRARY_ID = '6584';
+const MAIN_LIBRARY_CODE = '6581';
+const MAIN_LIBRARY_ID = 'K-F21';
+const LAW_LIBRARY_CODE = '6584';
+const LAW_LIBRARY_ID = 'K-E8';
 
-const scrapeLibraryBookings = async() => {
+const scrapeLibraryBookings = async(library_code: string, library_id: string) => {
 
-    const response = await downloadBookingsPage(MAIN_LIBRARY_ID);
-    // const responseData = response.data;
+    const response = await downloadBookingsPage(library_code);
 
     const bookingData = parseBookingData(response.data['slots']);
 
@@ -21,7 +24,7 @@ const scrapeLibraryBookings = async() => {
     const allRoomBookings: RoomBooking[] = [];
 
     for (const roomID in bookingData) {
-        const roomData = await getRoomData(roomID);
+        const roomData = await getRoomData(roomID, library_id);
         allRoomData.push(roomData);
 
         for (const booking of bookingData[roomID]) {
@@ -37,7 +40,7 @@ const scrapeLibraryBookings = async() => {
     }
 
     console.log(allRoomData);
-    console.log(allRoomBookings);
+
 }
 
 // Formats a date into YYYY-MM-DD format
@@ -55,10 +58,11 @@ const downloadBookingsPage = async(locationId: string) => {
 
     const todaysDate = formatDate(new Date());
 
-    // Need to figure out the furthest in the future we can go
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const tomorrowsDate = formatDate(tomorrow);
+    // Furthest seems to be 2 weeks in the future
+    const twoWeeks = new Date();
+    twoWeeks.setDate(twoWeeks.getDate() + 14);
+
+    const furthestBookableDate = formatDate(twoWeeks);
 
     const postData = {
         lid: locationId,
@@ -68,7 +72,7 @@ const downloadBookingsPage = async(locationId: string) => {
         seatId: '0',
         zone: '0',
         start: todaysDate,
-        end: tomorrowsDate,
+        end: furthestBookableDate,
         pageIndex: '0',
         pageSize: '18'
     };
@@ -103,8 +107,8 @@ const parseBookingData = (bookingData: ResponseData[]) => {
         if (slot.className == "s-lc-eq-checkout") {
             bookings[slot.itemId].push(
                 {
-                    start: new Date(slot.start),
-                    end: new Date(slot.end),
+                    start: toSydneyTime(new Date(slot.start)),
+                    end: toSydneyTime(new Date(slot.end)),
                 }
             )
         }
@@ -121,7 +125,7 @@ const downloadRoomPage = async(roomId: string) => {
 
 }
 
-const getRoomData = async (roomId: string) => {
+const getRoomData = async (roomId: string, buildingId: string) => {
 
     const response = await downloadRoomPage(roomId);
     const $ = load(response.data);
@@ -135,7 +139,7 @@ const getRoomData = async (roomId: string) => {
     const roomData: Room = {
         abbr: data[0],
         name: data[0],
-        id: roomId,
+        id: buildingId + "-" + roomId,
         usage: "LIBRARY",
         capacity: capacity,
         school: " "
@@ -144,4 +148,5 @@ const getRoomData = async (roomId: string) => {
     return roomData;
 }
 
-scrapeLibraryBookings();
+scrapeLibraryBookings(MAIN_LIBRARY_CODE, MAIN_LIBRARY_ID);
+scrapeLibraryBookings(LAW_LIBRARY_CODE, LAW_LIBRARY_ID);
