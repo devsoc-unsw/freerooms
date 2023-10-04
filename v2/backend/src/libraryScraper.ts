@@ -5,7 +5,6 @@ import { RoomBooking, Room } from "./types";
 import toSydneyTime from "./toSydneyTime";
 
 import axios from "axios";
-// import fs from "fs";
 
 const ROOM_URL = "https://unswlibrary-bookings.libcal.com/space/";
 const BOOKINGS_URL = "https://unswlibrary-bookings.libcal.com/spaces/availability/grid";
@@ -39,7 +38,8 @@ const scrapeLibraryBookings = async(library_code: string, library_id: string) =>
         }
     }
 
-    console.log(allRoomData);
+    // console.log(allRoomData);
+    // console.log(JSON.stringify(allRoomBookings, null, 4));
 
 }
 
@@ -56,13 +56,14 @@ const formatDate = (date: Date): string => {
 
 const downloadBookingsPage = async(locationId: string) => {
 
-    const todaysDate = formatDate(new Date());
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
 
-    // Furthest seems to be 2 weeks in the future
-    const twoWeeks = new Date();
-    twoWeeks.setDate(twoWeeks.getDate() + 14);
+    // First date of the year
+    const firstDate = formatDate(new Date(currentYear, 0, 1));  // Month is 0-indexed, so 0 = January
 
-    const furthestBookableDate = formatDate(twoWeeks);
+    // Last date of the year
+    const lastDate = formatDate(new Date(currentYear, 11, 31));  // Month 11 = December
 
     const postData = {
         lid: locationId,
@@ -71,8 +72,8 @@ const downloadBookingsPage = async(locationId: string) => {
         seat: '0',
         seatId: '0',
         zone: '0',
-        start: todaysDate,
-        end: furthestBookableDate,
+        start: firstDate,
+        end: lastDate,
         pageIndex: '0',
         pageSize: '18'
     };
