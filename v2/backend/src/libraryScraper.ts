@@ -56,14 +56,12 @@ const formatDate = (date: Date): string => {
 
 const downloadBookingsPage = async(locationId: string) => {
 
-    const currentDate = new Date();
-    const currentYear = currentDate.getFullYear();
-
-    // First date of the year
-    const firstDate = formatDate(new Date(currentYear, 0, 1));  // Month is 0-indexed, so 0 = January
-
-    // Last date of the year
-    const lastDate = formatDate(new Date(currentYear, 11, 31));  // Month 11 = December
+    const todaysDate = formatDate(new Date());
+    
+    // Furthest seems to be 2 weeks in the future
+    const twoWeeks = new Date();
+    twoWeeks.setDate(twoWeeks.getDate() + 14);
+    const furthestBookableDate = formatDate(twoWeeks);
 
     const postData = {
         lid: locationId,
@@ -72,8 +70,8 @@ const downloadBookingsPage = async(locationId: string) => {
         seat: '0',
         seatId: '0',
         zone: '0',
-        start: firstDate,
-        end: lastDate,
+        start: todaysDate,
+        end: furthestBookableDate,
         pageIndex: '0',
         pageSize: '18'
     };
