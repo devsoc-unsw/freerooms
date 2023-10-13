@@ -12,7 +12,6 @@ const MILLIS = 3600000;
 async function seeBookings(room) {
   const items: AgendaSchedule = {};
   let bookingResponse = {};
-  console.log(room);
   try {
     bookingResponse = await getBookings(room)
     
@@ -42,7 +41,8 @@ async function seeBookings(room) {
           name: booking["name"],
           height: time_diff * ONEHOURLENGTH,
           day: date,
-          time: `${start_time.getHours()}:${String(start_time.getMinutes()).padStart(2, '0')}` + " - " + `${end_time.getHours()}:${String(end_time.getMinutes()).padStart(2, '0')}`
+          time: `${start_time.getHours()}:${String(start_time.getMinutes()).padStart(2, '0')}` + " - " + `${end_time.getHours()}:${String(end_time.getMinutes()).padStart(2, '0')}`,
+          type: booking["bookingType"]
         }
       ];
     } else {
@@ -50,11 +50,11 @@ async function seeBookings(room) {
         name: booking["name"],
         height: time_diff * ONEHOURLENGTH,
         day: date,
-        time: `${start_time.getHours()}:${String(start_time.getMinutes()).padStart(2, '0')}` + " - " + `${end_time.getHours()}:${String(end_time.getMinutes()).padStart(2, '0')}`
+        time: `${start_time.getHours()}:${String(start_time.getMinutes()).padStart(2, '0')}` + " - " + `${end_time.getHours()}:${String(end_time.getMinutes()).padStart(2, '0')}`,
+        type: booking["bookingType"]
       })
     }
   }
-  console.log(items);
   return items;
 }
 
@@ -66,10 +66,19 @@ export default function AgendaScreen (room) {
 
   const renderItem = (reservation) => {
     const fontSize = 14;
-    const color = '#43515c';
+    const color = 'white';
+    let backgroundcolour = '#EF6C00';
+    switch (reservation.type) {
+      case "INTERNAL":
+        backgroundcolour = '#BDBF00'
+        break;
+      case "MISC":
+        backgroundcolour = '#FF8353'
+        break;
+    }
   
     return (
-      <TouchableOpacity style={[styles.item, {height: reservation.height}]} onPress={() => pressed(reservation.day)}>
+      <TouchableOpacity style={[styles.item, {height: reservation.height, backgroundColor: backgroundcolour}]} onPress={() => pressed(reservation.day)}>
         <Text style={{fontSize, color}}>{reservation.name}</Text>
         <Text style={{fontSize, color}}>{reservation.time}</Text>
   
@@ -78,6 +87,7 @@ export default function AgendaScreen (room) {
   }
   
   const pressed = (id: string) => {
+    // maybe a page of information on the booking if needed.
     console.log("id has been pressed");
   }
   
@@ -112,7 +122,6 @@ export default function AgendaScreen (room) {
 
 const styles = StyleSheet.create({
   item: {
-    backgroundColor: 'white',
     flex: 1,
     borderRadius: 5,
     padding: 10,
