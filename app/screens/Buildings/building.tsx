@@ -21,7 +21,7 @@ export default function Building({ route, navigation } : BuildingStackScreenProp
 		navigation.navigate("Room Filter");
 	}
 
-	const { rooms, onRefresh } = useContext(FreeRoomsAPIContext);
+	const { rooms, onRefresh, roomInfo } = useContext(FreeRoomsAPIContext);
 	const roomsOfCurrBuilding = rooms[route.params.buildingId];
 
 
@@ -49,6 +49,7 @@ export default function Building({ route, navigation } : BuildingStackScreenProp
 							key={index}
 							nav={navigation}
 							roomNumber={roomNumber}
+							roomName={roomInfo.rooms[`${route.params.buildingId}-${roomNumber}`].name}
 							status={roomsOfCurrBuilding[roomNumber]}
 						/> )}
 				</View>
