@@ -1,12 +1,10 @@
-
 const config = {
-	domain: "https://freerooms.csesoc.app",
-	endpoints: {
-		getBuildings: "/api/buildings",
-		getRooms: "/api/rooms",
-		getBookings: "/api/rooms"
-	}
+  domain: "https://freerooms.staging.csesoc.unsw.edu.au",
+  endpoints: {
+    getBuildings: "/api/buildings",
+    getRooms: "/api/rooms/status",
+    getRoomInfo: "/api/rooms",
+  },
 };
-
 
 export default config;

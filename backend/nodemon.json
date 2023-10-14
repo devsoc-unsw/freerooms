@@ -1,0 +1,7 @@
+{
+    "ignore": ["database.json"],
+    "execMap": {
+        "ts": "ts-node -r tsconfig-paths/register",
+        "js": "node -r ts-node/register/transpile-only -r tsconfig-paths/register"
+    }
+}

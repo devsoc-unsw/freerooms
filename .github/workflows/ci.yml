@@ -2,6 +2,9 @@ name: CI
 on:
   push: {}
 
+env:
+  BRANCH_NAME: ${{ github.base_ref || github.ref_name }}
+
 jobs:
   lint:
     name: "Lint (${{ matrix.component }})"
@@ -9,11 +12,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        component: [frontend, v2/frontend]
+        component: [frontend]
         include:
           - component: frontend
-            command: npm ci
-          - component: v2/frontend
             command: pnpm i --frozen-lockfile
     steps:
       - uses: actions/checkout@v3
@@ -34,13 +35,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        component: [frontend, v2/backend, v2/frontend]
+        component: [frontend, backend]
         include:
           - component: frontend
-            command: npm ci
-          - component: v2/frontend
             command: pnpm i --frozen-lockfile
-          - component: v2/backend
+          - component: backend
             command: pnpm i --frozen-lockfile
     steps:
       - uses: actions/checkout@v3
@@ -52,6 +51,10 @@ jobs:
       - name: Install dependencies
         run: ${{ matrix.command }}
         working-directory: ${{ matrix.component }}
+      - name: Create staging .env file
+        if: ${{ env.BRANCH_NAME == 'dev' && matrix.component == 'frontend' }}
+        run: echo "NEXT_PUBLIC_STAGING=true" >> .env
+        working-directory: frontend
       - name: Build
         run: pnpm build
         working-directory: ${{ matrix.component }}
