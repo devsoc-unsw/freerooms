@@ -9,57 +9,81 @@ export default function Room({
                                  navigation,
                              }: BuildingStackScreenProps<"Room">) {
 
-    const [params, setParams] = useState()
-    const [roomName, setRoomName] = useState("")
-    useEffect(() => {
-        setParams(route.params)
-    }, [route])
-
-    useEffect(() => {
-        async function fetchBooking(params) {
-            const res = await getBookings(`K-J17-${params.roomName}`);
-            setRoomName(res.name)
-        }
-
-        if (params != undefined) {
-            fetchBooking(params).catch(console.error)
-        }
-    }, [params])
-
-    return (
-        <View style={styles.container}>
-            <Image
-                style={styles.roomImage}
-                source={require("../../../assets/placeholder-room.png")}
-            ></Image>
-            <View style={styles.titleContainer}>
-                <Text style={{fontSize: 15, fontWeight: "bold"}}>
-                    CATS -{" "}
-                    <Text style={{color: "orange", fontSize: 15, fontWeight: "bold"}}>
-                        ID Required
-                    </Text>
-                </Text>
-                <Text style={styles.largeText}>{roomName}</Text>
-            </View>
-            <View
-                style={{justifyContent: "flex-start", paddingTop: 20, width: "100%"}}
-            >
-                <View style={styles.infoContainer}>
-                    <Text style={styles.mediumText}> Room ID: </Text>
-                    <Text style={styles.largeText}> {`\tK-J17-302`} </Text>
-                </View>
-                <View style={styles.infoContainer}>
-                    <Text style={styles.mediumText}> Type: </Text>
-                    <Text style={styles.largeText}> {`\t\tComputer Lab`} </Text>
-                </View>
-                <View style={styles.infoContainer}>
-                    <Text style={styles.mediumText}> Alias: </Text>
-                    <Text style={styles.largeText}> {`\t\tStringsME3`} </Text>
-                </View>
-            </View>
-        </View>
-    );
+interface RouteParams {
+	roomName: string;
+	status: string;
+	buildingId: string;
 }
+
+export default function Room({ route, navigation } : BuildingStackScreenProps<"Room"> ) {
+	const [routeParams, setRouteParams] = useState<RouteParams>(null)
+	const [nav, setNav] = useState(null)
+	useEffect(() => {
+		setRouteParams(route.params)
+		setNav(navigation)
+		
+	}, [route, navigation]);
+
+	async function seeBookings() {
+		const roomId  = routeParams.buildingId + "-" + routeParams.roomName;
+		console.log(roomId);
+		nav?.navigate("Agenda", {roomName: roomId})
+	}
+
+	return (
+		<>
+			<View style={ styles.container }>
+				<Text style={ styles.main_heading }>{routeParams?.roomName}</Text>
+				<Text style={styles.avaliable}> {routeParams?.status == "free" ? "Available" : "Unvailable"} </Text>
+				<Elements></Elements>
+				<CalendarDay/>
+			</View>
+			<Button title={"See Bookings"} onPress={seeBookings}>See Bookings</Button>
+			
+		</>
+
+
+
+	);
+}
+
+const Elements = () => {
+	return (
+
+		<View style={styles.header}>
+					
+			<View style={styles.column} >
+				<Text style={styles.title}>Capacity</Text>
+				<Text>10</Text> 
+
+			</View>
+			
+				
+			<View style={styles.column}>
+				<Text style={styles.title}>Room Type</Text>
+				<Text>CATS Room</Text> 
+			</View>
+		</View>
+
+	)
+}
+
+const CalendarDay = () => {
+
+	const  [selected, setSelected] = useState('');
+	return (
+		<Calendar
+      onDayPress={day => {
+        setSelected(day.dateString);
+		console.log(day.dateString);
+      }}
+      markedDates={{
+        [selected]: {selected: true, disableTouchEvent: true, selectedColor: 'orange'}
+      }}
+    />
+	)
+}
+
 
 const styles = StyleSheet.create({
     container: {
