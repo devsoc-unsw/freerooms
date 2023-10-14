@@ -1,4 +1,5 @@
 import {
+  BookingsResponse,
   Building,
   BuildingsResponse,
   RoomsResponse,
@@ -46,4 +47,14 @@ export async function getRoomInfo(): Promise<RoomsResponse> {
   } catch {}
 
   return room_lookup;
+}
+export async function getBookings(roomId: string): Promise<BookingsResponse> {
+  const bookingsEndpoint = config.endpoints.getBookings;
+  const url = `${domain}${bookingsEndpoint}/${roomId}`;
+  let bookings: BookingsResponse = { bookings: [] };
+  try {
+    const response = await fetch(url);
+    bookings = await response.json();
+  } catch {}
+  return bookings;
 }
