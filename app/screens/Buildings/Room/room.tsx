@@ -1,17 +1,9 @@
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, Image, StyleSheet, Text, View } from "react-native";
 
-import {
-  Calendar,
-  LocaleConfig,
-  Agenda,
-  AgendaList,
-} from "react-native-calendars";
+import { Calendar } from "react-native-calendars";
 import React, { useEffect, useState } from "react";
 
-import { FlatList } from "react-native";
 import type { BuildingStackScreenProps } from "../../types";
-import { TabRouter } from "@react-navigation/native";
-import { getBookings } from "../../../services/freerooms_api/endpoints";
 
 interface RouteParams {
   roomName: string;
@@ -37,32 +29,46 @@ export default function Room({
   }
 
   return (
-    <>
-      <View style={styles.container}>
-        <Text style={styles.main_heading}>{routeParams?.roomName}</Text>
-        <Text style={styles.avaliable}>
-          {" "}
-          {routeParams?.status == "free" ? "Available" : "Unvailable"}{" "}
-        </Text>
-        <Elements></Elements>
-        <CalendarDay />
+    <View style={styles.container}>
+      <View style={styles.titleContainer}>
+        <Text style={styles.largeText}>NAME{routeParams?.roomName}</Text>
       </View>
-      <Button title={"See Bookings"} onPress={seeBookings}></Button>
-    </>
+      <View
+        style={{
+          alignSelf: "center",
+          backgroundColor:
+            routeParams?.status == "free" ? "#50C878" : "#FF4141",
+          borderRadius: 30,
+          height: 45,
+          justifyContent: "center",
+          paddingHorizontal: 20,
+        }}
+      >
+        <Text style={styles.avaliableText}>
+          {routeParams?.status == "free" ? "FREE" : "OCCUPIED"}
+        </Text>
+      </View>
+      <RoomInfo></RoomInfo>
+      <CalendarDay />
+      <Button title={"SEE BOOKINGS"} onPress={seeBookings}></Button>
+    </View>
   );
 }
 
-const Elements = () => {
+const RoomInfo = () => {
   return (
-    <View style={styles.header}>
-      <View style={styles.column}>
-        <Text style={styles.title}>Capacity</Text>
-        <Text>10</Text>
+    <View style={{ paddingVertical: 15 }}>
+      <View style={styles.infoContainer}>
+        <Text style={styles.mediumText}> Room Type: </Text>
+        <Text style={styles.infoText}> {`Computer Lab`} </Text>
       </View>
-
-      <View style={styles.column}>
-        <Text style={styles.title}>Room Type</Text>
-        <Text>CATS Room</Text>
+      <View style={styles.infoContainer}>
+        <Text style={styles.mediumText}> Capacity: </Text>
+        <Text style={styles.infoText}> {`\t10`} </Text>
+      </View>
+      <View style={styles.infoContainer}>
+        <Text style={styles.mediumText}> Room Alias: </Text>
+        <Text style={styles.infoText}> {`StringsME3`} </Text>
       </View>
     </View>
   );
@@ -90,28 +96,36 @@ const CalendarDay = () => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    flex: 1,
+    width: "100%",
   },
-  header: {
+  roomImage: {
+    height: "40%",
+    width: "100%",
+  },
+  titleContainer: {
+    alignItems: "center",
+    justifyContent: "flex-start",
+    padding: 15,
+    paddingTop: 20,
+    width: "100%",
+  },
+  infoContainer: {
+    alignItems: "center",
     flexDirection: "row",
-    flexWrap: "wrap",
+    padding: 10,
   },
-  column: {
-    width: "40%",
-    alignItems: "center",
+  largeText: {
+    fontSize: 36,
+    fontWeight: "600",
   },
-  title: {
-    fontWeight: "bold",
-    fontSize: 18,
+  infoText: {
+    fontSize: 24,
+    fontWeight: "600",
   },
-  main_heading: {
-    fontSize: 25,
-    fontWeight: "bold",
-    paddingBottom: 20,
-  },
-  avaliable: {
-    fontSize: 18,
-    paddingBottom: 20,
+  mediumText: { color: "grey", fontSize: 20, fontWeight: "600" },
+  avaliableText: {
+    alignSelf: "center",
+    fontSize: 16,
   },
 });
