@@ -17,23 +17,23 @@ const FAILED = -1;
 
 const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
   position: "relative",
-	alignItems: "center",
-	justifyContent: "center",
+  alignItems: "center",
+  justifyContent: "center",
   flex: 1,
   height: 100,
   borderRadius: 10,
-	backgroundColor: 'black',
-	transition: "all 0.1s ease-in-out",
-	padding: 10,
+  backgroundColor: 'black',
+  transition: "all 0.1s ease-in-out",
+  padding: 10,
   "&:hover": {
     cursor: "pointer",
-		backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.primary.main,
   },
 }));
 
 const StyledImage = styled(Image)<ImageProps>(({ theme }) => ({
   borderRadius: 10,
-	opacity: 0.7,
+  opacity: 0.7,
   transition: "all 0.1s ease-in-out",
   "&:hover": {
     opacity: 0.5,
@@ -56,12 +56,12 @@ const StatusBox = styled(Box)<BoxProps>(({ theme }) => ({
 const TitleBox = styled(Box)<BoxProps>(({ theme }) => ({
   display: "flex",
   borderRadius: 10,
-	width: '100%',
-	height: '100%',
+  width: '100%',
+  height: '100%',
   position: "relative",
-	alignItems: "center",
+  alignItems: "center",
   color: "white",
-	padding: 10,
+  padding: 10,
 }));
 
 const BuildingCardMobile: React.FC<{
@@ -75,7 +75,7 @@ const BuildingCardMobile: React.FC<{
   if (!building) return <></>;
   
   const freerooms = getNumFreerooms(status);
-	const totalrooms = getTotalRooms(status);
+  const totalrooms = getTotalRooms(status);
 
   return (
     <MainBox onClick={() => dispatch(setCurrentBuilding(building))}>
@@ -90,26 +90,26 @@ const BuildingCardMobile: React.FC<{
         <Typography sx={{ fontSize: 16, fontWeight: 'bold' }}>
           {building.name}
         </Typography>
-				<StatusBox>
-					{freerooms > INITIALISING ? (
-						<>
-							{freerooms !== FAILED ? (
-								<StatusDot
-									colour={
-										freerooms >= 5 ? "green" : freerooms !== 0 ? "orange" : "red"
-									}
-								/>
-							) : null}
-							<Typography sx={{ fontSize: 12, fontWeight: 500, color: "#000000" }}>
-								{freerooms !== FAILED
-									? `${freerooms} / ${totalrooms}`
-									: "? / ?"}
-							</Typography>
-						</>
-					) : (
-						<CircularProgress size={20} thickness={5} disableShrink />
-					)}
-				</StatusBox>
+        <StatusBox>
+          {freerooms > INITIALISING ? (
+            <>
+              {freerooms !== FAILED ? (
+                <StatusDot
+                  colour={
+                    freerooms >= 5 ? "green" : freerooms !== 0 ? "orange" : "red"
+                  }
+                />
+              ) : null}
+              <Typography sx={{ fontSize: 12, fontWeight: 500, color: "#000000" }}>
+                {freerooms !== FAILED
+                  ? `${freerooms} / ${totalrooms}`
+                  : "? / ?"}
+              </Typography>
+            </>
+          ) : (
+            <CircularProgress size={20} thickness={5} disableShrink />
+          )}
+        </StatusBox>
       </TitleBox>
     </MainBox>
   );
