@@ -9,7 +9,7 @@ import useBuilding from "../hooks/useBuilding";
 import useBuildingStatus from "../hooks/useBuildingStatus";
 import { setCurrentBuilding } from "../redux/currentBuildingSlice";
 import { useDispatch } from "../redux/hooks";
-import { getNumFreerooms } from "../utils/utils";
+import { getNumFreerooms, getTotalRooms } from "../utils/utils";
 import StatusDot from "./StatusDot";
 
 const INITIALISING = -2;
@@ -17,62 +17,54 @@ const FAILED = -1;
 
 const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
   position: "relative",
+	alignItems: "center",
+	justifyContent: "center",
   flex: 1,
-  backgroundColor: theme.palette.primary.main,
-  height: 385,
+  height: 100,
   borderRadius: 10,
+	backgroundColor: 'black',
+	transition: "all 0.1s ease-in-out",
+	padding: 10,
   "&:hover": {
     cursor: "pointer",
+		backgroundColor: theme.palette.primary.main,
   },
-  [theme.breakpoints.down('lg')]: {
-    height: 300,
-  },
-  [theme.breakpoints.down('md')]: {
-    height: 200,
-  }
 }));
 
 const StyledImage = styled(Image)<ImageProps>(({ theme }) => ({
   borderRadius: 10,
+	opacity: 0.7,
   transition: "all 0.1s ease-in-out",
   "&:hover": {
-    opacity: 0.7,
+    opacity: 0.5,
   },
 }));
 
 const StatusBox = styled(Box)<BoxProps>(({ theme }) => ({
   display: "flex",
-  justifyContent: "center",
   alignItems: "center",
   borderRadius: 15,
   position: "absolute",
-  top: 0,
   right: 0,
   backgroundColor: "white",
-  padding: 10,
-  paddingLeft: 15,
+  padding: 8,
+  paddingLeft: 10,
   paddingRight: 15,
   margin: 10,
-  pointerEvents: "none",
 }));
 
 const TitleBox = styled(Box)<BoxProps>(({ theme }) => ({
   display: "flex",
   borderRadius: 10,
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  right: 0,
-  backgroundColor: theme.palette.primary.main,
+	width: '100%',
+	height: '100%',
+  position: "relative",
+	alignItems: "center",
   color: "white",
-  padding: 15,
-  paddingLeft: 20,
-  paddingRight: 20,
-  margin: 10,
-  pointerEvents: "none",
+	padding: 10,
 }));
 
-const BuildingCard: React.FC<{
+const BuildingCardMobile: React.FC<{
   buildingId: string;
 }> = ({ buildingId }) => {
   const dispatch = useDispatch();
@@ -83,6 +75,7 @@ const BuildingCard: React.FC<{
   if (!building) return <></>;
   
   const freerooms = getNumFreerooms(status);
+	const totalrooms = getTotalRooms(status);
 
   return (
     <MainBox onClick={() => dispatch(setCurrentBuilding(building))}>
@@ -93,33 +86,33 @@ const BuildingCard: React.FC<{
         style={{ objectFit: "cover" }}
         priority={true}
       />
-      <StatusBox>
-        {freerooms > INITIALISING ? (
-          <>
-            {freerooms !== FAILED ? (
-              <StatusDot
-                colour={
-                  freerooms >= 5 ? "green" : freerooms !== 0 ? "orange" : "red"
-                }
-              />
-            ) : null}
-            <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
-              {freerooms !== FAILED
-                ? `${freerooms} room${freerooms === 1 ? "" : "s"} available`
-                : "Data Unavailable"}
-            </Typography>
-          </>
-        ) : (
-          <CircularProgress size={20} thickness={5} disableShrink />
-        )}
-      </StatusBox>
       <TitleBox>
-        <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
+        <Typography sx={{ fontSize: 16, fontWeight: 'bold' }}>
           {building.name}
         </Typography>
+				<StatusBox>
+					{freerooms > INITIALISING ? (
+						<>
+							{freerooms !== FAILED ? (
+								<StatusDot
+									colour={
+										freerooms >= 5 ? "green" : freerooms !== 0 ? "orange" : "red"
+									}
+								/>
+							) : null}
+							<Typography sx={{ fontSize: 12, fontWeight: 500, color: "#000000" }}>
+								{freerooms !== FAILED
+									? `${freerooms} / ${totalrooms}`
+									: "? / ?"}
+							</Typography>
+						</>
+					) : (
+						<CircularProgress size={20} thickness={5} disableShrink />
+					)}
+				</StatusBox>
       </TitleBox>
     </MainBox>
   );
 };
 
-export default BuildingCard;
+export default BuildingCardMobile;
