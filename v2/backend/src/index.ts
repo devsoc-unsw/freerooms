@@ -61,6 +61,66 @@ app.get(
   })
 );
 
+
+// Image Storage for Uploads
+const storage = multer.diskStorage({
+    destination : (req, file, cb) => {
+        cb(null, '../../images')
+    },
+    filename : (req, file, cb) => {
+        const { roomID } = req.body;
+        if (roomID) {
+            // Room Id Image; Possibly extract name instead later? 
+            cb(null, `${roomID}_${Date.now()}${path.extname(file.originalname)}`);
+        } else {
+            // Default Image Name if no roomID is provided.
+            cb(null, Date.now() + path.extname(file.originalname));
+        }
+    }
+})
+
+// Multer upload middleware
+const upload = multer({ storage: storage });
+
+
+// Upload image Route
+app.post('/api/rooms/images/upload', 
+    upload.single('image'), 
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+        
+        if (!req.file) {
+            return res.status(400).json({ message: 'No image file provided.' });
+        }
+        // Multer Middleware handles save automically;
+        res.status(200).json({ message: 'Image uploaded successfully.' });
+        next();
+    })
+);
+
+// List Image Filenames
+// Currently returns all images
+app.get('/api/rooms/images/list/all', 
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+        const imagesDir = '../../images';
+        const files = await fs.promises.readdir(imagesDir);
+        res.status(200).json({ images: files });
+        next();
+    })
+);
+
+// Get specific room images
+app.get('/api/rooms/images/list/:roomId', 
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+        const imagesDir = '../../images';
+        const roomId = req.params.roomId;
+        const files = await fs.promises.readdir(imagesDir);
+        // TODO: Currently grabs all files based on roomId string.
+        const roomFiles = files.filter(file => file.startsWith(`${roomId}_`));
+        res.status(200).json({ images: roomFiles });
+        next();
+    })
+);
+
 // After each request, check if database.json needs to be updated
 app.use(
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
@@ -76,53 +136,6 @@ app.use(
   })
 );
 
-// Image Storage for Uploads
-// TODO: Errors not handled
-const storage = multer.diskStorage({
-    destination : (req, file, cb) => {
-        cb(null, '../../images')
-    },
-    filename : (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname));
-    }
-})
-
-// Multer upload middleware
-const upload = multer({ storage: storage });
-
-
-// Upload image Route
-// Save to static images folder of some sort
-// TODO: upload.single('image') -> 'image' must align with variable name of file in frontend uploaded by user
-app.post("/api/rooms/images/upload", upload.single('image'), (err: Error, req: Request, res: Response) => {
-    const {roomID, file} = req.body;
-    try {
-        if (!req.file) {
-          return res.status(400).json({ message: 'No image file provided.' });
-        }
-        // If the image is successfully uploaded, you can respond with a success message.
-        return res.status(200).json({ message: 'Image uploaded successfully.' });
-    } catch (error) {
-        return res.status(500).json({ message: 'Something went wrong.' });
-    }
-})
-
-// List Image Filenames 
-app.get("/api/rooms/images/list", (err: Error, req: Request, res: Response) => {
-    const images: string[] = [
-
-    ];
-    
-    res.status(200).json({
-        images: images
-    })
-})
-
-// Static Image Endpoint
-// TODO -> 
-
-
-// Static Image Folder
 
 // Error-handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
