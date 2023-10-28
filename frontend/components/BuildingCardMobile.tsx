@@ -31,7 +31,7 @@ const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
   },
 }));
 
-const StyledImage = styled(Image)<ImageProps>(({ theme }) => ({
+const StyledImage = styled(Image)<ImageProps>(() => ({
   borderRadius: 10,
   opacity: 0.7,
   transition: "all 0.1s ease-in-out",
@@ -40,7 +40,7 @@ const StyledImage = styled(Image)<ImageProps>(({ theme }) => ({
   },
 }));
 
-const StatusBox = styled(Box)<BoxProps>(({ theme }) => ({
+const StatusBox = styled(Box)<BoxProps>(() => ({
   display: "flex",
   alignItems: "center",
   borderRadius: 15,
@@ -53,7 +53,7 @@ const StatusBox = styled(Box)<BoxProps>(({ theme }) => ({
   margin: 10,
 }));
 
-const TitleBox = styled(Box)<BoxProps>(({ theme }) => ({
+const TitleBox = styled(Box)<BoxProps>(() => ({
   display: "flex",
   borderRadius: 10,
   width: '100%',

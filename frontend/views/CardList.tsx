@@ -1,7 +1,8 @@
-import { styled } from "@mui/material/styles";
+import { styled, useTheme } from "@mui/material/styles";
 import React from "react";
 import FlipMove from "react-flip-move";
 import { useMediaQuery } from '@mui/material';
+
 
 import BuildingCard from "../components/BuildingCard";
 import BuildingCardMobile from "../components/BuildingCardMobile";
@@ -20,7 +21,7 @@ const FlipMoveGrid = styled(FlipMove)(() => ({
 }));
 
 const FlippableCard = React.forwardRef<HTMLDivElement, { buildingId: string;}>(({ buildingId }, ref) => {
-  const displayMobile = useMediaQuery('(max-width:600px)');
+  const displayMobile = useMediaQuery(useTheme().breakpoints.down('sm'));
   return (
     <div ref={ref}>
       { displayMobile 
