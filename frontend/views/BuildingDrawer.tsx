@@ -1,6 +1,7 @@
 import { RoomStatus } from "@common/types";
 import CloseIcon from "@mui/icons-material/Close";
-import { Typography } from "@mui/material";
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { Typography, TypographyProps } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Divider from "@mui/material/Divider";
@@ -21,6 +22,7 @@ import { selectCurrentBuilding, setCurrentBuilding } from "../redux/currentBuild
 import { selectDatetime, setDatetime } from "../redux/datetimeSlice";
 import { useDispatch, useSelector } from "../redux/hooks";
 import toSydneyTime from "../utils/toSydneyTime";
+import useRoom from "hooks/useRoom";
 
 const AppBox = styled(Box)(({ theme }) => ({
   boxShadow: "none",
@@ -64,18 +66,32 @@ const IndiviRoomBox = styled(Box)<BoxProps>(({ theme }) => ({
   justifyContent: "space-between",
   alignItems: "center",
   borderRadius: 10,
+  height: 75,
   fontSize: 20,
   fontWeight: 500,
   backgroundColor: "#FFFFFF",
   color: "black",
-  padding: theme.spacing(2, 3),
+  padding: theme.spacing(2, 2, 2, 3),
   margin: theme.spacing(1.5, 1),
 	'&:hover': {
-		border: "1px solid",	
+		border: "1px solid",
 		borderColor: theme.palette.primary.main,
 		cursor: "pointer",
 	}
 }));
+
+const RoomBoxHeading = styled(Typography)<TypographyProps>(({ theme }) => ({
+  fontSize: 18,
+  fontWeight: 500,
+}));
+
+const RoomBoxSubheading = styled(Typography)<TypographyProps>(({ theme }) => ({
+  fontSize: 12,
+  fontWeight: 500,
+  paddingTop: 1,
+}));
+
+
 
 export const drawerWidth = 400;
 
@@ -117,32 +133,64 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
       busy: "#D30000",
       soon: "#ffa600",
     };
+
     const roomStatusMessage = {
-      free:
-        hoursMinutes == "Invalid Date"
-          ? "Available"
-          : "Available until " + hoursMinutes,
-      busy:
-        hoursMinutes == "Invalid Date"
-          ? "Unavailable"
-          : "Unavailable until " + hoursMinutes,
-      soon: "Available soon at " + hoursMinutes,
+      free: "Available",
+      busy: "Unavailable",
+      soon: "Available",
     };
+
+    const untilMessage = {
+      free: hoursMinutes == "Invalid Date" ? "" : "until " + hoursMinutes,
+      busy: hoursMinutes == "Invalid Date" ? "" : "until " + hoursMinutes,
+      soon: "soon at " + hoursMinutes,
+    }
+
+    const { room } = useRoom(`${building.id}-${roomNumber}`);
+
     return (
       <Link href={`/room/${building.id}-${roomNumber}`}>
         <IndiviRoomBox>
-          {roomNumber}{" "}
-          <Typography
-            sx={{
-              fontSize: 16,
-              fontWeight: 500,
-              color: roomStatusColor[roomStatus.status],
-            }}
-          >
-            {roomStatusMessage[roomStatus.status]}
-          </Typography>
+          <Box sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              paddingRight: 1,
+            }}>
+            <RoomBoxHeading>
+              {roomNumber}
+            </RoomBoxHeading>
+            <RoomBoxSubheading>
+              {!room ? "" : room.name}
+            </RoomBoxSubheading>
+          </Box>
+          <Box sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+          }}>
+            <Box sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-end',
+              paddingRight: 1,
+            }}>
+              <RoomBoxHeading
+                sx={{ color: roomStatusColor[roomStatus.status] }}
+              >
+                {roomStatusMessage[roomStatus.status]}
+              </RoomBoxHeading>
+              <RoomBoxSubheading
+                sx={{ color: roomStatusColor[roomStatus.status] }}
+              >
+                {untilMessage[roomStatus.status]}
+              </RoomBoxSubheading>
+            </Box>
+            <ChevronRightIcon style={{ color: 'grey' }}/>
+          </Box>
         </IndiviRoomBox>
-      </Link>  
+      </Link>
     );
   };
 
