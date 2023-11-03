@@ -24,6 +24,7 @@ export default function Building({
 
   const { rooms, onRefresh, roomInfo } = useContext(FreeRoomsAPIContext);
   const roomsOfCurrBuilding = rooms[route.params.buildingId];
+  console.log(roomInfo.rooms["K-G27-G04"].name);
 
   useEffect(() => {
     navigation.setOptions({
@@ -43,6 +44,7 @@ export default function Building({
       <ScrollView style={styles.scrollView}>
         <View style={[styles.container, { paddingBottom: 20 }]}>
           {Object.keys(roomsOfCurrBuilding).map((roomNumber, index) => (
+            
             <RoomCard
               key={index}
               nav={navigation}

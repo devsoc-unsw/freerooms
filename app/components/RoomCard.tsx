@@ -20,8 +20,10 @@ interface RoomCardProps {
 const RoomCard: React.FC<RoomCardProps> = ({ nav, roomNumber, roomName, status }) => {
 
 	const handlePress = () => {
-		nav.navigate("Room");
+		nav.navigate("Room", {roomName: roomName});
 	}
+
+	console.log(roomName);
 
 	const date = new Date(status.endtime);
 	const hoursMinutes = date.toLocaleTimeString("en-AU", {

@@ -31,7 +31,7 @@ export default function Room({
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.largeText}>NAME{routeParams?.roomName}</Text>
+        <Text style={styles.largeText}>{routeParams?.roomName}</Text>
       </View>
       <View
         style={{
@@ -49,7 +49,6 @@ export default function Room({
         </Text>
       </View>
       <RoomInfo></RoomInfo>
-      <CalendarDay />
       <Button title={"SEE BOOKINGS"} onPress={seeBookings}></Button>
     </View>
   );

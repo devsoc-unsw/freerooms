@@ -17,7 +17,7 @@ export type RootTabScreenProps<T extends keyof RootTabParamList> = BottomTabScre
 export type BuildingStackParamList = {
 	"All Buildings": undefined,
 	Building: { buildingName: string, buildingId : string };
-	Room: undefined;
+	Room: {	roomName: string};
 	"Room Filter": undefined;
 	"Building Filter": undefined;
 	"Agenda": undefined;
