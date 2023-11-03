@@ -17,10 +17,10 @@ export type RootTabScreenProps<T extends keyof RootTabParamList> = BottomTabScre
 export type BuildingStackParamList = {
 	"All Buildings": undefined,
 	Building: { buildingName: string, buildingId : string };
-	Room: {	roomName: string};
+	Room: {	roomName: string, roomNumber: string};
 	"Room Filter": undefined;
 	"Building Filter": undefined;
-	"Agenda": undefined;
+	Agenda: { roomName:string};
 }
 
 // Type for Screens in nested Navigator

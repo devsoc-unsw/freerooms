@@ -20,7 +20,7 @@ interface RoomCardProps {
 const RoomCard: React.FC<RoomCardProps> = ({ nav, roomNumber, roomName, status }) => {
 
 	const handlePress = () => {
-		nav.navigate("Room", {roomName: roomName});
+		nav.navigate("Room", {roomName: roomName, roomNumber: roomNumber});
 	}
 
 	console.log(roomName);

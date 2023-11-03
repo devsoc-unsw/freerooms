@@ -7,6 +7,7 @@ import type { BuildingStackScreenProps } from "../../types";
 
 interface RouteParams {
   roomName: string;
+  roomId: string;
   status: string;
   buildingId: string;
 }
@@ -23,9 +24,7 @@ export default function Room({
   }, [route, navigation]);
 
   async function seeBookings() {
-    const roomId = routeParams.buildingId + "-" + routeParams.roomName;
-    console.log(roomId);
-    nav?.navigate("Agenda", { roomName: roomId });
+    nav?.navigate("Agenda", { roomName: routeParams.roomNumber });
   }
 
   return (

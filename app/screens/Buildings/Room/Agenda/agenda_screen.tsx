@@ -101,9 +101,8 @@ export default function AgendaScreen (room) {
 
   useEffect(() => {
     const loadItems = async () => {
-      const bookings = await seeBookings(room.room);
-      setItems(bookings)
-      console.log(items);
+      const bookings = await seeBookings(room.room.roomName);
+      setItems(bookings);
     }
     loadItems();
 
