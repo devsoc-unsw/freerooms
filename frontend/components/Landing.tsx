@@ -1,87 +1,53 @@
-import GridViewRoundedIcon from "@mui/icons-material/GridViewRounded";
-import MapIcon from "@mui/icons-material/Map";
-import { Accordion } from "@mui/material";
-import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
-import Typography from "@mui/material/Typography";
 import Image from "next/image";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
-import Button from "../components/Button";
-import parentLogo from "../public/assets/favicon/csesocgreyblue.png";
-import Gif from "../public/assets/favicon/free_rooms_logo.gif";
 import Logo from "../public/assets/favicon/free_rooms_logo.png";
+import ClosedLogo from "../public/assets/favicon/free_rooms_logo_closed.png";
+import HeroPanel from "../public/assets/landing_page/hero_panel.png";
 import Faq from "./Faq";
-import Footer from "./Footer";
-import UsageTips from "./UsageTips";
+import Features from "./Features";
+import TextAnimation from "./TextAnimation";
 
 const Landing = () => {
-  const [isHovered, setIsHovered] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
   const [gifSource, setGifSource] = useState(Logo);
 
-  const handleMouseEnter = () => {
-    setIsHovered(true);
+  const handleClick = () => {
+    setIsClicked(!isClicked);
+    setGifSource(isClicked ? Logo : ClosedLogo);
   };
 
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      if (isHovered) {
-        setGifSource(Gif);
-      } else {
-        setGifSource(Logo);
-      }
-    }, 100);
-
-    return () => clearInterval(intervalId);
-  }, [isHovered]);
   return (
     <div>
-      <LandingScreenContainer>
-        <Box margin="auto" display={{ xs: "none", md: "block" }}>
+      <AnimationContainer>
+        <DoorContainer>
           <Image
-            width={400}
-            height={400}
-            alt={"Freerooms Logo"}
+            width={150}
+            height={150}
+            alt="Freerooms Logo"
             src={gifSource}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+            onClick={handleClick}
+            style={{}}
           />
-        </Box>
-      </LandingScreenContainer>
+        </DoorContainer>
+        <TextAnimation />
+        <HeroPanelContainer>
+          <Image
+            src={HeroPanel}
+            alt="hero panel"
+            style={{ height: "100%", width: "100%" }}
+          />
+        </HeroPanelContainer>
+      </AnimationContainer>
       <LandingScreenContainer>
-        <UsageTips />
+        <Features />
       </LandingScreenContainer>
       <Faq />
-      <Footer />
     </div>
   );
 };
-
-const GradientText = styled(Typography)({
-  WebkitBackgroundClip: "text",
-  WebkitTextFillColor: "transparent",
-  backgroundImage: "linear-gradient(to left, #d26038, #f5915a)",
-  animation: "gradient 10s ease infinite",
-  backgroundSize: "400% 400%",
-  fontWeight: 700,
-  "@keyframes gradient": {
-    "0%": {
-      backgroundPosition: "0% 50%",
-    },
-    "50%": {
-      backgroundPosition: "100% 50%",
-    },
-    "100%": {
-      backgroundPosition: "0% 50%",
-    },
-  },
-});
 
 const LandingScreenContainer = styled(Stack)(({ theme }) => ({
   height: "100%",
@@ -89,53 +55,22 @@ const LandingScreenContainer = styled(Stack)(({ theme }) => ({
   margin: "auto",
 }));
 
-export default Landing;
+const HeroPanelContainer = styled(Stack)(({ theme }) => ({
+  height: "100%",
+  width: "100%",
+}));
 
-{
-  /* <LandingScreenContainer direction="row" justifyContent="center">
-        <Stack direction="column" spacing={2} sx={{ margin: "auto" }}>
-          <Stack style={{ width: "auto" }}></Stack>
-          <GradientText
-            variant="h1"
-            fontFamily="Josefin Sans, sans-serif"
-            fontSize={{ xs: "4rem", md: "5rem" }}
-          >
-            Freerooms
-          </GradientText>
-          <GradientText fontSize={{ xs: "1rem", md: "1.5rem" }}>
-            UNSW room bookings
-          </GradientText>
-          <Stack direction="column" spacing={2}>
-            <Button
-              LinkComponent={Link}
-              href="/browse"
-              sx={{ width: "13rem" }}
-              endIcon={<GridViewRoundedIcon />}
-            >
-              <Typography
-                fontWeight="bold"
-                sx={{ display: "flex", margin: "auto" }}
-              >
-                Browse
-              </Typography>
-            </Button>
-            <Button
-              LinkComponent={Link}
-              href="/map"
-              sx={{ width: "13rem" }}
-              endIcon={<MapIcon />}
-            >
-              <Typography
-                fontWeight="bold"
-                sx={{ display: "flex", margin: "auto" }}
-              >
-                Map
-              </Typography>
-            </Button>
-          </Stack>
-        </Stack>
-        <Box margin="auto" display={{ xs: "none", md: "block" }}>
-          <Image width={400} height={400} alt={"Freerooms Logo"} src={Gif} />
-        </Box>
-      </LandingScreenContainer> */
-}
+const DoorContainer = styled(Stack)(({ theme }) => ({
+  cursor: "pointer",
+}));
+
+const AnimationContainer = styled(Stack)(({ theme }) => ({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  height: "100%",
+  width: "80%",
+  margin: "auto",
+}));
+
+export default Landing;

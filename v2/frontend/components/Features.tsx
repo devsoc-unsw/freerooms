@@ -1,45 +1,47 @@
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
+import GridIcon from "@mui/icons-material/GridViewRounded";
 import MapIcon from "@mui/icons-material/Map";
 import { styled } from "@mui/system";
 import Image from "next/image";
 import React from "react";
 
-import background from "../public/assets/landing_page/usage_background.png";
-import vector from "../public/assets/landing_page/usage_tips_vector.png";
-import UsageCard from "./UsageCard";
+import background from "../public/assets/landing_page/Feature_background.png";
+import vector from "../public/assets/landing_page/Feature_tips_vector.png";
+import FeatureCard from "./FeatureCard";
 
-const UsageTips = () => {
+const Features = () => {
   return (
-    <StyledUsageDiv>
+    <StyledFeatureDiv>
       <StyledBackgroudVector src={background} alt="background vector" />
-      <StyledUsageVector alt={"Usage Vector"} src={vector} />
-      <StyledHeading style={{}}>Usage Tips</StyledHeading>
+      <StyledFeatureVector alt={"Feature Vector"} src={vector} />
+      <StyledHeading style={{}}>Our Features</StyledHeading>
       <StyledCardParent>
-        <UsageCard
-          icon={
-            <EventAvailableIcon style={{ height: "3rem", width: "3rem" }} />
-          }
-          heading="Timetable"
+        <FeatureCard
+          icon={<GridIcon style={{ height: "3rem", width: "3rem" }} />}
+          heading="Browse Buildings"
           description="Check the timetable to see available rooms at UNSW and avoid scheduling conflicts."
+          link="/browse"
         />
-        <UsageCard
+        <FeatureCard
           icon={<MapIcon style={{ height: "3rem", width: "3rem" }} />}
-          heading="Timetable"
+          heading="Map"
           description="Check the timetable to see available rooms at UNSW and avoid scheduling conflicts."
+          link="/map"
         />
-        <UsageCard
+        <FeatureCard
           icon={
             <EventAvailableIcon style={{ height: "3rem", width: "3rem" }} />
           }
           heading="Timetable"
           description="Check the timetable to see available rooms at UNSW and avoid scheduling conflicts."
+          link="/timetable"
         />
       </StyledCardParent>
-    </StyledUsageDiv>
+    </StyledFeatureDiv>
   );
 };
 
-export default UsageTips;
+export default Features;
 
 const StyledHeading = styled("h2")(({ theme }) => ({
   textAlign: "center",
@@ -47,12 +49,12 @@ const StyledHeading = styled("h2")(({ theme }) => ({
   marginBottom: "5rem",
 }));
 
-const StyledUsageVector = styled(Image)(({ theme }) => ({
-  marginBottom: "-3rem",
-  marginLeft: "-18rem",
+const StyledFeatureVector = styled(Image)(({ theme }) => ({
+  marginBottom: "-4rem",
+  marginLeft: "-19rem",
 }));
 
-const StyledUsageDiv = styled("div")(({ theme }) => ({
+const StyledFeatureDiv = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-evenly",
