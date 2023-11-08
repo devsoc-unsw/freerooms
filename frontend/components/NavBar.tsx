@@ -4,13 +4,13 @@ import GridIcon from "@mui/icons-material/GridViewRounded";
 import MapIcon from "@mui/icons-material/Map";
 import SearchIcon from "@mui/icons-material/Search";
 import MuiAppBar from "@mui/material/AppBar";
-import background from "../public/assets/landing_page/texture.png";
 import { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar/AppBar";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import { usePathname } from "next/navigation";
 import React from "react";
 
+import background from "../public/assets/landing_page/texture.png";
 import { drawerWidth } from "../views/BuildingDrawer";
 import Branding from "./Branding";
 import IconButton from "./IconButton";

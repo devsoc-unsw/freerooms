@@ -5,7 +5,7 @@ import React, { useState } from "react";
 
 import Logo from "../public/assets/favicon/free_rooms_logo.png";
 import ClosedLogo from "../public/assets/favicon/free_rooms_logo_closed.png";
-import HeroPanel from "../public/assets/landing_page/hero_panel.png";
+import HeroPanel from "../public/assets/landing_page/hero_panel.svg";
 import Faq from "./Faq";
 import Features from "./Features";
 import TextAnimation from "./TextAnimation";
