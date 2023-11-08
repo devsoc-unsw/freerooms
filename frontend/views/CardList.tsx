@@ -1,8 +1,11 @@
-import { styled } from "@mui/material/styles";
+import { styled, useTheme } from "@mui/material/styles";
 import React from "react";
 import FlipMove from "react-flip-move";
+import { useMediaQuery } from '@mui/material';
+
 
 import BuildingCard from "../components/BuildingCard";
+import BuildingCardMobile from "../components/BuildingCardMobile";
 import LoadingCircle from "../components/LoadingCircle";
 import useBuildings from "../hooks/useBuildings";
 import useStatus from "../hooks/useStatus";
@@ -17,13 +20,17 @@ const FlipMoveGrid = styled(FlipMove)(() => ({
   gridGap: "20px",
 }));
 
-const FlippableCard = React.forwardRef<HTMLDivElement, {
-  buildingId: string;
-}>(({ buildingId }, ref) => (
-  <div ref={ref}>
-    <BuildingCard buildingId={buildingId} />
-  </div>
-));
+const FlippableCard = React.forwardRef<HTMLDivElement, { buildingId: string;}>(({ buildingId }, ref) => {
+  const displayMobile = useMediaQuery(useTheme().breakpoints.down('sm'));
+  return (
+    <div ref={ref}>
+      { displayMobile 
+        ? (<BuildingCardMobile buildingId={buildingId}/>) 
+        : (<BuildingCard buildingId={buildingId} />)
+      }
+    </div>
+  );
+});
 FlippableCard.displayName = "FlippableCard";
 
 const CardList: React.FC<{
