@@ -66,7 +66,7 @@ const IndiviRoomBox = styled(Box)<BoxProps>(({ theme }) => ({
   justifyContent: "space-between",
   alignItems: "center",
   borderRadius: 10,
-  height: 75,
+  height: 70,
   fontSize: 20,
   fontWeight: 500,
   backgroundColor: "#FFFFFF",
@@ -81,7 +81,7 @@ const IndiviRoomBox = styled(Box)<BoxProps>(({ theme }) => ({
 }));
 
 const RoomBoxHeading = styled(Typography)<TypographyProps>(({ theme }) => ({
-  fontSize: 18,
+  fontSize: 16,
   fontWeight: 500,
 }));
 
@@ -218,7 +218,7 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
               alignItems: "center",
             }}
           >
-            <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
+            <Typography sx={{ fontSize: 19, fontWeight: 500 }}>
               {building!.name}
             </Typography>
             <StatusBox>
