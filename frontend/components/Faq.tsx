@@ -5,6 +5,8 @@ import React, { useState } from "react";
 import underline from "../public/assets/landing_page/underline_vector.png";
 import AccordionItem from "./AccordionItem";
 
+// TODO: Change descriptions and titles of faqs
+
 const Faq = () => {
   return (
     <StyledParentDiv>

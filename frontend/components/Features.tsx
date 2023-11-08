@@ -19,12 +19,14 @@ const Features = () => {
         <FeatureCard
           icon={<GridIcon style={{ height: "3rem", width: "3rem" }} />}
           heading="Browse Buildings"
+          // TODO: Change description
           description="Check the timetable to see available rooms at UNSW and avoid scheduling conflicts."
           link="/browse"
         />
         <FeatureCard
           icon={<MapIcon style={{ height: "3rem", width: "3rem" }} />}
           heading="Map"
+          // TODO: Change description
           description="Check the timetable to see available rooms at UNSW and avoid scheduling conflicts."
           link="/map"
         />
@@ -33,7 +35,9 @@ const Features = () => {
             <EventAvailableIcon style={{ height: "3rem", width: "3rem" }} />
           }
           heading="Timetable"
+          // TODO: Change description
           description="Check the timetable to see available rooms at UNSW and avoid scheduling conflicts."
+          // FIX: Time table doesnt have a default page
           link="/timetable"
         />
       </StyledCardParent>

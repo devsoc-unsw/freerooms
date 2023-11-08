@@ -18,7 +18,9 @@ const Landing = () => {
     setIsClicked(!isClicked);
     setGifSource(isClicked ? Logo : ClosedLogo);
   };
-
+  // TODO: less line spacing, more space between title and image
+  // TODO: Add mobile version of l anding page should have mobile images
+  // TODO: Add TODOs for where the text should be
   return (
     <div>
       <AnimationContainer>
