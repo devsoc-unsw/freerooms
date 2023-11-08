@@ -5,13 +5,13 @@ import { useEffect } from "react";
 import CursorBlinker from "./CursorBlinker";
 
 export default function TextAnimation() {
+  // TODO: Change tagline
   const baseText = "Find a space make it yours with Freerooms" as string;
   const count = useMotionValue(0);
   const rounded = useTransform(count, (latest) => Math.round(latest));
   const displayText = useTransform(rounded, (latest) =>
     baseText.slice(0, latest)
   );
-  const animationStyle = {};
 
   useEffect(() => {
     const controls = animate(count, baseText.length, {
@@ -24,9 +24,7 @@ export default function TextAnimation() {
 
   return (
     <span style={{ textAlign: "center" }}>
-      <AnimationContainerStyle style={animationStyle}>
-        {displayText}
-      </AnimationContainerStyle>
+      <AnimationContainerStyle>{displayText}</AnimationContainerStyle>
       <CursorBlinker />
     </span>
   );
