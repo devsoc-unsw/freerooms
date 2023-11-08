@@ -14,20 +14,18 @@ const Features = () => {
     <StyledFeatureDiv>
       <StyledBackgroudVector src={background} alt="background vector" />
       <StyledFeatureVector alt={"Feature Vector"} src={vector} />
-      <StyledHeading style={{}}>Our Features</StyledHeading>
+      <StyledHeading>Our Features</StyledHeading>
       <StyledCardParent>
         <FeatureCard
           icon={<GridIcon style={{ height: "3rem", width: "3rem" }} />}
           heading="Browse Buildings"
-          // TODO: Change description
-          description="Check the timetable to see available rooms at UNSW and avoid scheduling conflicts."
+          description="Efficiently browse a complete list of available rooms and buildings, with customizable filters for quick and easy scheduling."
           link="/browse"
         />
         <FeatureCard
           icon={<MapIcon style={{ height: "3rem", width: "3rem" }} />}
           heading="Map"
-          // TODO: Change description
-          description="Check the timetable to see available rooms at UNSW and avoid scheduling conflicts."
+          description="Explore a dynamic map showcasing building availability near your location, and quickly find the perfect spot for your next study session."
           link="/map"
         />
         <FeatureCard
@@ -35,8 +33,7 @@ const Features = () => {
             <EventAvailableIcon style={{ height: "3rem", width: "3rem" }} />
           }
           heading="Timetable"
-          // TODO: Change description
-          description="Check the timetable to see available rooms at UNSW and avoid scheduling conflicts."
+          description="Get instant access to real-time room schedules across campus, ensuring you're always in the right place at the right time."
           // FIX: Time table doesnt have a default page
           link="/timetable"
         />
