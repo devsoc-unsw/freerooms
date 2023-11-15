@@ -11,19 +11,21 @@ import { usePathname } from "next/navigation";
 import React from "react";
 
 import background from "../public/assets/landing_page/texture.png";
+import { useDispatch } from "../redux/hooks";
+import { openSearch } from "../redux/searchOpenSlice";
 import { drawerWidth } from "../views/BuildingDrawer";
 import Branding from "./Branding";
 import IconButton from "./IconButton";
 
 interface NavBarProps {
-  setSearchOpen: (open: boolean) => void;
   drawerOpen: boolean;
 }
 
 // This isn't actually enforced so update this if u change the navbar
 export const navHeight = 65;
 
-const NavBar: React.FC<NavBarProps> = ({ setSearchOpen, drawerOpen }) => {
+const NavBar: React.FC<NavBarProps> = ({ drawerOpen }) => {
+  const dispatch = useDispatch();
   const path = usePathname();
 
   return (
@@ -41,7 +43,7 @@ const NavBar: React.FC<NavBarProps> = ({ setSearchOpen, drawerOpen }) => {
       <Stack direction="row" spacing={1}>
         <IconButton
           aria-label="Open search"
-          onClick={() => setSearchOpen(true)}
+          onClick={() => dispatch(openSearch())}
         >
           <SearchIcon />
         </IconButton>
