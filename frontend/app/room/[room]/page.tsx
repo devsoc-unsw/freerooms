@@ -46,7 +46,7 @@ export default function Page({ params }: {
         { room != undefined ? 
             ( <Stack justifyContent="center" alignItems="center" width="100%" py={5} height="100%" px={{ xs: 3, md: 15 }}>
                 <RoomPageHeader room={room} buildingName={ building != undefined ? building.name : "" } />
-			    <RoomImage src={roomImage} />
+			    <RoomImage src={`/assets/building_photos/${campus}-${grid}.webp`} />
 			    <BookingCalendar events={ bookings == undefined ? [] : bookings } />
             </Stack>
             ) : <LoadingCircle />  }
@@ -168,7 +168,7 @@ const ActionMenu : React.FC = () => {
 	);
 }
 
-const RoomImage : React.FC<{ src : StaticImageData }> = ({ src }) => {
+const RoomImage : React.FC<{ src : string }> = ({ src }) => {
 	return (
 		<Box width={"100%"} display="flex">
 			<Box minWidth={"100%"} minHeight={300} position="relative" >
