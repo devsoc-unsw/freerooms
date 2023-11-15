@@ -1,6 +1,6 @@
 import { RoomStatus } from "@common/types";
-import CloseIcon from "@mui/icons-material/Close";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import CloseIcon from "@mui/icons-material/Close";
 import { Typography, TypographyProps } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -18,11 +18,11 @@ import React from "react";
 
 import Button from "../components/Button";
 import useBuildingStatus from "../hooks/useBuildingStatus";
+import useRoom from "../hooks/useRoom";
 import { selectCurrentBuilding, setCurrentBuilding } from "../redux/currentBuildingSlice";
 import { selectDatetime, setDatetime } from "../redux/datetimeSlice";
 import { useDispatch, useSelector } from "../redux/hooks";
 import toSydneyTime from "../utils/toSydneyTime";
-import useRoom from "hooks/useRoom";
 
 const AppBox = styled(Box)(({ theme }) => ({
   boxShadow: "none",
@@ -87,7 +87,7 @@ const RoomBoxHeading = styled(Typography)<TypographyProps>(({ theme }) => ({
 
 const RoomBoxSubheading = styled(Typography)<TypographyProps>(({ theme }) => ({
   fontSize: 12,
-  fontWeight: 500,
+  fontWeight: 400,
   paddingTop: 1,
 }));
 
