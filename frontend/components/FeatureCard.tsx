@@ -6,7 +6,8 @@ interface FeatureCardProps {
   icon: React.ReactElement;
   heading: string;
   description: string;
-  link: string;
+  link?: string;
+  onClick?: () => void;
 }
 
 const StyledParentDiv = styled("div")(({ theme }) => ({
@@ -47,9 +48,10 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
   heading,
   description,
   link,
+  onClick
 }) => {
   return (
-    <Link href={link}>
+    <Link href={link ?? "#"} onClick={onClick}>
       <StyledParentDiv
         onMouseEnter={(e) => {
           e.currentTarget.style.transform = "scale(1.05)";
