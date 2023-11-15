@@ -6,7 +6,7 @@ import type { RootTabParamList } from "../types";
 
 // Screen Imports 
 import Map from "../Map/map";
-import Home from "../Home/home";
+import About from "../Home/home";
 import Buildings from "../Buildings/buildings";
 
 // Style Imports
@@ -20,7 +20,7 @@ const Tab = createBottomTabNavigator<RootTabParamList>();
 export default function RootNavigator() {
 	return (
 		<Tab.Navigator
-			initialRouteName="Home"
+			initialRouteName="Buildings"
 			screenOptions={({route}) => ({
 				headerShown: route.name == 'Buildings' ? false : true,
 				tabBarStyle: styles.tabBar,
@@ -34,8 +34,9 @@ export default function RootNavigator() {
 					
 					let iconColor = focused ? theme.colors.primary : 'gray';
 					
-					if( route.name === "Home" ) {
-						iconName = "home";
+					if( route.name === "About Us" ) {
+						iconName = "information-sharp";
+						return <Ionicons name={iconName} size={25} color={iconColor} />
 					} else if( route.name === "Buildings") {
 						iconName = "business"
 					} else {
@@ -47,8 +48,9 @@ export default function RootNavigator() {
 			})}
 		>
 			<Tab.Screen name="Buildings" component={Buildings} />
-			<Tab.Screen name="Home" component={Home} />
+			
 			<Tab.Screen name="Map" component={Map} />
+			<Tab.Screen name="About Us" component={About} />
 		</Tab.Navigator>
 	)
 }

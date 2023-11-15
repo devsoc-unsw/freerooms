@@ -5,7 +5,7 @@ import type { CompositeScreenProps } from '@react-navigation/native';
 
 // Bottom Tab Navigator
 export type RootTabParamList = {
-	Home: undefined;
+	"About Us": undefined;
 	Buildings: NavigatorScreenParams<BuildingStackParamList>;
 	Map: undefined;
 }
