@@ -35,7 +35,6 @@ const Features = () => {
           heading="Timetable"
           description="Get instant access to real-time room schedules across campus, ensuring you're always in the right place at the right time."
           // FIX: Time table doesnt have a default page
-          link="/timetable"
         />
       </StyledCardParent>
     </StyledFeatureDiv>
