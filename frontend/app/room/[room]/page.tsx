@@ -46,7 +46,7 @@ export default function Page({ params }: {
         { room != undefined ? 
             ( <Stack justifyContent="center" alignItems="center" width="100%" py={5} height="100%" px={{ xs: 3, md: 15 }}>
                 <RoomPageHeader room={room} buildingName={ building != undefined ? building.name : "" } />
-			    <RoomImage src={`/assets/building_photos/${campus}-${grid}.webp`} />
+			    <RoomImage src={`/assets/building_photos/${campus}-${grid}.webp`} /> 
 			    <BookingCalendar events={ bookings == undefined ? [] : bookings } />
             </Stack>
             ) : <LoadingCircle />  }
@@ -101,14 +101,10 @@ const RoomPageHeader : React.FC<{ room : Room, buildingName : string }> = ({
 					<Typography variant='h4' fontWeight={550}> {room.name} </Typography>
 					{ isMobile ?  <ActionMenu /> 
 					: ( 
-						<Stack direction={"row"} spacing={1}>
-							<Button sx={{ px: 2, py: 1}}>
-								<Typography variant={"body2"} fontWeight={"bold"}>Make a Booking</Typography>
-							</Button>
-							<Button sx={{ px: 2, py: 1}}>
-								<Typography variant={"body2"} fontWeight={"bold"}>Add Photos</Typography>
-							</Button>
-						</Stack> )
+					    <Button sx={{ px: 2, py: 1}}>
+						    <Typography variant={"body2"} fontWeight={"bold"}>Make a Booking</Typography>
+						</Button>
+                        )
 					}	
 					
 				</Box>
@@ -170,13 +166,8 @@ const ActionMenu : React.FC = () => {
 
 const RoomImage : React.FC<{ src : string }> = ({ src }) => {
 	return (
-		<Box width={"100%"} display="flex">
-			<Box minWidth={"100%"} minHeight={300} position="relative" >
-				<Image src={src} alt={"Room Image"} fill style={{ objectFit: "cover", borderRadius: 10 }}/>	
-			</Box>
-			<Button sx={{ px: 2, py: 1, position: 'relative', alignSelf: "flex-end", right: 145, bottom: 15, minWidth: 125 }}>
-				<Typography variant={"body2"} fontWeight={"bold"}>More Photos</Typography>
-			</Button>
+	    <Box minWidth={"100%"} minHeight={300} position="relative" >
+	        <Image src={src} alt={"Room Image"} fill style={{ objectFit: "cover", borderRadius: 10 }}/>	
 		</Box>
 	);
 }
