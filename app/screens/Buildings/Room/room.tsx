@@ -4,12 +4,14 @@ import { Calendar } from "react-native-calendars";
 import React, { useEffect, useState } from "react";
 
 import type { BuildingStackScreenProps } from "../../types";
+import { RoomStatus } from "@common/types";
 
 interface RouteParams {
+  buildingId?: string;
+  roomId?: string;
   roomName: string;
-  roomId: string;
-  status: string;
-  buildingId: string;
+  roomNumber: string;
+  status?: RoomStatus;
 }
 
 export default function Room({
@@ -24,7 +26,7 @@ export default function Room({
   }, [route, navigation]);
 
   async function seeBookings() {
-    nav?.navigate("Agenda", { roomName: routeParams.roomNumber });
+    nav?.navigate("Agenda", { roomName: routeParams.roomName });
   }
 
   return (
@@ -36,7 +38,7 @@ export default function Room({
         style={{
           alignSelf: "center",
           backgroundColor:
-            routeParams?.status == "free" ? "#50C878" : "#FF4141",
+            routeParams?.status.status == "free" ? "#50C878" : "#FF4141",
           borderRadius: 30,
           height: 45,
           justifyContent: "center",
@@ -44,7 +46,7 @@ export default function Room({
         }}
       >
         <Text style={styles.avaliableText}>
-          {routeParams?.status == "free" ? "FREE" : "OCCUPIED"}
+          {routeParams?.status.status == "free" ? "FREE" : "OCCUPIED"}
         </Text>
       </View>
       <RoomInfo></RoomInfo>
@@ -78,7 +80,6 @@ const CalendarDay = () => {
     <Calendar
       onDayPress={(day) => {
         setSelected(day.dateString);
-        console.log(day.dateString);
       }}
       markedDates={{
         [selected]: {

@@ -43,7 +43,6 @@ export default function Building({
       <ScrollView style={styles.scrollView}>
         <View style={[styles.container, { paddingBottom: 20 }]}>
           {Object.keys(roomsOfCurrBuilding).map((roomNumber, index) => (
-            
             <RoomCard
               key={index}
               nav={navigation}
