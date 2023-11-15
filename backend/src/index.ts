@@ -1,16 +1,15 @@
 import express, { NextFunction, Request, RequestHandler, Response } from "express";
 import cors from "cors";
-import fs from "fs";
 
-import { scrapeBuildingData } from "./helpers";
 import {
   parseDatetime,
   parseFilters,
   getAllRoomStatus,
   getAllBuildings,
   getRoomBookings,
+  getAllRooms,
 } from "./service";
-import { DATABASE_PATH, PORT } from "./config";
+import { PORT } from "./config";
 
 const app = express();
 app.use(cors());
@@ -26,8 +25,17 @@ app.get(
   "/api/buildings",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const buildingData = await getAllBuildings();
-    const data = { buildings: buildingData };
-    res.send(data);
+    res.send(buildingData);
+    next();
+  })
+);
+
+// Route to get info of all the rooms
+app.get(
+  "/api/rooms",
+  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const roomData = await getAllRooms();
+    res.send(roomData);
     next();
   })
 );
@@ -49,25 +57,8 @@ app.get(
   "/api/rooms/bookings/:roomID",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const { roomID } = req.params;
-    const [campus, buildingGrid, roomNumber] = roomID.split('-');
-
-    const data = await getRoomBookings(`${campus}-${buildingGrid}`, roomNumber);
+    const data = await getRoomBookings(roomID);
     res.send(data);
-    next();
-  })
-);
-
-// After each request, check if database.json needs to be updated
-app.use(
-  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const timeNow = new Date();
-    const stat = fs.statSync(DATABASE_PATH);
-    if (
-      timeNow.getFullYear() - stat.mtime.getFullYear() > 0 ||
-      timeNow.getMonth() - stat.mtime.getMonth() > 0
-    ) {
-      await scrapeBuildingData();
-    }
     next();
   })
 );

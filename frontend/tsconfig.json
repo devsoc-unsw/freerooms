@@ -22,7 +22,11 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@common/*": ["../common/*"]
+    }
   },
   "include": [
     "next-env.d.ts",

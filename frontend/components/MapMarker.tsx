@@ -1,3 +1,4 @@
+import { Building, BuildingStatus } from "@common/types";
 import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 import RoomIcon from "@mui/icons-material/Room";
 import { alpha } from "@mui/material";
@@ -12,7 +13,6 @@ import useBuilding from "../hooks/useBuilding";
 import useBuildingStatus from "../hooks/useBuildingStatus";
 import { selectCurrentBuilding, setCurrentBuilding } from "../redux/currentBuildingSlice";
 import { useDispatch, useSelector } from "../redux/hooks";
-import { Building, BuildingStatus } from "../types";
 import { getNumFreerooms, getTotalRooms } from "../utils/utils";
 
 const MapMarker: React.FC<{

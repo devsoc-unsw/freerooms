@@ -24,6 +24,12 @@ const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
   "&:hover": {
     cursor: "pointer",
   },
+  [theme.breakpoints.down('lg')]: {
+    height: 300,
+  },
+  [theme.breakpoints.down('md')]: {
+    height: 200,
+  }
 }));
 
 const StyledImage = styled(Image)<ImageProps>(({ theme }) => ({

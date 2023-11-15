@@ -1,26 +1,38 @@
 import { Request } from "express";
-import { calculateStatus, getBuildingData, getTimetableData, getWeekAndDay } from "./helpers";
-import { BuildingsResponse, Filters, RoomBookings, BuildingStatus, RoomsResponse } from "./types";
-import { DateTime } from "luxon";
+
+import { calculateStatus, getBuildingRoomData, getBookingsForDate } from "./helpers";
+import { BuildingsResponse, StatusResponse, BookingsResponse, RoomsResponse } from "@common/types";
+import { Filters } from "./types";
+import { queryBookingsForRoom } from "./dbInterface";
 
 const ISO_REGEX = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/;
 const UPPER = 19; // Buildings with grid 19+ are upper campus
 
 export const getAllBuildings = async (): Promise<BuildingsResponse> => {
-  const data = Object.values(await getBuildingData());
+  const data = Object.values(await getBuildingRoomData());
   if (!data) {
     throw new Error(`Buildings cannot be retrieved`);
   }
 
-  const res: BuildingsResponse = [];
-  data.forEach(({ name, id, lat, long }) => {
-    res.push({
-      name: name,
-      id: id,
-      lat: lat,
-      long: long,
-    });
+  const res: BuildingsResponse = { buildings: [] };
+  data.forEach(({ name, id, lat, long, aliases }) => {
+    res.buildings.push({ name, id, lat, long, aliases });
   });
+  return res;
+};
+
+export const getAllRooms = async (): Promise<RoomsResponse> => {
+  const data = Object.values(await getBuildingRoomData());
+  if (!data) {
+    throw new Error(`Rooms cannot be retrieved`);
+  }
+
+  const res: RoomsResponse = { rooms: {} };
+  data.forEach(bldg =>
+    Object.values(bldg.rooms).forEach(room => {
+      res.rooms[room.id] = room;
+    })
+  );
   return res;
 };
 
@@ -64,11 +76,7 @@ export const parseFilters = (req: Request): Filters => {
   }
 
   if (req.query.usage) {
-    const usage = req.query.usage as string;
-    if (usage !== 'LEC' && usage !== 'TUT') {
-      throw new Error('Invalid usage: must be one of "LEC" or "TUT"');
-    }
-    filters.usage = usage;
+    filters.usage = req.query.usage as string;
   }
 
   if (req.query.location) {
@@ -79,81 +87,62 @@ export const parseFilters = (req: Request): Filters => {
     filters.location = location;
   }
 
+  if (req.query.id) {
+    const id = req.query.id as string;
+    if (id !== 'true' && id !== 'false') {
+      throw new Error('Invalid ID required: must be one of "true" or "false"');
+    }
+    filters.id = id === 'true';
+  }
+
   return filters;
 };
 
 export const getAllRoomStatus = async (
   date: Date,
   filters: Filters
-): Promise<RoomsResponse> => {
-  const { week, day } = await getWeekAndDay(date);
+): Promise<StatusResponse> => {
+  const bookings = await getBookingsForDate(date);
+  const buildingData = await getBuildingRoomData();
 
-  const buildingData = await getBuildingData();
-  const timetableData = await getTimetableData();
-  const result: RoomsResponse = {};
-  for (const buildingID in buildingData) {
+  const result: StatusResponse = {};
+  for (const buildingId in buildingData) {
     // Skip building if it does not match filter
-    const roomLocation = +buildingID.substring(3) < UPPER ? 'lower' : 'upper';
+    const roomLocation = +buildingId.substring(3) < UPPER ? 'lower' : 'upper';
     if (filters.location && filters.location != roomLocation) {
-      result[buildingID] = {};
+      result[buildingId] = {};
       continue;
     }
 
-    const buildingRooms = buildingData[buildingID].rooms;
-    const buildingStatus: BuildingStatus = {};
+    const buildingRooms = buildingData[buildingId].rooms;
+    result[buildingId] = {};
     for (const roomNumber in buildingRooms) {
       const roomData = buildingRooms[roomNumber];
 
       // Skip room if it does not match filter
       if (
         (filters.capacity && roomData.capacity < filters.capacity) ||
-        (filters.usage && roomData.usage != filters.usage)
-      ) {
-        continue;
-      }
-      
-      // If no data for this room on this day, it is free
-      if (
-        !(buildingID in timetableData) ||
-        !(roomNumber in timetableData[buildingID]) ||
-        !(week in timetableData[buildingID][roomNumber]) ||
-        !(day in timetableData[buildingID][roomNumber][week])
-      ) {
-        buildingStatus[roomNumber] = {
-          status: "free",
-          endtime: "",
-        };
-        continue;
-      }
-  
-      const classes = timetableData[buildingID][roomNumber][week][day];
-      const status = calculateStatus(date, classes, filters.duration || 0);
+        (filters.usage && roomData.usage != filters.usage) ||
+        (filters.id != undefined && ((roomData.school != " ") != filters.id)) // id is required if managed by a school (non-CATS)
+      ) continue;
+
+      const status = calculateStatus(date, bookings[roomData.id].bookings, filters.duration || 0);
       if (status !== null) {
-        buildingStatus[roomNumber] = status;
+        result[buildingId][roomNumber] = status;
       }
     }
-    result[buildingID] = buildingStatus;
   }
 
   return result;
 };
 
 export const getRoomBookings = async (
-  buildingID: string,
-  roomNumber: string
-): Promise<RoomBookings> => {
-  // Check if room exists in database
-  const buildingData = await getBuildingData();
-  if (!(buildingID in buildingData)) {
-    throw new Error(`Building ID ${buildingID} does not exist`);
-  }
-  if (!(roomNumber in buildingData[buildingID].rooms)) {
-    throw new Error(`Room ID ${buildingID}-${roomNumber} does not exist`);
+  roomId: string
+): Promise<BookingsResponse> => {
+  const res = await queryBookingsForRoom(roomId);
+  if (res.rooms_by_pk === null) {
+    throw new Error(`Room ID ${roomId} does not exist`);
   }
 
-  // If in timetable, return bookings, otherwise just return name from database
-  const timetableData = await getTimetableData();
-  return !(buildingID in timetableData) || !(roomNumber in timetableData[buildingID])
-   ? { name: buildingData[buildingID].rooms[roomNumber].name }
-   : timetableData[buildingID][roomNumber];
+  return res.rooms_by_pk;
 };

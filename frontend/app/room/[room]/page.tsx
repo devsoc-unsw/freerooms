@@ -1,26 +1,26 @@
 "use client" 
 
+import MenuIcon from '@mui/icons-material/Menu';
+import { IconButton, useMediaQuery } from '@mui/material';
 import Box from '@mui/material/Box';
 import Container from "@mui/material/Container";
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
+import { useTheme } from "@mui/material/styles";
 import Typography from '@mui/material/Typography';
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import React from 'react';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import MenuIcon from '@mui/icons-material/Menu';
-import { useTheme } from "@mui/material/styles";
 
 import BookingCalendar from "../../../components/BookingCalendar";
 import Button from "../../../components/Button";
 import LoadingCircle from "../../../components/LoadingCircle";
 import useBookings from "../../../hooks/useBookings";
+import useRoom from "../../../hooks/useRoom";
 import roomImage from "../../../public/assets/building_photos/K-B16.webp";
-import { setCurrentBuilding } from "../../../redux/currentBuildingSlice";
-import { useDispatch } from '../../../redux/hooks';
-import type  {  RoomAvailability } from '../../../types';
-import { IconButton, useMediaQuery } from '@mui/material';
+import type { Room } from "../../../../common/types";
+import useBuilding from 'hooks/useBuilding';
 
 type Event = {
 	title: string;
@@ -36,55 +36,54 @@ type RoomDetails = {
 export default function Page({ params }: {
   params: {room: string};
 }) {
-	const [ events, setEvents ] = React.useState<Array<Event>>([]);
-	const [ roomName, setRoomName ] = React.useState<string>("");
-	const handleRoomDetails = ({ name, bookings } : RoomDetails ) => {
-		setRoomName(name);
-		setEvents(bookings);
-	}
-	
-	const handleError = () => {
-		setEvents([]);
-	}
+	const { bookings } = useBookings(params.room);
+	const { room } = useRoom(params.room);
+    const [ campus, grid ] = room ? room.id.split('-') : [ "", "" ];
+    const { building } = useBuilding(`${campus}-${grid}`);
 
-	const { bookings, error } = useBookings(params.room);
-
-	React.useEffect( () => {
-		if (bookings) {
-			handleRoomDetails(extractBookings(bookings));
-		} else if (error) {
-			handleError();
-		}
-	}, [bookings, error]);
-
-  return (
-    
+      return (
     <Container maxWidth={'xl'}>
-      { !roomName
-				? <LoadingCircle/>
-				: (
-        <Stack justifyContent="center" alignItems="center" width="100%" py={5} height="100%" px={{ xs: 3, md: 15 }}>
-			<RoomPageHeader roomName={roomName} roomId={"K-J17-G01"} roomAlias={"StringsME3"} roomType={"Computer Lab"} idRequired={true} />
-			<RoomImage src={roomImage} /> 
-			<BookingCalendar events={events} />
-      </Stack>
-      )}
+        { room != undefined ? 
+            ( <Stack justifyContent="center" alignItems="center" width="100%" py={5} height="100%" px={{ xs: 3, md: 15 }}>
+                <RoomPageHeader room={room} buildingName={ building != undefined ? building.name : "" } />
+			    <RoomImage src={roomImage} />
+			    <BookingCalendar events={ bookings == undefined ? [] : bookings } />
+            </Stack>
+            ) : <LoadingCircle />  }
     </Container>
     
   );
 }
 
-const RoomPageHeader : React.FC<{ roomName: string, roomId:  string, roomAlias : string, roomType: string, idRequired: boolean }> = ({
-	roomName,
-	roomId, 
-	roomAlias, 
-	roomType, 
-	idRequired
+const RoomPageHeader : React.FC<{ room : Room, buildingName : string }> = ({
+    room,
+    buildingName
 }) => {
 	const theme = useTheme();
 	const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-	return (
+    const translateUsage = ( usage : string  ) => {
+        switch(usage) {
+            case "AUD" :
+                return "Auditorium";
+            case "CMLB":
+                return "Computer Lab";
+            case "LAB" : 
+                return "Lab";
+            case "LCTR":
+                return "Lecture Hall";
+            case "MEET":
+                return "Meeting Room";
+            case "SDIO":
+               return "Studio";
+            case "TUSM":
+                return "Tutorial Room";
+            default:
+                return "";
+        }
+    }
+
+    	return (
 		<Box
 			width={"100%"}
 			display={"flex"}
@@ -93,17 +92,13 @@ const RoomPageHeader : React.FC<{ roomName: string, roomId:  string, roomAlias :
 			justifyContent={"space-between"}
 		>
 			<Stack direction={"column"} spacing={1} width="100%">
-				
-				{ idRequired ? (
-					<Typography variant='subtitle2'>
-						<Typography display="inline" variant="subtitle2" fontWeight={"bold"}>{"CATS "}</Typography> 
-							| 
-						<Typography display="inline" variant="subtitle2"fontWeight={"bold"} color={"#d26038"}>{" ID Required"}</Typography> 
-					</Typography>
-				) : null 
-				}
+                { buildingName != "" ? (
+                    <Stack direction='row' spacing={1} >
+                        <Typography display="inline" variant="subtitle2">{`${buildingName} / ${translateUsage(room.usage)}`} </Typography>
+                    </Stack>
+                ) : null }
 				<Box display="flex" justifyContent={"space-between"} alignItems={'center'} width={'100%'} >
-					<Typography variant='h4' fontWeight={550}> {roomName} </Typography>
+					<Typography variant='h4' fontWeight={550}> {room.name} </Typography>
 					{ isMobile ?  <ActionMenu /> 
 					: ( 
 						<Stack direction={"row"} spacing={1}>
@@ -119,13 +114,13 @@ const RoomPageHeader : React.FC<{ roomName: string, roomId:  string, roomAlias :
 				</Box>
 				<Stack direction={"row"} spacing={3}  >
 					<Typography variant="body1" fontWeight={"bold"}>
-						ID: <Typography display={"inline"} variant="body1">{roomId}</Typography>
+						ID: <Typography display={"inline"} variant="body1">{room.id}</Typography>
+					</Typography>
+                    <Typography variant="body1" fontWeight={"bold"}>
+						Capacity: <Typography display={"inline"} variant="body1">{room.capacity}</Typography>
 					</Typography>
 					<Typography variant="body1" fontWeight={"bold"}>
-						Alias: <Typography display={"inline"} variant="body1">{roomAlias}</Typography>
-					</Typography>
-					<Typography variant="body1" fontWeight={"bold"}>
-						Type: <Typography display={"inline"} variant="body1">{roomType}</Typography>
+						School: <Typography display={"inline"} variant="body1">{room.school}</Typography>
 					</Typography>
 				</Stack>
 			</Stack>

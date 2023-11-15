@@ -1,3 +1,4 @@
+import { Building } from "@common/types";
 import Box from "@mui/material/Box";
 import {
   GoogleMap,
@@ -11,7 +12,6 @@ import { useDebounce } from "usehooks-ts";
 import { GOOGLE_API_KEY } from "../config";
 import useBuildings from "../hooks/useBuildings";
 import useUserLocation from "../hooks/useUserLocation";
-import { Building } from "../types";
 import calculateDistance from "../utils/calculateDistance";
 import MapMarker from "./MapMarker";
 

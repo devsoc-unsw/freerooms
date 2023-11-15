@@ -1,8 +1,11 @@
-import { styled } from "@mui/material/styles";
+import { styled, useTheme } from "@mui/material/styles";
 import React from "react";
 import FlipMove from "react-flip-move";
+import { useMediaQuery } from '@mui/material';
+
 
 import BuildingCard from "../components/BuildingCard";
+import BuildingCardMobile from "../components/BuildingCardMobile";
 import LoadingCircle from "../components/LoadingCircle";
 import useBuildings from "../hooks/useBuildings";
 import useStatus from "../hooks/useStatus";
@@ -17,13 +20,17 @@ const FlipMoveGrid = styled(FlipMove)(() => ({
   gridGap: "20px",
 }));
 
-const FlippableCard = React.forwardRef<HTMLDivElement, {
-  buildingId: string;
-}>(({ buildingId }, ref) => (
-  <div ref={ref}>
-    <BuildingCard buildingId={buildingId} />
-  </div>
-));
+const FlippableCard = React.forwardRef<HTMLDivElement, { buildingId: string;}>(({ buildingId }, ref) => {
+  const displayMobile = useMediaQuery(useTheme().breakpoints.down('sm'));
+  return (
+    <div ref={ref}>
+      { displayMobile 
+        ? (<BuildingCardMobile buildingId={buildingId}/>) 
+        : (<BuildingCard buildingId={buildingId} />)
+      }
+    </div>
+  );
+});
 FlippableCard.displayName = "FlippableCard";
 
 const CardList: React.FC<{
@@ -38,10 +45,16 @@ const CardList: React.FC<{
   const { userLat, userLng } = useUserLocation();
 
   React.useEffect(() => {
-    if (!buildings || !roomStatusData || Object.keys(roomStatusData).length == 0)
+    if (!displayedBuildings && buildings) {
+      setDisplayedBuildings(buildings);
       return;
+    }
 
-    // Filter any out that dont start with query
+    if (!buildings || !roomStatusData || Object.keys(roomStatusData).length == 0) {
+      return;
+    }
+
+    // Filter any out that don't start with query
     // If hideUnavailable is true, filter any that have no available rooms
     const newDisplayedBuildings = buildings.filter((building) =>
       building.name.toLowerCase().includes(query.toLowerCase()) &&
@@ -61,7 +74,7 @@ const CardList: React.FC<{
             calculateDistance(userLat, userLng, b.lat, b.long)
           ) : 0;
         case "mostRooms":
-          return (
+          return roomStatusData && (
             getNumFreerooms(roomStatusData[b.id]) -
             getNumFreerooms(roomStatusData[a.id])
           );

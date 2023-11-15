@@ -1,13 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import {
 	StyleSheet,
 	Text,
 	View,
 	SafeAreaView,
-	StatusBar,
 	ScrollView,
 	Pressable,
-	Button,
 } from "react-native";
 
 import type { BuildingStackScreenProps } from '../types';
@@ -23,7 +21,7 @@ export default function Building({ route, navigation } : BuildingStackScreenProp
 		navigation.navigate("Room Filter");
 	}
 
-	const { rooms, onRefresh } = useContext(FreeRoomsAPIContext);
+	const { rooms, onRefresh, roomInfo } = useContext(FreeRoomsAPIContext);
 	const roomsOfCurrBuilding = rooms[route.params.buildingId];
 
 
@@ -46,7 +44,14 @@ export default function Building({ route, navigation } : BuildingStackScreenProp
 		<SafeAreaView style={ styles.container }>
 			<ScrollView style={ styles.scrollView }>
 				<View style={[styles.container, {paddingBottom: 20} ]}>
-					{ Object.keys(roomsOfCurrBuilding).map( (roomId, index) => <RoomCard key={index} nav={navigation} roomName={roomId} {...roomsOfCurrBuilding[roomId]} /> )}
+					{ Object.keys(roomsOfCurrBuilding).map( (roomNumber, index) =>
+						<RoomCard
+							key={index}
+							nav={navigation}
+							roomNumber={roomNumber}
+							roomName={roomInfo.rooms[`${route.params.buildingId}-${roomNumber}`].name}
+							status={roomsOfCurrBuilding[roomNumber]}
+						/> )}
 				</View>
 			</ScrollView>
 		</SafeAreaView>
