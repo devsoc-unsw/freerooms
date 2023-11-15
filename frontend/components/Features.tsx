@@ -7,9 +7,12 @@ import React from "react";
 
 import background from "../public/assets/landing_page/Feature_background.png";
 import vector from "../public/assets/landing_page/Feature_vector.png";
+import { useDispatch } from "../redux/hooks";
+import { openSearch } from "../redux/searchOpenSlice";
 import FeatureCard from "./FeatureCard";
 
 const Features = () => {
+  const dispatch = useDispatch();
   return (
     <StyledFeatureDiv>
       <StyledBackgroudVector src={background} alt="background vector" />
@@ -34,7 +37,7 @@ const Features = () => {
           }
           heading="Timetable"
           description="Get instant access to real-time room schedules across campus, ensuring you're always in the right place at the right time."
-          // FIX: Time table doesnt have a default page
+          onClick={() => dispatch(openSearch())}
         />
       </StyledCardParent>
     </StyledFeatureDiv>
