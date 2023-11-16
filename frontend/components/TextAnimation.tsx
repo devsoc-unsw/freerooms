@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import CursorBlinker from "./CursorBlinker";
 
 export default function TextAnimation() {
-  const baseText = "Unlock spaces, own your time, with Freerooms" as string;
+  const baseText = "Unlock spaces, own your time, with Freerooms." as string;
   const count = useMotionValue(0);
   const rounded = useTransform(count, (latest) => Math.round(latest));
   const displayText = useTransform(rounded, (latest) =>
