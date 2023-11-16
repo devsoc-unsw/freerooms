@@ -1,16 +1,16 @@
-import React, {Component, useState, useEffect} from 'react';
+import React, { useState, useEffect } from "react";
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {Agenda, AgendaEntry, AgendaSchedule, DateData} from 'react-native-calendars';
+import {Agenda, AgendaSchedule } from 'react-native-calendars';
 import { getBookings } from '../../../../services/freerooms_api/endpoints';
-interface State {
-  items?: AgendaSchedule;
-}
 
 const ONEHOURLENGTH = 60;
 const MILLIS = 3600000;
 
 async function seeBookings(room) {
-  const items: AgendaSchedule = {};
+  // Initialise items as empty arrays for all dates in the year
+  const allDates = getDatesForYear(new Date().getFullYear());
+  const items: AgendaSchedule = Object.fromEntries(allDates.map(date => [date, []]));
+
   let bookingResponse = {};
   try {
     bookingResponse = await getBookings(room)
@@ -24,8 +24,6 @@ async function seeBookings(room) {
   // items might have no data if the room is has no timetable 
   // eg K-G26-G03 
   for (let key in bookingResponse["bookings"]) {
-
-
     const booking = bookingResponse["bookings"][key]
     const date_time = booking["end"].split('T');
 
@@ -36,26 +34,36 @@ async function seeBookings(room) {
     const time_diff = (end_time - start_time) / MILLIS;
 
     if (!(date in items)) {
-      items[date] = [
-        {
-          name: booking["name"],
-          height: time_diff * ONEHOURLENGTH,
-          day: date,
-          time: `${start_time.getHours()}:${String(start_time.getMinutes()).padStart(2, '0')}` + " - " + `${end_time.getHours()}:${String(end_time.getMinutes()).padStart(2, '0')}`,
-          type: booking["bookingType"]
-        }
-      ];
-    } else {
-      items[date].push({
-        name: booking["name"],
-        height: time_diff * ONEHOURLENGTH,
-        day: date,
-        time: `${start_time.getHours()}:${String(start_time.getMinutes()).padStart(2, '0')}` + " - " + `${end_time.getHours()}:${String(end_time.getMinutes()).padStart(2, '0')}`,
-        type: booking["bookingType"]
-      })
+      items[date] = [];
     }
+    items[date].push({
+      name: booking["name"],
+      height: time_diff * ONEHOURLENGTH,
+      day: date,
+      time: `${start_time.getHours()}:${String(start_time.getMinutes()).padStart(2, '0')}` + " - " + `${end_time.getHours()}:${String(end_time.getMinutes()).padStart(2, '0')}`,
+      type: booking["bookingType"]
+    })
   }
   return items;
+}
+
+function getDatesForYear(year: number): string[] {
+  const startDate = `${year}-01-01`;
+  const endDate = `${year}-12-31`;
+
+  const dateList: string[] = [];
+  let currentDate = new Date(startDate);
+
+  while (currentDate <= new Date(endDate)) {
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+    const day = currentDate.getDate().toString().padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+
+    dateList.push(formattedDate);
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+
+  return dateList;
 }
 
 export default function AgendaScreen({ roomId }) {
@@ -91,9 +99,7 @@ export default function AgendaScreen({ roomId }) {
   
   const renderEmptyDate = () => {
     return (
-      <View style={styles.emptyDate}>
-        <Text>This is empty date!</Text>
-      </View>
+      <View style={styles.emptyDate} />
     );
   };
 
@@ -112,6 +118,7 @@ export default function AgendaScreen({ roomId }) {
       selected={date.toString()}
       renderItem={(item) => { return (renderItem(item)) }}
       showClosingKnob={true}
+      renderEmptyDate={renderEmptyDate}
     />
   );
 }
@@ -125,8 +132,9 @@ const styles = StyleSheet.create({
     marginTop: 17,
   },
   emptyDate: {
-    height: 15,
-    flex: 1,
-    paddingTop: 30,
+    height: ONEHOURLENGTH,
+    borderBottomColor: '#a0b1bf',
+    marginRight: 10,
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
 });
