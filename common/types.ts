@@ -28,8 +28,8 @@ export type Booking = {
 };
 
 export type BuildingStatus = {
-  [roomNumber: string]: RoomStatus
-}
+  [roomNumber: string]: RoomStatus;
+};
 
 export type RoomStatus = {
   status: "free" | "soon" | "busy";
@@ -41,17 +41,17 @@ export type RoomStatus = {
 
 export type BuildingsResponse = {
   buildings: Building[];
-}
+};
 
 export type RoomsResponse = {
   rooms: {
-    [roomId: string]: Room
+    [roomId: string]: Room;
   };
-}
+};
 
 export type StatusResponse = {
-  [buildingId: string]: BuildingStatus
-}
+  [buildingId: string]: BuildingStatus;
+};
 
 export type BookingsResponse = {
   bookings: Booking[];

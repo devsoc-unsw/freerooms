@@ -41,7 +41,7 @@ export default function SingleRoom({
   };
 
   const date = new Date(routeParams?.status.endtime);
-  const hoursMinutes = date.toLocaleTimeString("en-AU", {
+  const untilTime = date.toLocaleTimeString("en-AU", {
     hour: "numeric",
     minute: "2-digit",
     hour12: true,
@@ -92,9 +92,11 @@ export default function SingleRoom({
           {routeParams?.status.status == "free" ? "AVAILABLE" : "UNAVAILABLE"}
         </Text>
       </View>
-      <Text style={{ alignSelf: "center", fontSize: 18, marginTop: 10 }}>
-        {"until " + hoursMinutes}
-      </Text>
+      {untilTime !== "Invalid Date" && (
+        <Text style={{ alignSelf: "center", fontSize: 18, marginTop: 10 }}>
+          {"until " + untilTime}
+        </Text>
+      )}
       <View style={styles.mainInfoContainer}>
         <View style={styles.infoContainer}>
           <Text style={styles.mediumText}> Room Type: </Text>
