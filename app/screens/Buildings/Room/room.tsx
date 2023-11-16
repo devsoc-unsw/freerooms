@@ -37,6 +37,7 @@ export default function SingleRoom({
     MEET: "Meeting Room",
     SDIO: "Studio",
     TUSM: "Tutorial Room",
+    LIB: "Library Room"
   };
 
   const date = new Date(routeParams?.status.endtime);
