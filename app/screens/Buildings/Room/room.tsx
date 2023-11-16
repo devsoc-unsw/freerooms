@@ -1,10 +1,16 @@
-import { Button, Image, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Button,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
-import { Calendar } from "react-native-calendars";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import type { BuildingStackScreenProps } from "../../types";
-import { RoomStatus } from "@common/types";
+import { Room, RoomStatus } from "@common/types";
+import { FreeRoomsAPIContext } from "../../../contexts";
 
 interface RouteParams {
   buildingId?: string;
@@ -14,19 +20,32 @@ interface RouteParams {
   status?: RoomStatus;
 }
 
-export default function Room({
+export default function SingleRoom({
   route,
   navigation,
 }: BuildingStackScreenProps<"Room">) {
   const [routeParams, setRouteParams] = useState<RouteParams>(null);
   const [nav, setNav] = useState(null);
+
+  const { roomInfo } = useContext(FreeRoomsAPIContext);
+  const [singleRoomInfo, setSingleRoomInfo] = useState<Room>();
+
   useEffect(() => {
     setRouteParams(route.params);
     setNav(navigation);
+    setSingleRoomInfo(roomInfo.rooms[route.params.roomNumber]);
   }, [route, navigation]);
 
   async function seeBookings() {
     nav?.navigate("Agenda", { roomName: routeParams.roomName });
+  }
+
+  if (!singleRoomInfo) {
+    return (
+      <View style={[styles.loadingContainer, styles.loadingHorizontal]}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
   }
 
   return (
@@ -49,48 +68,24 @@ export default function Room({
           {routeParams?.status.status == "free" ? "FREE" : "OCCUPIED"}
         </Text>
       </View>
-      <RoomInfo></RoomInfo>
+      <View style={{ paddingVertical: 15 }}>
+        <View style={styles.infoContainer}>
+          <Text style={styles.mediumText}> Room Type: </Text>
+          <Text style={styles.infoText}>{singleRoomInfo.usage}</Text>
+        </View>
+        <View style={styles.infoContainer}>
+          <Text style={styles.mediumText}> Capacity: </Text>
+          <Text style={styles.infoText}>{singleRoomInfo.capacity}</Text>
+        </View>
+        <View style={styles.infoContainer}>
+          <Text style={styles.mediumText}> Room Alias: </Text>
+          <Text style={styles.infoText}>{singleRoomInfo.abbr}</Text>
+        </View>
+      </View>
       <Button title={"SEE BOOKINGS"} onPress={seeBookings}></Button>
     </View>
   );
 }
-
-const RoomInfo = () => {
-  return (
-    <View style={{ paddingVertical: 15 }}>
-      <View style={styles.infoContainer}>
-        <Text style={styles.mediumText}> Room Type: </Text>
-        <Text style={styles.infoText}> {`Computer Lab`} </Text>
-      </View>
-      <View style={styles.infoContainer}>
-        <Text style={styles.mediumText}> Capacity: </Text>
-        <Text style={styles.infoText}> {`\t10`} </Text>
-      </View>
-      <View style={styles.infoContainer}>
-        <Text style={styles.mediumText}> Room Alias: </Text>
-        <Text style={styles.infoText}> {`StringsME3`} </Text>
-      </View>
-    </View>
-  );
-};
-
-const CalendarDay = () => {
-  const [selected, setSelected] = useState("");
-  return (
-    <Calendar
-      onDayPress={(day) => {
-        setSelected(day.dateString);
-      }}
-      markedDates={{
-        [selected]: {
-          selected: true,
-          disableTouchEvent: true,
-          selectedColor: "orange",
-        },
-      }}
-    />
-  );
-};
 
 const styles = StyleSheet.create({
   container: {
@@ -126,5 +121,14 @@ const styles = StyleSheet.create({
   avaliableText: {
     alignSelf: "center",
     fontSize: 16,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  loadingHorizontal: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10,
   },
 });
