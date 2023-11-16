@@ -16,7 +16,7 @@ const Faq = () => {
           alt={"Underline Vector"}
           src={underline}
           style={{
-            alignSelf: "end",
+            alignSelf: "center",
           }}
         />
       </StyledHeaderDiv>

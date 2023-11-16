@@ -70,6 +70,7 @@ const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "drawerOpen",
 })<AppBarProps>(({ theme, drawerOpen }) => ({
   backgroundImage: `url(${background.src})`,
+  // background: theme.palette.background.default,
   color: theme.palette.getContrastText(theme.palette.background.default),
   boxShadow: "none",
   display: "flex",

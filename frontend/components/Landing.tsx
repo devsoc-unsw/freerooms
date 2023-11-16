@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import Logo from "../public/assets/favicon/free_rooms_logo.png";
 import ClosedLogo from "../public/assets/favicon/free_rooms_logo_closed.png";
 import HeroPanel from "../public/assets/landing_page/hero_panel.svg";
+import MobileHeroPanel from "../public/assets/landing_page/hero_panel_mobile.svg";
 import Faq from "./Faq";
 import Features from "./Features";
 import TextAnimation from "./TextAnimation";
@@ -19,8 +20,7 @@ const Landing = () => {
     setGifSource(isClicked ? Logo : ClosedLogo);
   };
   // TODO: less line spacing, more space between title and image
-  // TODO: Add mobile version of l anding page should have mobile images
-  // TODO: Add TODOs for where the text should be
+  // TODO: Add mobile version of landing page should have mobile images
   return (
     <div>
       <AnimationContainer>
@@ -36,10 +36,11 @@ const Landing = () => {
         </DoorContainer>
         <TextAnimation />
         <HeroPanelContainer>
-          <Image
-            src={HeroPanel}
+          <StyledImage src={HeroPanel} alt="hero panel" isAlternate />
+          <StyledImage
+            src={MobileHeroPanel}
             alt="hero panel"
-            style={{ height: "100%", width: "100%" }}
+            isAlternate={false}
           />
         </HeroPanelContainer>
       </AnimationContainer>
@@ -57,9 +58,25 @@ const LandingScreenContainer = styled(Stack)(({ theme }) => ({
   margin: "auto",
 }));
 
+interface StyledImageProps {
+  isAlternate: boolean;
+}
+
+const StyledImage = styled(Image)<StyledImageProps>(
+  ({ theme, isAlternate }) => ({
+    height: "100%",
+    width: "100%",
+    display: isAlternate ? "block" : "none",
+    [theme.breakpoints.down("md")]: {
+      display: isAlternate ? "none" : "block",
+    },
+  })
+);
+
 const HeroPanelContainer = styled(Stack)(({ theme }) => ({
   height: "100%",
   width: "100%",
+  marginTop: "2rem",
 }));
 
 const DoorContainer = styled(Stack)(({ theme }) => ({
