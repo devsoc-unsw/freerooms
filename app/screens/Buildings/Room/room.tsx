@@ -1,6 +1,6 @@
 import {
   ActivityIndicator,
-  Button,
+  Pressable,
   StyleSheet,
   Text,
   View,
@@ -29,6 +29,23 @@ export default function SingleRoom({
 
   const { roomInfo } = useContext(FreeRoomsAPIContext);
   const [singleRoomInfo, setSingleRoomInfo] = useState<Room>();
+
+  const roomType = {
+    AUD: "Auditorium",
+    CMLB: "Computer Lab",
+    LAB: "Lab",
+    LCTR: "Lecture Hall",
+    MEET: "Meeting Room",
+    SDIO: "Studio",
+    TUSM: "Tutorial Room",
+  };
+
+  const date = new Date(routeParams?.status.endtime);
+  const hoursMinutes = date.toLocaleTimeString("en-AU", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
 
   useEffect(() => {
     setRouteParams(route.params);
@@ -62,16 +79,26 @@ export default function SingleRoom({
           height: 45,
           justifyContent: "center",
           paddingHorizontal: 20,
+          shadowColor: "#9e3131",
+          shadowRadius: 1,
+          shadowOffset: {
+            width: 2,
+            height: 2,
+          },
+          shadowOpacity: 1,
         }}
       >
         <Text style={styles.avaliableText}>
-          {routeParams?.status.status == "free" ? "FREE" : "OCCUPIED"}
+          {routeParams?.status.status == "free" ? "AVAILABLE" : "UNAVAILABLE"}
         </Text>
       </View>
-      <View style={{ paddingVertical: 15 }}>
+      <Text style={{ alignSelf: "center", fontSize: 18, marginTop: 10 }}>
+        {"until " + hoursMinutes}
+      </Text>
+      <View style={styles.mainInfoContainer}>
         <View style={styles.infoContainer}>
           <Text style={styles.mediumText}> Room Type: </Text>
-          <Text style={styles.infoText}>{singleRoomInfo.usage}</Text>
+          <Text style={styles.infoText}>{roomType[singleRoomInfo.usage]}</Text>
         </View>
         <View style={styles.infoContainer}>
           <Text style={styles.mediumText}> Capacity: </Text>
@@ -82,14 +109,16 @@ export default function SingleRoom({
           <Text style={styles.infoText}>{singleRoomInfo.abbr}</Text>
         </View>
       </View>
-      <Button title={"SEE BOOKINGS"} onPress={seeBookings}></Button>
+      <Pressable style={styles.button} onPress={seeBookings}>
+        <Text style={styles.buttonText}>TIMETABLE</Text>
+      </Pressable>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
+    backgroundColor: "#ffffff",
     flex: 1,
     width: "100%",
   },
@@ -101,17 +130,36 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
     padding: 15,
-    paddingTop: 20,
+    marginTop: 20,
+    marginBottom: 5,
     width: "100%",
+  },
+  mainInfoContainer: {
+    backgroundColor: "#ffffff",
+    borderColor: "#ebe8e4",
+    borderRadius: 15,
+    borderWidth: 1,
+    marginHorizontal: 10,
+    marginVertical: 30,
+    paddingVertical: 10,
+    shadowColor: "#a6a1a1",
+    shadowOffset: {
+      height: 3,
+      width: 3,
+    },
+    shadowRadius: 3,
+    shadowOpacity: 0.3,
   },
   infoContainer: {
     alignItems: "center",
     flexDirection: "row",
     padding: 10,
+    paddingLeft: 20,
   },
   largeText: {
-    fontSize: 36,
+    fontSize: 30,
     fontWeight: "600",
+    textAlign: "center",
   },
   infoText: {
     fontSize: 24,
@@ -121,6 +169,30 @@ const styles = StyleSheet.create({
   avaliableText: {
     alignSelf: "center",
     fontSize: 16,
+    letterSpacing: 1,
+  },
+  button: {
+    alignSelf: "center",
+    backgroundColor: "#fab561",
+    borderColor: "#faae52",
+    borderRadius: 15,
+    borderWidth: 2,
+    justifyContent: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 25,
+    shadowColor: "#b89b77",
+    shadowRadius: 1,
+    shadowOffset: {
+      width: 2,
+      height: 2,
+    },
+    shadowOpacity: 1,
+  },
+  buttonText: {
+    alignSelf: "center",
+    fontSize: 16,
+    lineHeight: 21,
+    letterSpacing: 1,
   },
   loadingContainer: {
     flex: 1,
