@@ -53,7 +53,7 @@ export default function SingleRoom({
   }, [route, navigation]);
 
   async function seeBookings() {
-    nav?.navigate("Agenda", { roomId: routeParams.roomId });
+    nav?.navigate("Timetable", { roomId: routeParams.roomId });
   }
 
   if (!singleRoomInfo) {

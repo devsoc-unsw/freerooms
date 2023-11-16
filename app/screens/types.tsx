@@ -22,7 +22,7 @@ export type BuildingStackParamList = {
   Room: { roomName: string; roomId: string; status: RoomStatus };
   "Room Filter": undefined;
   "Building Filter": undefined;
-  Agenda: { roomId: string };
+  Timetable: { roomId: string };
 };
 
 // Type for Screens in nested Navigator
