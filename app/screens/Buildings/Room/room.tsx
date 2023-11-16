@@ -79,7 +79,7 @@ export default function SingleRoom({
           height: 45,
           justifyContent: "center",
           paddingHorizontal: 20,
-          shadowColor: "#9e3131",
+          shadowColor: "#a6a1a1",
           shadowRadius: 1,
           shadowOffset: {
             width: 2,
