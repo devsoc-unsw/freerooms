@@ -46,7 +46,7 @@ export default function Building({
             <RoomCard
               key={index}
               nav={navigation}
-              roomNumber={`${route.params.buildingId}-${roomNumber}`}
+              roomId={`${route.params.buildingId}-${roomNumber}`}
               roomName={
                 roomInfo.rooms[`${route.params.buildingId}-${roomNumber}`].name
               }

@@ -14,7 +14,7 @@ async function seeBookings(room) {
   let bookingResponse = {};
   try {
     bookingResponse = await getBookings(room)
-    
+
   } catch (error) {
     console.error(error);
     return items;
@@ -58,11 +58,9 @@ async function seeBookings(room) {
   return items;
 }
 
-
-export default function AgendaScreen (room) {
+export default function AgendaScreen({ roomId }) {
   const [items, setItems] = useState({});
   const date = new Date();
-
 
   const renderItem = (reservation) => {
     const fontSize = 14;
@@ -101,7 +99,7 @@ export default function AgendaScreen (room) {
 
   useEffect(() => {
     const loadItems = async () => {
-      const bookings = await seeBookings(room.room.roomName);
+      const bookings = await seeBookings(roomId);
       setItems(bookings);
     }
     loadItems();
@@ -113,7 +111,6 @@ export default function AgendaScreen (room) {
       loadItemsForMonth={(month) => console.log(month)}
       selected={date.toString()}
       renderItem={(item) => { return (renderItem(item)) }}
-      renderEmptyDate={renderEmptyDate}
       showClosingKnob={true}
     />
   );

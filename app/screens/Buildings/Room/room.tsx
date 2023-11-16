@@ -14,9 +14,8 @@ import { FreeRoomsAPIContext } from "../../../contexts";
 
 interface RouteParams {
   buildingId?: string;
-  roomId?: string;
   roomName: string;
-  roomNumber: string;
+  roomId: string;
   status?: RoomStatus;
 }
 
@@ -50,11 +49,11 @@ export default function SingleRoom({
   useEffect(() => {
     setRouteParams(route.params);
     setNav(navigation);
-    setSingleRoomInfo(roomInfo.rooms[route.params.roomNumber]);
+    setSingleRoomInfo(roomInfo.rooms[route.params.roomId]);
   }, [route, navigation]);
 
   async function seeBookings() {
-    nav?.navigate("Agenda", { roomName: routeParams.roomName });
+    nav?.navigate("Agenda", { roomId: routeParams.roomId });
   }
 
   if (!singleRoomInfo) {

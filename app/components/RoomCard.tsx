@@ -7,23 +7,19 @@ import { BuildingStackScreenProps } from "../screens/types";
 
 interface RoomCardProps {
   nav: BuildingStackScreenProps<"Building">["navigation"];
-  roomNumber: string;
+  roomId: string;
   roomName: string;
   status: RoomStatus;
 }
 
 const RoomCard: React.FC<RoomCardProps> = ({
   nav,
-  roomNumber,
+  roomId,
   roomName,
   status,
 }) => {
   const handlePress = () => {
-    nav.navigate("Room", {
-      roomName: roomName,
-      roomNumber: roomNumber,
-      status: status,
-    });
+    nav.navigate("Room", { roomName, roomId, status });
   };
 
   //   console.log(roomName);
@@ -64,7 +60,7 @@ const RoomCard: React.FC<RoomCardProps> = ({
       ]}
     >
       <View>
-        <Text style={styles.subHeading}>{roomNumber}</Text>
+        <Text style={styles.subHeading}>{roomId.split('-')[2]}</Text>
         <Text style={styles.body}>{roomName}</Text>
       </View>
       <View style={styles.textContainer}>
