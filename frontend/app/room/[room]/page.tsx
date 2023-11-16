@@ -78,6 +78,8 @@ const RoomPageHeader : React.FC<{ room : Room, buildingName : string }> = ({
                return "Studio";
             case "TUSM":
                 return "Tutorial Room";
+            case "LIB":
+                return "Library";
             default:
                 return "";
         }
@@ -93,19 +95,17 @@ const RoomPageHeader : React.FC<{ room : Room, buildingName : string }> = ({
 		>
 			<Stack direction={"column"} spacing={1} width="100%">
                 { buildingName != "" ? (
-                    <Stack direction='row' spacing={1} >
-                        <Typography display="inline" variant="subtitle2">{`${buildingName} / ${translateUsage(room.usage)}`} </Typography>
+                    <Stack direction='row' spacing={2} >
+                        <Typography display="inline" variant="subtitle2">{`${buildingName}`} </Typography>
+                        <Typography display="inline" variant="subtitle2">{"/"}</Typography>
+                        <Typography display="inline" variant="subtitle2">{`${translateUsage(room.usage)}`}</Typography>
+                        { room.school != " " ? <Typography display="inline" variant="subtitle2">{"/"}</Typography> : null }
+                        { room.school != " " ? <Typography display="inline" fontWeight={"bold"} color={"#e65100"} variant="subtitle2">{"ID Required"}</Typography> : null }
                     </Stack>
                 ) : null }
 				<Box display="flex" justifyContent={"space-between"} alignItems={'center'} width={'100%'} >
 					<Typography variant='h4' fontWeight={550}> {room.name} </Typography>
-					{ isMobile ?  <ActionMenu /> 
-					: ( 
-					    <Button sx={{ px: 2, py: 1}}>
-						    <Typography variant={"body2"} fontWeight={"bold"}>Make a Booking</Typography>
-						</Button>
-                        )
-					}	
+					{ isMobile ?  <ActionMenu />  : <BookingButton school={room.school} usage={room.usage} onClick={() => {}} /> }
 					
 				</Box>
 				<Stack direction={"row"} spacing={3}  >
@@ -115,13 +115,38 @@ const RoomPageHeader : React.FC<{ room : Room, buildingName : string }> = ({
                     <Typography variant="body1" fontWeight={"bold"}>
 						Capacity: <Typography display={"inline"} variant="body1">{room.capacity}</Typography>
 					</Typography>
-					<Typography variant="body1" fontWeight={"bold"}>
+                    <Typography variant="body1" fontWeight={"bold"}>
+						Abbreviation: <Typography display={"inline"} variant="body1">{room.abbr}</Typography>
+					</Typography>
+
+					{ room.school != " " ? (
+                     <Typography variant="body1" fontWeight={"bold"}>
 						School: <Typography display={"inline"} variant="body1">{room.school}</Typography>
 					</Typography>
+                    ) : null }
 				</Stack>
 			</Stack>
 		</Box>
 	);
+}
+
+const BookingButton : React.FC<{ school: string, usage: string, onClick : () => void }> = ({ school, usage, onClick }) => {
+
+    let link = "";
+    if( school === " " && usage === "LIB" ) link = "https://unswlibrary-bookings.libcal.com";
+    else if( school === " " ) link = "https://www.learningenvironments.unsw.edu.au/make-booking/book-room";
+
+    if( link != "" ) return (
+        <Button href={link} sx={{ px: 2, py: 1}}>
+	        <Typography variant={"body2"} fontWeight={"bold"}>Make a Booking</Typography>
+		</Button>
+    );
+
+    return (
+        <Button onClick={onClick} sx={{ px: 2, py: 1}}>
+	        <Typography variant={"body2"} fontWeight={"bold"}>Make a Booking</Typography>
+		</Button>
+    );
 }
 
 const ActionMenu : React.FC = () => {
