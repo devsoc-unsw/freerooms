@@ -1,13 +1,9 @@
 "use client" 
 
-import MenuIcon from '@mui/icons-material/Menu';
-import  {Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, IconButton, useMediaQuery } from '@mui/material';
+import  {Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions} from '@mui/material';
 import Box from '@mui/material/Box';
 import Container from "@mui/material/Container";
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
-import { useTheme } from "@mui/material/styles";
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import Image from "next/image";
@@ -143,44 +139,6 @@ const BookingButton : React.FC<{ school: string, usage: string, onClick : () => 
 	        <Typography variant={"body2"} fontWeight={"bold"}>Make a Booking</Typography>
 		</Button>
     );
-}
-
-const ActionMenu : React.FC = () => {
-
-	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
- 	const open = Boolean(anchorEl);
-	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-		setAnchorEl(event.currentTarget);
-	};
-	const handleClose = () => {
-		setAnchorEl(null);
-	};
-
-
-	return (
-		<Box>
-			<IconButton
-				id="basic-button"
-				aria-controls={open ? 'basic-menu' : undefined}
-				aria-haspopup="true"
-				aria-expanded={open ? 'true' : undefined}
-				onClick={handleClick}
-      		>
-				<MenuIcon />
-      		</IconButton>
-      		<Menu
-				id="basic-menu"
-				anchorEl={anchorEl}
-				open={open}
-				onClose={handleClose}
-				MenuListProps={{
-				'aria-labelledby': 'basic-button',
-				}}
-			>
-				<MenuItem onClick={handleClose}>Make a Booking</MenuItem>
-      		</Menu>
-		</Box>
-	);
 }
 
 const RoomImage : React.FC<{ src : string }> = ({ src }) => {
