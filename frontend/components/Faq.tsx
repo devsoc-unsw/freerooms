@@ -70,6 +70,9 @@ const StyledHeading = styled("h2")(({ theme }) => ({
   fontSize: "3rem",
   marginBottom: "0rem",
   marginTop: "10rem",
+  [theme.breakpoints.down("md")]: {
+    marginTop: "0rem",
+  },
 }));
 
 const StyledHeaderDiv = styled("div")(({ theme }) => ({
