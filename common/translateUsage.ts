@@ -1,10 +1,10 @@
-const translateUsage = ( usage : string  ) => {
-        switch(usage) {
-            case "AUD" :
+const translateUsage = ( usage : string ) => {
+        switch (usage) {
+            case "AUD":
                 return "Auditorium";
             case "CMLB":
                 return "Computer Lab";
-            case "LAB" : 
+            case "LAB":
                 return "Lab";
             case "LCTR":
                 return "Lecture Hall";
@@ -15,7 +15,7 @@ const translateUsage = ( usage : string  ) => {
             case "TUSM":
                 return "Tutorial Room";
             case "LIB":
-                return "Library";
+                return "Library Study Room";
             default:
                 return "";
         }
