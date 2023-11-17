@@ -36,6 +36,12 @@ export type RoomStatus = {
   endtime: string;
 };
 
+export type School = {
+    name : string;
+    homepageLink : string;
+    contactLink : string
+}
+
 ///////////////////////////////////////////////////////////////
 // API Response Types
 
