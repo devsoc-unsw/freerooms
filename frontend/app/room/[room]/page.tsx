@@ -1,7 +1,7 @@
 "use client" 
 
 import MenuIcon from '@mui/icons-material/Menu';
-import {Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, IconButton, useMediaQuery } from '@mui/material';
+import  {Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, IconButton, useMediaQuery } from '@mui/material';
 import Box from '@mui/material/Box';
 import Container from "@mui/material/Container";
 import Menu from '@mui/material/Menu';
@@ -51,17 +51,17 @@ const RoomPageHeader : React.FC<{ room : Room, buildingName: string }> = ({
     buildingName
 }) => {
 
-	const theme = useTheme();
-	const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
     const [ openDialog, setDialog ] = useState(false);
     const toggleDialog = () => {
         setDialog( (isOpen) => { return !isOpen } ); 
     }
 
     const schoolDetails = getSchoolDetails(room.school);
+	const dialogMessage = schoolDetails ? ( 
+		`This room is managed by ${schoolDetails.name}. Please contact the school to request a booking` 
+		) : "This room is managed externally by its associated school. Please contact the school to request a booking"
 
-    	return (
+    return (
 		<Box
 			width={"100%"}
 			display={"flex"}
@@ -72,7 +72,7 @@ const RoomPageHeader : React.FC<{ room : Room, buildingName: string }> = ({
 			<Stack direction={"column"} spacing={1} width="100%">
                 { buildingName != "" ? (
                     <Stack direction='row' spacing={2} >
-                        <Typography display="inline" variant="subtitle2">{`${buildingName}`} </Typography>
+						<Typography display="inline" variant="subtitle2">{`${buildingName}`} </Typography>
                         <Typography display="inline" variant="subtitle2">{"/"}</Typography>
                         <Typography display="inline" variant="subtitle2">{`${translateUsage(room.usage)}`}</Typography>
                         { room.school != " " ? <Typography display="inline" variant="subtitle2">{"/"}</Typography> : null }
@@ -81,10 +81,9 @@ const RoomPageHeader : React.FC<{ room : Room, buildingName: string }> = ({
                 ) : null }
 				<Box display="flex" justifyContent={"space-between"} alignItems={'center'} width={'100%'} >
 					<Typography variant='h4' fontWeight={550}> {room.name} </Typography>
-					{ isMobile ?  <ActionMenu />  : <BookingButton school={room.school} usage={room.usage} onClick={toggleDialog} /> }
-					
+					<BookingButton school={room.school} usage={room.usage} onClick={toggleDialog} />
 				</Box>
-				<Stack direction={"row"} spacing={3}  >
+				<Stack direction={"row"} spacing={2}  >
 					<Typography variant="body1" fontWeight={"bold"}>
 						ID: <Typography display={"inline"} variant="body1">{room.id}</Typography>
 					</Typography>
@@ -110,11 +109,9 @@ const RoomPageHeader : React.FC<{ room : Room, buildingName: string }> = ({
 					<DialogContentText>
 						<Stack direction={"column"} spacing={2}>
 							<Typography variant={"body1"}>
-								This room is managed by the { schoolDetails ? schoolDetails.name : "" }. Please contact the school to request a booking. 
+								{ dialogMessage }
 							</Typography>
-							<Typography variant={"body1"}>
-								You can find the contact details of the school <Link href={ schoolDetails ? schoolDetails.contactLink : "" }>here</Link>.
-							</Typography>
+							{ schoolDetails ? <Typography variant={"body1"}> You can find the contact details of the school <Link href={schoolDetails.contactLink}>here</Link>. </Typography> : null } 
 						</Stack>
 					</DialogContentText>
 					<DialogActions>
