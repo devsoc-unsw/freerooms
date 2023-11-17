@@ -29,7 +29,7 @@ const Faq = () => {
           />
           <AccordionItem
             title="Why isn't my booking showing up?"
-            content={<>Our data is updated periodically, so please be patient. Library bookings are updated every XX minutes, all other bookings are updated once a week.</>}
+            content={<>Our data is updated periodically, so please be patient. Library bookings are updated every 15 minutes, all other bookings are updated once a week.</>}
 
           />
           <AccordionItem
