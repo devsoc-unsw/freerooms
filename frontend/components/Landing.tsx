@@ -31,7 +31,6 @@ const Landing = () => {
             alt="Freerooms Logo"
             src={gifSource}
             onClick={handleClick}
-            style={{}}
           />
         </DoorContainer>
         <TextAnimation />
@@ -81,6 +80,9 @@ const HeroPanelContainer = styled(Stack)(({ theme }) => ({
 
 const DoorContainer = styled(Stack)(({ theme }) => ({
   cursor: "pointer",
+  [theme.breakpoints.down("md")]: {
+    marginTop: "-3rem",
+  },
 }));
 
 const AnimationContainer = styled(Stack)(({ theme }) => ({
