@@ -62,8 +62,6 @@ const StyledAccordionParent = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "row",
   justifyContent: "center",
-  alignItems: "center",
-  alignContent: "center",
   width: "75%",
   [theme.breakpoints.down("lg")]: {
     flexDirection: "column",
@@ -73,8 +71,8 @@ const StyledAccordionParent = styled("div")(({ theme }) => ({
 const StyledAccordionContainer = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  justifyContent: "center",
   alignItems: "center",
+  padding: "0 1rem",
   width: "100%",
 }));
 

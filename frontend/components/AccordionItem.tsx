@@ -13,9 +13,7 @@ interface AccordionItemProps {
 }
 
 const StyledAccordion = styled(Accordion)(({ theme }) => ({
-  marginBottom: "2rem",
-  marginLeft: "1rem",
-  marginRight: "1rem",
+  margin: "0 0 2rem 0 !important",
   padding: "1rem",
   maxWidth: "100%",
   borderRadius: "0.75rem",
