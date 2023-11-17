@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import CursorBlinker from "./CursorBlinker";
 
 export default function TextAnimation() {
-  const baseText = "Unlock spaces, own your time, with Freerooms." as string;
+  const baseText = "Unlock spaces, own your time, with Freerooms" as string;
   const count = useMotionValue(0);
   const rounded = useTransform(count, (latest) => Math.round(latest));
   const displayText = useTransform(rounded, (latest) =>
@@ -28,13 +28,14 @@ export default function TextAnimation() {
     </span>
   );
 }
-
+//TODO: Fix text on mobile
 const AnimationContainerStyle = styled(motion.span)(({ theme }) => ({
   fontSize: "55px",
   fontWeight: "700",
   fontStyle: "extrabold",
   padding: "0.2rem",
   textAlign: "center",
+  lineHeight: "0.5",
   [theme.breakpoints.down("md")]: {
     fontSize: "30px",
     padding: "0rem",

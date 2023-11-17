@@ -11,6 +11,9 @@ dependencies:
   '@emotion/styled':
     specifier: ^11.10.5
     version: 11.11.0(@emotion/react@11.11.1)(@types/react@18.2.37)(react@18.2.0)
+  '@fontsource/roboto':
+    specifier: ^5.0.8
+    version: 5.0.8
   '@mui/icons-material':
     specifier: ^5.10.14
     version: 5.14.16(@mui/material@5.14.17)(@types/react@18.2.37)(react@18.2.0)
@@ -539,6 +542,10 @@ packages:
 
   /@floating-ui/utils@0.1.6:
     resolution: {integrity: sha512-OfX7E2oUDYxtBvsuS4e/jSn4Q9Qb6DzgeYtsAdkPZ47znpoNsMgZw0+tVijiv3uGNR6dgNlty6r9rzIzHjtd/A==}
+    dev: false
+
+  /@fontsource/roboto@5.0.8:
+    resolution: {integrity: sha512-XxPltXs5R31D6UZeLIV1td3wTXU3jzd3f2DLsXI8tytMGBkIsGcc9sIyiupRtA8y73HAhuSCeweOoBqf6DbWCA==}
     dev: false
 
   /@googlemaps/js-api-loader@1.16.2:

@@ -6,7 +6,7 @@ const cursorVariants = {
     opacity: [0, 0, 1, 1],
     transition: {
       duration: 1,
-      repeat: 3,
+      repeat: Infinity,
       repeatDelay: 0,
       ease: "linear",
       times: [0, 0.5, 0.5, 1],
@@ -25,7 +25,7 @@ const CursorStyle = styled(motion.div)(({ theme }) => ({
   transform: "translateY(0.25rem)",
   backgroundColor: "#FF9361",
   [theme.breakpoints.down("md")]: {
-    height: "2rem",
+    height: "1.7rem",
     width: "2px",
   },
 }));
