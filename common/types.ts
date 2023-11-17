@@ -38,8 +38,12 @@ export type RoomStatus = {
 
 export type School = {
     name : string;
-    homepageLink : string;
+    homepage : string;
     contactLink : string
+}
+
+export type Schools = {
+  [ schoolCode : string ] : School
 }
 
 ///////////////////////////////////////////////////////////////

@@ -1,4 +1,6 @@
-const schools = {
+import type { Schools } from "./types";
+
+const schools : Schools = {
     "ARTSC": {
         name: "Faculty of Arts, Design & Architecture",
         homepage: "https://www.unsw.edu.au/arts-design-architecture",
