@@ -9,6 +9,7 @@ import {
 import React, { useContext, useEffect, useState } from "react";
 
 import type { BuildingStackScreenProps } from "../../types";
+import translateUsage from "@common/translateUsage";
 import { Room, RoomStatus } from "@common/types";
 import { FreeRoomsAPIContext } from "../../../contexts";
 
@@ -28,17 +29,6 @@ export default function SingleRoom({
 
   const { roomInfo } = useContext(FreeRoomsAPIContext);
   const [singleRoomInfo, setSingleRoomInfo] = useState<Room>();
-
-  const roomType = {
-    AUD: "Auditorium",
-    CMLB: "Computer Lab",
-    LAB: "Lab",
-    LCTR: "Lecture Hall",
-    MEET: "Meeting Room",
-    SDIO: "Studio",
-    TUSM: "Tutorial Room",
-    LIB: "Library Room"
-  };
 
   const date = new Date(routeParams?.status.endtime);
   const untilTime = date.toLocaleTimeString("en-AU", {
@@ -100,7 +90,7 @@ export default function SingleRoom({
       <View style={styles.mainInfoContainer}>
         <View style={styles.infoContainer}>
           <Text style={styles.mediumText}> Room Type: </Text>
-          <Text style={styles.infoText}>{roomType[singleRoomInfo.usage]}</Text>
+          <Text style={styles.infoText}>{translateUsage(singleRoomInfo.usage)}</Text>
         </View>
         <View style={styles.infoContainer}>
           <Text style={styles.mediumText}> Capacity: </Text>
