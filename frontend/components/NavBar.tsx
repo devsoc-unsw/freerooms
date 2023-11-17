@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import GridIcon from "@mui/icons-material/GridViewRounded";
 import MapIcon from "@mui/icons-material/Map";
@@ -10,22 +10,21 @@ import { styled } from "@mui/material/styles";
 import { usePathname } from "next/navigation";
 import React from "react";
 
+import { useDispatch } from "../redux/hooks";
+import { openSearch } from "../redux/searchOpenSlice";
 import { drawerWidth } from "../views/BuildingDrawer";
 import Branding from "./Branding";
 import IconButton from "./IconButton";
 
 interface NavBarProps {
-  setSearchOpen: (open: boolean) => void;
   drawerOpen: boolean;
 }
 
 // This isn't actually enforced so update this if u change the navbar
 export const navHeight = 65;
 
-const NavBar: React.FC<NavBarProps> = ({
-  setSearchOpen,
-  drawerOpen
-}) => {
+const NavBar: React.FC<NavBarProps> = ({ drawerOpen }) => {
+  const dispatch = useDispatch();
   const path = usePathname();
 
   return (
@@ -43,28 +42,24 @@ const NavBar: React.FC<NavBarProps> = ({
       <Stack direction="row" spacing={1}>
         <IconButton
           aria-label="Open search"
-          onClick={() => setSearchOpen(true)}
+          onClick={() => dispatch(openSearch())}
         >
-          <SearchIcon/>
+          <SearchIcon />
         </IconButton>
         <IconButton
           aria-label="Browse buildings"
           active={path === "/browse"}
           href="/browse"
         >
-          <GridIcon/>
+          <GridIcon />
         </IconButton>
-        <IconButton
-          aria-label="Go to map"
-          active={path === "/map"}
-          href="/map"
-        >
-          <MapIcon/>
+        <IconButton aria-label="Go to map" active={path === "/map"} href="/map">
+          <MapIcon />
         </IconButton>
       </Stack>
     </AppBar>
-  )
-}
+  );
+};
 
 interface AppBarProps extends MuiAppBarProps {
   drawerOpen?: boolean;
@@ -73,7 +68,7 @@ interface AppBarProps extends MuiAppBarProps {
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "drawerOpen",
 })<AppBarProps>(({ theme, drawerOpen }) => ({
-  backgroundColor: theme.palette.background.default,
+  background: theme.palette.background.default,
   color: theme.palette.getContrastText(theme.palette.background.default),
   boxShadow: "none",
   display: "flex",

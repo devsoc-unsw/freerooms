@@ -37,17 +37,17 @@ const RoomCard: React.FC<RoomCardProps> = ({
     soon: "#ffa600",
   };
 
-  const roomStatusMessage = {
-    free: "Available",
-    busy: "Unavailable",
-    soon: "Available",
-  };
+	const roomStatusMessage = {
+		free: "Available",
+		busy: "Unavailable",
+		soon: "Available Soon",
+	};
 
-  const untilMessage = {
-    free: hoursMinutes == "Invalid Date" ? "" : "until " + hoursMinutes,
-    busy: hoursMinutes == "Invalid Date" ? "" : "until " + hoursMinutes,
-    soon: "soon at " + hoursMinutes,
-  };
+	const untilMessage = {
+		free: hoursMinutes == "Invalid Date" ? "" : "until " + hoursMinutes,
+		busy: hoursMinutes == "Invalid Date" ? "" : "until " + hoursMinutes,
+		soon: "at " + hoursMinutes,
+	}
 
   const untilMessageDisplay = hoursMinutes == "Invalid Date" ? "none" : "flex";
 
