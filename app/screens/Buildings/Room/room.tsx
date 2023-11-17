@@ -24,7 +24,7 @@ export default function Room({
   }, [route, navigation]);
 
   async function seeBookings() {
-    nav?.navigate("Agenda", { roomName: routeParams.roomNumber });
+    nav?.navigate("Agenda", { roomName: routeParams.roomName });
   }
 
   return (
