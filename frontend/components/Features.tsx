@@ -81,7 +81,6 @@ const StyledFeatureDiv = styled("div")(({ theme }) => ({
   alignItems: "center",
   position: "relative",
   padding: "5rem 0",
-  gap: "12rem",
   [theme.breakpoints.down("lg")]: {
     gap: "0rem",
   },

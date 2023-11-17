@@ -17,7 +17,7 @@ const StyledAccordion = styled(Accordion)(({ theme }) => ({
   marginLeft: "1rem",
   marginRight: "1rem",
   padding: "1rem",
-  maxWidth: "40%",
+  maxWidth: "100%",
   borderRadius: "0.75rem",
   boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.15)",
   "&:before": {

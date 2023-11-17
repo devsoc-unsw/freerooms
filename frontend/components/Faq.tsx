@@ -23,30 +23,34 @@ const Faq = () => {
       </StyledHeaderDiv>
 
       <StyledAccordionParent>
-        <AccordionItem
-          title="What is this?"
-          description="Include a dedicated section where users can easily submit their feedback, suggestions, or issue reports. This feature enables users to provide feedback directly within the software, enhancing user engagement and facilitating continuous improvement."
-        />
-        <AccordionItem
-          title="What is this?"
-          description="Include a dedicated section where users can easily submit their feedback, suggestions, or issue reports. This feature enables users to provide feedback directly within the software, enhancing user engagement and facilitating continuous improvement."
-        />
-        <AccordionItem
-          title="What is this?"
-          description="Include a dedicated section where users can easily submit their feedback, suggestions, or issue reports. This feature enables users to provide feedback directly within the software, enhancing user engagement and facilitating continuous improvement."
-        />
-        <AccordionItem
-          title="What is this?"
-          description="Include a dedicated section where users can easily submit their feedback, suggestions, or issue reports. This feature enables users to provide feedback directly within the software, enhancing user engagement and facilitating continuous improvement."
-        />
-        <AccordionItem
-          title="What is this?"
-          description="Include a dedicated section where users can easily submit their feedback, suggestions, or issue reports. This feature enables users to provide feedback directly within the software, enhancing user engagement and facilitating continuous improvement."
-        />
-        <AccordionItem
-          title="What is this?"
-          description="Include a dedicated section where users can easily submit their feedback, suggestions, or issue reports. This feature enables users to provide feedback directly within the software, enhancing user engagement and facilitating continuous improvement."
-        />
+        <StyledAccordionContainer>
+          <AccordionItem
+            title="What is this?"
+            description="Include a dedicated section where users can easily submit their feedback, suggestions, or issue reports. This feature enables users to provide feedback directly within the software, enhancing user engagement and facilitating continuous improvement."
+          />
+          <AccordionItem
+            title="What is this?"
+            description="Include a dedicated section where users can easily submit their feedback, suggestions, or issue reports. This feature enables users to provide feedback directly within the software, enhancing user engagement and facilitating continuous improvement."
+          />
+          <AccordionItem
+            title="What is this?"
+            description="Include a dedicated section where users can easily submit their feedback, suggestions, or issue reports. This feature enables users to provide feedback directly within the software, enhancing user engagement and facilitating continuous improvement."
+          />
+        </StyledAccordionContainer>
+        <StyledAccordionContainer>
+          <AccordionItem
+            title="What is this?"
+            description="Include a dedicated section where users can easily submit their feedback, suggestions, or issue reports. This feature enables users to provide feedback directly within the software, enhancing user engagement and facilitating continuous improvement."
+          />
+          <AccordionItem
+            title="What is this?"
+            description="Include a dedicated section where users can easily submit their feedback, suggestions, or issue reports. This feature enables users to provide feedback directly within the software, enhancing user engagement and facilitating continuous improvement."
+          />
+          <AccordionItem
+            title="What is this?"
+            description="Include a dedicated section where users can easily submit their feedback, suggestions, or issue reports. This feature enables users to provide feedback directly within the software, enhancing user engagement and facilitating continuous improvement."
+          />
+        </StyledAccordionContainer>
       </StyledAccordionParent>
     </StyledParentDiv>
   );
@@ -56,7 +60,7 @@ export default Faq;
 
 const StyledAccordionParent = styled("div")(({ theme }) => ({
   display: "flex",
-  flexWrap: "wrap",
+  flexDirection: "row",
   justifyContent: "center",
   alignItems: "center",
   alignContent: "center",
@@ -66,11 +70,18 @@ const StyledAccordionParent = styled("div")(({ theme }) => ({
   },
 }));
 
+const StyledAccordionContainer = styled("div")(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  width: "100%",
+}));
+
 const StyledHeading = styled("h2")(({ theme }) => ({
   textAlign: "center",
   fontSize: "3rem",
   marginBottom: "0rem",
-  marginTop: "10rem",
   [theme.breakpoints.down("md")]: {
     marginTop: "0rem",
   },
