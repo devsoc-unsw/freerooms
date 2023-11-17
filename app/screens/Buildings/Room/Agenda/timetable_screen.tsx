@@ -6,12 +6,9 @@ import { getBookings } from "../../../../services/freerooms_api/endpoints";
 const HOUR_HEIGHT = 60;
 const HOUR = 60 * 60 * 1000;
 
-function formatTime(time: Date) {
-  return `${time.getHours()}:${time.getMinutes().toString().padStart(2, "0")}`;
-}
-
 async function seeBookings(roomId: string) {
   // Initialise items as empty arrays for all dates in the year
+  // Because dates not in the object are treated as loading (for some reason)
   const allDates = getDatesForYear(new Date().getFullYear());
   const items: AgendaSchedule = Object.fromEntries(allDates.map(date => [date, []]));
 
@@ -68,6 +65,10 @@ function getDatesForYear(year: number): string[] {
   }
 
   return dateList;
+}
+
+function formatTime(time: Date) {
+  return `${time.getHours()}:${time.getMinutes().toString().padStart(2, "0")}`;
 }
 
 export default function TimetableScreen({ roomId }) {
