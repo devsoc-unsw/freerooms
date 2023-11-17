@@ -39,13 +39,13 @@ const RoomCard: React.FC<RoomCardProps> = ({ nav, roomNumber, roomName, status }
 	const roomStatusMessage = {
 		free: "Available",
 		busy: "Unavailable",
-		soon: "Available",
+		soon: "Available Soon",
 	};
 
 	const untilMessage = {
 		free: hoursMinutes == "Invalid Date" ? "" : "until " + hoursMinutes,
 		busy: hoursMinutes == "Invalid Date" ? "" : "until " + hoursMinutes,
-		soon: "soon at " + hoursMinutes,
+		soon: "at " + hoursMinutes,
 	}
 
 	const untilMessageDisplay = hoursMinutes == "Invalid Date" ? "none" : "flex";
