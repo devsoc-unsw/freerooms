@@ -14,6 +14,8 @@ import Image from "next/image";
 import React from 'react';
 import { useState } from 'react';
 
+import getSchoolDetails from "../../../../common/getSchoolDetails";
+import translateUsage from "../../../../common/translateUsage";
 import BookingCalendar from "../../../components/BookingCalendar";
 import Button from "../../../components/Button";
 import LoadingCircle from "../../../components/LoadingCircle";
@@ -30,12 +32,11 @@ export default function Page({ params }: {
     const [ campus, grid ] = room ? room.id.split('-') : [ "", "" ];
     const { building } = useBuilding(`${campus}-${grid}`);
 
-    
-
     return (
         <Container maxWidth={'xl'}>
             { room != undefined ? 
-                ( <Stack justifyContent="center" alignItems="center" width="100%" py={5} height="100%" px={{ xs: 3, md: 15 }}>
+                ( 
+                <Stack justifyContent="center" alignItems="center" width="100%" py={5} height="100%" px={{ xs: 3, md: 15 }}>
                     <RoomPageHeader room={room} buildingName={ building != undefined ? building.name : "" } />
                     <RoomImage src={`/assets/building_photos/${campus}-${grid}.webp`} /> 
                     <BookingCalendar events={ bookings == undefined ? [] : bookings } />
@@ -58,28 +59,7 @@ const RoomPageHeader : React.FC<{ room : Room, buildingName: string }> = ({
         setDialog( (isOpen) => { return !isOpen } ); 
     }
 
-    const translateUsage = ( usage : string  ) => {
-        switch(usage) {
-            case "AUD" :
-                return "Auditorium";
-            case "CMLB":
-                return "Computer Lab";
-            case "LAB" : 
-                return "Lab";
-            case "LCTR":
-                return "Lecture Hall";
-            case "MEET":
-                return "Meeting Room";
-            case "SDIO":
-               return "Studio";
-            case "TUSM":
-                return "Tutorial Room";
-            case "LIB":
-                return "Library";
-            default:
-                return "";
-        }
-    }
+    const schoolDetails = getSchoolDetails(room.school);
 
     	return (
 		<Box
@@ -117,26 +97,33 @@ const RoomPageHeader : React.FC<{ room : Room, buildingName: string }> = ({
 
 					{ room.school != " " ? (
                      <Typography variant="body1" fontWeight={"bold"}>
-						School: <Typography display={"inline"} variant="body1">{room.school}</Typography>
+						School: <Typography display={"inline"} variant="body1">{ schoolDetails ? schoolDetails.name : room.school }</Typography>
 					</Typography>
                     ) : null }
 				</Stack>
 			</Stack>
-                <Dialog open={openDialog} onClose={toggleDialog} PaperProps={{ sx: { borderRadius: '10px' }}}>
-                    <DialogTitle>
-                        <Typography fontWeight={"Bold"}>Booking this Room</Typography>
-                    </DialogTitle>
-                    <DialogContent>
-                        <DialogContentText>
-                            This room is managed by the school of *school here*. Please contact the school to request a booking. You can find the contact details of the school <Link href="">here</Link>
-                        </DialogContentText>
-                        <DialogActions>
-                            <Button onClick={toggleDialog} sx={{ px: 2, py: 1 }}>
-                                <Typography variant={"body2"} fontWeight={"bold"}>Close</Typography> 
-                            </Button>
-                        </DialogActions>
-                    </DialogContent>
-                </Dialog>
+			<Dialog open={openDialog} onClose={toggleDialog} PaperProps={{ sx: { borderRadius: '10px' }}}>
+				<DialogTitle>
+					<Typography variant={"h6"} fontWeight={"Bold"}>Booking this Room</Typography>
+				</DialogTitle>
+				<DialogContent>
+					<DialogContentText>
+						<Stack direction={"column"} spacing={2}>
+							<Typography variant={"body1"}>
+								This room is managed by the { schoolDetails ? schoolDetails.name : "" }. Please contact the school to request a booking. 
+							</Typography>
+							<Typography variant={"body1"}>
+								You can find the contact details of the school <Link href={ schoolDetails ? schoolDetails.contactLink : "" }>here</Link>.
+							</Typography>
+						</Stack>
+					</DialogContentText>
+					<DialogActions>
+						<Button onClick={toggleDialog} sx={{ px: 2, py: 1 }}>
+							<Typography variant={"body2"} fontWeight={"bold"}>Close</Typography> 
+						</Button>
+					</DialogActions>
+				</DialogContent>
+			</Dialog>
 		</Box>
 
 	);
