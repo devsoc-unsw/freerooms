@@ -17,7 +17,7 @@ const Features = () => {
       <div>
         <StyledFeatureVector
           alt={"Feature Vector"}
-          src="/assets/landing_page/Feature_vector.png"
+          src="/assets/landing_page/feature_vector.png"
           width={36}
           height={34}
         />
@@ -26,7 +26,7 @@ const Features = () => {
       <Box mt={10} width="100%" height={{ xs: "75rem", lg: "25rem" }}>
         <div>
           <StyledBackgroudVector
-            src="/assets/landing_page/Feature_background.png"
+            src="/assets/landing_page/feature_background.png"
             alt="background vector"
             width={1125} // Set the actual width of the image
             height={485} // Set the actual height of the image
