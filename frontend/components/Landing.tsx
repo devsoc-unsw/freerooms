@@ -80,6 +80,7 @@ const HeroPanelContainer = styled(Stack)(({ theme }) => ({
 
 const DoorContainer = styled(Stack)(({ theme }) => ({
   cursor: "pointer",
+  marginBottom: "1rem",
   [theme.breakpoints.down("md")]: {
     marginTop: "-3rem",
   },
