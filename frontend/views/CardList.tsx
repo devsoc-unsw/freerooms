@@ -1,8 +1,7 @@
+import { useMediaQuery } from '@mui/material';
 import { styled, useTheme } from "@mui/material/styles";
 import React from "react";
 import FlipMove from "react-flip-move";
-import { useMediaQuery } from '@mui/material';
-
 
 import BuildingCard from "../components/BuildingCard";
 import BuildingCardMobile from "../components/BuildingCardMobile";

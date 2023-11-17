@@ -1,24 +1,24 @@
 "use client" 
 
-import  {Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions} from '@mui/material';
+import  {Dialog, DialogActions,DialogContent, DialogContentText, DialogTitle} from '@mui/material';
 import Box from '@mui/material/Box';
 import Container from "@mui/material/Container";
+import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import Link from '@mui/material/Link';
+import useBuilding from 'hooks/useBuilding';
 import Image from "next/image";
 import React from 'react';
 import { useState } from 'react';
 
 import getSchoolDetails from "../../../../common/getSchoolDetails";
 import translateUsage from "../../../../common/translateUsage";
+import type { Room } from "../../../../common/types";
 import BookingCalendar from "../../../components/BookingCalendar";
 import Button from "../../../components/Button";
 import LoadingCircle from "../../../components/LoadingCircle";
 import useBookings from "../../../hooks/useBookings";
 import useRoom from "../../../hooks/useRoom";
-import type { Room } from "../../../../common/types";
-import useBuilding from 'hooks/useBuilding';
 
 
 export default function Page({ params }: {
