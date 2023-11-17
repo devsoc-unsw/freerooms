@@ -10,7 +10,6 @@ import { styled } from "@mui/material/styles";
 import { usePathname } from "next/navigation";
 import React from "react";
 
-import background from "../public/assets/landing_page/texture.png";
 import { useDispatch } from "../redux/hooks";
 import { openSearch } from "../redux/searchOpenSlice";
 import { drawerWidth } from "../views/BuildingDrawer";
@@ -69,8 +68,7 @@ interface AppBarProps extends MuiAppBarProps {
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "drawerOpen",
 })<AppBarProps>(({ theme, drawerOpen }) => ({
-  backgroundImage: `url(${background.src})`,
-  // background: theme.palette.background.default,
+  background: theme.palette.background.default,
   color: theme.palette.getContrastText(theme.palette.background.default),
   boxShadow: "none",
   display: "flex",

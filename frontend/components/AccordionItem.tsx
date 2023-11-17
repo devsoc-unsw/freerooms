@@ -20,6 +20,9 @@ const StyledAccordion = styled(Accordion)(({ theme }) => ({
   maxWidth: "40%",
   borderRadius: "0.75rem",
   boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.15)",
+  "&:before": {
+    backgroundColor: "rgba(0,0,0,0)",
+  },
   [theme.breakpoints.down("lg")]: {
     maxWidth: "100%",
     width: "100%",

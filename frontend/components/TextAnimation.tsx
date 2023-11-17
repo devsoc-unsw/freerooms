@@ -28,7 +28,7 @@ export default function TextAnimation() {
     </span>
   );
 }
-
+//TODO: Fix text on mobile
 const AnimationContainerStyle = styled(motion.span)(({ theme }) => ({
   fontSize: "55px",
   fontWeight: "700",

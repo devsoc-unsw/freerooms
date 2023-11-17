@@ -16,7 +16,7 @@ const StyledParentDiv = styled("div")(({ theme }) => ({
   borderRadius: "15px",
   boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.1)",
   height: "20rem",
-  width: "20rem",
+  width: "19rem",
   transition: "transform 0.3s",
   cursor: "pointer",
   margin: "1rem 0",
@@ -48,7 +48,7 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
   heading,
   description,
   link,
-  onClick
+  onClick,
 }) => {
   return (
     <Link href={link ?? "#"} onClick={onClick}>

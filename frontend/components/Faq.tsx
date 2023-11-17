@@ -2,7 +2,6 @@ import { styled } from "@mui/system";
 import Image from "next/image";
 import React, { useState } from "react";
 
-import underline from "../public/assets/landing_page/underline_vector.png";
 import AccordionItem from "./AccordionItem";
 
 // TODO: Change descriptions and titles of faqs
@@ -14,7 +13,9 @@ const Faq = () => {
         <StyledHeading>Frequently Asked Questions</StyledHeading>
         <Image
           alt={"Underline Vector"}
-          src={underline}
+          src="/assets/landing_page/underline_vector.png"
+          height={12}
+          width={247}
           style={{
             alignSelf: "center",
           }}

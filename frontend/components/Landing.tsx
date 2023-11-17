@@ -5,19 +5,23 @@ import React, { useState } from "react";
 
 import Logo from "../public/assets/favicon/free_rooms_logo.png";
 import ClosedLogo from "../public/assets/favicon/free_rooms_logo_closed.png";
-import HeroPanel from "../public/assets/landing_page/hero_panel.svg";
-import MobileHeroPanel from "../public/assets/landing_page/hero_panel_mobile.svg";
 import Faq from "./Faq";
 import Features from "./Features";
 import TextAnimation from "./TextAnimation";
 
 const Landing = () => {
   const [isClicked, setIsClicked] = useState(false);
-  const [gifSource, setGifSource] = useState(Logo);
+  const [gifSource, setGifSource] = useState(
+    "/assets/favicon/free_rooms_logo.png"
+  );
 
   const handleClick = () => {
     setIsClicked(!isClicked);
-    setGifSource(isClicked ? Logo : ClosedLogo);
+    setGifSource(
+      isClicked
+        ? "/assets/favicon/free_rooms_logo.png"
+        : "/assets/favicon/free_rooms_logo_closed.png"
+    );
   };
   // TODO: less line spacing, more space between title and image
   // TODO: Add mobile version of landing page should have mobile images
@@ -35,11 +39,19 @@ const Landing = () => {
         </DoorContainer>
         <TextAnimation />
         <HeroPanelContainer>
-          <StyledImage src={HeroPanel} alt="hero panel" isAlternate />
           <StyledImage
-            src={MobileHeroPanel}
+            src="/assets/landing_page/hero_panel.svg"
+            alt="hero panel"
+            isAlternate
+            width="1249"
+            height="1067"
+          />
+          <StyledImage
+            src={"/assets/landing_page/hero_panel_mobile.svg"}
             alt="hero panel"
             isAlternate={false}
+            width="562"
+            height="547"
           />
         </HeroPanelContainer>
       </AnimationContainer>
