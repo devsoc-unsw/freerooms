@@ -5,11 +5,11 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/system";
-import React, { useState } from "react";
+import React, { ReactElement, useState } from "react";
 
 interface AccordionItemProps {
   title: string;
-  description: string;
+  content: ReactElement;
 }
 
 const StyledAccordion = styled(Accordion)(({ theme }) => ({
@@ -29,7 +29,7 @@ const StyledAccordion = styled(Accordion)(({ theme }) => ({
 
 const AccordionItem: React.FC<AccordionItemProps> = ({
   title,
-  description,
+  content,
 }) => {
   const [expandedPanel, setExpandedPanel] = useState(false);
 
@@ -56,7 +56,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
         <Typography style={{ fontWeight: "bold" }}>{title}</Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <Typography style={{ fontWeight: "lighter" }}>{description}</Typography>
+        <Typography style={{ fontWeight: "lighter" }}>{content}</Typography>
       </AccordionDetails>
     </StyledAccordion>
   );
