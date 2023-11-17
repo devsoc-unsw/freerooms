@@ -1,5 +1,10 @@
 "use client"
 
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+
 import { orange } from "@mui/material/colors";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, styled } from "@mui/material/styles";
@@ -48,15 +53,14 @@ const ClientLayout: React.FC<{
 const App: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
-  const [searchOpen, setSearchOpen] = React.useState(false);
   const currentBuilding = useSelector(selectCurrentBuilding);
   const path = usePathname();
   const drawerOpen = !!currentBuilding && (path == '/browse' || path == '/map');
 
   return (
     <>
-      <NavBar setSearchOpen={setSearchOpen} drawerOpen={drawerOpen}/>
-      <SearchModal open={searchOpen} setOpen={setSearchOpen}/>
+      <NavBar drawerOpen={drawerOpen}/>
+      <SearchModal />
       <Main drawerOpen={drawerOpen}>
         {children}
       </Main>

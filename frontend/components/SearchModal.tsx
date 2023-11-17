@@ -16,18 +16,19 @@ import { useLocalStorage } from "usehooks-ts";
 import useBuildings from "../hooks/useBuildings";
 import useRooms from "../hooks/useRooms";
 import { setCurrentBuilding } from "../redux/currentBuildingSlice";
-import { useDispatch } from "../redux/hooks";
+import { useDispatch, useSelector } from "../redux/hooks";
+import { closeSearch, selectSearchOpen } from "../redux/searchOpenSlice";
 import { BuildingSearchOption, RoomSearchOption, SearchOption } from "../types";
 
 interface SearchProps {
-  open: boolean;
-  setOpen: (open: boolean) => void;
+
 }
 
-const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
+const SearchModal: React.FC<SearchProps> = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const path = usePathname();
+  const open = useSelector(selectSearchOpen);
 
   const [recentSearches, setRecentSearches] = useLocalStorage<SearchOption[]>(
     "recentSearches", []
@@ -82,7 +83,7 @@ const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
   ) => {
     if (!option) return;
 
-    setOpen(false);
+    dispatch(closeSearch());
 
     if (!option.recent) {
       addRecentSearch(option);
@@ -101,7 +102,7 @@ const SearchModal: React.FC<SearchProps> = ({ open, setOpen }) => {
   return (
     <Modal
       open={open}
-      onClose={() => setOpen(false)}
+      onClose={() => dispatch(closeSearch())}
       sx={{ backdropFilter: "blur(3px)" }}
     >
       <Autocomplete

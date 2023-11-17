@@ -201,7 +201,7 @@ const BookingCalendar : React.FC<{ events : Array<Booking> }>= ({ events }) => {
 				justifyContent="flex-start"
 				height="100%"
 				width="100%"
-				px={{ xs: 3, md: 15 }}
+				// px={{ xs: 3, md: 15 }}
 				pt={3}
 			>
 				<Stack

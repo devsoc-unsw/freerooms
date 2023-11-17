@@ -3,12 +3,14 @@ import { configureStore } from '@reduxjs/toolkit'
 import currentBuildingReducer from "./currentBuildingSlice";
 import datetimeReducer from "./datetimeSlice";
 import filtersReducer from "./filtersSlice";
+import searchOpenSlice from "./searchOpenSlice";
 
 const store = configureStore({
   reducer: {
     currentBuilding: currentBuildingReducer,
     datetime: datetimeReducer,
-    filters: filtersReducer
+    filters: filtersReducer,
+    searchOpen: searchOpenSlice
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
