@@ -4,6 +4,7 @@ import { calculateStatus, getBuildingRoomData, getBookingsForDate } from "./help
 import { BuildingsResponse, StatusResponse, BookingsResponse, RoomsResponse } from "@common/types";
 import { Filters } from "./types";
 import { queryBookingsForRoom } from "./dbInterface";
+import { roomUsages } from "@common/roomUsages";
 
 const ISO_REGEX = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/;
 const UPPER = 19; // Buildings with grid 19+ are upper campus
@@ -76,7 +77,11 @@ export const parseFilters = (req: Request): Filters => {
   }
 
   if (req.query.usage) {
-    filters.usage = req.query.usage as string;
+    const usage = req.query.usage as string;
+    if (!Object.keys(roomUsages).includes(usage)) {
+      throw new Error('Invalid room usage');
+    }
+    filters.usage = usage;
   }
 
   if (req.query.location) {

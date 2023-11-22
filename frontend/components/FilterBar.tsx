@@ -1,3 +1,4 @@
+import { roomUsages } from "@common/roomUsages";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { ClickAwayListener } from "@mui/material";
@@ -159,36 +160,10 @@ const dropdowns: DropDown[] = [
   {
     text: "Room Type",
     key: "usage",
-    items: [
-      {
-        text: "Auditorium",
-        value: "AUD",
-      },
-      {
-        text: "Computer Lab",
-        value: "CMLB",
-      },
-      {
-        text: "Lab",
-        value: "LAB",
-      },
-      {
-        text: "Lecture Hall",
-        value: "LCTR",
-      },
-      {
-        text: "Meeting Room",
-        value: "MEET",
-      },
-      {
-        text: "Studio",
-        value: "SDIO",
-      },
-      {
-        text: "Tutorial Room",
-        value: "TUSM",
-      },
-    ],
+    items: Object.entries(roomUsages).map(([abbr, usage]) => ({
+      text: usage,
+      value: abbr
+    }))
   },
   {
     text: "Room Capacity",
