@@ -1,7 +1,7 @@
 "use client" 
 
-import getSchoolDetails from "@common/getSchoolDetails";
-import translateUsage from "@common/translateUsage";
+import translateRoomUsage from "@common/roomUsages";
+import getSchoolDetails from "@common/schools";
 import type { Room } from "@common/types";
 import CloseIcon from "@mui/icons-material/Close";
 import  {Dialog, DialogContent, DialogContentText, DialogTitle, IconButton} from '@mui/material';
@@ -71,7 +71,7 @@ const RoomPageHeader : React.FC<{ room : Room, buildingName: string }> = ({
 					<Stack direction='row' spacing={2} >
 						<Typography display="inline" variant="subtitle2">{`${buildingName}`} </Typography>
 						<Typography display="inline" variant="subtitle2">{"/"}</Typography>
-						<Typography display="inline" variant="subtitle2">{`${translateUsage(room.usage)}`}</Typography>
+						<Typography display="inline" variant="subtitle2">{`${translateRoomUsage(room.usage)}`}</Typography>
 						{ room.school != " " ? <Typography display="inline" variant="subtitle2">{"/"}</Typography> : null }
 						{ room.school != " " ? <Typography display="inline" fontWeight={"bold"} color={"#e65100"} variant="subtitle2">{"ID Required"}</Typography> : null }
 					</Stack>

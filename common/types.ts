@@ -42,10 +42,6 @@ export type School = {
     contactLink : string
 }
 
-export type Schools = {
-  [ schoolCode : string ] : School
-}
-
 ///////////////////////////////////////////////////////////////
 // API Response Types
 

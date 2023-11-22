@@ -9,9 +9,9 @@ import {
 import React, { useContext, useEffect, useState } from "react";
 
 import type { BuildingStackScreenProps } from "../../types";
-import translateUsage from "@common/translateUsage";
 import { Room, RoomStatus } from "@common/types";
 import { FreeRoomsAPIContext } from "../../../contexts";
+import translateRoomUsage from "@common/roomUsages";
 
 interface RouteParams {
   buildingId?: string;
@@ -90,7 +90,7 @@ export default function SingleRoom({
       <View style={styles.mainInfoContainer}>
         <View style={styles.infoContainer}>
           <Text style={styles.mediumText}> Room Type: </Text>
-          <Text style={styles.infoText}>{translateUsage(singleRoomInfo.usage)}</Text>
+          <Text style={styles.infoText}>{translateRoomUsage(singleRoomInfo.usage)}</Text>
         </View>
         <View style={styles.infoContainer}>
           <Text style={styles.mediumText}> Capacity: </Text>
