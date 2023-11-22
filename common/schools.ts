@@ -1,6 +1,6 @@
-import type { Schools } from "./types";
+import { School } from "./types";
 
-const schools : Schools = {
+const schools: Record<string, School> = {
     "ARTSC": {
         name: "Faculty of Arts, Design & Architecture",
         homepage: "https://www.unsw.edu.au/arts-design-architecture",
@@ -148,4 +148,8 @@ const schools : Schools = {
     },
 }
 
-export default schools;
+const getSchoolDetails = (schoolCode: string): School | undefined => {
+    return schools[schoolCode.toUpperCase()];
+};
+
+export default getSchoolDetails;
