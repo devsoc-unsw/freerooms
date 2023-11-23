@@ -1,3 +1,4 @@
+import { Building } from "@common/types";
 import { useMediaQuery } from '@mui/material';
 import { styled, useTheme } from "@mui/material/styles";
 import React from "react";
@@ -37,56 +38,52 @@ const CardList: React.FC<{
   query: string;
 }> = ({ sort, query }) => {
   const { buildings } = useBuildings();
-
-  const [displayedBuildings, setDisplayedBuildings] = React.useState(buildings);
   const { status: roomStatusData } = useStatus();
-
   const { userLat, userLng } = useUserLocation();
 
+  // This exists so that while new filtered data is loading, the old one stays there
+  const [persistedData, setPersistedData] = React.useState(roomStatusData);
   React.useEffect(() => {
-    if (!displayedBuildings && buildings) {
-      setDisplayedBuildings(buildings);
-      return;
+    if (roomStatusData) {
+      setPersistedData(roomStatusData);
     }
+  }, [roomStatusData])
 
-    if (!buildings || !roomStatusData || Object.keys(roomStatusData).length == 0) {
-      return;
-    }
+  let displayedBuildings: Building[] | undefined = buildings;
 
+  // If we have all data, apply filters
+  if (buildings && persistedData && Object.keys(persistedData).length != 0) {
     // Filter any out that don't start with query
     // If hideUnavailable is true, filter any that have no available rooms
-    const newDisplayedBuildings = buildings.filter((building) =>
-      building.name.toLowerCase().includes(query.toLowerCase()) &&
-      Object.keys(roomStatusData[building.id]).length > 0,
-    );
-
-    // Sort the displayed buildings
-    newDisplayedBuildings.sort((a, b) => {
-      switch (sort) {
-        case "lowerToUpper":
-          return a.long - b.long;
-        case "upperToLower":
-          return b.long - a.long;
-        case "nearest":
-          return userLat && userLng ? (
-            calculateDistance(userLat, userLng, a.lat, a.long) -
-            calculateDistance(userLat, userLng, b.lat, b.long)
-          ) : 0;
-        case "mostRooms":
-          return roomStatusData && (
-            getNumFreerooms(roomStatusData[b.id]) -
-            getNumFreerooms(roomStatusData[a.id])
-          );
-        case "reverseAlphabetical":
-          return b.name.localeCompare(a.name);
-        default:
-          // default is alphabetical
-          return a.name.localeCompare(b.name);
-      }
+    displayedBuildings = buildings
+      .filter((building) =>
+        building.name.toLowerCase().includes(query.toLowerCase()) &&
+        Object.keys(persistedData[building.id]).length > 0,
+      )
+      .sort((a, b) => {
+        switch (sort) {
+          case "lowerToUpper":
+            return a.long - b.long;
+          case "upperToLower":
+            return b.long - a.long;
+          case "nearest":
+            return userLat && userLng ? (
+              calculateDistance(userLat, userLng, a.lat, a.long) -
+              calculateDistance(userLat, userLng, b.lat, b.long)
+            ) : 0;
+          case "mostRooms":
+            return (
+              getNumFreerooms(persistedData[b.id]) -
+              getNumFreerooms(persistedData[a.id])
+            );
+          case "reverseAlphabetical":
+            return b.name.localeCompare(a.name);
+          default:
+            // default is alphabetical
+            return a.name.localeCompare(b.name);
+        }
     });
-
-    setDisplayedBuildings(newDisplayedBuildings);
-  }, [query, sort, roomStatusData, buildings]);
+  }
 
   return (
     displayedBuildings
