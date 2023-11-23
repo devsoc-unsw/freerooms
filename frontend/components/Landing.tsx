@@ -3,8 +3,6 @@ import { styled } from "@mui/material/styles";
 import Image from "next/image";
 import React, { useState } from "react";
 
-import Logo from "../public/assets/favicon/free_rooms_logo.png";
-import ClosedLogo from "../public/assets/favicon/free_rooms_logo_closed.png";
 import Faq from "./Faq";
 import Features from "./Features";
 import TextAnimation from "./TextAnimation";
@@ -23,8 +21,7 @@ const Landing = () => {
         : "/assets/favicon/free_rooms_logo_closed.png"
     );
   };
-  // TODO: less line spacing, more space between title and image
-  // TODO: Add mobile version of landing page should have mobile images
+
   return (
     <div>
       <AnimationContainer>
@@ -42,14 +39,14 @@ const Landing = () => {
           <StyledImage
             src="/assets/landing_page/hero_panel.svg"
             alt="hero panel"
-            isAlternate
+            isalternate
             width="1249"
             height="1067"
           />
           <StyledImage
             src={"/assets/landing_page/hero_panel_mobile.svg"}
             alt="hero panel"
-            isAlternate={false}
+            isalternate={false}
             width="562"
             height="547"
           />
@@ -70,16 +67,16 @@ const LandingScreenContainer = styled(Stack)(({ theme }) => ({
 }));
 
 interface StyledImageProps {
-  isAlternate: boolean;
+  isalternate: boolean;
 }
 
 const StyledImage = styled(Image)<StyledImageProps>(
-  ({ theme, isAlternate }) => ({
+  ({ theme, isalternate }) => ({
     height: "100%",
     width: "100%",
-    display: isAlternate ? "block" : "none",
+    display: isalternate ? "block" : "none",
     [theme.breakpoints.down("md")]: {
-      display: isAlternate ? "none" : "block",
+      display: isalternate ? "none" : "block",
     },
   })
 );
