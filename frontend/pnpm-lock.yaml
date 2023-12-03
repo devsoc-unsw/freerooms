@@ -83,8 +83,8 @@ devDependencies:
     specifier: ^2.18.1
     version: 2.19.2(react-dom@18.2.0)(react@18.2.0)
   '@types/luxon':
-    specifier: ^2.4.0
-    version: 2.4.0
+    specifier: ^3.0.0
+    version: 3.0.0
   '@types/node':
     specifier: 18.11.18
     version: 18.11.18
@@ -1053,8 +1053,8 @@ packages:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
     dev: true
 
-  /@types/luxon@2.4.0:
-    resolution: {integrity: sha512-oCavjEjRXuR6URJEtQm0eBdfsBiEcGBZbq21of8iGkeKxU1+1xgKuFPClaBZl2KB8ZZBSWlgk61tH6Mf+nvZVw==}
+  /@types/luxon@3.0.0:
+    resolution: {integrity: sha512-Lx+EZoJxUKw4dp8uei9XiUVNlgkYmax5+ovqt6Xf3LzJOnWhlfJw/jLBmqfGVwOP/pDr4HT8bI1WtxK0IChMLw==}
     dev: true
 
   /@types/node@18.11.18:
