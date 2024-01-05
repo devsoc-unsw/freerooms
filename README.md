@@ -1,4 +1,4 @@
-# Freerooms by CSESoc
+# Freerooms by DevSoc
 
 Freerooms is a tool designed to help UNSW students find empty rooms on campus.
 
