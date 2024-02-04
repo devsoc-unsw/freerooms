@@ -11,7 +11,7 @@ const env = process.env.NEXT_PUBLIC_STAGING === "true"
 // Backend API URL
 const API_CONFIG: Record<string, string> = Object.freeze({
   [Env.DEV]: "http://localhost:3000",
-  [Env.PROD]: "https://freerooms.csesoc.app",
+  [Env.PROD]: "https://freerooms.devsoc.app",
   [Env.STAGING]: "https://freerooms.staging.csesoc.unsw.edu.au/"
 });
 
