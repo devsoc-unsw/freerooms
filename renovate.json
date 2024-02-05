@@ -21,8 +21,28 @@
       "groupName": "react monorepo with types"
     },
     {
-      "matchPackagePatterns": ["@mantine/*"],
-      "groupName": "mantine monorepo"
+      "groupName": "ci-actions",
+      "managers": ["github-actions", "dockerfile"],
+      "automerge": true,
+      "automergeType": "branch",
+      "addLabels": ["deps: ci-actions"]
+    },
+    {
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "weekly minor & patch updates",
+      "schedule": ["before 5am every monday"]
+    },
+    {
+      "matchUpdateTypes": ["minor"],
+      "addLabels": ["deps: minor"]
+    },
+    {
+      "matchUpdateTypes": ["patch"],
+      "addLabels": ["deps: patches"]
+    },
+    {
+      "managers": ["npm"],
+      "addLabels": ["deps: javascript"]
     }
   ],
   "baseBranches": ["dev"]
