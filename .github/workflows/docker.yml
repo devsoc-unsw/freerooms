@@ -62,10 +62,11 @@ jobs:
     if: ${{ github.event_name != 'pull_request' && (github.ref_name == 'dev' || github.ref_name == 'master')  }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: csesoc/deployment
           token: ${{ secrets.GH_TOKEN }}
+          ref: migration
       - name: Install yq - portable yaml processor
         uses: mikefarah/yq@v4.34.2
       - name: Update deployment
@@ -96,5 +97,5 @@ jobs:
           git add . 
           git commit -m "feat(freerooms-$build_type): update images" 
           git push -u origin update/freerooms-$build_type/${{ github.sha }}
-          gh pr create --title "feat(freerooms-$build_type): update image" --body "Updates the image for the freerooms deployment to commit csesoc/Freerooms@${{ github.sha }}." > URL
+          gh pr create -B migration --title "feat(freerooms-$build_type): update image" --body "Updates the image for the freerooms deployment to commit csesoc/freerooms@${{ github.sha }}." > URL
           gh pr merge $(cat URL) --squash -d
