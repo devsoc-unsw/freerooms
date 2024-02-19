@@ -172,7 +172,7 @@ const BookingCalendar : React.FC<{ events : Array<Booking> }>= ({ events }) => {
 		}
 		let res = localizer.format(date, "h", culture);
 		if (date.getMinutes() !== 0) {
-			res += localizer.format(date, ":m", culture);
+			res += localizer.format(date, ":mm", culture);
 		}
 		res += localizer.format(date, " a", culture);
 		return res;
@@ -242,8 +242,7 @@ const BookingCalendar : React.FC<{ events : Array<Booking> }>= ({ events }) => {
 						slotGroupPropGetter={() => ({ style: { minHeight: "50px" }})}
 						dayPropGetter={(date) => ({ style: { backgroundColor: isToday(date) ? "#fff3e0" : "white" }})}
 						min={new Date(0, 0, 0, 9)}
-						max={new Date(0, 0, 0, 22)}
-						showMultiDayTimes={false}
+						showMultiDayTimes={true}
 						formats={{
 							timeGutterFormat: formatTime,
 							eventTimeRangeFormat: formatTimeRange
