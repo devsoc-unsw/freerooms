@@ -4,14 +4,14 @@ import { Building, Room } from "@common/types";
 // Dropdown types
 
 export type DropDown = {
-  text: string,
-  key: keyof Filters,
-  items: DropDownItem[]
+  text: string;
+  key: keyof Filters;
+  items: DropDownItem[];
 };
 
 export type DropDownItem = {
-  text: string,
-  value: string,
+  text: string;
+  value: string;
 };
 
 ///////////////////////////////////////////////////////////////
@@ -39,9 +39,15 @@ export type RoomSearchOption = {
 
 // Filters for /rooms endpoint
 export type Filters = {
-  capacity?: string,
+  capacity?: string;
   usage?: string;
   location?: string;
   duration?: string;
   id?: string;
-}
+};
+
+export type Sponsor = {
+  name: string;
+  image: string;
+  url: string;
+};
