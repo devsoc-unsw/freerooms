@@ -183,13 +183,11 @@ const BookingCalendar : React.FC<{ events : Array<Booking> }>= ({ events }) => {
 		culture: string | undefined,
 		localizer?: DateLocalizer
 	) => {
-		console.log({start, end});
 		return formatTime(start, culture, localizer) + " - " + formatTime(end, culture, localizer);
 	}
 
 	// Only render booking type on day view (wide)
 	const titleAccessor = React.useCallback((booking: Booking): string => {
-		console.log(booking);
 		if (currView == Views.DAY) {
 			return `${booking.name} (${booking.bookingType})`;
 		} else {
