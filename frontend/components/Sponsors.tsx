@@ -1,4 +1,5 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
+import Image from "next/image";
 import { Sponsor } from "types";
 
 import SponsorItem from "./SponsorItem";
@@ -8,7 +9,7 @@ export default function Sponsors() {
     {
       name: "TikTok",
       image: "/assets/sponsors/tiktok.png",
-      url: "https://www.tiktok.com/about?lang=en",
+      url: "https://careers.tiktok.com/",
     },
     {
       name: "Jane Street",
@@ -18,13 +19,28 @@ export default function Sponsors() {
   ];
 
   return (
-    <Box marginTop={4}>
-      <Typography align="center" variant="h6">
+    <Stack marginTop={4}>
+      <Typography
+        align="center"
+        variant="h1"
+        sx={{ fontSize: "3rem", fontWeight: "bold" }}
+      >
         Our Sponsors
       </Typography>
+      <Image
+        alt="Underline Vector"
+        src="/assets/landing_page/underline_vector.png"
+        height={12}
+        width={200}
+        style={{
+          alignSelf: "center",
+          marginTop: 5,
+        }}
+      />
       <Stack
+        alignItems="center"
         gap={5}
-        marginTop={2}
+        marginTop={5}
         sx={{ flexDirection: { xs: "stack", sm: "row" } }}
       >
         {sponsors.map((s, idx) => (
@@ -36,6 +52,6 @@ export default function Sponsors() {
           ></SponsorItem>
         ))}
       </Stack>
-    </Box>
+    </Stack>
   );
 }
