@@ -5,6 +5,7 @@ import React, { useState } from "react";
 
 import Faq from "./Faq";
 import Features from "./Features";
+import Sponsors from "./Sponsors";
 import TextAnimation from "./TextAnimation";
 
 const Landing = () => {
@@ -23,7 +24,7 @@ const Landing = () => {
   };
 
   return (
-    <div>
+    <Stack alignItems="center">
       <AnimationContainer>
         <DoorContainer>
           <Image
@@ -56,7 +57,8 @@ const Landing = () => {
         <Features />
       </LandingScreenContainer>
       <Faq />
-    </div>
+      <Sponsors />
+    </Stack>
   );
 };
 
