@@ -43,13 +43,12 @@ export const queryBookingsInRange = async (
   start: Date,
   end: Date,
 ): Promise<BookingsInRangeRes> => {
-  // alternative condition: (where: {start: {_lte: $end}, end: {_gte: $start}})
   const query = `
     query BookingsInRange($start: timestamptz, $end: timestamptz) {
       rooms {
         id
         name
-        bookings(where: {start: {_gte: $start, _lte: $end}, end: {_gte: $start, _lte: $end}}, order_by: {start: asc}) {
+        bookings(where: {start: {_lte: $end}, end: {_gte: $start}}, order_by: {start: asc}) {
           name
           bookingType
           start
