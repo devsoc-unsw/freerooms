@@ -16,16 +16,19 @@ const useRoomStatus = (roomId: string) => {
 
   // Still loading
   if (!status) {
-    return { status: undefined, error }
+    return { status: undefined, error };
   }
 
   // Try find building
   const roomStatus = status[roomNumber];
   if (!roomStatus) {
-    return { status: undefined, error: new Error("No status data for " + roomId) };
+    return {
+      status: undefined,
+      error: new Error("No status data for " + roomId),
+    };
   }
 
   return { status: roomStatus, error };
-}
+};
 
 export default useRoomStatus;

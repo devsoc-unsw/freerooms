@@ -10,7 +10,6 @@ import SearchBar from "../../components/SearchBar";
 import SortBar from "../../components/SortBar";
 import CardList from "../../views/CardList";
 
-
 const Page = () => {
   // Local state variables
   const [sort, setSort] = React.useState<string>("alphabetical");
@@ -39,7 +38,7 @@ const Tiles = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   flexGrow: 1,
-  padding: theme.spacing(0, 0, 1, 0)
+  padding: theme.spacing(0, 0, 1, 0),
 }));
 
 export default Page;

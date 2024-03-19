@@ -10,8 +10,8 @@ interface DatetimeSlice {
 }
 
 const initialState: DatetimeSlice = {
-  value: new Date()
-}
+  value: new Date(),
+};
 
 const datetimeSlice = createSlice({
   name: "datetime",
@@ -19,8 +19,8 @@ const datetimeSlice = createSlice({
   reducers: {
     setDatetime: (state, action: PayloadAction<Date>) => {
       state.value = action.payload;
-    }
-  }
+    },
+  },
 });
 
 export const { setDatetime } = datetimeSlice.actions;

@@ -13,14 +13,14 @@ import ClientLayout from "./clientLayout";
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "Freerooms",
-    description: "A tool to aid UNSW students in finding vacant rooms."
-  }
+    description: "A tool to aid UNSW students in finding vacant rooms.",
+  };
 }
 
 export default function RootLayout({
- // Layouts must accept a children prop.
- // This will be populated with nested layouts or pages
- children,
+  // Layouts must accept a children prop.
+  // This will be populated with nested layouts or pages
+  children,
 }: {
   children: React.ReactNode;
 }) {

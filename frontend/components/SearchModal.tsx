@@ -1,7 +1,11 @@
-import BuildingIcon from '@mui/icons-material/Apartment';
-import RoomIcon from '@mui/icons-material/MeetingRoom';
+import BuildingIcon from "@mui/icons-material/Apartment";
+import RoomIcon from "@mui/icons-material/MeetingRoom";
 import SearchIcon from "@mui/icons-material/Search";
-import { AutocompleteRenderInputParams, FilterOptionsState, SvgIconProps } from "@mui/material";
+import {
+  AutocompleteRenderInputParams,
+  FilterOptionsState,
+  SvgIconProps,
+} from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import InputAdornment from "@mui/material/InputAdornment";
 import Modal from "@mui/material/Modal";
@@ -20,9 +24,7 @@ import { useDispatch, useSelector } from "../redux/hooks";
 import { closeSearch, selectSearchOpen } from "../redux/searchOpenSlice";
 import { BuildingSearchOption, RoomSearchOption, SearchOption } from "../types";
 
-interface SearchProps {
-
-}
+interface SearchProps {}
 
 const SearchModal: React.FC<SearchProps> = () => {
   const router = useRouter();
@@ -31,51 +33,54 @@ const SearchModal: React.FC<SearchProps> = () => {
   const open = useSelector(selectSearchOpen);
 
   const [recentSearches, setRecentSearches] = useLocalStorage<SearchOption[]>(
-    "recentSearches", []
+    "recentSearches",
+    []
   );
   const addRecentSearch = (option: SearchOption) => {
-    setRecentSearches(prevState => [option, ...prevState].slice(0, 3));
-  }
+    setRecentSearches((prevState) => [option, ...prevState].slice(0, 3));
+  };
 
   // Fetch options
   const { buildings } = useBuildings();
   const { rooms } = useRooms();
   const options = React.useMemo(() => {
     const buildingOptions: BuildingSearchOption[] = buildings
-      ? buildings.map(building => ({
-        type: "Building",
-        searchKeys: [building.name, ...building.aliases, building.id],
-        building
-      }))
+      ? buildings.map((building) => ({
+          type: "Building",
+          searchKeys: [building.name, ...building.aliases, building.id],
+          building,
+        }))
       : [];
 
     const roomOptions: RoomSearchOption[] = rooms
-      ? Object.values(rooms).map(room => ({
-        type: "Room",
-        searchKeys: [room.name, room.abbr, room.id],
-        room
-      }))
+      ? Object.values(rooms).map((room) => ({
+          type: "Room",
+          searchKeys: [room.name, room.abbr, room.id],
+          room,
+        }))
       : [];
 
-    return [...roomOptions, ...buildingOptions]
-  }, [buildings, rooms])
+    return [...roomOptions, ...buildingOptions];
+  }, [buildings, rooms]);
 
   const filterOptions = (
     options: SearchOption[],
     { inputValue }: FilterOptionsState<SearchOption>
   ) => {
     if (inputValue) {
-      const filtered = matchSorter(options, inputValue, { keys: ['searchKeys'] });
+      const filtered = matchSorter(options, inputValue, {
+        keys: ["searchKeys"],
+      });
 
       // Make sure buildings come before rooms
-      const buildings = filtered.filter(opt => opt.type === "Building");
-      const rooms = filtered.filter(opt => opt.type === "Room");
+      const buildings = filtered.filter((opt) => opt.type === "Building");
+      const rooms = filtered.filter((opt) => opt.type === "Room");
       return [...buildings, ...rooms];
     } else {
       // Return recent searches
-      return recentSearches.map(option => ({ ...option, recent: true }));
+      return recentSearches.map((option) => ({ ...option, recent: true }));
     }
-  }
+  };
 
   const handleSelect = (
     event: React.SyntheticEvent,
@@ -91,13 +96,14 @@ const SearchModal: React.FC<SearchProps> = () => {
 
     if (option.type === "Room") {
       router.push("/room/" + option.room.id);
-    } else { // option.type === "Building"
+    } else {
+      // option.type === "Building"
       if (path !== "/browse" && path !== "/map") {
         router.push("/browse");
       }
-      dispatch(setCurrentBuilding(option.building))
+      dispatch(setCurrentBuilding(option.building));
     }
-  }
+  };
 
   return (
     <Modal
@@ -112,49 +118,53 @@ const SearchModal: React.FC<SearchProps> = () => {
         openOnFocus
         onChange={handleSelect}
         options={options}
-        getOptionLabel={option => option.searchKeys[0]}
+        getOptionLabel={(option) => option.searchKeys[0]}
         filterOptions={filterOptions}
-        groupBy={option => option.recent ? "Recent" : option.type + "s"}
+        groupBy={(option) => (option.recent ? "Recent" : option.type + "s")}
         renderInput={(params) => <InputBox {...params} />}
         renderOption={(props, option) => (
           <li {...props} key={option.searchKeys[0]}>
-            <SearchResult option={option}/>
+            <SearchResult option={option} />
           </li>
         )}
         slotProps={{
-          paper: { sx: { borderRadius: "0 0 10px 10px" } }
+          paper: { sx: { borderRadius: "0 0 10px 10px" } },
         }}
         sx={{
           maxWidth: 600,
-          margin: '10% auto'
+          margin: "10% auto",
         }}
       />
     </Modal>
-  )
-}
+  );
+};
 
 const SearchResult: React.FC<{ option: SearchOption }> = ({ option }) => {
   const iconProps: SvgIconProps = {
     fontSize: "large",
-    color: "primary"
-  }
+    color: "primary",
+  };
 
   const [name, ...aliases] = option.searchKeys;
 
   return (
-   <Stack direction="row" padding={0.5} spacing={2}>
-     <Stack alignItems="center" justifyContent="center">
-       {option.type === "Room" ? <RoomIcon {...iconProps} /> : <BuildingIcon {...iconProps} />}
-     </Stack>
-     <Stack direction="column">
-       <Typography>{name}</Typography>
-       <Typography variant="body2" color="text.secondary">
-         <b>AKA</b> {aliases.join(", ")}
-       </Typography>
-     </Stack>
-   </Stack>
-  )
-}
+    <Stack direction="row" padding={0.5} spacing={2}>
+      <Stack alignItems="center" justifyContent="center">
+        {option.type === "Room" ? (
+          <RoomIcon {...iconProps} />
+        ) : (
+          <BuildingIcon {...iconProps} />
+        )}
+      </Stack>
+      <Stack direction="column">
+        <Typography>{name}</Typography>
+        <Typography variant="body2" color="text.secondary">
+          <b>AKA</b> {aliases.join(", ")}
+        </Typography>
+      </Stack>
+    </Stack>
+  );
+};
 
 const InputBox = (params: AutocompleteRenderInputParams) => {
   return (
@@ -176,10 +186,10 @@ const InputBox = (params: AutocompleteRenderInputParams) => {
           backgroundColor: "background.paper",
           borderRadius: "10px 10px 0 0",
         },
-        slotProps: { root: { style: { padding: 10 } } }
+        slotProps: { root: { style: { padding: 10 } } },
       }}
     />
-  )
-}
+  );
+};
 
 export default SearchModal;

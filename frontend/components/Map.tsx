@@ -28,8 +28,10 @@ const mapBounds = {
 };
 
 const isInBounds = (lat: number, lng: number) =>
-  lat >= mapBounds.south && lat <= mapBounds.north &&
-  lng >= mapBounds.west && lng <= mapBounds.east;
+  lat >= mapBounds.south &&
+  lat <= mapBounds.north &&
+  lng >= mapBounds.west &&
+  lng <= mapBounds.east;
 
 const LocationMarker = () => {
   return (
@@ -84,16 +86,18 @@ export const Map = () => {
   const { userLat, userLng } = useUserLocation();
 
   const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: GOOGLE_API_KEY
+    googleMapsApiKey: GOOGLE_API_KEY,
   });
 
   const [distances, setDistances] = useState<number[]>([]);
 
   useEffect(() => {
     if (buildings && userLat && userLng && isInBounds(userLat, userLng)) {
-      setDistances(buildings.map((building) =>
-        calculateDistance(userLat, userLng, building.lat, building.long)
-      ))
+      setDistances(
+        buildings.map((building) =>
+          calculateDistance(userLat, userLng, building.lat, building.long)
+        )
+      );
     }
   }, [buildings, userLat, userLng]);
 
@@ -101,7 +105,7 @@ export const Map = () => {
     return (
       <div style={{ position: "relative", height: "100%" }}>
         <GoogleMap
-          mapContainerStyle={{ height: "100%", }}
+          mapContainerStyle={{ height: "100%" }}
           center={center}
           options={{
             clickableIcons: false,
@@ -117,24 +121,25 @@ export const Map = () => {
           }}
           zoom={17.5}
         >
-          {buildings && buildings.map((building, index) => (
-            <OverlayViewF
-              key={building.id}
-              mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
-              position={{
-                lat: building.lat,
-                lng: building.long,
-              }}
-              zIndex={debouncedCurrentHover?.id === building.id ? 2 : 1}
-            >
-              <MapMarker
-                buildingId={building.id}
-                distance={distances[index]}
-                currentHover={debouncedCurrentHover}
-                setCurrentHover={setCurrentHover}
-              />
-            </OverlayViewF>
-          ))}
+          {buildings &&
+            buildings.map((building, index) => (
+              <OverlayViewF
+                key={building.id}
+                mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+                position={{
+                  lat: building.lat,
+                  lng: building.long,
+                }}
+                zIndex={debouncedCurrentHover?.id === building.id ? 2 : 1}
+              >
+                <MapMarker
+                  buildingId={building.id}
+                  distance={distances[index]}
+                  currentHover={debouncedCurrentHover}
+                  setCurrentHover={setCurrentHover}
+                />
+              </OverlayViewF>
+            ))}
           {userLat && userLng && isInBounds(userLat, userLng) && (
             <OverlayViewF
               mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
