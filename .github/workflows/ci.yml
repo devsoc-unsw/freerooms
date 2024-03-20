@@ -15,19 +15,17 @@ jobs:
         component: [frontend]
         include:
           - component: frontend
-            command: pnpm i --frozen-lockfile
+            command: npm ci
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: "16"
-      - name: Install pnpm
-        run: npm i -g pnpm
       - name: Install dependencies
         run: ${{ matrix.command }}
         working-directory: ${{ matrix.component }}
       - name: Build
-        run: pnpm lint
+        run: npm run lint
         working-directory: ${{ matrix.component }}
   build:
     name: "Build (${{ matrix.component }})"
@@ -38,16 +36,14 @@ jobs:
         component: [frontend, backend]
         include:
           - component: frontend
-            command: pnpm i --frozen-lockfile
+            command: npm ci
           - component: backend
-            command: pnpm i --frozen-lockfile
+            command: npm ci
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: "16"
-      - name: Install pnpm
-        run: npm i -g pnpm
       - name: Install dependencies
         run: ${{ matrix.command }}
         working-directory: ${{ matrix.component }}
@@ -56,5 +52,5 @@ jobs:
         run: echo "NEXT_PUBLIC_STAGING=true" >> .env
         working-directory: frontend
       - name: Build
-        run: pnpm build
+        run: npm run build
         working-directory: ${{ matrix.component }}
