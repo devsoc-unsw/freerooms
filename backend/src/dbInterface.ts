@@ -1,10 +1,11 @@
 // Interface to the Hasura GraphQL API
-import { Booking } from "@common/types";
 import parseDates from "@common/parseDates";
-import { GraphQLClient, gql } from 'graphql-request'
+import { Booking } from "@common/types";
+import type { TypedDocumentNode } from "@graphql-typed-document-node/core";
+import { parse } from "graphql";
+import { gql, GraphQLClient } from "graphql-request";
+
 import { GRAPHQL_API } from "./config";
-import type { TypedDocumentNode } from '@graphql-typed-document-node/core';
-import { parse } from 'graphql'
 
 ///////////////////////////////////////////////////////////////
 // Helper functions for making and processing GQL requests
@@ -19,12 +20,14 @@ const doRequest = async <T>(
   variables: Record<string, string> = {}
 ): Promise<T> => {
   // Make the request
-  const query: TypedDocumentNode<T> = parse(gql`${queryStr}`);
+  const query: TypedDocumentNode<T> = parse(gql`
+    ${queryStr}
+  `);
   const data = await client.request(query, variables);
 
   // Parse dates
   return parseDates(data);
-}
+};
 
 ///////////////////////////////////////////////////////////////
 
@@ -32,16 +35,16 @@ type BookingsInRangeRes = {
   rooms: Array<{
     id: string;
     name: string;
-    bookings: Booking[]
+    bookings: Booking[];
   }>;
-}
+};
 
 /**
  * Query all bookings in the range start to end, grouped by room
  */
 export const queryBookingsInRange = async (
   start: Date,
-  end: Date,
+  end: Date
 ): Promise<BookingsInRangeRes> => {
   const query = `
     query BookingsInRange($start: timestamptz, $end: timestamptz) {
@@ -64,7 +67,7 @@ export const queryBookingsInRange = async (
   };
 
   return await doRequest<BookingsInRangeRes>(query, variables);
-}
+};
 
 ///////////////////////////////////////////////////////////////
 
@@ -84,13 +87,14 @@ type BuildingsAndRoomsRes = {
       capacity: number;
     }>;
   }>;
-}
+};
 
 /**
  * Query information for all buildings and rooms
  */
-export const queryBuildingsAndRooms = async (): Promise<BuildingsAndRoomsRes> => {
-  const query = `
+export const queryBuildingsAndRooms =
+  async (): Promise<BuildingsAndRoomsRes> => {
+    const query = `
     query BuildingAndRooms {
       buildings(order_by: {name: asc}) {
         id
@@ -110,19 +114,18 @@ export const queryBuildingsAndRooms = async (): Promise<BuildingsAndRoomsRes> =>
     }
   `;
 
-  return await doRequest<BuildingsAndRoomsRes>(query);
-}
+    return await doRequest<BuildingsAndRoomsRes>(query);
+  };
 
 ///////////////////////////////////////////////////////////////
-
 
 type BookingsForRoomRes = {
   rooms_by_pk: {
     id: string;
     name: string;
     bookings: Booking[];
-  }
-}
+  };
+};
 
 /**
  * Query all bookings in the range start to end, grouped by room
@@ -148,4 +151,4 @@ export const queryBookingsForRoom = async (
   const variables = { roomId };
 
   return await doRequest<BookingsForRoomRes>(query, variables);
-}
+};
