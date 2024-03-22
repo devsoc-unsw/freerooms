@@ -38,7 +38,7 @@
     "@babel/core": "7.17.12",
     "@react-google-maps/api": "^2.18.1",
     "@types/luxon": "^2.4.0",
-    "@types/node": "18.11.18",
+    "@types/node": "20.11.30",
     "@types/react": "^18.0.33",
     "@types/react-big-calendar": "^1.6.3",
     "eslint": "^8.14.0",
