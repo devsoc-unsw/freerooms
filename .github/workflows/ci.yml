@@ -26,7 +26,7 @@ jobs:
       - name: Install dependencies
         run: ${{ matrix.command }}
         working-directory: ${{ matrix.component }}
-      - name: Build
+      - name: Lint
         run: npm run lint
         working-directory: ${{ matrix.component }}
   build:
