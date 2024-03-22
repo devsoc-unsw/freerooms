@@ -6,8 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "lint:fix": "next lint --fix"
+    "lint": "prettier --check **/*.ts{,x} && next lint",
+    "lint:fix": "prettier --write **/*.ts{,x} && next lint --fix"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
@@ -46,6 +46,7 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-simple-import-sort": "^10.0.0",
+    "prettier": "^3.2.5",
     "typescript": "4.6.4"
   },
   "engines": {

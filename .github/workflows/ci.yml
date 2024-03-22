@@ -12,9 +12,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        component: [frontend]
+        component: [frontend, backend]
         include:
           - component: frontend
+            command: npm ci
+          - component: backend
             command: npm ci
     steps:
       - uses: actions/checkout@v3
