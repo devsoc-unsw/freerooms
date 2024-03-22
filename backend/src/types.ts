@@ -9,9 +9,9 @@ export type BuildingDatabase = {
 };
 
 export type Filters = {
-  capacity?: number,
+  capacity?: number;
   usage?: string;
   location?: "upper" | "lower";
   duration?: number;
   id?: boolean;
-}
+};

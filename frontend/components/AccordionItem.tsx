@@ -27,10 +27,7 @@ const StyledAccordion = styled(Accordion)(({ theme }) => ({
   },
 }));
 
-const AccordionItem: React.FC<AccordionItemProps> = ({
-  title,
-  content,
-}) => {
+const AccordionItem: React.FC<AccordionItemProps> = ({ title, content }) => {
   const [expandedPanel, setExpandedPanel] = useState(false);
 
   const handleChangePanel = (

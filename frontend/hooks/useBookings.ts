@@ -5,11 +5,15 @@
 import parseDates from "@common/parseDates";
 import { BookingsResponse } from "@common/types";
 import axios from "axios";
-import useSWRImmutable from 'swr/immutable'
+import useSWRImmutable from "swr/immutable";
 
 import { API_URL } from "../config";
 
-const fetcher = (url: string) => axios.get(url).then(res => res.data).then(parseDates);
+const fetcher = (url: string) =>
+  axios
+    .get(url)
+    .then((res) => res.data)
+    .then(parseDates);
 
 const useBookings = (roomId: string) => {
   const { data, error } = useSWRImmutable<BookingsResponse>(
@@ -19,8 +23,8 @@ const useBookings = (roomId: string) => {
 
   return {
     bookings: data?.bookings,
-    error
+    error,
   };
-}
+};
 
 export default useBookings;

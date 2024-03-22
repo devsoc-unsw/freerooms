@@ -10,8 +10,8 @@ interface SearchOpenState {
 }
 
 const initialState: SearchOpenState = {
-  value: false
-}
+  value: false,
+};
 
 const searchOpenSlice = createSlice({
   name: "searchOpen",
@@ -26,10 +26,11 @@ const searchOpenSlice = createSlice({
     toggleSearch: (state) => {
       state.value = !state.value;
     },
-  }
+  },
 });
 
-export const { openSearch, closeSearch, toggleSearch } = searchOpenSlice.actions;
+export const { openSearch, closeSearch, toggleSearch } =
+  searchOpenSlice.actions;
 
 export const selectSearchOpen = (state: RootState) => state.searchOpen.value;
 

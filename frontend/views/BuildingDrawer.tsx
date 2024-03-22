@@ -1,5 +1,5 @@
 import { RoomStatus } from "@common/types";
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import CloseIcon from "@mui/icons-material/Close";
 import { Typography, TypographyProps } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
@@ -8,7 +8,7 @@ import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import { styled } from "@mui/material/styles";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
@@ -19,7 +19,10 @@ import React from "react";
 import Button from "../components/Button";
 import useBuildingStatus from "../hooks/useBuildingStatus";
 import useRoom from "../hooks/useRoom";
-import { selectCurrentBuilding, setCurrentBuilding } from "../redux/currentBuildingSlice";
+import {
+  selectCurrentBuilding,
+  setCurrentBuilding,
+} from "../redux/currentBuildingSlice";
 import { selectDatetime, setDatetime } from "../redux/datetimeSlice";
 import { useDispatch, useSelector } from "../redux/hooks";
 import toSydneyTime from "../utils/toSydneyTime";
@@ -73,11 +76,11 @@ const IndiviRoomBox = styled(Box)<BoxProps>(({ theme }) => ({
   color: "black",
   padding: theme.spacing(2, 2, 2, 3),
   margin: theme.spacing(1.5, 1),
-	'&:hover': {
-		border: "1px solid",
-		borderColor: theme.palette.primary.main,
-		cursor: "pointer",
-	}
+  "&:hover": {
+    border: "1px solid",
+    borderColor: theme.palette.primary.main,
+    cursor: "pointer",
+  },
 }));
 
 const RoomBoxHeading = styled(Typography)<TypographyProps>(({ theme }) => ({
@@ -90,8 +93,6 @@ const RoomBoxSubheading = styled(Typography)<TypographyProps>(({ theme }) => ({
   fontWeight: 400,
   paddingTop: 1,
 }));
-
-
 
 export const drawerWidth = 400;
 
@@ -144,38 +145,40 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
       free: hoursMinutes == "Invalid Date" ? "" : "until " + hoursMinutes,
       busy: hoursMinutes == "Invalid Date" ? "" : "until " + hoursMinutes,
       soon: "at " + hoursMinutes,
-    }
+    };
 
     const { room } = useRoom(`${building.id}-${roomNumber}`);
 
     return (
       <Link href={`/room/${building.id}-${roomNumber}`}>
         <IndiviRoomBox>
-          <Box sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-start',
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
               paddingRight: 1,
-            }}>
-            <RoomBoxHeading>
-              {roomNumber}
-            </RoomBoxHeading>
-            <RoomBoxSubheading>
-              {!room ? "" : room.name}
-            </RoomBoxSubheading>
+            }}
+          >
+            <RoomBoxHeading>{roomNumber}</RoomBoxHeading>
+            <RoomBoxSubheading>{!room ? "" : room.name}</RoomBoxSubheading>
           </Box>
-          <Box sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            alignItems: 'center',
-          }}>
-            <Box sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-end',
-              paddingRight: 1,
-            }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-around",
+              alignItems: "center",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-end",
+                paddingRight: 1,
+              }}
+            >
               <RoomBoxHeading
                 sx={{ color: roomStatusColor[roomStatus.status] }}
               >
@@ -187,7 +190,7 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
                 {untilMessage[roomStatus.status]}
               </RoomBoxSubheading>
             </Box>
-            <ChevronRightIcon style={{ color: 'grey' }}/>
+            <ChevronRightIcon style={{ color: "grey" }} />
           </Box>
         </IndiviRoomBox>
       </Link>
@@ -260,13 +263,17 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
             <DesktopDatePicker
               inputFormat="dd/MM/yyyy"
               value={datetime}
-              onChange={(value) => value && dispatch(setDatetime(toSydneyTime(value)))}
+              onChange={(value) =>
+                value && dispatch(setDatetime(toSydneyTime(value)))
+              }
               renderInput={customTextField}
             />
             <div style={{ width: 10 }} />
             <TimePicker
               value={datetime}
-              onChange={(value) => value && dispatch(setDatetime(toSydneyTime(value)))}
+              onChange={(value) =>
+                value && dispatch(setDatetime(toSydneyTime(value)))
+              }
               renderInput={customTextField}
             />
           </div>

@@ -1,24 +1,29 @@
-import express, { NextFunction, Request, RequestHandler, Response } from "express";
 import cors from "cors";
+import express, {
+  NextFunction,
+  Request,
+  RequestHandler,
+  Response,
+} from "express";
 
+import { PORT } from "./config";
 import {
+  getAllBuildings,
+  getAllRooms,
+  getAllRoomStatus,
+  getRoomBookings,
   parseDatetime,
   parseFilters,
-  getAllRoomStatus,
-  getAllBuildings,
-  getRoomBookings,
-  getAllRooms,
 } from "./service";
-import { PORT } from "./config";
 
 const app = express();
 app.use(cors());
 
 // Wrapper for request handler functions to catch async exceptions
-const asyncHandler = (fn: RequestHandler) =>
-  (req: Request, res: Response, next: NextFunction) => {
+const asyncHandler =
+  (fn: RequestHandler) => (req: Request, res: Response, next: NextFunction) => {
     Promise.resolve(fn(req, res, next)).catch(next);
-  }
+  };
 
 // Route to get info of all the buildings
 app.get(
@@ -65,7 +70,7 @@ app.get(
 
 // Error-handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error(`"${req.originalUrl}" ${err.stack ?? err}`)
+  console.error(`"${req.originalUrl}" ${err.stack ?? err}`);
 
   if (!res.writableEnded) {
     res.status(400).send(err);

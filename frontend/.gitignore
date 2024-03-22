@@ -37,6 +37,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 
-# Non PNPM lockfiles
-package-lock.json
+# Non npm lockfiles
+pnpm-lock.yaml
 yarn.lock

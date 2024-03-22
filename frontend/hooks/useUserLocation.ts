@@ -23,6 +23,6 @@ const useUserLocation = () => {
   }, []);
 
   return { userLat, userLng };
-}
+};
 
 export default useUserLocation;
