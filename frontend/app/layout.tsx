@@ -1,5 +1,3 @@
-"use server";
-
 import "../styles/globals.css";
 
 import { Metadata } from "next";
@@ -17,13 +15,15 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   // Layouts must accept a children prop.
   // This will be populated with nested layouts or pages
   children,
 }: {
   children: React.ReactNode;
 }) {
+  "use server";
+
   return (
     <html lang="en">
       <body>
