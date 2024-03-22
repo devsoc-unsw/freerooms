@@ -7,7 +7,7 @@ settings:
 dependencies:
   '@graphql-typed-document-node/core':
     specifier: ^3.2.0
-    version: 3.2.0(graphql@16.7.1)
+    version: 3.2.0(graphql@16.8.1)
   cors:
     specifier: ^2.8.5
     version: 2.8.5
@@ -22,10 +22,10 @@ dependencies:
     version: 4.18.2
   graphql:
     specifier: ^16.6.0
-    version: 16.7.1
+    version: 16.8.1
   graphql-request:
     specifier: ^6.1.0
-    version: 6.1.0(graphql@16.7.1)
+    version: 6.1.0(graphql@16.8.1)
 
 devDependencies:
   '@types/cors':
@@ -69,12 +69,12 @@ packages:
       '@jridgewell/trace-mapping': 0.3.9
     dev: true
 
-  /@graphql-typed-document-node/core@3.2.0(graphql@16.7.1):
+  /@graphql-typed-document-node/core@3.2.0(graphql@16.8.1):
     resolution: {integrity: sha512-mB9oAsNCm9aM3/SOv4YtBMqZbYj10R7dkq8byBqxGY/ncFwhf2oQzMV+LCRlWoDSEBJ3COiR1yeDvMtsoOsuFQ==}
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
     dependencies:
-      graphql: 16.7.1
+      graphql: 16.8.1
     dev: false
 
   /@jridgewell/resolve-uri@3.1.1:
@@ -317,7 +317,7 @@ packages:
       normalize-path: 3.0.0
       readdirp: 3.6.0
     optionalDependencies:
-      fsevents: 2.3.2
+      fsevents: 2.3.3
     dev: true
 
   /commander@9.5.0:
@@ -536,8 +536,8 @@ packages:
     engines: {node: '>= 0.6'}
     dev: false
 
-  /fsevents@2.3.2:
-    resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
+  /fsevents@2.3.3:
+    resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
     requiresBuild: true
@@ -576,20 +576,20 @@ packages:
       slash: 3.0.0
     dev: true
 
-  /graphql-request@6.1.0(graphql@16.7.1):
+  /graphql-request@6.1.0(graphql@16.8.1):
     resolution: {integrity: sha512-p+XPfS4q7aIpKVcgmnZKhMNqhltk20hfXtkaIkTfjjmiKMJ5xrt5c743cL03y/K7y1rg3WrIC49xGiEQ4mxdNw==}
     peerDependencies:
       graphql: 14 - 16
     dependencies:
-      '@graphql-typed-document-node/core': 3.2.0(graphql@16.7.1)
+      '@graphql-typed-document-node/core': 3.2.0(graphql@16.8.1)
       cross-fetch: 3.1.8
-      graphql: 16.7.1
+      graphql: 16.8.1
     transitivePeerDependencies:
       - encoding
     dev: false
 
-  /graphql@16.7.1:
-    resolution: {integrity: sha512-DRYR9tf+UGU0KOsMcKAlXeFfX89UiiIZ0dRU3mR0yJfu6OjZqUcp68NnFLnqQU5RexygFoDy1EW+ccOYcPfmHg==}
+  /graphql@16.8.1:
+    resolution: {integrity: sha512-59LZHPdGZVh695Ud9lRzPBVTtlX9ZCV150Er2W43ro37wVof0ctenSaskPPjN7lVTIN8mSZt8PHUNKZuNQUuxw==}
     engines: {node: ^12.22.0 || ^14.16.0 || ^16.0.0 || >=17.0.0}
     dev: false
 
