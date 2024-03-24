@@ -11,8 +11,8 @@ interface CurrentBuildingState {
 }
 
 const initialState: CurrentBuildingState = {
-  value: null
-}
+  value: null,
+};
 
 const currentBuildingSlice = createSlice({
   name: "currentBuilding",
@@ -20,12 +20,13 @@ const currentBuildingSlice = createSlice({
   reducers: {
     setCurrentBuilding: (state, action: PayloadAction<Building | null>) => {
       state.value = action.payload;
-    }
-  }
+    },
+  },
 });
 
 export const { setCurrentBuilding } = currentBuildingSlice.actions;
 
-export const selectCurrentBuilding = (state: RootState) => state.currentBuilding.value;
+export const selectCurrentBuilding = (state: RootState) =>
+  state.currentBuilding.value;
 
 export default currentBuildingSlice.reducer;

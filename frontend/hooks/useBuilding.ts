@@ -13,16 +13,19 @@ const useBuilding = (buildingId: string) => {
 
   // Still loading
   if (!buildings) {
-    return { building: undefined, error }
+    return { building: undefined, error };
   }
 
   // Try find building
-  const building = buildings.find(b => b.id === buildingId);
+  const building = buildings.find((b) => b.id === buildingId);
   if (!building) {
-    return { building: undefined, error: new Error("No data for " + buildingId) };
+    return {
+      building: undefined,
+      error: new Error("No data for " + buildingId),
+    };
   }
 
   return { building, error };
-}
+};
 
 export default useBuilding;

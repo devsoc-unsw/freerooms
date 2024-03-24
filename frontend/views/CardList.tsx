@@ -1,5 +1,5 @@
 import { Building } from "@common/types";
-import { useMediaQuery } from '@mui/material';
+import { useMediaQuery } from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
 import React from "react";
 import FlipMove from "react-flip-move";
@@ -20,17 +20,20 @@ const FlipMoveGrid = styled(FlipMove)(() => ({
   gridGap: "20px",
 }));
 
-const FlippableCard = React.forwardRef<HTMLDivElement, { buildingId: string;}>(({ buildingId }, ref) => {
-  const displayMobile = useMediaQuery(useTheme().breakpoints.down('sm'));
-  return (
-    <div ref={ref}>
-      { displayMobile 
-        ? (<BuildingCardMobile buildingId={buildingId}/>) 
-        : (<BuildingCard buildingId={buildingId} />)
-      }
-    </div>
-  );
-});
+const FlippableCard = React.forwardRef<HTMLDivElement, { buildingId: string }>(
+  ({ buildingId }, ref) => {
+    const displayMobile = useMediaQuery(useTheme().breakpoints.down("sm"));
+    return (
+      <div ref={ref}>
+        {displayMobile ? (
+          <BuildingCardMobile buildingId={buildingId} />
+        ) : (
+          <BuildingCard buildingId={buildingId} />
+        )}
+      </div>
+    );
+  }
+);
 FlippableCard.displayName = "FlippableCard";
 
 const CardList: React.FC<{
@@ -47,7 +50,7 @@ const CardList: React.FC<{
     if (roomStatusData) {
       setPersistedData(roomStatusData);
     }
-  }, [roomStatusData])
+  }, [roomStatusData]);
 
   let displayedBuildings: Building[] | undefined = buildings;
 
@@ -56,9 +59,10 @@ const CardList: React.FC<{
     // Filter any out that don't start with query
     // If hideUnavailable is true, filter any that have no available rooms
     displayedBuildings = buildings
-      .filter((building) =>
-        building.name.toLowerCase().includes(query.toLowerCase()) &&
-        Object.keys(persistedData[building.id]).length > 0,
+      .filter(
+        (building) =>
+          building.name.toLowerCase().includes(query.toLowerCase()) &&
+          Object.keys(persistedData[building.id]).length > 0
       )
       .sort((a, b) => {
         switch (sort) {
@@ -67,10 +71,10 @@ const CardList: React.FC<{
           case "upperToLower":
             return b.long - a.long;
           case "nearest":
-            return userLat && userLng ? (
-              calculateDistance(userLat, userLng, a.lat, a.long) -
-              calculateDistance(userLat, userLng, b.lat, b.long)
-            ) : 0;
+            return userLat && userLng
+              ? calculateDistance(userLat, userLng, a.lat, a.long) -
+                  calculateDistance(userLat, userLng, b.lat, b.long)
+              : 0;
           case "mostRooms":
             return (
               getNumFreerooms(persistedData[b.id]) -
@@ -82,17 +86,17 @@ const CardList: React.FC<{
             // default is alphabetical
             return a.name.localeCompare(b.name);
         }
-    });
+      });
   }
 
-  return (
-    displayedBuildings
-      ? <FlipMoveGrid duration={500}>
-        {displayedBuildings.map((building) => (
-          <FlippableCard key={building.id} buildingId={building.id} />
-        ))}
-      </FlipMoveGrid>
-      : <LoadingCircle/>
+  return displayedBuildings ? (
+    <FlipMoveGrid duration={500}>
+      {displayedBuildings.map((building) => (
+        <FlippableCard key={building.id} buildingId={building.id} />
+      ))}
+    </FlipMoveGrid>
+  ) : (
+    <LoadingCircle />
   );
 };
 

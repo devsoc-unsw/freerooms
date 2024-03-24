@@ -13,7 +13,12 @@ import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
 
-import { clearFilters, selectFilters, setFilter, unsetFilter } from "../redux/filtersSlice";
+import {
+  clearFilters,
+  selectFilters,
+  setFilter,
+  unsetFilter,
+} from "../redux/filtersSlice";
 import { useDispatch, useSelector } from "../redux/hooks";
 import { DropDown, DropDownItem, Filters } from "../types";
 
@@ -33,8 +38,8 @@ const StyledFilterButton = styled(Box)<BoxProps>(({ theme }) => ({
   borderColor: theme.palette.primary.main,
   zIndex: 10,
   ":hover": {
-    cursor: "pointer"
-  }
+    cursor: "pointer",
+  },
 }));
 
 const StyledDropDownMenu = styled(Box)<BoxProps>(() => ({
@@ -50,8 +55,8 @@ const StyledDropDownMenu = styled(Box)<BoxProps>(() => ({
   borderStyle: "solid",
   borderColor: "#BCBCBC",
   ":hover": {
-    cursor: "auto"
-  }
+    cursor: "auto",
+  },
 }));
 
 const StyledHeader = styled(Box)<BoxProps>(() => ({
@@ -89,39 +94,45 @@ const FilterBar = () => {
   const handleSelect = (key: keyof Filters, item: DropDownItem) => {
     if (filters[key] === item.value) {
       // If the same as already selected, unset key
-      dispatch(unsetFilter(key))
+      dispatch(unsetFilter(key));
     } else {
       // Otherwise, spread existing filters and set key
-      dispatch(setFilter({ key, value: item.value }))
+      dispatch(setFilter({ key, value: item.value }));
     }
   };
 
   // Reveal dropdown items
   const dropdownReveal = (dropdown: DropDown) => {
-    return <div>
-      {dropdown.items.map(item => (
-        <div onClick={() => handleSelect(dropdown.key, item)} key={item.value}>
-          <Radio checked={filters[dropdown.key] === item.value} />
-          {item.text}
-        </div>
-      ))}
-    </div>;
+    return (
+      <div>
+        {dropdown.items.map((item) => (
+          <div
+            onClick={() => handleSelect(dropdown.key, item)}
+            key={item.value}
+          >
+            <Radio checked={filters[dropdown.key] === item.value} />
+            {item.text}
+          </div>
+        ))}
+      </div>
+    );
   };
 
   return (
     <ClickAwayListener onClickAway={() => setOpen(false)}>
       <StyledFilterButton onClick={() => setOpen(!open)}>
-        <Stack
-          direction="row"
-          spacing={1.5}
-          alignItems="center"
-        >
-          <p>{open ? <FilterAltIcon style={{ color: "#F77F00" }} /> :
-            <FilterAltIcon style={{ color: "#F77F00" }} />}</p>
+        <Stack direction="row" spacing={1.5} alignItems="center">
+          <p>
+            {open ? (
+              <FilterAltIcon style={{ color: "#F77F00" }} />
+            ) : (
+              <FilterAltIcon style={{ color: "#F77F00" }} />
+            )}
+          </p>
           <p style={{ color: "#F77F00", fontWeight: "bold" }}>Filters</p>
         </Stack>
         {open && (
-          <Container onClick={e => e.stopPropagation()}>
+          <Container onClick={(e) => e.stopPropagation()}>
             <StyledDropDownMenu>
               <StyledHeader>
                 <h3>Filter</h3>
@@ -133,7 +144,7 @@ const FilterBar = () => {
                   Reset
                 </Typography>
               </StyledHeader>
-              {dropdowns.map(dropdown => (
+              {dropdowns.map((dropdown) => (
                 <StyledAccordian key={dropdown.key}>
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
@@ -162,8 +173,8 @@ const dropdowns: DropDown[] = [
     key: "usage",
     items: Object.entries(roomUsages).map(([abbr, usage]) => ({
       text: usage,
-      value: abbr
-    }))
+      value: abbr,
+    })),
   },
   {
     text: "Room Capacity",
@@ -229,14 +240,14 @@ const dropdowns: DropDown[] = [
     items: [
       {
         text: "Not Required",
-        value: "false"
+        value: "false",
       },
       {
         text: "Required",
-        value: "true"
+        value: "true",
       },
-    ]
-  }
+    ],
+  },
 ];
 
 export default FilterBar;

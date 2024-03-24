@@ -22,7 +22,7 @@ const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
   flex: 1,
   height: 100,
   borderRadius: 10,
-  backgroundColor: 'black',
+  backgroundColor: "black",
   transition: "all 0.1s ease-in-out",
   padding: 10,
   "&:hover": {
@@ -56,8 +56,8 @@ const StatusBox = styled(Box)<BoxProps>(() => ({
 const TitleBox = styled(Box)<BoxProps>(() => ({
   display: "flex",
   borderRadius: 10,
-  width: '100%',
-  height: '100%',
+  width: "100%",
+  height: "100%",
   position: "relative",
   alignItems: "center",
   color: "white",
@@ -68,12 +68,12 @@ const BuildingCardMobile: React.FC<{
   buildingId: string;
 }> = ({ buildingId }) => {
   const dispatch = useDispatch();
-  
+
   const { building } = useBuilding(buildingId);
   const { status } = useBuildingStatus(buildingId);
-  
+
   if (!building) return <></>;
-  
+
   const freerooms = getNumFreerooms(status);
   const totalrooms = getTotalRooms(status);
 
@@ -87,7 +87,7 @@ const BuildingCardMobile: React.FC<{
         priority={true}
       />
       <TitleBox>
-        <Typography sx={{ fontSize: 16, fontWeight: 'bold' }}>
+        <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
           {building.name}
         </Typography>
         <StatusBox>
@@ -96,11 +96,17 @@ const BuildingCardMobile: React.FC<{
               {freerooms !== FAILED ? (
                 <StatusDot
                   colour={
-                    freerooms >= 5 ? "green" : freerooms !== 0 ? "orange" : "red"
+                    freerooms >= 5
+                      ? "green"
+                      : freerooms !== 0
+                        ? "orange"
+                        : "red"
                   }
                 />
               ) : null}
-              <Typography sx={{ fontSize: 12, fontWeight: 500, color: "#000000" }}>
+              <Typography
+                sx={{ fontSize: 12, fontWeight: 500, color: "#000000" }}
+              >
                 {freerooms !== FAILED
                   ? `${freerooms} / ${totalrooms}`
                   : "? / ?"}

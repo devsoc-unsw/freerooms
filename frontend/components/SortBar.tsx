@@ -26,8 +26,8 @@ const StyledSortButton = styled(Box)<BoxProps>(({ theme }) => ({
   borderColor: theme.palette.primary.main,
   zIndex: 10,
   ":hover": {
-    cursor: "pointer"
-  }
+    cursor: "pointer",
+  },
 }));
 
 const StyledDropDownMenu = styled(Box)<BoxProps>(() => ({
@@ -43,8 +43,8 @@ const StyledDropDownMenu = styled(Box)<BoxProps>(() => ({
   borderStyle: "solid",
   borderColor: "#BCBCBC",
   ":hover": {
-    cursor: "auto"
-  }
+    cursor: "auto",
+  },
 }));
 
 const StyledHeader = styled(Box)<BoxProps>(() => ({
@@ -57,14 +57,13 @@ const StyledHeader = styled(Box)<BoxProps>(() => ({
 const StyledAccordian = styled(Accordion)(({ theme }) => ({
   backgroundColor: "#fff",
   color: "#000",
-  transition: "all 0.1s ease-in-out"
+  transition: "all 0.1s ease-in-out",
 }));
 
 const SortBar: React.FC<{
-  sort: string,
-  setSort: (sort: string) => void
+  sort: string;
+  setSort: (sort: string) => void;
 }> = ({ sort, setSort }) => {
-
   // Hide and close Dropdown
   const [open, setOpen] = useState(false);
 
@@ -77,19 +76,27 @@ const SortBar: React.FC<{
           alignItems="center"
           // onBlur={(e: React.FocusEvent) => dismissHandler(e)}
         >
-          <p>{open ? <FilterListIcon style={{ color: "#F77F00" }} /> :
-            <FilterListIcon style={{ color: "#F77F00" }} />}</p>
+          <p>
+            {open ? (
+              <FilterListIcon style={{ color: "#F77F00" }} />
+            ) : (
+              <FilterListIcon style={{ color: "#F77F00" }} />
+            )}
+          </p>
           <p style={{ color: "#F77F00", fontWeight: "bold" }}>Sort</p>
         </Stack>
         {open && (
-          <Container onClick={e => e.stopPropagation()}>
+          <Container onClick={(e) => e.stopPropagation()}>
             <StyledDropDownMenu>
               <StyledHeader>
                 <h3>Sort</h3>
               </StyledHeader>
-              {dropdowns.map(dropdown => (
+              {dropdowns.map((dropdown) => (
                 <StyledAccordian key={dropdown.value}>
-                  <div onClick={() => setSort(dropdown.value)} key={dropdown.value}>
+                  <div
+                    onClick={() => setSort(dropdown.value)}
+                    key={dropdown.value}
+                  >
                     <Radio checked={sort === dropdown.value} />
                     {dropdown.text}
                   </div>

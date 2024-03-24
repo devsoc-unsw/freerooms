@@ -11,9 +11,9 @@ const StyledText = styled(Typography)<TypographyProps>(({ theme }) => ({
   fontWeight: 600,
   fontFamily: "Josefin Sans",
   fontSize: "2rem",
-  [theme.breakpoints.down('sm')]: {
-    display: "none"
-  }
+  [theme.breakpoints.down("sm")]: {
+    display: "none",
+  },
 }));
 
 const StyledBox = styled(Box)<BoxProps>(({ theme }) => ({
@@ -25,7 +25,7 @@ const StyledBox = styled(Box)<BoxProps>(({ theme }) => ({
   "&:hover": {
     cursor: "pointer",
     opacity: 0.7,
-  }
+  },
 }));
 
 const Branding = (props: BoxProps) => (

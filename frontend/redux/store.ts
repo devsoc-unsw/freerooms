@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore } from "@reduxjs/toolkit";
 
 import currentBuildingReducer from "./currentBuildingSlice";
 import datetimeReducer from "./datetimeSlice";
@@ -10,17 +10,17 @@ const store = configureStore({
     currentBuilding: currentBuildingReducer,
     datetime: datetimeReducer,
     filters: filtersReducer,
-    searchOpen: searchOpenSlice
+    searchOpen: searchOpenSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
         // Allow Date object in store
-        ignoredActions: ['datetime/setDatetime'],
-        ignoredPaths: ['datetime'],
+        ignoredActions: ["datetime/setDatetime"],
+        ignoredPaths: ["datetime"],
       },
     }),
-})
+});
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
