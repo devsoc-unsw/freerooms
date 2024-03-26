@@ -29,8 +29,8 @@ jobs:
       - name: Lint
         run: npm run lint
         working-directory: ${{ matrix.component }}
-  build:
-    name: "Build (${{ matrix.component }})"
+  build-and-test:
+    name: "Build and test (${{ matrix.component }})"
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -55,4 +55,7 @@ jobs:
         working-directory: frontend
       - name: Build
         run: npm run build
+        working-directory: ${{ matrix.component }}
+      - name: Test
+        run: npm test
         working-directory: ${{ matrix.component }}

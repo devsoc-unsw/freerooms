@@ -10,7 +10,8 @@
     "baseUrl": ".",
     "paths": {
       "@common/*": ["../common/*"]
-    }
+    },
+    "types": ["jest"]
   },
-  "include": ["./src/*.ts"]
+  "include": ["./src/*.ts", "./__tests__/*.ts"]
 }
