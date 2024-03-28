@@ -86,6 +86,7 @@ const IndiviRoomBox = styled(Box)<BoxProps>(({ theme }) => ({
 const RoomBoxHeading = styled(Typography)<TypographyProps>(({ theme }) => ({
   fontSize: 16,
   fontWeight: 500,
+  whiteSpace: "nowrap",
 }));
 
 const RoomBoxSubheading = styled(Typography)<TypographyProps>(({ theme }) => ({
