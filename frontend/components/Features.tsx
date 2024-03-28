@@ -23,7 +23,11 @@ const Features = () => {
         />
         <StyledHeading>Our Features</StyledHeading>
       </div>
-      <Box mt={10} width="100%" height={{ xs: "75rem", lg: "25rem" }}>
+      <Box
+        mt={10}
+        width="100%"
+        height={{ xs: "50rem", md: "75rem", lg: "25rem" }}
+      >
         <div>
           <StyledBackgroudVector
             src="/assets/landing_page/feature_background.png"
