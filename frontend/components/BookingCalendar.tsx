@@ -3,9 +3,12 @@
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
 import { Booking } from "@common/types";
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import Box, { BoxProps } from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
+import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import { styled, useTheme } from "@mui/material/styles";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
@@ -164,7 +167,6 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
   React.useEffect(() => {
     setCurrView(isMobile ? Views.DAY : Views.WEEK);
   }, [isMobile]);
-
   const datetime = useSelector(selectDatetime);
   const [date, setDate] = React.useState<Date>(datetime);
   const handleDateChange = (newDate: Date | null) => {
@@ -230,6 +232,8 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
     [currView]
   );
 
+  const timeInDay = 24 * 60 * 60 * 1000;
+
   return (
     <>
       <Stack
@@ -238,6 +242,7 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
         width="100%"
         // px={{ xs: 3, md: 15 }}
         pt={3}
+        data-testid="outerStack"
       >
         <Stack
           direction={{ xs: "column", md: "row" }}
@@ -245,22 +250,58 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
           spacing={1}
           width="100%"
           pb={2}
+          data-testid="innerStack"
         >
           <Typography variant="h5" fontWeight="bold">
             Room Bookings
           </Typography>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DatePicker
-              inputFormat="iii, d MMM yyyy"
-              value={date}
-              onChange={(newDate) => {
-                handleDateChange(newDate);
-              }}
-              renderInput={customDatePickerComponent}
-            />
+            <Stack
+              direction="row"
+              alignItems="center"
+              data-testid="dateSelectStack"
+            >
+              {isMobile && (
+                <IconButton
+                  onClick={() =>
+                    handleDateChange(new Date(date.getTime() - timeInDay))
+                  }
+                >
+                  <NavigateBeforeIcon
+                    style={{ color: "#f57c00", fontSize: 40 }}
+                    data-testId="beforeIcon"
+                  ></NavigateBeforeIcon>
+                </IconButton>
+              )}
+              <DatePicker
+                inputFormat="iii, d MMM yyyy"
+                value={date}
+                onChange={(newDate) => {
+                  handleDateChange(newDate);
+                }}
+                renderInput={customDatePickerComponent}
+                data-testid="datePicker"
+              />
+              {isMobile && (
+                <IconButton
+                  onClick={() =>
+                    handleDateChange(new Date(date.getTime() + timeInDay))
+                  }
+                >
+                  <NavigateNextIcon
+                    style={{ color: "#f57c00", fontSize: 40 }}
+                  ></NavigateNextIcon>
+                </IconButton>
+              )}
+            </Stack>
           </LocalizationProvider>
         </Stack>
-        <StyledCalendarContainer overflow="auto" p={0.5} view={currView}>
+        <StyledCalendarContainer
+          overflow="auto"
+          p={0.5}
+          view={currView}
+          data-testid="calendarContainer"
+        >
           <Calendar
             components={components}
             dayLayoutAlgorithm={"no-overlap"}
