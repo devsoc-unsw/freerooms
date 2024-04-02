@@ -122,9 +122,9 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
           </Stack>
         )}
         <Stack
-          direction="row"
+          direction={{ xs: "column", sm: "row" }}
           justifyContent="space-between"
-          alignItems="center"
+          alignItems="centre"
           width="100%"
         >
           <Typography variant="h4" fontWeight={550}>
@@ -216,7 +216,16 @@ const BookingButton: React.FC<{
   if (link)
     return (
       <Link target="_blank" href={link}>
-        <Button sx={{ px: 2, py: 1, height: 45 }}>
+        <Button
+          sx={{
+            px: 2,
+            py: 1,
+            height: 45,
+            marginTop: 2,
+            marginBottom: 2,
+            width: "100px",
+          }}
+        >
           <Typography variant="body2" fontWeight="bold">
             Make a Booking
           </Typography>
@@ -225,7 +234,17 @@ const BookingButton: React.FC<{
     );
 
   return (
-    <Button onClick={onClick} sx={{ px: 2, py: 1, height: 45 }}>
+    <Button
+      onClick={onClick}
+      sx={{
+        px: 2,
+        py: 1,
+        height: 45,
+        marginTop: 2,
+        marginBottom: 2,
+        width: "100px",
+      }}
+    >
       <Typography variant="body2" fontWeight="bold">
         Make a Booking
       </Typography>
