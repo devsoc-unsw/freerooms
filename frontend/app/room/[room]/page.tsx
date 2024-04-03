@@ -16,13 +16,13 @@ import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import useBuilding from "hooks/useBuilding";
 import Image from "next/image";
 import React, { useState } from "react";
 
 import BookingCalendar from "../../../components/BookingCalendar";
 import Button from "../../../components/Button";
 import LoadingCircle from "../../../components/LoadingCircle";
+import useBuilding from "../../../hooks/useBuilding";
 import useBookings from "../../../hooks/useBookings";
 import useRoom from "../../../hooks/useRoom";
 
@@ -76,7 +76,7 @@ export default function Page({ params }: { params: { room: string } }) {
   );
 }
 
-const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
+export const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
   room,
   buildingName,
 }) => {
@@ -201,7 +201,7 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
   );
 };
 
-const BookingButton: React.FC<{
+export const BookingButton: React.FC<{
   school: string;
   usage: string;
   onClick: () => void;
