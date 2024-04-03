@@ -22,8 +22,8 @@ import React, { useState } from "react";
 import BookingCalendar from "../../../components/BookingCalendar";
 import Button from "../../../components/Button";
 import LoadingCircle from "../../../components/LoadingCircle";
-import useBuilding from "../../../hooks/useBuilding";
 import useBookings from "../../../hooks/useBookings";
+import useBuilding from "../../../hooks/useBuilding";
 import useRoom from "../../../hooks/useRoom";
 
 const adjustDateIfMidnight = (inputDate: Date): Date => {
