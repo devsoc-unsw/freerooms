@@ -1,6 +1,6 @@
+import { Booking, BookingsResponse, RoomStatus } from "@common/types";
 import { utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
 
-import { RoomStatus, Booking, BookingsResponse } from "@common/types";
 import { queryBookingsInRange, queryBuildingsAndRooms } from "./dbInterface";
 import { BuildingDatabase } from "./types";
 
@@ -18,26 +18,23 @@ export const getBookingsForDate = async (
   const end = zonedTimeToUtc(base, "Australia/Sydney");
 
   const res = await queryBookingsInRange(start, end);
-  return Object.fromEntries(
-    res.rooms.map(room => [room.id, room])
-  );
+  return Object.fromEntries(res.rooms.map((room) => [room.id, room]));
 };
 
 export const getBuildingRoomData = async (): Promise<BuildingDatabase> => {
   const res = await queryBuildingsAndRooms();
   return Object.fromEntries(
-    res.buildings.map(building => [
+    res.buildings.map((building) => [
       building.id,
       {
         ...building,
-        rooms: Object.fromEntries(building.rooms.map(room => [
-          room.id.split('-')[2],
-          room
-        ]))
-      }
+        rooms: Object.fromEntries(
+          building.rooms.map((room) => [room.id.split("-")[2], room])
+        ),
+      },
     ])
   );
-}
+};
 
 // Given a datetime and a list of the room's bookings for
 // the corresponding date, calculate the status of the room
@@ -57,12 +54,12 @@ export const calculateStatus = (
     if (a.start != b.start) {
       return a.start < b.start ? -1 : 1;
     } else {
-      return a.end < b.end ? -1 : 1 ;
+      return a.end < b.end ? -1 : 1;
     }
   });
 
   // Find the first class that *ends* after the current time
-  const firstAfter = classes.find(cls => cls.end >= datetime);
+  const firstAfter = classes.find((cls) => cls.end >= datetime);
   if (!firstAfter) {
     // No such class, it is free indefinitely
     // There exists no times today where it is unavailable, and endtime is ""
@@ -100,7 +97,10 @@ export const calculateStatus = (
     }
 
     // Determine if the end time is soon or not
-    if (new Date(roomStatus.endtime).getTime() - datetime.getTime() <= FIFTEEN_MIN) {
+    if (
+      new Date(roomStatus.endtime).getTime() - datetime.getTime() <=
+      FIFTEEN_MIN
+    ) {
       roomStatus.status = "soon";
     } else {
       roomStatus.status = "busy";
@@ -108,4 +108,4 @@ export const calculateStatus = (
   }
 
   return roomStatus;
-}
+};

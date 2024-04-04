@@ -24,12 +24,12 @@ const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
   "&:hover": {
     cursor: "pointer",
   },
-  [theme.breakpoints.down('lg')]: {
+  [theme.breakpoints.down("lg")]: {
     height: 300,
   },
-  [theme.breakpoints.down('md')]: {
+  [theme.breakpoints.down("md")]: {
     height: 200,
-  }
+  },
 }));
 
 const StyledImage = styled(Image)<ImageProps>(({ theme }) => ({
@@ -76,12 +76,12 @@ const BuildingCard: React.FC<{
   buildingId: string;
 }> = ({ buildingId }) => {
   const dispatch = useDispatch();
-  
+
   const { building } = useBuilding(buildingId);
   const { status } = useBuildingStatus(buildingId);
-  
+
   if (!building) return <></>;
-  
+
   const freerooms = getNumFreerooms(status);
 
   return (

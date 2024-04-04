@@ -14,16 +14,19 @@ const useBuildingStatus = (buildingId: string) => {
 
   // Still loading
   if (!status) {
-    return { status: undefined, error }
+    return { status: undefined, error };
   }
 
   // Try find building
   const buildingStatus = status[buildingId];
   if (!buildingStatus) {
-    return { status: undefined, error: new Error("No status data for " + buildingId) };
+    return {
+      status: undefined,
+      error: new Error("No status data for " + buildingId),
+    };
   }
 
   return { status: buildingStatus, error };
-}
+};
 
 export default useBuildingStatus;
