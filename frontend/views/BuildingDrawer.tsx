@@ -103,7 +103,10 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
   const building = useSelector(selectCurrentBuilding);
   const { status: rooms } = useBuildingStatus(building?.id ?? "");
 
-  if (!building || !open) return <></>;
+  if (!building || !open) {
+    console.log("hi");
+    return <></>;
+  }
 
   const onClose = () => dispatch(setCurrentBuilding(null));
 
