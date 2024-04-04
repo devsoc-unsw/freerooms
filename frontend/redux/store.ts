@@ -7,10 +7,10 @@ import searchOpenSlice from "./searchOpenSlice";
 
 // Create the root reducer separately, so we can extract the RootState type
 const rootReducer = combineReducers({
-    currentBuilding: currentBuildingReducer,
-    datetime: datetimeReducer,
-    filters: filtersReducer,
-    searchOpen: searchOpenSlice,
+  currentBuilding: currentBuildingReducer,
+  datetime: datetimeReducer,
+  filters: filtersReducer,
+  searchOpen: searchOpenSlice,
 });
 
 export const setupStore = (preloadedState?: Partial<RootState>) => {
@@ -24,15 +24,15 @@ export const setupStore = (preloadedState?: Partial<RootState>) => {
           ignoredPaths: ["datetime"],
         },
       }),
-    preloadedState
-  })
-}
+    preloadedState,
+  });
+};
 
 const store = setupStore();
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<typeof rootReducer>
-export type AppStore = ReturnType<typeof setupStore>
-export type AppDispatch = AppStore['dispatch']
+export type RootState = ReturnType<typeof rootReducer>;
+export type AppStore = ReturnType<typeof setupStore>;
+export type AppDispatch = AppStore["dispatch"];
 
 export default store;
