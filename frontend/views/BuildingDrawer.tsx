@@ -104,7 +104,6 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
   const { status: rooms } = useBuildingStatus(building?.id ?? "");
 
   if (!building || !open) {
-    console.log("hi");
     return <></>;
   }
 
