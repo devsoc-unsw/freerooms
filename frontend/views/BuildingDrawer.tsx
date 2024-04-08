@@ -213,6 +213,7 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
       variant="persistent"
       anchor="right"
       open={true}
+      aria-label="building-drawer"
     >
       <Divider />
       <MainBox>
