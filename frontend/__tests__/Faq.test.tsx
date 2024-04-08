@@ -41,7 +41,7 @@ describe("Faq", () => {
       )
     ).toBeInTheDocument();
   });
-  it("check website link", async () => {
+  it("check website link", () => {
     render(<Faq />);
     const linkElement = screen.getByText("our website");
     expect(linkElement).toHaveAttribute(
