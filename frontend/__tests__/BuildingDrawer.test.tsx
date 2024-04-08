@@ -72,4 +72,40 @@ describe("BuildingDrawer", () => {
     expect(drawer).toBeInTheDocument();
     expect(getComputedStyle(drawer).getPropertyValue("width")).toBe("100%");
   });
+
+  it("Correct building name is displayed", () => {
+    renderWithRedux(<BuildingDrawer open={true} />, {
+      preloadedState: {
+        currentBuilding: {
+          value: {
+            name: "Ainsworth",
+            id: "K-J17",
+            lat: 0,
+            long: 0,
+            aliases: [],
+          },
+        },
+      },
+    });
+    const buildingName = screen.getByText(/Ainsworth/i);
+    expect(buildingName).toBeInTheDocument();
+  });
+
+  it("Correct alternate description for image of building", () => {
+    renderWithRedux(<BuildingDrawer open={true} />, {
+      preloadedState: {
+        currentBuilding: {
+          value: {
+            name: "Ainsworth",
+            id: "K-J17",
+            lat: 0,
+            long: 0,
+            aliases: [],
+          },
+        },
+      },
+    });
+    const image = screen.getByAltText(/Image of building K-J17/i);
+    expect(image).toBeInTheDocument();
+  });
 });
