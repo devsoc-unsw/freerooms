@@ -19,8 +19,8 @@ import Typography from "@mui/material/Typography";
 import Image from "next/image";
 import React, { useState } from "react";
 
+import BookingButton from "../../../components/BookingButton";
 import BookingCalendar from "../../../components/BookingCalendar";
-import Button from "../../../components/Button";
 import LoadingCircle from "../../../components/LoadingCircle";
 import useBookings from "../../../hooks/useBookings";
 import useBuilding from "../../../hooks/useBuilding";
@@ -76,7 +76,7 @@ export default function Page({ params }: { params: { room: string } }) {
   );
 }
 
-export const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
+const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
   room,
   buildingName,
 }) => {
@@ -135,6 +135,8 @@ export const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
             school={room.school}
             usage={room.usage}
             onClick={toggleDialog}
+            label="Make a Booking"
+            role="button"
           />
         </Stack>
         <Stack direction="row" spacing={2}>
@@ -198,57 +200,6 @@ export const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
         </DialogContent>
       </Dialog>
     </Stack>
-  );
-};
-
-export const BookingButton: React.FC<{
-  school: string;
-  usage: string;
-  onClick: () => void;
-}> = ({ school, usage, onClick }) => {
-  let link = "";
-  if (school === " " && usage === "LIB")
-    link = "https://unswlibrary-bookings.libcal.com";
-  else if (school === " ")
-    link =
-      "https://www.learningenvironments.unsw.edu.au/make-booking/book-room";
-
-  if (link)
-    return (
-      <Link target="_blank" href={link}>
-        <Button
-          sx={{
-            px: 2,
-            py: 1,
-            height: 45,
-            marginTop: 2,
-            marginBottom: 2,
-            width: "100px",
-          }}
-        >
-          <Typography variant="body2" fontWeight="bold">
-            Make a Booking
-          </Typography>
-        </Button>
-      </Link>
-    );
-
-  return (
-    <Button
-      onClick={onClick}
-      sx={{
-        px: 2,
-        py: 1,
-        height: 45,
-        marginTop: 2,
-        marginBottom: 2,
-        width: "100px",
-      }}
-    >
-      <Typography variant="body2" fontWeight="bold">
-        Make a Booking
-      </Typography>
-    </Button>
   );
 };
 

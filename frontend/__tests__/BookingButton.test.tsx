@@ -1,16 +1,35 @@
 import "@testing-library/jest-dom";
 
 import { render, screen } from "@testing-library/react";
+import Page from "../app/room/[room]/page";
 
-import { BookingButton } from "../app/room/[room]/page";
+import BookingButton from "../app/room/[room]/page";
 
-describe("BookingButton", () => {
+jest.mock("../hooks/useRooms", () => {
+  const originalModule = jest.requireActual("../hooks/useRooms");
+  return {
+    __esModule: true,
+    default: jest.fn().mockReturnValue({
+      rooms: "K-J17-101",
+      error: null,
+    }),
+  };
+});
+
+describe("Page", () => {
   test("Button appears and links to library booking", () => {
-    render(<BookingButton school=" " usage="LIB" onClick={() => {}} />);
+    render(<Page params={{ room: "K-J17-101" }} />);
 
-    const bookingButton = screen.getByRole("button", {
-      name: "Make a Booking",
-    });
+    // Trying to use Test-ID
+    const bookingButton = screen.getByTestId("booking-button");
+    expect(bookingButton).toBeInTheDocument();
+  });
+
+  test("Button appears and links to library booking", () => {
+    render(<Page params={{ room: "K-J17-101" }} />);
+
+    // Trying to use Label
+    const bookingButton = screen.getByLabelText("Make a Booking");
     expect(bookingButton).toBeInTheDocument();
 
     const linkElement = screen.getByRole("link", { name: "Make a Booking" });
@@ -21,8 +40,9 @@ describe("BookingButton", () => {
   });
 
   test("Button appears and links to learning environments", () => {
-    render(<BookingButton school=" " usage=" " onClick={() => {}} />);
+    render(<Page params={{ room: "K-J17-101" }} />);
 
+    // Trying to use Role
     const bookingButton = screen.getByRole("button", {
       name: "Make a Booking",
     });
@@ -36,9 +56,7 @@ describe("BookingButton", () => {
   });
 
   test("Button appears but has no link if school has a name", () => {
-    render(
-      <BookingButton school="something" usage="something" onClick={() => {}} />
-    );
+    render(<Page params={{ room: "K-J17-101" }} />);
 
     const bookingButton = screen.getByRole("button", {
       name: "Make a Booking",
