@@ -10,7 +10,7 @@ jest.mock("../hooks/useRooms", () => {
   return {
     __esModule: true,
     default: jest.fn().mockReturnValue({
-      rooms: "K-J17-101",
+      rooms: { roomId: "K-J17-101" },
       error: null,
     }),
   };
@@ -29,7 +29,7 @@ describe("Page", () => {
     render(<Page params={{ room: "K-J17-101" }} />);
 
     // Trying to use Label
-    const bookingButton = screen.getByLabelText("Make a Booking");
+    const bookingButton = screen.getByLabelText(/Make a Booking/i);
     expect(bookingButton).toBeInTheDocument();
 
     const linkElement = screen.getByRole("link", { name: "Make a Booking" });
