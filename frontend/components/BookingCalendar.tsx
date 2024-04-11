@@ -281,6 +281,7 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
                   handleDateChange(newDate);
                 }}
                 renderInput={customDatePickerComponent}
+                disableMaskedInput
                 data-testid="datePicker"
               />
               {isMobile && (
