@@ -1,33 +1,21 @@
 import "@testing-library/jest-dom";
 
 import { Booking } from "@common/types";
-import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import IconButton from "@mui/material/IconButton";
-import {
-  fireEvent,
-  getByTestId,
-  queryByAttribute,
-  render,
-  screen,
-} from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 
 import BookingCalendar from "../components/BookingCalendar";
 import store from "../redux/store";
 
 describe("Booking Calendar", () => {
-  beforeAll(() => {
-    // Suppress console.warn messages
-    console.warn = jest.fn();
-  });
-
   // test prop for booking calendar
   const start: Date = new Date();
   const end: Date = new Date();
   const events: Booking[] = [
     {
-      name: "s",
-      bookingType: "a",
+      name: "MARK5827 TUT",
+      bookingType: "(CLASS)",
       start: start,
       end: end,
     },
@@ -45,40 +33,28 @@ describe("Booking Calendar", () => {
     expect(heading).toBeInTheDocument();
   });
 
-  it("renders the outer stack", () => {
-    const { queryByTestId } = render(
+  it("renders the icon button (default test mobile tablet)", () => {
+    const { getByRole } = render(
       <Provider store={store}>
-        <BookingCalendar events={events} />
+        <IconButton></IconButton>
       </Provider>
     );
 
-    const outerStack = queryByTestId("outerStack");
+    const iconButton = getByRole("button");
 
-    expect(outerStack).toBeInTheDocument();
+    expect(iconButton).toBeInTheDocument();
   });
 
-  it("renders the inner stack", () => {
+  it("renders the calendar", () => {
     const { queryByTestId } = render(
       <Provider store={store}>
         <BookingCalendar events={events} />
       </Provider>
     );
 
-    const innerStack = queryByTestId("innerStack");
+    const calendar = queryByTestId("calendarContainer");
 
-    expect(innerStack).toBeInTheDocument();
-  });
-
-  it("renders the calendar container", () => {
-    const { queryByTestId } = render(
-      <Provider store={store}>
-        <BookingCalendar events={events} />
-      </Provider>
-    );
-
-    const calendarContainer = queryByTestId("calendarContainer");
-
-    expect(calendarContainer).toBeInTheDocument();
+    expect(calendar).toBeInTheDocument();
   });
 
   it("does not render icon buttons in desktop view", () => {

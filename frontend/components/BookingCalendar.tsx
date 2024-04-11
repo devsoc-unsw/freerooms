@@ -242,7 +242,6 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
         width="100%"
         // px={{ xs: 3, md: 15 }}
         pt={3}
-        data-testid="outerStack"
       >
         <Stack
           direction={{ xs: "column", md: "row" }}
@@ -250,26 +249,28 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
           spacing={1}
           width="100%"
           pb={2}
-          data-testid="innerStack"
         >
           <Typography variant="h5" fontWeight="bold">
             Room Bookings
           </Typography>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <Stack
-              direction="row"
-              alignItems="center"
-              data-testid="dateSelectStack"
-            >
+            <Stack direction="row" alignItems="center">
               {isMobile && (
                 <IconButton
+                  disableRipple
+                  sx={{
+                    ml: 1,
+                    "&.MuiButtonBase-root:hover": {
+                      bgcolor: "transparent",
+                    },
+                  }}
+                  data-testid="beforeButton"
                   onClick={() =>
                     handleDateChange(new Date(date.getTime() - timeInDay))
                   }
                 >
                   <NavigateBeforeIcon
                     style={{ color: "#f57c00", fontSize: 40 }}
-                    data-testId="beforeIcon"
                   ></NavigateBeforeIcon>
                 </IconButton>
               )}
@@ -284,6 +285,14 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
               />
               {isMobile && (
                 <IconButton
+                  disableRipple
+                  sx={{
+                    ml: 1,
+                    "&.MuiButtonBase-root:hover": {
+                      bgcolor: "transparent",
+                    },
+                  }}
+                  data-testid="nextButton"
                   onClick={() =>
                     handleDateChange(new Date(date.getTime() + timeInDay))
                   }
