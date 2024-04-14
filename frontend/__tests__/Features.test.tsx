@@ -21,24 +21,24 @@ describe("Features", () => {
   it("shows BrowseBuildings icon", () => {
     render(<Features />);
 
-    const BrowseBuildings = screen.getByText("Browse Buildings");
+    const browseBuildings = screen.getByText("Browse Buildings");
 
-    expect(BrowseBuildings).toBeInTheDocument();
+    expect(browseBuildings).toBeInTheDocument();
   });
 
   it("shows map icon", () => {
     render(<Features />);
 
-    const Map = screen.getByText("Map");
+    const map = screen.getByText("Map");
 
-    expect(Map).toBeInTheDocument();
+    expect(map).toBeInTheDocument();
   });
 
   it("shows Timetable icon", () => {
     render(<Features />);
 
-    const Timetable = screen.getByText("Timetable");
+    const timetable = screen.getByText("Timetable");
 
-    expect(Timetable).toBeInTheDocument();
+    expect(timetable).toBeInTheDocument();
   });
 });

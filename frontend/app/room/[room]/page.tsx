@@ -92,6 +92,10 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
     ? `This room is managed by ${schoolDetails.name}. Please contact the school to request a booking`
     : "This room is managed externally by its associated school. Please contact the school to request a booking";
 
+  // const handleBackClick = () => {
+  //   dispatch(setCurrentBuilding(building))
+  // };
+
   return (
     <Stack
       width="100%"
@@ -121,6 +125,15 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
             )}
           </Stack>
         )}
+        {/* <IconButton
+        href="/browse"
+          onClick={handleBackClick}
+          style={{ width: "5%", color: "black" }}
+        >
+          <ArrowBack />
+          <Typography variant="body1">Back</Typography>
+        </IconButton> */}
+
         <Stack
           direction="row"
           justifyContent="space-between"
