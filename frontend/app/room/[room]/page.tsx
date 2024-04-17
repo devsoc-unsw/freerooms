@@ -19,7 +19,7 @@ import Typography from "@mui/material/Typography";
 import useBuilding from "hooks/useBuilding";
 import Image from "next/image";
 import React, { useState } from "react";
-
+import { ArrowBack } from "@mui/icons-material";
 import BookingCalendar from "../../../components/BookingCalendar";
 import Button from "../../../components/Button";
 import LoadingCircle from "../../../components/LoadingCircle";
@@ -137,6 +137,12 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
             onClick={toggleDialog}
           />
         </Stack>
+
+        <IconButton href="/browse" style={{ width: "5%", color: "black" }}>
+          <ArrowBack />
+          <Typography variant="body1">Back</Typography>
+        </IconButton>
+
         <Stack direction="row" spacing={2}>
           <Typography variant="body1" fontWeight="bold">
             ID: {room.id}
