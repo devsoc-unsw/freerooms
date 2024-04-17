@@ -106,8 +106,6 @@ const StyledBackgroudVector = styled(Image)(({ theme }) => ({
 }));
 
 const StyledCardParent = styled("div")(({ theme }) => ({
-  marginTop: "0%",
-  paddingBottom: "0%",
   position: "absolute",
   display: "flex",
   flexDirection: "row",
@@ -125,9 +123,5 @@ const StyledCardParent = styled("div")(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
     marginTop: "20%",
     paddingBottom: "15%",
-  },
-  [theme.breakpoints.down("sm")]: {
-    marginTop: "35%",
-    paddingBottom: "10%",
   },
 }));
