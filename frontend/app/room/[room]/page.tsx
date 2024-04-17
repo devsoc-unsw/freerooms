@@ -3,6 +3,7 @@
 import translateRoomUsage from "@common/roomUsages";
 import getSchoolDetails from "@common/schools";
 import type { Booking, Room } from "@common/types";
+import { ArrowBack } from "@mui/icons-material";
 import CloseIcon from "@mui/icons-material/Close";
 import {
   Dialog,
@@ -19,7 +20,7 @@ import Typography from "@mui/material/Typography";
 import useBuilding from "hooks/useBuilding";
 import Image from "next/image";
 import React, { useState } from "react";
-import { ArrowBack } from "@mui/icons-material";
+
 import BookingCalendar from "../../../components/BookingCalendar";
 import Button from "../../../components/Button";
 import LoadingCircle from "../../../components/LoadingCircle";
