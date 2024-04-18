@@ -8,8 +8,6 @@ const BookingButton: React.FC<{
   school: string;
   usage: string;
   onClick: () => void;
-  label: string;
-  role: string;
 }> = ({ school, usage, onClick }) => {
   let link = "";
   if (school === " " && usage === "LIB")
@@ -53,10 +51,6 @@ const BookingButton: React.FC<{
         marginBottom: 2,
         width: "100px",
       }}
-      aria-label="Make a Booking"
-      role="button"
-      name="Make a Booking"
-      data-testid="booking-button"
     >
       <Typography variant="body2" fontWeight="bold">
         Make a Booking

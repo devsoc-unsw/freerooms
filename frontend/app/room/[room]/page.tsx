@@ -135,8 +135,6 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
             school={room.school}
             usage={room.usage}
             onClick={toggleDialog}
-            label="Make a Booking"
-            role="button"
           />
         </Stack>
         <Stack direction="row" spacing={2}>
