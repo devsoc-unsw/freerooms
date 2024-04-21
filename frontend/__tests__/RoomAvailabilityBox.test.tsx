@@ -1,5 +1,6 @@
-import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
+
+import { render, screen } from "@testing-library/react";
 import React from "react";
 
 import RoomAvailabilityBox from "../views/RoomAvailabilityBox";
@@ -25,8 +26,7 @@ describe("RoomAvailabilityBox", () => {
     expect(availableSoonText).toBeInTheDocument();
     // check if there is wrapping of the text, if offsetWidth < scrollWidth,
     // then there is wrapping involved because the total width of the content
-    // is overflowing (i.e. some of the content is not visible), but the Available
-    // soon text does not get affected either way.
+    // is overflowing (i.e. some of the content is not visible)
     const isWrapping =
       availableSoonText.offsetWidth < availableSoonText.scrollWidth;
     expect(isWrapping).toBe(false);
