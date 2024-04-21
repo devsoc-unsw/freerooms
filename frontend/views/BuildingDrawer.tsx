@@ -1,10 +1,10 @@
 import CloseIcon from "@mui/icons-material/Close";
-import { Typography } from "@mui/material";
+import { Typography, TypographyProps, useMediaQuery } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
-import { styled } from "@mui/material/styles";
+import { styled, useTheme } from "@mui/material/styles";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
@@ -61,12 +61,15 @@ const RoomBox = styled(Box)<BoxProps>(({ theme }) => ({
 }));
 
 export const drawerWidth = 400;
+const drawerWidthMobile = "100%";
 
 const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
   const dispatch = useDispatch();
   const datetime = useSelector(selectDatetime);
   const building = useSelector(selectCurrentBuilding);
   const { status: rooms } = useBuildingStatus(building?.id ?? "");
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   if (!building || !open) {
     return <></>;
@@ -89,16 +92,17 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
   return (
     <Drawer
       sx={{
-        width: drawerWidth,
+        width: isMobile ? drawerWidthMobile : drawerWidth,
         flexShrink: 0,
         "& .MuiDrawer-paper": {
-          width: drawerWidth,
+          width: isMobile ? drawerWidthMobile : drawerWidth,
           boxSizing: "border-box",
         },
       }}
       variant="persistent"
       anchor="right"
       open={true}
+      aria-label="building-drawer"
     >
       <Divider />
       <MainBox>
