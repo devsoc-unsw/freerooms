@@ -1,5 +1,7 @@
 import "@testing-library/jest-dom";
+
 import { render, screen } from "@testing-library/react";
+
 import Faq from "../components/Faq";
 
 describe("Faq", () => {
