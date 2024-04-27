@@ -132,6 +132,10 @@ const StyledAccordionContainer = styled("div")(({ theme }) => ({
   alignItems: "center",
   padding: "0 1rem",
   width: "100%",
+  "@media screen and (max-width: 320px)": {
+    width: "80vw",
+    alignSelf: "center",
+  },
 }));
 
 const StyledHeading = styled("h2")(({ theme }) => ({
