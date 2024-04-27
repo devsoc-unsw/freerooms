@@ -150,9 +150,14 @@ const StyledHeaderDiv = styled("div")(({ theme }) => ({
 }));
 
 const StyledParentDiv = styled("div")(({ theme }) => ({
-  display: "flex",
-  justifyContent: "center",
-  flexDirection: "column",
-  width: "100%",
   alignItems: "center",
+  bottom: "150px",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  position: "relative",
+  width: "100%",
+  [theme.breakpoints.down("lg")]: {
+    bottom: "0",
+  },
 }));
