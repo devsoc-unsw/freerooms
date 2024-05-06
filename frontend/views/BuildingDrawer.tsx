@@ -1,11 +1,12 @@
 import CloseIcon from "@mui/icons-material/Close";
-import { Typography, TypographyProps, useMediaQuery } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import { styled, useTheme } from "@mui/material/styles";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import useMediaQuery from "@mui/material/useMediaQuery"
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";

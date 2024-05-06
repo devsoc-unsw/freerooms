@@ -1,8 +1,8 @@
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import GridIcon from "@mui/icons-material/GridViewRounded";
 import MapIcon from "@mui/icons-material/Map";
-import { Box } from "@mui/material";
-import { styled } from "@mui/system";
+import Box from "@mui/material/Box";
+import { styled } from "@mui/material/styles";
 import Image from "next/image";
 import React from "react";
 

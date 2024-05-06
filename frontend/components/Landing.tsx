@@ -40,14 +40,14 @@ const Landing = () => {
           <StyledImage
             src="/assets/landing_page/hero_panel.svg"
             alt="hero panel"
-            isalternate
+            $isalternate
             width="1249"
             height="1067"
           />
           <StyledImage
             src={"/assets/landing_page/hero_panel_mobile.svg"}
             alt="hero panel"
-            isalternate={false}
+            $isalternate={false}
             width="562"
             height="547"
           />
@@ -69,16 +69,18 @@ const LandingScreenContainer = styled(Stack)(({ theme }) => ({
 }));
 
 interface StyledImageProps {
-  isalternate: boolean;
+  $isalternate: boolean;
 }
 
-const StyledImage = styled(Image)<StyledImageProps>(
-  ({ theme, isalternate }) => ({
+const StyledImage = styled(Image, {
+  shouldForwardProp: (propName: string) => !propName.startsWith('$'), // see https://github.com/emotion-js/emotion/issues/2193
+})<StyledImageProps>(
+  ({ theme, $isalternate }) => ({
     height: "100%",
     width: "100%",
-    display: isalternate ? "block" : "none",
+    display: $isalternate ? "block" : "none",
     [theme.breakpoints.down("md")]: {
-      display: isalternate ? "none" : "block",
+      display: $isalternate ? "none" : "block",
     },
   })
 );

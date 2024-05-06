@@ -1,4 +1,5 @@
-import { Box, Link } from "@mui/material";
+import Box from "@mui/material/Box";
+import Link from "@mui/material/Link"
 import { Sponsor } from "types";
 
 export default function SponsorItem({ name, image, url }: Sponsor) {

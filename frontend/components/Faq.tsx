@@ -1,5 +1,5 @@
 import Link from "@mui/material/Link";
-import { styled } from "@mui/system";
+import { styled } from "@mui/material/styles";
 import Image from "next/image";
 import React from "react";
 

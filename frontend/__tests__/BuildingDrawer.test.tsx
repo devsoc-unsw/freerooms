@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 
-import { useMediaQuery } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { screen } from "@testing-library/react";
 
 import BuildingDrawer from "../views/BuildingDrawer";

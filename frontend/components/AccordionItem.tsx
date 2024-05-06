@@ -3,8 +3,8 @@ import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
+import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import { styled } from "@mui/system";
 import React, { ReactElement, useState } from "react";
 
 interface AccordionItemProps {

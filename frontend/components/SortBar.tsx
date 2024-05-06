@@ -1,7 +1,7 @@
 import FilterListIcon from "@mui/icons-material/FilterList";
-import { ClickAwayListener } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import Box, { BoxProps } from "@mui/material/Box";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Container from "@mui/material/Container";
 import Radio from "@mui/material/Radio";
 import Stack from "@mui/material/Stack";

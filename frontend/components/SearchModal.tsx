@@ -1,17 +1,16 @@
 import BuildingIcon from "@mui/icons-material/Apartment";
 import RoomIcon from "@mui/icons-material/MeetingRoom";
 import SearchIcon from "@mui/icons-material/Search";
-import {
-  AutocompleteRenderInputParams,
-  FilterOptionsState,
-  SvgIconProps,
-} from "@mui/material";
-import Autocomplete from "@mui/material/Autocomplete";
+import Autocomplete, { AutocompleteRenderInputParams } from "@mui/material/Autocomplete";
 import InputAdornment from "@mui/material/InputAdornment";
 import Modal from "@mui/material/Modal";
 import Stack from "@mui/material/Stack";
+import { SvgIconProps } from "@mui/material/SvgIcon";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import {
+  FilterOptionsState,
+} from "@mui/material/useAutocomplete";
 import { matchSorter } from "match-sorter";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";

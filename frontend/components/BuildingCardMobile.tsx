@@ -1,7 +1,7 @@
-import { Typography } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import { styled } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
 import Image, { ImageProps } from "next/image";
 import React from "react";
 

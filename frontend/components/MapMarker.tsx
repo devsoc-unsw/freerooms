@@ -1,11 +1,11 @@
 import { Building, BuildingStatus } from "@common/types";
 import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 import RoomIcon from "@mui/icons-material/Room";
-import { alpha } from "@mui/material";
-import { Fade } from "@mui/material";
-import { Typography } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
+import Fade from "@mui/material/Fade";
 import { styled } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
+import { alpha } from "@mui/system/colorManipulator";
 import Image, { ImageProps } from "next/image";
 import React from "react";
 
