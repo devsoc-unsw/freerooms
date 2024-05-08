@@ -30,19 +30,6 @@ import {
 import { selectDatetime } from "../redux/datetimeSlice";
 import { useSelector } from "../redux/hooks";
 
-const customDatePickerComponent = (params: TextFieldProps) => (
-  <TextField
-    {...params}
-    size="small"
-    sx={{
-      svg: { color: "#000000" },
-      input: { color: "#000000" },
-      width: { xs: "100%", md: 200 },
-      borderColor: "rgba(0, 0, 0, 0.12)",
-    }}
-  />
-);
-
 const ToolBarButton = styled(Button)(({ theme }) => ({
   borderColor: "rgba(0, 0, 0, 0.12)",
   color: "black",
@@ -251,12 +238,22 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
           </Typography>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
-              inputFormat="iii, d MMM yyyy"
+              format="iii, d MMM yyyy"
               value={date}
               onChange={(newDate) => {
                 handleDateChange(newDate);
               }}
-              renderInput={customDatePickerComponent}
+              slotProps={{
+                textField: {
+                  size: "small",
+                  sx: {
+                    svg: { color: "#000000" },
+                    input: { color: "#000000" },
+                    width: { xs: "100%", md: 200 },
+                    borderColor: "rgba(0, 0, 0, 0.12)",
+                  },
+                },
+              }}
             />
           </LocalizationProvider>
         </Stack>
