@@ -7,7 +7,7 @@ import {
   useJsApiLoader,
 } from "@react-google-maps/api";
 import React, { useEffect, useState } from "react";
-import { useDebounce } from "usehooks-ts";
+import { useDebounceValue } from "usehooks-ts";
 
 import { GOOGLE_API_KEY } from "../config";
 import useBuildings from "../hooks/useBuildings";
@@ -55,7 +55,7 @@ export const Map = () => {
 
   // Use debounce to allow moving from marker to popup without popup hiding
   const [currentHover, setCurrentHover] = useState<Building | null>(null);
-  const debouncedCurrentHover = useDebounce(currentHover, 50);
+  const [debouncedCurrentHover, _] = useDebounceValue(currentHover, 50);
 
   const styleArray = [
     {
@@ -109,7 +109,6 @@ export const Map = () => {
           center={center}
           options={{
             clickableIcons: false,
-            // disableDefaultUI: true,
             fullscreenControl: false,
             mapTypeControl: false,
             restriction: {
@@ -117,7 +116,6 @@ export const Map = () => {
               strictBounds: false,
             },
             styles: styleArray,
-            // zoomControl: false,
           }}
           zoom={17.5}
         >
