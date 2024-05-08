@@ -8,7 +8,6 @@ import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Stack from "@mui/material/Stack";
 import { styled, useTheme } from "@mui/material/styles";
-import TextField, { TextFieldProps } from "@mui/material/TextField";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
@@ -219,13 +218,7 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
 
   return (
     <>
-      <Stack
-        justifyContent="flex-start"
-        height="100%"
-        width="100%"
-        // px={{ xs: 3, md: 15 }}
-        pt={3}
-      >
+      <Stack justifyContent="flex-start" height="100%" width="100%" pt={3}>
         <Stack
           direction={{ xs: "column", md: "row" }}
           justifyContent="space-between"
