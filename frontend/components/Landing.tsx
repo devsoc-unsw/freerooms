@@ -73,16 +73,17 @@ interface StyledImageProps {
   $isalternate: boolean;
 }
 
-const StyledImage = styled(Image, transientOptions)<StyledImageProps>(
-  ({ theme, $isalternate }) => ({
-    height: "100%",
-    width: "100%",
-    display: $isalternate ? "block" : "none",
-    [theme.breakpoints.down("md")]: {
-      display: $isalternate ? "none" : "block",
-    },
-  })
-);
+const StyledImage = styled(
+  Image,
+  transientOptions
+)<StyledImageProps>(({ theme, $isalternate }) => ({
+  height: "100%",
+  width: "100%",
+  display: $isalternate ? "block" : "none",
+  [theme.breakpoints.down("md")]: {
+    display: $isalternate ? "none" : "block",
+  },
+}));
 
 const HeroPanelContainer = styled(Stack)(({ theme }) => ({
   height: "100%",
