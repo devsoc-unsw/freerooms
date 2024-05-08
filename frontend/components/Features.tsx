@@ -23,7 +23,12 @@ const Features = () => {
         />
         <StyledHeading>Our Features</StyledHeading>
       </div>
-      <Box mt={10} width="100%" height={{ xs: "75rem", lg: "25rem" }}>
+
+      <Box
+        mt={10}
+        width="100%"
+        height={{ xs: "50rem", md: "45rem", lg: "25rem" }}
+      >
         <div>
           <StyledBackgroudVector
             src="/assets/landing_page/feature_background.png"
@@ -65,6 +70,7 @@ export default Features;
 const StyledHeading = styled("h2")(({ theme }) => ({
   textAlign: "center",
   fontSize: "3rem",
+  paddingBottom: "50%",
 }));
 
 const StyledFeatureVector = styled(Image)(({ theme }) => ({
@@ -111,5 +117,11 @@ const StyledCardParent = styled("div")(({ theme }) => ({
   [theme.breakpoints.down("lg")]: {
     flexDirection: "column",
     alignItems: "center",
+    marginTop: "25%",
+    paddingBottom: "25%",
+  },
+  [theme.breakpoints.down("md")]: {
+    marginTop: "20%",
+    paddingBottom: "15%",
   },
 }));

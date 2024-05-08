@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from "../redux/hooks";
 import { closeSearch, selectSearchOpen } from "../redux/searchOpenSlice";
 import { BuildingSearchOption, RoomSearchOption, SearchOption } from "../types";
 
+const RECENT_SEARCH_LIMIT = 3;
 interface SearchProps {}
 
 const SearchModal: React.FC<SearchProps> = () => {
@@ -36,8 +37,27 @@ const SearchModal: React.FC<SearchProps> = () => {
     "recentSearches",
     []
   );
-  const addRecentSearch = (option: SearchOption) => {
-    setRecentSearches((prevState) => [option, ...prevState].slice(0, 3));
+
+  const addRecentSearch = (newOption: SearchOption) => {
+    // Check if newOption for search already exists in previous state
+    setRecentSearches((prevState) => {
+      const prevIndex = prevState.findIndex((prevOption) => {
+        if (newOption.type === "Building" && prevOption.type === "Building") {
+          return prevOption.building.id === newOption.building.id;
+        } else if (newOption.type === "Room" && prevOption.type === "Room") {
+          return prevOption.room.id === newOption.room.id;
+        }
+        return false;
+      });
+
+      const newState = [...prevState];
+      if (prevIndex !== -1) {
+        newState.splice(prevIndex, 1);
+      }
+
+      newState.unshift(newOption);
+      return newState.slice(0, RECENT_SEARCH_LIMIT);
+    });
   };
 
   // Fetch options
