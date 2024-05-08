@@ -1,5 +1,5 @@
 import CloseIcon from "@mui/icons-material/Close";
-import { Typography, TypographyProps, useMediaQuery } from "@mui/material";
+import { Typography, useMediaQuery } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Divider from "@mui/material/Divider";
@@ -154,12 +154,19 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
             }}
           >
             <DesktopDatePicker
-              inputFormat="dd/MM/yyyy"
+              format="dd/MM/yyyy"
               value={datetime}
               onChange={(value) =>
                 value && dispatch(setDatetime(toSydneyTime(value)))
               }
-              renderInput={customTextField}
+              slotProps={{
+                textField: {
+                  sx: {
+                    svg: { color: "#000000" },
+                    input: { color: "#000000" },
+                  },
+                },
+              }}
             />
             <div style={{ width: 10 }} />
             <TimePicker
@@ -167,7 +174,14 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
               onChange={(value) =>
                 value && dispatch(setDatetime(toSydneyTime(value)))
               }
-              renderInput={customTextField}
+              slotProps={{
+                textField: {
+                  sx: {
+                    svg: { color: "#000000" },
+                    input: { color: "#000000" },
+                  },
+                },
+              }}
             />
           </div>
         </LocalizationProvider>

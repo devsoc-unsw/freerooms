@@ -8,7 +8,6 @@ import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Stack from "@mui/material/Stack";
 import { styled, useTheme } from "@mui/material/styles";
-import TextField, { TextFieldProps } from "@mui/material/TextField";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
@@ -29,19 +28,6 @@ import {
 
 import { selectDatetime } from "../redux/datetimeSlice";
 import { useSelector } from "../redux/hooks";
-
-const customDatePickerComponent = (params: TextFieldProps) => (
-  <TextField
-    {...params}
-    size="small"
-    sx={{
-      svg: { color: "#000000" },
-      input: { color: "#000000" },
-      width: { xs: "100%", md: 200 },
-      borderColor: "rgba(0, 0, 0, 0.12)",
-    }}
-  />
-);
 
 const ToolBarButton = styled(Button)(({ theme }) => ({
   borderColor: "rgba(0, 0, 0, 0.12)",
@@ -232,13 +218,7 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
 
   return (
     <>
-      <Stack
-        justifyContent="flex-start"
-        height="100%"
-        width="100%"
-        // px={{ xs: 3, md: 15 }}
-        pt={3}
-      >
+      <Stack justifyContent="flex-start" height="100%" width="100%" pt={3}>
         <Stack
           direction={{ xs: "column", md: "row" }}
           justifyContent="space-between"
@@ -251,12 +231,22 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
           </Typography>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
-              inputFormat="iii, d MMM yyyy"
+              format="iii, d MMM yyyy"
               value={date}
               onChange={(newDate) => {
                 handleDateChange(newDate);
               }}
-              renderInput={customDatePickerComponent}
+              slotProps={{
+                textField: {
+                  size: "small",
+                  sx: {
+                    svg: { color: "#000000" },
+                    input: { color: "#000000" },
+                    width: { xs: "100%", md: 200 },
+                    borderColor: "rgba(0, 0, 0, 0.12)",
+                  },
+                },
+              }}
             />
           </LocalizationProvider>
         </Stack>
