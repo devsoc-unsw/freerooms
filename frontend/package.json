@@ -41,7 +41,7 @@
     "@babel/core": "7.17.12",
     "@react-google-maps/api": "^2.18.1",
     "@testing-library/jest-dom": "^6.4.2",
-    "@testing-library/react": "^14.2.2",
+    "@testing-library/react": "^15.0.0",
     "@types/jest": "^29.5.12",
     "@types/luxon": "^3.0.0",
     "@types/node": "20.11.30",
