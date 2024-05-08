@@ -22,7 +22,7 @@
     "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.0.0",
     "date-fns": "^2.29.3",
-    "date-fns-tz": "^2.0.0",
+    "date-fns-tz": "^3.0.0",
     "esri-loader": "^3.7.0",
     "framer-motion": "^10.16.4",
     "match-sorter": "^6.3.1",
