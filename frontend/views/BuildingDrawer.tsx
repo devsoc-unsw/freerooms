@@ -33,11 +33,11 @@ const AppBox = styled(Box)(({ theme }) => ({
   padding: theme.spacing(3, 2, 2, 3),
 }));
 
-const MainBox = styled(Box)<BoxProps>({
+const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
   position: "relative",
   flex: 1,
-  backgroundColor: "#FAFAFA",
-});
+  backgroundColor: theme.palette.background.default,
+}));
 
 const StyledImage = styled(Image)<ImageProps>({
   borderRadius: 10,
@@ -55,7 +55,7 @@ const StatusBox = styled(Box)<BoxProps>(({ theme }) => ({
 
 const RoomBox = styled(Box)<BoxProps>(({ theme }) => ({
   borderRadius: 10,
-  backgroundColor: "#F1F1F1",
+  backgroundColor: theme.palette.mode === "light" ? "#F1F1F1" : "#2c2c2c",
   margin: 10,
   padding: theme.spacing(0.5),
 }));
