@@ -5,12 +5,12 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
-import { orange } from "@mui/material/colors";
+import { grey, orange } from "@mui/material/colors";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, styled } from "@mui/material/styles";
 import ThemeProvider from "@mui/system/ThemeProvider";
 import { usePathname } from "next/navigation";
-import React from "react";
+import React, { createContext, useMemo, useState } from "react";
 import { Provider as ReduxProvider } from "react-redux";
 
 import NavBar, { navHeight } from "../components/NavBar";
@@ -20,12 +20,9 @@ import { useSelector } from "../redux/hooks";
 import store from "../redux/store";
 import BuildingDrawer, { drawerWidth } from "../views/BuildingDrawer";
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: orange[800],
-    },
-  },
+export const DarkModeContext = createContext({
+  isDarkMode: false,
+  toggleDarkMode: () => {},
 });
 
 /**
@@ -34,13 +31,52 @@ const theme = createTheme({
 const ClientLayout: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
+  const [mode, setMode] = useState<"light" | "dark">(
+    (localStorage.getItem("darkMode") as any) || "light"
+  );
+  const toggle = useMemo(
+    () => ({
+      isDarkMode: mode === "dark",
+      toggleDarkMode: () => {
+        setMode((prev) => (prev === "light" ? "dark" : "light")),
+          localStorage.setItem("darkMode", mode === "light" ? "dark" : "light");
+      },
+    }),
+    [mode]
+  );
+  const theme = createTheme({
+    palette: {
+      mode,
+      ...(mode === "light"
+        ? {
+            primary: {
+              main: orange[800],
+            },
+          }
+        : {
+            primary: {
+              main: orange[800],
+            },
+            background: {
+              default: "#101214",
+              paper: "#000000",
+            },
+            text: {
+              primary: grey[50],
+            },
+          }),
+    },
+  });
+
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <ReduxProvider store={store}>
-        <App>{children}</App>
-      </ReduxProvider>
-    </ThemeProvider>
+    <DarkModeContext.Provider value={toggle}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <ReduxProvider store={store}>
+          <App>{children}</App>
+        </ReduxProvider>
+      </ThemeProvider>
+    </DarkModeContext.Provider>
   );
 };
 
