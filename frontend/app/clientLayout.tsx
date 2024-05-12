@@ -10,7 +10,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, styled } from "@mui/material/styles";
 import ThemeProvider from "@mui/system/ThemeProvider";
 import { usePathname } from "next/navigation";
-import React, { createContext, useMemo, useState } from "react";
+import React, { createContext, useEffect, useMemo, useState } from "react";
 import { Provider as ReduxProvider } from "react-redux";
 
 import NavBar, { navHeight } from "../components/NavBar";
@@ -31,9 +31,12 @@ export const DarkModeContext = createContext({
 const ClientLayout: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
-  const [mode, setMode] = useState<"light" | "dark">(
-    (localStorage.getItem("darkMode") as any) || "light"
-  );
+  const [mode, setMode] = useState<"light" | "dark">("light");
+
+  useEffect(() => {
+    setMode((localStorage.getItem("darkMode") as any) || "light");
+  }, []);
+
   const toggle = useMemo(
     () => ({
       isDarkMode: mode === "dark",
@@ -44,6 +47,7 @@ const ClientLayout: React.FC<{
     }),
     [mode]
   );
+
   const theme = createTheme({
     palette: {
       mode,
@@ -55,6 +59,10 @@ const ClientLayout: React.FC<{
             background: {
               paper: grey[200],
             },
+            text: {
+              primary: "#000000",
+              secondary: "rgba(0, 0, 0, 0.12)",
+            },
           }
         : {
             primary: {
@@ -62,10 +70,11 @@ const ClientLayout: React.FC<{
             },
             background: {
               default: "#101214",
-              paper: grey[900],
+              paper: grey[800],
             },
             text: {
               primary: grey[50],
+              secondary: grey[800],
             },
           }),
     },

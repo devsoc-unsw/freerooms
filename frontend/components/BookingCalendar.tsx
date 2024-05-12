@@ -6,6 +6,7 @@ import { Booking } from "@common/types";
 import Box, { BoxProps } from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
+import { grey } from "@mui/material/colors";
 import Stack from "@mui/material/Stack";
 import { styled, useTheme } from "@mui/material/styles";
 import ToggleButton from "@mui/material/ToggleButton";
@@ -30,8 +31,8 @@ import { selectDatetime } from "../redux/datetimeSlice";
 import { useSelector } from "../redux/hooks";
 
 const ToolBarButton = styled(Button)(({ theme }) => ({
-  borderColor: "rgba(0, 0, 0, 0.12)",
-  color: "black",
+  borderColor: theme.palette.text.secondary,
+  color: theme.palette.text.primary,
   fontSize: "12px",
   textTransform: "none",
   "&:hover": {
@@ -42,13 +43,17 @@ const ToolBarButton = styled(Button)(({ theme }) => ({
 }));
 
 const ViewToggleButton = styled(ToggleButton)(({ theme }) => ({
-  color: "black",
+  color: theme.palette.text.primary,
   fontSize: "12px",
   textTransform: "none",
-  "&:hover, &.Mui-selected, &.Mui-selected:hover": {
+  transition: "all 0.1s ease-in-out",
+  "&.Mui-selected, &.Mui-selected:hover": {
     backgroundColor: theme.palette.primary.main,
     borderColor: theme.palette.primary.main,
     color: "#fff",
+  },
+  "&:hover": {
+    borderColor: theme.palette.primary.main,
   },
 }));
 
@@ -104,14 +109,19 @@ const CustomToolBar: React.FC<ToolbarProps> = ({
 };
 
 const StyledCalendarContainer = styled(Box)<BoxProps & { view: View }>(
-  ({ view }) => ({
+  ({ view, theme }) => ({
+    "& .rbc-time-slot, & .rbc-day-slot, & .rbc-timeslot-group": {
+      borderColor: `${theme.palette.background.paper} !important`,
+    },
     "& .rbc-allday-cell": {
       display: "none",
     },
     "& .rbc-time-view .rbc-header": {
+      borderColor: theme.palette.background.paper,
       borderBottom: "none",
     },
     "& .rbc-events-container": {
+      borderColor: theme.palette.background.paper,
       margin: "1px !important",
     },
     "& .rbc-header": {
@@ -122,6 +132,7 @@ const StyledCalendarContainer = styled(Box)<BoxProps & { view: View }>(
       fontWeight: 500,
     },
     "& .rbc-time-view": {
+      borderColor: theme.palette.background.paper,
       boxShadow:
         "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
       border: "none",
@@ -132,6 +143,7 @@ const StyledCalendarContainer = styled(Box)<BoxProps & { view: View }>(
       borderRight: "none",
     },
     "& .rbc-time-content": {
+      borderColor: theme.palette.background.paper,
       borderBottomLeftRadius: "12px",
       borderBottomRightRadius: "12px",
       ...(view === "day" && {
@@ -240,17 +252,17 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
                 textField: {
                   size: "small",
                   sx: {
-                    svg: { color: "#000000" },
-                    input: { color: "#000000" },
+                    svg: { color: theme.palette.text.primary },
+                    input: { color: theme.palette.text.primary },
                     width: { xs: "100%", md: 200 },
-                    borderColor: "rgba(0, 0, 0, 0.12)",
+                    borderColor: theme.palette.text.secondary,
                   },
                 },
               }}
             />
           </LocalizationProvider>
         </Stack>
-        <StyledCalendarContainer overflow="auto" p={0.5} view={currView}>
+        <StyledCalendarContainer overflow="hidden" p={0.5} view={currView}>
           <Calendar
             components={components}
             dayLayoutAlgorithm={"no-overlap"}
@@ -272,7 +284,13 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
             })}
             slotGroupPropGetter={() => ({ style: { minHeight: "50px" } })}
             dayPropGetter={(date) => ({
-              style: { backgroundColor: isToday(date) ? "#fff3e0" : "white" },
+              style: {
+                backgroundColor: isToday(date)
+                  ? theme.palette.mode === "light"
+                    ? "#fff3e0"
+                    : grey[900]
+                  : theme.palette.background.default,
+              },
             })}
             min={new Date(0, 0, 0, 9)}
             showMultiDayTimes={true}
