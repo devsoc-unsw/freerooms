@@ -52,6 +52,9 @@ const ClientLayout: React.FC<{
             primary: {
               main: orange[800],
             },
+            background: {
+              paper: grey[200],
+            },
           }
         : {
             primary: {
@@ -59,7 +62,7 @@ const ClientLayout: React.FC<{
             },
             background: {
               default: "#101214",
-              paper: "#000000",
+              paper: grey[900],
             },
             text: {
               primary: grey[50],

@@ -60,6 +60,10 @@ const RoomBox = styled(Box)<BoxProps>(({ theme }) => ({
   padding: theme.spacing(0.5),
 }));
 
+const CloseButton = styled(Button)(({ theme }) => ({
+  backgroundColor: theme.palette.background.paper,
+}));
+
 export const drawerWidth = 400;
 const drawerWidthMobile = "100%";
 
@@ -124,9 +128,9 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
               ) : null}
             </StatusBox>
           </div>
-          <Button aria-label="Close" onClick={onClose}>
+          <CloseButton aria-label="Close" onClick={onClose}>
             <CloseIcon />
-          </Button>
+          </CloseButton>
         </AppBox>
 
         <div
@@ -162,8 +166,8 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
               slotProps={{
                 textField: {
                   sx: {
-                    svg: { color: "#000000" },
-                    input: { color: "#000000" },
+                    svg: { color: theme.palette.text.primary },
+                    input: { color: theme.palette.text.primary },
                   },
                 },
               }}
@@ -177,8 +181,8 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
               slotProps={{
                 textField: {
                   sx: {
-                    svg: { color: "#000000" },
-                    input: { color: "#000000" },
+                    svg: { color: theme.palette.text.primary },
+                    input: { color: theme.palette.text.primary },
                   },
                 },
               }}
