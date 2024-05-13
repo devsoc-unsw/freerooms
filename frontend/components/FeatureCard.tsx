@@ -1,4 +1,4 @@
-import { styled } from "@mui/system";
+import { styled, useTheme } from "@mui/system";
 import Link from "next/link";
 import React from "react";
 
@@ -11,7 +11,7 @@ interface FeatureCardProps {
 }
 
 const StyledParentDiv = styled("div")(({ theme }) => ({
-  backgroundColor: "white",
+  backgroundColor: theme.palette.background.paper,
   padding: "1rem",
   borderRadius: "15px",
   boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.1)",
