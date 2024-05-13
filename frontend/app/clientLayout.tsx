@@ -73,7 +73,7 @@ const ClientLayout: React.FC<{
               paper: grey[800],
             },
             text: {
-              primary: grey[50],
+              primary: "#ffffff",
               secondary: grey[800],
             },
           }),

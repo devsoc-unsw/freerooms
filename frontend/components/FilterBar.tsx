@@ -68,6 +68,7 @@ const StyledHeader = styled(Box)<BoxProps>(() => ({
 
 const StyledAccordian = styled(Accordion)(({ theme }) => ({
   transition: "all 0.1s ease-in-out",
+  backgroundColor: theme.palette.background.default,
   "&:hover": {
     backgroundColor: theme.palette.primary.main,
     color: "#fff",

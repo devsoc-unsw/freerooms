@@ -280,7 +280,11 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
             view={currView}
             onView={setCurrView}
             eventPropGetter={() => ({
-              style: { backgroundColor: "#f57c00", borderColor: "#f57c00" },
+              style: {
+                backgroundColor: "#f57c00",
+                borderColor: "#f57c00",
+                opacity: theme.palette.mode === "light" ? 1 : 0.8,
+              },
             })}
             slotGroupPropGetter={() => ({ style: { minHeight: "50px" } })}
             dayPropGetter={(date) => ({
