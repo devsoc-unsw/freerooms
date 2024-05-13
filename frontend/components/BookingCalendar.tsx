@@ -31,7 +31,7 @@ import { selectDatetime } from "../redux/datetimeSlice";
 import { useSelector } from "../redux/hooks";
 
 const ToolBarButton = styled(Button)(({ theme }) => ({
-  borderColor: theme.palette.text.secondary,
+  borderColor: theme.palette.secondary.main,
   color: theme.palette.text.primary,
   fontSize: "12px",
   textTransform: "none",
@@ -255,7 +255,7 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
                     svg: { color: theme.palette.text.primary },
                     input: { color: theme.palette.text.primary },
                     width: { xs: "100%", md: 200 },
-                    borderColor: theme.palette.text.secondary,
+                    borderColor: theme.palette.secondary.main,
                   },
                 },
               }}

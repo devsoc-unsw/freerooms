@@ -56,17 +56,23 @@ const ClientLayout: React.FC<{
             primary: {
               main: orange[800],
             },
+            secondary: {
+              main: "rgba(0, 0, 0, 0.12)",
+            },
             background: {
               paper: grey[200],
             },
             text: {
               primary: "#000000",
-              secondary: "rgba(0, 0, 0, 0.12)",
+              secondary: grey[600],
             },
           }
         : {
             primary: {
               main: orange[800],
+            },
+            secondary: {
+              main: grey[800],
             },
             background: {
               default: "#101214",
@@ -74,7 +80,7 @@ const ClientLayout: React.FC<{
             },
             text: {
               primary: "#ffffff",
-              secondary: grey[800],
+              secondary: grey[400],
             },
           }),
     },

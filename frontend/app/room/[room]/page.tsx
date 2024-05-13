@@ -224,7 +224,7 @@ const BookingButton: React.FC<{
             px: 2,
             py: 1,
             height: 45,
-            backgroundColor: theme.palette.text.secondary,
+            backgroundColor: theme.palette.secondary.main,
             color: theme.palette.text.primary,
           }}
         >
@@ -242,7 +242,7 @@ const BookingButton: React.FC<{
         px: 2,
         py: 1,
         height: 45,
-        backgroundColor: theme.palette.text.secondary,
+        backgroundColor: theme.palette.secondary.main,
         color: theme.palette.text.primary,
       }}
     >
