@@ -3,6 +3,7 @@ import { styled } from "@mui/material/styles";
 import Image from "next/image";
 import React, { useState } from "react";
 
+import transientOptions from "../utils/transientOptions";
 import Faq from "./Faq";
 import Features from "./Features";
 import Sponsors from "./Sponsors";
@@ -40,14 +41,14 @@ const Landing = () => {
           <StyledImage
             src="/assets/landing_page/hero_panel.svg"
             alt="hero panel"
-            isalternate
+            $isalternate
             width="1249"
             height="1067"
           />
           <StyledImage
             src={"/assets/landing_page/hero_panel_mobile.svg"}
             alt="hero panel"
-            isalternate={false}
+            $isalternate={false}
             width="562"
             height="547"
           />
@@ -69,19 +70,20 @@ const LandingScreenContainer = styled(Stack)(({ theme }) => ({
 }));
 
 interface StyledImageProps {
-  isalternate: boolean;
+  $isalternate: boolean;
 }
 
-const StyledImage = styled(Image)<StyledImageProps>(
-  ({ theme, isalternate }) => ({
-    height: "100%",
-    width: "100%",
-    display: isalternate ? "block" : "none",
-    [theme.breakpoints.down("md")]: {
-      display: isalternate ? "none" : "block",
-    },
-  })
-);
+const StyledImage = styled(
+  Image,
+  transientOptions
+)<StyledImageProps>(({ theme, $isalternate }) => ({
+  height: "100%",
+  width: "100%",
+  display: $isalternate ? "block" : "none",
+  [theme.breakpoints.down("md")]: {
+    display: $isalternate ? "none" : "block",
+  },
+}));
 
 const HeroPanelContainer = styled(Stack)(({ theme }) => ({
   height: "100%",
