@@ -40,7 +40,7 @@ const Landing = () => {
           <StyledImage
             src="/assets/landing_page/hero_panel.svg"
             alt="hero panel"
-            isalternate={true}
+            isalternate
             width="1249"
             height="1067"
           />
