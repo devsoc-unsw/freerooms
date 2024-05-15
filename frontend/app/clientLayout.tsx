@@ -41,8 +41,8 @@ const ClientLayout: React.FC<{
     () => ({
       isDarkMode: mode === "dark",
       toggleDarkMode: () => {
-        setMode((prev) => (prev === "light" ? "dark" : "light")),
-          localStorage.setItem("darkMode", mode === "light" ? "dark" : "light");
+        setMode((prev) => (prev === "light" ? "dark" : "light"));
+        localStorage.setItem("darkMode", mode === "light" ? "dark" : "light");
       },
     }),
     [mode]
