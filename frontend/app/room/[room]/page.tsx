@@ -121,6 +121,7 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
             )}
           </Stack>
         )}
+
         <Stack
           direction="row"
           justifyContent="space-between"

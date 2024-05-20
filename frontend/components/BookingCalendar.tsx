@@ -11,7 +11,6 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import { styled, useTheme } from "@mui/material/styles";
-import TextField, { TextFieldProps } from "@mui/material/TextField";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
@@ -32,19 +31,6 @@ import {
 
 import { selectDatetime } from "../redux/datetimeSlice";
 import { useSelector } from "../redux/hooks";
-
-const customDatePickerComponent = (params: TextFieldProps) => (
-  <TextField
-    {...params}
-    size="small"
-    sx={{
-      svg: { color: "#000000" },
-      input: { color: "#000000" },
-      width: { xs: "100%", md: 200 },
-      borderColor: "rgba(0, 0, 0, 0.12)",
-    }}
-  />
-);
 
 const ToolBarButton = styled(Button)(({ theme }) => ({
   borderColor: "rgba(0, 0, 0, 0.12)",
@@ -236,13 +222,7 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
 
   return (
     <>
-      <Stack
-        justifyContent="flex-start"
-        height="100%"
-        width="100%"
-        // px={{ xs: 3, md: 15 }}
-        pt={3}
-      >
+      <Stack justifyContent="flex-start" height="100%" width="100%" pt={3}>
         <Stack
           direction={{ xs: "column", md: "row" }}
           justifyContent="space-between"
@@ -257,14 +237,11 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
             <Stack direction="row" alignItems="center">
               {isMobile && (
                 <IconButton
-                  disableRipple
+                  aria-label="Previous day"
                   sx={{
-                    ml: 1,
-                    "&.MuiButtonBase-root:hover": {
-                      bgcolor: "transparent",
-                    },
+                    borderRadius: 3,
+                    mr: 1,
                   }}
-                  data-testid="beforeButton"
                   onClick={() =>
                     handleDateChange(new Date(date.getTime() - timeInDay))
                   }
@@ -275,25 +252,31 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
                 </IconButton>
               )}
               <DatePicker
-                inputFormat="iii, d MMM yyyy"
+                aria-label="Date picker"
+                format="iii, d MMM yyyy"
                 value={date}
                 onChange={(newDate) => {
                   handleDateChange(newDate);
                 }}
-                renderInput={customDatePickerComponent}
-                disableMaskedInput
-                data-testid="datePicker"
+                slotProps={{
+                  textField: {
+                    size: "small",
+                    sx: {
+                      svg: { color: "#000000" },
+                      input: { color: "#000000" },
+                      width: { xs: "100%", md: 200 },
+                      borderColor: "rgba(0, 0, 0, 0.12)",
+                    },
+                  },
+                }}
               />
               {isMobile && (
                 <IconButton
-                  disableRipple
+                  aria-label="Next day"
                   sx={{
+                    borderRadius: 3,
                     ml: 1,
-                    "&.MuiButtonBase-root:hover": {
-                      bgcolor: "transparent",
-                    },
                   }}
-                  data-testid="nextButton"
                   onClick={() =>
                     handleDateChange(new Date(date.getTime() + timeInDay))
                   }
@@ -307,10 +290,11 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
           </LocalizationProvider>
         </Stack>
         <StyledCalendarContainer
+          aria-label="Room Booking Calendar"
           overflow="auto"
           p={0.5}
+          role="table"
           view={currView}
-          data-testid="calendarContainer"
         >
           <Calendar
             components={components}

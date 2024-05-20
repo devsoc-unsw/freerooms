@@ -132,6 +132,10 @@ const StyledAccordionContainer = styled("div")(({ theme }) => ({
   alignItems: "center",
   padding: "0 1rem",
   width: "100%",
+  "@media screen and (max-width: 320px)": {
+    width: "80vw",
+    alignSelf: "center",
+  },
 }));
 
 const StyledHeading = styled("h2")(({ theme }) => ({
@@ -150,9 +154,14 @@ const StyledHeaderDiv = styled("div")(({ theme }) => ({
 }));
 
 const StyledParentDiv = styled("div")(({ theme }) => ({
-  display: "flex",
-  justifyContent: "center",
-  flexDirection: "column",
-  width: "100%",
   alignItems: "center",
+  bottom: "150px",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  position: "relative",
+  width: "100%",
+  [theme.breakpoints.down("lg")]: {
+    bottom: "0",
+  },
 }));
