@@ -125,7 +125,6 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
         <Stack
           direction={{ xs: "column", sm: "row" }}
           justifyContent="space-between"
-          alignItems="centre"
           width="100%"
         >
           <Typography variant="h4" fontWeight={550}>
