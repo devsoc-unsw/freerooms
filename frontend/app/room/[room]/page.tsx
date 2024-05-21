@@ -129,8 +129,7 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
           width="100%"
         >
           <Typography variant="h4" fontWeight={550}>
-            {" "}
-            {room.name}{" "}
+            {room.name}
           </Typography>
           <BookingButton
             school={room.school}

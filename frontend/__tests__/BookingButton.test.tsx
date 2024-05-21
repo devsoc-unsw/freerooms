@@ -5,7 +5,7 @@ import { render, screen } from "@testing-library/react";
 import BookingButton from "../components/BookingButton";
 
 describe("BookingButton", () => {
-  test("Button appears and links to library booking", () => {
+  test("links to library booking", () => {
     render(<BookingButton school=" " usage="LIB" onClick={() => {}} />);
 
     const bookingButton = screen.getByRole("button", {
@@ -20,8 +20,8 @@ describe("BookingButton", () => {
     );
   });
 
-  test("Button appears and links to learning environments", () => {
-    render(<BookingButton school=" " usage=" " onClick={() => {}} />);
+  test("links to learning environments", () => {
+    render(<BookingButton school=" " usage="usage" onClick={() => {}} />);
 
     const bookingButton = screen.getByRole("button", {
       name: "Make a Booking",
@@ -35,10 +35,8 @@ describe("BookingButton", () => {
     );
   });
 
-  test("Button appears but has no link if school has a name", () => {
-    render(
-      <BookingButton school="something" usage="something" onClick={() => {}} />
-    );
+  test("no link if school has a name", () => {
+    render(<BookingButton school="school" usage="usage" onClick={() => {}} />);
 
     const bookingButton = screen.getByRole("button", {
       name: "Make a Booking",

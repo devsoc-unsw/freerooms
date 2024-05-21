@@ -1,6 +1,6 @@
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
-import React, { useState } from "react";
+import React from "react";
 
 import Button from "./Button";
 
@@ -8,7 +8,7 @@ const BookingButton: React.FC<{
   school: string;
   usage: string;
   onClick: () => void;
-}> = ({ school, usage, onClick }) => {
+}> = ({ school, usage }) => {
   let link = "";
   if (school === " " && usage === "LIB")
     link = "https://unswlibrary-bookings.libcal.com";
@@ -16,22 +16,18 @@ const BookingButton: React.FC<{
     link =
       "https://www.learningenvironments.unsw.edu.au/make-booking/book-room";
 
-  if (link)
+  if (link) {
     return (
       <Link target="_blank" href={link}>
         <Button
-          sx={{
-            px: 2,
-            py: 1,
-            height: 45,
-            marginTop: 2,
-            marginBottom: 2,
-            width: "100px",
-          }}
           aria-label="Make a Booking"
-          role="button"
           name="Make a Booking"
-          data-testid="booking-button"
+          sx={{
+            height: 45,
+            ml: { xs: 0, sm: 1 },
+            my: { xs: 1, sm: 0 },
+            width: { xs: "100%", sm: "160px" },
+          }}
         >
           <Typography variant="body2" fontWeight="bold">
             Make a Booking
@@ -39,17 +35,17 @@ const BookingButton: React.FC<{
         </Button>
       </Link>
     );
+  }
 
   return (
     <Button
-      onClick={onClick}
+      aria-label="Make a Booking"
+      name="Make a Booking"
       sx={{
-        px: 2,
-        py: 1,
         height: 45,
-        marginTop: 2,
-        marginBottom: 2,
-        width: "100px",
+        ml: { xs: 0, sm: 1 },
+        my: { xs: 1, sm: 0 },
+        width: { xs: "100%", sm: "160px" },
       }}
     >
       <Typography variant="body2" fontWeight="bold">
