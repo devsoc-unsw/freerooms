@@ -3,10 +3,13 @@
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
 import { Booking } from "@common/types";
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import Box, { BoxProps } from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import { grey } from "@mui/material/colors";
+import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import { styled, useTheme } from "@mui/material/styles";
 import ToggleButton from "@mui/material/ToggleButton";
@@ -162,7 +165,6 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
   React.useEffect(() => {
     setCurrView(isMobile ? Views.DAY : Views.WEEK);
   }, [isMobile]);
-
   const datetime = useSelector(selectDatetime);
   const [date, setDate] = React.useState<Date>(datetime);
   const handleDateChange = (newDate: Date | null) => {
@@ -228,6 +230,8 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
     [currView]
   );
 
+  const timeInDay = 24 * 60 * 60 * 1000;
+
   return (
     <>
       <Stack justifyContent="flex-start" height="100%" width="100%" pt={3}>
@@ -242,27 +246,68 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
             Room Bookings
           </Typography>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DatePicker
-              format="iii, d MMM yyyy"
-              value={date}
-              onChange={(newDate) => {
-                handleDateChange(newDate);
-              }}
-              slotProps={{
-                textField: {
-                  size: "small",
-                  sx: {
-                    svg: { color: theme.palette.text.primary },
-                    input: { color: theme.palette.text.primary },
-                    width: { xs: "100%", md: 200 },
-                    borderColor: theme.palette.secondary.main,
+            <Stack direction="row" alignItems="center">
+              {isMobile && (
+                <IconButton
+                  aria-label="Previous day"
+                  sx={{
+                    borderRadius: 3,
+                    mr: 1,
+                  }}
+                  onClick={() =>
+                    handleDateChange(new Date(date.getTime() - timeInDay))
+                  }
+                >
+                  <NavigateBeforeIcon
+                    style={{ color: "#f57c00", fontSize: 40 }}
+                  ></NavigateBeforeIcon>
+                </IconButton>
+              )}
+              <DatePicker
+                aria-label="Date picker"
+                format="iii, d MMM yyyy"
+                value={date}
+                onChange={(newDate) => {
+                  handleDateChange(newDate);
+                }}
+                slotProps={{
+                  textField: {
+                    size: "small",
+                    sx: {
+                      svg: { color: theme.palette.text.primary },
+                      input: { color: theme.palette.text.primary },
+                      width: { xs: "100%", md: 200 },
+                      borderColor: theme.palette.secondary.main,
+                    },
                   },
-                },
-              }}
-            />
+                }}
+              />
+              {isMobile && (
+                <IconButton
+                  aria-label="Next day"
+                  sx={{
+                    borderRadius: 3,
+                    ml: 1,
+                  }}
+                  onClick={() =>
+                    handleDateChange(new Date(date.getTime() + timeInDay))
+                  }
+                >
+                  <NavigateNextIcon
+                    style={{ color: "#f57c00", fontSize: 40 }}
+                  ></NavigateNextIcon>
+                </IconButton>
+              )}
+            </Stack>
           </LocalizationProvider>
         </Stack>
-        <StyledCalendarContainer overflow="hidden" p={0.5} view={currView}>
+        <StyledCalendarContainer
+          aria-label="Room Booking Calendar"
+          overflow="auto"
+          p={0.5}
+          role="table"
+          view={currView}
+        >
           <Calendar
             components={components}
             dayLayoutAlgorithm={"no-overlap"}
