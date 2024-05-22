@@ -116,6 +116,9 @@ const StyledCalendarContainer = styled(Box)<BoxProps & { view: View }>(
     "& .rbc-time-slot, & .rbc-day-slot, & .rbc-timeslot-group": {
       borderColor: `${theme.palette.background.paper} !important`,
     },
+    "& .rbc-header:first-of-type, & .rbc-time-header": {
+      borderColor: "red",
+    },
     "& .rbc-allday-cell": {
       display: "none",
     },
@@ -143,7 +146,7 @@ const StyledCalendarContainer = styled(Box)<BoxProps & { view: View }>(
     },
     "& .rbc-header:last-child, & .rbc-time-header": {
       borderTopRightRadius: "12px",
-      borderRight: "none",
+      borderRight: "none !important",
     },
     "& .rbc-time-content": {
       borderColor: theme.palette.background.paper,
