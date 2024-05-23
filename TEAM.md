@@ -1,5 +1,19 @@
 # Freerooms Team
 
+## 2024
+### Leads
+- Jessica Feng (@JessicaF)
+- Richard Xue (@Vinegarette)
+
+### Developers
+- Andrew Zhang (@azjy89)
+- Livia Wang (@liviawangg)
+- Sophia Liu (@sobariu)
+- Mark Tran (@marktran2)
+- Cherise Chan (@cherisechan)
+- Hung Pham (@SkellyBG)
+- Kelly Su (@kellysu1)
+
 ## 2023
 ### Leads
 - Franco Reyes (@francojreyes)
@@ -41,3 +55,12 @@
 - Grace Kan (@Grace338)
 - Keshiga Gopalarajah (@Kesh-ga)
 - Damian Stevanoski (@damo190)
+
+## 2020
+### Lead
+- Kyu-Sang Kim (@hexDoor)
+
+### Developers
+- Jerry Lu (@metallicOxide)
+- Callum Avery (@nugycal)
+- Natalie Eleftheriades (@natLF3RD)
