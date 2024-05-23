@@ -58,9 +58,9 @@
 
 ## 2020
 ### Lead
-- Kyu-Sang Kim (@hexDoor)
+- Callum Avery (@nugycal)
 
 ### Developers
+- Kyu-Sang Kim (@hexDoor)
 - Jerry Lu (@metallicOxide)
-- Callum Avery (@nugycal)
 - Natalie Eleftheriades (@natLF3RD)
