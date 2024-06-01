@@ -10,6 +10,7 @@ import {
   DialogContentText,
   DialogTitle,
   IconButton,
+  useTheme,
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -207,6 +208,7 @@ const BookingButton: React.FC<{
   usage: string;
   onClick: () => void;
 }> = ({ school, usage, onClick }) => {
+  const theme = useTheme();
   let link = "";
   if (school === " " && usage === "LIB")
     link = "https://unswlibrary-bookings.libcal.com";
@@ -217,7 +219,15 @@ const BookingButton: React.FC<{
   if (link)
     return (
       <Link target="_blank" href={link}>
-        <Button sx={{ px: 2, py: 1, height: 45 }}>
+        <Button
+          sx={{
+            px: 2,
+            py: 1,
+            height: 45,
+            backgroundColor: theme.palette.secondary.main,
+            color: theme.palette.text.primary,
+          }}
+        >
           <Typography variant="body2" fontWeight="bold">
             Make a Booking
           </Typography>
@@ -226,7 +236,16 @@ const BookingButton: React.FC<{
     );
 
   return (
-    <Button onClick={onClick} sx={{ px: 2, py: 1, height: 45 }}>
+    <Button
+      onClick={onClick}
+      sx={{
+        px: 2,
+        py: 1,
+        height: 45,
+        backgroundColor: theme.palette.secondary.main,
+        color: theme.palette.text.primary,
+      }}
+    >
       <Typography variant="body2" fontWeight="bold">
         Make a Booking
       </Typography>
