@@ -21,7 +21,6 @@ const useRoom = (roomId: string) => {
   if (!room) {
     return { room: undefined, error: new Error("No data for " + roomId) };
   }
-
   return { room, error };
 };
 

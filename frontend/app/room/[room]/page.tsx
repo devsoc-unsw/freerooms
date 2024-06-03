@@ -17,14 +17,14 @@ import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import useBuilding from "hooks/useBuilding";
 import Image from "next/image";
 import React, { useState } from "react";
 
+import BookingButton from "../../../components/BookingButton";
 import BookingCalendar from "../../../components/BookingCalendar";
-import Button from "../../../components/Button";
 import LoadingCircle from "../../../components/LoadingCircle";
 import useBookings from "../../../hooks/useBookings";
+import useBuilding from "../../../hooks/useBuilding";
 import useRoom from "../../../hooks/useRoom";
 
 const adjustDateIfMidnight = (inputDate: Date): Date => {
@@ -124,14 +124,12 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
         )}
 
         <Stack
-          direction="row"
+          direction={{ xs: "column", sm: "row" }}
           justifyContent="space-between"
-          alignItems="center"
           width="100%"
         >
           <Typography variant="h4" fontWeight={550}>
-            {" "}
-            {room.name}{" "}
+            {room.name}
           </Typography>
           <BookingButton
             school={room.school}
@@ -200,56 +198,6 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
         </DialogContent>
       </Dialog>
     </Stack>
-  );
-};
-
-const BookingButton: React.FC<{
-  school: string;
-  usage: string;
-  onClick: () => void;
-}> = ({ school, usage, onClick }) => {
-  const theme = useTheme();
-  let link = "";
-  if (school === " " && usage === "LIB")
-    link = "https://unswlibrary-bookings.libcal.com";
-  else if (school === " ")
-    link =
-      "https://www.learningenvironments.unsw.edu.au/make-booking/book-room";
-
-  if (link)
-    return (
-      <Link target="_blank" href={link}>
-        <Button
-          sx={{
-            px: 2,
-            py: 1,
-            height: 45,
-            backgroundColor: theme.palette.secondary.main,
-            color: theme.palette.text.primary,
-          }}
-        >
-          <Typography variant="body2" fontWeight="bold">
-            Make a Booking
-          </Typography>
-        </Button>
-      </Link>
-    );
-
-  return (
-    <Button
-      onClick={onClick}
-      sx={{
-        px: 2,
-        py: 1,
-        height: 45,
-        backgroundColor: theme.palette.secondary.main,
-        color: theme.palette.text.primary,
-      }}
-    >
-      <Typography variant="body2" fontWeight="bold">
-        Make a Booking
-      </Typography>
-    </Button>
   );
 };
 
