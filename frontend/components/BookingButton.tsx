@@ -1,3 +1,4 @@
+import { useTheme } from "@mui/material";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import React from "react";
@@ -9,6 +10,7 @@ const BookingButton: React.FC<{
   usage: string;
   onClick: () => void;
 }> = ({ school, usage }) => {
+  const theme = useTheme();
   let link = "";
   if (school === " " && usage === "LIB")
     link = "https://unswlibrary-bookings.libcal.com";
@@ -23,6 +25,8 @@ const BookingButton: React.FC<{
           aria-label="Make a Booking"
           name="Make a Booking"
           sx={{
+            backgroundColor: theme.palette.secondary.main,
+            color: theme.palette.text.primary,
             height: 45,
             ml: { xs: 0, sm: 1 },
             my: { xs: 1, sm: 0 },
@@ -42,6 +46,8 @@ const BookingButton: React.FC<{
       aria-label="Make a Booking"
       name="Make a Booking"
       sx={{
+        backgroundColor: theme.palette.secondary.main,
+        color: theme.palette.text.primary,
         height: 45,
         ml: { xs: 0, sm: 1 },
         my: { xs: 1, sm: 0 },
