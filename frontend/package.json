@@ -12,13 +12,13 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@emotion/react": "^11.10.5",
-    "@emotion/styled": "^11.10.5",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
     "@fontsource/roboto": "^5.0.8",
     "@mui/icons-material": "^5.10.14",
     "@mui/material": "^5.10.14",
     "@mui/system": "^5.10.14",
-    "@mui/x-date-pickers": "^5.0.8",
+    "@mui/x-date-pickers": "^7.6.1",
     "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.0.0",
     "date-fns": "^2.29.3",

@@ -4,14 +4,24 @@ import Box, { BoxProps } from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { styled, useTheme } from "@mui/material/styles";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
+import { TimePicker } from "@mui/x-date-pickers";
+import { TimeField } from "@mui/x-date-pickers";
+import { DesktopTimePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import { DigitalClock } from "@mui/x-date-pickers/DigitalClock";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import dayjs, { Dayjs } from "dayjs";
 import Image, { ImageProps } from "next/image";
-import React from "react";
+import * as React from "react";
+import { useState } from "react";
 
 import Button from "../components/Button";
 import useBuildingStatus from "../hooks/useBuildingStatus";
@@ -65,6 +75,8 @@ const drawerWidthMobile = "100%";
 
 const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
   const dispatch = useDispatch();
+  const [age, setAge] = useState("");
+  const [value, setValue] = useState<Dayjs | null>(dayjs("2022-04-17"));
   const datetime = useSelector(selectDatetime);
   const building = useSelector(selectCurrentBuilding);
   const { status: rooms } = useBuildingStatus(building?.id ?? "");
@@ -88,6 +100,16 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
       }}
     />
   );
+
+  const handleDateTimeChange = (value: Date | undefined) => {
+    if (value && dayjs(value).isValid()) {
+      dispatch(setDatetime(toSydneyTime(value)));
+    }
+  };
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setAge(event.target.value as string);
+  };
 
   return (
     <Drawer
@@ -144,7 +166,7 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
           />
         </div>
 
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
           <div
             style={{
               display: "flex",
@@ -154,21 +176,39 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
             }}
           >
             <DesktopDatePicker
-              inputFormat="dd/MM/yyyy"
-              value={datetime}
+              format="DD/MM/YYYY"
+              value={dayjs(datetime)}
               onChange={(value) =>
-                value && dispatch(setDatetime(toSydneyTime(value)))
+                value && dispatch(setDatetime(toSydneyTime(value.toDate())))
               }
-              renderInput={customTextField}
+            />
+            <DesktopTimePicker
+              label="Time"
+              value={dayjs(datetime)}
+              onChange={(value) =>
+                value && dispatch(setDatetime(toSydneyTime(value.toDate())))
+              }
             />
             <div style={{ width: 10 }} />
-            <TimePicker
-              value={datetime}
-              onChange={(value) =>
-                value && dispatch(setDatetime(toSydneyTime(value)))
-              }
-              renderInput={customTextField}
-            />
+            <Box sx={{ minWidth: 120 }}>
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Time</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={age}
+                  label="Time"
+                  onChange={handleChange}
+                >
+                  <DigitalClock
+                    skipDisabled
+                    minTime={dayjs("2022-04-17T09:00")}
+                    maxTime={dayjs("2022-04-17T22:00")}
+                    timeStep={30}
+                  />
+                </Select>
+              </FormControl>
+            </Box>
           </div>
         </LocalizationProvider>
 
