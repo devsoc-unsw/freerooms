@@ -1,5 +1,6 @@
 "use client";
 
+import { DarkMode } from "@mui/icons-material";
 import GridIcon from "@mui/icons-material/GridViewRounded";
 import MapIcon from "@mui/icons-material/Map";
 import SearchIcon from "@mui/icons-material/Search";
@@ -7,8 +8,9 @@ import MuiAppBar from "@mui/material/AppBar";
 import { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar/AppBar";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
+import { DarkModeContext } from "app/clientLayout";
 import { usePathname } from "next/navigation";
-import React from "react";
+import React, { useContext } from "react";
 
 import { useDispatch } from "../redux/hooks";
 import { openSearch } from "../redux/searchOpenSlice";
@@ -26,13 +28,13 @@ export const navHeight = 65;
 const NavBar: React.FC<NavBarProps> = ({ drawerOpen }) => {
   const dispatch = useDispatch();
   const path = usePathname();
-
+  const { isDarkMode, toggleDarkMode } = useContext(DarkModeContext);
   return (
     <AppBar
       position="fixed"
       drawerOpen={drawerOpen}
       sx={{
-        borderBottom: "1px solid #e0e0e0",
+        borderBottom: `1px solid ${isDarkMode ? "#2c2c2c" : "#e0e0e0"}`,
         alignItems: "center",
         display: "flex",
         justifyContent: "space-between",
@@ -55,6 +57,9 @@ const NavBar: React.FC<NavBarProps> = ({ drawerOpen }) => {
         </IconButton>
         <IconButton aria-label="Go to map" active={path === "/map"} href="/map">
           <MapIcon />
+        </IconButton>
+        <IconButton active={isDarkMode} onClick={toggleDarkMode}>
+          <DarkMode />
         </IconButton>
       </Stack>
     </AppBar>

@@ -5,8 +5,10 @@ import {
   AutocompleteRenderInputParams,
   FilterOptionsState,
   SvgIconProps,
+  useTheme,
 } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
+import { grey } from "@mui/material/colors";
 import InputAdornment from "@mui/material/InputAdornment";
 import Modal from "@mui/material/Modal";
 import Stack from "@mui/material/Stack";
@@ -164,7 +166,7 @@ const SearchResult: React.FC<{ option: SearchOption }> = ({ option }) => {
     fontSize: "large",
     color: "primary",
   };
-
+  const theme = useTheme();
   const [name, ...aliases] = option.searchKeys;
 
   return (
@@ -178,7 +180,10 @@ const SearchResult: React.FC<{ option: SearchOption }> = ({ option }) => {
       </Stack>
       <Stack direction="column">
         <Typography>{name}</Typography>
-        <Typography variant="body2" color="text.secondary">
+        <Typography
+          variant="body2"
+          color={theme.palette.mode === "light" ? grey[600] : grey[500]}
+        >
           <b>AKA</b> {aliases.join(", ")}
         </Typography>
       </Stack>

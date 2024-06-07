@@ -18,6 +18,8 @@ const StyledAccordion = styled(Accordion)(({ theme }) => ({
   maxWidth: "100%",
   borderRadius: "0.75rem",
   boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.15)",
+  backgroundColor:
+    theme.palette.mode === "light" ? "#ffffff" : theme.palette.background.paper,
   "&:before": {
     backgroundColor: "rgba(0,0,0,0)",
   },

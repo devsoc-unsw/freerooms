@@ -1,5 +1,5 @@
 import CloseIcon from "@mui/icons-material/Close";
-import { Typography, TypographyProps, useMediaQuery } from "@mui/material";
+import { Typography, useMediaQuery } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Divider from "@mui/material/Divider";
@@ -43,11 +43,11 @@ const AppBox = styled(Box)(({ theme }) => ({
   padding: theme.spacing(3, 2, 2, 3),
 }));
 
-const MainBox = styled(Box)<BoxProps>({
+const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
   position: "relative",
   flex: 1,
-  backgroundColor: "#FAFAFA",
-});
+  backgroundColor: theme.palette.background.default,
+}));
 
 const StyledImage = styled(Image)<ImageProps>({
   borderRadius: 10,
@@ -65,9 +65,13 @@ const StatusBox = styled(Box)<BoxProps>(({ theme }) => ({
 
 const RoomBox = styled(Box)<BoxProps>(({ theme }) => ({
   borderRadius: 10,
-  backgroundColor: "#F1F1F1",
+  backgroundColor: theme.palette.mode === "light" ? "#F1F1F1" : "#2c2c2c",
   margin: 10,
   padding: theme.spacing(0.5),
+}));
+
+const CloseButton = styled(Button)(({ theme }) => ({
+  backgroundColor: theme.palette.background.paper,
 }));
 
 export const drawerWidth = 400;
@@ -146,9 +150,9 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
               ) : null}
             </StatusBox>
           </div>
-          <Button aria-label="Close" onClick={onClose}>
+          <CloseButton aria-label="Close" onClick={onClose}>
             <CloseIcon />
-          </Button>
+          </CloseButton>
         </AppBox>
 
         <div
@@ -189,6 +193,14 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
                 value && dispatch(setDatetime(toSydneyTime(value.toDate())))
               }
               slots={{ digitalClockItem: () => <DigitalClock /> }}
+              slotProps={{
+                textField: {
+                  sx: {
+                    svg: { color: theme.palette.text.primary },
+                    input: { color: theme.palette.text.primary },
+                  },
+                },
+              }}
             />
             <TimePicker
               label="Time"
@@ -196,6 +208,15 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
               onChange={(value) =>
                 value && dispatch(setDatetime(toSydneyTime(value.toDate())))
               }
+              slotProps={{
+                textField: {
+                  sx: {
+                    svg: { color: theme.palette.text.primary },
+                    input: { color: theme.palette.text.primary },
+                  },
+                },
+              }}
+            />
               slots={{ digitalClockItem: () => <DigitalClock /> }}
             />
             <div style={{ width: 10 }} />

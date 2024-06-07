@@ -1,4 +1,4 @@
-import { Stack, Typography } from "@mui/material";
+import { Stack, Typography, useTheme } from "@mui/material";
 import Image from "next/image";
 import { Sponsor } from "types";
 
@@ -17,6 +17,7 @@ export default function Sponsors() {
       url: "https://www.janestreet.com/",
     },
   ];
+  const theme = useTheme();
 
   return (
     <Stack marginTop={4}>
@@ -41,7 +42,12 @@ export default function Sponsors() {
         alignItems="center"
         gap={5}
         marginTop={5}
-        sx={{ flexDirection: { xs: "stack", sm: "row" } }}
+        sx={{
+          flexDirection: { xs: "stack", sm: "row" },
+          backgroundColor: "white",
+          padding: "30px",
+          borderRadius: "10px",
+        }}
       >
         {sponsors.map((s, idx) => (
           <SponsorItem
