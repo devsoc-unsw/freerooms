@@ -188,9 +188,18 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
               onChange={(value) =>
                 value && dispatch(setDatetime(toSydneyTime(value.toDate())))
               }
+              slots={{ digitalClockItem: () => <DigitalClock /> }}
+            />
+            <TimePicker
+              label="Time"
+              value={dayjs(datetime)}
+              onChange={(value) =>
+                value && dispatch(setDatetime(toSydneyTime(value.toDate())))
+              }
+              slots={{ digitalClockItem: () => <DigitalClock /> }}
             />
             <div style={{ width: 10 }} />
-            <Box sx={{ minWidth: 120 }}>
+            {/* <Box sx={{ minWidth: 120 }}>
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">Time</InputLabel>
                 <Select
@@ -208,7 +217,7 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
                   />
                 </Select>
               </FormControl>
-            </Box>
+            </Box> */}
           </div>
         </LocalizationProvider>
 
