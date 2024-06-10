@@ -5,7 +5,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import { styled, useTheme } from "@mui/material/styles";
-import TextField, { TextFieldProps } from "@mui/material/TextField";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -64,7 +63,7 @@ const CloseButton = styled(Button)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
 }));
 
-export const drawerWidth = 400;
+const drawerWidth = 400;
 const drawerWidthMobile = "100%";
 
 const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
@@ -81,18 +80,6 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
 
   const onClose = () => dispatch(setCurrentBuilding(null));
 
-  const customTextField = (
-    params: JSX.IntrinsicAttributes & TextFieldProps
-  ) => (
-    <TextField
-      {...params}
-      sx={{
-        svg: { color: "#000000" },
-        input: { color: "#000000" },
-      }}
-    />
-  );
-
   return (
     <Drawer
       sx={{
@@ -103,7 +90,6 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
           boxSizing: "border-box",
         },
       }}
-      variant="persistent"
       anchor="right"
       open={true}
       aria-label="building-drawer"

@@ -18,7 +18,7 @@ import SearchModal from "../components/SearchModal";
 import { selectCurrentBuilding } from "../redux/currentBuildingSlice";
 import { useSelector } from "../redux/hooks";
 import store from "../redux/store";
-import BuildingDrawer, { drawerWidth } from "../views/BuildingDrawer";
+import BuildingDrawer from "../views/BuildingDrawer";
 
 export const DarkModeContext = createContext({
   isDarkMode: false,
@@ -110,17 +110,15 @@ const App: React.FC<{
 
   return (
     <>
-      <NavBar drawerOpen={drawerOpen} />
+      <NavBar />
       <SearchModal />
-      <Main drawerOpen={drawerOpen}>{children}</Main>
+      <Main>{children}</Main>
       <BuildingDrawer open={drawerOpen} />
     </>
   );
 };
 
-const Main = styled("main", {
-  shouldForwardProp: (prop) => prop !== "drawerOpen",
-})<{ drawerOpen: boolean }>(({ theme, drawerOpen }) => ({
+const Main = styled("main")(({ theme }) => ({
   transition: theme.transitions.create(["margin", "width"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -129,14 +127,6 @@ const Main = styled("main", {
   width: "100%",
   marginRight: 0,
   height: "100%",
-  ...(drawerOpen && {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginRight: drawerWidth,
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
 }));
 
 export default ClientLayout;
