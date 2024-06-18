@@ -104,16 +104,12 @@ const ClientLayout: React.FC<{
 const App: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
-  const currentBuilding = useSelector(selectCurrentBuilding);
-  const path = usePathname();
-  const drawerOpen = !!currentBuilding && (path == "/browse" || path == "/map");
-
   return (
     <>
       <NavBar />
       <SearchModal />
       <Main>{children}</Main>
-      <BuildingDrawer open={drawerOpen} />
+      <BuildingDrawer />
     </>
   );
 };
