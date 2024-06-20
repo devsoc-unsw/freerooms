@@ -79,8 +79,6 @@ const drawerWidthMobile = "100%";
 
 const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
   const dispatch = useDispatch();
-  const [value, setValue] = useState<Dayjs | null>(dayjs("2022-04-17"));
-  const datetime = useSelector(selectDatetime);
   const building = useSelector(selectCurrentBuilding);
   const { status: rooms } = useBuildingStatus(building?.id ?? "");
   const theme = useTheme();
@@ -103,12 +101,6 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
       }}
     />
   );
-
-  const handleDateTimeChange = (value: Date | undefined) => {
-    if (value && dayjs(value).isValid()) {
-      dispatch(setDatetime(toSydneyTime(value)));
-    }
-  };
 
   return (
     <Drawer
@@ -149,7 +141,6 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
             <CloseIcon />
           </CloseButton>
         </AppBox>
-
         <div
           style={{
             margin: 10,
@@ -164,43 +155,6 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
             priority={true}
           />
         </div>
-
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              margin: 10,
-            }}
-          >
-            <DesktopDatePicker
-              format="DD/MM/YYYY"
-              value={dayjs(datetime)}
-              onChange={(value) =>
-                value && dispatch(setDatetime(toSydneyTime(value.toDate())))
-              }
-            />
-            <div style={{ width: 10 }} />
-            <DesktopTimePicker
-              label="Time"
-              value={dayjs(datetime)}
-              onChange={(value) =>
-                value && dispatch(setDatetime(toSydneyTime(value.toDate())))
-              }
-              slots={{ digitalClockItem: () => <DigitalClock /> }}
-              slotProps={{
-                textField: {
-                  sx: {
-                    svg: { color: theme.palette.text.primary },
-                    input: { color: theme.palette.text.primary },
-                  },
-                },
-              }}
-            />
-          </div>
-        </LocalizationProvider>
-
         <RoomBox>
           {rooms ? (
             Object.keys(rooms).map((roomNumber) => (
