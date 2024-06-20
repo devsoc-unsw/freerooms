@@ -79,7 +79,6 @@ const drawerWidthMobile = "100%";
 
 const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
   const dispatch = useDispatch();
-  const [age, setAge] = useState("");
   const [value, setValue] = useState<Dayjs | null>(dayjs("2022-04-17"));
   const datetime = useSelector(selectDatetime);
   const building = useSelector(selectCurrentBuilding);
@@ -109,10 +108,6 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
     if (value && dayjs(value).isValid()) {
       dispatch(setDatetime(toSydneyTime(value)));
     }
-  };
-
-  const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value as string);
   };
 
   return (
@@ -186,6 +181,7 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
                 value && dispatch(setDatetime(toSydneyTime(value.toDate())))
               }
             />
+            <div style={{ width: 10 }} />
             <DesktopTimePicker
               label="Time"
               value={dayjs(datetime)}
@@ -202,43 +198,6 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
                 },
               }}
             />
-            <TimePicker
-              label="Time"
-              value={dayjs(datetime)}
-              onChange={(value) =>
-                value && dispatch(setDatetime(toSydneyTime(value.toDate())))
-              }
-              slotProps={{
-                textField: {
-                  sx: {
-                    svg: { color: theme.palette.text.primary },
-                    input: { color: theme.palette.text.primary },
-                  },
-                },
-              }}
-            />
-              slots={{ digitalClockItem: () => <DigitalClock /> }}
-            />
-            <div style={{ width: 10 }} />
-            {/* <Box sx={{ minWidth: 120 }}>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Time</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={age}
-                  label="Time"
-                  onChange={handleChange}
-                >
-                  <DigitalClock
-                    skipDisabled
-                    minTime={dayjs("2022-04-17T09:00")}
-                    maxTime={dayjs("2022-04-17T22:00")}
-                    timeStep={30}
-                  />
-                </Select>
-              </FormControl>
-            </Box> */}
           </div>
         </LocalizationProvider>
 
