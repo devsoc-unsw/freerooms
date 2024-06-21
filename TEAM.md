@@ -13,6 +13,7 @@
 - Cherise Chan (@cherisechan)
 - Hung Pham (@SkellyBG)
 - Kelly Su (@kellysu1)
+- Hannah Anh (@TimezDed)
 
 ## 2023
 ### Leads
