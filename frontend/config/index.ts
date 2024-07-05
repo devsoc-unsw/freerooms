@@ -13,13 +13,13 @@ const env =
 const API_CONFIG: Record<string, string> = Object.freeze({
   [Env.DEV]: "http://localhost:3000",
   [Env.PROD]: "https://freerooms.devsoc.app",
-  [Env.STAGING]: "https://freerooms.staging.csesoc.unsw.edu.au/",
+  [Env.STAGING]: "https://freeroomsstaging.devsoc.app",
 });
 
 export const API_URL: string = API_CONFIG[env] + "/api";
 
 // Google Maps API Keys
-const DEV_KEY = "AIzaSyCCcSB-yYX16Scr379XriL8UXkm7dqGnFM";
+const DEV_KEY = "AIzaSyA8CNPhNUvBjLwxGPQ0mBZU5MJSVopEb2o";
 const PROD_KEY = "AIzaSyAfwBfVaKd7bzJlTGa2MJyijm_wDH68lKM";
 
 const GOOGLE_API_CONFIG: Record<string, string> = Object.freeze({

@@ -48,12 +48,12 @@ const StatusBox = styled(Box)<BoxProps>(({ theme }) => ({
   position: "absolute",
   top: 0,
   right: 0,
-  backgroundColor: "white",
   padding: 10,
   paddingLeft: 15,
   paddingRight: 15,
   margin: 10,
   pointerEvents: "none",
+  backgroundColor: theme.palette.background.default,
 }));
 
 const TitleBox = styled(Box)<BoxProps>(({ theme }) => ({
