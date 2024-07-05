@@ -27,6 +27,39 @@ import LoadingCircle from "../../../components/LoadingCircle";
 import useBookings from "../../../hooks/useBookings";
 import useRoom from "../../../hooks/useRoom";
 
+import BuildingDrawer from "../../../views/BuildingDrawer";
+import {
+  selectCurrentBuilding,
+  setCurrentBuilding,
+} from "../../../redux/currentBuildingSlice";
+import { useSelector } from "../../../redux/hooks";
+import { usePathname, useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+
+const BackButtonIcon = () => {
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const currentBuilding = useSelector(selectCurrentBuilding);
+  const path = usePathname();
+
+  const handleBackButton = () => {
+    router.back();
+    dispatch(setCurrentBuilding(currentBuilding));
+  };
+
+    const drawerOpen = !!currentBuilding && (path == "/browse" || path == "/map");
+  return (
+    <>
+      <IconButton onClick={handleBackButton} style={{ width: "5%", color: "black" }}>
+        <ArrowBack />
+        <Typography variant="body1">Back</Typography>
+      </IconButton>
+      <BuildingDrawer open={drawerOpen} />
+    </>
+  );
+};
+
+
 const adjustDateIfMidnight = (inputDate: Date): Date => {
   // Check if the time is midnight (00:00:00)
   if (
@@ -143,7 +176,7 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
           <ArrowBack />
           <Typography variant="body1">Back</Typography>
         </IconButton>
-
+        <BackButtonIcon/>
         <Stack direction="row" spacing={2}>
           <Typography variant="body1" fontWeight="bold">
             ID: {room.id}
