@@ -48,10 +48,13 @@ const BackButtonIcon = () => {
     dispatch(setCurrentBuilding(currentBuilding));
   };
 
-    const drawerOpen = !!currentBuilding && (path == "/browse" || path == "/map");
+  const drawerOpen = !!currentBuilding && (path == "/browse" || path == "/map");
   return (
     <>
-      <IconButton onClick={handleBackButton} style={{ width: "5%", color: "black" }}>
+      <IconButton
+        onClick={handleBackButton}
+        style={{ width: "5%", color: "black" }}
+      >
         <ArrowBack />
         <Typography variant="body1">Back</Typography>
       </IconButton>
@@ -59,7 +62,6 @@ const BackButtonIcon = () => {
     </>
   );
 };
-
 
 const adjustDateIfMidnight = (inputDate: Date): Date => {
   // Check if the time is midnight (00:00:00)
@@ -176,7 +178,7 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
           <ArrowBack />
           <Typography variant="body1">Back</Typography>
         </IconButton>
-        <BackButtonIcon/>
+        <BackButtonIcon />
         <Stack direction="row" spacing={2}>
           <Typography variant="body1" fontWeight="bold">
             ID: {room.id}
