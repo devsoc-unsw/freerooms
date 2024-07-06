@@ -7,18 +7,21 @@ import { Filters } from "../types";
 import { RootState } from "./store";
 
 interface FiltersState {
-  value: Filters
+  value: Filters;
 }
 
 const initialState: FiltersState = {
-  value: {}
+  value: {},
 };
 
 const filtersSlice = createSlice({
   name: "filters",
   initialState,
   reducers: {
-    setFilter: (state, action: PayloadAction<{ key: keyof Filters, value: string }>) => {
+    setFilter: (
+      state,
+      action: PayloadAction<{ key: keyof Filters; value: string }>
+    ) => {
       const { key, value } = action.payload;
       state.value[key] = value;
     },
@@ -31,8 +34,8 @@ const filtersSlice = createSlice({
     },
     clearFilters: (state) => {
       state.value = {};
-    }
-  }
+    },
+  },
 });
 
 export const { setFilter, unsetFilter, clearFilters } = filtersSlice.actions;

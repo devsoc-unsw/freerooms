@@ -3,15 +3,17 @@ import Link from "next/link";
 import React from "react";
 
 interface StyledIconButtonProps extends ButtonProps {
-  active?: boolean
+  active?: boolean;
 }
 
-const StyledIconButton: React.FC<StyledIconButtonProps> = (
-  { children, active, ...otherProps }
-) => (
+const StyledIconButton: React.FC<StyledIconButtonProps> = ({
+  children,
+  active,
+  ...otherProps
+}) => (
   <Button
     {...otherProps}
-    sx={theme => ({
+    sx={(theme) => ({
       padding: theme.spacing(1),
       minWidth: 0,
     })}
@@ -22,6 +24,6 @@ const StyledIconButton: React.FC<StyledIconButtonProps> = (
   >
     {children}
   </Button>
-)
+);
 
 export default StyledIconButton;

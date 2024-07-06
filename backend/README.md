@@ -4,18 +4,20 @@ The Freerooms backend is an Express.js server.
 
 ## Installation Guide
 
-The package manager used is [pnpm](https://pnpm.io/), you will need to install it if you haven't already.
+The package manager used is [npm](https://www.npmjs.com/), which should already be there if you've installed Node.
 
 Once installed, you can run the following command to install dependencies:
+
 ```bash
-pnpm install
+npm install
 ```
 
 ## Usage Guide
+
 You can run the backend with the following command:
 
 ```bash
-pnpm start
+npm start
 ```
 
 To check things are working properly, you can send a request to [http://localhost:3000/api/buildings](http://localhost:3000/api/buildings).

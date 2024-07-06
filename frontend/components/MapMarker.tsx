@@ -5,13 +5,16 @@ import { alpha } from "@mui/material";
 import { Fade } from "@mui/material";
 import { Typography } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
-import { styled } from "@mui/material/styles";
+import { styled, useTheme } from "@mui/material/styles";
 import Image, { ImageProps } from "next/image";
 import React from "react";
 
 import useBuilding from "../hooks/useBuilding";
 import useBuildingStatus from "../hooks/useBuildingStatus";
-import { selectCurrentBuilding, setCurrentBuilding } from "../redux/currentBuildingSlice";
+import {
+  selectCurrentBuilding,
+  setCurrentBuilding,
+} from "../redux/currentBuildingSlice";
 import { useDispatch, useSelector } from "../redux/hooks";
 import { getNumFreerooms, getTotalRooms } from "../utils/utils";
 
@@ -20,15 +23,11 @@ const MapMarker: React.FC<{
   distance: number | undefined;
   currentHover: Building | null;
   setCurrentHover: (building: Building | null) => void;
-}> = ({
-  buildingId,
-  distance,
-  currentHover,
-  setCurrentHover,
-}) => {
+}> = ({ buildingId, distance, currentHover, setCurrentHover }) => {
   // Get building data
   const { building } = useBuilding(buildingId);
   const { status: liveStatus } = useBuildingStatus(buildingId);
+  const theme = useTheme();
 
   // This one uses stale data so markers don't disappear
   const [status, setStatus] = React.useState<BuildingStatus>();
@@ -36,7 +35,7 @@ const MapMarker: React.FC<{
     if (liveStatus) setStatus(liveStatus);
   }, [liveStatus]);
   const freerooms = getNumFreerooms(status);
-  const totalRooms = getTotalRooms(status)
+  const totalRooms = getTotalRooms(status);
 
   const dispatch = useDispatch();
   const currentBuilding = useSelector(selectCurrentBuilding);
@@ -50,12 +49,11 @@ const MapMarker: React.FC<{
   const [colour, setColour] = React.useState("#e57373");
   React.useEffect(() => {
     freerooms >= 5
-    ? setColour("#66bb6a")
-    : freerooms !== 0
-    ? setColour("#ffa726")
-    : setColour("#f44336")
-
-  }, [freerooms])
+      ? setColour("#66bb6a")
+      : freerooms !== 0
+        ? setColour("#ffa726")
+        : setColour("#f44336");
+  }, [freerooms]);
 
   if (!building) return <></>;
 
@@ -75,11 +73,17 @@ const MapMarker: React.FC<{
         setCurrentHover(null);
       }}
     >
-      <Typography sx={{
-        fontSize: 11,
-        fontWeight: 500,
-        textShadow: '-.5px -.5px 1px #f2f2f2, .5px -.5px 1px #f2f2f2, -.5px .5px 1px #f2f2f2, .5px .5px 1px #f2f2f2'
-      }}>
+      <Typography
+        sx={{
+          fontSize: 11,
+          fontWeight: 500,
+          textShadow:
+            theme.palette.mode === "light"
+              ? "-.5px -.5px 1px #f2f2f2, .5px -.5px 1px #f2f2f2, -.5px .5px 1px #f2f2f2, .5px .5px 1px #f2f2f2"
+              : "",
+          color: theme.palette.text.primary,
+        }}
+      >
         {building.name}
       </Typography>
       <Box
@@ -87,9 +91,11 @@ const MapMarker: React.FC<{
           width: 18,
           height: 18,
           borderRadius: "50%",
-          border: isCurrentBuilding ? `5px solid ${colour}` : '4px solid white',
-          backgroundColor: isCurrentBuilding ? 'white': colour,
-          boxShadow: isCurrentBuilding ? `0px 0px 6px 4px ${alpha(colour, 0.5)}` : '',
+          border: isCurrentBuilding ? `5px solid ${colour}` : "4px solid white",
+          backgroundColor: isCurrentBuilding ? "white" : colour,
+          boxShadow: isCurrentBuilding
+            ? `0px 0px 6px 4px ${alpha(colour, 0.5)}`
+            : "",
           position: "relative",
           "&:hover": {
             cursor: "pointer",

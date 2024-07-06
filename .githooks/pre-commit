@@ -1,0 +1,16 @@
+#!/bin/sh
+FILES=$(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g')
+[ -z "$FILES" ] && exit 0
+
+# Prettify all frontend files
+FE_FILES=$(echo "$FILES" | grep "^frontend/.*\.[tj]sx\?$")
+echo "$FE_FILES" | xargs frontend/node_modules/.bin/prettier --config frontend/.prettierrc --ignore-unknown --write
+
+# Prettify all backend files
+BE_FILES=$(echo "$FILES" | grep "^backend/.*\.[tj]sx\?$")
+echo "$BE_FILES" | xargs backend/node_modules/.bin/prettier --config backend/.prettierrc --ignore-unknown --write
+
+# Add back the modified/prettified files to staging
+echo "$FILES" | xargs git add
+
+exit 0

@@ -13,7 +13,7 @@ const useRoom = (roomId: string) => {
 
   // Still loading
   if (!rooms) {
-    return { room: undefined, error }
+    return { room: undefined, error };
   }
 
   // Try find building
@@ -21,8 +21,7 @@ const useRoom = (roomId: string) => {
   if (!room) {
     return { room: undefined, error: new Error("No data for " + roomId) };
   }
-
   return { room, error };
-}
+};
 
 export default useRoom;

@@ -15,11 +15,11 @@ const USER_TZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
  *  We do this by adding -4 (local offset) and subtracting 10 (syd offset) hours
  */
 const toSydneyTime = (date: Date): Date => {
-    const sydOffset = getTimezoneOffset('Australia/Sydney', date);
-    const userOffset = getTimezoneOffset(USER_TZ, date);
+  const sydOffset = getTimezoneOffset("Australia/Sydney", date);
+  const userOffset = getTimezoneOffset(USER_TZ, date);
 
-    // Add user offset to force UTC then subtract syd offset to force Sydney time
-    return new Date(date.getTime() + userOffset - sydOffset);
-}
+  // Add user offset to force UTC then subtract syd offset to force Sydney time
+  return new Date(date.getTime() + userOffset - sydOffset);
+};
 
 export default toSydneyTime;

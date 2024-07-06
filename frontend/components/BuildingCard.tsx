@@ -24,12 +24,12 @@ const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
   "&:hover": {
     cursor: "pointer",
   },
-  [theme.breakpoints.down('lg')]: {
+  [theme.breakpoints.down("lg")]: {
     height: 300,
   },
-  [theme.breakpoints.down('md')]: {
+  [theme.breakpoints.down("md")]: {
     height: 200,
-  }
+  },
 }));
 
 const StyledImage = styled(Image)<ImageProps>(({ theme }) => ({
@@ -48,12 +48,12 @@ const StatusBox = styled(Box)<BoxProps>(({ theme }) => ({
   position: "absolute",
   top: 0,
   right: 0,
-  backgroundColor: "white",
   padding: 10,
   paddingLeft: 15,
   paddingRight: 15,
   margin: 10,
   pointerEvents: "none",
+  backgroundColor: theme.palette.background.default,
 }));
 
 const TitleBox = styled(Box)<BoxProps>(({ theme }) => ({
@@ -76,12 +76,12 @@ const BuildingCard: React.FC<{
   buildingId: string;
 }> = ({ buildingId }) => {
   const dispatch = useDispatch();
-  
+
   const { building } = useBuilding(buildingId);
   const { status } = useBuildingStatus(buildingId);
-  
+
   if (!building) return <></>;
-  
+
   const freerooms = getNumFreerooms(status);
 
   return (

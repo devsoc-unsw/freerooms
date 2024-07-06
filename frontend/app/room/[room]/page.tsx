@@ -4,25 +4,36 @@ import translateRoomUsage from "@common/roomUsages";
 import getSchoolDetails from "@common/schools";
 import type { Booking, Room } from "@common/types";
 import CloseIcon from "@mui/icons-material/Close";
-import { Dialog, DialogContent, DialogContentText, DialogTitle, IconButton } from "@mui/material";
+import {
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  IconButton,
+  useTheme,
+} from "@mui/material";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import useBuilding from "hooks/useBuilding";
 import Image from "next/image";
 import React, { useState } from "react";
 
+import BookingButton from "../../../components/BookingButton";
 import BookingCalendar from "../../../components/BookingCalendar";
-import Button from "../../../components/Button";
 import LoadingCircle from "../../../components/LoadingCircle";
 import useBookings from "../../../hooks/useBookings";
+import useBuilding from "../../../hooks/useBuilding";
 import useRoom from "../../../hooks/useRoom";
 
 const adjustDateIfMidnight = (inputDate: Date): Date => {
   // Check if the time is midnight (00:00:00)
-  if (inputDate.getHours() === 0 && inputDate.getMinutes() === 0 && inputDate.getSeconds() === 0) {
+  if (
+    inputDate.getHours() === 0 &&
+    inputDate.getMinutes() === 0 &&
+    inputDate.getSeconds() === 0
+  ) {
     // Set the time to 11:59:00 and subtract one day
     const adjusted = new Date(inputDate);
     adjusted.setHours(23, 59);
@@ -33,12 +44,9 @@ const adjustDateIfMidnight = (inputDate: Date): Date => {
   }
 };
 
-
-export default function Page({ params }: {
-  params: { room: string };
-}) {
+export default function Page({ params }: { params: { room: string } }) {
   const { bookings } = useBookings(params.room);
-  const adjustedBookings: Booking[] | undefined = bookings?.map(booking => ({
+  const adjustedBookings: Booking[] | undefined = bookings?.map((booking) => ({
     ...booking,
     end: adjustDateIfMidnight(booking.end),
   }));
@@ -49,23 +57,30 @@ export default function Page({ params }: {
 
   return (
     <Container maxWidth="xl">
-      {room && building ?
-        (
-          <Stack justifyContent="center" alignItems="center" width="100%" py={5} height="100%" px={{ xs: 3, md: 15 }}>
-            <RoomPageHeader room={room} buildingName={building.name} />
-            <RoomImage src={`/assets/building_photos/${campus}-${grid}.webp`} />
-            <BookingCalendar events={adjustedBookings ?? []} />
-          </Stack>
-        ) : <LoadingCircle />}
+      {room && building ? (
+        <Stack
+          justifyContent="center"
+          alignItems="center"
+          width="100%"
+          py={5}
+          height="100%"
+          px={{ xs: 3, md: 15 }}
+        >
+          <RoomPageHeader room={room} buildingName={building.name} />
+          <RoomImage src={`/assets/building_photos/${campus}-${grid}.webp`} />
+          <BookingCalendar events={adjustedBookings ?? []} />
+        </Stack>
+      ) : (
+        <LoadingCircle />
+      )}
     </Container>
   );
 }
 
-const RoomPageHeader: React.FC<{ room: Room, buildingName: string }> = ({
+const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
   room,
   buildingName,
 }) => {
-
   const [openDialog, setDialog] = useState(false);
   const toggleDialog = () => {
     setDialog((isOpen) => {
@@ -74,21 +89,32 @@ const RoomPageHeader: React.FC<{ room: Room, buildingName: string }> = ({
   };
 
   const schoolDetails = getSchoolDetails(room.school);
-  const dialogMessage = schoolDetails ? (
-    `This room is managed by ${schoolDetails.name}. Please contact the school to request a booking`
-  ) : "This room is managed externally by its associated school. Please contact the school to request a booking";
+  const dialogMessage = schoolDetails
+    ? `This room is managed by ${schoolDetails.name}. Please contact the school to request a booking`
+    : "This room is managed externally by its associated school. Please contact the school to request a booking";
 
   return (
-    <Stack width="100%" direction="row" alignItems="center" justifyContent="space-between">
+    <Stack
+      width="100%"
+      direction="row"
+      alignItems="center"
+      justifyContent="space-between"
+    >
       <Stack direction="column" spacing={1} width="100%" mb={1}>
         {buildingName != "" && (
           <Stack
             direction="row"
             spacing={2}
-            divider={<Typography display="inline" variant="subtitle2">/</Typography>}
+            divider={
+              <Typography display="inline" variant="subtitle2">
+                /
+              </Typography>
+            }
           >
             <Typography variant="subtitle2">{buildingName} </Typography>
-            <Typography variant="subtitle2">{translateRoomUsage(room.usage)}</Typography>
+            <Typography variant="subtitle2">
+              {translateRoomUsage(room.usage)}
+            </Typography>
             {room.school != " " && (
               <Typography fontWeight="bold" color="#e65100" variant="subtitle2">
                 ID Required
@@ -96,9 +122,20 @@ const RoomPageHeader: React.FC<{ room: Room, buildingName: string }> = ({
             )}
           </Stack>
         )}
-        <Stack direction="row" justifyContent="space-between" alignItems="center" width="100%">
-          <Typography variant="h4" fontWeight={550}> {room.name} </Typography>
-          <BookingButton school={room.school} usage={room.usage} onClick={toggleDialog} />
+
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          justifyContent="space-between"
+          width="100%"
+        >
+          <Typography variant="h4" fontWeight={550}>
+            {room.name}
+          </Typography>
+          <BookingButton
+            school={room.school}
+            usage={room.usage}
+            onClick={toggleDialog}
+          />
         </Stack>
         <Stack direction="row" spacing={2}>
           <Typography variant="body1" fontWeight="bold">
@@ -113,17 +150,23 @@ const RoomPageHeader: React.FC<{ room: Room, buildingName: string }> = ({
 
           {room.school != " " && (
             <Typography variant="body1" fontWeight="bold">
-              School: <Typography
-              display="inline"
-              variant="body1"
-            >{schoolDetails ? schoolDetails.name : room.school}</Typography>
+              School:{" "}
+              <Typography display="inline" variant="body1">
+                {schoolDetails ? schoolDetails.name : room.school}
+              </Typography>
             </Typography>
           )}
         </Stack>
       </Stack>
-      <Dialog open={openDialog} onClose={toggleDialog} PaperProps={{ sx: { borderRadius: "10px" } }}>
+      <Dialog
+        open={openDialog}
+        onClose={toggleDialog}
+        PaperProps={{ sx: { borderRadius: "10px" } }}
+      >
         <DialogTitle>
-          <Typography variant="h6" fontWeight="Bold">Booking this Room</Typography>
+          <Typography variant="h6" fontWeight="Bold">
+            Booking this Room
+          </Typography>
         </DialogTitle>
         <IconButton
           aria-label="close"
@@ -140,12 +183,14 @@ const RoomPageHeader: React.FC<{ room: Room, buildingName: string }> = ({
         <DialogContent dividers>
           <DialogContentText>
             <Stack direction="column" spacing={2}>
-              <Typography variant="body1">
-                {dialogMessage}
-              </Typography>
+              <Typography variant="body1">{dialogMessage}</Typography>
               {schoolDetails && (
                 <Typography variant="body1">
-                  You can find the contact details of the school <Link target="_blank" href={schoolDetails.contactLink}>here</Link>.
+                  You can find the contact details of the school{" "}
+                  <Link target="_blank" href={schoolDetails.contactLink}>
+                    here
+                  </Link>
+                  .
                 </Typography>
               )}
             </Stack>
@@ -153,39 +198,18 @@ const RoomPageHeader: React.FC<{ room: Room, buildingName: string }> = ({
         </DialogContent>
       </Dialog>
     </Stack>
-
-  );
-};
-
-const BookingButton: React.FC<{ school: string, usage: string, onClick: () => void }> = ({
-  school,
-  usage,
-  onClick,
-}) => {
-
-  let link = "";
-  if (school === " " && usage === "LIB") link = "https://unswlibrary-bookings.libcal.com";
-  else if (school === " ") link = "https://www.learningenvironments.unsw.edu.au/make-booking/book-room";
-
-  if (link) return (
-    <Link target="_blank" href={link}>
-      <Button sx={{ px: 2, py: 1, height: 45 }}>
-        <Typography variant="body2" fontWeight="bold">Make a Booking</Typography>
-      </Button>
-    </Link>
-  );
-
-  return (
-    <Button onClick={onClick} sx={{ px: 2, py: 1, height: 45 }}>
-      <Typography variant="body2" fontWeight="bold">Make a Booking</Typography>
-    </Button>
   );
 };
 
 const RoomImage: React.FC<{ src: string }> = ({ src }) => {
   return (
     <Box minWidth="100%" minHeight={300} position="relative">
-      <Image src={src} alt="Room Image" fill style={{ objectFit: "cover", borderRadius: 10 }} />
+      <Image
+        src={src}
+        alt="Room Image"
+        fill
+        style={{ objectFit: "cover", borderRadius: 10 }}
+      />
     </Box>
   );
 };
