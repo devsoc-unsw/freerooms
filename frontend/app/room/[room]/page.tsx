@@ -11,7 +11,6 @@ import {
   DialogContentText,
   DialogTitle,
   IconButton,
-  useTheme,
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -19,7 +18,9 @@ import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 
 import BookingButton from "../../../components/BookingButton";
 import BookingCalendar from "../../../components/BookingCalendar";
@@ -27,15 +28,12 @@ import LoadingCircle from "../../../components/LoadingCircle";
 import useBookings from "../../../hooks/useBookings";
 import useBuilding from "../../../hooks/useBuilding";
 import useRoom from "../../../hooks/useRoom";
-
-import BuildingDrawer from "../../../views/BuildingDrawer";
 import {
   selectCurrentBuilding,
   setCurrentBuilding,
 } from "../../../redux/currentBuildingSlice";
 import { useSelector } from "../../../redux/hooks";
-import { usePathname, useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
+import BuildingDrawer from "../../../views/BuildingDrawer";
 
 const BackButtonIcon = () => {
   const dispatch = useDispatch();
