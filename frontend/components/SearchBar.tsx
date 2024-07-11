@@ -7,11 +7,11 @@ import React from "react";
 const SearchBar = ({ setQuery }: { setQuery: (query: string) => void }) => {
   return (
     <Box
-      width={{ xs: "100%", sm: "50%" }}
+      width={{ xs: "100%", sm: "100%", md: "50%" }}
       my={1}
       mx={{ sm: 1 }}
       flexShrink={{ sm: 3 }}
-      order={{ xs: -1, sm: "unset" }}
+      order={{ xs: -1, sm: -1, md: "unset" }}
     >
       <TextField
         id="input-with-sx"

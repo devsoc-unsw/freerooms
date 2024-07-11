@@ -4,14 +4,24 @@ import Box, { BoxProps } from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { styled, useTheme } from "@mui/material/styles";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
+import { TimePicker } from "@mui/x-date-pickers";
+import { TimeField } from "@mui/x-date-pickers";
+import { DesktopTimePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import { DigitalClock } from "@mui/x-date-pickers/DigitalClock";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import dayjs, { Dayjs } from "dayjs";
 import Image, { ImageProps } from "next/image";
-import React from "react";
+import * as React from "react";
+import { useState } from "react";
 
 import Button from "../components/Button";
 import useBuildingStatus from "../hooks/useBuildingStatus";
@@ -69,7 +79,6 @@ const drawerWidthMobile = "100%";
 
 const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
   const dispatch = useDispatch();
-  const datetime = useSelector(selectDatetime);
   const building = useSelector(selectCurrentBuilding);
   const { status: rooms } = useBuildingStatus(building?.id ?? "");
   const theme = useTheme();
@@ -132,7 +141,6 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
             <CloseIcon />
           </CloseButton>
         </AppBox>
-
         <div
           style={{
             margin: 10,
@@ -147,49 +155,6 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
             priority={true}
           />
         </div>
-
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              margin: 10,
-            }}
-          >
-            <DesktopDatePicker
-              format="dd/MM/yyyy"
-              value={datetime}
-              onChange={(value) =>
-                value && dispatch(setDatetime(toSydneyTime(value)))
-              }
-              slotProps={{
-                textField: {
-                  sx: {
-                    svg: { color: theme.palette.text.primary },
-                    input: { color: theme.palette.text.primary },
-                  },
-                },
-              }}
-            />
-            <div style={{ width: 10 }} />
-            <TimePicker
-              value={datetime}
-              onChange={(value) =>
-                value && dispatch(setDatetime(toSydneyTime(value)))
-              }
-              slotProps={{
-                textField: {
-                  sx: {
-                    svg: { color: theme.palette.text.primary },
-                    input: { color: theme.palette.text.primary },
-                  },
-                },
-              }}
-            />
-          </div>
-        </LocalizationProvider>
-
         <RoomBox>
           {rooms ? (
             Object.keys(rooms).map((roomNumber) => (
