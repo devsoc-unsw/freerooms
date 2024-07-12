@@ -5,7 +5,7 @@ import { alpha } from "@mui/material";
 import { Fade } from "@mui/material";
 import { Typography } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
-import { styled } from "@mui/material/styles";
+import { styled, useTheme } from "@mui/material/styles";
 import Image, { ImageProps } from "next/image";
 import React from "react";
 
@@ -27,6 +27,7 @@ const MapMarker: React.FC<{
   // Get building data
   const { building } = useBuilding(buildingId);
   const { status: liveStatus } = useBuildingStatus(buildingId);
+  const theme = useTheme();
 
   // This one uses stale data so markers don't disappear
   const [status, setStatus] = React.useState<BuildingStatus>();
@@ -77,7 +78,10 @@ const MapMarker: React.FC<{
           fontSize: 11,
           fontWeight: 500,
           textShadow:
-            "-.5px -.5px 1px #f2f2f2, .5px -.5px 1px #f2f2f2, -.5px .5px 1px #f2f2f2, .5px .5px 1px #f2f2f2",
+            theme.palette.mode === "light"
+              ? "-.5px -.5px 1px #f2f2f2, .5px -.5px 1px #f2f2f2, -.5px .5px 1px #f2f2f2, .5px .5px 1px #f2f2f2"
+              : "",
+          color: theme.palette.text.primary,
         }}
       >
         {building.name}

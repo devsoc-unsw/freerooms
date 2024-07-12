@@ -17,8 +17,8 @@ const IndiviRoomBox = styled(Box)<BoxProps>(({ theme }) => ({
   height: 70,
   fontSize: 20,
   fontWeight: 500,
-  backgroundColor: "#FFFFFF",
-  color: "black",
+  backgroundColor: theme.palette.background.default,
+  color: theme.palette.text.primary,
   padding: theme.spacing(2, 2, 2, 3),
   margin: theme.spacing(1.5, 1),
   "&:hover": {
