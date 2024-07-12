@@ -6,6 +6,7 @@ import type { Booking, Room } from "@common/types";
 import { ArrowBack } from "@mui/icons-material";
 import CloseIcon from "@mui/icons-material/Close";
 import {
+  Button,
   Dialog,
   DialogContent,
   DialogContentText,
@@ -35,7 +36,7 @@ import {
 import { useSelector } from "../../../redux/hooks";
 import BuildingDrawer from "../../../views/BuildingDrawer";
 
-const BackButtonIcon = () => {
+const RoomBackButton = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const currentBuilding = useSelector(selectCurrentBuilding);
@@ -49,13 +50,26 @@ const BackButtonIcon = () => {
   const drawerOpen = !!currentBuilding && (path == "/browse" || path == "/map");
   return (
     <>
-      <IconButton
+      <Button
         onClick={handleBackButton}
-        style={{ width: "5%", color: "black" }}
+        style={{
+          backgroundColor: "transparent",
+          position: "relative",
+          right: "12px",
+          width: "max-content",
+        }}
       >
         <ArrowBack />
-        <Typography variant="body1">Back</Typography>
-      </IconButton>
+        <Typography
+          variant="body1"
+          marginLeft={1}
+          sx={{
+            textDecoration: "underline",
+          }}
+        >
+          Back
+        </Typography>
+      </Button>
       <BuildingDrawer open={drawerOpen} />
     </>
   );
@@ -135,6 +149,7 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
       justifyContent="space-between"
     >
       <Stack direction="column" spacing={1} width="100%" mb={1}>
+        <RoomBackButton />
         {buildingName != "" && (
           <Stack
             direction="row"
@@ -171,12 +186,6 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
             onClick={toggleDialog}
           />
         </Stack>
-
-        <IconButton href="/browse" style={{ width: "5%", color: "black" }}>
-          <ArrowBack />
-          <Typography variant="body1">Back</Typography>
-        </IconButton>
-        <BackButtonIcon />
         <Stack direction="row" spacing={2}>
           <Typography variant="body1" fontWeight="bold">
             ID: {room.id}
