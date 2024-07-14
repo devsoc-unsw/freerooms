@@ -1,3 +1,5 @@
+"use client";
+
 import SearchIcon from "@mui/icons-material/Search";
 import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
@@ -8,33 +10,15 @@ export default function Page() {
   return (
     <Container>
       <Stack>
-        <SearchBar />
-        <Stack
-          direction="row"
-          style={{
-            flexWrap: "wrap",
-            borderStyle: "solid",
-            borderRadius: 3,
-            borderColor: "black",
-            borderWidth: "thin",
-            marginLeft: 40,
-            marginRight: 40,
-            paddingRight: 16,
-          }}
-        >
-          <Stack>
-            <span
-              style={{
-                fontWeight: "bold",
-                paddingLeft: 6,
-              }}
-            >
-              Filter by:
-            </span>
-            <SubFilter />
-          </Stack>
+        <StyledSearchBar>
+          <MainFilter />
+          <SearchButton />
+        </StyledSearchBar>
+
+        <StyledBody>
+          <SubFilter />
           <RoomList />
-        </Stack>
+        </StyledBody>
       </Stack>
     </Container>
   );
@@ -56,27 +40,28 @@ const MainFilter: React.FC<{}> = () => {
   );
 };
 
-const SearchBar: React.FC<{}> = () => {
-  return (
-    <Stack direction="row">
-      <MainFilter />
-      <SearchButton />
-    </Stack>
-  );
-};
-
 const SubFilter: React.FC<{}> = () => {
   return (
-    <Stack
-      spacing={1}
-      divider={<Divider orientation="horizontal" flexItem />}
-      style={{
-        padding: 3,
-      }}
-    >
-      <RoomType />
-      <Location />
-      <IDRequired />
+    <Stack>
+      <span
+        style={{
+          fontWeight: "bold",
+          paddingLeft: 6,
+        }}
+      >
+        Filter by:
+      </span>
+      <Stack
+        spacing={1}
+        divider={<Divider orientation="horizontal" flexItem />}
+        style={{
+          padding: 3,
+        }}
+      >
+        <RoomType />
+        <Location />
+        <IDRequired />
+      </Stack>
     </Stack>
   );
 };
@@ -133,7 +118,8 @@ const IDRequired: React.FC<{}> = () => {
   return <Stack>ID Required</Stack>;
 };
 
-const StyledSearchBar = styled(SearchBar)(({ theme }) => ({
+const StyledSearchBar = styled(Stack)(({ theme }) => ({
+  flexDirection: "row",
   minWidth: 0,
   borderStyle: "solid",
   borderRadius: 7,
@@ -145,4 +131,17 @@ const StyledSearchBar = styled(SearchBar)(({ theme }) => ({
   marginBottom: 30,
   padding: 10,
   justifyContent: "space-between",
+}));
+
+const StyledBody = styled(Stack)(({ theme }) => ({
+  flexDirection: "row",
+  flexWrap: "wrap",
+  borderStyle: "solid",
+  borderRadius: 3,
+  borderColor: "black",
+  borderWidth: "thin",
+  marginLeft: 40,
+  marginRight: 40,
+  paddingRight: 16,
+  backgroundColor: "pink",
 }));
