@@ -21,6 +21,8 @@ import {
 } from "../redux/filtersSlice";
 import { useDispatch, useSelector } from "../redux/hooks";
 import { DropDown, DropDownItem, Filters } from "../types";
+import { filterBarDropdown } from "../utils/constants";
+import DropdownSelections from "./DropdownSelections";
 
 const StyledFilterButton = styled(Box)<BoxProps>(({ theme }) => ({
   height: 40,
@@ -104,29 +106,14 @@ const FilterBar = () => {
 
   const dropdownMap = useMemo(
     () =>
-      dropdowns.map((dropdown) => (
-        <StyledAccordian key={dropdown.key}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-          >
-            {dropdown.text}
-          </AccordionSummary>
-          <StyledAccordionDetails>
-            <div>
-              {dropdown.items.map((item) => (
-                <div
-                  onClick={() => handleSelect(dropdown.key, item)}
-                  key={item.value}
-                >
-                  <Radio checked={filters[dropdown.key] === item.value} />
-                  {item.text}
-                </div>
-              ))}
-            </div>
-          </StyledAccordionDetails>
-        </StyledAccordian>
+      filterBarDropdown.map((dropdown) => (
+        <DropdownSelections
+          key={dropdown.key}
+          dropdown={dropdown}
+          multiple={false}
+          filters={filters}
+          handleSelect={handleSelect}
+        />
       )),
     [filters, handleSelect]
   );
@@ -165,89 +152,5 @@ const FilterBar = () => {
     </ClickAwayListener>
   );
 };
-
-// Dropdowns and items.
-const dropdowns: DropDown[] = [
-  {
-    text: "Room Type",
-    key: "usage",
-    items: Object.entries(roomUsages).map(([abbr, usage]) => ({
-      text: usage,
-      value: abbr,
-    })),
-  },
-  {
-    text: "Room Capacity",
-    key: "capacity",
-    items: [
-      {
-        text: "25+",
-        value: "25",
-      },
-      {
-        text: "50+",
-        value: "50",
-      },
-      {
-        text: "100+",
-        value: "100",
-      },
-      {
-        text: "200+",
-        value: "200",
-      },
-    ],
-  },
-  {
-    text: "Duration Free",
-    key: "duration",
-    items: [
-      {
-        text: "30+ minutes",
-        value: "30",
-      },
-      {
-        text: "1+ hours",
-        value: "60",
-      },
-      {
-        text: "2+ hours",
-        value: "120",
-      },
-      {
-        text: "3+ hours",
-        value: "180",
-      },
-    ],
-  },
-  {
-    text: "Location",
-    key: "location",
-    items: [
-      {
-        text: "Upper Campus",
-        value: "upper",
-      },
-      {
-        text: "Lower Campus",
-        value: "lower",
-      },
-    ],
-  },
-  {
-    text: "ID Required",
-    key: "id",
-    items: [
-      {
-        text: "Not Required",
-        value: "false",
-      },
-      {
-        text: "Required",
-        value: "true",
-      },
-    ],
-  },
-];
 
 export default FilterBar;
