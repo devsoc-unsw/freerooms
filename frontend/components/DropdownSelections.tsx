@@ -23,16 +23,20 @@ const StyledAccordionDetails = styled(AccordionDetails)(({ theme }) => ({
 
 const DropdownSelections: React.FC<{
   dropdown: DropDown;
-  multiple: boolean;
+  canSelectMultiple: boolean;
   filters: Filters;
   handleSelect: (key: keyof Filters, item: DropDownItem) => void;
-}> = ({ dropdown, multiple, filters, handleSelect }) => {
+}> = ({ dropdown, canSelectMultiple, filters, handleSelect }) => {
   return (
-    <StyledAccordian disableGutters={true}>
+    <StyledAccordian
+      disableGutters={true}
+      elevation={canSelectMultiple ? 0 : undefined}
+    >
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
         id="panel1a-header"
+        style={canSelectMultiple ? { padding: "10px 15px" } : {}}
       >
         {dropdown.text}
       </AccordionSummary>
@@ -42,7 +46,7 @@ const DropdownSelections: React.FC<{
             onClick={() => handleSelect(dropdown.key, item)}
             key={item.value}
           >
-            {multiple ? (
+            {canSelectMultiple ? (
               <Checkbox checked={filters[dropdown.key] === item.value} />
             ) : (
               <Radio checked={filters[dropdown.key] === item.value} />

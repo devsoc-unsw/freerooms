@@ -1,13 +1,7 @@
-import { roomUsages } from "@common/roomUsages";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { ClickAwayListener } from "@mui/material";
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
 import Box, { BoxProps } from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import Radio from "@mui/material/Radio";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
@@ -68,20 +62,6 @@ const StyledHeader = styled(Box)<BoxProps>(() => ({
   gap: 135,
 }));
 
-const StyledAccordian = styled(Accordion)(({ theme }) => ({
-  transition: "all 0.1s ease-in-out",
-  backgroundColor: theme.palette.background.default,
-  "&:hover": {
-    backgroundColor: theme.palette.primary.main,
-    color: "#fff",
-  },
-}));
-
-const StyledAccordionDetails = styled(AccordionDetails)(({ theme }) => ({
-  backgroundColor: theme.palette.background.default,
-  color: theme.palette.text.primary,
-}));
-
 const FilterBar = () => {
   // Get filters from Redux
   const dispatch = useDispatch();
@@ -110,7 +90,7 @@ const FilterBar = () => {
         <DropdownSelections
           key={dropdown.key}
           dropdown={dropdown}
-          multiple={false}
+          canSelectMultiple={false}
           filters={filters}
           handleSelect={handleSelect}
         />
