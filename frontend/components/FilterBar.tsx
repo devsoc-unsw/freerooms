@@ -11,7 +11,7 @@ import Radio from "@mui/material/Radio";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import React, { useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 
 import {
   clearFilters,
@@ -89,32 +89,47 @@ const FilterBar = () => {
   const [open, setOpen] = useState(false);
 
   // Handle user selecting a filter, each dropdown select has an associated key
-  const handleSelect = (key: keyof Filters, item: DropDownItem) => {
-    if (filters[key] === item.value) {
-      // If the same as already selected, unset key
-      dispatch(unsetFilter(key));
-    } else {
-      // Otherwise, spread existing filters and set key
-      dispatch(setFilter({ key, value: item.value }));
-    }
-  };
+  const handleSelect = useCallback(
+    (key: keyof Filters, item: DropDownItem) => {
+      if (filters[key] === item.value) {
+        // If the same as already selected, unset key
+        dispatch(unsetFilter(key));
+      } else {
+        // Otherwise, spread existing filters and set key
+        dispatch(setFilter({ key, value: item.value }));
+      }
+    },
+    [dispatch, filters]
+  );
 
-  // Reveal dropdown items
-  const dropdownReveal = (dropdown: DropDown) => {
-    return (
-      <div>
-        {dropdown.items.map((item) => (
-          <div
-            onClick={() => handleSelect(dropdown.key, item)}
-            key={item.value}
+  const dropdownMap = useMemo(
+    () =>
+      dropdowns.map((dropdown) => (
+        <StyledAccordian key={dropdown.key}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
           >
-            <Radio checked={filters[dropdown.key] === item.value} />
-            {item.text}
-          </div>
-        ))}
-      </div>
-    );
-  };
+            {dropdown.text}
+          </AccordionSummary>
+          <StyledAccordionDetails>
+            <div>
+              {dropdown.items.map((item) => (
+                <div
+                  onClick={() => handleSelect(dropdown.key, item)}
+                  key={item.value}
+                >
+                  <Radio checked={filters[dropdown.key] === item.value} />
+                  {item.text}
+                </div>
+              ))}
+            </div>
+          </StyledAccordionDetails>
+        </StyledAccordian>
+      )),
+    [filters, handleSelect]
+  );
 
   return (
     <ClickAwayListener onClickAway={() => setOpen(false)}>
@@ -142,20 +157,7 @@ const FilterBar = () => {
                   Reset
                 </Typography>
               </StyledHeader>
-              {dropdowns.map((dropdown) => (
-                <StyledAccordian key={dropdown.key}>
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                  >
-                    {dropdown.text}
-                  </AccordionSummary>
-                  <StyledAccordionDetails>
-                    {dropdownReveal(dropdown)}
-                  </StyledAccordionDetails>
-                </StyledAccordian>
-              ))}
+              {dropdownMap}
             </StyledDropDownMenu>
           </Container>
         )}
