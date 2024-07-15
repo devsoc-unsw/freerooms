@@ -1,10 +1,16 @@
 "use client";
 
-import SearchIcon from "@mui/icons-material/Search";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import EastIcon from "@mui/icons-material/East";
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
 import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
+import Typography, { TypographyProps } from "@mui/material/Typography";
 import { styled } from "@mui/system";
+import React, { useEffect, useState } from "react";
 
 export default function Page() {
   return (
@@ -17,11 +23,46 @@ export default function Page() {
 
         <StyledBody>
           <SubFilter />
-          <RoomList />
+          {/* should insert a room list here */}
+          <Room>
+            <div
+              style={{
+                paddingLeft: 20,
+                fontWeight: "bold",
+              }}
+            >
+              Ainsworth G03
+            </div>
+            <div
+              style={{
+                paddingLeft: 20,
+              }}
+            >
+              Available Until 1:00pm
+            </div>
+          </Room>
         </StyledBody>
       </Stack>
     </Container>
   );
+}
+
+function SubFilterOptions() {
+  const [width, setWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  return width;
 }
 
 const MainFilter: React.FC<{}> = () => {
@@ -30,7 +71,10 @@ const MainFilter: React.FC<{}> = () => {
       direction="row"
       spacing={2}
       divider={<Divider orientation="vertical" flexItem />}
-      style={{}}
+      style={{
+        justifyContent: "center",
+        flexGrow: 3,
+      }}
     >
       <Building />
       <Capacity />
@@ -42,106 +86,164 @@ const MainFilter: React.FC<{}> = () => {
 
 const SubFilter: React.FC<{}> = () => {
   return (
-    <Stack>
-      <span
+    <Stack
+      flexDirection={SubFilterOptions() <= 690 ? "row" : "column"}
+      style={{
+        padding: 3,
+        flexGrow: 1,
+        alignItems: SubFilterOptions() <= 690 ? "flex-start" : "stretch",
+      }}
+    >
+      <StyledText
         style={{
-          fontWeight: "bold",
-          paddingLeft: 6,
+          paddingBottom: 10,
         }}
       >
         Filter by:
-      </span>
+      </StyledText>
       <Stack
         spacing={1}
-        divider={<Divider orientation="horizontal" flexItem />}
+        flexDirection={SubFilterOptions() <= 690 ? "row" : "column"}
         style={{
-          padding: 3,
+          marginLeft: 2,
+          marginRight: 2,
         }}
       >
-        <RoomType />
-        <Location />
-        <IDRequired />
+        <StyledAccordion>
+          <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+            {"Room type"}
+          </AccordionSummary>
+          <AccordionDetails>{"Auditorium"}</AccordionDetails>
+        </StyledAccordion>
+
+        <StyledAccordion>
+          <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+            {"Location"}
+          </AccordionSummary>
+          <AccordionDetails>{"Upper Campus"}</AccordionDetails>
+        </StyledAccordion>
+
+        <StyledAccordion>
+          <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+            {"ID Required"}
+          </AccordionSummary>
+          <AccordionDetails>{"Not Required"}</AccordionDetails>
+        </StyledAccordion>
       </Stack>
     </Stack>
   );
 };
 
-const RoomList: React.FC<{}> = () => {
+// all components below should either be moved to another file
+// or reconstructed into something else
+const Building: React.FC<{}> = () => {
   return (
     <Stack
       style={{
-        borderStyle: "solid",
-        borderRadius: 3,
-        borderColor: "black",
-        borderWidth: "thin",
-        fontFamily: "Roboto",
+        flexGrow: 1,
+        paddingLeft: 5,
       }}
     >
-      Ainsworth G03 Available Until 1:00pm
+      Building
     </Stack>
   );
 };
 
-const Building: React.FC<{}> = () => {
-  return <Stack>Building</Stack>;
-};
-
 const Capacity: React.FC<{}> = () => {
-  return <Stack>Capacity</Stack>;
+  return (
+    <Stack
+      style={{
+        flexGrow: 1,
+      }}
+    >
+      Capacity
+    </Stack>
+  );
 };
 
 const When: React.FC<{}> = () => {
-  return <Stack>When</Stack>;
+  return (
+    <Stack
+      style={{
+        flexGrow: 1,
+      }}
+    >
+      When
+    </Stack>
+  );
 };
 
 const Duration: React.FC<{}> = () => {
-  return <Stack>Duration</Stack>;
+  return (
+    <Stack
+      style={{
+        flexGrow: 1,
+      }}
+    >
+      Duration
+    </Stack>
+  );
 };
 
 const SearchButton: React.FC<{}> = () => {
   return (
     <Stack>
-      <SearchIcon />
+      <EastIcon />
     </Stack>
   );
-};
-
-const RoomType: React.FC<{}> = () => {
-  return <Stack>Room Type</Stack>;
-};
-
-const Location: React.FC<{}> = () => {
-  return <Stack>Location</Stack>;
-};
-
-const IDRequired: React.FC<{}> = () => {
-  return <Stack>ID Required</Stack>;
 };
 
 const StyledSearchBar = styled(Stack)(({ theme }) => ({
   flexDirection: "row",
   minWidth: 0,
-  borderStyle: "solid",
   borderRadius: 7,
+  borderStyle: "solid",
   borderColor: "black",
   borderWidth: "thin",
   marginTop: 48,
   marginLeft: 32,
   marginRight: 32,
   marginBottom: 30,
-  padding: 10,
+  padding: theme.spacing(1.25),
   justifyContent: "space-between",
 }));
 
 const StyledBody = styled(Stack)(({ theme }) => ({
   flexDirection: "row",
   flexWrap: "wrap",
+  margin: theme.spacing(0, 4.25),
+  padding: theme.spacing(2.5),
+  justifyContent: "space-between",
+}));
+
+const StyledText = styled(Typography)<TypographyProps>(({ theme }) => ({
+  color: theme.palette.primary.main,
+  fontWeight: 700,
+  fontFamily: "Josefin Sans",
+  fontSize: "1rem",
+}));
+
+const StyledAccordion = styled(Accordion)(({ theme }) => ({
+  // backgroundColor: theme.palette.background.default,
+  boxShadow: "none",
+  "&.MuiAccordion-root:before": {
+    backgroundColor: theme.palette.background.default,
+    height: 0,
+  },
+}));
+
+const Room = styled(Stack)(({ theme }) => ({
+  flexDirection: "row",
+  justifyContent: "space-between",
+  height: "fit-content",
+  flexGrow: 5,
+  borderRadius: 4,
   borderStyle: "solid",
-  borderRadius: 3,
   borderColor: "black",
   borderWidth: "thin",
-  marginLeft: 40,
-  marginRight: 40,
-  paddingRight: 16,
-  backgroundColor: "pink",
+  margin: 18,
+  paddingTop: 10,
+  paddingBottom: 10,
+  paddingLeft: 18,
+  paddingRight: 20,
 }));
