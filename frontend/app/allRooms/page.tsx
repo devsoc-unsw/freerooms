@@ -47,14 +47,14 @@ export default function Page() {
   );
 }
 
-function SubFilterOptions() {
-  const [width, setWidth] = useState(window.innerWidth);
+function GetWindowSize() {
+  const [width, setWidth] = useState(0);
+
+  const handleResize = () => {
+    setWidth(window.innerWidth);
+  };
 
   useEffect(() => {
-    const handleResize = () => {
-      setWidth(window.innerWidth);
-    };
-
     window.addEventListener("resize", handleResize);
 
     return () => {
@@ -87,23 +87,23 @@ const MainFilter: React.FC<{}> = () => {
 const SubFilter: React.FC<{}> = () => {
   return (
     <Stack
-      flexDirection={SubFilterOptions() <= 690 ? "row" : "column"}
+      flexDirection={GetWindowSize() <= 690 ? "row" : "column"}
       style={{
         padding: 3,
         flexGrow: 1,
-        alignItems: SubFilterOptions() <= 690 ? "flex-start" : "stretch",
+        alignItems: GetWindowSize() <= 690 ? "center" : "stretch",
       }}
     >
       <StyledText
         style={{
+          paddingRight: 8,
           paddingBottom: 10,
         }}
       >
         Filter by:
       </StyledText>
       <Stack
-        spacing={1}
-        flexDirection={SubFilterOptions() <= 690 ? "row" : "column"}
+        flexDirection={GetWindowSize() <= 690 ? "row" : "column"}
         style={{
           marginLeft: 2,
           marginRight: 2,
@@ -224,7 +224,7 @@ const StyledText = styled(Typography)<TypographyProps>(({ theme }) => ({
 }));
 
 const StyledAccordion = styled(Accordion)(({ theme }) => ({
-  // backgroundColor: theme.palette.background.default,
+  backgroundColor: theme.palette.background.default,
   boxShadow: "none",
   "&.MuiAccordion-root:before": {
     backgroundColor: theme.palette.background.default,
