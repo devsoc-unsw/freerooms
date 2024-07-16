@@ -10,7 +10,6 @@ import {
   DialogContentText,
   DialogTitle,
   IconButton,
-  useTheme,
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -26,6 +25,7 @@ import LoadingCircle from "../../../components/LoadingCircle";
 import useBookings from "../../../hooks/useBookings";
 import useBuilding from "../../../hooks/useBuilding";
 import useRoom from "../../../hooks/useRoom";
+import OverallRating from "components/OverallRating";
 
 const adjustDateIfMidnight = (inputDate: Date): Date => {
   // Check if the time is midnight (00:00:00)
