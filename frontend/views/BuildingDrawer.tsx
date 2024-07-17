@@ -33,11 +33,11 @@ const AppBox = styled(Box)(({ theme }) => ({
   padding: theme.spacing(3, 2, 2, 3),
 }));
 
-const MainBox = styled(Box)<BoxProps>({
+const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
   position: "relative",
   flex: 1,
-  backgroundColor: "#FAFAFA",
-});
+  backgroundColor: theme.palette.background.default,
+}));
 
 const StyledImage = styled(Image)<ImageProps>({
   borderRadius: 10,
@@ -55,9 +55,13 @@ const StatusBox = styled(Box)<BoxProps>(({ theme }) => ({
 
 const RoomBox = styled(Box)<BoxProps>(({ theme }) => ({
   borderRadius: 10,
-  backgroundColor: "#F1F1F1",
+  backgroundColor: theme.palette.mode === "light" ? "#F1F1F1" : "#2c2c2c",
   margin: 10,
   padding: theme.spacing(0.5),
+}));
+
+const CloseButton = styled(Button)(({ theme }) => ({
+  backgroundColor: theme.palette.background.paper,
 }));
 
 export const drawerWidth = 400;
@@ -124,9 +128,9 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
               ) : null}
             </StatusBox>
           </div>
-          <Button aria-label="Close" onClick={onClose}>
+          <CloseButton aria-label="Close" onClick={onClose}>
             <CloseIcon />
-          </Button>
+          </CloseButton>
         </AppBox>
 
         <div
@@ -162,8 +166,8 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
               slotProps={{
                 textField: {
                   sx: {
-                    svg: { color: "#000000" },
-                    input: { color: "#000000" },
+                    svg: { color: theme.palette.text.primary },
+                    input: { color: theme.palette.text.primary },
                   },
                 },
               }}
@@ -177,8 +181,8 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
               slotProps={{
                 textField: {
                   sx: {
-                    svg: { color: "#000000" },
-                    input: { color: "#000000" },
+                    svg: { color: theme.palette.text.primary },
+                    input: { color: theme.palette.text.primary },
                   },
                 },
               }}
