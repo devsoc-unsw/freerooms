@@ -19,7 +19,7 @@ import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
@@ -34,20 +34,17 @@ import {
   setCurrentBuilding,
 } from "../../../redux/currentBuildingSlice";
 import { useSelector } from "../../../redux/hooks";
-import BuildingDrawer from "../../../views/BuildingDrawer";
 
 const RoomBackButton = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const currentBuilding = useSelector(selectCurrentBuilding);
-  const path = usePathname();
 
   const handleBackButton = () => {
     router.back();
     dispatch(setCurrentBuilding(currentBuilding));
   };
 
-  const drawerOpen = !!currentBuilding && (path == "/browse" || path == "/map");
   return (
     <>
       <Button
@@ -70,7 +67,6 @@ const RoomBackButton = () => {
           Back
         </Typography>
       </Button>
-      <BuildingDrawer open={drawerOpen} />
     </>
   );
 };

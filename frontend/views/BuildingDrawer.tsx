@@ -9,6 +9,7 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import Image, { ImageProps } from "next/image";
+import { usePathname } from "next/navigation";
 import React from "react";
 
 import Button from "../components/Button";
@@ -72,8 +73,9 @@ const BuildingDrawer: React.FC = () => {
   const { status: rooms } = useBuildingStatus(building?.id ?? "");
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const path = usePathname();
 
-  if (!building) {
+  if (!building || (path !== "/browse" && path !== "/map")) {
     return <></>;
   }
 
