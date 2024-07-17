@@ -32,7 +32,6 @@ const StyledFilterButton = styled(Box)<BoxProps>(({ theme }) => ({
   justifyItems: "center",
   position: "relative",
   borderRadius: 10,
-  backgroundColor: "white",
   borderWidth: 2,
   borderStyle: "solid",
   borderColor: theme.palette.primary.main,
@@ -42,7 +41,7 @@ const StyledFilterButton = styled(Box)<BoxProps>(({ theme }) => ({
   },
 }));
 
-const StyledDropDownMenu = styled(Box)<BoxProps>(() => ({
+const StyledDropDownMenu = styled(Box)<BoxProps>(({ theme }) => ({
   width: 250,
   top: 50,
   left: 0,
@@ -50,10 +49,10 @@ const StyledDropDownMenu = styled(Box)<BoxProps>(() => ({
   display: "flex",
   flexDirection: "column",
   position: "absolute",
-  backgroundColor: "white",
+  backgroundColor: theme.palette.background.default,
   borderWidth: 1,
   borderStyle: "solid",
-  borderColor: "#BCBCBC",
+  borderColor: theme.palette.mode === "light" ? "#BCBCBC" : "#3F3F3F",
   ":hover": {
     cursor: "auto",
   },
@@ -68,9 +67,8 @@ const StyledHeader = styled(Box)<BoxProps>(() => ({
 }));
 
 const StyledAccordian = styled(Accordion)(({ theme }) => ({
-  backgroundColor: "#fff",
-  color: "#000",
   transition: "all 0.1s ease-in-out",
+  backgroundColor: theme.palette.background.default,
   "&:hover": {
     backgroundColor: theme.palette.primary.main,
     color: "#fff",
@@ -78,8 +76,8 @@ const StyledAccordian = styled(Accordion)(({ theme }) => ({
 }));
 
 const StyledAccordionDetails = styled(AccordionDetails)(({ theme }) => ({
-  backgroundColor: "#eee",
-  color: "#000",
+  backgroundColor: theme.palette.background.default,
+  color: theme.palette.text.primary,
 }));
 
 const FilterBar = () => {
