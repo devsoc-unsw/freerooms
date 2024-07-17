@@ -109,7 +109,6 @@ const App: React.FC<{
       <NavBar />
       <SearchModal />
       <Main>{children}</Main>
-      <BuildingDrawer />
     </>
   );
 };

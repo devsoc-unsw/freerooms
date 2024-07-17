@@ -75,7 +75,7 @@ const BuildingDrawer: React.FC = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const path = usePathname();
 
-  if (!building || (path !== "/browse" && path !== "/map")) {
+  if (!building) {
     return <></>;
   }
 
