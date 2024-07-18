@@ -15,6 +15,7 @@ import {
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
+import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Image from "next/image";
@@ -93,6 +94,8 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
     ? `This room is managed by ${schoolDetails.name}. Please contact the school to request a booking`
     : "This room is managed externally by its associated school. Please contact the school to request a booking";
 
+  const ratingValue = 3.5;
+
   return (
     <Stack
       width="100%"
@@ -156,6 +159,20 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
               </Typography>
             </Typography>
           )}
+        </Stack>
+
+        <Stack direction="row" alignItems="center">
+          <Typography variant="body1" fontWeight="bold">
+            {4.5}
+          </Typography>
+          <div style={{ width: 3 }} />
+          <Rating
+            readOnly
+            value={ratingValue}
+            size="small"
+            precision={0.5}
+            sx={{ color: "rgb(255, 169, 12)" }}
+          />
         </Stack>
       </Stack>
       <Dialog

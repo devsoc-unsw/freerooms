@@ -2,6 +2,8 @@ import { RoomStatus } from "@common/types";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { Typography, TypographyProps } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
+import Rating from "@mui/material/Rating";
+import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import Link from "next/link";
 import React from "react";
@@ -14,7 +16,7 @@ const IndiviRoomBox = styled(Box)<BoxProps>(({ theme }) => ({
   justifyContent: "space-between",
   alignItems: "center",
   borderRadius: 10,
-  height: 70,
+  height: 90,
   fontSize: 20,
   fontWeight: 500,
   backgroundColor: theme.palette.background.default,
@@ -37,8 +39,17 @@ const RoomBoxHeading = styled(Typography)<TypographyProps>(({ theme }) => ({
 const RoomBoxSubheading = styled(Typography)<TypographyProps>(({ theme }) => ({
   fontSize: 12,
   fontWeight: 400,
-  paddingTop: 1,
 }));
+
+const RatingsBoxSubheading = styled(Typography)<TypographyProps>(
+  ({ theme }) => ({
+    fontSize: 12,
+    fontWeight: 400,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  })
+);
 
 const RoomAvailabilityBox: React.FC<{
   roomNumber: string;
@@ -71,37 +82,35 @@ const RoomAvailabilityBox: React.FC<{
   };
 
   const { room } = useRoom(`${buildingId}-${roomNumber}`);
+  const ratingValue = 3.5;
 
   return (
     <Link href={`/room/${buildingId}-${roomNumber}`}>
       <IndiviRoomBox>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-start",
-            paddingRight: 1,
-          }}
-        >
-          <RoomBoxHeading>{roomNumber}</RoomBoxHeading>
+        <Stack direction="column">
+          <RoomBoxHeading> {roomNumber} </RoomBoxHeading>
+          <RatingsBoxSubheading>
+            <Typography sx={{ fontSize: 12, fontWeight: 400 }}>
+              {" "}
+              {ratingValue}{" "}
+            </Typography>
+            <div style={{ width: 3 }} />
+            <Rating
+              readOnly
+              value={ratingValue}
+              size="small"
+              precision={0.5}
+              sx={{ color: "rgb(255, 169, 12)" }}
+            />
+          </RatingsBoxSubheading>
           <RoomBoxSubheading>{!room ? "" : room.name}</RoomBoxSubheading>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-around",
-            alignItems: "center",
-          }}
+        </Stack>
+        <Stack
+          direction="row"
+          justifyContent="space-around"
+          alignItems="center"
         >
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-end",
-              paddingRight: 1,
-            }}
-          >
+          <Stack direction="column" alignItems="flex-end">
             <RoomBoxHeading sx={{ color: roomStatusColor[roomStatus.status] }}>
               {roomStatusMessage[roomStatus.status]}
             </RoomBoxHeading>
@@ -110,9 +119,9 @@ const RoomAvailabilityBox: React.FC<{
             >
               {untilMessage[roomStatus.status]}
             </RoomBoxSubheading>
-          </Box>
+          </Stack>
           <ChevronRightIcon style={{ color: "grey" }} />
-        </Box>
+        </Stack>
       </IndiviRoomBox>
     </Link>
   );
