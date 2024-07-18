@@ -1,11 +1,13 @@
 "use client";
 
 import ManageSearchIcon from "@mui/icons-material/ManageSearch";
+import { useMediaQuery } from "@mui/material";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
-import { styled } from "@mui/system";
+import { styled, useTheme } from "@mui/system";
 
 import AllRoomsFilter from "../../components/AllRoomsFilter";
+import AllRoomsFilterMobile from "../../components/AllRoomsFilterMobile";
 import Room from "../../components/AllRoomsRoom";
 import RoomList from "../../components/AllRoomsRoomList";
 import AllRoomsSearchBar from "../../components/AllRoomsSearchBar";
@@ -21,7 +23,7 @@ export default function Page() {
         </StyledSearchBar>
 
         <StyledBody>
-          <AllRoomsFilter />
+          <Filter />
           <RoomList>
             <Room building="Ainsworth G03" string="Available Until 1:00pm" />
             <Room building="CSE Building K17" string="Available Until 1:00pm" />
@@ -57,5 +59,9 @@ const StyledBody = styled(Stack)(({ theme }) => ({
   margin: theme.spacing(0, 4.25),
   padding: theme.spacing(2.5),
   justifyContent: "space-between",
-  backgroundColor: "yellow",
 }));
+
+const Filter: React.FC<{}> = () => {
+  const displayMobile = useMediaQuery(useTheme().breakpoints.down("md"));
+  return <>{displayMobile ? <AllRoomsFilterMobile /> : <AllRoomsFilter />}</>;
+};

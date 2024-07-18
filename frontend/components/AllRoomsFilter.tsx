@@ -12,15 +12,13 @@ const AllRoomsFilter: React.FC<{}> = () => {
       <Typography
         sx={{
           color: "primary.main",
-          fontWeight: 700,
-          fontFamily: "Josefin Sans",
           width: "fit-content",
           marginRight: 2,
-          backgroundColor: "green",
-          fontSize: { xs: "0.8rem", sm: "0.9rem", md: "1rem" },
+          fontWeight: 500,
+          fontSize: "0.85rem",
         }}
       >
-        Filter by:
+        FILTER OPTIONS
       </Typography>
       <Stack
         sx={{
@@ -53,15 +51,9 @@ const AllRoomsFilter: React.FC<{}> = () => {
 };
 
 const StyledMainFilter = styled(Stack)(({ theme }) => ({
-  backgroundColor: "pink",
-  [theme.breakpoints.down("md")]: {
-    alignItems: "center",
-    flexDirection: "row",
-  },
-  [theme.breakpoints.up("md")]: {
-    alignItems: "stretch",
-    flexDirection: "column",
-  },
+  alignItems: "stretch",
+  flexDirection: "column",
+  flexGrow: 3,
 }));
 
 const StyledAccordion = styled(Accordion)(({ theme }) => ({
@@ -72,14 +64,6 @@ const StyledAccordion = styled(Accordion)(({ theme }) => ({
     height: 0,
   },
   disableGutters: true,
-  [theme.breakpoints.down("xs")]: {
-    fontSize: "0.7em",
-    flexDirection: "row",
-  },
-  [theme.breakpoints.down("sm")]: {
-    fontSize: "0.8em",
-    flexDirection: "row",
-  },
 }));
 
 export default AllRoomsFilter;

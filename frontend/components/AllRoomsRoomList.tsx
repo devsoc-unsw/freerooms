@@ -6,13 +6,13 @@ const RoomList = styled(Stack)(({ theme }) => ({
   flexGrow: 5,
   [theme.breakpoints.down("md")]: {
     width: "100%",
-    marginTop: 10,
+    marginTop: 14,
   },
   [theme.breakpoints.up("md")]: {
     width: "75%",
     marginLeft: 10,
+    marginTop: 8,
   },
-  backgroundColor: "blue",
 }));
 
 export default RoomList;

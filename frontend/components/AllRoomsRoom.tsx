@@ -12,11 +12,18 @@ const Room: React.FC<{
         <Typography
           sx={{
             fontWeight: "bold",
+            fontSize: { sm: "0.9em", md: "0.95em" },
           }}
         >
           {building}
         </Typography>
-        <Typography>{string}</Typography>
+        <Typography
+          sx={{
+            fontSize: { sm: "0.9em", md: "0.95em" },
+          }}
+        >
+          {string}
+        </Typography>
       </RoomDetails>
     </>
   );
