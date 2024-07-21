@@ -6,7 +6,7 @@ import Checkbox from "@mui/material/Checkbox";
 import Radio from "@mui/material/Radio";
 import { styled } from "@mui/system";
 import React from "react";
-import { DropDown, DropDownItem, Filters } from "types";
+import { AllRoomsFilter, DropDown, DropDownItem, Filters } from "types";
 
 const StyledAccordian = styled(Accordion)(({ theme }) => ({
   transition: "all 0.1s ease-in-out",
@@ -24,8 +24,11 @@ const StyledAccordionDetails = styled(AccordionDetails)(({ theme }) => ({
 const DropdownSelections: React.FC<{
   dropdown: DropDown;
   canSelectMultiple: boolean;
-  filters: Filters;
-  handleSelect: (key: keyof Filters, item: DropDownItem) => void;
+  filters: Filters | AllRoomsFilter;
+  handleSelect: (
+    key: keyof Filters | keyof AllRoomsFilter,
+    item: DropDownItem
+  ) => void;
 }> = ({ dropdown, canSelectMultiple, filters, handleSelect }) => {
   return (
     <StyledAccordian
@@ -47,7 +50,7 @@ const DropdownSelections: React.FC<{
             key={item.value}
           >
             {canSelectMultiple ? (
-              <Checkbox checked={filters[dropdown.key] === item.value} />
+              <Checkbox checked={filters[dropdown.key]?.includes(item.value)} />
             ) : (
               <Radio checked={filters[dropdown.key] === item.value} />
             )}
