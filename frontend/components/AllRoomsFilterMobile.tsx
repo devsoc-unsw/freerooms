@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Drawer from "@mui/material/Drawer";
@@ -54,9 +55,19 @@ export default function AnchorTemporaryDrawer() {
         sx={{
           fontWeight: 500,
           fontSize: { xs: "0.8rem", sm: "0.9rem", md: "1rem" },
+          margin: 0,
         }}
       >
-        FILTER OPTIONS
+        <Typography
+          style={{
+            color: "primary.main",
+            width: "fit-content",
+            fontWeight: 500,
+            fontSize: "0.85rem",
+          }}
+        >
+          FILTER OPTIONS
+        </Typography>
       </Button>
       <Drawer
         anchor={"bottom"}

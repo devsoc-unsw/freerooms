@@ -16,6 +16,7 @@ const AllRoomsFilter: React.FC<{}> = () => {
           marginRight: 2,
           fontWeight: 500,
           fontSize: "0.85rem",
+          paddingBottom: "4px",
         }}
       >
         FILTER OPTIONS
