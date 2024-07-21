@@ -50,9 +50,15 @@ const DropdownSelections: React.FC<{
             key={item.value}
           >
             {canSelectMultiple ? (
-              <Checkbox checked={filters[dropdown.key]?.includes(item.value)} />
+              <Checkbox
+                checked={filters[dropdown.key]?.includes(item.value)}
+                role="checkbox"
+              />
             ) : (
-              <Radio checked={filters[dropdown.key] === item.value} />
+              <Radio
+                checked={filters[dropdown.key] === item.value}
+                role="radio"
+              />
             )}
             {item.text}
           </div>

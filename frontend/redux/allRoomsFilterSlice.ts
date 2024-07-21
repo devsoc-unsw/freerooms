@@ -15,7 +15,7 @@ const initialState: RoomsFilterState = {
 };
 
 const filtersSlice = createSlice({
-  name: "filters",
+  name: "allRoomsFilters",
   initialState,
   reducers: {
     setAllRoomsFilter: (
@@ -23,6 +23,9 @@ const filtersSlice = createSlice({
       action: PayloadAction<{ key: keyof AllRoomsFilter; value: string }>
     ) => {
       const { key, value } = action.payload;
+      if (!Object.keys(state.value).includes(key)) {
+        state.value[key] = [];
+      }
       state.value[key]?.push(value);
     },
     unsetAllRoomsFilter: (
