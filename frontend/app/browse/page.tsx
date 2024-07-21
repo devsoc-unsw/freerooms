@@ -6,7 +6,6 @@ import { styled } from "@mui/material/styles";
 import React from "react";
 
 import FilterBar from "../../components/FilterBar";
-import FilterSideBar from "../../components/FilterSideBar";
 import SearchBar from "../../components/SearchBar";
 import SortBar from "../../components/SortBar";
 import CardList from "../../views/CardList";
@@ -18,20 +17,19 @@ const Page = () => {
 
   return (
     <Container maxWidth={false}>
-      {/* <Tiles>
+      <Tiles>
         <Stack
           direction="row"
           justifyContent="space-between"
           my={1}
           flexWrap={{ xs: "wrap", sm: "nowrap" }}
-        > */}
-      {/* <FilterBar /> */}
-      <FilterSideBar />
-      {/* <SearchBar setQuery={setQuery} />
+        >
+          <FilterBar />
+          <SearchBar setQuery={setQuery} />
           <SortBar setSort={setSort} sort={sort} />
         </Stack>
         <CardList sort={sort} query={query} />
-      </Tiles> */}
+      </Tiles>
     </Container>
   );
 };
