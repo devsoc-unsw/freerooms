@@ -9,16 +9,12 @@ import { grey, orange } from "@mui/material/colors";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, styled } from "@mui/material/styles";
 import ThemeProvider from "@mui/system/ThemeProvider";
-import { usePathname } from "next/navigation";
 import React, { createContext, useEffect, useMemo, useState } from "react";
 import { Provider as ReduxProvider } from "react-redux";
 
 import NavBar, { navHeight } from "../components/NavBar";
 import SearchModal from "../components/SearchModal";
-import { selectCurrentBuilding } from "../redux/currentBuildingSlice";
-import { useSelector } from "../redux/hooks";
 import store from "../redux/store";
-import BuildingDrawer from "../views/BuildingDrawer";
 
 export const DarkModeContext = createContext({
   isDarkMode: false,
