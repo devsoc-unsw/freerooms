@@ -73,7 +73,6 @@ const BuildingDrawer: React.FC = () => {
   const { status: rooms } = useBuildingStatus(building?.id ?? "");
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const path = usePathname();
 
   if (!building) {
     return <></>;
@@ -94,6 +93,7 @@ const BuildingDrawer: React.FC = () => {
       anchor="right"
       open={true}
       aria-label="building-drawer"
+      onClose={onClose}
     >
       <Slide in={true} direction="left">
         <MainBox>
