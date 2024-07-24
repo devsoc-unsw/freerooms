@@ -9,7 +9,6 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import Image, { ImageProps } from "next/image";
-import { usePathname } from "next/navigation";
 import React from "react";
 
 import Button from "../components/Button";
