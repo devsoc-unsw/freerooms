@@ -4,6 +4,7 @@ import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import React from "react";
+import BuildingDrawer from "views/BuildingDrawer";
 
 import FilterBar from "../../components/FilterBar";
 import SearchBar from "../../components/SearchBar";
@@ -30,6 +31,7 @@ const Page = () => {
         </Stack>
         <CardList sort={sort} query={query} />
       </Tiles>
+      <BuildingDrawer />
     </Container>
   );
 };
