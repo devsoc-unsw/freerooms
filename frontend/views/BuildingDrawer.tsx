@@ -90,12 +90,12 @@ const BuildingDrawer: React.FC = () => {
           boxSizing: "border-box",
         },
       }}
-      anchor="right"
+      anchor={isMobile ? "bottom" : "right"}
       open={true}
       aria-label="building-drawer"
       onClose={onClose}
     >
-      <Slide in={true} direction="left">
+      <Slide in={true} direction={isMobile ? "up" : "left"}>
         <MainBox>
           <AppBox>
             <div
