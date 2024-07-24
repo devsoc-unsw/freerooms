@@ -93,6 +93,10 @@ const BuildingDrawer: React.FC = () => {
       open={true}
       aria-label="building-drawer"
       onClose={onClose}
+      // when modal open, the scroll bar is hidden, which cause the page to shift left slightly
+      // this option when enabled disable that behaviour, with the tradeoff being users can scroll in the backdrop
+      // see https://github.com/mui/material-ui/issues/10000
+      disableScrollLock={true}
     >
       <Slide in={true} direction={isMobile ? "up" : "left"}>
         <MainBox>
