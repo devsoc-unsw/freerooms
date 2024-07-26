@@ -232,6 +232,8 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
 
   const timeInDay = 24 * 60 * 60 * 1000;
 
+  // make a const for the circular display rating here
+
   return (
     <>
       <Stack justifyContent="flex-start" height="100%" width="100%" pt={3}>
@@ -352,6 +354,7 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
         <Box>
           <h1>
             rating goes here
+            {/*call the circular display here */}
           </h1>
         </Box>
       </Stack>
