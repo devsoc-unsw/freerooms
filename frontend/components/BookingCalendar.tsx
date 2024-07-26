@@ -349,6 +349,11 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
             }}
           />
         </StyledCalendarContainer>
+        <Box>
+          <h1>
+            rating goes here
+          </h1>
+        </Box>
       </Stack>
     </>
   );
