@@ -232,6 +232,31 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
 
   const timeInDay = 24 * 60 * 60 * 1000;
 
+  const CircularRating: React.FC<{ category: string; rating: number }> = ({
+    category,
+    rating,
+  }) => (
+    <Box textAlign="center" mx={1}>
+      <Typography variant="subtitle1">{category}</Typography>
+      <Box
+        sx={{
+          width: 100,
+          height: 100,
+          borderRadius: "50%",
+          border: "6px solid black",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          margin: "0 auto",
+        }}
+      >
+        <Typography fontSize={20} variant="body1">
+          {rating}
+        </Typography>
+      </Box>
+    </Box>
+  );
+
   return (
     <>
       <Stack justifyContent="flex-start" height="100%" width="100%" pt={3}>
@@ -349,6 +374,11 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
             }}
           />
         </StyledCalendarContainer>
+        <Box display="flex" flexDirection="row-reverse" mt={2} gap={9} pr={14}>
+          <CircularRating category="ACK" rating={5} />
+          <CircularRating category="Quietness" rating={3.5} />
+          <CircularRating category="Cleanliness" rating={4} />
+        </Box>
       </Stack>
     </>
   );
