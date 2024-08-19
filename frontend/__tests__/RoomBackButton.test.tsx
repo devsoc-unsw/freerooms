@@ -1,14 +1,14 @@
 import "@testing-library/jest-dom";
 
-import { render, screen, fireEvent } from "@testing-library/react";
-import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
-import currentBuildingSlice from "../redux/currentBuildingSlice";
-import RoomBackButton from "../components/RoomBackButton";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { useRouter } from "next/navigation";
-import { useSelector, useDispatch } from "../redux/hooks";
+import { Provider } from "react-redux";
 
-// used BuildingDrawer.test as reference
+import RoomBackButton from "../components/RoomBackButton";
+import currentBuildingSlice from "../redux/currentBuildingSlice";
+import { useDispatch, useSelector } from "../redux/hooks";
+
 jest.mock("next/navigation", () => ({
   ...jest.requireActual("next/navigation"),
   useRouter: jest.fn(),
