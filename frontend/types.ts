@@ -46,6 +46,14 @@ export type Filters = {
   id?: string;
 };
 
+export type AllRoomsFilter = {
+  capacity?: string[];
+  usage?: string[];
+  location?: string[];
+  duration?: string[];
+  id?: string[];
+};
+
 export type Sponsor = {
   name: string;
   image: string;
