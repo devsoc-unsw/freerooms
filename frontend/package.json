@@ -21,7 +21,7 @@
     "@mui/x-date-pickers": "^7.0.0",
     "@reduxjs/toolkit": "^1.9.5",
     "@types/css-mediaquery": "^0.1.4",
-    "axios": "^1.0.0",
+    "axios": "^1.7.4",
     "css-mediaquery": "^0.1.2",
     "date-fns": "^2.29.3",
     "date-fns-tz": "^2.0.0",
