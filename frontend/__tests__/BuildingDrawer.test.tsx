@@ -17,7 +17,7 @@ jest.mock("@mui/material", () => ({
 
 describe("BuildingDrawer", () => {
   it("Building Drawer shows close button", () => {
-    renderWithRedux(<BuildingDrawer open={true} />, {
+    renderWithRedux(<BuildingDrawer />, {
       preloadedState: {
         currentBuilding: {
           value: {
@@ -35,7 +35,7 @@ describe("BuildingDrawer", () => {
   });
 
   it("Building Drawer has correct width default (non-mobile view)", () => {
-    renderWithRedux(<BuildingDrawer open={true} />, {
+    renderWithRedux(<BuildingDrawer />, {
       preloadedState: {
         currentBuilding: {
           value: {
@@ -55,7 +55,7 @@ describe("BuildingDrawer", () => {
 
   it("Building Drawer has correct width for mobile view", () => {
     (useMediaQuery as unknown as jest.Mock).mockReturnValue(true);
-    renderWithRedux(<BuildingDrawer open={true} />, {
+    renderWithRedux(<BuildingDrawer />, {
       preloadedState: {
         currentBuilding: {
           value: {
@@ -74,7 +74,7 @@ describe("BuildingDrawer", () => {
   });
 
   it("Correct building name is displayed", () => {
-    renderWithRedux(<BuildingDrawer open={true} />, {
+    renderWithRedux(<BuildingDrawer />, {
       preloadedState: {
         currentBuilding: {
           value: {
@@ -92,7 +92,7 @@ describe("BuildingDrawer", () => {
   });
 
   it("Correct alternate description for image of building", () => {
-    renderWithRedux(<BuildingDrawer open={true} />, {
+    renderWithRedux(<BuildingDrawer />, {
       preloadedState: {
         currentBuilding: {
           value: {
