@@ -1,4 +1,4 @@
-FROM node:20.13-alpine as builder
+FROM node:20.17-alpine as builder
 
 # Set the current working directory inside the container
 WORKDIR /app/backend
@@ -13,7 +13,7 @@ COPY /common ../common
 
 RUN npm run build
 
-FROM node:20.13-alpine as runner
+FROM node:20.17-alpine as runner
 WORKDIR /app
 
 COPY backend/package.json backend/package-lock.json ./
