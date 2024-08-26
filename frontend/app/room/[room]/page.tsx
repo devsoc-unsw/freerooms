@@ -3,6 +3,7 @@
 import translateRoomUsage from "@common/roomUsages";
 import getSchoolDetails from "@common/schools";
 import type { Booking, Room } from "@common/types";
+import { ArrowBack } from "@mui/icons-material";
 import CloseIcon from "@mui/icons-material/Close";
 import {
   Button,
@@ -18,7 +19,9 @@ import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 
 import BookingButton from "../../../components/BookingButton";
 import BookingCalendar from "../../../components/BookingCalendar";
@@ -27,6 +30,47 @@ import RoomBackButton from "../../../components/RoomBackButton";
 import useBookings from "../../../hooks/useBookings";
 import useBuilding from "../../../hooks/useBuilding";
 import useRoom from "../../../hooks/useRoom";
+import {
+  selectCurrentBuilding,
+  setCurrentBuilding,
+} from "../../../redux/currentBuildingSlice";
+import { useSelector } from "../../../redux/hooks";
+
+const RoomBackButton = () => {
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const currentBuilding = useSelector(selectCurrentBuilding);
+
+  const handleBackButton = () => {
+    router.back();
+    dispatch(setCurrentBuilding(currentBuilding));
+  };
+
+  return (
+    <>
+      <Button
+        onClick={handleBackButton}
+        style={{
+          backgroundColor: "transparent",
+          position: "relative",
+          right: "12px",
+          width: "max-content",
+        }}
+      >
+        <ArrowBack />
+        <Typography
+          variant="body1"
+          marginLeft={1}
+          sx={{
+            textDecoration: "underline",
+          }}
+        >
+          Back
+        </Typography>
+      </Button>
+    </>
+  );
+};
 
 const adjustDateIfMidnight = (inputDate: Date): Date => {
   // Check if the time is midnight (00:00:00)
