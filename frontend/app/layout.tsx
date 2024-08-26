@@ -5,15 +5,10 @@ import React from "react";
 
 import ClientLayout from "./clientLayout";
 
-/**
- * Metadata in head is generated here
- */
-export async function generateMetadata(): Promise<Metadata> {
-  return {
-    title: "Freerooms",
-    description: "A tool to aid UNSW students in finding vacant rooms.",
-  };
-}
+export const metadata: Metadata = {
+  title: "Freerooms",
+  description: "A tool to aid UNSW students in finding vacant rooms.",
+};
 
 export default function RootLayout({
   // Layouts must accept a children prop.
