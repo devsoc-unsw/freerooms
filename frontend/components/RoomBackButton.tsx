@@ -1,7 +1,7 @@
 import { ArrowBack } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import {
   selectCurrentBuilding,
@@ -9,20 +9,17 @@ import {
 } from "../redux/currentBuildingSlice";
 import { useDispatch } from "../redux/hooks";
 import { useSelector } from "../redux/hooks";
-import BuildingDrawer from "../views/BuildingDrawer";
 
 const RoomBackButton = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const currentBuilding = useSelector(selectCurrentBuilding);
-  const path = usePathname();
 
   const handleBackButton = () => {
     router.back();
     dispatch(setCurrentBuilding(currentBuilding));
   };
 
-  const drawerOpen = !!currentBuilding && (path == "/browse" || path == "/map");
   return (
     <>
       <Button
@@ -33,7 +30,6 @@ const RoomBackButton = () => {
           right: "12px",
           width: "max-content",
         }}
-        aria-label="back"
       >
         <ArrowBack />
         <Typography
@@ -46,7 +42,6 @@ const RoomBackButton = () => {
           Back
         </Typography>
       </Button>
-      <BuildingDrawer open={drawerOpen} />
     </>
   );
 };
