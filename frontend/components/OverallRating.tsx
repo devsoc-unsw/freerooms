@@ -38,11 +38,11 @@ const OverallRating = () => {
           <LinearRating />
         </Stack>
       </Stack>
-      <Stack spacing={2} alignItems="flex-start" width="50%" height="50%">
-        <Stack alignItems="center" spacing={1} width="170px">
+      <Stack spacing={2} alignItems="flex-start" width="50%" height="30%">
+        <Stack alignItems="center" spacing={1} width="170px" height="100%">
           <Typography
             component="legend"
-            variant="h4"
+            variant="h3"
             sx={{ marginBottom: "8px" }}
           >
             {4.5}
@@ -56,7 +56,10 @@ const OverallRating = () => {
         </Stack>
         <Button
           onClick={handleOpen}
-          sx={{ fontSize: "10px", padding: "0px 0px 0px 44px", margin: "50px" }}
+          sx={{
+            fontSize: "10px",
+            padding: "0px 0px 12px 44px",
+          }}
         >
           Leave a Review
         </Button>
