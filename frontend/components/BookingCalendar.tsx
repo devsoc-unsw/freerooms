@@ -8,7 +8,7 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import Box, { BoxProps } from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from "@mui/material/CircularProgress";
 import { grey } from "@mui/material/colors";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
@@ -233,12 +233,12 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
 
   const timeInDay = 24 * 60 * 60 * 1000;
 
- const CircularRating: React.FC<{ category: string; rating: number }> = ({
+  const CircularRating: React.FC<{ category: string; rating: number }> = ({
     category,
     rating,
   }) => {
-    const normalizedRating = 100 - (rating / 5) * 100; 
-  
+    const normalizedRating = 100 - (rating / 5) * 100;
+
     return (
       <Box textAlign="center" mx={1}>
         <Typography variant="h6" fontWeight="bold">
@@ -246,11 +246,11 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
         </Typography>
         <Box
           sx={{
-            position: 'relative',
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            margin: '0 auto',
+            position: "relative",
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            margin: "0 auto",
           }}
         >
           <CircularProgress
@@ -259,8 +259,8 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
             size={100}
             thickness={3}
             sx={{
-              color: '#f57c00', 
-              position: 'absolute',
+              color: "#f57c00",
+              position: "absolute",
             }}
           />
           <CircularProgress
@@ -269,28 +269,24 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
             size={100}
             thickness={3}
             sx={{
-              color: '#e0e0e0', 
+              color: "#e0e0e0",
             }}
-          /> 
-          
-          
+          />
+
           <Box
             sx={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
             }}
           >
-            <Typography variant="h4">
-              {rating}
-            </Typography>
+            <Typography variant="h4">{rating}</Typography>
           </Box>
         </Box>
       </Box>
     );
   };
-  
 
   return (
     <>
