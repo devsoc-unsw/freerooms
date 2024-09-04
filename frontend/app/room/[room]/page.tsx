@@ -161,11 +161,15 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
           )}
         </Stack>
 
-        <Stack direction="row" alignItems="center">
+        <Stack
+          direction="row"
+          alignItems="center"
+          spacing={0.3}
+          aria-label="5-star-info"
+        >
           <Typography variant="body1" fontWeight="bold">
-            {4.5}
+            {ratingValue}
           </Typography>
-          <div style={{ width: 3 }} />
           <Rating
             readOnly
             value={ratingValue}

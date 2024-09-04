@@ -1,6 +1,8 @@
+import StarIcon from "@mui/icons-material/Star";
 import { Typography } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
+import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import Image, { ImageProps } from "next/image";
 import React from "react";
@@ -44,12 +46,11 @@ const StatusBox = styled(Box)<BoxProps>(() => ({
   display: "flex",
   alignItems: "center",
   borderRadius: 15,
-  position: "absolute",
   right: 0,
   backgroundColor: "white",
   padding: 8,
   paddingLeft: 10,
-  paddingRight: 15,
+  paddingRight: 10,
   margin: 10,
 }));
 
@@ -60,6 +61,7 @@ const TitleBox = styled(Box)<BoxProps>(() => ({
   height: "100%",
   position: "relative",
   alignItems: "center",
+  justifyContent: "space-between",
   color: "white",
   padding: 10,
 }));
@@ -77,6 +79,8 @@ const BuildingCardMobile: React.FC<{
   const freerooms = getNumFreerooms(status);
   const totalrooms = getTotalRooms(status);
 
+  const averageRatingValue = 4.5;
+
   return (
     <MainBox onClick={() => dispatch(setCurrentBuilding(building))}>
       <StyledImage
@@ -90,32 +94,55 @@ const BuildingCardMobile: React.FC<{
         <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
           {building.name}
         </Typography>
-        <StatusBox>
-          {freerooms > INITIALISING ? (
-            <>
-              {freerooms !== FAILED ? (
-                <StatusDot
-                  colour={
-                    freerooms >= 5
-                      ? "green"
-                      : freerooms !== 0
-                        ? "orange"
-                        : "red"
-                  }
-                />
-              ) : null}
+        <Stack
+          direction="column"
+          justifyContent="center"
+          alignItems="flex-end"
+          spacing={0.5}
+        >
+          <StatusBox>
+            {freerooms > INITIALISING ? (
+              <>
+                {freerooms !== FAILED ? (
+                  <StatusDot
+                    colour={
+                      freerooms >= 5
+                        ? "green"
+                        : freerooms !== 0
+                          ? "orange"
+                          : "red"
+                    }
+                  />
+                ) : null}
+                <Typography
+                  sx={{ fontSize: 12, fontWeight: 500, color: "#000000" }}
+                >
+                  {freerooms !== FAILED
+                    ? `${freerooms} / ${totalrooms}`
+                    : "? / ?"}
+                </Typography>
+              </>
+            ) : (
+              <CircularProgress size={20} thickness={5} disableShrink />
+            )}
+          </StatusBox>
+          <StatusBox>
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="center"
+              spacing={0.3}
+              aria-label="star-info"
+            >
               <Typography
                 sx={{ fontSize: 12, fontWeight: 500, color: "#000000" }}
               >
-                {freerooms !== FAILED
-                  ? `${freerooms} / ${totalrooms}`
-                  : "? / ?"}
+                {averageRatingValue}{" "}
               </Typography>
-            </>
-          ) : (
-            <CircularProgress size={20} thickness={5} disableShrink />
-          )}
-        </StatusBox>
+              <StarIcon sx={{ fontSize: "1rem", color: "rgb(255, 169, 12)" }} />
+            </Stack>
+          </StatusBox>
+        </Stack>
       </TitleBox>
     </MainBox>
   );

@@ -2,7 +2,6 @@ import StarIcon from "@mui/icons-material/Star";
 import { Typography } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
-import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import Image, { ImageProps } from "next/image";
@@ -87,7 +86,7 @@ const BuildingCard: React.FC<{
   if (!building) return <></>;
 
   const freerooms = getNumFreerooms(status);
-  const ratingValue = 3;
+  const averageRatingValue = 4.5;
 
   return (
     <MainBox onClick={() => dispatch(setCurrentBuilding(building))}>
@@ -122,9 +121,15 @@ const BuildingCard: React.FC<{
         <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
           {building.name}
         </Typography>
-        <Stack direction="row" alignItems="center">
-          <Typography sx={{ fontSize: 16, fontWeight: 500 }}>{4.5}</Typography>
-          <div style={{ width: 3 }} />
+        <Stack
+          direction="row"
+          alignItems="center"
+          spacing={0.3}
+          aria-label="star-info"
+        >
+          <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
+            {averageRatingValue}{" "}
+          </Typography>
           <StarIcon sx={{ color: "rgb(255, 169, 12)" }} />
         </Stack>
       </TitleBox>

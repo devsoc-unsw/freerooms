@@ -41,16 +41,6 @@ const RoomBoxSubheading = styled(Typography)<TypographyProps>(({ theme }) => ({
   fontWeight: 400,
 }));
 
-const RatingsBoxSubheading = styled(Typography)<TypographyProps>(
-  ({ theme }) => ({
-    fontSize: 12,
-    fontWeight: 400,
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-  })
-);
-
 const RoomAvailabilityBox: React.FC<{
   roomNumber: string;
   roomStatus: RoomStatus;
@@ -89,12 +79,10 @@ const RoomAvailabilityBox: React.FC<{
       <IndiviRoomBox>
         <Stack direction="column">
           <RoomBoxHeading> {roomNumber} </RoomBoxHeading>
-          <RatingsBoxSubheading>
+          <Stack direction="row" spacing={0.3} aria-label="5-star-info">
             <Typography sx={{ fontSize: 12, fontWeight: 400 }}>
-              {" "}
-              {ratingValue}{" "}
+              {ratingValue}
             </Typography>
-            <div style={{ width: 3 }} />
             <Rating
               readOnly
               value={ratingValue}
@@ -102,7 +90,7 @@ const RoomAvailabilityBox: React.FC<{
               precision={0.5}
               sx={{ color: "rgb(255, 169, 12)" }}
             />
-          </RatingsBoxSubheading>
+          </Stack>
           <RoomBoxSubheading>{!room ? "" : room.name}</RoomBoxSubheading>
         </Stack>
         <Stack
