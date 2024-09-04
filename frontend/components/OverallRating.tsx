@@ -31,11 +31,11 @@ const OverallRating = () => {
           Overall Rating
         </Typography>
         <Stack spacing={2}>
-          <LinearRating />
-          <LinearRating />
-          <LinearRating />
-          <LinearRating />
-          <LinearRating />
+          <LinearRating value={5} />
+          <LinearRating value={4} />
+          <LinearRating value={3} />
+          <LinearRating value={2} />
+          <LinearRating value={1} />
         </Stack>
       </Stack>
       <Stack spacing={2} alignItems="flex-start" width="50%" height="30%">
