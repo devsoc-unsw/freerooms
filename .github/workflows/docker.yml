@@ -44,7 +44,7 @@ jobs:
         run: echo "NEXT_PUBLIC_STAGING=true" >> .env
         working-directory: frontend
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
@@ -68,7 +68,7 @@ jobs:
           token: ${{ secrets.GH_TOKEN }}
           ref: migration
       - name: Install yq - portable yaml processor
-        uses: mikefarah/yq@v4.44.1
+        uses: mikefarah/yq@v4.44.3
       - name: Update deployment
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
