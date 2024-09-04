@@ -30,7 +30,7 @@ const OverallRating = () => {
         >
           Overall Rating
         </Typography>
-        <Stack spacing={2}>
+        <Stack spacing={2} aria-label="Linear Ratings">
           <LinearRating value={5} />
           <LinearRating value={4} />
           <LinearRating value={3} />
@@ -39,7 +39,13 @@ const OverallRating = () => {
         </Stack>
       </Stack>
       <Stack spacing={2} alignItems="flex-start" width="50%" height="30%">
-        <Stack alignItems="center" spacing={1} width="170px" height="100%">
+        <Stack
+          alignItems="center"
+          spacing={1}
+          width="170px"
+          height="100%"
+          aria-label="Number Star Rating"
+        >
           <Typography
             component="legend"
             variant="h3"
@@ -60,6 +66,7 @@ const OverallRating = () => {
             fontSize: "10px",
             padding: "0px 0px 12px 44px",
           }}
+          aria-label="Leave A Review"
         >
           Leave a Review
         </Button>
