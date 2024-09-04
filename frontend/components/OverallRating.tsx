@@ -1,8 +1,9 @@
-import { Box, Button, LinearProgress, Modal } from "@mui/material";
+import { Box, Button, Modal } from "@mui/material";
 import Rating from "@mui/material/Rating";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/system/Stack";
 import React, { useState } from "react";
+
 import LinearRating from "./LinearRating";
 
 const OverallRating = () => {

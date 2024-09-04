@@ -16,6 +16,7 @@ import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import OverallRating from "components/OverallRating";
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -25,7 +26,6 @@ import LoadingCircle from "../../../components/LoadingCircle";
 import useBookings from "../../../hooks/useBookings";
 import useBuilding from "../../../hooks/useBuilding";
 import useRoom from "../../../hooks/useRoom";
-import OverallRating from "components/OverallRating";
 
 const adjustDateIfMidnight = (inputDate: Date): Date => {
   // Check if the time is midnight (00:00:00)
