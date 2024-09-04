@@ -62,10 +62,16 @@ const OverallRating = () => {
           />
         </Stack>
         <Button
+          disableRipple
           onClick={handleOpen}
           sx={{
             fontSize: "10px",
             padding: "0px 0px 12px 44px",
+            color: "#1E90FF",
+            "&:hover": {
+              backgroundColor: "inherit",
+              boxShadow: "none",
+            },
           }}
           aria-label="Leave A Review"
         >
@@ -78,13 +84,48 @@ const OverallRating = () => {
           aria-describedby="modal-modal-description"
           sx={{ height: "30%", width: "30%" }}
         >
-          <Box>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-              Text in a modal
-            </Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-            </Typography>
+          <Box
+            sx={{
+              position: "absolute",
+              top: "100%",
+              left: "150%",
+              width: "10vw",
+              height: "50vh",
+              bgcolor: "white",
+              p: 4,
+            }}
+          >
+            <Stack spacing={2} alignItems="center">
+              <Typography id="modal-modal-title" variant="h6" component="h2">
+                Quietness
+              </Typography>
+              <Rating name="quietness" defaultValue={4.5} precision={0.5} />
+              <Typography id="modal-modal-title" variant="h6" component="h2">
+                Location
+              </Typography>
+              <Rating name="location" defaultValue={4.5} precision={0.5} />
+              <Typography id="modal-modal-title" variant="h6" component="h2">
+                Cleanliness
+              </Typography>
+              <Rating name="cleanliness" defaultValue={4.5} precision={0.5} />
+              <Typography id="modal-modal-title" variant="h6" component="h2">
+                Overall
+              </Typography>
+              <Rating name="overall" defaultValue={4.5} precision={0.5} />
+              <Button
+                disableRipple
+                sx={{
+                  fontSize: "10px",
+                  color: "#1E90FF",
+                  "&:hover": {
+                    backgroundColor: "inherit",
+                    boxShadow: "none",
+                  },
+                }}
+              >
+                Submit
+              </Button>
+            </Stack>
           </Box>
         </Modal>
       </Stack>
