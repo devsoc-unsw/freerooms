@@ -2,6 +2,8 @@ import {
   BookingsResponse,
   BuildingsResponse,
   RoomsResponse,
+  RoomStatus,
+  SearchResponse,
   StatusResponse,
 } from "@common/types";
 
@@ -9,6 +11,7 @@ import { queryBookingsForRoom } from "./dbInterface";
 import {
   calculateStatus,
   getBookingsForDate,
+  getBookingsForTimeRange,
   getBuildingRoomData,
 } from "./helpers";
 import { SearchFilters, StatusFilters } from "./types";
@@ -86,7 +89,55 @@ export const getAllRoomStatus = async (
   return result;
 };
 
-export const searchAllRoom = async (_filters: SearchFilters) => {};
+export const searchAllRoom = async (filters: SearchFilters) => {
+  let bookings;
+
+  if (filters.startTime && filters.endTime) {
+    bookings = await getBookingsForTimeRange(
+      filters.startTime,
+      filters.endTime
+    );
+  } else {
+    bookings = await getBookingsForDate(new Date());
+  }
+
+  const buildingData = await getBuildingRoomData();
+  const result: SearchResponse = {};
+  const rooms: Array<RoomStatus> = [];
+
+  for (const buildingId in buildingData) {
+    const roomLocation = +buildingId.substring(3) < UPPER ? "lower" : "upper";
+    if (filters.location && filters.location != roomLocation) {
+      continue;
+    }
+
+    const buildingRooms = buildingData[buildingId].rooms;
+    for (const roomNumber in buildingRooms) {
+      const roomData = buildingRooms[roomNumber];
+      if (
+        (filters.capacity && roomData.capacity < filters.capacity) ||
+        (filters.usage && roomData.usage != filters.usage) ||
+        (filters.id != undefined && (roomData.school != " ") != filters.id) // id is required if managed by a school (non-CATS)
+      )
+        continue;
+
+      const status = calculateStatus(
+        date,
+        bookings[roomData.id].bookings,
+        filters.duration || 0
+      );
+
+      if (status === null) {
+        continue;
+      }
+    }
+  }
+
+  return {
+    total: rooms.length,
+    result: rooms,
+  };
+};
 
 export const getRoomBookings = async (
   roomId: string
