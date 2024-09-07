@@ -33,7 +33,8 @@ import {
 
 import { selectDatetime } from "../redux/datetimeSlice";
 import { useSelector } from "../redux/hooks";
-import CircularRating from "./CircularRating";
+import CircularRating from "./Rooms/CircularRating";
+import RoomRatingList from "./Rooms/RoomRatingList";
 
 const ToolBarButton = styled(Button)(({ theme }) => ({
   borderColor: theme.palette.secondary.main,
@@ -351,11 +352,7 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
             }}
           />
         </StyledCalendarContainer>
-        <Box display="flex" flexDirection="row-reverse" mt={2} gap={9} pr={14}>
-          <CircularRating category="ACK" rating={5} />
-          <CircularRating category="Quietness" rating={3.5} />
-          <CircularRating category="Cleanliness" rating={4} />
-        </Box>
+        <RoomRatingList />
       </Stack>
     </>
   );

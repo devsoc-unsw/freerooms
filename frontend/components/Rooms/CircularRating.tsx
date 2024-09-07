@@ -8,21 +8,22 @@ interface CircularRatingProps {
   rating: number;
 }
 
-const CircularRating: React.FC<CircularRatingProps> = ({ category, rating }) => {
+const CircularRating: React.FC<CircularRatingProps> = ({
+  category,
+  rating,
+}) => {
   const normalizedRating = 100 - (rating / 5) * 100;
 
   return (
     <Box textAlign="center" mx={1}>
-      <Typography variant="h6" fontWeight="bold">
-        {category}
-      </Typography>
+      <Typography variant="h6">{category}</Typography>
       <Box
         sx={{
-          position: "relative",
-          display: "inline-flex",
           alignItems: "center",
+          display: "inline-flex",
           justifyContent: "center",
           margin: "0 auto",
+          position: "relative",
         }}
       >
         <CircularProgress
@@ -47,9 +48,9 @@ const CircularRating: React.FC<CircularRatingProps> = ({ category, rating }) => 
 
         <Box
           sx={{
+            left: "50%",
             position: "absolute",
             top: "50%",
-            left: "50%",
             transform: "translate(-50%, -50%)",
           }}
         >
