@@ -33,6 +33,7 @@ import {
 
 import { selectDatetime } from "../redux/datetimeSlice";
 import { useSelector } from "../redux/hooks";
+import CircularRating from "./CircularRating";
 
 const ToolBarButton = styled(Button)(({ theme }) => ({
   borderColor: theme.palette.secondary.main,
@@ -232,61 +233,6 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
   );
 
   const timeInDay = 24 * 60 * 60 * 1000;
-
-  const CircularRating: React.FC<{ category: string; rating: number }> = ({
-    category,
-    rating,
-  }) => {
-    const normalizedRating = 100 - (rating / 5) * 100;
-
-    return (
-      <Box textAlign="center" mx={1}>
-        <Typography variant="h6" fontWeight="bold">
-          {category}
-        </Typography>
-        <Box
-          sx={{
-            position: "relative",
-            display: "inline-flex",
-            alignItems: "center",
-            justifyContent: "center",
-            margin: "0 auto",
-          }}
-        >
-          <CircularProgress
-            variant="determinate"
-            value={100}
-            size={100}
-            thickness={3}
-            sx={{
-              color: "#f57c00",
-              position: "absolute",
-            }}
-          />
-          <CircularProgress
-            variant="determinate"
-            value={normalizedRating}
-            size={100}
-            thickness={3}
-            sx={{
-              color: "#e0e0e0",
-            }}
-          />
-
-          <Box
-            sx={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-            }}
-          >
-            <Typography variant="h4">{rating}</Typography>
-          </Box>
-        </Box>
-      </Box>
-    );
-  };
 
   return (
     <>
