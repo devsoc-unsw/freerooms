@@ -8,7 +8,6 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import Box, { BoxProps } from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
-import CircularProgress from "@mui/material/CircularProgress";
 import { grey } from "@mui/material/colors";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
@@ -33,7 +32,6 @@ import {
 
 import { selectDatetime } from "../redux/datetimeSlice";
 import { useSelector } from "../redux/hooks";
-import CircularRating from "./Rooms/CircularRating";
 import RoomRatingList from "./Rooms/RoomRatingList";
 
 const ToolBarButton = styled(Button)(({ theme }) => ({
