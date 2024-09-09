@@ -20,6 +20,7 @@ const OverallRating = () => {
       height="50vh"
       alignItems="flex-start"
       marginTop={3}
+      sx={{ flexGrow: 1 }}
     >
       <Stack width="300px" height="50%">
         <Typography
@@ -31,7 +32,7 @@ const OverallRating = () => {
         >
           Overall Rating
         </Typography>
-        <Stack spacing={2} aria-label="Linear Ratings">
+        <Stack spacing={2} aria-label="Linear Ratings" width="100%">
           <LinearRating value={5} />
           <LinearRating value={4} />
           <LinearRating value={3} />
@@ -39,18 +40,28 @@ const OverallRating = () => {
           <LinearRating value={1} />
         </Stack>
       </Stack>
-      <Stack spacing={2} alignItems="flex-start" width="50%" height="30%">
+      <Stack
+        spacing={2}
+        alignItems={{ xs: "center", sm: "flex-start" }}
+        width="40%"
+        height="40%"
+      >
         <Stack
           alignItems="center"
           spacing={1}
-          width="170px"
-          height="100%"
+          width="40%"
+          height="150%"
           aria-label="Number Star Rating"
         >
           <Typography
             component="legend"
             variant="h3"
-            sx={{ marginBottom: "8px" }}
+            sx={{
+              marginBottom: "16px",
+              fontSize: "3rem",
+              width: "100%",
+              textAlign: "center",
+            }}
           >
             {4.5}
           </Typography>
@@ -59,75 +70,76 @@ const OverallRating = () => {
             defaultValue={4.5}
             precision={0.1}
             readOnly
+            size="large"
           />
-        </Stack>
-        <Button
-          disableRipple
-          onClick={handleOpen}
-          sx={{
-            fontSize: "10px",
-            padding: "0px 0px 12px 44px",
-            color: "#1E90FF",
-            "&:hover": {
-              backgroundColor: "inherit",
-              boxShadow: "none",
-            },
-          }}
-          aria-label="Leave A Review"
-        >
-          Leave a Review
-        </Button>
-        <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-          sx={{ height: "30%", width: "30%" }}
-        >
-          <Box
+          <Button
+            disableRipple
+            onClick={handleOpen}
             sx={{
-              position: "absolute",
-              top: "100%",
-              left: "150%",
-              width: "10vw",
-              height: "50vh",
-              bgcolor: "white",
-              p: 4,
+              textAlign: "center",
+              fontSize: "10px",
+              color: "#1E90FF",
+              "&:hover": {
+                backgroundColor: "inherit",
+                boxShadow: "none",
+              },
             }}
+            aria-label="Leave A Review"
           >
-            <Stack spacing={2} alignItems="center">
-              <Typography id="modal-modal-title" variant="h6" component="h2">
-                Quietness
-              </Typography>
-              <Rating name="quietness" defaultValue={4.5} precision={0.5} />
-              <Typography id="modal-modal-title" variant="h6" component="h2">
-                Location
-              </Typography>
-              <Rating name="location" defaultValue={4.5} precision={0.5} />
-              <Typography id="modal-modal-title" variant="h6" component="h2">
-                Cleanliness
-              </Typography>
-              <Rating name="cleanliness" defaultValue={4.5} precision={0.5} />
-              <Typography id="modal-modal-title" variant="h6" component="h2">
-                Overall
-              </Typography>
-              <Rating name="overall" defaultValue={4.5} precision={0.5} />
-              <Button
-                disableRipple
-                sx={{
-                  fontSize: "10px",
-                  color: "#1E90FF",
-                  "&:hover": {
-                    backgroundColor: "inherit",
-                    boxShadow: "none",
-                  },
-                }}
-              >
-                Submit
-              </Button>
-            </Stack>
-          </Box>
-        </Modal>
+            Leave a Review
+          </Button>
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+            sx={{ height: "30%", width: "30%" }}
+          >
+            <Box
+              sx={{
+                position: "absolute",
+                top: "100%",
+                left: "120%",
+                width: "30vw",
+                height: "50vh",
+                bgcolor: "white",
+                p: 4,
+              }}
+            >
+              <Stack spacing={2} alignItems="center">
+                <Typography id="modal-modal-title" variant="h6" component="h2">
+                  Quietness
+                </Typography>
+                <Rating name="quietness" defaultValue={4.5} precision={0.5} />
+                <Typography id="modal-modal-title" variant="h6" component="h2">
+                  Location
+                </Typography>
+                <Rating name="location" defaultValue={4.5} precision={0.5} />
+                <Typography id="modal-modal-title" variant="h6" component="h2">
+                  Cleanliness
+                </Typography>
+                <Rating name="cleanliness" defaultValue={4.5} precision={0.5} />
+                <Typography id="modal-modal-title" variant="h6" component="h2">
+                  Overall
+                </Typography>
+                <Rating name="overall" defaultValue={4.5} precision={0.5} />
+                <Button
+                  disableRipple
+                  sx={{
+                    fontSize: "10px",
+                    color: "#1E90FF",
+                    "&:hover": {
+                      backgroundColor: "inherit",
+                      boxShadow: "none",
+                    },
+                  }}
+                >
+                  Submit
+                </Button>
+              </Stack>
+            </Box>
+          </Modal>
+        </Stack>
       </Stack>
     </Stack>
   );
