@@ -73,7 +73,6 @@ const OverallRating = () => {
             size="large"
           />
           <Button
-            disableRipple
             onClick={handleOpen}
             sx={{
               textAlign: "center",
@@ -147,7 +146,6 @@ const OverallRating = () => {
                   size="large"
                 />
                 <Button
-                  disableRipple
                   sx={{
                     fontSize: "10px",
                     color: "#1E90FF",
