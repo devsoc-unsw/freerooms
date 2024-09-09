@@ -98,31 +98,54 @@ const OverallRating = () => {
             <Box
               sx={{
                 position: "absolute",
-                top: "100%",
-                left: "120%",
-                width: "30vw",
+                top: "160%",
+                left: "165%",
+                transform: "translate(-50%, -50%)",
+                width: "20vw",
+                minWidth: "300px",
                 height: "50vh",
                 bgcolor: "white",
                 p: 4,
+                borderRadius: "16px",
               }}
             >
               <Stack spacing={2} alignItems="center">
                 <Typography id="modal-modal-title" variant="h6" component="h2">
                   Quietness
                 </Typography>
-                <Rating name="quietness" defaultValue={4.5} precision={0.5} />
+                <Rating
+                  name="quietness"
+                  defaultValue={4.5}
+                  precision={0.5}
+                  size="large"
+                />
                 <Typography id="modal-modal-title" variant="h6" component="h2">
                   Location
                 </Typography>
-                <Rating name="location" defaultValue={4.5} precision={0.5} />
+                <Rating
+                  name="location"
+                  defaultValue={4.5}
+                  precision={0.5}
+                  size="large"
+                />
                 <Typography id="modal-modal-title" variant="h6" component="h2">
                   Cleanliness
                 </Typography>
-                <Rating name="cleanliness" defaultValue={4.5} precision={0.5} />
+                <Rating
+                  name="cleanliness"
+                  defaultValue={4.5}
+                  precision={0.5}
+                  size="large"
+                />
                 <Typography id="modal-modal-title" variant="h6" component="h2">
                   Overall
                 </Typography>
-                <Rating name="overall" defaultValue={4.5} precision={0.5} />
+                <Rating
+                  name="overall"
+                  defaultValue={4.5}
+                  precision={0.5}
+                  size="large"
+                />
                 <Button
                   disableRipple
                   sx={{
