@@ -6,13 +6,16 @@ import {
   OverlayViewF,
   useJsApiLoader,
 } from "@react-google-maps/api";
-import React, { useEffect, useState } from "react";
+import { DarkModeContext } from "app/clientLayout";
+import React, { useContext, useEffect, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
+import BuildingDrawer from "views/BuildingDrawer";
 
 import { GOOGLE_API_KEY } from "../config";
 import useBuildings from "../hooks/useBuildings";
 import useUserLocation from "../hooks/useUserLocation";
 import calculateDistance from "../utils/calculateDistance";
+import getMapType from "../utils/getMapType";
 import MapMarker from "./MapMarker";
 
 const center = {
@@ -52,35 +55,13 @@ const LocationMarker = () => {
 export const Map = () => {
   // Fetch data
   const { buildings } = useBuildings();
+  const { isDarkMode } = useContext(DarkModeContext);
 
   // Use debounce to allow moving from marker to popup without popup hiding
   const [currentHover, setCurrentHover] = useState<Building | null>(null);
   const [debouncedCurrentHover, _] = useDebounceValue(currentHover, 50);
 
-  const styleArray = [
-    {
-      featureType: "all",
-      stylers: [{ visibility: "off" }],
-    },
-    {
-      featureType: "landscape",
-      stylers: [{ visibility: "on" }],
-    },
-    {
-      featureType: "landscape",
-      elementType: "labels",
-      stylers: [{ visibility: "off" }],
-    },
-    {
-      featureType: "road",
-      stylers: [{ visibility: "on" }],
-    },
-    {
-      featureType: "road",
-      elementType: "labels",
-      stylers: [{ visibility: "off" }],
-    },
-  ];
+  const styleArray = getMapType(isDarkMode);
 
   // Get current location of user
   const { userLat, userLng } = useUserLocation();
@@ -150,6 +131,7 @@ export const Map = () => {
             </OverlayViewF>
           )}
         </GoogleMap>
+        <BuildingDrawer />
       </div>
     );
   };

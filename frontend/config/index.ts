@@ -13,7 +13,7 @@ const env =
 const API_CONFIG: Record<string, string> = Object.freeze({
   [Env.DEV]: "http://localhost:3000",
   [Env.PROD]: "https://freerooms.devsoc.app",
-  [Env.STAGING]: "https://freerooms.staging.csesoc.unsw.edu.au/",
+  [Env.STAGING]: "https://freeroomsstaging.devsoc.app",
 });
 
 export const API_URL: string = API_CONFIG[env] + "/api";
