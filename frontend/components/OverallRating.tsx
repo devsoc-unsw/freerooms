@@ -48,6 +48,7 @@ const OverallRating = () => {
       >
         <Stack
           alignItems="center"
+          justifyContent="flex-end"
           spacing={1}
           width="40%"
           height="150%"
@@ -58,7 +59,7 @@ const OverallRating = () => {
             variant="h3"
             sx={{
               marginBottom: "16px",
-              fontSize: "3rem",
+              fontSize: "5rem",
               width: "100%",
               textAlign: "center",
             }}
