@@ -5,6 +5,7 @@ import Stack from "@mui/system/Stack";
 import React, { useState } from "react";
 
 import LinearRating from "./LinearRating";
+import ReviewRating from "./ReviewRating";
 
 const OverallRating = () => {
   const [open, setOpen] = useState(false);
@@ -59,7 +60,10 @@ const OverallRating = () => {
             variant="h3"
             sx={{
               marginBottom: "16px",
-              fontSize: "5rem",
+              fontSize: {
+                xs: "2.5rem",
+                md: "5rem",
+              },
               width: "100%",
               textAlign: "center",
             }}
@@ -110,42 +114,10 @@ const OverallRating = () => {
               }}
             >
               <Stack spacing={2} alignItems="center">
-                <Typography id="modal-modal-title" variant="h6" component="h2">
-                  Quietness
-                </Typography>
-                <Rating
-                  name="quietness"
-                  defaultValue={4.5}
-                  precision={0.5}
-                  size="large"
-                />
-                <Typography id="modal-modal-title" variant="h6" component="h2">
-                  Location
-                </Typography>
-                <Rating
-                  name="location"
-                  defaultValue={4.5}
-                  precision={0.5}
-                  size="large"
-                />
-                <Typography id="modal-modal-title" variant="h6" component="h2">
-                  Cleanliness
-                </Typography>
-                <Rating
-                  name="cleanliness"
-                  defaultValue={4.5}
-                  precision={0.5}
-                  size="large"
-                />
-                <Typography id="modal-modal-title" variant="h6" component="h2">
-                  Overall
-                </Typography>
-                <Rating
-                  name="overall"
-                  defaultValue={4.5}
-                  precision={0.5}
-                  size="large"
-                />
+                <ReviewRating text="Quietness" />
+                <ReviewRating text="Location" />
+                <ReviewRating text="Cleanliness" />
+                <ReviewRating text="Overall" />
                 <Button
                   sx={{
                     fontSize: "10px",
