@@ -23,6 +23,7 @@ import React, { useState } from "react";
 import BookingButton from "../../../components/BookingButton";
 import BookingCalendar from "../../../components/BookingCalendar";
 import LoadingCircle from "../../../components/LoadingCircle";
+import RoomBackButton from "../../../components/RoomBackButton";
 import useBookings from "../../../hooks/useBookings";
 import useBuilding from "../../../hooks/useBuilding";
 import useRoom from "../../../hooks/useRoom";
@@ -102,6 +103,7 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
       justifyContent="space-between"
     >
       <Stack direction="column" spacing={1} width="100%" mb={1}>
+        <RoomBackButton />
         {buildingName != "" && (
           <Stack
             direction="row"
