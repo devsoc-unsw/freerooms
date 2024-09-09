@@ -148,12 +148,19 @@ const BuildingDrawer: React.FC = () => {
               }}
             >
               <DesktopDatePicker
-                inputFormat="dd/MM/yyyy"
+                format="dd/MM/yyyy"
                 value={datetime}
                 onChange={(value) =>
                   value && dispatch(setDatetime(toSydneyTime(value)))
                 }
-                renderInput={customTextField}
+                slotProps={{
+                  textField: {
+                    sx: {
+                      svg: { color: theme.palette.text.primary },
+                      input: { color: theme.palette.text.primary },
+                    },
+                  },
+                }}
               />
               <div style={{ width: 10 }} />
               <TimePicker
@@ -161,7 +168,14 @@ const BuildingDrawer: React.FC = () => {
                 onChange={(value) =>
                   value && dispatch(setDatetime(toSydneyTime(value)))
                 }
-                renderInput={customTextField}
+                slotProps={{
+                  textField: {
+                    sx: {
+                      svg: { color: theme.palette.text.primary },
+                      input: { color: theme.palette.text.primary },
+                    },
+                  },
+                }}
               />
             </div>
           </LocalizationProvider>
