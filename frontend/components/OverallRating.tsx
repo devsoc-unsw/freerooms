@@ -4,8 +4,8 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/system/Stack";
 import React, { useState } from "react";
 
-import LinearRating from "./LinearRating";
-import ReviewRating from "./ReviewRating";
+import LinearRatings from "./LinearRatings";
+import ReviewModal from "./ReviewModal";
 
 const OverallRating = () => {
   const [open, setOpen] = useState(false);
@@ -18,29 +18,11 @@ const OverallRating = () => {
       direction="row"
       spacing={2}
       width="100%"
-      height="50vh"
       alignItems="flex-start"
       marginTop={3}
       sx={{ flexGrow: 1 }}
     >
-      <Stack width="300px" height="50%">
-        <Typography
-          id="overall-rating"
-          variant="h2"
-          component="h2"
-          sx={{ fontSize: "20px", fontWeight: "bold" }}
-          marginBottom={2}
-        >
-          Overall Rating
-        </Typography>
-        <Stack spacing={2} aria-label="Linear Ratings" width="100%">
-          <LinearRating value={5} />
-          <LinearRating value={4} />
-          <LinearRating value={3} />
-          <LinearRating value={2} />
-          <LinearRating value={1} />
-        </Stack>
-      </Stack>
+      <LinearRatings />
       <Stack
         spacing={2}
         alignItems={{ xs: "center", sm: "flex-start" }}
@@ -81,7 +63,7 @@ const OverallRating = () => {
             onClick={handleOpen}
             sx={{
               textAlign: "center",
-              fontSize: "10px",
+              fontSize: "12px",
               color: "#1E90FF",
               "&:hover": {
                 backgroundColor: "inherit",
@@ -92,47 +74,7 @@ const OverallRating = () => {
           >
             Leave a Review
           </Button>
-          <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-            sx={{ height: "30%", width: "30%" }}
-          >
-            <Box
-              sx={{
-                position: "absolute",
-                top: "160%",
-                left: "165%",
-                transform: "translate(-50%, -50%)",
-                width: "20vw",
-                minWidth: "300px",
-                height: "50vh",
-                bgcolor: "white",
-                p: 4,
-                borderRadius: "16px",
-              }}
-            >
-              <Stack spacing={2} alignItems="center">
-                <ReviewRating text="Quietness" />
-                <ReviewRating text="Location" />
-                <ReviewRating text="Cleanliness" />
-                <ReviewRating text="Overall" />
-                <Button
-                  sx={{
-                    fontSize: "10px",
-                    color: "#1E90FF",
-                    "&:hover": {
-                      backgroundColor: "inherit",
-                      boxShadow: "none",
-                    },
-                  }}
-                >
-                  Submit
-                </Button>
-              </Stack>
-            </Box>
-          </Modal>
+          <ReviewModal open={open} handleClose={handleClose} />
         </Stack>
       </Stack>
     </Stack>
