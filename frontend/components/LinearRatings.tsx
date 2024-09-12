@@ -1,5 +1,6 @@
 import { Stack, Typography } from "@mui/material";
 import React from "react";
+
 import LinearRating from "./LinearRating";
 
 const LinearRatings = () => {

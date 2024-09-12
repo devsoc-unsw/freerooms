@@ -1,7 +1,7 @@
 import { Box, Button, Modal, Stack } from "@mui/material";
-import React, { useState } from "react";
-import ReviewRating from "./ReviewRating";
+import React from "react";
 
+import ReviewRating from "./ReviewRating";
 interface ReviewModalProps {
   open: boolean;
   handleClose: () => void;
