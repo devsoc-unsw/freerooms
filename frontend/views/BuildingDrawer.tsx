@@ -3,25 +3,9 @@ import { Slide, Typography, useMediaQuery } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Drawer from "@mui/material/Drawer";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { styled, useTheme } from "@mui/material/styles";
-import TextField, { TextFieldProps } from "@mui/material/TextField";
-import { TimePicker } from "@mui/x-date-pickers";
-import { TimeField } from "@mui/x-date-pickers";
-import { DesktopTimePicker } from "@mui/x-date-pickers";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-import { DigitalClock } from "@mui/x-date-pickers/DigitalClock";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import dayjs, { Dayjs } from "dayjs";
 import Image, { ImageProps } from "next/image";
 import * as React from "react";
-import { useState } from "react";
-import DatePicker from "../components/DatePicker";
 
 import Button from "../components/Button";
 import useBuildingStatus from "../hooks/useBuildingStatus";
@@ -29,9 +13,7 @@ import {
   selectCurrentBuilding,
   setCurrentBuilding,
 } from "../redux/currentBuildingSlice";
-import { selectDatetime, setDatetime } from "../redux/datetimeSlice";
 import { useDispatch, useSelector } from "../redux/hooks";
-import toSydneyTime from "../utils/toSydneyTime";
 import RoomAvailabilityBox from "./RoomAvailabilityBox";
 
 const AppBox = styled(Box)(({ theme }) => ({
