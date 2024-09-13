@@ -2,11 +2,10 @@
 
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
-import { styled, useTheme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import React from "react";
-import BuildingDrawer from "views/BuildingDrawer";
 
 import DatePicker from "../../components/DatePicker";
 import FilterBar from "../../components/FilterBar";
@@ -19,7 +18,6 @@ const Page = () => {
   // Local state variables
   const [sort, setSort] = React.useState<string>("alphabetical");
   const [query, setQuery] = React.useState<string>("");
-  const theme = useTheme();
 
   return (
     <Container maxWidth={false}>
