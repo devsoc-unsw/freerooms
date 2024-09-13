@@ -27,7 +27,8 @@
     "date-fns-tz": "^2.0.0",
     "express": "^4.19.2",
     "graphql": "^16.6.0",
-    "graphql-request": "^6.1.0"
+    "graphql-request": "^6.1.0",
+    "mongodb": "^6.8.0"
   },
   "devDependencies": {
     "@types/cors": "2.8.17",

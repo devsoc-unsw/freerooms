@@ -4,6 +4,7 @@ import express, {
   Request,
   RequestHandler,
   Response,
+  json
 } from "express";
 
 import { PORT } from "./config";
@@ -16,8 +17,13 @@ import {
   parseFilters,
 } from "./service";
 
+import {
+  insertRating
+} from "./ratingDbInterface"
+
 const app = express();
 app.use(cors());
+app.use(json());
 
 // Wrapper for request handler functions to catch async exceptions
 const asyncHandler =
@@ -67,6 +73,18 @@ app.get(
     next();
   })
 );
+
+// insert one rating
+app.post("/api/rating/rate", async (req: Request, res: Response) => {
+  const { roomName, experience, cleanliness, quietness } = req.body;
+  const ratings = [experience, cleanliness, quietness];
+  try {
+      await insertRating(roomName, ratings)
+      res.status(200).json({ message: 'rating inserted successfully'});
+  } catch (error) {
+      res.status(500).json({ error: error});
+  }
+});
 
 // Error-handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
