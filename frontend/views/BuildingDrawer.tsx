@@ -1,8 +1,7 @@
 import CloseIcon from "@mui/icons-material/Close";
-import { Typography, useMediaQuery } from "@mui/material";
+import { Slide, Typography, useMediaQuery } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
-import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
@@ -74,33 +73,21 @@ const CloseButton = styled(Button)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
 }));
 
-export const drawerWidth = 400;
+const drawerWidth = 400;
 const drawerWidthMobile = "100%";
 
-const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
+const BuildingDrawer: React.FC = () => {
   const dispatch = useDispatch();
   const building = useSelector(selectCurrentBuilding);
   const { status: rooms } = useBuildingStatus(building?.id ?? "");
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  if (!building || !open) {
+  if (!building) {
     return <></>;
   }
 
   const onClose = () => dispatch(setCurrentBuilding(null));
-
-  const customTextField = (
-    params: JSX.IntrinsicAttributes & TextFieldProps
-  ) => (
-    <TextField
-      {...params}
-      sx={{
-        svg: { color: "#000000" },
-        input: { color: "#000000" },
-      }}
-    />
-  );
 
   return (
     <Drawer
@@ -112,73 +99,122 @@ const BuildingDrawer: React.FC<{ open: boolean }> = ({ open }) => {
           boxSizing: "border-box",
         },
       }}
-      variant="persistent"
-      anchor="right"
+      anchor={isMobile ? "bottom" : "right"}
       open={true}
       aria-label="building-drawer"
+      onClose={onClose}
+      // when modal open, the scroll bar is hidden, which cause the page to shift left slightly
+      // this option when enabled disable that behaviour, with the tradeoff being users can scroll in the backdrop
+      // see https://github.com/mui/material-ui/issues/10000
+      disableScrollLock={true}
     >
-      <Divider />
-      <MainBox>
-        <AppBox>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <Typography sx={{ fontSize: 19, fontWeight: 500 }}>
-              {building!.name}
-            </Typography>
-            <StatusBox>
-              {!rooms ? (
-                // loading
-                <CircularProgress size={20} thickness={5} disableShrink />
-              ) : null}
-            </StatusBox>
-          </div>
-          <CloseButton aria-label="Close" onClick={onClose}>
-            <CloseIcon />
-          </CloseButton>
-        </AppBox>
-        <div
-          style={{
-            margin: 10,
-          }}
-        >
-          <StyledImage
-            alt={`Image of building ${building.id}`}
-            src={`/assets/building_photos/${building.id}.webp`}
-            width={946}
-            height={648}
-            style={{ objectFit: "cover" }}
-            priority={true}
-          />
-        </div>
-        <RoomBox>
-          {rooms ? (
-            Object.keys(rooms).map((roomNumber) => (
-              <RoomAvailabilityBox
-                key={roomNumber}
-                roomNumber={roomNumber}
-                roomStatus={rooms[roomNumber]}
-                buildingId={building.id}
-              />
-            ))
-          ) : (
-            <Typography
-              sx={{
-                fontSize: 16,
-                fontWeight: 500,
-                textAlign: "center",
-                padding: 10,
+      <Slide in={true} direction={isMobile ? "up" : "left"}>
+        <MainBox>
+          <AppBox>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
               }}
             >
-              Loading...
-            </Typography>
-          )}
-        </RoomBox>
-      </MainBox>
+              <Typography sx={{ fontSize: 19, fontWeight: 500 }}>
+                {building.name}
+              </Typography>
+              <StatusBox>
+                {!rooms ? (
+                  // loading
+                  <CircularProgress size={20} thickness={5} disableShrink />
+                ) : null}
+              </StatusBox>
+            </div>
+            <CloseButton aria-label="Close" onClick={onClose}>
+              <CloseIcon />
+            </CloseButton>
+          </AppBox>
+
+          <div
+            style={{
+              margin: 10,
+            }}
+          >
+            <StyledImage
+              alt={`Image of building ${building.id}`}
+              src={`/assets/building_photos/${building.id}.webp`}
+              width={946}
+              height={648}
+              style={{ objectFit: "cover" }}
+              priority={true}
+            />
+          </div>
+
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                margin: 10,
+              }}
+            >
+              <DesktopDatePicker
+                format="dd/MM/yyyy"
+                value={datetime}
+                onChange={(value) =>
+                  value && dispatch(setDatetime(toSydneyTime(value)))
+                }
+                slotProps={{
+                  textField: {
+                    sx: {
+                      svg: { color: theme.palette.text.primary },
+                      input: { color: theme.palette.text.primary },
+                    },
+                  },
+                }}
+              />
+              <div style={{ width: 10 }} />
+              <TimePicker
+                value={datetime}
+                onChange={(value) =>
+                  value && dispatch(setDatetime(toSydneyTime(value)))
+                }
+                slotProps={{
+                  textField: {
+                    sx: {
+                      svg: { color: theme.palette.text.primary },
+                      input: { color: theme.palette.text.primary },
+                    },
+                  },
+                }}
+              />
+            </div>
+          </LocalizationProvider>
+
+          <RoomBox>
+            {rooms ? (
+              Object.keys(rooms).map((roomNumber) => (
+                <RoomAvailabilityBox
+                  key={roomNumber}
+                  roomNumber={roomNumber}
+                  roomStatus={rooms[roomNumber]}
+                  buildingId={building.id}
+                />
+              ))
+            ) : (
+              <Typography
+                sx={{
+                  fontSize: 16,
+                  fontWeight: 500,
+                  textAlign: "center",
+                  padding: 10,
+                }}
+              >
+                Loading...
+              </Typography>
+            )}
+          </RoomBox>
+        </MainBox>
+      </Slide>
     </Drawer>
   );
 };

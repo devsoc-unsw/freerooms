@@ -6,6 +6,7 @@ import { styled, useTheme } from "@mui/material/styles";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import React from "react";
+import BuildingDrawer from "views/BuildingDrawer";
 
 import DatePicker from "../../components/DatePicker";
 import FilterBar from "../../components/FilterBar";
