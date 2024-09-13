@@ -1,3 +1,5 @@
+"use client";
+
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import { styled, useTheme } from "@mui/material/styles";
