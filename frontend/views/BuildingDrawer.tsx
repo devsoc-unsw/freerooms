@@ -21,6 +21,7 @@ import dayjs, { Dayjs } from "dayjs";
 import Image, { ImageProps } from "next/image";
 import * as React from "react";
 import { useState } from "react";
+import DatePicker from "../components/DatePicker";
 
 import Button from "../components/Button";
 import useBuildingStatus from "../hooks/useBuildingStatus";
@@ -147,48 +148,6 @@ const BuildingDrawer: React.FC = () => {
               priority={true}
             />
           </div>
-
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                margin: 10,
-              }}
-            >
-              <DesktopDatePicker
-                format="dd/MM/yyyy"
-                value={datetime}
-                onChange={(value) =>
-                  value && dispatch(setDatetime(toSydneyTime(value)))
-                }
-                slotProps={{
-                  textField: {
-                    sx: {
-                      svg: { color: theme.palette.text.primary },
-                      input: { color: theme.palette.text.primary },
-                    },
-                  },
-                }}
-              />
-              <div style={{ width: 10 }} />
-              <TimePicker
-                value={datetime}
-                onChange={(value) =>
-                  value && dispatch(setDatetime(toSydneyTime(value)))
-                }
-                slotProps={{
-                  textField: {
-                    sx: {
-                      svg: { color: theme.palette.text.primary },
-                      input: { color: theme.palette.text.primary },
-                    },
-                  },
-                }}
-              />
-            </div>
-          </LocalizationProvider>
 
           <RoomBox>
             {rooms ? (

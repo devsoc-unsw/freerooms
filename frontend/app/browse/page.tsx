@@ -2,7 +2,7 @@
 
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
-import { styled } from "@mui/material/styles";
+import { styled, useTheme } from "@mui/material/styles";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import React from "react";
@@ -13,11 +13,13 @@ import SearchBar from "../../components/SearchBar";
 import SortBar from "../../components/SortBar";
 import TimePicker from "../../components/TimePicker";
 import CardList from "../../views/CardList";
+import BuildingDrawer from "views/BuildingDrawer";
 
 const Page = () => {
   // Local state variables
   const [sort, setSort] = React.useState<string>("alphabetical");
   const [query, setQuery] = React.useState<string>("");
+  const theme = useTheme();
 
   return (
     <Container maxWidth={false}>
@@ -60,6 +62,7 @@ const Page = () => {
           <CardList sort={sort} query={query} />
         </Tiles>
       </LocalizationProvider>
+      <BuildingDrawer />
     </Container>
   );
 };
