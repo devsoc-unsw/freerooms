@@ -26,6 +26,7 @@ const Building: React.FC<{}> = () => {
         flexGrow: 1,
         maxWidth: "440px",
         fontSize: { xs: "0.9em", sm: "1em" },
+        fontWeight: 300,
       }}
     >
       Building
@@ -40,6 +41,7 @@ const Capacity: React.FC<{}> = () => {
         flexGrow: 1,
         maxWidth: "440px",
         fontSize: { xs: "0.9em", sm: "1em" },
+        fontWeight: 300,
       }}
     >
       Capacity
@@ -54,6 +56,7 @@ const When: React.FC<{}> = () => {
         flexGrow: 1,
         maxWidth: "440px",
         fontSize: { xs: "0.9em", sm: "1em" },
+        fontWeight: 300,
       }}
     >
       When
@@ -68,6 +71,7 @@ const Duration: React.FC<{}> = () => {
         flexGrow: 1,
         maxWidth: "440px",
         fontSize: { xs: "0.9em", sm: "1em" },
+        fontWeight: 300,
       }}
     >
       Duration

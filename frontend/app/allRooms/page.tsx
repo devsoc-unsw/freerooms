@@ -1,6 +1,6 @@
 "use client";
 
-import ManageSearchIcon from "@mui/icons-material/ManageSearch";
+import SearchIcon from "@mui/icons-material/Search";
 import { useMediaQuery } from "@mui/material";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
@@ -18,8 +18,7 @@ export default function Page() {
       <Stack>
         <StyledSearchBar>
           <AllRoomsSearchBar />
-          <ManageSearchIcon />
-          <></>
+          <SearchIcon />
         </StyledSearchBar>
 
         <StyledBody>
@@ -41,7 +40,7 @@ const StyledSearchBar = styled(Stack)(({ theme }) => ({
   borderStyle: "solid",
   borderWidth: "thin",
   borderColor: theme.palette.text.secondary,
-  margin: theme.spacing(6, 5, 3.75),
+  margin: theme.spacing(6, 6.25, 3.75),
   padding: theme.spacing(1.25),
   justifyContent: "space-between",
   alignItems: "center",
@@ -57,7 +56,7 @@ const StyledBody = styled(Stack)(({ theme }) => ({
   flexDirection: "row",
   flexWrap: "wrap",
   margin: theme.spacing(0, 4.25),
-  padding: theme.spacing(2.5),
+  padding: theme.spacing(2),
   justifyContent: "space-between",
 }));
 
