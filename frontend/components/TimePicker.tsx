@@ -47,6 +47,7 @@ const TimePicker = () => {
             },
           },
         }}
+        aria-label="time-picker"
       />
     </LocalizationProvider>
   );

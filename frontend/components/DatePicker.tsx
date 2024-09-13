@@ -1,6 +1,5 @@
 "use client";
 
-import { styled, useTheme } from "@mui/material/styles";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -30,6 +29,7 @@ const DatePicker = () => {
             height: 45,
           },
         }}
+        aria-label="date-picker"
       />
     </LocalizationProvider>
   );

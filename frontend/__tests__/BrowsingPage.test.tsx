@@ -13,9 +13,16 @@ describe("Browsing Page", () => {
         <Page />
       </Provider>
     );
+
+    const datePicker = screen.getByRole("button", {
+      name: /Choose date, selected date i/i,
+    });
+
     const timePicker = screen.getByRole("button", {
       name: /Choose time, selected time is/i,
     });
+
     expect(timePicker).toBeInTheDocument();
+    expect(datePicker).toBeInTheDocument();
   });
 });
