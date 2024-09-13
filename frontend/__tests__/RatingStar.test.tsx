@@ -1,17 +1,21 @@
 import "@testing-library/jest-dom";
 
 import { RoomStatus } from "@common/types";
-import StarIcon from "@mui/icons-material/Star";
 import { useMediaQuery } from "@mui/material";
 import { render, screen } from "@testing-library/react";
+import { useRouter } from "next/navigation";
 import { Provider } from "react-redux";
 
 import Page from "../app/room/[room]/page";
 import BuildingCard from "../components/BuildingCard";
 import store from "../redux/store";
-import BuildingDrawer from "../views/BuildingDrawer";
 import RoomAvailabilityBox from "../views/RoomAvailabilityBox";
 import renderWithRedux from "./utils/renderWithRedux";
+import { useDispatch, useSelector } from "../redux/hooks";
+
+jest.mock("next/navigation", () => ({
+  useRouter: jest.fn(),
+}));
 
 jest.mock("react-redux", () => ({
   ...jest.requireActual("react-redux"),
@@ -85,14 +89,19 @@ describe("Rating Star", () => {
   });
 
   it("Stars show up on the room page", () => {
-    const mockParams = { room: "K-J17-101" }; // Mock room params
+    const router = { back: jest.fn() };
+
+    (useRouter as jest.Mock).mockReturnValue(router);
+
+    const mockParams = { room: "K-J17-101" };
 
     render(
       <Provider store={store}>
         <Page params={mockParams} />
       </Provider>
     );
-    const starIcon = screen.getByLabelText(/5-star-info/i);
-    expect(starIcon).toBeInTheDocument();
+
+    const starInfo = screen.getByLabelText(/5-star-info/i);
+    expect(starInfo).toBeInTheDocument();
   });
 });
