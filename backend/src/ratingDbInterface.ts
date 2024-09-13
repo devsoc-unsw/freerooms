@@ -1,7 +1,7 @@
 const {MongoClient} = require('mongodb');
 const uri = "mongodb+srv://freerooms:Freerooms123-456@freerooms.bceee3g.mongodb.net/?retryWrites=true&w=majority&appName=freerooms"
 
-export async function insertRating(roomName: string, ratings: number[]): Promise<void> {
+export async function insertRating(roomId: string, ratings: number[]): Promise<void> {
     const client = new MongoClient(uri);
     try {
         await client.connect();
@@ -9,7 +9,7 @@ export async function insertRating(roomName: string, ratings: number[]): Promise
         const collection = database.collection('ratings');
 
         const document = {
-            roomName: roomName,
+            roomId: roomId,
             ratings: ratings
         };
 
