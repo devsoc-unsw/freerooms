@@ -90,7 +90,7 @@ export const parseSearchFilters = (req: Request): SearchFilters => {
   if (req.query.startTime && req.query.endTime) {
     const startAndEndTime = {
       startTime: parseDatetime(req.query.startTime as string),
-      endTime: parseDatetime(req.query.datetime as string),
+      endTime: parseDatetime(req.query.endTime as string),
     };
 
     if (
@@ -99,6 +99,15 @@ export const parseSearchFilters = (req: Request): SearchFilters => {
     ) {
       throw new Error(
         "Invalid time range: end time cannot be 1 week later than start time."
+      );
+    }
+    filters = { ...filters, ...startAndEndTime };
+    if (
+      startAndEndTime.endTime.getTime() - startAndEndTime.startTime.getTime() <
+      0
+    ) {
+      throw new Error(
+        "Invalid time range: end time cannot be before start time."
       );
     }
     filters = { ...filters, ...startAndEndTime };

@@ -60,9 +60,7 @@ export type StatusResponse = {
 };
 
 export type SearchResponse = {
-  // total may be different to result.length if/when we implement pagination
-  total: number;
-  result: Array<RoomStatus>;
+  [roomId: string]: RoomStatus;
 };
 
 export type BookingsResponse = {

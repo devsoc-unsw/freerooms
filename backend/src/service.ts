@@ -2,7 +2,6 @@ import {
   BookingsResponse,
   BuildingsResponse,
   RoomsResponse,
-  RoomStatus,
   SearchResponse,
   StatusResponse,
 } from "@common/types";
@@ -89,7 +88,9 @@ export const getAllRoomStatus = async (
   return result;
 };
 
-export const searchAllRoom = async (filters: SearchFilters) => {
+export const searchAllRoom = async (
+  filters: SearchFilters
+): Promise<SearchResponse> => {
   let bookings;
 
   if (filters.startTime && filters.endTime) {
@@ -103,7 +104,6 @@ export const searchAllRoom = async (filters: SearchFilters) => {
 
   const buildingData = await getBuildingRoomData();
   const result: SearchResponse = {};
-  const rooms: Array<RoomStatus> = [];
 
   for (const buildingId in buildingData) {
     const roomLocation = +buildingId.substring(3) < UPPER ? "lower" : "upper";
@@ -122,7 +122,7 @@ export const searchAllRoom = async (filters: SearchFilters) => {
         continue;
 
       const status = calculateStatus(
-        date,
+        filters.startTime ?? new Date(),
         bookings[roomData.id].bookings,
         filters.duration || 0
       );
@@ -130,13 +130,25 @@ export const searchAllRoom = async (filters: SearchFilters) => {
       if (status === null) {
         continue;
       }
+
+      result[`${buildingId}-${roomNumber}`] = status;
     }
   }
 
-  return {
-    total: rooms.length,
-    result: rooms,
-  };
+  if (filters.startTime && filters.endTime) {
+    for (const roomId of Object.keys(result)) {
+      if (
+        result[roomId].status === "busy" ||
+        (result[roomId].status === "soon" &&
+          new Date(result[roomId].endtime).getTime() <
+            new Date(filters.endTime).getTime())
+      ) {
+        delete result[roomId];
+      }
+    }
+  }
+
+  return result;
 };
 
 export const getRoomBookings = async (
