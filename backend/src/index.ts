@@ -4,7 +4,7 @@ import express, {
   Request,
   RequestHandler,
   Response,
-  json
+  json,
 } from "express";
 
 import { PORT } from "./config";
@@ -17,9 +17,7 @@ import {
   parseFilters,
 } from "./service";
 
-import {
-  insertRating
-} from "./ratingDbInterface"
+import { getRatings, insertRating } from "./ratingDbInterface";
 
 const app = express();
 app.use(cors());
@@ -74,15 +72,28 @@ app.get(
   })
 );
 
+// get a rating for a room given roomId
+app.get("/api/rating/:roomID", async (req: Request, res: Response) => {
+  console.log("rating test\n");
+  const { roomID } = req.params;
+
+  try {
+    const room = await getRatings(roomID);
+    res.status(200).json({ room: room });
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+});
+
 // insert one rating
 app.post("/api/rating/rate", async (req: Request, res: Response) => {
   const { roomId, experience, cleanliness, quietness, location } = req.body;
   const ratings = [experience, cleanliness, quietness, location];
   try {
-      await insertRating(roomId, ratings)
-      res.status(200).json({ message: 'rating inserted successfully'});
+    await insertRating(roomId, ratings);
+    res.status(200).json({ message: "rating inserted successfully" });
   } catch (error) {
-      res.status(500).json({ error: error});
+    res.status(500).json({ error: error });
   }
 });
 
