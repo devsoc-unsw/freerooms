@@ -74,7 +74,6 @@ app.get(
 
 // get a rating for a room given roomId
 app.get("/api/rating/:roomID", async (req: Request, res: Response) => {
-  console.log("rating test\n");
   const { roomID } = req.params;
 
   try {

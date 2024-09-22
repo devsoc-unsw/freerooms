@@ -42,6 +42,12 @@ export type School = {
     contactLink : string
 }
 
+export type Rating = {
+  cleanliness: number;
+  quitness: number;
+  ack: number;
+}
+
 ///////////////////////////////////////////////////////////////
 // API Response Types
 
@@ -62,3 +68,9 @@ export type StatusResponse = {
 export type BookingsResponse = {
   bookings: Booking[];
 };
+
+// TODO: Finalize ratings interface
+export type RatingResponse = {
+  roomId: string;
+  ratings: any[]
+}
