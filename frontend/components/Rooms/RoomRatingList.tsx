@@ -7,6 +7,7 @@ import useRoomRatings from "hooks/useRoomRatings";
 const RoomRatingList: React.FC<{
   roomID: string;
 }> = ({ roomID }) => {
+  console.log("building name", roomID);
   const { ratings } = useRoomRatings(roomID);
 
   let cleanlinesRating = 0;
