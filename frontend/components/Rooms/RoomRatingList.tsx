@@ -14,7 +14,7 @@ const RoomRatingList: React.FC<{
   let quietnessRating = 0;
   let ackRating = 0;
 
-  if (ratings) {
+  if (ratings && ratings.length > 0) {
     let cleanlinesRatingSum = 0;
     let quietnessRatingSum = 0;
     let ackRatingSum = 0;
