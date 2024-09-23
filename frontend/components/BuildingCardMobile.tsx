@@ -128,16 +128,16 @@ const BuildingCardMobile: React.FC<{
           </StatusBox>
           <StatusBox>
             <Stack
-              direction="row"
               alignItems="center"
+              aria-label="star-info"
+              direction="row"
               justifyContent="center"
               spacing={0.3}
-              aria-label="star-info"
             >
               <Typography
                 sx={{ fontSize: 12, fontWeight: 500, color: "#000000" }}
               >
-                {averageRatingValue}{" "}
+                {averageRatingValue}
               </Typography>
               <StarIcon sx={{ fontSize: "1rem", color: "rgb(255, 169, 12)" }} />
             </Stack>

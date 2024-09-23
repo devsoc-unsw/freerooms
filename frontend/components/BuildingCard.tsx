@@ -128,7 +128,7 @@ const BuildingCard: React.FC<{
           aria-label="star-info"
         >
           <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
-            {averageRatingValue}{" "}
+            {averageRatingValue}
           </Typography>
           <StarIcon sx={{ color: "rgb(255, 169, 12)" }} />
         </Stack>
