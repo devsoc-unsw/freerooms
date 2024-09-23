@@ -71,6 +71,7 @@ export type BookingsResponse = {
 
 // TODO: Finalize ratings interface
 export type RatingsResponse = {
+  // roomId refers to room name
   roomId: string;
   ratings: any[]
 }

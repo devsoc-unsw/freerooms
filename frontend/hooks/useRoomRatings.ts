@@ -10,13 +10,14 @@ import { API_URL } from "../config";
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
-const useRoomRatings = (roomID: number) => {
+const useRoomRatings = (roomID: string) => {
   const { data, error } = useSWRImmutable<RatingsResponse>(
-    API_URL + "/api/rating/" + roomID,
+    API_URL + "/rating/" + roomID,
     fetcher
   );
+
   return {
-    ratings: data?.ratings,
+    ratings: data,
     error,
   };
 };
