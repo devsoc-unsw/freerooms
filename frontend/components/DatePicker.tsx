@@ -24,7 +24,6 @@ const DatePicker = () => {
         }
         sx={{
           width: 140,
-          // No easier way to change the height
           "& .MuiInputBase-root": {
             height: 45,
           },

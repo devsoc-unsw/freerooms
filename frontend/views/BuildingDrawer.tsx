@@ -5,7 +5,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Drawer from "@mui/material/Drawer";
 import { styled, useTheme } from "@mui/material/styles";
 import Image, { ImageProps } from "next/image";
-import * as React from "react";
 
 import Button from "../components/Button";
 import useBuildingStatus from "../hooks/useBuildingStatus";

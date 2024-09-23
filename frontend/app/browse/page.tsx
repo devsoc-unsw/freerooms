@@ -2,7 +2,7 @@
 
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
-import { styled, useTheme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import React from "react";
@@ -16,10 +16,8 @@ import TimePicker from "../../components/TimePicker";
 import CardList from "../../views/CardList";
 
 const Page = () => {
-  // Local state variables
   const [sort, setSort] = React.useState<string>("alphabetical");
   const [query, setQuery] = React.useState<string>("");
-  const theme = useTheme();
 
   return (
     <Container maxWidth={false}>
@@ -29,8 +27,7 @@ const Page = () => {
             direction={{ xs: "column", sm: "row" }}
             justifyContent={{
               xs: "center",
-              sm: "space-around",
-              md: "space-between",
+              sm: "space-between",
             }}
             alignItems="center"
             my={1}
@@ -49,11 +46,12 @@ const Page = () => {
             </Stack>
             <SearchBar setQuery={setQuery} />
             <Stack
-              direction="row"
-              spacing={1}
-              justifyContent="space-between"
               alignItems="center"
               alignSelf="center"
+              direction="row"
+              justifyContent="space-between"
+              marginTop={{ xs: 1, sm: 0 }}
+              spacing={1}
             >
               <DatePicker />
               <TimePicker />
