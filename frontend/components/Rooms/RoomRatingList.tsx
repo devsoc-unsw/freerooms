@@ -7,7 +7,6 @@ import useRoomRatings from "hooks/useRoomRatings";
 const RoomRatingList: React.FC<{
   roomID: string;
 }> = ({ roomID }) => {
-  console.log("building name", roomID);
   const { ratings } = useRoomRatings(roomID);
 
   let cleanlinesRating = 0;
@@ -15,19 +14,15 @@ const RoomRatingList: React.FC<{
   let ackRating = 0;
 
   if (ratings && ratings.length > 0) {
-    let cleanlinesRatingSum = 0;
-    let quietnessRatingSum = 0;
-    let ackRatingSum = 0;
-
     ratings.forEach((rating) => {
-      cleanlinesRatingSum += rating.ratings[0];
-      quietnessRatingSum += rating.ratings[1];
-      ackRatingSum += rating.ratings[2];
+      cleanlinesRating += rating.ratings[0];
+      quietnessRating += rating.ratings[1];
+      ackRating += rating.ratings[2];
     });
 
-    cleanlinesRating = cleanlinesRatingSum / ratings.length;
-    quietnessRating = quietnessRatingSum / ratings.length;
-    ackRating = ackRatingSum / ratings.length;
+    cleanlinesRating = cleanlinesRating / ratings.length;
+    quietnessRating = quietnessRating / ratings.length;
+    ackRating = ackRating / ratings.length;
   }
 
   return (
