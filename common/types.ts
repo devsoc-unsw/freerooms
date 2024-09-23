@@ -70,7 +70,7 @@ export type BookingsResponse = {
 };
 
 // TODO: Finalize ratings interface
-export type RatingResponse = {
+export type RatingsResponse = {
   roomId: string;
   ratings: any[]
 }

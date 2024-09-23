@@ -1,7 +1,7 @@
 import { MongoClient } from "mongodb";
 
 import dotenv from "dotenv";
-import { RatingResponse } from "@common/types";
+import { RatingsResponse } from "@common/types";
 dotenv.config({ path: "src/.env.local" });
 
 const uri: string | undefined = process.env.MONGODB_URI;
@@ -34,14 +34,14 @@ export async function insertRating(
   }
 }
 
-export async function getRatings(roomId: string): Promise<RatingResponse[]> {
+export async function getRatings(roomId: string): Promise<RatingsResponse[]> {
   if (!uri) {
     throw new Error("uri not found");
   }
 
   const client = new MongoClient(uri);
   // Return object
-  let roomRatings: RatingResponse[] = [];
+  let roomRatings: RatingsResponse[] = [];
 
   try {
     await client.connect();
@@ -63,7 +63,7 @@ export async function getRatings(roomId: string): Promise<RatingResponse[]> {
 
     for await (const doc of room) {
       // Convert to return type
-      const roomRating = doc as unknown as RatingResponse;
+      const roomRating = doc as unknown as RatingsResponse;
       roomRatings.push(roomRating);
     }
   } catch (error) {

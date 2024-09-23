@@ -72,7 +72,7 @@ app.get(
   })
 );
 
-// get a rating for a room given roomId
+// get all ratings for a room given roomId
 app.get("/api/rating/:roomID", async (req: Request, res: Response) => {
   const { roomID } = req.params;
 

@@ -2,6 +2,7 @@ import Box from "@mui/material/Box";
 import React from "react";
 
 import CircularRating from "./CircularRating";
+import useRoomRatings from "hooks/useRoomRatings";
 
 const RoomRatingList = () => {
   return (
