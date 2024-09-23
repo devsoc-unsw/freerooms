@@ -9,15 +9,31 @@ const RoomRatingList: React.FC<{
 }> = ({ roomID }) => {
   const { ratings } = useRoomRatings(roomID);
 
-  console.log(ratings);
+  let cleanlinesRating = 0;
+  let quietnessRating = 0;
+  let ackRating = 0;
 
-  if (!ratings) return <></>;
+  if (ratings) {
+    let cleanlinesRatingSum = 0;
+    let quietnessRatingSum = 0;
+    let ackRatingSum = 0;
+
+    ratings.forEach((rating) => {
+      cleanlinesRatingSum += rating.ratings[0];
+      quietnessRatingSum += rating.ratings[1];
+      ackRatingSum += rating.ratings[2];
+    });
+
+    cleanlinesRating = cleanlinesRatingSum / ratings.length;
+    quietnessRating = quietnessRatingSum / ratings.length;
+    ackRating = ackRatingSum / ratings.length;
+  }
 
   return (
     <Box display="flex" justifyContent="flex-start" mt={2} gap={9}>
-      <CircularRating category="Cleanliness" rating={4} />
-      <CircularRating category="Quietness" rating={3.5} />
-      <CircularRating category="ACK" rating={5} />
+      <CircularRating category="Cleanliness" rating={cleanlinesRating} />
+      <CircularRating category="Quietness" rating={quietnessRating} />
+      <CircularRating category="ACK" rating={ackRating} />
     </Box>
   );
 };
