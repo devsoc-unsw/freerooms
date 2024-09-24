@@ -1,8 +1,8 @@
 import Box from "@mui/material/Box";
+import useRoomRatings from "hooks/useRoomRatings";
 import React from "react";
 
 import CircularRating from "./CircularRating";
-import useRoomRatings from "hooks/useRoomRatings";
 
 const RoomRatingList: React.FC<{
   roomID: string;

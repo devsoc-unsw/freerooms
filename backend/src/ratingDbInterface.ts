@@ -1,7 +1,6 @@
-import { MongoClient } from "mongodb";
-
-import dotenv from "dotenv";
 import { RatingsResponse } from "@common/types";
+import dotenv from "dotenv";
+import { MongoClient } from "mongodb";
 dotenv.config({ path: "src/.env.local" });
 
 const uri: string | undefined = process.env.MONGODB_URI;
@@ -41,7 +40,7 @@ export async function getRatings(roomId: string): Promise<RatingsResponse[]> {
 
   const client = new MongoClient(uri);
   // Return object
-  let roomRatings: RatingsResponse[] = [];
+  const roomRatings: RatingsResponse[] = [];
 
   try {
     await client.connect();

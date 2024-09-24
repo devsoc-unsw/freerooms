@@ -1,13 +1,14 @@
 import cors from "cors";
 import express, {
+  json,
   NextFunction,
   Request,
   RequestHandler,
   Response,
-  json,
 } from "express";
 
 import { PORT } from "./config";
+import { getRatings, insertRating } from "./ratingDbInterface";
 import {
   getAllBuildings,
   getAllRooms,
@@ -16,8 +17,6 @@ import {
   parseDatetime,
   parseFilters,
 } from "./service";
-
-import { getRatings, insertRating } from "./ratingDbInterface";
 
 const app = express();
 app.use(cors());
