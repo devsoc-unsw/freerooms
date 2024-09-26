@@ -49,14 +49,13 @@ export async function getRatings(roomId: string): Promise<RatingsResponse[]> {
     const query = { roomId: roomId };
     // Include only 'roomId' and 'ratings' fields in each document
     const options = {
-      sort: {},
       projection: { _id: 0, roomId: 1, ratings: 1 },
     };
 
     const room = collection.find(query, options);
-    // Sanity check
+    // No document found
     if ((await collection.countDocuments(query)) === 0) {
-      console.log("No documents found!");
+      return roomRatings;
     }
 
     for await (const doc of room) {

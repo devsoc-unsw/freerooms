@@ -77,7 +77,7 @@ app.get("/api/rating/:roomID", async (req: Request, res: Response) => {
 
   try {
     const room = await getRatings(roomID);
-    res.status(200).json({ room: room });
+    res.status(200).json(room);
   } catch (error) {
     res.status(500).json({ error: error });
   }
