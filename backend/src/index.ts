@@ -72,16 +72,15 @@ app.get(
 );
 
 // get all ratings for a room given roomId
-app.get("/api/rating/:roomID", async (req: Request, res: Response) => {
-  const { roomID } = req.params;
-
-  try {
-    const room = await getRatings(roomID);
-    res.status(200).json(room);
-  } catch (error) {
-    res.status(500).json({ error: error });
-  }
-});
+app.get(
+  "/api/rating/:roomID",
+  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const { roomID } = req.params;
+    const roomRatings = await getRatings(roomID);
+    res.send(roomRatings);
+    next();
+  })
+);
 
 // insert one rating
 app.post("/api/rating/rate", async (req: Request, res: Response) => {
