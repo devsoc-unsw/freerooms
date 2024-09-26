@@ -18,7 +18,6 @@ export async function insertRating(
     await client.connect();
     const database = client.db("room-ratings");
     const collection = database.collection("ratings");
-    console.log("ratings", collection);
 
     const document = {
       roomId: roomId,
