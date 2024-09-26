@@ -4,12 +4,7 @@ import Box, { BoxProps } from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Drawer from "@mui/material/Drawer";
 import { styled, useTheme } from "@mui/material/styles";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import Image, { ImageProps } from "next/image";
-import React from "react";
 
 import Button from "../components/Button";
 import useBuildingStatus from "../hooks/useBuildingStatus";
@@ -17,9 +12,7 @@ import {
   selectCurrentBuilding,
   setCurrentBuilding,
 } from "../redux/currentBuildingSlice";
-import { selectDatetime, setDatetime } from "../redux/datetimeSlice";
 import { useDispatch, useSelector } from "../redux/hooks";
-import toSydneyTime from "../utils/toSydneyTime";
 import RoomAvailabilityBox from "./RoomAvailabilityBox";
 
 const AppBox = styled(Box)(({ theme }) => ({
@@ -67,7 +60,6 @@ const drawerWidthMobile = "100%";
 
 const BuildingDrawer: React.FC = () => {
   const dispatch = useDispatch();
-  const datetime = useSelector(selectDatetime);
   const building = useSelector(selectCurrentBuilding);
   const { status: rooms } = useBuildingStatus(building?.id ?? "");
   const theme = useTheme();
@@ -137,48 +129,6 @@ const BuildingDrawer: React.FC = () => {
               priority={true}
             />
           </div>
-
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                margin: 10,
-              }}
-            >
-              <DesktopDatePicker
-                format="dd/MM/yyyy"
-                value={datetime}
-                onChange={(value) =>
-                  value && dispatch(setDatetime(toSydneyTime(value)))
-                }
-                slotProps={{
-                  textField: {
-                    sx: {
-                      svg: { color: theme.palette.text.primary },
-                      input: { color: theme.palette.text.primary },
-                    },
-                  },
-                }}
-              />
-              <div style={{ width: 10 }} />
-              <TimePicker
-                value={datetime}
-                onChange={(value) =>
-                  value && dispatch(setDatetime(toSydneyTime(value)))
-                }
-                slotProps={{
-                  textField: {
-                    sx: {
-                      svg: { color: theme.palette.text.primary },
-                      input: { color: theme.palette.text.primary },
-                    },
-                  },
-                }}
-              />
-            </div>
-          </LocalizationProvider>
 
           <RoomBox>
             {rooms ? (
