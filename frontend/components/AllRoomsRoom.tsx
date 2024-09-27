@@ -1,3 +1,4 @@
+import { SearchResponseValue } from "@common/types";
 import { Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/system";
@@ -6,12 +7,14 @@ import { RoomAvailabilityBoxProps } from "views/RoomAvailabilityBox";
 
 import RoomAvailability from "./RoomAvailability";
 
-type AllRoomsRoomProps = Pick<
-  RoomAvailabilityBoxProps,
-  "roomNumber" | "roomStatus"
->;
+type AllRoomsRoomProps = SearchResponseValue &
+  Pick<RoomAvailabilityBoxProps, "roomNumber">;
 
-const Room: React.FC<AllRoomsRoomProps> = ({ roomNumber, roomStatus }) => {
+const Room: React.FC<AllRoomsRoomProps> = ({
+  name,
+  roomNumber,
+  ...roomStatus
+}) => {
   return (
     <Link href={`/room/${roomNumber}`}>
       <RoomDetails>
@@ -21,7 +24,7 @@ const Room: React.FC<AllRoomsRoomProps> = ({ roomNumber, roomStatus }) => {
             fontSize: { sm: "0.9em", md: "0.95em" },
           }}
         >
-          {roomNumber}
+          {name}
         </Typography>
         <RoomAvailability roomStatus={roomStatus} />
       </RoomDetails>

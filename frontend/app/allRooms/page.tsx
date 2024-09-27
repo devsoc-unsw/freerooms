@@ -18,8 +18,16 @@ export default function Page() {
   const { rooms, error } = useAllRooms();
   const roomsDisplay = useMemo(() => {
     if (!rooms) return;
-    return Object.entries(rooms).map(([roomId, roomStatus]) => {
-      return <Room key={roomId} roomNumber={roomId} roomStatus={roomStatus} />;
+    return Object.entries(rooms).map(([roomId, { name, status, endtime }]) => {
+      return (
+        <Room
+          key={roomId}
+          roomNumber={roomId}
+          name={name}
+          status={status}
+          endtime={endtime}
+        />
+      );
     });
   }, [rooms]);
 
@@ -52,6 +60,7 @@ const StyledSearchBar = styled(Stack)(({ theme }) => ({
   alignItems: "center",
   [theme.breakpoints.down("xs")]: {
     spacing: 1,
+    margin: theme.spacing(3, 6.25, 2),
   },
   [theme.breakpoints.up("xs")]: {
     spacing: 2,
@@ -64,6 +73,11 @@ const StyledBody = styled(Stack)(({ theme }) => ({
   margin: theme.spacing(0, 4.25),
   padding: theme.spacing(2),
   justifyContent: "space-between",
+  [theme.breakpoints.down("md")]: {
+    flexDirection: "column",
+    alignItems: "center",
+    padding: theme.spacing(0, 2),
+  },
 }));
 
 const Filter: React.FC<{}> = () => {

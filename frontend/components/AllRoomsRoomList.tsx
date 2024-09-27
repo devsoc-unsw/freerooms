@@ -4,7 +4,7 @@ import { styled } from "@mui/system";
 const RoomList = styled(Stack)(({ theme }) => ({
   flexDirection: "column",
   flexGrow: 5,
-  maxHeight: "calc(100vh - 225px)",
+  maxHeight: "calc(100svh - 225px)",
   overflowY: "auto",
   [theme.breakpoints.down("md")]: {
     width: "100%",
