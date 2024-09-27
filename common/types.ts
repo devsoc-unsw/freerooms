@@ -37,10 +37,10 @@ export type RoomStatus = {
 };
 
 export type School = {
-    name : string;
-    homepage : string;
-    contactLink : string
-}
+  name: string;
+  homepage: string;
+  contactLink: string;
+};
 
 ///////////////////////////////////////////////////////////////
 // API Response Types
@@ -57,6 +57,10 @@ export type RoomsResponse = {
 
 export type StatusResponse = {
   [buildingId: string]: BuildingStatus;
+};
+
+export type SearchResponse = {
+  [roomId: string]: RoomStatus;
 };
 
 export type BookingsResponse = {
