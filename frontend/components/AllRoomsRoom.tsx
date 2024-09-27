@@ -32,8 +32,9 @@ const Room: React.FC<AllRoomsRoomProps> = ({ roomNumber, roomStatus }) => {
 const RoomDetails = styled(Stack)(({ theme }) => ({
   flexDirection: "row",
   justifyContent: "space-between",
+  alignItems: "center",
   height: "fit-content",
-  borderRadius: 4,
+  borderRadius: 8,
   borderStyle: "solid",
   borderColor: "black",
   borderWidth: "thin",
