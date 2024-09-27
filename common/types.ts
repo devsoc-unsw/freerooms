@@ -59,8 +59,10 @@ export type StatusResponse = {
   [buildingId: string]: BuildingStatus;
 };
 
+export type SearchResponseValue = RoomStatus & Pick<Room, "name">;
+
 export type SearchResponse = {
-  [roomId: string]: RoomStatus;
+  [roomId: string]: SearchResponseValue;
 };
 
 export type BookingsResponse = {

@@ -131,7 +131,10 @@ export const searchAllRoom = async (
         continue;
       }
 
-      result[`${buildingId}-${roomNumber}`] = status;
+      result[`${buildingId}-${roomNumber}`] = {
+        ...status,
+        name: roomData.name,
+      };
     }
   }
 
