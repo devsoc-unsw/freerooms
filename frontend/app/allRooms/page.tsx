@@ -5,6 +5,8 @@ import { useMediaQuery } from "@mui/material";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import { styled, useTheme } from "@mui/system";
+import useAllRooms from "hooks/useAllRooms";
+import { useMemo } from "react";
 
 import AllRoomsFilter from "../../components/AllRoomsFilter";
 import AllRoomsFilterMobile from "../../components/AllRoomsFilterMobile";
@@ -13,6 +15,14 @@ import RoomList from "../../components/AllRoomsRoomList";
 import AllRoomsSearchBar from "../../components/AllRoomsSearchBar";
 
 export default function Page() {
+  const { rooms, error } = useAllRooms();
+  const roomsDisplay = useMemo(() => {
+    if (!rooms) return;
+    return Object.entries(rooms).map(([roomId, roomStatus]) => {
+      return <Room key={roomId} roomNumber={roomId} roomStatus={roomStatus} />;
+    });
+  }, [rooms]);
+
   return (
     <Container>
       <Stack>
@@ -20,13 +30,9 @@ export default function Page() {
           <AllRoomsSearchBar />
           <SearchIcon />
         </StyledSearchBar>
-
         <StyledBody>
           <Filter />
-          <RoomList>
-            <Room building="Ainsworth G03" string="Available Until 1:00pm" />
-            <Room building="CSE Building K17" string="Available Until 1:00pm" />
-          </RoomList>
+          <RoomList>{roomsDisplay}</RoomList>
         </StyledBody>
       </Stack>
     </Container>
