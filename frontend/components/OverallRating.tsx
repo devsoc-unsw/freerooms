@@ -41,12 +41,8 @@ const OverallRating = () => {
             onClick={handleOpen}
             sx={{
               textAlign: "center",
-              fontSize: "12px",
+              fontSize: "14px",
               color: "#1E90FF",
-              "&:hover": {
-                backgroundColor: "inherit",
-                boxShadow: "none",
-              },
             }}
             aria-label="Leave A Review"
           >

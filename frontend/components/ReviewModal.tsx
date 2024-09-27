@@ -41,12 +41,8 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ open, handleClose }) => {
           <Button
             onClick={handleSubmit}
             sx={{
-              fontSize: "14px",
+              fontSize: "16px",
               color: "#1E90FF",
-              "&:hover": {
-                backgroundColor: "inherit",
-                boxShadow: "none",
-              },
             }}
           >
             Submit
