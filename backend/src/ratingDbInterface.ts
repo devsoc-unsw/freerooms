@@ -1,6 +1,6 @@
 import { RatingsResponse } from "@common/types";
 import dotenv from "dotenv";
-import { MongoClient } from "mongodb";
+import { Collection, MongoClient } from "mongodb";
 dotenv.config({ path: "src/.env.local" });
 
 const uri: string | undefined = process.env.MONGODB_URI;
@@ -17,14 +17,22 @@ export async function insertRating(
   try {
     await client.connect();
     const database = client.db("room-ratings");
-    const collection = database.collection("ratings");
+    const collection: Collection<RatingsResponse> =
+      database.collection("ratings");
 
-    const document = {
-      roomId: roomId,
-      ratings: ratings,
+    // Update this room's document with new ratings
+    // If no documents exist for the current room, create one with ratings array
+    const filter = { roomId: roomId };
+    const options = {
+      upsert: true,
     };
+    const result = await collection.updateOne(
+      filter,
+      { $push: { ratings: ratings } },
+      options
+    );
 
-    await collection.insertOne(document);
+    console.log(result);
   } catch (error) {
     console.error("Error inserting document:", error);
   } finally {
