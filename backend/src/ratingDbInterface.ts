@@ -1,4 +1,4 @@
-import { RatingsArray, RatingsResponse } from "@common/types";
+import { Rating, RatingsResponse } from "@common/types";
 import dotenv from "dotenv";
 import { Collection, MongoClient } from "mongodb";
 dotenv.config({ path: "src/.env.local" });
@@ -20,6 +20,13 @@ export async function insertRating(
     const collection: Collection<RatingsResponse> =
       database.collection("ratings");
 
+    const ratingObject: Rating = {
+      quitness: ratings[0],
+      location: ratings[1],
+      cleanliness: ratings[2],
+      overall: ratings[3],
+    };
+
     // Update this room's document with new ratings
     // If no documents exist for the current room, create one with ratings array
     const filter = { roomId: roomId };
@@ -28,7 +35,7 @@ export async function insertRating(
     };
     await collection.updateOne(
       filter,
-      { $push: { ratings: ratings } },
+      { $push: { ratings: ratingObject } },
       options
     );
   } catch (error) {
@@ -38,7 +45,7 @@ export async function insertRating(
   }
 }
 
-export async function getRatings(roomId: string): Promise<RatingsArray[]> {
+export async function getRatings(roomId: string): Promise<Rating[]> {
   if (!uri) {
     throw new Error("uri not found");
   }

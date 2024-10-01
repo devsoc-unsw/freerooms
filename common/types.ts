@@ -43,9 +43,10 @@ export type School = {
 }
 
 export type Rating = {
-  cleanliness: number;
   quitness: number;
-  ack: number;
+  location: number;
+  cleanliness: number;
+  overall: number;
 }
 
 ///////////////////////////////////////////////////////////////
@@ -69,10 +70,8 @@ export type BookingsResponse = {
   bookings: Booking[];
 };
 
-export type RatingsArray = number[];
-
 export type RatingsResponse = {
   // roomId refers to room name
   roomId: string;
-  ratings: RatingsArray[]
+  ratings: Rating[];
 }
