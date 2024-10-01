@@ -69,10 +69,10 @@ export type BookingsResponse = {
   bookings: Booking[];
 };
 
-// TODO: Finalize ratings interface
+export type RatingsArray = number[];
 
 export type RatingsResponse = {
   // roomId refers to room name
   roomId: string;
-  ratings: any[]
+  ratings: RatingsArray[]
 }

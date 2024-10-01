@@ -1,4 +1,4 @@
-import { RatingsResponse } from "@common/types";
+import { RatingsArray, RatingsResponse } from "@common/types";
 import dotenv from "dotenv";
 import { Collection, MongoClient } from "mongodb";
 dotenv.config({ path: "src/.env.local" });
@@ -26,13 +26,11 @@ export async function insertRating(
     const options = {
       upsert: true,
     };
-    const result = await collection.updateOne(
+    await collection.updateOne(
       filter,
       { $push: { ratings: ratings } },
       options
     );
-
-    console.log(result);
   } catch (error) {
     console.error("Error inserting document:", error);
   } finally {
@@ -40,42 +38,36 @@ export async function insertRating(
   }
 }
 
-export async function getRatings(roomId: string): Promise<RatingsResponse[]> {
+export async function getRatings(roomId: string): Promise<RatingsArray[]> {
   if (!uri) {
     throw new Error("uri not found");
   }
 
   const client = new MongoClient(uri);
-  // Return object
-  const roomRatings: RatingsResponse[] = [];
 
   try {
     await client.connect();
     const database = client.db("room-ratings");
     const collection = database.collection("ratings");
-
     const query = { roomId: roomId };
+
     // Include only 'roomId' and 'ratings' fields in each document
     const options = {
       projection: { _id: 0, roomId: 1, ratings: 1 },
     };
 
-    const room = collection.find(query, options);
-    // No document found
-    if ((await collection.countDocuments(query)) === 0) {
-      return roomRatings;
-    }
+    const roomDoc = await collection.findOne(query, options);
 
-    for await (const doc of room) {
-      // Convert to return type
-      const roomRating = doc as unknown as RatingsResponse;
-      roomRatings.push(roomRating);
+    // Document found, return ratings array
+    if (roomDoc !== null) {
+      const roomRating = roomDoc as unknown as RatingsResponse;
+      return roomRating.ratings;
     }
   } catch (error) {
     console.error("Error finding item:", error);
   } finally {
     await client.close();
   }
-
-  return roomRatings;
+  // No document found, return empty array
+  return [];
 }
