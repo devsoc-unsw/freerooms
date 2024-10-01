@@ -15,9 +15,9 @@ const RoomRatingList: React.FC<{
 
   if (ratings && ratings.length > 0) {
     ratings.forEach((rating) => {
-      cleanlinesRating += rating.ratings[0];
-      quietnessRating += rating.ratings[1];
-      ackRating += rating.ratings[2];
+      cleanlinesRating += rating.cleanliness;
+      quietnessRating += rating.cleanliness;
+      ackRating += rating.overall;
     });
 
     cleanlinesRating = cleanlinesRating / ratings.length;
