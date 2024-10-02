@@ -5,6 +5,7 @@ import Box, { BoxProps } from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
+import RoomAvailability from "components/RoomAvailability";
 import Link from "next/link";
 import React from "react";
 
@@ -41,36 +42,17 @@ const RoomBoxSubheading = styled(Typography)<TypographyProps>(({ theme }) => ({
   fontWeight: 400,
 }));
 
-const RoomAvailabilityBox: React.FC<{
+export interface RoomAvailabilityBoxProps {
   roomNumber: string;
   roomStatus: RoomStatus;
   buildingId: string;
-}> = ({ roomNumber, roomStatus, buildingId }) => {
-  const date = new Date(roomStatus.endtime);
-  const hoursMinutes = date.toLocaleTimeString("en-AU", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-  });
+}
 
-  const roomStatusColor = {
-    free: "#2AA300",
-    busy: "#D30000",
-    soon: "#ffa600",
-  };
-
-  const roomStatusMessage = {
-    free: "Available",
-    busy: "Unavailable",
-    soon: "Available Soon",
-  };
-
-  const untilMessage = {
-    free: hoursMinutes == "Invalid Date" ? "" : "until " + hoursMinutes,
-    busy: hoursMinutes == "Invalid Date" ? "" : "until " + hoursMinutes,
-    soon: "at " + hoursMinutes,
-  };
-
+const RoomAvailabilityBox: React.FC<RoomAvailabilityBoxProps> = ({
+  roomNumber,
+  roomStatus,
+  buildingId,
+}) => {
   const { room } = useRoom(`${buildingId}-${roomNumber}`);
   const ratingValue = 3.5;
 
@@ -98,16 +80,7 @@ const RoomAvailabilityBox: React.FC<{
           justifyContent="space-around"
           alignItems="center"
         >
-          <Stack direction="column" alignItems="flex-end">
-            <RoomBoxHeading sx={{ color: roomStatusColor[roomStatus.status] }}>
-              {roomStatusMessage[roomStatus.status]}
-            </RoomBoxHeading>
-            <RoomBoxSubheading
-              sx={{ color: roomStatusColor[roomStatus.status] }}
-            >
-              {untilMessage[roomStatus.status]}
-            </RoomBoxSubheading>
-          </Stack>
+          <RoomAvailability roomStatus={roomStatus} />
           <ChevronRightIcon style={{ color: "grey" }} />
         </Stack>
       </IndiviRoomBox>

@@ -21,6 +21,14 @@ export const getBookingsForDate = async (
   return Object.fromEntries(res.rooms.map((room) => [room.id, room]));
 };
 
+export const getBookingsForTimeRange = async (
+  startTime: Date,
+  endTime: Date
+) => {
+  const res = await queryBookingsInRange(startTime, endTime);
+  return Object.fromEntries(res.rooms.map((room) => [room.id, room]));
+};
+
 export const getBuildingRoomData = async (): Promise<BuildingDatabase> => {
   const res = await queryBuildingsAndRooms();
   return Object.fromEntries(
