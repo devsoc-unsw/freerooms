@@ -32,6 +32,7 @@ import {
 
 import { selectDatetime } from "../redux/datetimeSlice";
 import { useSelector } from "../redux/hooks";
+import RoomRatingList from "./Rooms/RoomRatingList";
 
 const ToolBarButton = styled(Button)(({ theme }) => ({
   borderColor: theme.palette.secondary.main,
@@ -349,6 +350,7 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
             }}
           />
         </StyledCalendarContainer>
+        <RoomRatingList />
       </Stack>
     </>
   );
