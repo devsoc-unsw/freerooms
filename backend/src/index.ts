@@ -10,12 +10,16 @@ import express, {
 import { PORT } from "./config";
 import { getRatings, insertRating } from "./ratingDbInterface";
 import {
+  parseSearchFilters,
+  parseStatusDatetime,
+  parseStatusFilters,
+} from "./requestParsers";
+import {
   getAllBuildings,
   getAllRooms,
   getAllRoomStatus,
   getRoomBookings,
-  parseDatetime,
-  parseFilters,
+  searchAllRoom,
 } from "./service";
 
 const app = express();
@@ -52,9 +56,20 @@ app.get(
 app.get(
   "/api/rooms/status",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const datetime = parseDatetime(req);
-    const filters = parseFilters(req);
+    const datetime = parseStatusDatetime(req);
+    const filters = parseStatusFilters(req);
     const data = await getAllRoomStatus(datetime, filters);
+    res.send(data);
+    next();
+  })
+);
+
+// Route to search all rooms
+app.get(
+  "/api/rooms/search",
+  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const filters = parseSearchFilters(req);
+    const data = await searchAllRoom(filters);
     res.send(data);
     next();
   })
