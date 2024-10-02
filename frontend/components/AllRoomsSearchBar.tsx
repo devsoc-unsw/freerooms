@@ -10,6 +10,7 @@ const AllRoomsSearchBar: React.FC<{}> = () => {
         flexGrow: 3,
       }}
     >
+      <div></div>
       <Building />
       <Capacity />
       <When />
@@ -23,10 +24,9 @@ const Building: React.FC<{}> = () => {
     <Stack
       sx={{
         flexGrow: 1,
-        maxWidth: "640px",
+        maxWidth: "440px",
         fontSize: { xs: "0.9em", sm: "1em" },
         fontWeight: 300,
-        paddingLeft: { xs: "0px", sm: "8px" },
       }}
     >
       Building
@@ -39,7 +39,7 @@ const Capacity: React.FC<{}> = () => {
     <Stack
       sx={{
         flexGrow: 1,
-        maxWidth: "320px",
+        maxWidth: "440px",
         fontSize: { xs: "0.9em", sm: "1em" },
         fontWeight: 300,
       }}
@@ -54,7 +54,7 @@ const When: React.FC<{}> = () => {
     <Stack
       sx={{
         flexGrow: 1,
-        maxWidth: "320px",
+        maxWidth: "440px",
         fontSize: { xs: "0.9em", sm: "1em" },
         fontWeight: 300,
       }}
@@ -69,7 +69,7 @@ const Duration: React.FC<{}> = () => {
     <Stack
       sx={{
         flexGrow: 1,
-        maxWidth: "320px",
+        maxWidth: "440px",
         fontSize: { xs: "0.9em", sm: "1em" },
         fontWeight: 300,
       }}
