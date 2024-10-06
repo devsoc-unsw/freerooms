@@ -11,7 +11,13 @@ interface RoomsFilterState {
 }
 
 const initialState: RoomsFilterState = {
-  value: {},
+  value: {
+    usage: [],
+    location: [],
+    id: [],
+  },
+  // Needs to be initalised to silence errors
+  // TODO: Get values from constants.ts
 };
 
 const filtersSlice = createSlice({
@@ -23,10 +29,7 @@ const filtersSlice = createSlice({
       action: PayloadAction<{ key: keyof AllRoomsFilter; value: string }>
     ) => {
       const { key, value } = action.payload;
-      if (!Object.keys(state.value).includes(key)) {
-        state.value[key] = [];
-      }
-      state.value[key]?.push(value);
+      state.value[key]!.push(value);
     },
     unsetAllRoomsFilter: (
       state,
@@ -34,12 +37,14 @@ const filtersSlice = createSlice({
     ) => {
       const { key, value } = action.payload;
       if (Object.keys(state.value).includes(key)) {
-        console.log(key, value);
-        const { ...otherFilters } = state.value;
-        const targetIndex = otherFilters["usage"]?.indexOf(value);
-        if (targetIndex && targetIndex > -1)
-          otherFilters["usage"]?.splice(targetIndex, 1);
-        state.value = otherFilters;
+        const targetIndex = state.value[key]!.indexOf(value);
+        if (targetIndex > -1) {
+          state.value[key]!.splice(targetIndex);
+        }
+
+
+      } else {
+        throw "unsetting unincluded key"
       }
     },
     clearAllRoomsFilters: (state) => {

@@ -14,16 +14,12 @@ import { allRoomsFilterDropdown } from "utils/constants";
 import DropdownSelections from "./DropdownSelections";
 
 const StyledFilterSideBarContainer = styled(Box)<BoxProps>(({ theme }) => ({
-  width: 450,
-  top: 100,
-  left: 100,
-  borderRadius: 10,
+  // borderRadius: 10,
   display: "flex",
   flexDirection: "column",
-  position: "absolute",
   backgroundColor: theme.palette.background.default,
-  borderWidth: 1,
-  borderStyle: "solid",
+  // borderWidth: 1,
+  // borderStyle: "solid",
   borderColor: theme.palette.mode === "light" ? "#BCBCBC" : "#3F3F3F",
   ":hover": {
     cursor: "auto",
@@ -37,6 +33,7 @@ const FilterSideBar = () => {
   // Handle user selecting a filter, each dropdown select has an associated key
   const handleSelect = useCallback(
     (key: keyof AllRoomsFilter, item: DropDownItem) => {
+      console.log(filters);
       if (filters[key]?.includes(item.value)) {
         // If the same as already selected, unset key
         dispatch(unsetAllRoomsFilter({ key, value: item.value }));

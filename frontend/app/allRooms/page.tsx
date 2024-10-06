@@ -16,6 +16,7 @@ import AllRoomsSearchBar from "../../components/AllRoomsSearchBar";
 
 export default function Page() {
   const { rooms, error } = useAllRooms();
+  // TODO: get filter object from AllRoomsFilter and use it to change the hook call.
   const roomsDisplay = useMemo(() => {
     if (!rooms) return;
     return Object.entries(rooms).map(([roomId, { name, status, endtime }]) => {
@@ -73,6 +74,7 @@ const StyledBody = styled(Stack)(({ theme }) => ({
   margin: theme.spacing(0, 4.25),
   padding: theme.spacing(2),
   justifyContent: "space-between",
+  gap: theme.spacing(2),
   [theme.breakpoints.down("md")]: {
     flexDirection: "column",
     alignItems: "center",
