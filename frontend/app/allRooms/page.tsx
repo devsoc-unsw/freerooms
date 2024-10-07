@@ -6,14 +6,14 @@ import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import { styled, useTheme } from "@mui/system";
 import useAllRooms from "hooks/useAllRooms";
-import { useMemo, useState, useContext, createContext } from "react";
+import { createContext,useContext, useMemo, useState } from "react";
+import { AllRoomsFilters } from "types";
 
 import AllRoomsFilter from "../../components/AllRoomsFilter";
 import AllRoomsFilterMobile from "../../components/AllRoomsFilterMobile";
 import Room from "../../components/AllRoomsRoom";
 import RoomList from "../../components/AllRoomsRoomList";
 import AllRoomsSearchBar from "../../components/AllRoomsSearchBar";
-import { AllRoomsFilters } from "types";
 
 export const AllRoomsFilterContext = createContext<Function>(() => {});
 
@@ -48,7 +48,7 @@ export default function Page() {
           <AllRoomsFilterContext.Provider value={setFilters}>
             {displayMobile ?
               <AllRoomsFilterMobile />
-              : <AllRoomsFilter setParentFilters={setFilters}/>
+              : <AllRoomsFilter/>
             }
           </AllRoomsFilterContext.Provider>
           <RoomList>{roomsDisplay}</RoomList>

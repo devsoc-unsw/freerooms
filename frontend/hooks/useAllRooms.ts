@@ -9,7 +9,7 @@ const fetcher = (url: string, filters: AllRoomsFilters /* datetime: Date */) =>
   axios
     .get(url, {
       params: {
-          ...filters
+        ...filters,
       },
     })
     .then((res) => res.data);
@@ -19,10 +19,12 @@ const useAllRooms = (filters: AllRoomsFilters) => {
   // const datetime = useSelector(selectDatetime);
   // const filters = useSelector(selectFilters);
 
-  let parsedFilters : Filters = { usage: ""};
-  const keys: (keyof Filters)[] = Object.keys({} as Filters) as (keyof Filters)[];
-  keys.forEach( k => {
-    parsedFilters[k] = filters[k]!.toString()
+  let parsedFilters: Filters = { usage: "" };
+  const keys: (keyof Filters)[] = Object.keys(
+    {} as Filters
+  ) as (keyof Filters)[];
+  keys.forEach((k) => {
+    parsedFilters[k] = filters[k]!.toString();
   });
   const { data, error } = useSWRImmutable<SearchResponse>(
     [API_URL + "/rooms/search", parsedFilters /*, datetime */],

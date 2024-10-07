@@ -41,10 +41,8 @@ const filtersSlice = createSlice({
         if (targetIndex > -1) {
           state.value[key]!.splice(targetIndex);
         }
-
-
       } else {
-        throw "unsetting unincluded key"
+        throw "unsetting unincluded key";
       }
     },
     clearAllRoomsFilters: (state) => {

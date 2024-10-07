@@ -1,7 +1,8 @@
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { BoxProps } from "@mui/system";
-import { useCallback, useMemo, useEffect, useContext } from "react";
+import { AllRoomsFilterContext } from "app/allRooms/page";
+import { useCallback, useContext, useEffect, useMemo } from "react";
 import {
   selectAllRoomsFilters,
   setAllRoomsFilter,
@@ -10,7 +11,6 @@ import {
 import { useDispatch, useSelector } from "redux/hooks";
 import { AllRoomsFilters, DropDownItem } from "types";
 import { allRoomsFilterDropdown } from "utils/constants";
-import { AllRoomsFilterContext } from "app/allRooms/page";
 
 import DropdownSelections from "./DropdownSelections";
 
@@ -27,14 +27,10 @@ const StyledFilterSideBarContainer = styled(Box)<BoxProps>(({ theme }) => ({
   },
 }));
 
-interface FilterSideBarProps {
-  setParentFilters: React.Dispatch<React.SetStateAction<AllRoomsFilters>>;
-}
-
-const FilterSideBar = ({ setParentFilters }: FilterSideBarProps) => {
+const FilterSideBar = () => {
   const dispatch = useDispatch();
   const filters = useSelector(selectAllRoomsFilters);
-  const setParentFilter = useContext(AllRoomsFilterContext)
+  const setParentFilter = useContext(AllRoomsFilterContext);
 
   // Handle user selecting a filter, each dropdown select has an associated key
   const handleSelect = useCallback(
@@ -52,7 +48,7 @@ const FilterSideBar = ({ setParentFilters }: FilterSideBarProps) => {
 
   useEffect(() => {
     setParentFilter(filters);
-  }, [filters])
+  }, [filters, setParentFilter]);
 
   const dropdownMap = useMemo(
     () =>

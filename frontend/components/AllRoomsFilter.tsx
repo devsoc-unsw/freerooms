@@ -1,19 +1,12 @@
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/system";
-import FilterSideBar from "./FilterSideBar";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AllRoomsFilters } from "types";
 
-interface FilterSideBarProps {
-  setParentFilters: React.Dispatch<React.SetStateAction<AllRoomsFilters>>;
-}
+import FilterSideBar from "./FilterSideBar";
 
-const AllRoomsFilter: React.FC<FilterSideBarProps> = ({ setParentFilters }: FilterSideBarProps) => {
-  const [filters, setFilters] = useState<AllRoomsFilters>({});
-  useEffect(() => {
-    setParentFilters(filters);
-  }, [filters]);
+const AllRoomsFilter: React.FC<{}> = () => {
   return (
     <StyledMainFilter>
       <Typography
@@ -28,10 +21,8 @@ const AllRoomsFilter: React.FC<FilterSideBarProps> = ({ setParentFilters }: Filt
       >
         FILTER OPTIONS
       </Typography>
-      <FilterSideBar/>
-
+      <FilterSideBar />
     </StyledMainFilter>
-
   );
 };
 
