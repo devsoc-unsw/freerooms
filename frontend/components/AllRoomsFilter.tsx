@@ -2,10 +2,18 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/system";
 import FilterSideBar from "./FilterSideBar";
+import { useState, useEffect } from "react";
+import { AllRoomsFilters } from "types";
 
+interface FilterSideBarProps {
+  setParentFilters: React.Dispatch<React.SetStateAction<AllRoomsFilters>>;
+}
 
-
-const AllRoomsFilter: React.FC<{}> = () => {
+const AllRoomsFilter: React.FC<FilterSideBarProps> = ({ setParentFilters }: FilterSideBarProps) => {
+  const [filters, setFilters] = useState<AllRoomsFilters>({});
+  useEffect(() => {
+    setParentFilters(filters);
+  }, [filters]);
   return (
     <StyledMainFilter>
       <Typography

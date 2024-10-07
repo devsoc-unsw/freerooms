@@ -1,15 +1,16 @@
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { BoxProps } from "@mui/system";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useEffect, useContext } from "react";
 import {
   selectAllRoomsFilters,
   setAllRoomsFilter,
   unsetAllRoomsFilter,
 } from "redux/allRoomsFilterSlice";
 import { useDispatch, useSelector } from "redux/hooks";
-import { AllRoomsFilter, DropDownItem } from "types";
+import { AllRoomsFilters, DropDownItem } from "types";
 import { allRoomsFilterDropdown } from "utils/constants";
+import { AllRoomsFilterContext } from "app/allRooms/page";
 
 import DropdownSelections from "./DropdownSelections";
 
@@ -26,14 +27,18 @@ const StyledFilterSideBarContainer = styled(Box)<BoxProps>(({ theme }) => ({
   },
 }));
 
-const FilterSideBar = () => {
+interface FilterSideBarProps {
+  setParentFilters: React.Dispatch<React.SetStateAction<AllRoomsFilters>>;
+}
+
+const FilterSideBar = ({ setParentFilters }: FilterSideBarProps) => {
   const dispatch = useDispatch();
   const filters = useSelector(selectAllRoomsFilters);
+  const setParentFilter = useContext(AllRoomsFilterContext)
 
   // Handle user selecting a filter, each dropdown select has an associated key
   const handleSelect = useCallback(
-    (key: keyof AllRoomsFilter, item: DropDownItem) => {
-      console.log(filters);
+    (key: keyof AllRoomsFilters, item: DropDownItem) => {
       if (filters[key]?.includes(item.value)) {
         // If the same as already selected, unset key
         dispatch(unsetAllRoomsFilter({ key, value: item.value }));
@@ -44,6 +49,10 @@ const FilterSideBar = () => {
     },
     [dispatch, filters]
   );
+
+  useEffect(() => {
+    setParentFilter(filters);
+  }, [filters])
 
   const dropdownMap = useMemo(
     () =>

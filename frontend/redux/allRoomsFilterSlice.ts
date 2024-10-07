@@ -3,11 +3,11 @@
  */
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { AllRoomsFilter } from "../types";
+import { AllRoomsFilters } from "../types";
 import { RootState } from "./store";
 
 interface RoomsFilterState {
-  value: AllRoomsFilter;
+  value: AllRoomsFilters;
 }
 
 const initialState: RoomsFilterState = {
@@ -26,14 +26,14 @@ const filtersSlice = createSlice({
   reducers: {
     setAllRoomsFilter: (
       state,
-      action: PayloadAction<{ key: keyof AllRoomsFilter; value: string }>
+      action: PayloadAction<{ key: keyof AllRoomsFilters; value: string }>
     ) => {
       const { key, value } = action.payload;
       state.value[key]!.push(value);
     },
     unsetAllRoomsFilter: (
       state,
-      action: PayloadAction<{ key: keyof AllRoomsFilter; value: string }>
+      action: PayloadAction<{ key: keyof AllRoomsFilters; value: string }>
     ) => {
       const { key, value } = action.payload;
       if (Object.keys(state.value).includes(key)) {

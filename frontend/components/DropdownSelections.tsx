@@ -6,9 +6,9 @@ import Checkbox from "@mui/material/Checkbox";
 import Radio from "@mui/material/Radio";
 import { styled } from "@mui/system";
 import React from "react";
-import { AllRoomsFilter, DropDown, DropDownItem, Filters } from "types";
+import { AllRoomsFilters, DropDown, DropDownItem, Filters } from "types";
 
-const StyledAccordian = styled(Accordion)(({ theme }) => ({
+const StyledAccordion = styled(Accordion)(({ theme }) => ({
   transition: "all 0.1s ease-in-out",
   backgroundColor: theme.palette.background.default,
   "&:hover": {
@@ -24,14 +24,14 @@ const StyledAccordionDetails = styled(AccordionDetails)(({ theme }) => ({
 const DropdownSelections: React.FC<{
   dropdown: DropDown;
   canSelectMultiple: boolean;
-  filters: Filters | AllRoomsFilter;
+  filters: Filters | AllRoomsFilters;
   handleSelect: (
-    key: keyof Filters | keyof AllRoomsFilter,
+    key: keyof Filters | keyof AllRoomsFilters,
     item: DropDownItem
   ) => void;
 }> = ({ dropdown, canSelectMultiple, filters, handleSelect }) => {
   return (
-    <StyledAccordian
+    <StyledAccordion
       disableGutters={true}
       elevation={canSelectMultiple ? 0 : undefined}
     >
@@ -64,7 +64,7 @@ const DropdownSelections: React.FC<{
           </div>
         ))}
       </StyledAccordionDetails>
-    </StyledAccordian>
+    </StyledAccordion>
   );
 };
 

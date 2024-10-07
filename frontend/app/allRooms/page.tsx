@@ -6,17 +6,22 @@ import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import { styled, useTheme } from "@mui/system";
 import useAllRooms from "hooks/useAllRooms";
-import { useMemo } from "react";
+import { useMemo, useState, useContext, createContext } from "react";
 
 import AllRoomsFilter from "../../components/AllRoomsFilter";
 import AllRoomsFilterMobile from "../../components/AllRoomsFilterMobile";
 import Room from "../../components/AllRoomsRoom";
 import RoomList from "../../components/AllRoomsRoomList";
 import AllRoomsSearchBar from "../../components/AllRoomsSearchBar";
+import { AllRoomsFilters } from "types";
+
+export const AllRoomsFilterContext = createContext<Function>(() => {});
 
 export default function Page() {
-  const { rooms, error } = useAllRooms();
-  // TODO: get filter object from AllRoomsFilter and use it to change the hook call.
+  const [filters, setFilters] = useState<AllRoomsFilters>({});
+  const { rooms, error } = useAllRooms(filters);
+  const displayMobile = useMediaQuery(useTheme().breakpoints.down("md"));
+
   const roomsDisplay = useMemo(() => {
     if (!rooms) return;
     return Object.entries(rooms).map(([roomId, { name, status, endtime }]) => {
@@ -40,7 +45,12 @@ export default function Page() {
           <SearchIcon />
         </StyledSearchBar>
         <StyledBody>
-          <Filter />
+          <AllRoomsFilterContext.Provider value={setFilters}>
+            {displayMobile ?
+              <AllRoomsFilterMobile />
+              : <AllRoomsFilter setParentFilters={setFilters}/>
+            }
+          </AllRoomsFilterContext.Provider>
           <RoomList>{roomsDisplay}</RoomList>
         </StyledBody>
       </Stack>
@@ -81,8 +91,3 @@ const StyledBody = styled(Stack)(({ theme }) => ({
     padding: theme.spacing(0, 2),
   },
 }));
-
-const Filter: React.FC<{}> = () => {
-  const displayMobile = useMediaQuery(useTheme().breakpoints.down("md"));
-  return <>{displayMobile ? <AllRoomsFilterMobile /> : <AllRoomsFilter />}</>;
-};
