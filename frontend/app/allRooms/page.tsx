@@ -1,12 +1,12 @@
 "use client";
 
 import SearchIcon from "@mui/icons-material/Search";
-import { useMediaQuery } from "@mui/material";
+import { CircularProgress, useMediaQuery } from "@mui/material";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import { styled, useTheme } from "@mui/system";
 import useAllRooms from "hooks/useAllRooms";
-import { createContext,useContext, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { AllRoomsFilters } from "types";
 
 import AllRoomsFilter from "../../components/AllRoomsFilter";
@@ -14,12 +14,12 @@ import AllRoomsFilterMobile from "../../components/AllRoomsFilterMobile";
 import Room from "../../components/AllRoomsRoom";
 import RoomList from "../../components/AllRoomsRoomList";
 import AllRoomsSearchBar from "../../components/AllRoomsSearchBar";
-
-export const AllRoomsFilterContext = createContext<Function>(() => {});
+import { FilterSideBarContext } from "../../../app/contexts"
 
 export default function Page() {
   const [filters, setFilters] = useState<AllRoomsFilters>({});
-  const { rooms, error } = useAllRooms(filters);
+  const { rooms, isValidating, error } = useAllRooms(filters);
+  const centred = isValidating ? "center" : "default"
   const displayMobile = useMediaQuery(useTheme().breakpoints.down("md"));
 
   const roomsDisplay = useMemo(() => {
@@ -45,13 +45,19 @@ export default function Page() {
           <SearchIcon />
         </StyledSearchBar>
         <StyledBody>
-          <AllRoomsFilterContext.Provider value={setFilters}>
+          <FilterSideBarContext.Provider value={setFilters}>
             {displayMobile ?
               <AllRoomsFilterMobile />
               : <AllRoomsFilter/>
             }
-          </AllRoomsFilterContext.Provider>
-          <RoomList>{roomsDisplay}</RoomList>
+          </FilterSideBarContext.Provider>
+          {
+            <RoomList alignItems={centred} justifyContent={centred}>
+              {isValidating ?
+              <CircularProgress size={50} thickness={5} disableShrink />
+              : roomsDisplay}
+            </RoomList>
+          }
         </StyledBody>
       </Stack>
     </Container>

@@ -9,3 +9,5 @@ type ContextType = {
 }
 
 export const FreeRoomsAPIContext = createContext<ContextType>({ buildings : [], rooms: {}, roomInfo: { rooms: {} }, onRefresh: () => {} });
+
+export const FilterSideBarContext = createContext<Function>(() => {});
