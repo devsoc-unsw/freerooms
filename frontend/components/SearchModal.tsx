@@ -24,7 +24,7 @@ import useRooms from "../hooks/useRooms";
 import { setCurrentBuilding } from "../redux/currentBuildingSlice";
 import { useDispatch, useSelector } from "../redux/hooks";
 import { closeSearch, selectSearchOpen } from "../redux/searchOpenSlice";
-import { BuildingSearchOption, RoomSearchOption, SearchOption } from "../types";
+import { SearchOption } from "../types";
 
 const RECENT_SEARCH_LIMIT = 3;
 interface SearchProps {}
@@ -66,7 +66,7 @@ const SearchModal: React.FC<SearchProps> = () => {
   const { buildings } = useBuildings();
   const { rooms } = useRooms();
   const options = React.useMemo(() => {
-    const buildingOptions: BuildingSearchOption[] = buildings
+    const buildingOptions: SearchOption[] = buildings
       ? buildings.map((building) => ({
           type: "Building",
           searchKeys: [building.name, ...building.aliases, building.id],
@@ -74,7 +74,7 @@ const SearchModal: React.FC<SearchProps> = () => {
         }))
       : [];
 
-    const roomOptions: RoomSearchOption[] = rooms
+    const roomOptions: SearchOption[] = rooms
       ? Object.values(rooms).map((room) => ({
           type: "Room",
           searchKeys: [room.name, room.abbr, room.id],
