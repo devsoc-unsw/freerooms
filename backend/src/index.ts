@@ -1,5 +1,6 @@
 import cors from "cors";
 import express, {
+  json,
   NextFunction,
   Request,
   RequestHandler,
@@ -7,6 +8,7 @@ import express, {
 } from "express";
 
 import { PORT } from "./config";
+import { getRatings, insertRating } from "./ratingDbInterface";
 import {
   parseSearchFilters,
   parseStatusDatetime,
@@ -22,6 +24,7 @@ import {
 
 const app = express();
 app.use(cors());
+app.use(json());
 
 // Wrapper for request handler functions to catch async exceptions
 const asyncHandler =
@@ -82,6 +85,29 @@ app.get(
     next();
   })
 );
+
+// get all ratings for a room given roomId
+app.get(
+  "/api/rating/:roomID",
+  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const { roomID } = req.params;
+    const roomRatings = await getRatings(roomID);
+    res.send(roomRatings);
+    next();
+  })
+);
+
+// insert one rating
+app.post("/api/rating/rate", async (req: Request, res: Response) => {
+  const { roomId, quietness, location, cleanliness, overall } = req.body;
+  const ratings = [quietness, location, cleanliness, overall];
+  try {
+    await insertRating(roomId, ratings);
+    res.status(200).json({ message: "rating inserted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+});
 
 // Error-handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {

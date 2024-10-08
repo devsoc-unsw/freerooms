@@ -158,7 +158,10 @@ const StyledCalendarContainer = styled(Box)<BoxProps & { view: View }>(
   })
 );
 
-const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
+const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
+  events,
+  roomID,
+}) => {
   // Enforce day view on mobile
   const [currView, setCurrView] = React.useState<View>(Views.WEEK);
   const theme = useTheme();
@@ -350,7 +353,7 @@ const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
             }}
           />
         </StyledCalendarContainer>
-        <RoomRatingList />
+        <RoomRatingList roomID={roomID} />
       </Stack>
     </>
   );
