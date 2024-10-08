@@ -23,7 +23,7 @@
     "@types/css-mediaquery": "^0.1.4",
     "axios": "^1.7.4",
     "css-mediaquery": "^0.1.2",
-    "date-fns": "^2.29.3",
+    "date-fns": "^4.0.0",
     "date-fns-tz": "^2.0.0",
     "esri-loader": "^3.7.0",
     "framer-motion": "^10.16.4",
