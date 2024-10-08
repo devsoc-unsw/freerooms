@@ -61,7 +61,7 @@ const ViewToggleButton = styled(ToggleButton)(({ theme }) => ({
   },
 }));
 
-const CustomToolBar: React.FC<ToolbarProps> = ({
+const CustomToolBar: React.FC<ToolbarProps<Booking>> = ({
   view,
   onNavigate,
   onView,
