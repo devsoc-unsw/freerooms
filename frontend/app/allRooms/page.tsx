@@ -81,14 +81,14 @@ const StyledSearchBar = styled(Stack)(({ theme }) => ({
 
 const StyledBody = styled(Stack)(({ theme }) => ({
   flexDirection: "row",
-  flexWrap: "wrap",
+  // flexWrap: "wrap",
   margin: theme.spacing(0, 4.25),
   padding: theme.spacing(2),
   justifyContent: "space-between",
   gap: theme.spacing(2),
-  // [theme.breakpoints.down("md")]: {
-  //   flexDirection: "column",
-  //   alignItems: "center",
-  //   padding: theme.spacing(0, 2),
-  // },
+  [theme.breakpoints.down("md")]: {
+    flexDirection: "column",
+    // alignItems: "center",
+    padding: theme.spacing(0, 2),
+  },
 }));
