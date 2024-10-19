@@ -13,6 +13,7 @@ import { allRoomsFilterDropdown } from "utils/constants";
 import { FilterSideBarContext } from "../../app/contexts"
 
 import DropdownSelections from "./DropdownSelections";
+import { selectFilters, setFilter, unsetFilter } from "redux/filtersSlice";
 
 const StyledFilterSideBarContainer = styled(Box)<BoxProps>(({ theme }) => ({
   // borderRadius: 10,
@@ -29,7 +30,7 @@ const StyledFilterSideBarContainer = styled(Box)<BoxProps>(({ theme }) => ({
 
 const FilterSideBar = () => {
   const dispatch = useDispatch();
-  const filters = useSelector(selectAllRoomsFilters);
+  const filters = useSelector(selectFilters);
   const setParentFilter = useContext<Function>(FilterSideBarContext);
 
   // Handle user selecting a filter, each dropdown select has an associated key
@@ -37,10 +38,10 @@ const FilterSideBar = () => {
     (key: keyof AllRoomsFilters, item: DropDownItem) => {
       if (filters[key]?.includes(item.value)) {
         // If the same as already selected, unset key
-        dispatch(unsetAllRoomsFilter({ key, value: item.value }));
+        dispatch(unsetFilter(key));
       } else {
         // Otherwise, spread existing filters and set key
-        dispatch(setAllRoomsFilter({ key, value: item.value }));
+        dispatch(setFilter({ key, value: item.value }));
       }
     },
     [dispatch, filters]
@@ -56,7 +57,7 @@ const FilterSideBar = () => {
         <DropdownSelections
           key={dropdown.key}
           dropdown={dropdown}
-          canSelectMultiple={true}
+          canSelectMultiple={false}
           filters={filters}
           handleSelect={handleSelect}
         />
