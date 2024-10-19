@@ -7,20 +7,20 @@ import Stack from "@mui/material/Stack";
 import { styled, useTheme } from "@mui/system";
 import useAllRooms from "hooks/useAllRooms";
 import { useMemo, useState } from "react";
-import { AllRoomsFilters } from "types";
 
 import AllRoomsFilter from "../../components/AllRoomsFilter";
 import AllRoomsFilterMobile from "../../components/AllRoomsFilterMobile";
 import Room from "../../components/AllRoomsRoom";
 import RoomList from "../../components/AllRoomsRoomList";
 import AllRoomsSearchBar from "../../components/AllRoomsSearchBar";
-import { FilterSideBarContext } from "../../../app/contexts"
+import { useSelector } from "react-redux";
+import { selectFilters } from "redux/filtersSlice";
 
 export default function Page() {
-  const [filters, setFilters] = useState<AllRoomsFilters>({});
+  const filters = useSelector(selectFilters);
   const { rooms, isValidating, error } = useAllRooms(filters);
   const centred = isValidating ? "center" : "default"
-  const displayMobile = useMediaQuery(useTheme().breakpoints.down("md"));
+  // const displayMobile = useMediaQuery(useTheme().breakpoints.down("md"));
 
   const roomsDisplay = useMemo(() => {
     if (!rooms) return;
@@ -45,12 +45,7 @@ export default function Page() {
           <SearchIcon />
         </StyledSearchBar>
         <StyledBody>
-          <FilterSideBarContext.Provider value={setFilters}>
-            {displayMobile ?
-              <AllRoomsFilterMobile />
-              : <AllRoomsFilter/>
-            }
-          </FilterSideBarContext.Provider>
+         <AllRoomsFilter filters={filters}/>
           {
             <RoomList alignItems={centred} justifyContent={centred}>
               {isValidating ?
@@ -91,9 +86,9 @@ const StyledBody = styled(Stack)(({ theme }) => ({
   padding: theme.spacing(2),
   justifyContent: "space-between",
   gap: theme.spacing(2),
-  [theme.breakpoints.down("md")]: {
-    flexDirection: "column",
-    alignItems: "center",
-    padding: theme.spacing(0, 2),
-  },
+  // [theme.breakpoints.down("md")]: {
+  //   flexDirection: "column",
+  //   alignItems: "center",
+  //   padding: theme.spacing(0, 2),
+  // },
 }));

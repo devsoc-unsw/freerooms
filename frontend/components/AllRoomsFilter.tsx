@@ -3,8 +3,9 @@ import Typography from "@mui/material/Typography";
 import { styled } from "@mui/system";
 
 import FilterSideBar from "./FilterSideBar";
+import { Filters } from "types";
 
-const AllRoomsFilter: React.FC<{}> = () => {
+const AllRoomsFilter: React.FC<{filters : Filters }> = ({ filters }) => {
   return (
     <StyledMainFilter>
       <Typography
@@ -19,7 +20,7 @@ const AllRoomsFilter: React.FC<{}> = () => {
       >
         FILTER OPTIONS
       </Typography>
-      <FilterSideBar />
+      <FilterSideBar filters={filters}/>
     </StyledMainFilter>
   );
 };

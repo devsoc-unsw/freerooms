@@ -8,9 +8,8 @@ import {
   unsetAllRoomsFilter,
 } from "redux/allRoomsFilterSlice";
 import { useDispatch, useSelector } from "redux/hooks";
-import { AllRoomsFilters, DropDownItem } from "types";
+import { AllRoomsFilters, DropDownItem, Filters } from "types";
 import { allRoomsFilterDropdown } from "utils/constants";
-import { FilterSideBarContext } from "../../app/contexts"
 
 import DropdownSelections from "./DropdownSelections";
 import { selectFilters, setFilter, unsetFilter } from "redux/filtersSlice";
@@ -28,10 +27,9 @@ const StyledFilterSideBarContainer = styled(Box)<BoxProps>(({ theme }) => ({
   },
 }));
 
-const FilterSideBar = () => {
+const FilterSideBar = ({filters} : {filters : Filters}) => {
+  // To do - make this the same component as filter bar?
   const dispatch = useDispatch();
-  const filters = useSelector(selectFilters);
-  const setParentFilter = useContext<Function>(FilterSideBarContext);
 
   // Handle user selecting a filter, each dropdown select has an associated key
   const handleSelect = useCallback(
@@ -46,10 +44,6 @@ const FilterSideBar = () => {
     },
     [dispatch, filters]
   );
-
-  useEffect(() => {
-    setParentFilter(filters);
-  }, [filters, setParentFilter]);
 
   const dropdownMap = useMemo(
     () =>

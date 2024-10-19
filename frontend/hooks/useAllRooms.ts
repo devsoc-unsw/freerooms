@@ -12,7 +12,7 @@ const fetcher = (url: string, filters: AllRoomsFilters /* datetime: Date */) =>
     })
     .then((res) => res.data);
 
-const useAllRooms = (filters: AllRoomsFilters) => {
+const useAllRooms = (filters: Filters) => {
   // TODO: add in datetime and filters
   // const datetime = useSelector(selectDatetime);
   // const filters = useSelector(selectFilters);
