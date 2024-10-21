@@ -98,11 +98,12 @@ app.get(
 );
 
 // insert one rating
-app.post("/api/rating/rate", async (req: Request, res: Response) => {
-  const { roomId, quietness, location, cleanliness, overall } = req.body;
+app.post("/api/rating/rate/:roomID", async (req: Request, res: Response) => {
+  const { roomID } = req.params;
+  const { quietness, location, cleanliness, overall } = req.body;
   const ratings = [quietness, location, cleanliness, overall];
   try {
-    await insertRating(roomId, ratings);
+    await insertRating(roomID, ratings);
     res.status(200).json({ message: "rating inserted successfully" });
   } catch (error) {
     res.status(500).json({ error: error });
