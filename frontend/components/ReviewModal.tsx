@@ -44,7 +44,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
     };
 
     console.log(newRating);
-    useInsertRating(newRating);
+    useInsertRating(roomID, newRating);
     handleClose();
   };
   return (

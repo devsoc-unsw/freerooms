@@ -10,8 +10,8 @@ import { API_URL } from "../config";
 const fetcher = (url: string, body: Rating) =>
   axios.post(url, body).then((res) => res.data);
 
-const useInsertRating = (rating: Rating) => {
-  const response = fetcher(API_URL + "/rating/rate/", rating);
+const useInsertRating = (roomID: string, rating: Rating) => {
+  const response = fetcher(API_URL + "/rating/rate/" + roomID, rating);
   return {
     response,
   };
