@@ -1,15 +1,45 @@
 import { Box, Button, Modal, Stack } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 
 import ReviewRating from "./ReviewRating";
+import useInsertRating from "hooks/useInsertRating";
+import { Rating } from "@common/types";
+
 interface ReviewModalProps {
   open: boolean;
   handleClose: () => void;
 }
 
 const ReviewModal: React.FC<ReviewModalProps> = ({ open, handleClose }) => {
+  const [quietnessRating, setQuienessRating] = useState(0);
+  const [locationRating, setLocationRating] = useState(0);
+  const [cleanlinesRating, setCleanlinessRating] = useState(0);
+  const [overallRating, setOverallRating] = useState(0);
+
+  const ratingCallback = (reviewType: string, rating: number | null) => {
+    if (typeof rating === null) {
+      return;
+    } else if (reviewType === "Quietness") {
+      setQuienessRating(rating!);
+    } else if (reviewType === "Location") {
+      setLocationRating(rating!);
+    } else if (reviewType === "Cleanliness") {
+      setCleanlinessRating(rating!);
+    } else if (reviewType === "Overall") {
+      setOverallRating(rating!);
+    }
+  };
+
   const handleSubmit = () => {
-    // insert future code to deal with submission of review
+    const newRating: Rating = {
+      quitness: quietnessRating,
+      location: locationRating,
+      cleanliness: cleanlinesRating,
+      overall: overallRating,
+    };
+
+    console.log(newRating);
+    useInsertRating(newRating);
     handleClose();
   };
   return (
@@ -34,10 +64,10 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ open, handleClose }) => {
         }}
       >
         <Stack spacing={2} alignItems="center">
-          <ReviewRating text="Quietness" />
-          <ReviewRating text="Location" />
-          <ReviewRating text="Cleanliness" />
-          <ReviewRating text="Overall" />
+          <ReviewRating text="Quietness" ratingCallback={ratingCallback} />
+          <ReviewRating text="Location" ratingCallback={ratingCallback} />
+          <ReviewRating text="Cleanliness" ratingCallback={ratingCallback} />
+          <ReviewRating text="Overall" ratingCallback={ratingCallback} />
           <Button
             onClick={handleSubmit}
             sx={{
