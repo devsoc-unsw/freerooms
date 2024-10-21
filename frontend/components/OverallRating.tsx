@@ -6,7 +6,11 @@ import DecimalStarRating from "./DecimalStarRating";
 import LinearRatings from "./LinearRatings";
 import ReviewModal from "./ReviewModal";
 
-const OverallRating = () => {
+interface OverallRatingProps {
+  roomID: string;
+}
+
+const OverallRating: React.FC<OverallRatingProps> = ({ roomID }) => {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
@@ -48,7 +52,7 @@ const OverallRating = () => {
           >
             Leave a Review
           </Button>
-          <ReviewModal open={open} handleClose={handleClose} />
+          <ReviewModal open={open} roomID={roomID} handleClose={handleClose} />
         </Stack>
       </Stack>
     </Stack>

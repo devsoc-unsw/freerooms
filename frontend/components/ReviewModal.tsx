@@ -7,10 +7,15 @@ import { Rating } from "@common/types";
 
 interface ReviewModalProps {
   open: boolean;
+  roomID: string;
   handleClose: () => void;
 }
 
-const ReviewModal: React.FC<ReviewModalProps> = ({ open, handleClose }) => {
+const ReviewModal: React.FC<ReviewModalProps> = ({
+  open,
+  roomID,
+  handleClose,
+}) => {
   const [quietnessRating, setQuienessRating] = useState(0);
   const [locationRating, setLocationRating] = useState(0);
   const [cleanlinesRating, setCleanlinessRating] = useState(0);
