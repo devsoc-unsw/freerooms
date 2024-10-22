@@ -5,7 +5,7 @@ import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 
 import AllRoomsFilter from "../components/AllRoomsFilter";
-import AllRoomsRoom from "../components/AllRoomsRoom";
+import Room from "../components/AllRoomsRoom";
 import AllRoomsSearchBar from "../components/AllRoomsSearchBar";
 import NavBar from "../components/NavBar";
 import store from "../redux/store";
@@ -53,5 +53,24 @@ describe("AllRooms page", () => {
     expect(roomType).toBeInTheDocument();
     expect(location).toBeInTheDocument();
     expect(idRequired).toBeInTheDocument();
+  });
+
+  it("renders AllRoomsRoom", () => {
+    const roomStatus = {
+      status: "free" as const,
+      endtime: new Date().toISOString(),
+    };
+
+    render(
+      <ThemeProvider theme={createTheme({})}>
+        <Room name="Ainsworth G03" roomNumber="5" {...roomStatus} />
+      </ThemeProvider>
+    );
+
+    const room = screen.getByText("Ainsworth G03");
+    const availability = screen.getByText("Available");
+
+    expect(room).toBeInTheDocument();
+    expect(availability).toBeInTheDocument();
   });
 });
