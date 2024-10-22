@@ -55,22 +55,62 @@ describe("AllRooms page", () => {
     expect(idRequired).toBeInTheDocument();
   });
 
-  it("renders AllRoomsRoom", () => {
-    const roomStatus = {
-      status: "free" as const,
-      endtime: new Date().toISOString(),
-    };
+  describe("renders AllRoomsRoom", () => {
+    it("renders AllRoomsRoom - Available", () => {
+      const roomStatus = {
+        status: "free" as const,
+        endtime: new Date().toISOString(),
+      };
 
-    render(
-      <ThemeProvider theme={createTheme({})}>
-        <Room name="Ainsworth G03" roomNumber="5" {...roomStatus} />
-      </ThemeProvider>
-    );
+      render(
+        <ThemeProvider theme={createTheme({})}>
+          <Room name="Ainsworth G03" roomNumber="5" {...roomStatus} />
+        </ThemeProvider>
+      );
 
-    const room = screen.getByText("Ainsworth G03");
-    const availability = screen.getByText("Available");
+      const room = screen.getByText("Ainsworth G03");
+      const availability = screen.getByText("Available");
 
-    expect(room).toBeInTheDocument();
-    expect(availability).toBeInTheDocument();
+      expect(room).toBeInTheDocument();
+      expect(availability).toBeInTheDocument();
+    });
+
+    it("renders AllRoomsRoom - Unavailable", () => {
+      const roomStatus = {
+        status: "busy" as const,
+        endtime: new Date().toISOString(),
+      };
+
+      render(
+        <ThemeProvider theme={createTheme({})}>
+          <Room name="Ainsworth G03" roomNumber="5" {...roomStatus} />
+        </ThemeProvider>
+      );
+
+      const room = screen.getByText("Ainsworth G03");
+      const availability = screen.getByText("Unavailable");
+
+      expect(room).toBeInTheDocument();
+      expect(availability).toBeInTheDocument();
+    });
+
+    it("renders AllRoomsRoom - Available Soon", () => {
+      const roomStatus = {
+        status: "soon" as const,
+        endtime: new Date().toISOString(),
+      };
+
+      render(
+        <ThemeProvider theme={createTheme({})}>
+          <Room name="Ainsworth G03" roomNumber="5" {...roomStatus} />
+        </ThemeProvider>
+      );
+
+      const room = screen.getByText("Ainsworth G03");
+      const availability = screen.getByText("Available Soon");
+
+      expect(room).toBeInTheDocument();
+      expect(availability).toBeInTheDocument();
+    });
   });
 });
