@@ -22,10 +22,11 @@ const RoomRatingList: React.FC<{
       overallRating += rating.overall;
     });
 
-    cleanlinesRating = cleanlinesRating / ratings.length;
-    quietnessRating = quietnessRating / ratings.length;
-    locationRating = locationRating / ratings.length;
-    overallRating = overallRating / ratings.length;
+    cleanlinesRating =
+      Math.round((cleanlinesRating / ratings.length) * 10) / 10;
+    quietnessRating = Math.round((quietnessRating / ratings.length) * 10) / 10;
+    locationRating = Math.round((locationRating / ratings.length) * 10) / 10;
+    overallRating = Math.round((overallRating / ratings.length) * 10) / 10;
   }
 
   return (

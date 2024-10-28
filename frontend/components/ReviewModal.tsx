@@ -2,8 +2,8 @@ import { Box, Button, Modal, Stack } from "@mui/material";
 import React, { useState } from "react";
 
 import ReviewRating from "./ReviewRating";
-import useInsertRating from "hooks/useInsertRating";
 import { Rating } from "@common/types";
+import setInsertRating from "hooks/setInsertRating";
 
 interface ReviewModalProps {
   open: boolean;
@@ -43,7 +43,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
       overall: overallRating,
     };
 
-    useInsertRating(roomID, newRating);
+    setInsertRating(roomID, newRating);
     handleClose();
   };
   return (

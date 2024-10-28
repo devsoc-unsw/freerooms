@@ -40,7 +40,7 @@ const OverallRating: React.FC<OverallRatingProps> = ({ roomID }) => {
           height="150%"
           aria-label="Number Star Rating"
         >
-          <DecimalStarRating />
+          <DecimalStarRating roomID={roomID} />
           <Button
             onClick={handleOpen}
             sx={{
