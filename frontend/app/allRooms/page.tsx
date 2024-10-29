@@ -7,14 +7,14 @@ import Stack from "@mui/material/Stack";
 import { styled, useTheme } from "@mui/system";
 import useAllRooms from "hooks/useAllRooms";
 import { useMemo, useState } from "react";
+import { useSelector } from "react-redux";
+import { selectFilters } from "redux/filtersSlice";
 
 import AllRoomsFilter from "../../components/AllRoomsFilter";
 import AllRoomsFilterMobile from "../../components/AllRoomsFilterMobile";
 import Room from "../../components/AllRoomsRoom";
 import RoomList from "../../components/AllRoomsRoomList";
 import AllRoomsSearchBar from "../../components/AllRoomsSearchBar";
-import { useSelector } from "react-redux";
-import { selectFilters } from "redux/filtersSlice";
 
 export default function Page() {
   const filters = useSelector(selectFilters);

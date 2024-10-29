@@ -1,11 +1,11 @@
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/system";
-
-import FilterSideBar from "./FilterSideBar";
 import { Filters } from "types";
 
-const AllRoomsFilter: React.FC<{filters : Filters }> = ({ filters }) => {
+import FilterSideBar from "./FilterSideBar";
+
+const AllRoomsFilter: React.FC<{ filters: Filters }> = ({ filters }) => {
   return (
     <StyledMainFilter>
       <Typography
@@ -20,7 +20,7 @@ const AllRoomsFilter: React.FC<{filters : Filters }> = ({ filters }) => {
       >
         FILTER OPTIONS
       </Typography>
-      <FilterSideBar filters={filters}/>
+      <FilterSideBar filters={filters} />
     </StyledMainFilter>
   );
 };

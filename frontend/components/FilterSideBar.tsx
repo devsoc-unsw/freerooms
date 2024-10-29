@@ -1,18 +1,13 @@
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { BoxProps } from "@mui/system";
-import { useCallback, useContext, useEffect, useMemo } from "react";
-import {
-  selectAllRoomsFilters,
-  setAllRoomsFilter,
-  unsetAllRoomsFilter,
-} from "redux/allRoomsFilterSlice";
-import { useDispatch, useSelector } from "redux/hooks";
+import { useCallback, useMemo } from "react";
+import { setFilter, unsetFilter } from "redux/filtersSlice";
+import { useDispatch } from "redux/hooks";
 import { AllRoomsFilters, DropDownItem, Filters } from "types";
 import { allRoomsFilterDropdown } from "utils/constants";
 
 import DropdownSelections from "./DropdownSelections";
-import { selectFilters, setFilter, unsetFilter } from "redux/filtersSlice";
 
 const StyledFilterSideBarContainer = styled(Box)<BoxProps>(({ theme }) => ({
   // borderRadius: 10,
@@ -27,7 +22,7 @@ const StyledFilterSideBarContainer = styled(Box)<BoxProps>(({ theme }) => ({
   },
 }));
 
-const FilterSideBar = ({filters} : {filters : Filters}) => {
+const FilterSideBar = ({ filters }: { filters: Filters }) => {
   // To do - make this the same component as filter bar?
   const dispatch = useDispatch();
 

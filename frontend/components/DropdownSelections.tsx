@@ -31,10 +31,7 @@ const DropdownSelections: React.FC<{
   ) => void;
 }> = ({ dropdown, canSelectMultiple, filters, handleSelect }) => {
   return (
-    <StyledAccordion
-      disableGutters={true}
-      elevation={canSelectMultiple ? 0 : undefined}
-    >
+    <StyledAccordion disableGutters={true} elevation={0}>
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
