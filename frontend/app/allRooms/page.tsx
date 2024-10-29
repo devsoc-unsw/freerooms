@@ -1,24 +1,23 @@
 "use client";
 
 import SearchIcon from "@mui/icons-material/Search";
-import { CircularProgress, useMediaQuery } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
-import { styled, useTheme } from "@mui/system";
+import { styled } from "@mui/system";
 import useAllRooms from "hooks/useAllRooms";
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectFilters } from "redux/filtersSlice";
 
 import AllRoomsFilter from "../../components/AllRoomsFilter";
-import AllRoomsFilterMobile from "../../components/AllRoomsFilterMobile";
 import Room from "../../components/AllRoomsRoom";
 import RoomList from "../../components/AllRoomsRoomList";
 import AllRoomsSearchBar from "../../components/AllRoomsSearchBar";
 
 export default function Page() {
   const filters = useSelector(selectFilters);
-  const { rooms, isValidating, error } = useAllRooms(filters);
+  const { rooms, isValidating } = useAllRooms(filters);
   const centred = isValidating ? "center" : "default"
   // const displayMobile = useMediaQuery(useTheme().breakpoints.down("md"));
 
