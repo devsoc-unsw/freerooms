@@ -2,11 +2,13 @@
 
 import SearchIcon from "@mui/icons-material/Search";
 import { useMediaQuery } from "@mui/material";
+import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import { styled, useTheme } from "@mui/system";
 import useAllRooms from "hooks/useAllRooms";
 import { useMemo } from "react";
+import { useState } from "react";
 
 import AllRoomsFilter from "../../components/AllRoomsFilter";
 import AllRoomsFilterMobile from "../../components/AllRoomsFilterMobile";
@@ -16,9 +18,12 @@ import AllRoomsSearchBar from "../../components/AllRoomsSearchBar";
 
 export default function Page() {
   const { rooms, error } = useAllRooms();
+  const [visibleRooms, setVisibleRooms] = useState(20);
+
   const roomsDisplay = useMemo(() => {
     if (!rooms) return;
-    return Object.entries(rooms).map(([roomId, { name, status, endtime }]) => {
+    const roomEntries = Object.entries(rooms).slice(0, visibleRooms);
+    return roomEntries.map(([roomId, { name, status, endtime }]) => {
       return (
         <Room
           key={roomId}
@@ -29,7 +34,13 @@ export default function Page() {
         />
       );
     });
-  }, [rooms]);
+  }, [rooms, visibleRooms]);
+
+  const handleLoadMore = () => {
+    setVisibleRooms((prev) => prev + 20);
+  };
+
+  const totalRooms = rooms ? Object.keys(rooms).length : 0;
 
   return (
     <Container>
@@ -40,7 +51,14 @@ export default function Page() {
         </StyledSearchBar>
         <StyledBody>
           <Filter />
-          <RoomList>{roomsDisplay}</RoomList>
+          <RoomList>
+            {roomsDisplay}
+            {visibleRooms < totalRooms && (
+              <Button variant="contained" onClick={handleLoadMore}>
+                Load More Rooms
+              </Button>
+            )}
+          </RoomList>
         </StyledBody>
       </Stack>
     </Container>
