@@ -1,5 +1,5 @@
 import { Booking, BookingsResponse, RoomStatus } from "@common/types";
-import { utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
+import { fromZonedTime, toZonedTime } from "date-fns-tz";
 
 import { queryBookingsInRange, queryBuildingsAndRooms } from "./dbInterface";
 import { BuildingDatabase } from "./types";
@@ -11,11 +11,11 @@ export const getBookingsForDate = async (
   date: Date
 ): Promise<{ [roomId: string]: BookingsResponse }> => {
   // The date is in UTC time, convert to AEST first to manipulate hours
-  const base = utcToZonedTime(date, "Australia/Sydney");
+  const base = toZonedTime(date, "Australia/Sydney");
   base.setHours(0, 0);
-  const start = zonedTimeToUtc(base, "Australia/Sydney");
+  const start = fromZonedTime(base, "Australia/Sydney");
   base.setHours(23, 59);
-  const end = zonedTimeToUtc(base, "Australia/Sydney");
+  const end = fromZonedTime(base, "Australia/Sydney");
 
   const res = await queryBookingsInRange(start, end);
   return Object.fromEntries(res.rooms.map((room) => [room.id, room]));

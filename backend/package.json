@@ -24,7 +24,7 @@
     "@graphql-typed-document-node/core": "^3.2.0",
     "cors": "^2.8.5",
     "date-fns": "^4.0.0",
-    "date-fns-tz": "^2.0.0",
+    "date-fns-tz": "^3.0.0",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "graphql": "^16.6.0",
