@@ -47,7 +47,7 @@
     "@testing-library/react": "^16.0.0",
     "@types/jest": "^29.5.12",
     "@types/luxon": "^3.0.0",
-    "@types/node": "20.17.2",
+    "@types/node": "22.8.4",
     "@types/react": "^18.0.33",
     "@types/react-big-calendar": "^1.6.3",
     "eslint": "^8.14.0",
