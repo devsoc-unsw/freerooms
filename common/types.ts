@@ -42,6 +42,13 @@ export type School = {
   contactLink: string;
 };
 
+export type Rating = {
+  quitness: number;
+  location: number;
+  cleanliness: number;
+  overall: number;
+}
+
 ///////////////////////////////////////////////////////////////
 // API Response Types
 
@@ -68,3 +75,9 @@ export type SearchResponse = {
 export type BookingsResponse = {
   bookings: Booking[];
 };
+
+export type RatingsResponse = {
+  // roomId refers to room name
+  roomId: string;
+  ratings: Rating[];
+}

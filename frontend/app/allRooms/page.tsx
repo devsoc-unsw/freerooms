@@ -1,7 +1,7 @@
 "use client";
 
 import SearchIcon from "@mui/icons-material/Search";
-import { CircularProgress } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/system";
@@ -20,10 +20,12 @@ export default function Page() {
   const { rooms, isValidating } = useAllRooms(filters);
   const centred = isValidating ? "center" : "default";
   // const displayMobile = useMediaQuery(useTheme().breakpoints.down("md"));
+  const [visibleRooms, setVisibleRooms] = useState(20);
 
   const roomsDisplay = useMemo(() => {
     if (!rooms) return;
-    return Object.entries(rooms).map(([roomId, { name, status, endtime }]) => {
+    const roomEntries = Object.entries(rooms).slice(0, visibleRooms);
+    return roomEntries.map(([roomId, { name, status, endtime }]) => {
       return (
         <Room
           key={roomId}
@@ -34,7 +36,13 @@ export default function Page() {
         />
       );
     });
-  }, [rooms]);
+  }, [rooms, visibleRooms]);
+
+  const handleLoadMore = () => {
+    setVisibleRooms((prev) => prev + 20);
+  };
+
+  const totalRooms = rooms ? Object.keys(rooms).length : 0;
 
   return (
     <Container>
@@ -45,15 +53,14 @@ export default function Page() {
         </StyledSearchBar>
         <StyledBody>
           <AllRoomsFilter filters={filters} />
-          {
-            <RoomList alignItems={centred} justifyContent={centred}>
-              {isValidating ? (
-                <CircularProgress size={50} thickness={5} disableShrink />
-              ) : (
-                roomsDisplay
-              )}
-            </RoomList>
-          }
+          <RoomList isValidating={false}>
+            {roomsDisplay}
+            {visibleRooms < totalRooms && (
+              <Button variant="contained" onClick={handleLoadMore}>
+                Load More Rooms
+              </Button>
+            )}
+          </RoomList>
         </StyledBody>
       </Stack>
     </Container>
