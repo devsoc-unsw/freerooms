@@ -18,7 +18,7 @@ import AllRoomsSearchBar from "../../components/AllRoomsSearchBar";
 export default function Page() {
   const filters = useSelector(selectFilters);
   const { rooms, isValidating } = useAllRooms(filters);
-  const centred = isValidating ? "center" : "default"
+  const centred = isValidating ? "center" : "default";
   // const displayMobile = useMediaQuery(useTheme().breakpoints.down("md"));
 
   const roomsDisplay = useMemo(() => {
@@ -44,12 +44,14 @@ export default function Page() {
           <SearchIcon />
         </StyledSearchBar>
         <StyledBody>
-         <AllRoomsFilter filters={filters}/>
+          <AllRoomsFilter filters={filters} />
           {
             <RoomList alignItems={centred} justifyContent={centred}>
-              {isValidating ?
-              <CircularProgress size={50} thickness={5} disableShrink />
-              : roomsDisplay}
+              {isValidating ? (
+                <CircularProgress size={50} thickness={5} disableShrink />
+              ) : (
+                roomsDisplay
+              )}
             </RoomList>
           }
         </StyledBody>
