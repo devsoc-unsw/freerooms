@@ -17,13 +17,8 @@ const useAllRooms = (filters: Filters) => {
   // const datetime = useSelector(selectDatetime);
   // const filters = useSelector(selectFilters);
 
-  const keys: (keyof Filters)[] = Object.keys(filters) as (keyof Filters)[];
-  let parsedFilters: Filters = {};
-  keys.forEach((k) => {
-    parsedFilters[k] = filters[k]!.toString();
-  });
   const { data, isValidating, error } = useSWR<SearchResponse>(
-    [API_URL + "/rooms/search", parsedFilters /*, datetime */],
+    [API_URL + "/rooms/search", filters /*, datetime */],
     fetcher
   );
 
