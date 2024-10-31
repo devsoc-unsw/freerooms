@@ -21,16 +21,29 @@ const StyledStack = styled(Stack)(({ theme }) => ({
   },
 }));
 
-const RoomList = ({ isValidating, children } : { isValidating : boolean, children: React.ReactNode }) => {
+const RoomList = ({
+  isValidating,
+  children,
+}: {
+  isValidating: boolean;
+  children: React.ReactNode;
+}) => {
   return (
     <StyledStack>
-      {isValidating ?
-        <Box display="flex" height="100%" alignItems="center" justifyContent="center">
+      {isValidating ? (
+        <Box
+          display="flex"
+          height="100%"
+          alignItems="center"
+          justifyContent="center"
+        >
           <CircularProgress size={50} thickness={5} disableShrink />
         </Box>
-        : children}
+      ) : (
+        children
+      )}
     </StyledStack>
   );
-}
+};
 
 export default RoomList;
