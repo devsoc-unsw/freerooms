@@ -53,7 +53,7 @@ export default function Page() {
         </StyledSearchBar>
         <StyledBody>
           <AllRoomsFilter filters={filters} />
-          <RoomList isValidating={false}>
+          <RoomList isValidating={isValidating}>
             {roomsDisplay}
             {visibleRooms < totalRooms && (
               <Button variant="contained" onClick={handleLoadMore}>
