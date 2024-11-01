@@ -81,3 +81,8 @@ export type RatingsResponse = {
   roomId: string;
   ratings: Rating[];
 }
+
+export type BuildinRatingsResponse = {
+  buildingId: string;
+  overallRating: number;
+}
