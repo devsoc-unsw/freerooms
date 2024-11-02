@@ -10,40 +10,18 @@ jest.mock("react-redux", () => ({
 }));
 
 describe("OverallRating", () => {
-  it("renders overall rating title", () => {
+  it("renders decimal rating", () => {
     render(<OverallRating />);
 
-    const heading = screen.getByText("Overall Rating");
+    const decimalRating = screen.getByLabelText("decimal-rating");
 
-    expect(heading).toBeInTheDocument();
-  });
-
-  it("renders linear ratings", () => {
-    render(<OverallRating />);
-
-    const linearRatings = screen.getByRole("generic", {
-      name: "Linear Ratings",
-    });
-
-    expect(linearRatings).toBeInTheDocument();
-  });
-
-  it("renders overall number and star rating", () => {
-    render(<OverallRating />);
-
-    const numberStarRating = screen.getByRole("generic", {
-      name: "Number Star Rating",
-    });
-
-    expect(numberStarRating).toBeInTheDocument();
+    expect(decimalRating).toBeInTheDocument();
   });
 
   it("renders leave a review", () => {
     render(<OverallRating />);
 
-    const review = screen.getByRole("button", {
-      name: "Leave A Review",
-    });
+    const review = screen.getByLabelText("leave-review-link");
 
     expect(review).toBeInTheDocument();
   });

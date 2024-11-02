@@ -24,6 +24,7 @@ const DecimalStarRating = () => {
         precision={0.1}
         readOnly
         size="medium"
+        aria-label="decimal-rating"
       />
     </>
   );

@@ -21,7 +21,7 @@ const OverallRating = () => {
           fontSize: "14px",
           color: "#1E90FF",
         }}
-        aria-label="Leave A Review"
+        aria-label="leave-review-link"
       >
         Leave a Review
       </Button>
