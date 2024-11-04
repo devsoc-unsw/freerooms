@@ -1,17 +1,14 @@
-import { Rating, Typography } from "@mui/material";
+import { Rating, Stack, Typography } from "@mui/material";
 import React from "react";
 
 const DecimalStarRating = () => {
   return (
-    <>
+    <Stack alignItems="center">
       <Typography
         component="legend"
         variant="h3"
         sx={{
-          fontSize: {
-            xs: "2.5rem",
-            md: "5rem",
-          },
+          fontSize: "75px",
           width: "100%",
           textAlign: "center",
         }}
@@ -26,7 +23,7 @@ const DecimalStarRating = () => {
         size="medium"
         aria-label="decimal-rating"
       />
-    </>
+    </Stack>
   );
 };
 

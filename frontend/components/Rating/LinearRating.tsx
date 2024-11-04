@@ -8,15 +8,18 @@ interface LinearRatingProps {
 }
 
 const LinearRating: React.FC<LinearRatingProps> = ({ value }) => {
+  // Since ratings are out of 5 while LinearProgress is out of 100, multiply by 20
+  const progress = value * 20;
+
   return (
     <Box display="flex" alignItems="center">
       <Typography variant="body1" sx={{ marginRight: "8px" }}>
-        {`${Math.round(value)}`}
+        {value.toFixed(1)}
       </Typography>
 
       <LinearProgress
         variant="determinate"
-        value={100}
+        value={progress}
         sx={{
           height: "8px",
           borderRadius: "4px",

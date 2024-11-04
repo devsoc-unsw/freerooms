@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 
 import { render, screen } from "@testing-library/react";
-import RoomRatingList from "components/Rooms/RoomRatingList";
+import RoomRatingList from "components/Rating/RoomRatingList";
 
 describe("Rooms page with circular rating component", () => {
   it("renders the CircularRating component", () => {

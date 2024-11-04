@@ -16,7 +16,9 @@ const CircularRating: React.FC<CircularRatingProps> = ({
 
   return (
     <Box textAlign="center" mx={1}>
-      <Typography variant="h6">{category}</Typography>
+      <Typography variant="subtitle1" fontWeight={500}>
+        {category}
+      </Typography>
       <Box
         sx={{
           alignItems: "center",
@@ -54,7 +56,7 @@ const CircularRating: React.FC<CircularRatingProps> = ({
             transform: "translate(-50%, -50%)",
           }}
         >
-          <Typography variant="h4">{rating}</Typography>
+          <Typography variant="h5">{rating}</Typography>
         </Box>
       </Box>
     </Box>
