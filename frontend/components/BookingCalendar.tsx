@@ -353,7 +353,6 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
             }}
           />
         </StyledCalendarContainer>
-        <RoomRatingList roomID={roomID} />
       </Stack>
     </>
   );
