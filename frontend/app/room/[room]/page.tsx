@@ -17,7 +17,7 @@ import Link from "@mui/material/Link";
 import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import OverallRating from "components/OverallRating";
+import RoomRatingList from "components/Rooms/RoomRatingList";
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -71,7 +71,7 @@ export default function Page({ params }: { params: { room: string } }) {
           <RoomPageHeader room={room} buildingName={building.name} />
           <RoomImage src={`/assets/building_photos/${campus}-${grid}.webp`} />
           <BookingCalendar events={adjustedBookings ?? []} roomID={room.id} />
-          <OverallRating />
+          <RoomRatingList roomID={room.id} />
         </Stack>
       ) : (
         <LoadingCircle />
