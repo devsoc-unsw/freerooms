@@ -75,9 +75,15 @@ export async function insertBuldingRating(
       }
       // Update overall rating
       else {
-        const newNumRating = room.NumRating + 1;
-        const newOverallRating =
-          (room.overallRating * room.NumRating + overallRating) / newNumRating;
+        console.log("UPDATE: ", overallRating);
+        const newNumRating = room.numRating + 1;
+        console.log(newNumRating);
+
+        let newOverallRating =
+          (room.overallRating * room.numRating + overallRating) / newNumRating;
+
+        newOverallRating = Math.round(newOverallRating * 10) / 10;
+
         await collection.updateOne(
           filter,
           {
@@ -129,7 +135,9 @@ export async function getRatings(roomId: string): Promise<Rating[]> {
   return [];
 }
 
-export async function getBuildingRatings(buildingId: string): Promise<number> {
+export async function getBuildingRatings(
+  buildingId: string
+): Promise<BuildinRatingsResponse | null> {
   if (!uri) {
     throw new Error("uri not found");
   }
@@ -141,17 +149,17 @@ export async function getBuildingRatings(buildingId: string): Promise<number> {
     const collection = database.collection("building-ratings");
     const query = { buildingId: buildingId };
 
-    // Include only 'roomId' and 'ratings' fields in each document
+    // Include only 'buildingId' and 'overallRating' fields in each document
     const options = {
-      projection: { _id: 0, buildingId: 1, overallRating: 1, numRating: 0 },
+      projection: { _id: 0, buildingId: 1, overallRating: 1 },
     };
 
     const buildingDoc = await collection.findOne(query, options);
 
-    // Document found, return ratings array
+    // Document found, return overall rating
     if (buildingDoc !== null) {
       const buildingRating = buildingDoc as unknown as BuildinRatingsResponse;
-      return buildingRating.overallRating;
+      return buildingRating;
     }
   } catch (error) {
     console.error("Error finding item:", error);
@@ -159,5 +167,5 @@ export async function getBuildingRatings(buildingId: string): Promise<number> {
     await client.close();
   }
   // No document found, return 0
-  return 0;
+  return null;
 }

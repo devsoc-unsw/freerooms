@@ -8,12 +8,14 @@ import setInsertRating from "hooks/setInsertRating";
 interface ReviewModalProps {
   open: boolean;
   roomID: string;
+  buildingID: string;
   handleClose: () => void;
 }
 
 const ReviewModal: React.FC<ReviewModalProps> = ({
   open,
   roomID,
+  buildingID,
   handleClose,
 }) => {
   const [quietnessRating, setQuienessRating] = useState(0);
@@ -43,7 +45,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
       overall: overallRating,
     };
 
-    setInsertRating(roomID, newRating);
+    setInsertRating(roomID, buildingID, newRating);
     handleClose();
   };
   return (

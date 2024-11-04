@@ -71,7 +71,7 @@ export default function Page({ params }: { params: { room: string } }) {
           <RoomPageHeader room={room} buildingName={building.name} />
           <RoomImage src={`/assets/building_photos/${campus}-${grid}.webp`} />
           <BookingCalendar events={adjustedBookings ?? []} roomID={room.id} />
-          <OverallRating roomID={room.id} />
+          <OverallRating roomID={room.id} buildingID={building.id} />
         </Stack>
       ) : (
         <LoadingCircle />

@@ -8,9 +8,13 @@ import ReviewModal from "./ReviewModal";
 
 interface OverallRatingProps {
   roomID: string;
+  buildingID: string;
 }
 
-const OverallRating: React.FC<OverallRatingProps> = ({ roomID }) => {
+const OverallRating: React.FC<OverallRatingProps> = ({
+  roomID,
+  buildingID,
+}) => {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
@@ -52,7 +56,12 @@ const OverallRating: React.FC<OverallRatingProps> = ({ roomID }) => {
           >
             Leave a Review
           </Button>
-          <ReviewModal open={open} roomID={roomID} handleClose={handleClose} />
+          <ReviewModal
+            open={open}
+            roomID={roomID}
+            buildingID={buildingID}
+            handleClose={handleClose}
+          />
         </Stack>
       </Stack>
     </Stack>
