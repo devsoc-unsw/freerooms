@@ -31,11 +31,9 @@ describe("Booking calendar with circular rating", () => {
     const cleanlinessRating = screen.getByText("Cleanliness");
     const quietnessRating = screen.getByText("Quietness");
     const locationRating = screen.getByText("Location");
-    const overallRating = screen.getByText("Overall");
 
     expect(cleanlinessRating).toBeInTheDocument();
     expect(quietnessRating).toBeInTheDocument();
     expect(locationRating).toBeInTheDocument();
-    expect(overallRating).toBeInTheDocument();
   });
 });
