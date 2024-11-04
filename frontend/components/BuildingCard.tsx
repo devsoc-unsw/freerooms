@@ -13,6 +13,7 @@ import { setCurrentBuilding } from "../redux/currentBuildingSlice";
 import { useDispatch } from "../redux/hooks";
 import { getNumFreerooms } from "../utils/utils";
 import StatusDot from "./StatusDot";
+import useBuildingRatings from "hooks/useBuildingRatings";
 
 const INITIALISING = -2;
 const FAILED = -1;
@@ -82,6 +83,7 @@ const BuildingCard: React.FC<{
 
   const { building } = useBuilding(buildingId);
   const { status } = useBuildingStatus(buildingId);
+  const { ratings } = useBuildingRatings(buildingId);
 
   if (!building) return <></>;
 
@@ -128,7 +130,7 @@ const BuildingCard: React.FC<{
           aria-label="star-info"
         >
           <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
-            {averageRatingValue}
+            {ratings?.overallRating}
           </Typography>
           <StarIcon sx={{ color: "rgb(255, 169, 12)" }} />
         </Stack>

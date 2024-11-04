@@ -82,7 +82,7 @@ export type RatingsResponse = {
   ratings: Rating[];
 }
 
-export type BuildinRatingsResponse = {
+export type BuildingRatingsResponse = {
   buildingId: string;
   overallRating: number;
 }

@@ -1,4 +1,8 @@
-import { BuildinRatingsResponse, Rating, RatingsResponse } from "@common/types";
+import {
+  BuildingRatingsResponse,
+  Rating,
+  RatingsResponse,
+} from "@common/types";
 import dotenv from "dotenv";
 import { Collection, MongoClient } from "mongodb";
 dotenv.config({ path: "src/.env.local" });
@@ -137,7 +141,7 @@ export async function getRatings(roomId: string): Promise<Rating[]> {
 
 export async function getBuildingRatings(
   buildingId: string
-): Promise<BuildinRatingsResponse | null> {
+): Promise<BuildingRatingsResponse | null> {
   if (!uri) {
     throw new Error("uri not found");
   }
@@ -158,7 +162,7 @@ export async function getBuildingRatings(
 
     // Document found, return overall rating
     if (buildingDoc !== null) {
-      const buildingRating = buildingDoc as unknown as BuildinRatingsResponse;
+      const buildingRating = buildingDoc as unknown as BuildingRatingsResponse;
       return buildingRating;
     }
   } catch (error) {

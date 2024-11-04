@@ -26,7 +26,7 @@ import {
   getRoomBookings,
   searchAllRoom,
 } from "./service";
-import { BuildinRatingsResponse } from "@common/types";
+import { BuildingRatingsResponse } from "@common/types";
 
 const app = express();
 app.use(cors());
@@ -127,7 +127,7 @@ app.get(
   "/api/buildingRating/:buildingID",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const { buildingID } = req.params;
-    let buildingRating: BuildinRatingsResponse | null =
+    let buildingRating: BuildingRatingsResponse | null =
       await getBuildingRatings(buildingID);
 
     // no reviews for current building
