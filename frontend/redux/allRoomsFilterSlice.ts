@@ -37,12 +37,13 @@ const filtersSlice = createSlice({
     ) => {
       const { key, value } = action.payload;
       if (Object.keys(state.value).includes(key)) {
+        // find the index of the unset value and remove this element from the list.
         const targetIndex = state.value[key]!.indexOf(value);
         if (targetIndex > -1) {
           state.value[key]!.splice(targetIndex);
         }
       } else {
-        throw "unsetting unincluded key";
+        throw "unsetting value that was already unset";
       }
     },
     clearAllRoomsFilters: (state) => {

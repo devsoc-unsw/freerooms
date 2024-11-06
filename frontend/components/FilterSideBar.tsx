@@ -10,12 +10,9 @@ import { allRoomsFilterDropdown } from "utils/constants";
 import DropdownSelections from "./DropdownSelections";
 
 const StyledFilterSideBarContainer = styled(Box)<BoxProps>(({ theme }) => ({
-  // borderRadius: 10,
   display: "flex",
   flexDirection: "column",
   backgroundColor: theme.palette.background.default,
-  // borderWidth: 1,
-  // borderStyle: "solid",
   borderColor: theme.palette.mode === "light" ? "#BCBCBC" : "#3F3F3F",
   ":hover": {
     cursor: "auto",

@@ -1,7 +1,7 @@
 "use client";
 
 import SearchIcon from "@mui/icons-material/Search";
-import { Button, CircularProgress } from "@mui/material";
+import { Button } from "@mui/material";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/system";
@@ -96,7 +96,6 @@ const StyledBody = styled(Stack)(({ theme }) => ({
   gap: theme.spacing(2),
   [theme.breakpoints.down("md")]: {
     flexDirection: "column",
-    // alignItems: "center",
     padding: theme.spacing(0, 2),
   },
 }));

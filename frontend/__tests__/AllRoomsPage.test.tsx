@@ -41,12 +41,14 @@ describe("AllRooms page", () => {
 
   it("renders AllRoomsFilter", () => {
     render(
-      <ThemeProvider theme={createTheme({})}>
-        <AllRoomsFilter />
-      </ThemeProvider>
+      <Provider store={store}>
+        <ThemeProvider theme={createTheme({})}>
+          <AllRoomsFilter filters={{}} />
+        </ThemeProvider>
+      </Provider>
     );
 
-    const roomType = screen.getByText("Room type");
+    const roomType = screen.getByText("Room Type");
     const location = screen.getByText("Location");
     const idRequired = screen.getByText("ID Required");
 
