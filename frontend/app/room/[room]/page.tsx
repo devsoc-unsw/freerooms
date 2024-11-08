@@ -28,6 +28,7 @@ import RoomBackButton from "../../../components/RoomBackButton";
 import useBookings from "../../../hooks/useBookings";
 import useBuilding from "../../../hooks/useBuilding";
 import useRoom from "../../../hooks/useRoom";
+import useRoomRatings from "hooks/useRoomRatings";
 
 const adjustDateIfMidnight = (inputDate: Date): Date => {
   // Check if the time is midnight (00:00:00)
@@ -96,7 +97,16 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
     ? `This room is managed by ${schoolDetails.name}. Please contact the school to request a booking`
     : "This room is managed externally by its associated school. Please contact the school to request a booking";
 
-  const ratingValue = 3.5;
+  const ratings = useRoomRatings(room.id);
+  let ratingValue = 0;
+
+  if (ratings.ratings && ratings.ratings.length > 0) {
+    ratings.ratings.forEach((rating) => {
+      ratingValue += rating.overall;
+    });
+    ratingValue = ratingValue / ratings.ratings.length;
+    ratingValue = Math.round(ratingValue * 10) / 10;
+  }
 
   return (
     <Stack
