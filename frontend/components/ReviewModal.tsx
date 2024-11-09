@@ -1,9 +1,9 @@
+import { Rating } from "@common/types";
 import { Box, Button, Modal, Stack } from "@mui/material";
+import setInsertRating from "hooks/setInsertRating";
 import React, { useState } from "react";
 
 import ReviewRating from "./ReviewRating";
-import { Rating } from "@common/types";
-import setInsertRating from "hooks/setInsertRating";
 
 interface ReviewModalProps {
   open: boolean;

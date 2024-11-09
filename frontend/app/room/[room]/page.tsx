@@ -18,6 +18,7 @@ import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import OverallRating from "components/OverallRating";
+import useRoomRatings from "hooks/useRoomRatings";
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -28,7 +29,6 @@ import RoomBackButton from "../../../components/RoomBackButton";
 import useBookings from "../../../hooks/useBookings";
 import useBuilding from "../../../hooks/useBuilding";
 import useRoom from "../../../hooks/useRoom";
-import useRoomRatings from "hooks/useRoomRatings";
 
 const adjustDateIfMidnight = (inputDate: Date): Date => {
   // Check if the time is midnight (00:00:00)

@@ -1,3 +1,4 @@
+import { BuildingRatingsResponse } from "@common/types";
 import cors from "cors";
 import express, {
   json,
@@ -26,7 +27,6 @@ import {
   getRoomBookings,
   searchAllRoom,
 } from "./service";
-import { BuildingRatingsResponse } from "@common/types";
 
 const app = express();
 app.use(cors());
@@ -132,7 +132,6 @@ app.get(
 
     // no reviews for current building
     if (buildingRating === null) {
-      console.log("TEST");
       buildingRating = {
         buildingId: buildingID,
         overallRating: 0,

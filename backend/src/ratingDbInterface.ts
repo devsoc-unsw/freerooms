@@ -79,9 +79,7 @@ export async function insertBuldingRating(
       }
       // Update overall rating
       else {
-        console.log("UPDATE: ", overallRating);
         const newNumRating = room.numRating + 1;
-        console.log(newNumRating);
 
         let newOverallRating =
           (room.overallRating * room.numRating + overallRating) / newNumRating;
