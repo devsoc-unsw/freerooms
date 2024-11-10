@@ -99,7 +99,7 @@ export const searchAllRoom = async (
       filters.endTime
     );
   } else {
-    bookings = await getBookingsForDate(new Date());
+    bookings = await getBookingsForDate(filters.startTime);
   }
 
   const buildingData = await getBuildingRoomData();

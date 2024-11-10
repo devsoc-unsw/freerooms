@@ -79,7 +79,14 @@ export const parseStatusFilters = (req: Request): StatusFilters => {
 
 export const parseSearchFilters = (req: Request): SearchFilters => {
   // we may want to make SearchFilters independent from StatusFilters if SearchFilters does not completely extends it anymore.
-  let filters: SearchFilters = parseStatusFilters(req);
+  if (!req.query.startTime) {
+    throw new Error("Start time required.");
+  }
+
+  let filters: SearchFilters = {
+    ...parseStatusFilters(req),
+    startTime: parseDatetime(req.query.startTime as string),
+  };
 
   if (req.query.buildingId) {
     filters.buildingId = req.query.buildingId as string;
@@ -87,30 +94,23 @@ export const parseSearchFilters = (req: Request): SearchFilters => {
 
   // limit the startTime and endTime to be within a week from each other
   // seeing that we have 200k+ bookings
-  if (req.query.startTime && req.query.endTime) {
-    const startAndEndTime = {
-      startTime: parseDatetime(req.query.startTime as string),
-      endTime: parseDatetime(req.query.endTime as string),
-    };
+  if (req.query.endTime) {
+    const endTime = parseDatetime(req.query.endTime as string);
 
     if (
-      startAndEndTime.endTime.getTime() - startAndEndTime.startTime.getTime() >
+      endTime.getTime() - filters.startTime.getTime() >
       ONE_WEEK_IN_MILLISECONDS
     ) {
       throw new Error(
         "Invalid time range: end time cannot be 1 week later than start time."
       );
     }
-    filters = { ...filters, ...startAndEndTime };
-    if (
-      startAndEndTime.endTime.getTime() - startAndEndTime.startTime.getTime() <
-      0
-    ) {
+    if (endTime.getTime() - filters.startTime.getTime() < 0) {
       throw new Error(
         "Invalid time range: end time cannot be before start time."
       );
     }
-    filters = { ...filters, ...startAndEndTime };
+    filters = { ...filters, endTime };
   }
 
   return filters;

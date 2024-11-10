@@ -16,19 +16,8 @@ export type StatusFilters = {
   id?: boolean;
 };
 
-type BaseSearchFilters = StatusFilters & {
+export type SearchFilters = StatusFilters & {
   buildingId?: string;
-};
-
-type SearchFiltersWithoutTime = BaseSearchFilters & {
-  startTime?: never;
-  endTime?: never;
-};
-
-type SearchFiltersWithTime = BaseSearchFilters & {
   startTime: Date;
-  endTime: Date;
+  endTime?: Date;
 };
-
-// Search filters must either not have both start and end time, or have both (cannot provide startTime without endTime)
-export type SearchFilters = SearchFiltersWithoutTime | SearchFiltersWithTime;
