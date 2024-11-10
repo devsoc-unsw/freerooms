@@ -1,6 +1,5 @@
 "use client";
 
-import SearchIcon from "@mui/icons-material/Search";
 import { Button } from "@mui/material";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
@@ -10,10 +9,10 @@ import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectFilters } from "redux/filtersSlice";
 
+import AllRoomsSearchBar from "../../components/AllRooms/AllRoomsSearchBar";
 import AllRoomsFilter from "../../components/AllRoomsFilter";
 import Room from "../../components/AllRoomsRoom";
 import RoomList from "../../components/AllRoomsRoomList";
-import AllRoomsSearchBar from "../../components/AllRoomsSearchBar";
 
 export default function Page() {
   const filters = useSelector(selectFilters);
@@ -49,7 +48,6 @@ export default function Page() {
       <Stack>
         <StyledSearchBar>
           <AllRoomsSearchBar />
-          <SearchIcon />
         </StyledSearchBar>
         <StyledBody>
           <AllRoomsFilter filters={filters} />

@@ -1,4 +1,10 @@
+import SearchIcon from "@mui/icons-material/Search";
+import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
+
+import Building from "./Building";
+import When from "./When";
 
 const AllRoomsSearchBar: React.FC<{}> = () => {
   return (
@@ -7,60 +13,33 @@ const AllRoomsSearchBar: React.FC<{}> = () => {
       spacing={{ xs: 1, sm: 2 }}
       sx={{
         justifyContent: "center",
+        alignItems: "center",
         flexGrow: 3,
       }}
+      divider={<Divider orientation="vertical" flexItem />}
     >
-      <div></div>
       <Building />
       <Capacity />
       <When />
       <Duration />
-    </Stack>
-  );
-};
-
-const Building: React.FC<{}> = () => {
-  return (
-    <Stack
-      sx={{
-        flexGrow: 1,
-        maxWidth: "440px",
-        fontSize: { xs: "0.9em", sm: "1em" },
-        fontWeight: 300,
-      }}
-    >
-      Building
+      <SearchIcon />
     </Stack>
   );
 };
 
 const Capacity: React.FC<{}> = () => {
   return (
-    <Stack
+    <TextField
       sx={{
         flexGrow: 1,
         maxWidth: "440px",
         fontSize: { xs: "0.9em", sm: "1em" },
         fontWeight: 300,
       }}
-    >
-      Capacity
-    </Stack>
-  );
-};
-
-const When: React.FC<{}> = () => {
-  return (
-    <Stack
-      sx={{
-        flexGrow: 1,
-        maxWidth: "440px",
-        fontSize: { xs: "0.9em", sm: "1em" },
-        fontWeight: 300,
-      }}
-    >
-      When
-    </Stack>
+      type="number"
+      variant="standard"
+      label="Capacity"
+    />
   );
 };
 

@@ -4,11 +4,10 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
-import React from "react";
 
-import { selectDatetime, setDatetime } from "../redux/datetimeSlice";
-import { useDispatch, useSelector } from "../redux/hooks";
-import toSydneyTime from "../utils/toSydneyTime";
+import { selectDatetime, setDatetime } from "../../redux/datetimeSlice";
+import { useDispatch, useSelector } from "../../redux/hooks";
+import toSydneyTime from "../../utils/toSydneyTime";
 
 const DatePicker = () => {
   const dispatch = useDispatch();
@@ -23,10 +22,10 @@ const DatePicker = () => {
           value && dispatch(setDatetime(toSydneyTime(value.toDate())))
         }
         sx={{
-          flexGrow: 1,
-          maxWidth: "440px",
-          fontSize: { xs: "0.9em", sm: "1em" },
-          fontWeight: 300,
+          width: 140,
+          "& .MuiInputBase-root": {
+            height: 45,
+          },
         }}
         aria-label="date-picker"
       />
