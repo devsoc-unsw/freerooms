@@ -1,12 +1,11 @@
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/system";
+import { Filters } from "types";
 
-const AllRoomsFilter: React.FC<{}> = () => {
+import FilterSideBar from "./FilterSideBar";
+
+const AllRoomsFilter: React.FC<{ filters: Filters }> = ({ filters }) => {
   return (
     <StyledMainFilter>
       <Typography
@@ -21,32 +20,7 @@ const AllRoomsFilter: React.FC<{}> = () => {
       >
         FILTER OPTIONS
       </Typography>
-      <Stack
-        sx={{
-          flexDirection: { xs: "row", sm: "row", md: "column" },
-        }}
-      >
-        <StyledAccordion>
-          <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
-            {"Room type"}
-          </AccordionSummary>
-          <AccordionDetails>{"Auditorium"}</AccordionDetails>
-        </StyledAccordion>
-
-        <StyledAccordion>
-          <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
-            {"Location"}
-          </AccordionSummary>
-          <AccordionDetails>{"Upper Campus"}</AccordionDetails>
-        </StyledAccordion>
-
-        <StyledAccordion>
-          <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
-            {"ID Required"}
-          </AccordionSummary>
-          <AccordionDetails>{"Not Required"}</AccordionDetails>
-        </StyledAccordion>
-      </Stack>
+      <FilterSideBar filters={filters} />
     </StyledMainFilter>
   );
 };
@@ -55,16 +29,6 @@ const StyledMainFilter = styled(Stack)(({ theme }) => ({
   alignItems: "stretch",
   flexDirection: "column",
   flexGrow: 3,
-}));
-
-const StyledAccordion = styled(Accordion)(({ theme }) => ({
-  backgroundColor: theme.palette.background.default,
-  boxShadow: "none",
-  "&.MuiAccordion-root:before": {
-    backgroundColor: theme.palette.background.default,
-    height: 0,
-  },
-  disableGutters: true,
 }));
 
 export default AllRoomsFilter;

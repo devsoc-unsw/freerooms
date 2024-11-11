@@ -2,29 +2,29 @@ import { SearchResponse } from "@common/types";
 import axios from "axios";
 import { API_URL } from "config";
 import { useSelector } from "react-redux";
-import useSWRImmutable from "swr/immutable";
+import useSWR from "swr/immutable";
+import { AllRoomsFilters, Filters } from "types";
 
-const fetcher = (url: string /*, datetime: Date, filters: Filters*/) =>
+const fetcher = (url: string, filters: AllRoomsFilters /* datetime: Date */) =>
   axios
     .get(url, {
-      params: {
-        /*datetime, ...filters*/
-      },
+      params: filters,
     })
     .then((res) => res.data);
 
-const useAllRooms = () => {
+const useAllRooms = (filters: Filters) => {
   // TODO: add in datetime and filters
   // const datetime = useSelector(selectDatetime);
   // const filters = useSelector(selectFilters);
 
-  const { data, error } = useSWRImmutable<SearchResponse>(
-    [API_URL + "/rooms/search" /*, datetime, filters*/],
+  const { data, isValidating, error } = useSWR<SearchResponse>(
+    [API_URL + "/rooms/search", filters /*, datetime */],
     fetcher
   );
 
   return {
     rooms: data,
+    isValidating,
     error,
   };
 };
