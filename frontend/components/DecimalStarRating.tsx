@@ -8,7 +8,6 @@ const DecimalStarRating = () => {
         component="legend"
         variant="h3"
         sx={{
-          marginBottom: "16px",
           fontSize: {
             xs: "2.5rem",
             md: "5rem",
@@ -24,7 +23,8 @@ const DecimalStarRating = () => {
         defaultValue={4.5}
         precision={0.1}
         readOnly
-        size="large"
+        size="medium"
+        aria-label="decimal-rating"
       />
     </>
   );

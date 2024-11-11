@@ -1,41 +1,20 @@
 import "@testing-library/jest-dom";
 
-import { Booking } from "@common/types";
 import { render, screen } from "@testing-library/react";
-import { Provider } from "react-redux";
+import RoomRatingList from "components/Rooms/RoomRatingList";
 
-import BookingCalendar from "../components/BookingCalendar";
-import store from "../redux/store";
-
-const start: Date = new Date();
-const end: Date = new Date();
-const roomID: string = "test";
-
-const events: Booking[] = [
-  {
-    name: "MARK5827 TUT",
-    bookingType: "(CLASS)",
-    start: start,
-    end: end,
-  },
-];
-
-describe("Booking calendar with circular rating", () => {
+describe("Rooms page with circular rating component", () => {
   it("renders the CircularRating component", () => {
-    render(
-      <Provider store={store}>
-        <BookingCalendar events={events} roomID={roomID} />
-      </Provider>
-    );
+    const mockParams = "K-J17-101";
+
+    render(<RoomRatingList roomID={mockParams} />);
 
     const cleanlinessRating = screen.getByText("Cleanliness");
     const quietnessRating = screen.getByText("Quietness");
     const locationRating = screen.getByText("Location");
-    const overallRating = screen.getByText("Overall");
 
     expect(cleanlinessRating).toBeInTheDocument();
     expect(quietnessRating).toBeInTheDocument();
     expect(locationRating).toBeInTheDocument();
-    expect(overallRating).toBeInTheDocument();
   });
 });
