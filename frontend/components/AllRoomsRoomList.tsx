@@ -4,12 +4,10 @@ import { Box, styled } from "@mui/system";
 
 const StyledStack = styled(Stack)(({ theme }) => ({
   flexDirection: "column",
-  flexGrow: 5,
+  flexGrow: 1,
   maxHeight: "calc(100svh - 225px)",
-  overflowY: "auto",
-  alignItems: "centred",
-  justifyContent: "centred",
-  height: "100%",
+  padding: 1,
+  overflowY: "scroll",
   [theme.breakpoints.down("md")]: {
     width: "100%",
     marginTop: 14,

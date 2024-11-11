@@ -56,7 +56,11 @@ export default function Page() {
           <RoomList isValidating={isValidating}>
             {roomsDisplay}
             {visibleRooms < totalRooms && (
-              <Button variant="contained" onClick={handleLoadMore}>
+              <Button
+                variant="outlined"
+                onClick={handleLoadMore}
+                sx={{ margin: 1 }}
+              >
                 Load More Rooms
               </Button>
             )}

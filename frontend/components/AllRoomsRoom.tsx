@@ -1,8 +1,11 @@
 import { SearchResponseValue } from "@common/types";
-import { Typography } from "@mui/material";
-import Stack from "@mui/material/Stack";
-import { styled } from "@mui/system";
-import Link from "next/link";
+import {
+  Card,
+  CardActionArea,
+  CardContent,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { RoomAvailabilityBoxProps } from "views/RoomAvailabilityBox";
 
 import RoomAvailability from "./RoomAvailability";
@@ -16,38 +19,38 @@ const Room: React.FC<AllRoomsRoomProps> = ({
   ...roomStatus
 }) => {
   return (
-    <Link href={`/room/${roomNumber}`}>
-      <RoomDetails>
-        <Typography
-          sx={{
-            fontWeight: "bold",
-            fontSize: { sm: "0.9em", md: "0.95em" },
-          }}
-        >
-          {name}
-        </Typography>
-        <RoomAvailability roomStatus={roomStatus} />
-      </RoomDetails>
-    </Link>
+    <Card
+      variant="outlined"
+      sx={{
+        backgroundColor: "#ffffff",
+        marginBottom: 1,
+        marginX: 1,
+        overflow: "visible",
+      }}
+    >
+      <CardActionArea href={`/room/${roomNumber}`}>
+        <CardContent>
+          <Stack
+            alignItems="center"
+            direction="row"
+            justifyContent="space-between"
+            paddingX={1}
+          >
+            <Stack>
+              <Typography
+                sx={{
+                  fontWeight: "bold",
+                }}
+              >
+                {name}
+              </Typography>
+            </Stack>
+            <RoomAvailability roomStatus={roomStatus} />
+          </Stack>
+        </CardContent>
+      </CardActionArea>
+    </Card>
   );
 };
-
-const RoomDetails = styled(Stack)(({ theme }) => ({
-  flexDirection: "row",
-  justifyContent: "space-between",
-  alignItems: "center",
-  height: "fit-content",
-  borderRadius: 8,
-  borderStyle: "solid",
-  borderColor: "black",
-  borderWidth: "thin",
-  margin: theme.spacing(0, 0, 1.25),
-  padding: theme.spacing(1.25, 2.5, 1.25, 2.25),
-  cursor: "pointer",
-  "&:hover": {
-    border: "1px solid",
-    borderColor: theme.palette.primary.main,
-  },
-}));
 
 export default Room;
