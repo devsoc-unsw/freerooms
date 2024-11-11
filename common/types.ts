@@ -43,11 +43,11 @@ export type School = {
 };
 
 export type Rating = {
-  quitness: number;
-  location: number;
   cleanliness: number;
+  location: number;
+  quietness: number;
   overall: number;
-}
+};
 
 ///////////////////////////////////////////////////////////////
 // API Response Types
@@ -80,4 +80,9 @@ export type RatingsResponse = {
   // roomId refers to room name
   roomId: string;
   ratings: Rating[];
-}
+};
+
+export type BuildingRatingsResponse = {
+  buildingId: string;
+  overallRating: number;
+};

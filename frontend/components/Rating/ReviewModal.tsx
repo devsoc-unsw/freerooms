@@ -1,3 +1,4 @@
+import { Rating } from "@common/types";
 import CloseIcon from "@mui/icons-material/Close";
 import {
   Alert,
@@ -9,22 +10,66 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import setInsertRating from "hooks/setInsertRating";
 import React, { useState } from "react";
 
 import ReviewRating from "./ReviewRating";
 
 interface ReviewModalProps {
+  buildingID: string;
   open: boolean;
+  roomID: string;
   handleClose: () => void;
 }
 
-const ReviewModal: React.FC<ReviewModalProps> = ({ open, handleClose }) => {
+const ReviewModal: React.FC<ReviewModalProps> = ({
+  buildingID,
+  open,
+  roomID,
+  handleClose,
+}) => {
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
 
   const handleSubmit = () => {
-    // TODO: Insert future code to deal with submission of review
-    setShowSnackbar(true); // TODO: Add logic to show success message or error message based on BE response
+    // prevent default submission
+    if (
+      cleanlinesRating === 0 &&
+      locationRating === 0 &&
+      quietnessRating === 0 &&
+      overallRating === 0
+    ) {
+      return;
+    }
+
+    const newRating: Rating = {
+      cleanliness: cleanlinesRating,
+      location: locationRating,
+      quietness: quietnessRating,
+      overall: overallRating,
+    };
+
+    setInsertRating(roomID, buildingID, newRating);
+    setShowSnackbar(true);
     handleClose();
+  };
+
+  const [quietnessRating, setQuienessRating] = useState(0);
+  const [locationRating, setLocationRating] = useState(0);
+  const [cleanlinesRating, setCleanlinessRating] = useState(0);
+  const [overallRating, setOverallRating] = useState(0);
+
+  const ratingCallback = (reviewType: string, rating: number | null) => {
+    if (typeof rating === null) {
+      return;
+    } else if (reviewType === "Quietness") {
+      setQuienessRating(rating!);
+    } else if (reviewType === "Location") {
+      setLocationRating(rating!);
+    } else if (reviewType === "Cleanliness") {
+      setCleanlinessRating(rating!);
+    } else if (reviewType === "Overall") {
+      setOverallRating(rating!);
+    }
   };
 
   const handleSnackbarClose = () => {
@@ -60,10 +105,22 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ open, handleClose }) => {
             </IconButton>
             <Stack gap={3} marginBottom={4} paddingX={8}>
               <Typography variant="h6">Leave a Rating</Typography>
-              <ReviewRating category="Quietness" />
-              <ReviewRating category="Location" />
-              <ReviewRating category="Cleanliness" />
-              <ReviewRating category="Overall" />
+              <ReviewRating
+                category="Cleanliness"
+                ratingCallback={ratingCallback}
+              />
+              <ReviewRating
+                category="Location"
+                ratingCallback={ratingCallback}
+              />
+              <ReviewRating
+                category="Quietness"
+                ratingCallback={ratingCallback}
+              />
+              <ReviewRating
+                category="Overall"
+                ratingCallback={ratingCallback}
+              />
               <Button
                 variant="outlined"
                 onClick={handleSubmit}

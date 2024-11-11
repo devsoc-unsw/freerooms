@@ -2,7 +2,15 @@ import { Button } from "@mui/material";
 import ReviewModal from "components/Rating/ReviewModal";
 import { useState } from "react";
 
-export default function ReviewButton() {
+interface ReviewButtonProps {
+  buildingID: string;
+  roomID: string;
+}
+
+export default function ReviewButton({
+  buildingID,
+  roomID,
+}: ReviewButtonProps) {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
@@ -17,7 +25,12 @@ export default function ReviewButton() {
       >
         Leave a Rating
       </Button>
-      <ReviewModal open={open} handleClose={handleClose} />
+      <ReviewModal
+        open={open}
+        roomID={roomID}
+        buildingID={buildingID}
+        handleClose={handleClose}
+      />
     </>
   );
 }

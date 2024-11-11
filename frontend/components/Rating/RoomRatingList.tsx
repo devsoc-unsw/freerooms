@@ -5,7 +5,7 @@ import useRoomRatings from "hooks/useRoomRatings";
 import React from "react";
 
 import CircularRating from "./CircularRating";
-import LinearRatings from "./LinearRatings";
+import LinearRating from "./LinearRating";
 
 const RoomRatingList: React.FC<{
   roomID: string;
@@ -15,21 +15,21 @@ const RoomRatingList: React.FC<{
   const { ratings } = useRoomRatings(roomID);
 
   let cleanlinessRating = 0;
-  let quietnessRating = 0;
   let locationRating = 0;
+  let quietnessRating = 0;
   let overallRating = 0;
 
   if (ratings && ratings.length > 0) {
     ratings.forEach((rating) => {
       cleanlinessRating += rating.cleanliness;
-      quietnessRating += rating.cleanliness;
       locationRating += rating.location;
+      quietnessRating += rating.quietness;
       overallRating += rating.overall;
     });
 
     cleanlinessRating = cleanlinessRating / ratings.length;
-    quietnessRating = quietnessRating / ratings.length;
     locationRating = locationRating / ratings.length;
+    quietnessRating = quietnessRating / ratings.length;
     overallRating = overallRating / ratings.length;
   }
   return (
@@ -37,21 +37,23 @@ const RoomRatingList: React.FC<{
       {isDesktop ? (
         <Box display="flex" justifyContent="center" mt={2}>
           <Stack alignItems="center" direction="row" gap={4}>
-            <DecimalStarRating />
+            <DecimalStarRating roomID={roomID} />
             <Stack direction="row">
               <CircularRating
                 category="Cleanliness"
                 rating={cleanlinessRating}
               />
-              <CircularRating category="Quietness" rating={quietnessRating} />
               <CircularRating category="Location" rating={locationRating} />
+              <CircularRating category="Quietness" rating={quietnessRating} />
             </Stack>
           </Stack>
         </Box>
       ) : (
         <Stack gap={2} marginTop={2} width="100%">
-          <DecimalStarRating />
-          <LinearRatings />
+          <DecimalStarRating roomID={roomID} />
+          <LinearRating category="Cleanliness" value={cleanlinessRating} />
+          <LinearRating category="Location" value={locationRating} />
+          <LinearRating category="Quietness" value={quietnessRating} />
         </Stack>
       )}
     </>

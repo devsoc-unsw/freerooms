@@ -56,7 +56,7 @@ const CircularRating: React.FC<CircularRatingProps> = ({
             transform: "translate(-50%, -50%)",
           }}
         >
-          <Typography variant="h5">{rating}</Typography>
+          <Typography variant="h5">{rating.toFixed(1)}</Typography>
         </Box>
       </Box>
     </Box>

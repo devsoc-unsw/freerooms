@@ -5,10 +5,11 @@ import ReviewButton from "./ReviewButton";
 import RoomRatingList from "./RoomRatingList";
 
 interface RoomRatingProps {
+  buildingID: string;
   roomID: string;
 }
 
-export default function RoomRating({ roomID }: RoomRatingProps) {
+export default function RoomRating({ buildingID, roomID }: RoomRatingProps) {
   const isDesktop = useMediaQuery("(min-width: 675px)");
 
   return (
@@ -22,13 +23,13 @@ export default function RoomRating({ roomID }: RoomRatingProps) {
           <Divider flexItem orientation="vertical" />
           <Stack gap={1} justifyContent="center">
             <Typography>Share your thoughts on this room!</Typography>
-            <ReviewButton />
+            <ReviewButton buildingID={buildingID} roomID={roomID} />
           </Stack>
         </Stack>
       ) : (
         <Stack gap={2} justifySelf="center">
           <RoomRatingList roomID={roomID} />
-          <ReviewButton />
+          <ReviewButton buildingID={buildingID} roomID={roomID} />
         </Stack>
       )}
     </Stack>
