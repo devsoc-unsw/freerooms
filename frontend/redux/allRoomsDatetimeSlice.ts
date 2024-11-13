@@ -1,5 +1,5 @@
 /**
- * Redux slice to manage the selected datetime
+ * Redux slice to manage the selected datetime for all rooms page
  */
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
@@ -7,12 +7,12 @@ import { RootState } from "./store";
 
 interface AllRoomsDatetimeSlice {
   start: Date;
-  end: Date;
+  end: Date | null;
 }
 
 const initialState: AllRoomsDatetimeSlice = {
   start: new Date(),
-  end: new Date(),
+  end: null,
 };
 
 const allRoomsDatetimeSlice = createSlice({
