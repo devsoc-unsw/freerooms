@@ -119,11 +119,11 @@ const StyledModal = styled(Modal)(({ theme }) => ({
   margin: "auto",
 }));
 
-const StyledBox = styled(Box)({
+const StyledBox = styled(Box)(({ theme }) => ({
   padding: "20px",
-  backgroundColor: "white",
+  backgroundColor: theme.palette.background.default,
   borderRadius: "10px",
-});
+}));
 
 const StyledGridBox = styled(Box)({
   marginTop: "15px",
