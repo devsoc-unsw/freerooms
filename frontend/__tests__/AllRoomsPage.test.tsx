@@ -26,35 +26,38 @@ describe("AllRooms page", () => {
   });
 
   it("renders AllRoomsSearchBar", () => {
-    render(<AllRoomsSearchBar />);
+    render(
+      <Provider store={store}>
+        <AllRoomsSearchBar />
+      </Provider>
+    );
 
-    const building = screen.getByText("Building");
-    const capacity = screen.getByText("Capacity");
-    const when = screen.getByText("When");
-    const duration = screen.getByText("Duration");
-
-    expect(building).toBeInTheDocument();
-    expect(capacity).toBeInTheDocument();
-    expect(when).toBeInTheDocument();
-    expect(duration).toBeInTheDocument();
+    expect(screen.getByTestId("CalendarIcon")).toBeInTheDocument();
+    expect(screen.getByTestId("ClockIcon")).toBeInTheDocument();
   });
 
   it("renders AllRoomsFilter", () => {
     render(
       <Provider store={store}>
         <ThemeProvider theme={createTheme({})}>
-          <AllRoomsFilter filters={{}} />
+          <AllRoomsFilter
+            filters={{
+              usage: "Tutorial Room",
+              location: "Lower Campus",
+              duration: "1+ hours",
+            }}
+          />
         </ThemeProvider>
       </Provider>
     );
 
     const roomType = screen.getByText("Room Type");
     const location = screen.getByText("Location");
-    const idRequired = screen.getByText("ID Required");
+    const duration = screen.getByText("Duration Free");
 
     expect(roomType).toBeInTheDocument();
     expect(location).toBeInTheDocument();
-    expect(idRequired).toBeInTheDocument();
+    expect(duration).toBeInTheDocument();
   });
 
   describe("renders AllRoomsRoom", () => {

@@ -1,23 +1,15 @@
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, LinearProgress, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import { Box, styled } from "@mui/system";
 
 const StyledStack = styled(Stack)(({ theme }) => ({
   flexDirection: "column",
-  flexGrow: 5,
-  maxHeight: "calc(100svh - 225px)",
-  overflowY: "auto",
-  alignItems: "centred",
-  justifyContent: "centred",
-  height: "100%",
-  [theme.breakpoints.down("md")]: {
-    width: "100%",
-    marginTop: 14,
+  overflowY: "scroll",
+  [theme.breakpoints.down("sm")]: {
+    maxHeight: "calc(100vh - 90px)",
   },
-  [theme.breakpoints.up("md")]: {
-    width: "75%",
-    marginLeft: 0,
-    marginTop: 0,
+  [theme.breakpoints.up("sm")]: {
+    maxHeight: "calc(100vh - 225px)",
   },
 }));
 
@@ -31,14 +23,12 @@ const RoomList = ({
   return (
     <StyledStack>
       {isValidating ? (
-        <Box
-          display="flex"
-          height="100%"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <CircularProgress size={50} thickness={5} disableShrink />
-        </Box>
+        <Stack maxWidth={540} width="100vw">
+          <LinearProgress />
+          <Typography alignSelf="center" marginTop={1}>
+            Loading free rooms
+          </Typography>
+        </Stack>
       ) : (
         children
       )}
