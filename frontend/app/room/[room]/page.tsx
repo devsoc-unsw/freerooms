@@ -17,7 +17,8 @@ import Link from "@mui/material/Link";
 import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import RoomRatingList from "components/Rooms/RoomRatingList";
+import RoomRating from "components/Rating/RoomRating";
+import useRoomRatings from "hooks/useRoomRatings";
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -71,7 +72,7 @@ export default function Page({ params }: { params: { room: string } }) {
           <RoomPageHeader room={room} buildingName={building.name} />
           <RoomImage src={`/assets/building_photos/${campus}-${grid}.webp`} />
           <BookingCalendar events={adjustedBookings ?? []} roomID={room.id} />
-          <RoomRatingList roomID={room.id} />
+          <RoomRating buildingID={building.id} roomID={room.id} />
         </Stack>
       ) : (
         <LoadingCircle />
@@ -96,7 +97,16 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
     ? `This room is managed by ${schoolDetails.name}. Please contact the school to request a booking`
     : "This room is managed externally by its associated school. Please contact the school to request a booking";
 
-  const ratingValue = 3.5;
+  const ratings = useRoomRatings(room.id);
+  let ratingValue = 0;
+
+  if (ratings.ratings && ratings.ratings.length > 0) {
+    ratings.ratings.forEach((rating) => {
+      ratingValue += rating.overall;
+    });
+    ratingValue = ratingValue / ratings.ratings.length;
+    ratingValue = Math.round(ratingValue * 10) / 10;
+  }
 
   return (
     <Stack
@@ -171,7 +181,7 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
           aria-label="5-star-info"
         >
           <Typography variant="body1" fontWeight="bold">
-            {ratingValue}
+            {ratingValue == 0 ? 0 : ratingValue}
           </Typography>
           <Rating
             readOnly
