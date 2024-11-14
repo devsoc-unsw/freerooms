@@ -34,7 +34,7 @@ const AllRoomsBuildingModal = ({
                     dispatch(setCurrentBuilding(building));
                     dispatch(
                       setAllRoomsFilter({
-                        key: "buildingId",
+                        key: "id",
                         value: building.id,
                       })
                     );

@@ -12,12 +12,11 @@ interface RoomsFilterState {
 
 const initialState: RoomsFilterState = {
   value: {
-    capacity: [],
-    usage: [],
-    location: [],
-    duration: [],
-    buildingId: [],
-    id: [],
+    capacity: "",
+    usage: "",
+    location: "",
+    duration: "",
+    id: "",
   },
   // Needs to be initalised to silence errors
   // TODO: Get values from constants.ts
@@ -32,22 +31,14 @@ const filtersSlice = createSlice({
       action: PayloadAction<{ key: keyof AllRoomsFilters; value: string }>
     ) => {
       const { key, value } = action.payload;
-      state.value[key]!.push(value);
+      state.value[key] = value;
     },
     unsetAllRoomsFilter: (
       state,
       action: PayloadAction<{ key: keyof AllRoomsFilters; value: string }>
     ) => {
       const { key, value } = action.payload;
-      if (Object.keys(state.value).includes(key)) {
-        // find the index of the unset value and remove this element from the list.
-        const targetIndex = state.value[key]!.indexOf(value);
-        if (targetIndex > -1) {
-          state.value[key]!.splice(targetIndex);
-        }
-      } else {
-        throw "unsetting value that was already unset";
-      }
+      state.value[key] = value;
     },
     clearAllRoomsFilters: (state) => {
       state.value = {};

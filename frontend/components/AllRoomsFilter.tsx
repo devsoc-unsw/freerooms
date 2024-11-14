@@ -2,7 +2,7 @@ import { Button } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/system";
-import { clearFilters } from "redux/filtersSlice";
+import { clearAllRoomsFilters } from "redux/allRoomsFilterSlice";
 import { useDispatch } from "redux/hooks";
 import { AllRoomsFilters } from "types";
 
@@ -36,7 +36,7 @@ const AllRoomsFilter: React.FC<{ filters: AllRoomsFilters }> = ({
         <Button
           size="small"
           sx={{ position: "relative", bottom: 3 }}
-          onClick={() => dispatch(clearFilters())}
+          onClick={() => dispatch(clearAllRoomsFilters())}
         >
           RESET
         </Button>

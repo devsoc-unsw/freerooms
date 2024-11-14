@@ -22,6 +22,7 @@ const DropdownSelections: React.FC<{
     item: DropDownItem
   ) => void;
 }> = ({ dropdown, canSelectMultiple, filters, handleSelect }) => {
+  console.log(dropdown);
   return (
     <StyledAccordion disableGutters={true} elevation={0}>
       <AccordionSummary

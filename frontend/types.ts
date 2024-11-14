@@ -47,12 +47,11 @@ export type Filters = {
 };
 
 export type AllRoomsFilters = {
-  capacity?: string[];
-  usage?: string[];
-  location?: string[];
-  duration?: string[];
-  buildingId?: string[];
-  id?: string[];
+  capacity?: string;
+  usage?: string;
+  location?: string;
+  duration?: string;
+  id?: string;
 };
 
 export type Sponsor = {
