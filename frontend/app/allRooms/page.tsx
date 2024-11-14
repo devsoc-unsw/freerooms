@@ -9,6 +9,7 @@ import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectFilters } from "redux/filtersSlice";
 
+import AllRoomsBuildingSelector from "../../components/AllRoomsBuildingSelector";
 import AllRoomsFilter from "../../components/AllRoomsFilter";
 import Room from "../../components/AllRoomsRoom";
 import RoomList from "../../components/AllRoomsRoomList";
@@ -63,6 +64,7 @@ export default function Page() {
           Not looking for a specific building? See all free rooms in this easy
           to search list!
         </Typography>
+        <AllRoomsBuildingSelector />
         <StyledBody>
           <AllRoomsFilter filters={filters} />
           <RoomList isValidating={isValidating}>
