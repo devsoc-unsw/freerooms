@@ -68,8 +68,9 @@ app.get(
 app.get(
   "/api/rooms/search",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const datetime = parseStatusDatetime(req);
     const filters = parseSearchFilters(req);
-    const data = await searchAllRoom(filters);
+    const data = await searchAllRoom(datetime, filters);
     res.send(data);
     next();
   })

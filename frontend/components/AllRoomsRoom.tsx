@@ -32,8 +32,10 @@ const Room: React.FC<AllRoomsRoomProps> = ({
           <Stack
             alignItems="center"
             direction="row"
+            height="40px"
             justifyContent="space-between"
             paddingX={1}
+            spacing={1}
           >
             <Stack>
               <Typography

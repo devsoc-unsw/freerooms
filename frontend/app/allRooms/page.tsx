@@ -7,7 +7,6 @@ import AllRoomsSearchBar from "components/AllRoomsSearchBar";
 import useAllRooms from "hooks/useAllRooms";
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { selectDatetime } from "redux/datetimeSlice";
 import { selectFilters } from "redux/filtersSlice";
 
 import AllRoomsFilter from "../../components/AllRoomsFilter";

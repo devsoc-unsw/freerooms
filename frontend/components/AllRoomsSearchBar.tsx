@@ -40,7 +40,7 @@ export default function AllRoomsSearchBar() {
           label="Start Time"
           value={dayjs(datetime)}
           sx={{ width: "50%" }}
-          onChange={(value) =>
+          onAccept={(value) =>
             value && dispatch(setDatetime(toSydneyTime(value.toDate())))
           }
         />

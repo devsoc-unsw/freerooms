@@ -1,4 +1,4 @@
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, LinearProgress, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import { Box, styled } from "@mui/system";
 
@@ -23,14 +23,12 @@ const RoomList = ({
   return (
     <StyledStack>
       {isValidating ? (
-        <Box
-          display="flex"
-          height="100%"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <CircularProgress size={50} thickness={5} disableShrink />
-        </Box>
+        <Stack maxWidth={540} width="100vw">
+          <LinearProgress />
+          <Typography alignSelf="center" marginTop={1}>
+            Loading free rooms
+          </Typography>
+        </Stack>
       ) : (
         children
       )}
