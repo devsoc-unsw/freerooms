@@ -46,7 +46,7 @@ export type Filters = {
   id?: string;
 };
 
-export type AllRoomsFilter = {
+export type AllRoomsFilters = {
   capacity?: string[];
   usage?: string[];
   location?: string[];

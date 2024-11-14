@@ -1,23 +1,25 @@
 "use client";
 
 import SearchIcon from "@mui/icons-material/Search";
-import { useMediaQuery } from "@mui/material";
-import Button from "@mui/material/Button";
+import { Button } from "@mui/material";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
-import { styled, useTheme } from "@mui/system";
+import { styled } from "@mui/system";
 import useAllRooms from "hooks/useAllRooms";
-import { useMemo } from "react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { useSelector } from "react-redux";
+import { selectFilters } from "redux/filtersSlice";
 
 import AllRoomsFilter from "../../components/AllRoomsFilter";
-import AllRoomsFilterMobile from "../../components/AllRoomsFilterMobile";
 import Room from "../../components/AllRoomsRoom";
 import RoomList from "../../components/AllRoomsRoomList";
 import AllRoomsSearchBar from "../../components/AllRoomsSearchBar";
 
 export default function Page() {
-  const { rooms, error } = useAllRooms();
+  const filters = useSelector(selectFilters);
+  const { rooms, isValidating } = useAllRooms(filters);
+  const centred = isValidating ? "center" : "default";
+  // const displayMobile = useMediaQuery(useTheme().breakpoints.down("md"));
   const [visibleRooms, setVisibleRooms] = useState(20);
 
   const roomsDisplay = useMemo(() => {
@@ -50,8 +52,8 @@ export default function Page() {
           <SearchIcon />
         </StyledSearchBar>
         <StyledBody>
-          <Filter />
-          <RoomList>
+          <AllRoomsFilter filters={filters} />
+          <RoomList isValidating={isValidating}>
             {roomsDisplay}
             {visibleRooms < totalRooms && (
               <Button variant="contained" onClick={handleLoadMore}>
@@ -87,18 +89,13 @@ const StyledSearchBar = styled(Stack)(({ theme }) => ({
 
 const StyledBody = styled(Stack)(({ theme }) => ({
   flexDirection: "row",
-  flexWrap: "wrap",
+  // flexWrap: "wrap",
   margin: theme.spacing(0, 4.25),
   padding: theme.spacing(2),
   justifyContent: "space-between",
+  gap: theme.spacing(2),
   [theme.breakpoints.down("md")]: {
     flexDirection: "column",
-    alignItems: "center",
     padding: theme.spacing(0, 2),
   },
 }));
-
-const Filter: React.FC<{}> = () => {
-  const displayMobile = useMediaQuery(useTheme().breakpoints.down("md"));
-  return <>{displayMobile ? <AllRoomsFilterMobile /> : <AllRoomsFilter />}</>;
-};
