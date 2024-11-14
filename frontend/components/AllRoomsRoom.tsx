@@ -23,8 +23,7 @@ const Room: React.FC<AllRoomsRoomProps> = ({
       variant="outlined"
       sx={{
         backgroundColor: "#ffffff",
-        marginBottom: 1,
-        marginX: 1,
+        marginTop: 1,
         overflow: "visible",
       }}
     >

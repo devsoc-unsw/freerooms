@@ -1,82 +1,50 @@
 import Stack from "@mui/material/Stack";
+import {
+  DatePicker,
+  LocalizationProvider,
+  TimePicker,
+} from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 
-const AllRoomsSearchBar: React.FC<{}> = () => {
+import { selectDatetime, setDatetime } from "../redux/datetimeSlice";
+import { useDispatch, useSelector } from "../redux/hooks";
+import toSydneyTime from "../utils/toSydneyTime";
+
+export default function AllRoomsSearchBar() {
+  const dispatch = useDispatch();
+  const datetime = useSelector(selectDatetime);
+
   return (
     <Stack
       direction="row"
-      spacing={{ xs: 1, sm: 2 }}
-      sx={{
-        justifyContent: "center",
-        flexGrow: 3,
-      }}
+      gap={2}
+      justifyContent="space-between"
+      left="0px"
+      paddingTop="10px"
+      position="sticky"
+      top="0px"
+      zIndex={1}
+      sx={{ backgroundColor: "#fff" }}
     >
-      <div></div>
-      <Building />
-      <Capacity />
-      <When />
-      <Duration />
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DatePicker
+          label="Date"
+          value={dayjs(datetime)}
+          sx={{ width: "50%" }}
+          onChange={(value) =>
+            value && dispatch(setDatetime(toSydneyTime(value.toDate())))
+          }
+        />
+        <TimePicker
+          label="Start Time"
+          value={dayjs(datetime)}
+          sx={{ width: "50%" }}
+          onChange={(value) =>
+            value && dispatch(setDatetime(toSydneyTime(value.toDate())))
+          }
+        />
+      </LocalizationProvider>
     </Stack>
   );
-};
-
-const Building: React.FC<{}> = () => {
-  return (
-    <Stack
-      sx={{
-        flexGrow: 1,
-        maxWidth: "440px",
-        fontSize: { xs: "0.9em", sm: "1em" },
-        fontWeight: 300,
-      }}
-    >
-      Building
-    </Stack>
-  );
-};
-
-const Capacity: React.FC<{}> = () => {
-  return (
-    <Stack
-      sx={{
-        flexGrow: 1,
-        maxWidth: "440px",
-        fontSize: { xs: "0.9em", sm: "1em" },
-        fontWeight: 300,
-      }}
-    >
-      Capacity
-    </Stack>
-  );
-};
-
-const When: React.FC<{}> = () => {
-  return (
-    <Stack
-      sx={{
-        flexGrow: 1,
-        maxWidth: "440px",
-        fontSize: { xs: "0.9em", sm: "1em" },
-        fontWeight: 300,
-      }}
-    >
-      When
-    </Stack>
-  );
-};
-
-const Duration: React.FC<{}> = () => {
-  return (
-    <Stack
-      sx={{
-        flexGrow: 1,
-        maxWidth: "440px",
-        fontSize: { xs: "0.9em", sm: "1em" },
-        fontWeight: 300,
-      }}
-    >
-      Duration
-    </Stack>
-  );
-};
-
-export default AllRoomsSearchBar;
+}

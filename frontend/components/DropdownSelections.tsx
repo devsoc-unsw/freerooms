@@ -28,7 +28,7 @@ const DropdownSelections: React.FC<{
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
         id="panel1a-header"
-        sx={{ padding: 0 }}
+        sx={{ paddingX: 0 }}
       >
         {dropdown.text}
       </AccordionSummary>
