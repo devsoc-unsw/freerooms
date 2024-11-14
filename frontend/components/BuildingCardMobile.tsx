@@ -4,6 +4,7 @@ import Box, { BoxProps } from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
+import useBuildingRatings from "hooks/useBuildingRatings";
 import Image, { ImageProps } from "next/image";
 import React from "react";
 
@@ -73,13 +74,12 @@ const BuildingCardMobile: React.FC<{
 
   const { building } = useBuilding(buildingId);
   const { status } = useBuildingStatus(buildingId);
+  const { ratings } = useBuildingRatings(buildingId);
 
   if (!building) return <></>;
 
   const freerooms = getNumFreerooms(status);
   const totalrooms = getTotalRooms(status);
-
-  const averageRatingValue = 4.5;
 
   return (
     <MainBox onClick={() => dispatch(setCurrentBuilding(building))}>
@@ -137,7 +137,7 @@ const BuildingCardMobile: React.FC<{
               <Typography
                 sx={{ fontSize: 12, fontWeight: 500, color: "#000000" }}
               >
-                {averageRatingValue}
+                {ratings?.overallRating}
               </Typography>
               <StarIcon sx={{ fontSize: "1rem", color: "rgb(255, 169, 12)" }} />
             </Stack>
