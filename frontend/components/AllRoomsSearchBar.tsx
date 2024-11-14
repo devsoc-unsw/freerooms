@@ -1,4 +1,5 @@
 import Stack from "@mui/material/Stack";
+import { styled } from "@mui/system";
 import {
   DatePicker,
   LocalizationProvider,
@@ -16,7 +17,7 @@ export default function AllRoomsSearchBar() {
   const datetime = useSelector(selectDatetime);
 
   return (
-    <Stack
+    <StyledStack
       direction="row"
       gap={2}
       justifyContent="space-between"
@@ -25,7 +26,6 @@ export default function AllRoomsSearchBar() {
       position="sticky"
       top="0px"
       zIndex={1}
-      sx={{ backgroundColor: "#fff" }}
     >
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
@@ -45,6 +45,10 @@ export default function AllRoomsSearchBar() {
           }
         />
       </LocalizationProvider>
-    </Stack>
+    </StyledStack>
   );
 }
+
+const StyledStack = styled(Stack)(({ theme }) => ({
+  backgroundColor: theme.palette.background.default,
+}));

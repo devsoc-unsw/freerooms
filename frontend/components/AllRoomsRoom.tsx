@@ -6,6 +6,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import { styled } from "@mui/system";
 import { RoomAvailabilityBoxProps } from "views/RoomAvailabilityBox";
 
 import RoomAvailability from "./RoomAvailability";
@@ -19,14 +20,7 @@ const Room: React.FC<AllRoomsRoomProps> = ({
   ...roomStatus
 }) => {
   return (
-    <Card
-      variant="outlined"
-      sx={{
-        backgroundColor: "#ffffff",
-        marginTop: 1,
-        overflow: "visible",
-      }}
-    >
+    <StyledRoomCard variant="outlined">
       <CardActionArea href={`/room/${roomNumber}`} target="_blank">
         <CardContent>
           <Stack
@@ -50,8 +44,14 @@ const Room: React.FC<AllRoomsRoomProps> = ({
           </Stack>
         </CardContent>
       </CardActionArea>
-    </Card>
+    </StyledRoomCard>
   );
 };
+
+const StyledRoomCard = styled(Card)(({ theme }) => ({
+  backgroundColor: theme.palette.background.default,
+  marginTop: 1,
+  overflow: "visible",
+}));
 
 export default Room;
