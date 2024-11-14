@@ -26,17 +26,14 @@ describe("AllRooms page", () => {
   });
 
   it("renders AllRoomsSearchBar", () => {
-    render(<AllRoomsSearchBar />);
+    render(
+      <Provider store={store}>
+        <AllRoomsSearchBar />
+      </Provider>
+    );
 
-    const building = screen.getByText("Building");
-    const capacity = screen.getByText("Capacity");
-    const when = screen.getByText("When");
-    const duration = screen.getByText("Duration");
-
-    expect(building).toBeInTheDocument();
-    expect(capacity).toBeInTheDocument();
-    expect(when).toBeInTheDocument();
-    expect(duration).toBeInTheDocument();
+    expect(screen.getByTestId("CalendarIcon")).toBeInTheDocument();
+    expect(screen.getByTestId("ClockIcon")).toBeInTheDocument();
   });
 
   it("renders AllRoomsFilter", () => {
