@@ -40,18 +40,24 @@ describe("AllRooms page", () => {
     render(
       <Provider store={store}>
         <ThemeProvider theme={createTheme({})}>
-          <AllRoomsFilter filters={{}} />
+          <AllRoomsFilter
+            filters={{
+              usage: "Tutorial Room",
+              location: "Lower Campus",
+              duration: "1+ hours",
+            }}
+          />
         </ThemeProvider>
       </Provider>
     );
 
     const roomType = screen.getByText("Room Type");
     const location = screen.getByText("Location");
-    const idRequired = screen.getByText("ID Required");
+    const duration = screen.getByText("Duration Free");
 
     expect(roomType).toBeInTheDocument();
     expect(location).toBeInTheDocument();
-    expect(idRequired).toBeInTheDocument();
+    expect(duration).toBeInTheDocument();
   });
 
   describe("renders AllRoomsRoom", () => {
