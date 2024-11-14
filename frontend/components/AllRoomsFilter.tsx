@@ -1,25 +1,44 @@
+import { Button } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/system";
+import { clearFilters } from "redux/filtersSlice";
+import { useDispatch } from "redux/hooks";
 import { Filters } from "types";
 
 import FilterSideBar from "./FilterSideBar";
 
 const AllRoomsFilter: React.FC<{ filters: Filters }> = ({ filters }) => {
+  const dispatch = useDispatch();
+
   return (
     <StyledMainFilter>
-      <Typography
-        sx={{
-          color: "primary.main",
-          width: "fit-content",
-          marginRight: 2,
-          fontWeight: 500,
-          fontSize: "0.85rem",
-          paddingBottom: "4px",
-        }}
+      <Stack
+        alignContent="center"
+        alignItems="center"
+        direction="row"
+        justifyContent="space-between"
       >
-        FILTER OPTIONS
-      </Typography>
+        <Typography
+          sx={{
+            color: "primary.main",
+            width: "fit-content",
+            marginRight: 2,
+            fontWeight: 500,
+            fontSize: "0.85rem",
+            paddingBottom: "4px",
+          }}
+        >
+          FILTER
+        </Typography>
+        <Button
+          size="small"
+          sx={{ position: "relative", bottom: 3 }}
+          onClick={() => dispatch(clearFilters())}
+        >
+          RESET
+        </Button>
+      </Stack>
       <FilterSideBar filters={filters} />
     </StyledMainFilter>
   );

@@ -27,7 +27,7 @@ const Room: React.FC<AllRoomsRoomProps> = ({
         overflow: "visible",
       }}
     >
-      <CardActionArea href={`/room/${roomNumber}`}>
+      <CardActionArea href={`/room/${roomNumber}`} target="_blank">
         <CardContent>
           <Stack
             alignItems="center"
