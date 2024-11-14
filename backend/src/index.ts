@@ -1,3 +1,4 @@
+import { BuildingRatingsResponse } from "@common/types";
 import cors from "cors";
 import express, {
   json,
@@ -8,7 +9,12 @@ import express, {
 } from "express";
 
 import { PORT } from "./config";
-import { getRatings, insertRating } from "./ratingDbInterface";
+import {
+  getBuildingRatings,
+  getRatings,
+  insertBuldingRating,
+  insertRating,
+} from "./ratingDbInterface";
 import {
   parseSearchFilters,
   parseStatusDatetime,
@@ -68,8 +74,9 @@ app.get(
 app.get(
   "/api/rooms/search",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const datetime = parseStatusDatetime(req);
     const filters = parseSearchFilters(req);
-    const data = await searchAllRoom(filters);
+    const data = await searchAllRoom(datetime, filters);
     res.send(data);
     next();
   })
@@ -86,7 +93,7 @@ app.get(
   })
 );
 
-// get all ratings for a room given roomId
+// Get all ratings for a room given a roomId
 app.get(
   "/api/rating/:roomID",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
@@ -97,17 +104,45 @@ app.get(
   })
 );
 
-// insert one rating
-app.post("/api/rating/rate", async (req: Request, res: Response) => {
-  const { roomId, quietness, location, cleanliness, overall } = req.body;
-  const ratings = [quietness, location, cleanliness, overall];
-  try {
-    await insertRating(roomId, ratings);
-    res.status(200).json({ message: "rating inserted successfully" });
-  } catch (error) {
-    res.status(500).json({ error: error });
+// Insert one rating for a room
+app.post(
+  "/api/rating/rate/:buildingID/:roomID",
+  async (req: Request, res: Response) => {
+    const { buildingID, roomID } = req.params;
+    const { cleanliness, location, quietness, overall } = req.body;
+    const ratings = [cleanliness, location, quietness, overall];
+    try {
+      // Insert a new rating object to room document
+      await insertRating(roomID, ratings);
+      // Update the overall rating of the building
+      await insertBuldingRating(buildingID, overall);
+      res.status(200).json({ message: "rating inserted successfully" });
+    } catch (error) {
+      res.status(500).json({ error: error });
+    }
   }
-});
+);
+
+// Get overall rating for a building given a buildingID
+app.get(
+  "/api/buildingRating/:buildingID",
+  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const { buildingID } = req.params;
+    let buildingRating: BuildingRatingsResponse | null =
+      await getBuildingRatings(buildingID);
+
+    // no reviews for current building
+    if (buildingRating === null) {
+      buildingRating = {
+        buildingId: buildingID,
+        overallRating: 0,
+      };
+    }
+
+    res.send(buildingRating);
+    next();
+  })
+);
 
 // Error-handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {

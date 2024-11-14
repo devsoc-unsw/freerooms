@@ -10,7 +10,7 @@ import { queryBookingsForRoom } from "./dbInterface";
 import {
   calculateStatus,
   getBookingsForDate,
-  getBookingsForTimeRange,
+  getBookingsFromStartTime,
   getBuildingRoomData,
 } from "./helpers";
 import { SearchFilters, StatusFilters } from "./types";
@@ -89,18 +89,10 @@ export const getAllRoomStatus = async (
 };
 
 export const searchAllRoom = async (
+  date: Date,
   filters: SearchFilters
 ): Promise<SearchResponse> => {
-  let bookings;
-
-  if (filters.startTime && filters.endTime) {
-    bookings = await getBookingsForTimeRange(
-      filters.startTime,
-      filters.endTime
-    );
-  } else {
-    bookings = await getBookingsForDate(filters.startTime);
-  }
+  const bookings = await getBookingsFromStartTime(date);
 
   const buildingData = await getBuildingRoomData();
   const result: SearchResponse = {};
@@ -122,7 +114,7 @@ export const searchAllRoom = async (
         continue;
 
       const status = calculateStatus(
-        filters.startTime ?? new Date(),
+        date,
         bookings[roomData.id].bookings,
         filters.duration || 0
       );
@@ -138,16 +130,9 @@ export const searchAllRoom = async (
     }
   }
 
-  if (filters.startTime && filters.endTime) {
-    for (const roomId of Object.keys(result)) {
-      if (
-        result[roomId].status === "busy" ||
-        (result[roomId].status === "soon" &&
-          new Date(result[roomId].endtime).getTime() <
-            new Date(filters.endTime).getTime())
-      ) {
-        delete result[roomId];
-      }
+  for (const roomId of Object.keys(result)) {
+    if (result[roomId].status === "busy") {
+      delete result[roomId];
     }
   }
 

@@ -1,61 +1,52 @@
 import SearchIcon from "@mui/icons-material/Search";
 import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
-import TextField from "@mui/material/TextField";
+import {
+  DatePicker,
+  LocalizationProvider,
+  TimePicker,
+} from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 
-import Building from "./Building";
-import When from "./When";
+import { selectDatetime, setDatetime } from "../redux/datetimeSlice";
+import { useDispatch, useSelector } from "../redux/hooks";
+import toSydneyTime from "../utils/toSydneyTime";
 
-const AllRoomsSearchBar: React.FC<{}> = () => {
+export default function AllRoomsSearchBar() {
+  const dispatch = useDispatch();
+  const datetime = useSelector(selectDatetime);
+
   return (
     <Stack
       direction="row"
-      spacing={{ xs: 1, sm: 2 }}
-      sx={{
-        justifyContent: "center",
-        alignItems: "center",
-        flexGrow: 3,
-      }}
-      divider={<Divider orientation="vertical" flexItem />}
+      gap={2}
+      justifyContent="space-between"
+      left="0px"
+      paddingTop="10px"
+      position="sticky"
+      top="0px"
+      zIndex={1}
+      sx={{ backgroundColor: "#fff" }}
     >
-      <Building />
-      <Capacity />
-      <When />
-      <Duration />
-      <SearchIcon />
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DatePicker
+          label="Date"
+          value={dayjs(datetime)}
+          sx={{ width: "50%" }}
+          onChange={(value) =>
+            value && dispatch(setDatetime(toSydneyTime(value.toDate())))
+          }
+        />
+        <TimePicker
+          label="Start Time"
+          value={dayjs(datetime)}
+          sx={{ width: "50%" }}
+          onAccept={(value) =>
+            value && dispatch(setDatetime(toSydneyTime(value.toDate())))
+          }
+        />
+      </LocalizationProvider>
     </Stack>
   );
-};
-
-const Capacity: React.FC<{}> = () => {
-  return (
-    <TextField
-      sx={{
-        flexGrow: 1,
-        maxWidth: "440px",
-        fontSize: { xs: "0.9em", sm: "1em" },
-        fontWeight: 300,
-      }}
-      type="number"
-      variant="standard"
-      label="Capacity"
-    />
-  );
-};
-
-const Duration: React.FC<{}> = () => {
-  return (
-    <Stack
-      sx={{
-        flexGrow: 1,
-        maxWidth: "440px",
-        fontSize: { xs: "0.9em", sm: "1em" },
-        fontWeight: 300,
-      }}
-    >
-      Duration
-    </Stack>
-  );
-};
-
-export default AllRoomsSearchBar;
+}

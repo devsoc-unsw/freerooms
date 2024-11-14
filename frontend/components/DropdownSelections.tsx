@@ -9,16 +9,8 @@ import React from "react";
 import { AllRoomsFilters, DropDown, DropDownItem, Filters } from "types";
 
 const StyledAccordion = styled(Accordion)(({ theme }) => ({
+  backgroundColor: theme.palette.background.default,
   transition: "all 0.1s ease-in-out",
-  backgroundColor: theme.palette.background.default,
-  "&:hover": {
-    backgroundColor: theme.palette.primary.main,
-    color: "#fff",
-  },
-}));
-const StyledAccordionDetails = styled(AccordionDetails)(({ theme }) => ({
-  backgroundColor: theme.palette.background.default,
-  color: theme.palette.text.primary,
 }));
 
 const DropdownSelections: React.FC<{
@@ -36,11 +28,11 @@ const DropdownSelections: React.FC<{
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
         id="panel1a-header"
-        style={canSelectMultiple ? { padding: "10px 15px" } : {}}
+        sx={{ paddingX: 0 }}
       >
         {dropdown.text}
       </AccordionSummary>
-      <StyledAccordionDetails>
+      <AccordionDetails>
         {dropdown.items.map((item) => (
           <div
             onClick={() => handleSelect(dropdown.key, item)}
@@ -60,7 +52,7 @@ const DropdownSelections: React.FC<{
             {item.text}
           </div>
         ))}
-      </StyledAccordionDetails>
+      </AccordionDetails>
     </StyledAccordion>
   );
 };

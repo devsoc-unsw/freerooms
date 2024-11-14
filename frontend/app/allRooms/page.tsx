@@ -1,7 +1,6 @@
 "use client";
 
-import { Button } from "@mui/material";
-import Container from "@mui/material/Container";
+import { Alert, Button, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/system";
 import useAllRooms from "hooks/useAllRooms";
@@ -17,13 +16,24 @@ import RoomList from "../../components/AllRoomsRoomList";
 export default function Page() {
   const filters = useSelector(selectFilters);
   const { rooms, isValidating } = useAllRooms(filters);
-  const centred = isValidating ? "center" : "default";
-  // const displayMobile = useMediaQuery(useTheme().breakpoints.down("md"));
   const [visibleRooms, setVisibleRooms] = useState(20);
 
   const roomsDisplay = useMemo(() => {
     if (!rooms) return;
-    const roomEntries = Object.entries(rooms).slice(0, visibleRooms);
+    const availableRooms = Object.entries(rooms).filter(
+      (room) => room[1].status !== "busy"
+    );
+
+    if (availableRooms.length === 0) {
+      return (
+        <Alert severity="error" sx={{ marginTop: 2 }}>
+          No rooms satisfying current filters
+        </Alert>
+      );
+    }
+
+    const roomEntries = availableRooms.slice(0, visibleRooms);
+
     return roomEntries.map(([roomId, { name, status, endtime }]) => {
       return (
         <Room
@@ -44,56 +54,42 @@ export default function Page() {
   const totalRooms = rooms ? Object.keys(rooms).length : 0;
 
   return (
-    <Container>
-      <Stack>
-        <StyledSearchBar>
-          <AllRoomsSearchBar />
-        </StyledSearchBar>
+    <Stack alignItems="center">
+      <Stack marginTop={4} paddingX={1}>
+        <Typography fontWeight="bold" variant="h4">
+          All Free Rooms
+        </Typography>
+        <Typography marginTop={1} variant="body1">
+          Not looking for a specific building? See all free rooms in this easy
+          to search list!
+        </Typography>
         <StyledBody>
           <AllRoomsFilter filters={filters} />
           <RoomList isValidating={isValidating}>
+            <AllRoomsSearchBar />
             {roomsDisplay}
             {visibleRooms < totalRooms && (
-              <Button variant="contained" onClick={handleLoadMore}>
+              <Button
+                variant="outlined"
+                onClick={handleLoadMore}
+                sx={{ marginY: 1 }}
+              >
                 Load More Rooms
               </Button>
             )}
           </RoomList>
         </StyledBody>
       </Stack>
-    </Container>
+    </Stack>
   );
 }
 
-const StyledSearchBar = styled(Stack)(({ theme }) => ({
-  flexDirection: "row",
-  minWidth: "332px",
-  borderRadius: 8,
-  borderStyle: "solid",
-  borderWidth: "thin",
-  borderColor: theme.palette.text.secondary,
-  margin: theme.spacing(6, 6.25, 3.75),
-  padding: theme.spacing(1.25),
-  justifyContent: "space-between",
-  alignItems: "center",
-  [theme.breakpoints.down("xs")]: {
-    spacing: 1,
-    margin: theme.spacing(3, 6.25, 2),
-  },
-  [theme.breakpoints.up("xs")]: {
-    spacing: 2,
-  },
-}));
-
 const StyledBody = styled(Stack)(({ theme }) => ({
   flexDirection: "row",
-  // flexWrap: "wrap",
-  margin: theme.spacing(0, 4.25),
-  padding: theme.spacing(2),
   justifyContent: "space-between",
   gap: theme.spacing(2),
-  [theme.breakpoints.down("md")]: {
+  marginTop: "30px",
+  [theme.breakpoints.down("sm")]: {
     flexDirection: "column",
-    padding: theme.spacing(0, 2),
   },
 }));

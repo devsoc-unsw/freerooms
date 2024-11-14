@@ -20,7 +20,6 @@ const StyledFilterSideBarContainer = styled(Box)<BoxProps>(({ theme }) => ({
 }));
 
 const FilterSideBar = ({ filters }: { filters: Filters }) => {
-  // To do - make this the same component as filter bar?
   const dispatch = useDispatch();
 
   // Handle user selecting a filter, each dropdown select has an associated key
