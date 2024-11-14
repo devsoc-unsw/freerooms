@@ -1,5 +1,3 @@
-import SearchIcon from "@mui/icons-material/Search";
-import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
 import {
   DatePicker,
@@ -9,9 +7,9 @@ import {
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 
-import { selectDatetime, setDatetime } from "../redux/datetimeSlice";
-import { useDispatch, useSelector } from "../redux/hooks";
-import toSydneyTime from "../utils/toSydneyTime";
+import { selectDatetime, setDatetime } from "../../redux/datetimeSlice";
+import { useDispatch, useSelector } from "../../redux/hooks";
+import toSydneyTime from "../../utils/toSydneyTime";
 
 export default function AllRoomsSearchBar() {
   const dispatch = useDispatch();
