@@ -4,11 +4,13 @@ import Typography from "@mui/material/Typography";
 import { styled } from "@mui/system";
 import { clearFilters } from "redux/filtersSlice";
 import { useDispatch } from "redux/hooks";
-import { Filters } from "types";
+import { AllRoomsFilters } from "types";
 
 import FilterSideBar from "./FilterSideBar";
 
-const AllRoomsFilter: React.FC<{ filters: Filters }> = ({ filters }) => {
+const AllRoomsFilter: React.FC<{ filters: AllRoomsFilters }> = ({
+  filters,
+}) => {
   const dispatch = useDispatch();
 
   return (

@@ -4,6 +4,7 @@ import useBuildings from "hooks/useBuildings";
 import Image, { ImageProps } from "next/image";
 import FlipMove from "react-flip-move";
 import { useDispatch } from "react-redux";
+import { setAllRoomsFilter } from "redux/allRoomsFilterSlice";
 import { setCurrentBuilding } from "redux/currentBuildingSlice";
 
 interface AllRoomsBuildingModalProps {
@@ -31,6 +32,12 @@ const AllRoomsBuildingModal = ({
                   key={building.id}
                   onClick={() => {
                     dispatch(setCurrentBuilding(building));
+                    dispatch(
+                      setAllRoomsFilter({
+                        key: "buildingId",
+                        value: building.id,
+                      })
+                    );
                     onClose();
                   }}
                 >

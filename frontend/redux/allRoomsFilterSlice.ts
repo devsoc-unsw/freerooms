@@ -12,8 +12,11 @@ interface RoomsFilterState {
 
 const initialState: RoomsFilterState = {
   value: {
+    capacity: [],
     usage: [],
     location: [],
+    duration: [],
+    buildingId: [],
     id: [],
   },
   // Needs to be initalised to silence errors

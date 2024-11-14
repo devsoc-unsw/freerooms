@@ -51,6 +51,7 @@ export type AllRoomsFilters = {
   usage?: string[];
   location?: string[];
   duration?: string[];
+  buildingId?: string[];
   id?: string[];
 };
 
