@@ -2,15 +2,15 @@ import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { BoxProps } from "@mui/system";
 import { useCallback, useMemo } from "react";
+import {
+  setAllRoomsFilter,
+  unsetAllRoomsFilter,
+} from "redux/allRoomsFilterSlice";
 import { useDispatch } from "redux/hooks";
 import { AllRoomsFilters, DropDownItem } from "types";
 import { allRoomsFilterDropdown } from "utils/constants";
 
 import DropdownSelections from "./DropdownSelections";
-import {
-  setAllRoomsFilter,
-  unsetAllRoomsFilter,
-} from "redux/allRoomsFilterSlice";
 
 const StyledFilterSideBarContainer = styled(Box)<BoxProps>(({ theme }) => ({
   display: "flex",

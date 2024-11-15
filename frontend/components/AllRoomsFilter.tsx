@@ -2,11 +2,11 @@ import { Button } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/system";
+import { clearAllRoomsFilters } from "redux/allRoomsFilterSlice";
 import { useDispatch } from "redux/hooks";
 import { AllRoomsFilters } from "types";
 
 import FilterSideBar from "./FilterSideBar";
-import { clearAllRoomsFilters } from "redux/allRoomsFilterSlice";
 
 const AllRoomsFilter: React.FC<{ filters: AllRoomsFilters }> = ({
   filters,

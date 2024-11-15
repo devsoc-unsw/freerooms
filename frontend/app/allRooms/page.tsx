@@ -7,11 +7,11 @@ import AllRoomsSearchBar from "components/AllRoomsSearchBar";
 import useAllRooms from "hooks/useAllRooms";
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
+import { selectAllRoomsFilters } from "redux/allRoomsFilterSlice";
 
 import AllRoomsFilter from "../../components/AllRoomsFilter";
 import Room from "../../components/AllRoomsRoom";
 import RoomList from "../../components/AllRoomsRoomList";
-import { selectAllRoomsFilters } from "redux/allRoomsFilterSlice";
 
 export default function Page() {
   const filters = useSelector(selectAllRoomsFilters);
