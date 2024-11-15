@@ -9,6 +9,7 @@ import {
   Snackbar,
   Stack,
   Typography,
+  useTheme,
 } from "@mui/material";
 import setInsertRating from "hooks/setInsertRating";
 import React, { useState } from "react";
@@ -28,6 +29,8 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
   roomID,
   handleClose,
 }) => {
+  const theme = useTheme();
+
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
 
   const handleSubmit = () => {
@@ -87,7 +90,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
       >
         <Box
           sx={{
-            bgcolor: "white",
+            bgcolor: theme.palette.background.default,
             borderRadius: "10px",
             left: "165%",
             position: "absolute",

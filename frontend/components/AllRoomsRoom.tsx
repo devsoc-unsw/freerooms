@@ -5,6 +5,7 @@ import {
   CardContent,
   Stack,
   Typography,
+  useTheme,
 } from "@mui/material";
 import { RoomAvailabilityBoxProps } from "views/RoomAvailabilityBox";
 
@@ -18,16 +19,18 @@ const Room: React.FC<AllRoomsRoomProps> = ({
   roomNumber,
   ...roomStatus
 }) => {
+  const theme = useTheme();
+
   return (
     <Card
       variant="outlined"
       sx={{
-        backgroundColor: "#ffffff",
+        backgroundColor: theme.palette.background.default,
         marginTop: 1,
         overflow: "visible",
       }}
     >
-      <CardActionArea href={`/room/${roomNumber}`} target="_blank">
+      <CardActionArea href={`/room/${roomNumber}`}>
         <CardContent>
           <Stack
             alignItems="center"

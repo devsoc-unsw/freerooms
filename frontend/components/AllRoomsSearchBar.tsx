@@ -1,3 +1,4 @@
+import { useTheme } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import {
   DatePicker,
@@ -14,6 +15,7 @@ import toSydneyTime from "../utils/toSydneyTime";
 export default function AllRoomsSearchBar() {
   const dispatch = useDispatch();
   const datetime = useSelector(selectDatetime);
+  const theme = useTheme();
 
   return (
     <Stack
@@ -25,7 +27,7 @@ export default function AllRoomsSearchBar() {
       position="sticky"
       top="0px"
       zIndex={1}
-      sx={{ backgroundColor: "#fff" }}
+      sx={{ backgroundColor: theme.palette.background.default }}
     >
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
