@@ -1,6 +1,6 @@
-import { CircularProgress, LinearProgress, Typography } from "@mui/material";
+import { LinearProgress, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
-import { Box, styled } from "@mui/system";
+import { styled } from "@mui/system";
 
 const StyledStack = styled(Stack)(({ theme }) => ({
   flexDirection: "column",

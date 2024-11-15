@@ -2,13 +2,15 @@ import { Button } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/system";
-import { clearFilters } from "redux/filtersSlice";
 import { useDispatch } from "redux/hooks";
-import { Filters } from "types";
+import { AllRoomsFilters } from "types";
 
 import FilterSideBar from "./FilterSideBar";
+import { clearAllRoomsFilters } from "redux/allRoomsFilterSlice";
 
-const AllRoomsFilter: React.FC<{ filters: Filters }> = ({ filters }) => {
+const AllRoomsFilter: React.FC<{ filters: AllRoomsFilters }> = ({
+  filters,
+}) => {
   const dispatch = useDispatch();
 
   return (
@@ -34,7 +36,7 @@ const AllRoomsFilter: React.FC<{ filters: Filters }> = ({ filters }) => {
         <Button
           size="small"
           sx={{ position: "relative", bottom: 3 }}
-          onClick={() => dispatch(clearFilters())}
+          onClick={() => dispatch(clearAllRoomsFilters())}
         >
           RESET
         </Button>

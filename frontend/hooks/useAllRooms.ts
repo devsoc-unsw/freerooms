@@ -14,7 +14,7 @@ const fetcher = (url: string, datetime: Date, filters: AllRoomsFilters) =>
     })
     .then((res) => res.data);
 
-const useAllRooms = (filters: Filters) => {
+const useAllRooms = (filters: AllRoomsFilters) => {
   const datetime = useSelector(selectDatetime);
 
   const { data, isValidating, error } = useSWR<SearchResponse>(
