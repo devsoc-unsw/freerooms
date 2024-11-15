@@ -16,8 +16,12 @@ const RoomBackButton = () => {
   const currentBuilding = useSelector(selectCurrentBuilding);
 
   const handleBackButton = () => {
-    router.back();
-    dispatch(setCurrentBuilding(currentBuilding));
+    if (router.back() === undefined) {
+      router.push("/allRooms");
+    } else {
+      router.back();
+      dispatch(setCurrentBuilding(currentBuilding));
+    }
   };
 
   return (

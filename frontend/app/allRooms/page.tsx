@@ -7,14 +7,14 @@ import AllRoomsSearchBar from "components/AllRoomsSearchBar";
 import useAllRooms from "hooks/useAllRooms";
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { selectFilters } from "redux/filtersSlice";
+import { selectAllRoomsFilters } from "redux/allRoomsFilterSlice";
 
 import AllRoomsFilter from "../../components/AllRoomsFilter";
 import Room from "../../components/AllRoomsRoom";
 import RoomList from "../../components/AllRoomsRoomList";
 
 export default function Page() {
-  const filters = useSelector(selectFilters);
+  const filters = useSelector(selectAllRoomsFilters);
   const { rooms, isValidating } = useAllRooms(filters);
   const [visibleRooms, setVisibleRooms] = useState(20);
 

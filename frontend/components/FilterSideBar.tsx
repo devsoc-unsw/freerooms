@@ -2,9 +2,12 @@ import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { BoxProps } from "@mui/system";
 import { useCallback, useMemo } from "react";
-import { setFilter, unsetFilter } from "redux/filtersSlice";
+import {
+  setAllRoomsFilter,
+  unsetAllRoomsFilter,
+} from "redux/allRoomsFilterSlice";
 import { useDispatch } from "redux/hooks";
-import { AllRoomsFilters, DropDownItem, Filters } from "types";
+import { AllRoomsFilters, DropDownItem } from "types";
 import { allRoomsFilterDropdown } from "utils/constants";
 
 import DropdownSelections from "./DropdownSelections";
@@ -19,7 +22,7 @@ const StyledFilterSideBarContainer = styled(Box)<BoxProps>(({ theme }) => ({
   },
 }));
 
-const FilterSideBar = ({ filters }: { filters: Filters }) => {
+const FilterSideBar = ({ filters }: { filters: AllRoomsFilters }) => {
   const dispatch = useDispatch();
 
   // Handle user selecting a filter, each dropdown select has an associated key
@@ -27,10 +30,10 @@ const FilterSideBar = ({ filters }: { filters: Filters }) => {
     (key: keyof AllRoomsFilters, item: DropDownItem) => {
       if (filters[key]?.includes(item.value)) {
         // If the same as already selected, unset key
-        dispatch(unsetFilter(key));
+        dispatch(unsetAllRoomsFilter({ key, value: item.value }));
       } else {
         // Otherwise, spread existing filters and set key
-        dispatch(setFilter({ key, value: item.value }));
+        dispatch(setAllRoomsFilter({ key, value: item.value }));
       }
     },
     [dispatch, filters]
