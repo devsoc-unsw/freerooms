@@ -36,9 +36,9 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
   const handleSubmit = () => {
     // prevent default submission
     if (
-      cleanlinesRating === 0 &&
-      locationRating === 0 &&
-      quietnessRating === 0 &&
+      cleanlinesRating === 0 ||
+      locationRating === 0 ||
+      quietnessRating === 0 ||
       overallRating === 0
     ) {
       return;
