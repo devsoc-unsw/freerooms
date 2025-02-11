@@ -8,7 +8,7 @@ import { Collection, MongoClient } from "mongodb";
 dotenv.config({ path: "src/.env.local" });
 
 const uri: string | undefined =
-  `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_SERVICE_HOSTNAME}`;
+  `mongodb://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_SERVICE_HOSTNAME}:27017`;
 
 export async function insertRating(
   roomId: string,
