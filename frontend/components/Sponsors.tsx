@@ -7,9 +7,14 @@ import SponsorItem from "./SponsorItem";
 export default function Sponsors() {
   const sponsors: Sponsor[] = [
     {
-      name: "TikTok",
-      image: "/assets/sponsors/tiktok.png",
-      url: "https://careers.tiktok.com/",
+      name: "Arista",
+      image: "/assets/sponsors/arista.png",
+      url: "https://www.arista.com/en/",
+    },
+    {
+      name: "The Trade Desk",
+      image: "/assets/sponsors/theTradeDesk.svg",
+      url: "https://careers.thetradedesk.com/",
     },
     {
       name: "Jane Street",
