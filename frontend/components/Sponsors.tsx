@@ -1,4 +1,5 @@
 import { Stack, Typography, useTheme } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import Image from "next/image";
 import { Sponsor } from "types";
 
@@ -43,26 +44,39 @@ export default function Sponsors() {
           marginTop: 5,
         }}
       />
-      <Stack
+      <Grid
+        container
         alignItems="center"
-        gap={5}
+        justifyContent="center"
+        spacing={5}
         marginTop={5}
         sx={{
-          flexDirection: { xs: "stack", sm: "row" },
+          mt: 5,
+          flexDirection: { xs: "column", sm: "row" },
           backgroundColor: "white",
           padding: "30px",
           borderRadius: "10px",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         {sponsors.map((s, idx) => (
-          <SponsorItem
+          <Grid
+            size={{ xs: 12, sm: 8, md: 8, lg: 6 }}
             key={idx}
-            name={s.name}
-            image={s.image}
-            url={s.url}
-          ></SponsorItem>
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <SponsorItem
+              name={s.name}
+              image={s.image}
+              url={s.url}
+            ></SponsorItem>
+          </Grid>
         ))}
-      </Stack>
+      </Grid>
     </Stack>
   );
 }
