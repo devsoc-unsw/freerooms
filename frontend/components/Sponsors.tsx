@@ -9,17 +9,26 @@ export default function Sponsors() {
   const sponsors: Sponsor[] = [
     {
       name: "Arista",
+      tier: "Platinum",
       image: "/assets/sponsors/arista.png",
       url: "https://www.arista.com/en/",
     },
     {
       name: "The Trade Desk",
-      image: "/assets/sponsors/theTradeDesk.svg",
+      image: "/assets/sponsors/theTradeDesk.png",
+      tier: "Platinum",
       url: "https://careers.thetradedesk.com/",
     },
     {
-      name: "Jane Street",
+      name: "SafetyCulture",
+      tier: "Gold",
       image: "/assets/sponsors/jane_street.png",
+      url: "https://www.janestreet.com/",
+    },
+    {
+      name: "Jane Street",
+      tier: "Gold",
+      image: "/assets/sponsors/safetyculture.png",
       url: "https://www.janestreet.com/",
     },
   ];
@@ -48,8 +57,9 @@ export default function Sponsors() {
         container
         alignItems="center"
         justifyContent="center"
-        spacing={5}
         marginTop={5}
+        rowSpacing={6}
+        columns={12}
         sx={{
           mt: 5,
           flexDirection: { xs: "column", sm: "row" },
@@ -61,20 +71,13 @@ export default function Sponsors() {
         }}
       >
         {sponsors.map((s, idx) => (
-          <Grid
-            size={{ xs: 12, sm: 8, md: 8, lg: 6 }}
+          <SponsorItem
             key={idx}
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            <SponsorItem
-              name={s.name}
-              image={s.image}
-              url={s.url}
-            ></SponsorItem>
-          </Grid>
+            name={s.name}
+            image={s.image}
+            url={s.url}
+            tier={s.tier}
+          ></SponsorItem>
         ))}
       </Grid>
     </Stack>
