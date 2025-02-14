@@ -23,7 +23,7 @@ export default function Sponsors() {
       name: "SafetyCulture",
       tier: "Gold",
       image: "/assets/sponsors/jane_street.png",
-      url: "https://www.janestreet.com/",
+      url: "https://safetyculture.com/",
     },
     {
       name: "Jane Street",
