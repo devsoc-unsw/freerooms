@@ -1,6 +1,6 @@
 import { Box, Link } from "@mui/material";
-import { Sponsor } from "types";
 import Grid from "@mui/material/Grid2";
+import { Sponsor } from "types";
 
 export default function SponsorItem({ name, image, url, tier }: Sponsor) {
   if (tier === "Platinum") {
