@@ -56,6 +56,7 @@ export type AllRoomsFilters = {
 
 export type Sponsor = {
   name: string;
+  tier: string;
   image: string;
   url: string;
 };

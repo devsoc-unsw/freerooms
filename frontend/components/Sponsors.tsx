@@ -1,4 +1,5 @@
 import { Stack, Typography, useTheme } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import Image from "next/image";
 import { Sponsor } from "types";
 
@@ -7,13 +8,27 @@ import SponsorItem from "./SponsorItem";
 export default function Sponsors() {
   const sponsors: Sponsor[] = [
     {
-      name: "TikTok",
-      image: "/assets/sponsors/tiktok.png",
-      url: "https://careers.tiktok.com/",
+      name: "Arista",
+      tier: "Platinum",
+      image: "/assets/sponsors/arista.png",
+      url: "https://www.arista.com/en/",
+    },
+    {
+      name: "The Trade Desk",
+      image: "/assets/sponsors/theTradeDesk.png",
+      tier: "Platinum",
+      url: "https://careers.thetradedesk.com/",
+    },
+    {
+      name: "SafetyCulture",
+      tier: "Gold",
+      image: "/assets/sponsors/jane_street.png",
+      url: "https://safetyculture.com/",
     },
     {
       name: "Jane Street",
-      image: "/assets/sponsors/jane_street.png",
+      tier: "Gold",
+      image: "/assets/sponsors/safetyculture.png",
       url: "https://www.janestreet.com/",
     },
   ];
@@ -38,15 +53,21 @@ export default function Sponsors() {
           marginTop: 5,
         }}
       />
-      <Stack
+      <Grid
+        container
         alignItems="center"
-        gap={5}
+        justifyContent="center"
         marginTop={5}
+        rowSpacing={6}
+        columns={12}
         sx={{
-          flexDirection: { xs: "stack", sm: "row" },
+          mt: 5,
+          flexDirection: { xs: "column", sm: "row" },
           backgroundColor: "white",
           padding: "30px",
           borderRadius: "10px",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         {sponsors.map((s, idx) => (
@@ -55,9 +76,10 @@ export default function Sponsors() {
             name={s.name}
             image={s.image}
             url={s.url}
+            tier={s.tier}
           ></SponsorItem>
         ))}
-      </Stack>
+      </Grid>
     </Stack>
   );
 }
