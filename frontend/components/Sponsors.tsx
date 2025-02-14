@@ -20,16 +20,16 @@ export default function Sponsors() {
       url: "https://careers.thetradedesk.com/",
     },
     {
-      name: "SafetyCulture",
-      tier: "Gold",
-      image: "/assets/sponsors/jane_street.png",
-      url: "https://safetyculture.com/",
-    },
-    {
       name: "Jane Street",
       tier: "Gold",
-      image: "/assets/sponsors/safetyculture.png",
+      image: "/assets/sponsors/jane_street.png",
       url: "https://www.janestreet.com/",
+    },
+    {
+      name: "SafetyCulture",
+      tier: "Gold",
+      image: "/assets/sponsors/safetyculture.png",
+      url: "https://safetyculture.com/",
     },
   ];
   const theme = useTheme();
