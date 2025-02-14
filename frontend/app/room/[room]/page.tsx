@@ -10,19 +10,22 @@ import {
   DialogContentText,
   DialogTitle,
   IconButton,
-  useTheme,
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
+import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import RoomRating from "components/Rating/RoomRating";
+import useRoomRatings from "hooks/useRoomRatings";
 import Image from "next/image";
 import React, { useState } from "react";
 
 import BookingButton from "../../../components/BookingButton";
 import BookingCalendar from "../../../components/BookingCalendar";
 import LoadingCircle from "../../../components/LoadingCircle";
+import RoomBackButton from "../../../components/RoomBackButton";
 import useBookings from "../../../hooks/useBookings";
 import useBuilding from "../../../hooks/useBuilding";
 import useRoom from "../../../hooks/useRoom";
@@ -68,7 +71,8 @@ export default function Page({ params }: { params: { room: string } }) {
         >
           <RoomPageHeader room={room} buildingName={building.name} />
           <RoomImage src={`/assets/building_photos/${campus}-${grid}.webp`} />
-          <BookingCalendar events={adjustedBookings ?? []} />
+          <BookingCalendar events={adjustedBookings ?? []} roomID={room.id} />
+          <RoomRating buildingID={building.id} roomID={room.id} />
         </Stack>
       ) : (
         <LoadingCircle />
@@ -93,6 +97,17 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
     ? `This room is managed by ${schoolDetails.name}. Please contact the school to request a booking`
     : "This room is managed externally by its associated school. Please contact the school to request a booking";
 
+  const ratings = useRoomRatings(room.id);
+  let ratingValue = 0;
+
+  if (ratings.ratings && ratings.ratings.length > 0) {
+    ratings.ratings.forEach((rating) => {
+      ratingValue += rating.overall;
+    });
+    ratingValue = ratingValue / ratings.ratings.length;
+    ratingValue = Math.round(ratingValue * 10) / 10;
+  }
+
   return (
     <Stack
       width="100%"
@@ -101,6 +116,7 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
       justifyContent="space-between"
     >
       <Stack direction="column" spacing={1} width="100%" mb={1}>
+        <RoomBackButton />
         {buildingName != "" && (
           <Stack
             direction="row"
@@ -156,6 +172,24 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
               </Typography>
             </Typography>
           )}
+        </Stack>
+
+        <Stack
+          direction="row"
+          alignItems="center"
+          spacing={0.3}
+          aria-label="5-star-info"
+        >
+          <Typography variant="body1" fontWeight="bold">
+            {ratingValue == 0 ? 0 : ratingValue}
+          </Typography>
+          <Rating
+            readOnly
+            value={ratingValue}
+            size="small"
+            precision={0.5}
+            sx={{ color: "rgb(255, 169, 12)" }}
+          />
         </Stack>
       </Stack>
       <Dialog

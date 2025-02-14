@@ -1,7 +1,10 @@
+import StarIcon from "@mui/icons-material/Star";
 import { Typography } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
+import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
+import useBuildingRatings from "hooks/useBuildingRatings";
 import Image, { ImageProps } from "next/image";
 import React from "react";
 
@@ -60,6 +63,7 @@ const TitleBox = styled(Box)<BoxProps>(({ theme }) => ({
   display: "flex",
   borderRadius: 10,
   position: "absolute",
+  justifyContent: "space-between",
   bottom: 0,
   left: 0,
   right: 0,
@@ -79,6 +83,7 @@ const BuildingCard: React.FC<{
 
   const { building } = useBuilding(buildingId);
   const { status } = useBuildingStatus(buildingId);
+  const { ratings } = useBuildingRatings(buildingId);
 
   if (!building) return <></>;
 
@@ -117,6 +122,17 @@ const BuildingCard: React.FC<{
         <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
           {building.name}
         </Typography>
+        <Stack
+          direction="row"
+          alignItems="center"
+          spacing={0.3}
+          aria-label="star-info"
+        >
+          <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
+            {ratings?.overallRating}
+          </Typography>
+          <StarIcon sx={{ color: "rgb(255, 169, 12)" }} />
+        </Stack>
       </TitleBox>
     </MainBox>
   );

@@ -46,16 +46,17 @@ export type Filters = {
   id?: string;
 };
 
-export type AllRoomsFilter = {
-  capacity?: string[];
-  usage?: string[];
-  location?: string[];
-  duration?: string[];
-  id?: string[];
+export type AllRoomsFilters = {
+  capacity?: string;
+  usage?: string;
+  location?: string;
+  duration?: string;
+  id?: string;
 };
 
 export type Sponsor = {
   name: string;
+  tier: string;
   image: string;
   url: string;
 };

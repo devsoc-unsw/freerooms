@@ -14,7 +14,7 @@ import {
   unsetFilter,
 } from "../redux/filtersSlice";
 import { useDispatch, useSelector } from "../redux/hooks";
-import { DropDown, DropDownItem, Filters } from "../types";
+import { DropDownItem, Filters } from "../types";
 import { filterBarDropdown } from "../utils/constants";
 import DropdownSelections from "./DropdownSelections";
 
@@ -45,6 +45,8 @@ const StyledDropDownMenu = styled(Box)<BoxProps>(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   position: "absolute",
+  paddingLeft: "10px",
+  paddingRight: "10px",
   backgroundColor: theme.palette.background.default,
   borderWidth: 1,
   borderStyle: "solid",
@@ -55,7 +57,6 @@ const StyledDropDownMenu = styled(Box)<BoxProps>(({ theme }) => ({
 }));
 
 const StyledHeader = styled(Box)<BoxProps>(() => ({
-  paddingLeft: 15,
   height: 60,
   display: "inline-flex",
   alignItems: "center",

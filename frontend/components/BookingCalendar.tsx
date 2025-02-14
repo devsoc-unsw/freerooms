@@ -32,6 +32,7 @@ import {
 
 import { selectDatetime } from "../redux/datetimeSlice";
 import { useSelector } from "../redux/hooks";
+import RoomRatingList from "./Rating/RoomRatingList";
 
 const ToolBarButton = styled(Button)(({ theme }) => ({
   borderColor: theme.palette.secondary.main,
@@ -60,7 +61,7 @@ const ViewToggleButton = styled(ToggleButton)(({ theme }) => ({
   },
 }));
 
-const CustomToolBar: React.FC<ToolbarProps> = ({
+const CustomToolBar: React.FC<ToolbarProps<Booking>> = ({
   view,
   onNavigate,
   onView,
@@ -157,7 +158,10 @@ const StyledCalendarContainer = styled(Box)<BoxProps & { view: View }>(
   })
 );
 
-const BookingCalendar: React.FC<{ events: Array<Booking> }> = ({ events }) => {
+const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
+  events,
+  roomID,
+}) => {
   // Enforce day view on mobile
   const [currView, setCurrView] = React.useState<View>(Views.WEEK);
   const theme = useTheme();
