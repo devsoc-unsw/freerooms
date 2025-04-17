@@ -9,6 +9,7 @@ import express, {
 } from "express";
 
 import { PORT } from "./config";
+import { getRoomUtilities } from "./helpers";
 import {
   getBuildingRatings,
   getRatings,
@@ -27,8 +28,6 @@ import {
   getRoomBookings,
   searchAllRoom,
 } from "./service";
-
-import { getRoomUtilities } from "./helpers";
 
 const app = express();
 app.use(cors());
