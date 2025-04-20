@@ -1,7 +1,16 @@
-import { Booking, BookingsResponse, RoomStatus } from "@common/types";
+import {
+  Booking,
+  BookingsResponse,
+  RoomStatus,
+  RoomUtilitiesResponse,
+} from "@common/types";
 import { utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
 
-import { queryBookingsInRange, queryBuildingsAndRooms } from "./dbInterface";
+import {
+  queryBookingsInRange,
+  queryBuildingsAndRooms,
+  queryRoomUtilities,
+} from "./dbInterface";
 import { BuildingDatabase } from "./types";
 
 const FIFTEEN_MIN = 15 * 1000 * 60;
@@ -43,6 +52,14 @@ export const getBuildingRoomData = async (): Promise<BuildingDatabase> => {
       },
     ])
   );
+};
+
+// Gets the utilities data for a room
+export const getRoomUtilities = async (
+  roomId: string
+): Promise<RoomUtilitiesResponse> => {
+  const res = await queryRoomUtilities(roomId);
+  return res.rooms_by_pk;
 };
 
 // Given a datetime and a list of the room's bookings for
