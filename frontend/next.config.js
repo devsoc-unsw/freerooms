@@ -4,6 +4,15 @@ const nextConfig = {
   experimental: {
     externalDir: true,
   },
+  images: {
+    remotePatterns:
+    [
+      {
+        protocol: 'https',
+        hostname: 'www.learningenvironments.unsw.edu.au'
+      }
+    ]
+  },
 };
 
 module.exports = nextConfig;
