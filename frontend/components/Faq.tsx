@@ -55,12 +55,18 @@ const Faq = () => {
                 Development Society (DevSoc).
                 <br />
                 <br />
-                If you&apos;re looking to join the team, or make open source
-                contributions, please visit{" "}
-                <Link href="https://devsoc.app/get-involved">
-                  our website
-                </Link>{" "}
-                for more information.
+                Found a bug or want to see a new feature added to Freerooms?
+                Submit your{" "}
+                <Link href="https://forms.gle/jMzhQXXfyQiBGjQaA">feedback</Link>
+                , share your thoughts on{" "}
+                <Link href="https://discord.com/invite/u9p34WUTcs">
+                  Discord
+                </Link>
+                , or open an issue on{" "}
+                <Link href="https://github.com/devsoc-unsw/freerooms/issues">
+                  Github
+                </Link>
+                !
               </>
             }
           />

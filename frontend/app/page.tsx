@@ -5,12 +5,14 @@ import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import React from "react";
 
+import FeedbackButton from "../components/FeedbackButton";
 import Landing from "../components/Landing";
 
 const Home = () => {
   return (
     <Container maxWidth={false}>
       <Main>
+        <FeedbackButton />
         <Landing />
       </Main>
     </Container>

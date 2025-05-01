@@ -9,6 +9,7 @@ import React from "react";
 import BuildingDrawer from "views/BuildingDrawer";
 
 import DatePicker from "../../components/DatePicker";
+import FeedbackButton from "../../components/FeedbackButton";
 import FilterBar from "../../components/FilterBar";
 import SearchBar from "../../components/SearchBar";
 import SortBar from "../../components/SortBar";
@@ -21,6 +22,7 @@ const Page = () => {
 
   return (
     <Container maxWidth={false}>
+      <FeedbackButton />
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Tiles>
           <Stack
