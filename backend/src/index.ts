@@ -9,6 +9,7 @@ import express, {
 } from "express";
 
 import { PORT } from "./config";
+import { getRoomUtilities } from "./helpers";
 import {
   getBuildingRatings,
   getRatings,
@@ -140,6 +141,17 @@ app.get(
     }
 
     res.send(buildingRating);
+    next();
+  })
+);
+
+// Route to get utilities of a room
+app.get(
+  "/api/rooms/utilities/:roomId",
+  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const { roomId } = req.params;
+    const roomUtilities = await getRoomUtilities(roomId);
+    res.send(roomUtilities);
     next();
   })
 );
