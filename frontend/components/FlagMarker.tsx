@@ -8,9 +8,7 @@ import { styled, useTheme } from "@mui/material/styles";
 import Image, { ImageProps } from "next/image";
 import React from "react";
 
-import {
-  selectCurrentBuilding,
-} from "../redux/currentBuildingSlice";
+import { selectCurrentBuilding } from "../redux/currentBuildingSlice";
 import { useDispatch, useSelector } from "../redux/hooks";
 
 const FlagMarker: React.FC<{
@@ -40,9 +38,9 @@ const FlagMarker: React.FC<{
   // }, [currentHover, building]);
 
   const [colour, setColour] = React.useState("#e57373");
-    React.useEffect(() => {
-      setShowPopup(currentHover?.id === building?.id);
-    }, [currentHover, building]);
+  React.useEffect(() => {
+    setShowPopup(currentHover?.id === building?.id);
+  }, [currentHover, building]);
 
   return (
     <div
