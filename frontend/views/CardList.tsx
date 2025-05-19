@@ -12,6 +12,7 @@ import useStatus from "../hooks/useStatus";
 import useUserLocation from "../hooks/useUserLocation";
 import calculateDistance from "../utils/calculateDistance";
 import { getNumFreerooms } from "../utils/utils";
+import FakeBuildingCard from "components/FakeBuildingCard";
 
 const FlipMoveGrid = styled(FlipMove)(() => ({
   width: "100%",
@@ -94,6 +95,11 @@ const CardList: React.FC<{
       {displayedBuildings.map((building) => (
         <FlippableCard key={building.id} buildingId={building.id} />
       ))}
+
+      <div key="flag-building">
+        <FakeBuildingCard />
+      </div>
+      <FlippableCard key="flag-building" buildingId="flag-building" />
     </FlipMoveGrid>
   ) : (
     <LoadingCircle />
