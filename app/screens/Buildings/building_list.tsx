@@ -11,7 +11,6 @@ import { FreeRoomsAPIContext } from "../../contexts";
 import BuildingCard from "../../components/BuildingCard";
 
 import Ionicons from "@expo/vector-icons/Ionicons";
-import FakeBuildingCard from "components/FakeBuildingCard";
 
 export default function BuildingList({
   route,
@@ -46,7 +45,6 @@ export default function BuildingList({
               {...building}
             />
           ))}
-          <FakeBuildingCard />
         </View>
       </ScrollView>
     </SafeAreaView>
