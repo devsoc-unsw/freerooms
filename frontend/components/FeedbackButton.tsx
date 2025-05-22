@@ -23,7 +23,7 @@ const StyledButton = styled(AntdButton)(({ theme }) => {
     backgroundColor: bgColor,
     borderColor: borderColor,
     "&:hover": {
-      borderColor: `${theme.palette.primary.main} !important`,
+      borderColor: "#FB905E !important",
       backgroundColor: `${bgColor} !important`,
     },
   };
