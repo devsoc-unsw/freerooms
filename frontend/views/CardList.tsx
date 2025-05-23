@@ -12,6 +12,8 @@ import useStatus from "../hooks/useStatus";
 import useUserLocation from "../hooks/useUserLocation";
 import calculateDistance from "../utils/calculateDistance";
 import { getNumFreerooms } from "../utils/utils";
+import FakeBuildingCard from "components/FakeBuildingCard";
+import FakeBuildingCardMobile from "components/FakeBuildingCardMobile";
 
 const FlipMoveGrid = styled(FlipMove)(() => ({
   width: "100%",
@@ -43,6 +45,8 @@ const CardList: React.FC<{
   const { buildings } = useBuildings();
   const { status: roomStatusData } = useStatus();
   const { userLat, userLng } = useUserLocation();
+
+  const displayMobile = useMediaQuery(useTheme().breakpoints.down("sm"));
 
   // This exists so that while new filtered data is loading, the old one stays there
   const [persistedData, setPersistedData] = React.useState(roomStatusData);
@@ -94,6 +98,30 @@ const CardList: React.FC<{
       {displayedBuildings.map((building) => (
         <FlippableCard key={building.id} buildingId={building.id} />
       ))}
+
+      {displayMobile ? (
+        <div key="fake-card">
+          <FakeBuildingCardMobile />
+        </div>
+      ) : (
+        <div key="fake-card">
+          <FakeBuildingCard />
+        </div>
+      )}
+      {/* {displayMobile ? (
+        <FakeBuildingCardMobile key="fake-card" />
+      ) : (
+        <FakeBuildingCard key="fake-card" />
+      )} */}
+
+      {/* <div key="fake-building-card">
+        {displayMobile ? <FakeBuildingCardMobile /> : <FakeBuildingCard />}
+      </div>
+
+      <div key="flag-building">
+        <FakeBuildingCard />
+      </div>
+      <FlippableCard key="flag-building" buildingId="flag-building" /> */}
     </FlipMoveGrid>
   ) : (
     <LoadingCircle />
