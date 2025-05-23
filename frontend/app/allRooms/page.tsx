@@ -12,6 +12,7 @@ import { selectAllRoomsFilters } from "redux/allRoomsFilterSlice";
 import AllRoomsFilter from "../../components/AllRoomsFilter";
 import Room from "../../components/AllRoomsRoom";
 import RoomList from "../../components/AllRoomsRoomList";
+import FeedbackButton from "../../components/FeedbackButton";
 
 export default function Page() {
   const filters = useSelector(selectAllRoomsFilters);
@@ -55,6 +56,7 @@ export default function Page() {
 
   return (
     <Stack alignItems="center">
+      <FeedbackButton />
       <Stack marginTop={4} paddingX={1}>
         <Typography fontWeight="bold" variant="h4">
           All Free Rooms

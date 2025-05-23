@@ -25,6 +25,7 @@ import React, { useState } from "react";
 
 import BookingButton from "../../../components/BookingButton";
 import BookingCalendar from "../../../components/BookingCalendar";
+import FeedbackButton from "../../../components/FeedbackButton";
 import LoadingCircle from "../../../components/LoadingCircle";
 import RoomBackButton from "../../../components/RoomBackButton";
 import useBookings from "../../../hooks/useBookings";
@@ -62,6 +63,7 @@ export default function Page({ params }: { params: { room: string } }) {
 
   return (
     <Container maxWidth="xl">
+      <FeedbackButton />
       {room && building ? (
         <Stack
           justifyContent="center"
