@@ -124,8 +124,8 @@ export const Map = () => {
             key="???"
             mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
             position={{
-              lat: -33.919038156385824,
-              lng: 151.22579980622098,
+              lat: -33.91881572768698,
+              lng: 151.23108965166168,
             }}
             zIndex={debouncedCurrentHover?.id === "???" ? 3 : 1}
           >

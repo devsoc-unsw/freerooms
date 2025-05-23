@@ -18,8 +18,8 @@ const FlagMarker: React.FC<{
   const inconspeciousBuilding: Building = {
     name: "???",
     id: "???",
-    lat: -33.917,
-    long: 151.235664,
+    lat: -33.9189,
+    long: 151.231,
     aliases: [],
   };
   const building = inconspeciousBuilding;
@@ -69,7 +69,7 @@ const FlagMarker: React.FC<{
           color: theme.palette.text.primary,
         }}
       >
-        Flag
+        ?
       </Typography>
       <Box
         sx={(theme) => ({
