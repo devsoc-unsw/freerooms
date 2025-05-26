@@ -147,7 +147,7 @@ const MarkerHover: React.FC<{
     <MainBox>
       <StyledImage
         alt={`Image of ???`}
-        src={`/assets/building_photos/flag.webp`}
+        src={`/assets/building_photos/flag.png`}
         fill={true}
         priority={true}
       />

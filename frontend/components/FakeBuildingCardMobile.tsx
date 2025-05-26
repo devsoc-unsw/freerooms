@@ -68,9 +68,7 @@ const FakeBuildingCardMobile: React.FC<{}> = () => {
         priority={true}
       />
       <TitleBox>
-        <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-          Flag Building
-        </Typography>
+        <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>???</Typography>
         <Stack
           direction="column"
           justifyContent="center"

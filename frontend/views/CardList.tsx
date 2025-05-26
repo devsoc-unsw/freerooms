@@ -108,20 +108,6 @@ const CardList: React.FC<{
           <FakeBuildingCard />
         </div>
       )}
-      {/* {displayMobile ? (
-        <FakeBuildingCardMobile key="fake-card" />
-      ) : (
-        <FakeBuildingCard key="fake-card" />
-      )} */}
-
-      {/* <div key="fake-building-card">
-        {displayMobile ? <FakeBuildingCardMobile /> : <FakeBuildingCard />}
-      </div>
-
-      <div key="flag-building">
-        <FakeBuildingCard />
-      </div>
-      <FlippableCard key="flag-building" buildingId="flag-building" /> */}
     </FlipMoveGrid>
   ) : (
     <LoadingCircle />
