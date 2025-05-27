@@ -94,7 +94,7 @@ const FakeBuildingCardMobile: React.FC<{}> = () => {
               <Typography
                 sx={{ fontSize: 12, fontWeight: 500, color: "#000000" }}
               >
-                5
+                6
               </Typography>
               <StarIcon sx={{ fontSize: "1rem", color: "rgb(255, 169, 12)" }} />
             </Stack>

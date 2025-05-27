@@ -90,7 +90,7 @@ const FakeBuildingCard: React.FC<{}> = () => {
           spacing={0.3}
           aria-label="star-info"
         >
-          <Typography sx={{ fontSize: 16, fontWeight: 500 }}>0</Typography>
+          <Typography sx={{ fontSize: 16, fontWeight: 500 }}>6</Typography>
           <StarIcon sx={{ color: "rgb(255, 169, 12)" }} />
         </Stack>
       </TitleBox>
