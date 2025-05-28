@@ -5,13 +5,12 @@ const nextConfig = {
     externalDir: true,
   },
   images: {
-    remotePatterns:
-    [
+    remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'www.learningenvironments.unsw.edu.au'
-      }
-    ]
+        protocol: "https",
+        hostname: "www.learningenvironments.unsw.edu.au",
+      },
+    ],
   },
 };
 
