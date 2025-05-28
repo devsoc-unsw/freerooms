@@ -85,7 +85,6 @@ export type BuildingRatingsResponse = {
   buildingId: string;
   overallRating: number;
 };
-<<<<<<< HEAD
 
 export type RoomUtilitiesResponse = {
   id: string;
@@ -99,5 +98,3 @@ export type RoomUtilitiesResponse = {
   writingMedia: string[];
   service: string[];
 };
-=======
->>>>>>> 16e7f6e697389ae0624a91b189ab7636f5bea3c1
