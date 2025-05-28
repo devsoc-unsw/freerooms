@@ -19,6 +19,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { Dictionary } from "@reduxjs/toolkit";
 import RoomRating from "components/Rating/RoomRating";
+import RoomUtilityTags from "components/RoomUtilityTags";
 import useRoomRatings from "hooks/useRoomRatings";
 import Image from "next/image";
 import React, { useState } from "react";
@@ -31,7 +32,6 @@ import useBookings from "../../../hooks/useBookings";
 import useBuilding from "../../../hooks/useBuilding";
 import useRoom from "../../../hooks/useRoom";
 import room_photos from "../../../public/room-photos.json";
-import RoomUtilityTags from "components/RoomUtilityTags";
 
 const adjustDateIfMidnight = (inputDate: Date): Date => {
   // Check if the time is midnight (00:00:00)

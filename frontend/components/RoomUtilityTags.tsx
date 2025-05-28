@@ -1,29 +1,28 @@
 "use client";
 
-import type React from "react";
-
 import {
-  Box,
-  Typography,
-  Chip,
-  Stack,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-} from "@mui/material";
-import {
-  ViewQuilt,
-  Mic,
-  Monitor,
   Accessible,
-  Edit,
-  Settings,
+  AcUnit,
   Chair,
   Devices,
-  AcUnit,
+  Edit,
   ExpandMore,
+  Mic,
+  Monitor,
+  Settings,
+  ViewQuilt,
 } from "@mui/icons-material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Chip,
+  Stack,
+  Typography,
+} from "@mui/material";
 import useRoomUtilities from "hooks/useRoomUtilities";
+import type React from "react";
 
 // Constants
 const ORANGE = "#f57d04";
