@@ -2,7 +2,6 @@
 
 ///////////////////////////////////////////////////////////////
 // Data types
-
 export type Building = {
   name: string;
   id: string;
@@ -85,4 +84,17 @@ export type RatingsResponse = {
 export type BuildingRatingsResponse = {
   buildingId: string;
   overallRating: number;
+};
+
+export type RoomUtilitiesResponse = {
+  id: string;
+  name: string;
+  floor: string | null;
+  seating: string | null;
+  microphone: string[];
+  accessibility: string[];
+  audiovisual: string[];
+  infotechnology: string[];
+  writingMedia: string[];
+  service: string[];
 };

@@ -17,6 +17,7 @@ import Link from "@mui/material/Link";
 import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import { Dictionary } from "@reduxjs/toolkit";
 import RoomRating from "components/Rating/RoomRating";
 import useRoomRatings from "hooks/useRoomRatings";
 import Image from "next/image";
@@ -24,11 +25,13 @@ import React, { useState } from "react";
 
 import BookingButton from "../../../components/BookingButton";
 import BookingCalendar from "../../../components/BookingCalendar";
+import FeedbackButton from "../../../components/FeedbackButton";
 import LoadingCircle from "../../../components/LoadingCircle";
 import RoomBackButton from "../../../components/RoomBackButton";
 import useBookings from "../../../hooks/useBookings";
 import useBuilding from "../../../hooks/useBuilding";
 import useRoom from "../../../hooks/useRoom";
+import room_photos from "../../../public/room-photos.json";
 
 const adjustDateIfMidnight = (inputDate: Date): Date => {
   // Check if the time is midnight (00:00:00)
@@ -60,6 +63,7 @@ export default function Page({ params }: { params: { room: string } }) {
 
   return (
     <Container maxWidth="xl">
+      <FeedbackButton />
       {room && building ? (
         <Stack
           justifyContent="center"
@@ -70,7 +74,13 @@ export default function Page({ params }: { params: { room: string } }) {
           px={{ xs: 3, md: 15 }}
         >
           <RoomPageHeader room={room} buildingName={building.name} />
-          <RoomImage src={`/assets/building_photos/${campus}-${grid}.webp`} />
+          <RoomImage
+            src={
+              params.room in room_photos
+                ? `${(room_photos as Dictionary<String>)[params.room]}`
+                : `/assets/building_photos/${campus}-${grid}.webp`
+            }
+          />
           <BookingCalendar events={adjustedBookings ?? []} roomID={room.id} />
           <RoomRating buildingID={building.id} roomID={room.id} />
         </Stack>

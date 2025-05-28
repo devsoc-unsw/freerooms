@@ -5,20 +5,18 @@ import {
 } from "@common/types";
 import dotenv from "dotenv";
 import { Collection, MongoClient } from "mongodb";
+
+import { MONGO_URI } from "./config";
 dotenv.config({ path: "src/.env.local" });
-
-const uri: string | undefined =
-  `mongodb://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_SERVICE_HOSTNAME}:27017`;
-
 export async function insertRating(
   roomId: string,
   ratings: number[]
 ): Promise<void> {
-  if (!uri) {
-    throw new Error("uri not found");
+  if (!MONGO_URI) {
+    throw new Error("MONGO_URI not found");
   }
 
-  const client = new MongoClient(uri);
+  const client = new MongoClient(MONGO_URI);
   try {
     await client.connect();
     const database = client.db("room-ratings");
@@ -54,11 +52,11 @@ export async function insertBuldingRating(
   buildingId: string,
   overallRating: number
 ): Promise<void> {
-  if (!uri) {
-    throw new Error("uri not found");
+  if (!MONGO_URI) {
+    throw new Error("MONGO_URI not found");
   }
 
-  const client = new MongoClient(uri);
+  const client = new MongoClient(MONGO_URI);
   await client.connect();
   const database = client.db("room-ratings");
   const session = client.startSession();
@@ -105,11 +103,11 @@ export async function insertBuldingRating(
 }
 
 export async function getRatings(roomId: string): Promise<Rating[]> {
-  if (!uri) {
-    throw new Error("uri not found");
+  if (!MONGO_URI) {
+    throw new Error("MONGO_URI not found");
   }
 
-  const client = new MongoClient(uri);
+  const client = new MongoClient(MONGO_URI);
 
   try {
     await client.connect();
@@ -141,10 +139,10 @@ export async function getRatings(roomId: string): Promise<Rating[]> {
 export async function getBuildingRatings(
   buildingId: string
 ): Promise<BuildingRatingsResponse | null> {
-  if (!uri) {
-    throw new Error("uri not found");
+  if (!MONGO_URI) {
+    throw new Error("MONGO_URI not found");
   }
-  const client = new MongoClient(uri);
+  const client = new MongoClient(MONGO_URI);
 
   try {
     await client.connect();
