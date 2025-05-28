@@ -6,33 +6,43 @@ import { Sponsor } from "types";
 import SponsorItem from "./SponsorItem";
 
 export default function Sponsors() {
+  const theme = useTheme();
+  const isLightMode = theme.palette.mode === "light";
+
   const sponsors: Sponsor[] = [
     {
       name: "Arista",
       tier: "Platinum",
-      image: "/assets/sponsors/arista.png",
+      image: isLightMode
+        ? "/assets/sponsors/arista.png"
+        : "/assets/sponsors/arista_dark.png",
       url: "https://www.arista.com/en/",
     },
     {
       name: "The Trade Desk",
-      image: "/assets/sponsors/theTradeDesk.png",
+      image: isLightMode
+        ? "/assets/sponsors/theTradeDesk.png"
+        : "/assets/sponsors/thetradedesk_dark.png",
       tier: "Platinum",
       url: "https://careers.thetradedesk.com/",
     },
     {
       name: "Jane Street",
       tier: "Gold",
-      image: "/assets/sponsors/jane_street.png",
+      image: isLightMode
+        ? "/assets/sponsors/jane_street.png"
+        : "/assets/sponsors/jane_street_dark.svg",
       url: "https://www.janestreet.com/",
     },
     {
       name: "SafetyCulture",
       tier: "Gold",
-      image: "/assets/sponsors/safetyculture.png",
+      image: isLightMode
+        ? "/assets/sponsors/safetyculture.png"
+        : "/assets/sponsors/sc_dark.png",
       url: "https://safetyculture.com/",
     },
   ];
-  const theme = useTheme();
 
   return (
     <Stack marginTop={4}>
@@ -63,7 +73,7 @@ export default function Sponsors() {
         sx={{
           mt: 5,
           flexDirection: { xs: "column", sm: "row" },
-          backgroundColor: "white",
+          backgroundColor: theme.palette.background.paper,
           padding: "30px",
           borderRadius: "10px",
           justifyContent: "center",
