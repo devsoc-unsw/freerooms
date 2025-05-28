@@ -31,6 +31,7 @@ import useBookings from "../../../hooks/useBookings";
 import useBuilding from "../../../hooks/useBuilding";
 import useRoom from "../../../hooks/useRoom";
 import room_photos from "../../../public/room-photos.json";
+import RoomUtilityTags from "components/RoomUtilityTags";
 
 const adjustDateIfMidnight = (inputDate: Date): Date => {
   // Check if the time is midnight (00:00:00)
@@ -199,6 +200,7 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
             sx={{ color: "rgb(255, 169, 12)" }}
           />
         </Stack>
+        <RoomUtilityTags roomId={room?.id} />
       </Stack>
       <Dialog
         open={openDialog}
