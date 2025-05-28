@@ -81,6 +81,7 @@ export default function Page({ params }: { params: { room: string } }) {
             }
           />
           <BookingCalendar events={adjustedBookings ?? []} roomID={room.id} />
+          <RoomUtilityTags roomId={room?.id} />
           <RoomRating buildingID={building.id} roomID={room.id} />
         </Stack>
       ) : (
@@ -200,7 +201,6 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
             sx={{ color: "rgb(255, 169, 12)" }}
           />
         </Stack>
-        <RoomUtilityTags roomId={room?.id} />
       </Stack>
       <Dialog
         open={openDialog}

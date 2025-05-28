@@ -89,7 +89,7 @@ export default function RoomUtilities({ roomId }: { roomId: string }) {
     });
 
   return (
-    <Box>
+    <Box height="100%" width="100%" pt={6} pb={3}>
       <Typography
         sx={{ mb: 3 }}
         variant="h5"
