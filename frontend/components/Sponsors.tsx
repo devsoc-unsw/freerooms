@@ -73,7 +73,9 @@ export default function Sponsors() {
         sx={{
           mt: 5,
           flexDirection: { xs: "column", sm: "row" },
-          backgroundColor: theme.palette.background.paper,
+          backgroundColor: isLightMode
+            ? "#ffffff"
+            : theme.palette.background?.paper,
           padding: "30px",
           borderRadius: "10px",
           justifyContent: "center",
