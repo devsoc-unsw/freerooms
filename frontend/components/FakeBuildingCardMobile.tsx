@@ -62,7 +62,7 @@ const FakeBuildingCardMobile: React.FC<{}> = () => {
     <MainBox>
       <StyledImage
         alt="Image of fake building"
-        src="/assets/building_photos/flag_placeholder.webp"
+        src="/assets/building_photos/flag_placeholder.png"
         fill={true}
         style={{ objectFit: "cover" }}
         priority={true}
