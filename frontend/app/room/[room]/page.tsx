@@ -21,7 +21,8 @@ import { Dictionary } from "@reduxjs/toolkit";
 import RoomRating from "components/Rating/RoomRating";
 import useRoomRatings from "hooks/useRoomRatings";
 import Image from "next/image";
-import React, { useState, use } from "react";
+import { useParams } from "next/navigation";
+import React, { useState } from "react";
 
 import BookingButton from "../../../components/BookingButton";
 import BookingCalendar from "../../../components/BookingCalendar";
@@ -50,12 +51,9 @@ const adjustDateIfMidnight = (inputDate: Date): Date => {
   }
 };
 
-export default function Page({
-  params,
-}: {
-  params: Promise<{ room: string }>;
-}) {
-  const roomParam = use(params).room;
+export default function Page() {
+  const params = useParams();
+  const roomParam = params.room as string;
   const { bookings } = useBookings(roomParam);
   const adjustedBookings: Booking[] | undefined = bookings?.map((booking) => ({
     ...booking,
