@@ -1,13 +1,14 @@
+import { ExpandMore } from "@mui/icons-material";
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  alpha,
   Stack,
   Typography,
-  alpha,
   useTheme,
 } from "@mui/material";
-import { ExpandMore } from "@mui/icons-material";
+
 import UtilityChips from "./UtilityChips";
 
 interface Props {

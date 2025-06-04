@@ -11,9 +11,10 @@ import {
   Settings,
   ViewQuilt,
 } from "@mui/icons-material";
-import { Box, Stack, Typography, useTheme, alpha } from "@mui/material";
+import { Box, Stack, Typography, useTheme } from "@mui/material";
 import useRoomUtilities from "hooks/useRoomUtilities";
 import type React from "react";
+
 import UtilityAccordion from "./UtilityAccordian";
 
 const ICON_SIZE = 18;
