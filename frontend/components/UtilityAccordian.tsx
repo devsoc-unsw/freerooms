@@ -4,6 +4,8 @@ import {
   AccordionSummary,
   Stack,
   Typography,
+  alpha,
+  useTheme,
 } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
 import UtilityChips from "./UtilityChips";
@@ -15,34 +17,38 @@ interface Props {
 }
 
 export default function UtilityAccordion({ title, icon, items = [] }: Props) {
-  const ORANGE = "#f57d04";
+  const theme = useTheme();
+  const primary = theme.palette.primary.main;
 
   return (
     <Accordion
       disableGutters
       elevation={0}
       sx={{
-        border: "1px solid #e0e0e0",
-        borderRadius: "8px !important",
+        border: `1px solid ${theme.palette.divider}`,
+        borderRadius: `${theme.shape.borderRadius}px !important`,
         overflow: "hidden",
+        mb: theme.spacing(1),
         "&:before": {
           display: "none",
         },
-        mb: 1,
         "&:hover": {
-          borderColor: ORANGE,
+          borderColor: primary,
         },
       }}
     >
       <AccordionSummary
-        expandIcon={<ExpandMore sx={{ color: ORANGE }} />}
+        expandIcon={<ExpandMore sx={{ color: primary }} />}
         sx={{
-          backgroundColor: "#fafafa",
+          backgroundColor: theme.palette.common.white,
+          transition: "background-color 0.3s",
           "&:hover": {
-            backgroundColor: "#f5f5f5",
+            backgroundColor: theme.palette.common.white,
+            backgroundImage: `linear-gradient(${alpha(primary, 0.08)}, ${alpha(primary, 0.08)})`,
           },
           "&.Mui-expanded": {
-            backgroundColor: "#fef7f0",
+            backgroundColor: theme.palette.common.white,
+            backgroundImage: `linear-gradient(${alpha(primary, 0.08)}, ${alpha(primary, 0.08)})`,
           },
         }}
       >
@@ -50,7 +56,7 @@ export default function UtilityAccordion({ title, icon, items = [] }: Props) {
           {icon}
           <Typography
             variant="subtitle2"
-            fontWeight="medium"
+            fontWeight={theme.typography.fontWeightMedium}
             color="text.primary"
           >
             {title}
@@ -58,19 +64,24 @@ export default function UtilityAccordion({ title, icon, items = [] }: Props) {
           <Typography
             variant="caption"
             sx={{
-              color: ORANGE,
-              backgroundColor: "#fef7f0",
-              px: 1,
-              py: 0.25,
-              borderRadius: 1,
-              fontWeight: "medium",
+              color: primary,
+              backgroundColor: `${primary}1A`, // ~10% opacity
+              px: theme.spacing(1),
+              py: theme.spacing(0.25),
+              borderRadius: theme.shape.borderRadius,
+              fontWeight: theme.typography.fontWeightMedium,
             }}
           >
             {items.length}
           </Typography>
         </Stack>
       </AccordionSummary>
-      <AccordionDetails sx={{ p: 2, backgroundColor: "#fefefe" }}>
+      <AccordionDetails
+        sx={{
+          p: theme.spacing(2),
+          backgroundColor: theme.palette.background.default,
+        }}
+      >
         <UtilityChips items={items} />
       </AccordionDetails>
     </Accordion>

@@ -1,35 +1,46 @@
-import { Chip, Stack } from "@mui/material";
+import { Chip, Stack, useTheme } from "@mui/material";
 
 interface Props {
   items: string[];
 }
 
 export default function UtilityChips({ items }: Props) {
-  const ORANGE = "#f57d04";
+  const theme = useTheme();
 
   return (
-    <Stack direction="row" spacing={0.5} sx={{ flexWrap: "wrap", gap: 0.75 }}>
+    <Stack
+      direction="row"
+      spacing={0.5}
+      sx={{ flexWrap: "wrap", gap: theme.spacing(0.75) }}
+    >
       {items.map((item, index) => (
         <Chip
           key={index}
           label={item}
           size="small"
           sx={{
-            fontSize: "0.75rem",
+            fontSize: theme.typography.pxToRem(12),
             height: 26,
-            backgroundColor: "#f9f9f9",
-            color: "#424242",
-            border: "1px solid #e0e0e0",
+            backgroundColor: theme.palette.background.paper,
+            color: theme.palette.text.primary,
+            border: `1px solid ${theme.palette.divider}`,
             "&:hover": {
-              backgroundColor: "#fef7f0",
-              borderColor: ORANGE,
+              backgroundColor: theme.palette.action.hover,
+              borderColor: theme.palette.warning.main,
               transform: "translateY(-1px)",
-              boxShadow: "0 2px 4px rgba(245, 125, 4, 0.15)",
+              boxShadow: `0 2px 4px ${theme.palette.warning.main}33`, // 33 = 20% opacity
             },
-            transition: "all 0.2s ease-in-out",
+            transition: theme.transitions.create(
+              ["background-color", "border", "transform", "box-shadow"],
+              {
+                duration: theme.transitions.duration.short,
+                easing: theme.transitions.easing.easeInOut,
+              }
+            ),
             "& .MuiChip-label": {
-              px: 1.5,
-              fontWeight: "medium",
+              paddingLeft: theme.spacing(1.5),
+              paddingRight: theme.spacing(1.5),
+              fontWeight: theme.typography.fontWeightMedium,
             },
           }}
         />
