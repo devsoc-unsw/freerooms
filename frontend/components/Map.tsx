@@ -16,6 +16,7 @@ import useBuildings from "../hooks/useBuildings";
 import useUserLocation from "../hooks/useUserLocation";
 import calculateDistance from "../utils/calculateDistance";
 import getMapType from "../utils/getMapType";
+import FlagMarker from "./FlagMarker";
 import MapMarker from "./MapMarker";
 
 const center = {
@@ -119,6 +120,21 @@ export const Map = () => {
                 />
               </OverlayViewF>
             ))}
+          <OverlayViewF
+            key="???"
+            mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+            position={{
+              lat: -33.91881572768698,
+              lng: 151.23108965166168,
+            }}
+            zIndex={debouncedCurrentHover?.id === "???" ? 3 : 1}
+          >
+            <FlagMarker
+              currentHover={debouncedCurrentHover}
+              setCurrentHover={setCurrentHover}
+            />
+          </OverlayViewF>
+
           {userLat && userLng && isInBounds(userLat, userLng) && (
             <OverlayViewF
               mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}

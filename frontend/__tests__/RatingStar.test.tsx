@@ -3,7 +3,7 @@ import "@testing-library/jest-dom";
 import { RoomStatus } from "@common/types";
 import { useMediaQuery } from "@mui/material";
 import { render, screen } from "@testing-library/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { Provider } from "react-redux";
 
 import Page from "../app/room/[room]/page";
@@ -14,6 +14,7 @@ import renderWithRedux from "./utils/renderWithRedux";
 import { useDispatch, useSelector } from "../redux/hooks";
 
 jest.mock("next/navigation", () => ({
+  useParams: jest.fn(),
   useRouter: jest.fn(),
 }));
 
@@ -92,12 +93,11 @@ describe("Rating Star", () => {
     const router = { back: jest.fn() };
 
     (useRouter as jest.Mock).mockReturnValue(router);
-
-    const mockParams = { room: "K-J17-101" };
+    (useParams as jest.Mock).mockReturnValue({ room: "K-J17-101" });
 
     render(
       <Provider store={store}>
-        <Page params={mockParams} />
+        <Page />
       </Provider>
     );
 
