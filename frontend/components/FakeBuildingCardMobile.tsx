@@ -62,15 +62,13 @@ const FakeBuildingCardMobile: React.FC<{}> = () => {
     <MainBox>
       <StyledImage
         alt="Image of fake building"
-        src="/assets/building_photos/flag_placeholder.webp"
+        src="/assets/building_photos/flag_placeholder.png"
         fill={true}
         style={{ objectFit: "cover" }}
         priority={true}
       />
       <TitleBox>
-        <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
-          Flag Building
-        </Typography>
+        <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>???</Typography>
         <Stack
           direction="column"
           justifyContent="center"
@@ -96,7 +94,7 @@ const FakeBuildingCardMobile: React.FC<{}> = () => {
               <Typography
                 sx={{ fontSize: 12, fontWeight: 500, color: "#000000" }}
               >
-                5
+                6
               </Typography>
               <StarIcon sx={{ fontSize: "1rem", color: "rgb(255, 169, 12)" }} />
             </Stack>

@@ -71,7 +71,7 @@ const FakeBuildingCard: React.FC<{}> = () => {
     <MainBox>
       <StyledImage
         alt="Image of fake building"
-        src="/assets/building_photos/flag_placeholder.webp"
+        src="/assets/building_photos/flag.png"
         fill={true}
         style={{ objectFit: "cover" }}
         priority={true}
@@ -83,16 +83,14 @@ const FakeBuildingCard: React.FC<{}> = () => {
         </Typography>
       </StatusBox>
       <TitleBox>
-        <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
-          Flag Building
-        </Typography>
+        <Typography sx={{ fontSize: 16, fontWeight: 500 }}>???</Typography>
         <Stack
           direction="row"
           alignItems="center"
           spacing={0.3}
           aria-label="star-info"
         >
-          <Typography sx={{ fontSize: 16, fontWeight: 500 }}>5</Typography>
+          <Typography sx={{ fontSize: 16, fontWeight: 500 }}>6</Typography>
           <StarIcon sx={{ color: "rgb(255, 169, 12)" }} />
         </Stack>
       </TitleBox>
