@@ -1,27 +1,24 @@
-import { Building } from "@common/types";
-import Box from "@mui/material/Box";
-import {
-  GoogleMap,
-  OverlayView,
-  OverlayViewF,
-  useJsApiLoader,
-} from "@react-google-maps/api";
-import { DarkModeContext } from "app/clientLayout";
 import React, { useContext, useEffect, useState } from "react";
+import { LngLatBoundsLike, Map, Marker } from 'react-map-gl/mapbox';
+import "mapbox-gl/dist/mapbox-gl.css";
+import Box from "@mui/material/Box";
 import { useDebounceValue } from "usehooks-ts";
-import BuildingDrawer from "views/BuildingDrawer";
 
-import { GOOGLE_API_KEY } from "../config";
+import { Building } from "@common/types";
+import { DarkModeContext } from "app/clientLayout";
 import useBuildings from "../hooks/useBuildings";
 import useUserLocation from "../hooks/useUserLocation";
 import calculateDistance from "../utils/calculateDistance";
-import getMapType from "../utils/getMapType";
-import FlagMarker from "./FlagMarker";
+import getMapType from "../utils/getMapType"; // delete this file?
+import BuildingDrawer from "views/BuildingDrawer";
 import MapMarker from "./MapMarker";
 
-const center = {
-  lat: -33.91767,
-  lng: 151.23129,
+import { MAPBOX_ACCESS_TOKEN } from "../config";
+
+const initialViewState = {
+  longitude: 151.23129,
+  latitude: -33.91767,
+  zoom: 17.5,
 };
 
 const mapBounds = {
@@ -31,45 +28,38 @@ const mapBounds = {
   east: 151.237736,
 };
 
+const bounds: LngLatBoundsLike = [[mapBounds.west, mapBounds.south], [mapBounds.east, mapBounds.north]];
+
 const isInBounds = (lat: number, lng: number) =>
   lat >= mapBounds.south &&
   lat <= mapBounds.north &&
   lng >= mapBounds.west &&
   lng <= mapBounds.east;
 
-const LocationMarker = () => {
-  return (
-    <>
-      <Box
-        sx={() => ({
-          width: 18,
-          height: 18,
-          borderRadius: "50%",
-          border: "4px solid #BEDCF9",
-          backgroundColor: "#4ABDFA",
-        })}
-      />
-    </>
-  );
-};
+const LocationMarker = () => (
+  <Box
+    sx={{
+      width: 18,
+      height: 18,
+      borderRadius: "50%",
+      border: "4px solid #BEDCF9",
+      backgroundColor: "#4ABDFA",
+    }}
+  />
+);
 
-export const Map = () => {
-  // Fetch data
+export const MapComponent = () => {
   const { buildings } = useBuildings();
   const { isDarkMode } = useContext(DarkModeContext);
+  const { userLat, userLng } = useUserLocation();
 
   // Use debounce to allow moving from marker to popup without popup hiding
   const [currentHover, setCurrentHover] = useState<Building | null>(null);
-  const [debouncedCurrentHover, _] = useDebounceValue(currentHover, 50);
+  const [debouncedCurrentHover] = useDebounceValue(currentHover, 50);
 
-  const styleArray = getMapType(isDarkMode);
-
-  // Get current location of user
-  const { userLat, userLng } = useUserLocation();
-
-  const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: GOOGLE_API_KEY,
-  });
+  const style = isDarkMode
+    ? "mapbox://styles/mapbox/dark-v11"
+    : "mapbox://styles/mapbox/light-v11";
 
   const [distances, setDistances] = useState<number[]>([]);
 
@@ -83,78 +73,37 @@ export const Map = () => {
     }
   }, [buildings, userLat, userLng]);
 
-  const renderMap = () => {
-    return (
-      <div style={{ position: "relative", height: "100%" }}>
-        <GoogleMap
-          mapContainerStyle={{ height: "100%" }}
-          center={center}
-          options={{
-            clickableIcons: false,
-            fullscreenControl: false,
-            mapTypeControl: false,
-            restriction: {
-              latLngBounds: mapBounds,
-              strictBounds: false,
-            },
-            styles: styleArray,
-          }}
-          zoom={17.5}
-        >
-          {buildings &&
-            buildings.map((building, index) => (
-              <OverlayViewF
-                key={building.id}
-                mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
-                position={{
-                  lat: building.lat,
-                  lng: building.long,
-                }}
-                zIndex={debouncedCurrentHover?.id === building.id ? 2 : 1}
-              >
-                <MapMarker
-                  buildingId={building.id}
-                  distance={distances[index]}
-                  currentHover={debouncedCurrentHover}
-                  setCurrentHover={setCurrentHover}
-                />
-              </OverlayViewF>
-            ))}
-          <OverlayViewF
-            key="???"
-            mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
-            position={{
-              lat: -33.91881572768698,
-              lng: 151.23108965166168,
-            }}
-            zIndex={debouncedCurrentHover?.id === "???" ? 3 : 1}
+  return (
+    <div style={{ height: "100%", position: "relative" }}>
+      <Map
+        initialViewState={initialViewState}
+        mapStyle={style}
+        mapboxAccessToken={MAPBOX_ACCESS_TOKEN}
+        maxBounds={bounds}
+        style={{ width: "100%", height: "100%" }}
+      >
+        {buildings?.map((building, index) => (
+          <Marker
+            key={building.id}
+            latitude={building.lat}
+            longitude={building.long}
           >
-            <FlagMarker
+            <MapMarker
+              buildingId={building.id}
+              distance={distances[index]}
               currentHover={debouncedCurrentHover}
               setCurrentHover={setCurrentHover}
             />
-          </OverlayViewF>
+          </Marker>
+        ))}
 
-          {userLat && userLng && isInBounds(userLat, userLng) && (
-            <OverlayViewF
-              mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
-              position={{
-                lat: userLat,
-                lng: userLng,
-              }}
-            >
-              <LocationMarker />
-            </OverlayViewF>
-          )}
-        </GoogleMap>
-        <BuildingDrawer />
-      </div>
-    );
-  };
-
-  if (loadError) {
-    return <div>Map cannot be loaded right now.</div>;
-  }
-
-  return isLoaded ? renderMap() : <></>;
+        {userLat && userLng && isInBounds(userLat, userLng) && (
+          <Marker latitude={userLat} longitude={userLng} anchor="center">
+            <LocationMarker />
+          </Marker>
+        )}
+      </Map>
+      <BuildingDrawer />
+    </div>
+  );
 };
