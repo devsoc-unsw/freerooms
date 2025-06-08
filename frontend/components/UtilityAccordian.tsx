@@ -20,7 +20,7 @@ interface Props {
 export default function UtilityAccordion({ title, icon, items = [] }: Props) {
   const theme = useTheme();
   const primary = theme.palette.primary.main;
-  console.log(theme);
+
   return (
     <Accordion
       disableGutters
