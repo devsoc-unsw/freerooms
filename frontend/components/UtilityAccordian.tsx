@@ -20,7 +20,7 @@ interface Props {
 export default function UtilityAccordion({ title, icon, items = [] }: Props) {
   const theme = useTheme();
   const primary = theme.palette.primary.main;
-
+  console.log(theme);
   return (
     <Accordion
       disableGutters
@@ -41,14 +41,14 @@ export default function UtilityAccordion({ title, icon, items = [] }: Props) {
       <AccordionSummary
         expandIcon={<ExpandMore sx={{ color: primary }} />}
         sx={{
-          backgroundColor: theme.palette.common.white,
+          backgroundColor: theme.palette.background.default,
           transition: "background-color 0.3s",
           "&:hover": {
-            backgroundColor: theme.palette.common.white,
+            backgroundColor: theme.palette.background.default,
             backgroundImage: `linear-gradient(${alpha(primary, 0.08)}, ${alpha(primary, 0.08)})`,
           },
           "&.Mui-expanded": {
-            backgroundColor: theme.palette.common.white,
+            backgroundColor: theme.palette.background.default,
             backgroundImage: `linear-gradient(${alpha(primary, 0.08)}, ${alpha(primary, 0.08)})`,
           },
         }}
