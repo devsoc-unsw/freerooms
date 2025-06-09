@@ -19,6 +19,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { Dictionary } from "@reduxjs/toolkit";
 import RoomRating from "components/Rating/RoomRating";
+import RoomUtilityTags from "components/RoomUtilityTags";
 import useRoomRatings from "hooks/useRoomRatings";
 import Image from "next/image";
 import { useParams } from "next/navigation";
@@ -85,6 +86,7 @@ export default function Page() {
             }
           />
           <BookingCalendar events={adjustedBookings ?? []} roomID={room.id} />
+          <RoomUtilityTags roomId={room?.id} />
           <RoomRating buildingID={building.id} roomID={room.id} />
         </Stack>
       ) : (
