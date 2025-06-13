@@ -12,5 +12,5 @@ const env = process.env.NODE_ENV || "development";
 // local development uses a mock mongo atlas cluster
 export const MONGO_URI: string | undefined =
   env === "development"
-    ? `mongodb://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_SERVICE_HOSTNAME}:27017`
-    : process.env.MONGODB_URI;
+    ? process.env.MONGODB_URI
+    : `mongodb://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_SERVICE_HOSTNAME}:27017`;
