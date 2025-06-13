@@ -19,8 +19,10 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { Dictionary } from "@reduxjs/toolkit";
 import RoomRating from "components/Rating/RoomRating";
+import RoomUtilityTags from "components/RoomUtilityTags";
 import useRoomRatings from "hooks/useRoomRatings";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 import React, { useState } from "react";
 
 import BookingButton from "../../../components/BookingButton";
@@ -50,14 +52,16 @@ const adjustDateIfMidnight = (inputDate: Date): Date => {
   }
 };
 
-export default function Page({ params }: { params: { room: string } }) {
-  const { bookings } = useBookings(params.room);
+export default function Page() {
+  const params = useParams();
+  const roomParam = params.room as string;
+  const { bookings } = useBookings(roomParam);
   const adjustedBookings: Booking[] | undefined = bookings?.map((booking) => ({
     ...booking,
     end: adjustDateIfMidnight(booking.end),
   }));
 
-  const { room } = useRoom(params.room);
+  const { room } = useRoom(roomParam);
   const [campus, grid] = room ? room.id.split("-") : ["", ""];
   const { building } = useBuilding(`${campus}-${grid}`);
 
@@ -76,12 +80,13 @@ export default function Page({ params }: { params: { room: string } }) {
           <RoomPageHeader room={room} buildingName={building.name} />
           <RoomImage
             src={
-              params.room in room_photos
-                ? `${(room_photos as Dictionary<String>)[params.room]}`
+              roomParam in room_photos
+                ? `${(room_photos as Dictionary<String>)[roomParam]}`
                 : `/assets/building_photos/${campus}-${grid}.webp`
             }
           />
           <BookingCalendar events={adjustedBookings ?? []} roomID={room.id} />
+          <RoomUtilityTags roomId={room?.id} />
           <RoomRating buildingID={building.id} roomID={room.id} />
         </Stack>
       ) : (
