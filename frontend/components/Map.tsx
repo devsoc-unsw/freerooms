@@ -73,6 +73,7 @@ export const MapComponent = () => {
     }
   }, [buildings, userLat, userLng]);
 
+
   return (
     <div style={{ height: "100%", position: "relative" }}>
       <Map

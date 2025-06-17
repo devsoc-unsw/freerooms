@@ -64,7 +64,6 @@ const MapMarker: React.FC<{
         flexDirection: "column",
         alignItems: "center",
         position: "relative",
-        transform: "translate(-50%, -50%)",
       }}
       onMouseEnter={() => {
         setCurrentHover(building);
@@ -100,6 +99,7 @@ const MapMarker: React.FC<{
           "&:hover": {
             cursor: "pointer",
           },
+          // transform: "translate(-50%, -50%)", // only on the dot
         })}
         onClick={() => dispatch(setCurrentBuilding(building))}
       />
