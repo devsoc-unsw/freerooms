@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { LngLatBoundsLike, Map, Marker } from 'react-map-gl/mapbox';
+import { LngLatBoundsLike, Map, Marker } from "react-map-gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
 import Box from "@mui/material/Box";
 import { useDebounceValue } from "usehooks-ts";
@@ -12,6 +12,7 @@ import calculateDistance from "../utils/calculateDistance";
 import getMapType from "../utils/getMapType"; // delete this file?
 import BuildingDrawer from "views/BuildingDrawer";
 import MapMarker from "./MapMarker";
+import RoomMarkers from "./RoomMarkers";
 
 import { MAPBOX_ACCESS_TOKEN } from "../config";
 
@@ -28,7 +29,10 @@ const mapBounds = {
   east: 151.237736,
 };
 
-const bounds: LngLatBoundsLike = [[mapBounds.west, mapBounds.south], [mapBounds.east, mapBounds.north]];
+const bounds: LngLatBoundsLike = [
+  [mapBounds.west, mapBounds.south],
+  [mapBounds.east, mapBounds.north],
+];
 
 const isInBounds = (lat: number, lng: number) =>
   lat >= mapBounds.south &&
@@ -73,7 +77,6 @@ export const MapComponent = () => {
     }
   }, [buildings, userLat, userLng]);
 
-
   return (
     <div style={{ height: "100%", position: "relative" }}>
       <Map
@@ -103,6 +106,7 @@ export const MapComponent = () => {
             <LocationMarker />
           </Marker>
         )}
+        <RoomMarkers />
       </Map>
       <BuildingDrawer />
     </div>
