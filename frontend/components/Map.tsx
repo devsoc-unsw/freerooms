@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { LngLatBoundsLike, Map, MapRef, Marker, useMap, Source, Layer } from 'react-map-gl/mapbox';
+import { LngLatBoundsLike, Map, MapRef, Marker, Source, Layer } from 'react-map-gl/mapbox';
 import "mapbox-gl/dist/mapbox-gl.css";
 import Box from "@mui/material/Box";
 import { useDebounceValue } from "usehooks-ts";
@@ -13,6 +13,7 @@ import getMapType from "../utils/getMapType"; // delete this file?
 import BuildingDrawer from "views/BuildingDrawer";
 import MapMarker from "./MapMarker";
 import mbxDirections from '@mapbox/mapbox-sdk/services/directions';
+import RoomMarkers from "./RoomMarkers";
 
 import { MAPBOX_ACCESS_TOKEN } from "../config";
 
@@ -29,8 +30,10 @@ const mapBounds = {
   east: 151.237736,
 };
 
-
-const bounds: LngLatBoundsLike = [[mapBounds.west, mapBounds.south], [mapBounds.east, mapBounds.north]];
+const bounds: LngLatBoundsLike = [
+  [mapBounds.west, mapBounds.south],
+  [mapBounds.east, mapBounds.north],
+];
 
 const isInBounds = (lat: number, lng: number) =>
   lat >= mapBounds.south &&
@@ -104,9 +107,7 @@ export const MapComponent = () => {
   }, [buildings, userLat, userLng]);
 
   const handleMarkerClick = async (building: Building) => {
-    console.log("HI!")
     if (!userLat || !userLng) return;
-    console.log("Routing from", userLng, userLat, "to", building.long, building.lat);
 
     const geometry = await fetchRoute(
       [userLng, userLat],
@@ -170,6 +171,7 @@ export const MapComponent = () => {
             />
           </>
         )}
+        <RoomMarkers />
       </Map>
       <BuildingDrawer />
     </div>
