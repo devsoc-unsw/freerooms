@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { LngLatBoundsLike, Map, Marker } from 'react-map-gl/mapbox';
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { LngLatBoundsLike, Map, MapRef, Marker, useMap, Source, Layer } from 'react-map-gl/mapbox';
 import "mapbox-gl/dist/mapbox-gl.css";
 import Box from "@mui/material/Box";
 import { useDebounceValue } from "usehooks-ts";
@@ -12,6 +12,7 @@ import calculateDistance from "../utils/calculateDistance";
 import getMapType from "../utils/getMapType"; // delete this file?
 import BuildingDrawer from "views/BuildingDrawer";
 import MapMarker from "./MapMarker";
+import mbxDirections from '@mapbox/mapbox-sdk/services/directions';
 
 import { MAPBOX_ACCESS_TOKEN } from "../config";
 
@@ -27,6 +28,7 @@ const mapBounds = {
   west: 151.225258,
   east: 151.237736,
 };
+
 
 const bounds: LngLatBoundsLike = [[mapBounds.west, mapBounds.south], [mapBounds.east, mapBounds.north]];
 
@@ -48,6 +50,30 @@ const LocationMarker = () => (
   />
 );
 
+const directionsClient = mbxDirections({ accessToken: MAPBOX_ACCESS_TOKEN });
+
+const fetchRoute = async (
+  start: [number, number],
+  end: [number, number]
+) => {
+  try {
+    const response = await directionsClient.getDirections({
+      profile: 'walking', // or 'driving', 'cycling'
+      geometries: 'geojson',
+      waypoints: [
+        { coordinates: start },
+        { coordinates: end },
+      ],
+    }).send();
+
+    return response.body.routes[0].geometry;
+  } catch (error: any) {
+    console.error("Route fetch error:", error.response?.body || error.message);
+    throw error;
+  }
+};
+
+
 export const MapComponent = () => {
   const { buildings } = useBuildings();
   const { isDarkMode } = useContext(DarkModeContext);
@@ -57,11 +83,15 @@ export const MapComponent = () => {
   const [currentHover, setCurrentHover] = useState<Building | null>(null);
   const [debouncedCurrentHover] = useDebounceValue(currentHover, 50);
 
+  const [routeGeoJSON, setRouteGeoJSON] = useState<any | null>(null);
+
   const style = isDarkMode
-    ? "mapbox://styles/mapbox/dark-v11"
-    : "mapbox://styles/mapbox/light-v11";
+    ? "mapbox://styles/bengodw/cmcimql2101qo01sp7dricgzq"
+    : "mapbox://styles/bengodw/cmcimp1tz002p01rcfzbd8btn";
 
   const [distances, setDistances] = useState<number[]>([]);
+
+  const mapRef = useRef<MapRef>(null);
 
   useEffect(() => {
     if (buildings && userLat && userLng && isInBounds(userLat, userLng)) {
@@ -73,10 +103,27 @@ export const MapComponent = () => {
     }
   }, [buildings, userLat, userLng]);
 
+  const handleMarkerClick = async (building: Building) => {
+    console.log("HI!")
+    if (!userLat || !userLng) return;
+    console.log("Routing from", userLng, userLat, "to", building.long, building.lat);
+
+    const geometry = await fetchRoute(
+      [userLng, userLat],
+      [building.long, building.lat]
+    );
+
+    setRouteGeoJSON({
+      type: 'Feature',
+      properties: {},
+      geometry,
+    });
+  };
 
   return (
     <div style={{ height: "100%", position: "relative" }}>
       <Map
+        ref={mapRef}
         initialViewState={initialViewState}
         mapStyle={style}
         mapboxAccessToken={MAPBOX_ACCESS_TOKEN}
@@ -88,6 +135,7 @@ export const MapComponent = () => {
             key={building.id}
             latitude={building.lat}
             longitude={building.long}
+            onClick={() => handleMarkerClick(building)}
           >
             <MapMarker
               buildingId={building.id}
@@ -102,6 +150,25 @@ export const MapComponent = () => {
           <Marker latitude={userLat} longitude={userLng} anchor="center">
             <LocationMarker />
           </Marker>
+        )}
+
+        {routeGeoJSON && (
+          <>
+            <Source id="route" type="geojson" data={routeGeoJSON} />
+            <Layer
+              id="route-line"
+              type="line"
+              source="route"
+              layout={{
+                'line-cap': 'round',
+                'line-join': 'round',
+              }}
+              paint={{
+                'line-color': '#1DB954',
+                'line-width': 4,
+              }}
+            />
+          </>
         )}
       </Map>
       <BuildingDrawer />
