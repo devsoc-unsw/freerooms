@@ -30,5 +30,4 @@ const GOOGLE_API_CONFIG: Record<string, string> = Object.freeze({
 
 export const GOOGLE_API_KEY = GOOGLE_API_CONFIG[env];
 
-export const MAPBOX_ACCESS_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
-
+export const MAPBOX_ACCESS_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;

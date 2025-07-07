@@ -6,11 +6,11 @@ import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import RoomAvailability from "components/RoomAvailability";
+import useRoomRatings from "hooks/useRoomRatings";
 import Link from "next/link";
 import React from "react";
 
 import useRoom from "../hooks/useRoom";
-import useRoomRatings from "hooks/useRoomRatings";
 
 const IndiviRoomBox = styled(Box)<BoxProps>(({ theme }) => ({
   display: "flex",
@@ -57,16 +57,16 @@ const RoomAvailabilityBox: React.FC<RoomAvailabilityBoxProps> = ({
   const { room } = useRoom(`${buildingId}-${roomNumber}`);
   let ratingValue = 0;
 
-  if (room) {
-    const ratings = useRoomRatings(room.id);
+  // if (room) {
+  const ratings = useRoomRatings(room ? room.id : "");
 
-    if (ratings.ratings && ratings.ratings.length > 0) {
-      ratings.ratings.forEach((rating) => {
-        ratingValue += rating.overall;
-      });
-      ratingValue = ratingValue / ratings.ratings.length;
-      ratingValue = Math.round(ratingValue * 10) / 10;
-    }
+  if (ratings.ratings && ratings.ratings.length > 0) {
+    ratings.ratings.forEach((rating) => {
+      ratingValue += rating.overall;
+    });
+    ratingValue = ratingValue / ratings.ratings.length;
+    ratingValue = Math.round(ratingValue * 10) / 10;
+    // }
   }
 
   return (

@@ -1,3 +1,5 @@
+"use client";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Marker } from "react-map-gl/mapbox";
 
@@ -53,7 +55,11 @@ const RoomMapMarker = ({
       longitude={roomMarker.long}
       anchor="bottom"
     >
-      <img src="/MapPin.png" alt="Room pin" style={{ width: 30, height: 30 }} />
+      <Image
+        src="/MapPin.png"
+        alt="Room pin"
+        style={{ width: 30, height: 30 }}
+      />
     </Marker>
   );
 };

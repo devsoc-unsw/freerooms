@@ -29,11 +29,11 @@ import BookingCalendar from "../../../components/BookingCalendar";
 import FeedbackButton from "../../../components/FeedbackButton";
 import LoadingCircle from "../../../components/LoadingCircle";
 import RoomBackButton from "../../../components/RoomBackButton";
+import ShowOnMapButton from "../../../components/ShowOnMapButton";
 import useBookings from "../../../hooks/useBookings";
 import useBuilding from "../../../hooks/useBuilding";
 import useRoom from "../../../hooks/useRoom";
 import room_photos from "../../../public/room-photos.json";
-import ShowOnMapButton from "../../../components/ShowOnMapButton";
 
 const adjustDateIfMidnight = (inputDate: Date): Date => {
   // Check if the time is midnight (00:00:00)
