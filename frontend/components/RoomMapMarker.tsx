@@ -24,7 +24,7 @@ const RoomMapMarker = ({
   const [roomMarker, setRoomMarker] = useState<RoomMarker | null>(null);
   useEffect(() => {
     if (!roomId) return;
-    fetch("/roomMarkers.json")
+    fetch("/roommarkers.json")
       .then((res) => res.json())
       .then((markersData) => {
         const data = markersData as RoomMarkersData;
@@ -55,11 +55,7 @@ const RoomMapMarker = ({
       longitude={roomMarker.long}
       anchor="bottom"
     >
-      <Image
-        src="/MapPin.png"
-        alt="Room pin"
-        style={{ width: 30, height: 30 }}
-      />
+      <Image src="/MapPin.png" alt="Room pin" width={30} height={30} />
     </Marker>
   );
 };
