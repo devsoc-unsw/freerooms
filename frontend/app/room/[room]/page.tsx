@@ -33,6 +33,7 @@ import useBookings from "../../../hooks/useBookings";
 import useBuilding from "../../../hooks/useBuilding";
 import useRoom from "../../../hooks/useRoom";
 import room_photos from "../../../public/room-photos.json";
+import ShowOnMapButton from "../../../components/ShowOnMapButton";
 
 const adjustDateIfMidnight = (inputDate: Date): Date => {
   // Check if the time is midnight (00:00:00)
@@ -160,11 +161,14 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
           <Typography variant="h4" fontWeight={550}>
             {room.name}
           </Typography>
-          <BookingButton
-            school={room.school}
-            usage={room.usage}
-            onClick={toggleDialog}
-          />
+          <Stack direction="row" spacing={2}>
+            <ShowOnMapButton roomId={room.id} />
+            <BookingButton
+              school={room.school}
+              usage={room.usage}
+              onClick={toggleDialog}
+            />
+          </Stack>
         </Stack>
         <Stack direction="row" spacing={2}>
           <Typography variant="body1" fontWeight="bold">

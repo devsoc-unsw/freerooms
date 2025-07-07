@@ -12,9 +12,12 @@ import calculateDistance from "../utils/calculateDistance";
 import getMapType from "../utils/getMapType"; // delete this file?
 import BuildingDrawer from "views/BuildingDrawer";
 import MapMarker from "./MapMarker";
-import RoomMarkers from "./RoomMarkers";
+import RoomMapMarker from "./RoomMapMarker";
 
 import { MAPBOX_ACCESS_TOKEN } from "../config";
+import { useSearchParams } from "next/navigation";
+import { useRef } from "react";
+import type { MapRef } from "react-map-gl/mapbox";
 
 const initialViewState = {
   longitude: 151.23129,
@@ -56,6 +59,8 @@ export const MapComponent = () => {
   const { buildings } = useBuildings();
   const { isDarkMode } = useContext(DarkModeContext);
   const { userLat, userLng } = useUserLocation();
+  const roomIdToFocus = useSearchParams().get("roomId") ?? undefined;
+  const mapRef = useRef<MapRef>(null);
 
   // Use debounce to allow moving from marker to popup without popup hiding
   const [currentHover, setCurrentHover] = useState<Building | null>(null);
@@ -80,6 +85,7 @@ export const MapComponent = () => {
   return (
     <div style={{ height: "100%", position: "relative" }}>
       <Map
+        ref={mapRef}
         initialViewState={initialViewState}
         mapStyle={style}
         mapboxAccessToken={MAPBOX_ACCESS_TOKEN}
@@ -106,9 +112,17 @@ export const MapComponent = () => {
             <LocationMarker />
           </Marker>
         )}
-        <RoomMarkers />
+        <RoomMapMarker
+          roomId={roomIdToFocus}
+          roomLocation={(lat, long) => {
+            mapRef.current?.flyTo({
+              center: [long, lat],
+              zoom: 19.5,
+              duration: 1000,
+            });
+          }}
+        />
       </Map>
-      <BuildingDrawer />
     </div>
   );
 };
