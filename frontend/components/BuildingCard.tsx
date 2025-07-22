@@ -1,5 +1,6 @@
 import StarIcon from "@mui/icons-material/Star";
-import { Typography } from "@mui/material";
+import { Typography, TypographyProps } from "@mui/material";
+import { useMediaQuery } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Stack from "@mui/material/Stack";
@@ -13,20 +14,19 @@ import useBuildingStatus from "../hooks/useBuildingStatus";
 import { setCurrentBuilding } from "../redux/currentBuildingSlice";
 import { useDispatch } from "../redux/hooks";
 import { getNumFreerooms } from "../utils/utils";
+import BuildingRating from "./Rating/BuildingRating";
 import StatusDot from "./StatusDot";
 
 const INITIALISING = -2;
 const FAILED = -1;
 
 const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
-  position: "relative",
-  flex: 1,
-  backgroundColor: theme.palette.primary.main,
-  height: 385,
-  borderRadius: 10,
-  "&:hover": {
-    cursor: "pointer",
-  },
+  display: "flex",
+  flexDirection: "column",
+  height: 379,
+  borderRadius: 12,
+  border: "1px solid #F3D0C5",
+  overflow: "hidden",
   [theme.breakpoints.down("lg")]: {
     height: 300,
   },
@@ -35,8 +35,16 @@ const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
   },
 }));
 
+const ImageBox = styled(Box)<BoxProps>(({ theme }) => ({
+  position: "relative",
+  height: 249,
+  borderTopLeftRadius: 12,
+  borderTopRightRadius: 12,
+  cursor: "pointer",
+  //width: "100%",
+}));
+
 const StyledImage = styled(Image)<ImageProps>(({ theme }) => ({
-  borderRadius: 10,
   transition: "all 0.1s ease-in-out",
   "&:hover": {
     opacity: 0.7,
@@ -47,39 +55,66 @@ const StatusBox = styled(Box)<BoxProps>(({ theme }) => ({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  borderRadius: 15,
+  borderRadius: 100,
   position: "absolute",
   top: 0,
   right: 0,
-  padding: 10,
-  paddingLeft: 15,
-  paddingRight: 15,
+  padding: 6,
+  paddingLeft: 12,
+  paddingRight: 12,
   margin: 10,
+  gap: 6,
   pointerEvents: "none",
   backgroundColor: theme.palette.background.default,
 }));
 
-const TitleBox = styled(Box)<BoxProps>(({ theme }) => ({
+const InfoBox = styled(Box)<BoxProps>(({ theme }) => ({
   display: "flex",
-  borderRadius: 10,
-  position: "absolute",
+  flexDirection: "column",
+  borderBottomLeftRadius: 12,
+  borderBottomRightRadius: 12,
+  padding: 12,
+  gap: 4,
+  //width: "100%",
+}));
+
+const InfoFooterBox = styled(Box)<BoxProps>(({ theme }) => ({
+  display: "flex",
   justifyContent: "space-between",
-  bottom: 0,
-  left: 0,
-  right: 0,
-  backgroundColor: theme.palette.primary.main,
-  color: "white",
-  padding: 15,
-  paddingLeft: 20,
-  paddingRight: 20,
-  margin: 10,
-  pointerEvents: "none",
+  paddingTop: 8,
+}));
+
+const DetailPill = styled(Box)<BoxProps>(({ theme }) => ({
+  borderRadius: 100,
+  gap: 6,
+  padding: 6,
+  paddingLeft: 12,
+  paddingRight: 12,
+  backgroundColor: "#FDE7E1",
+}));
+
+const DetailPillText = styled(Typography)<TypographyProps>(() => ({
+  fontFamily: "TT Commons Pro Trial Variable",
+  fontSize: 12,
+  fontWeight: 400,
+  color: "#D4613C",
+  paddingBottom: "2px",
+  gap: 10,
+}));
+
+// Show only building name and rating for smaller screens
+const NameRatingBox = styled(Box)<BoxProps>(({ theme }) => ({
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "space-between",
+  alignItems: "center",
 }));
 
 const BuildingCard: React.FC<{
   buildingId: string;
 }> = ({ buildingId }) => {
   const dispatch = useDispatch();
+  const isCompact = useMediaQuery("(max-width:900px)");
 
   const { building } = useBuilding(buildingId);
   const { status } = useBuildingStatus(buildingId);
@@ -91,49 +126,144 @@ const BuildingCard: React.FC<{
 
   return (
     <MainBox onClick={() => dispatch(setCurrentBuilding(building))}>
-      <StyledImage
-        alt={`Image of ${buildingId}`}
-        src={`/assets/building_photos/${buildingId}.webp`}
-        fill={true}
-        style={{ objectFit: "cover" }}
-        priority={true}
-      />
-      <StatusBox>
-        {freerooms > INITIALISING ? (
-          <>
-            {freerooms !== FAILED ? (
-              <StatusDot
-                colour={
-                  freerooms >= 5 ? "green" : freerooms !== 0 ? "orange" : "red"
-                }
-              />
-            ) : null}
-            <Typography sx={{ fontSize: 12, fontWeight: 500 }}>
-              {freerooms !== FAILED
-                ? `${freerooms} room${freerooms === 1 ? "" : "s"} available`
-                : "Data Unavailable"}
+      <ImageBox>
+        <StyledImage
+          alt={`Image of ${buildingId}`}
+          src={`/assets/building_photos/${buildingId}.webp`}
+          fill={true}
+          style={{ objectFit: "cover" }}
+          priority={true}
+        />
+        <StatusBox>
+          {freerooms > INITIALISING ? (
+            <>
+              {freerooms !== FAILED ? (
+                <StatusDot
+                  colour={
+                    freerooms >= 5
+                      ? "green"
+                      : freerooms !== 0
+                        ? "orange"
+                        : "red"
+                  }
+                />
+              ) : null}
+              <Typography
+                sx={{
+                  fontFamily: "TT Commons Pro Trial Variable",
+                  fontWeight: 400,
+                  fontSize: 12,
+                  paddingBottom: "2px",
+                }}
+              >
+                {freerooms !== FAILED
+                  ? `${freerooms} room${freerooms === 1 ? "" : "s"} available`
+                  : "Data Unavailable"}
+              </Typography>
+            </>
+          ) : (
+            <CircularProgress size={20} thickness={5} disableShrink />
+          )}
+        </StatusBox>
+      </ImageBox>
+
+      <InfoBox>
+        {isCompact ? (
+          <NameRatingBox>
+            <Typography
+              sx={{
+                fontFamily: "TT Commons Pro Trial Variable",
+                fontWeight: 700,
+                fontSize: 20,
+                color: "#632410",
+                textTransform: "uppercase",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {building.name}
             </Typography>
-          </>
+
+            <Stack
+              direction="row"
+              alignItems="center"
+              spacing="1px"
+              aria-label="star-info"
+            >
+              <Typography
+                sx={{
+                  fontFamily: "TT Commons Pro Trial Variable",
+                  fontWeight: 400,
+                  fontSize: 12,
+                  color: "#D4613C",
+                }}
+              >
+                {ratings?.overallRating}
+              </Typography>
+
+              <StarIcon sx={{ color: "#D4613C" }} />
+            </Stack>
+          </NameRatingBox>
         ) : (
-          <CircularProgress size={20} thickness={5} disableShrink />
+          <>
+            <Typography
+              sx={{
+                fontFamily: "TT Commons Pro Trial Variable",
+                fontWeight: 400,
+                fontSize: 12,
+                color: "#D4613C",
+              }}
+            >
+              {`Building ID ${buildingId}`}
+            </Typography>
+
+            <Typography
+              sx={{
+                fontFamily: "TT Commons Pro Trial Variable",
+                fontWeight: 700,
+                fontSize: 20,
+                color: "#632410",
+                textTransform: "uppercase",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {building.name}
+            </Typography>
+
+            <Stack
+              direction="row"
+              alignItems="center"
+              gap="1px"
+              aria-label="star-info"
+            >
+              <BuildingRating overallRating={ratings?.overallRating ?? 0} />
+            </Stack>
+
+            <InfoFooterBox>
+              <Stack direction="row" gap="8px">
+                <DetailPill>
+                  <DetailPillText>Category</DetailPillText>
+                </DetailPill>
+
+                <DetailPill>
+                  <DetailPillText>TODO</DetailPillText>
+                </DetailPill>
+              </Stack>
+
+              <Image
+                alt="Arrow up right icon"
+                src="/assets/icons/arrow-up-right.svg"
+                width={24}
+                height={24}
+                style={{ cursor: "pointer" }}
+              />
+            </InfoFooterBox>
+          </>
         )}
-      </StatusBox>
-      <TitleBox>
-        <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
-          {building.name}
-        </Typography>
-        <Stack
-          direction="row"
-          alignItems="center"
-          spacing={0.3}
-          aria-label="star-info"
-        >
-          <Typography sx={{ fontSize: 16, fontWeight: 500 }}>
-            {ratings?.overallRating}
-          </Typography>
-          <StarIcon sx={{ color: "rgb(255, 169, 12)" }} />
-        </Stack>
-      </TitleBox>
+      </InfoBox>
     </MainBox>
   );
 };
