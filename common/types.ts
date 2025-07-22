@@ -17,6 +17,8 @@ export type Room = {
   capacity: number;
   usage: string;
   school: string;
+  lat: number;
+  long: number;
 };
 
 export type Booking = {

@@ -24,6 +24,7 @@ const RoomMapMarker = ({
   const [roomMarker, setRoomMarker] = useState<RoomMarker | null>(null);
   useEffect(() => {
     if (!roomId) return;
+    // make this below section into a hook
     fetch("/roommarkers.json")
       .then((res) => res.json())
       .then((markersData) => {
