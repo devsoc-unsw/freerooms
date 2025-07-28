@@ -1,17 +1,19 @@
 "use client";
+import useRoomCoords from "hooks/useRoomCoords";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+// import { useEffect, useState } from "react";
 import { Marker } from "react-map-gl/mapbox";
 
-type RoomMarkersData = {
-  [roomId: string]: [number, number];
-};
+// type RoomMarkersData = {
+//   [roomId: string]: [number, number];
+// };
 
-type RoomMarker = {
-  id: string;
-  lat: number;
-  long: number;
-};
+// type RoomMarker = {
+//   id: string;
+//   lat: number;
+//   long: number;
+// };
 
 const RoomMapMarker = ({
   roomId,
@@ -20,40 +22,21 @@ const RoomMapMarker = ({
   roomId?: string;
   roomLocation?: (lat: number, long: number) => void;
 }) => {
-  // Changing data structure to {[id: string, lat: number, long: number]...}
-  const [roomMarker, setRoomMarker] = useState<RoomMarker | null>(null);
+  const coords = useRoomCoords(roomId);
+
   useEffect(() => {
-    if (!roomId) return;
-    // make this below section into a hook
-    fetch("/roommarkers.json")
-      .then((res) => res.json())
-      .then((markersData) => {
-        const data = markersData as RoomMarkersData;
-        const roomCoords = data[roomId];
+    if (coords && roomLocation) {
+      roomLocation(coords.lat, coords.long);
+    }
+  }, [coords, roomLocation]);
 
-        if (roomCoords) {
-          const [longitude, latitude] = roomCoords;
-          const marker: RoomMarker = {
-            id: roomId,
-            lat: latitude,
-            long: longitude,
-          };
-          setRoomMarker(marker);
+  if (!coords) return null;
 
-          if (roomLocation) {
-            roomLocation(latitude, longitude);
-          }
-        }
-      })
-      .catch((err) => console.error("Failed to load room markers:", err));
-  }, [roomId, roomLocation]);
-
-  if (!roomMarker) return null;
   return (
     <Marker
-      key={roomMarker.id}
-      latitude={roomMarker.lat}
-      longitude={roomMarker.long}
+      key={roomId}
+      latitude={coords.lat}
+      longitude={coords.long}
       anchor="bottom"
     >
       <Image src="/MapPin.png" alt="Room pin" width={30} height={30} />
