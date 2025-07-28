@@ -105,9 +105,9 @@ const DetailPillText = styled(Typography)<TypographyProps>(() => ({
 // Show only building name and rating for smaller screens
 const NameRatingBox = styled(Box)<BoxProps>(({ theme }) => ({
   display: "flex",
-  flexDirection: "row",
+  flexDirection: "column",
   justifyContent: "space-between",
-  alignItems: "center",
+  alignItems: "flex-start",
 }));
 
 const BuildingCard: React.FC<{
@@ -151,7 +151,7 @@ const BuildingCard: React.FC<{
               <Typography
                 sx={{
                   fontFamily: "TT Commons Pro Trial Variable",
-                  fontWeight: 400,
+                  fontWeight: 600,
                   fontSize: 12,
                   paddingBottom: "2px",
                 }}
@@ -174,9 +174,8 @@ const BuildingCard: React.FC<{
               sx={{
                 fontFamily: "TT Commons Pro Trial Variable",
                 fontWeight: 700,
-                fontSize: 20,
+                fontSize: 15,
                 color: "#632410",
-                textTransform: "uppercase",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 whiteSpace: "nowrap",
@@ -188,21 +187,10 @@ const BuildingCard: React.FC<{
             <Stack
               direction="row"
               alignItems="center"
-              spacing="1px"
+              gap="1px"
               aria-label="star-info"
             >
-              <Typography
-                sx={{
-                  fontFamily: "TT Commons Pro Trial Variable",
-                  fontWeight: 400,
-                  fontSize: 12,
-                  color: "#D4613C",
-                }}
-              >
-                {ratings?.overallRating}
-              </Typography>
-
-              <StarIcon sx={{ color: "#D4613C" }} />
+              <BuildingRating overallRating={ratings?.overallRating ?? 0} />
             </Stack>
           </NameRatingBox>
         ) : (
@@ -210,21 +198,9 @@ const BuildingCard: React.FC<{
             <Typography
               sx={{
                 fontFamily: "TT Commons Pro Trial Variable",
-                fontWeight: 400,
-                fontSize: 12,
-                color: "#D4613C",
-              }}
-            >
-              {`Building ID ${buildingId}`}
-            </Typography>
-
-            <Typography
-              sx={{
-                fontFamily: "TT Commons Pro Trial Variable",
                 fontWeight: 700,
                 fontSize: 20,
                 color: "#632410",
-                textTransform: "uppercase",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 whiteSpace: "nowrap",
@@ -249,7 +225,7 @@ const BuildingCard: React.FC<{
                 </DetailPill>
 
                 <DetailPill>
-                  <DetailPillText>TODO</DetailPillText>
+                  <DetailPillText>{buildingId}</DetailPillText>
                 </DetailPill>
               </Stack>
 
