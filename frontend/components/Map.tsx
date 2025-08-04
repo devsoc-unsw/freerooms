@@ -177,16 +177,18 @@ export const MapComponent = () => {
           </Marker>
         )}
 
-        <RoomMapMarker
-          roomId={roomIdToFocus}
-          roomLocation={(lat, long) => {
-            mapRef.current?.flyTo({
-              center: [long, lat],
-              zoom: 19.5,
-              duration: 1000,
-            });
-          }}
-        />
+        {roomIdToFocus && (
+          <RoomMapMarker
+            roomId={roomIdToFocus}
+            roomLocation={(lat, long) => {
+              mapRef.current?.flyTo({
+                center: [long, lat],
+                zoom: 19.5,
+                duration: 1000,
+              });
+            }}
+          />
+        )}
 
         {routeGeoJSON && (
           <>

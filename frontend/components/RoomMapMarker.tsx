@@ -1,42 +1,31 @@
 "use client";
-import useRoomCoords from "hooks/useRoomCoords";
+import useRoom from "hooks/useRoom";
 import Image from "next/image";
 import { useEffect } from "react";
-// import { useEffect, useState } from "react";
 import { Marker } from "react-map-gl/mapbox";
-
-// type RoomMarkersData = {
-//   [roomId: string]: [number, number];
-// };
-
-// type RoomMarker = {
-//   id: string;
-//   lat: number;
-//   long: number;
-// };
 
 const RoomMapMarker = ({
   roomId,
   roomLocation,
 }: {
-  roomId?: string;
+  roomId: string;
   roomLocation?: (lat: number, long: number) => void;
 }) => {
-  const coords = useRoomCoords(roomId);
+  const { room } = useRoom(roomId);
 
   useEffect(() => {
-    if (coords && roomLocation) {
-      roomLocation(coords.lat, coords.long);
+    if (room && roomLocation) {
+      roomLocation(room.lat, room.long);
     }
-  }, [coords, roomLocation]);
+  }, [room, roomLocation]);
 
-  if (!coords) return null;
+  if (!room) return null;
 
   return (
     <Marker
       key={roomId}
-      latitude={coords.lat}
-      longitude={coords.long}
+      latitude={room.lat}
+      longitude={room.long}
       anchor="bottom"
     >
       <Image src="/MapPin.png" alt="Room pin" width={30} height={30} />
