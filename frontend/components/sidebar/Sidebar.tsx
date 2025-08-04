@@ -13,7 +13,6 @@ import {
   DoorOpenIcon,
   MapIcon,
   PanelLeftIcon,
-  SunMoonIcon,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -61,10 +60,6 @@ const SidebarFooter = styled("div")`
   padding: 10px 16px;
   gap: 8px;
 `;
-
-interface AppBarProps extends MuiAppBarProps {
-  open?: boolean;
-}
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
