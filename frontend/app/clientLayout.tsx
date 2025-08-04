@@ -9,6 +9,7 @@ import { grey, orange } from "@mui/material/colors";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, styled } from "@mui/material/styles";
 import ThemeProvider from "@mui/system/ThemeProvider";
+import Sidebar from "components/sidebar/Sidebar";
 import React, { createContext, useEffect, useMemo, useState } from "react";
 import { Provider as ReduxProvider } from "react-redux";
 
@@ -102,9 +103,11 @@ const App: React.FC<{
 }> = ({ children }) => {
   return (
     <>
-      <NavBar />
-      <SearchModal />
-      <Main>{children}</Main>
+      {/* <NavBar /> */}
+      <Sidebar>
+        <SearchModal />
+        <Main>{children}</Main>
+      </Sidebar>
     </>
   );
 };
@@ -114,7 +117,6 @@ const Main = styled("main")(({ theme }) => ({
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  paddingTop: navHeight,
   width: "100%",
   marginRight: 0,
   height: "100%",
