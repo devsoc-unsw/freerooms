@@ -1,5 +1,6 @@
 import LogoClosed from "@frontend/public/assets/easterEggButton/logo-closed.svg";
 import LogoOpen from "@frontend/public/assets/easterEggButton/logo-open.svg";
+import MenuIcon from "@mui/icons-material/Menu";
 import {
   Box,
   CssBaseline,
@@ -11,6 +12,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { CSSObject, styled, Theme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import {
   BookOpenIcon,
   LayoutGridIcon,
@@ -39,6 +41,7 @@ const openedMixin = (theme: Theme): CSSObject => ({
 });
 
 const closedMixin = (theme: Theme): CSSObject => ({
+  width: theme.spacing(7.5),
   backgroundColor: theme.palette.background.default,
   color: theme.palette.text.primary,
   transition: theme.transitions.create("width", {
@@ -46,18 +49,18 @@ const closedMixin = (theme: Theme): CSSObject => ({
     duration: theme.transitions.duration.leavingScreen,
   }),
   overflowX: "hidden",
-  width: theme.spacing(7.5), // 60px
 });
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
 })<{ open: boolean }>(({ theme, open }) => ({
   width: drawerWidth,
+  flexShrink: 0,
   whiteSpace: "nowrap",
   boxSizing: "border-box",
+  zIndex: theme.zIndex.drawer,
   ...(open ? openedMixin(theme) : closedMixin(theme)),
   "& .MuiDrawer-paper": open ? openedMixin(theme) : closedMixin(theme),
-  backgroundColor: theme.palette.background.default,
 }));
 
 const navItems = [
@@ -78,82 +81,177 @@ const navItems = [
   },
 ];
 
-const Sidebar = ({ children }: { children: React.ReactNode }) => {
+const SidebarContent = ({
+  sidebarOpen,
+  setSidebarOpen,
+}: {
+  sidebarOpen: boolean;
+  setSidebarOpen: (open: boolean) => void;
+}) => {
   const theme = useTheme();
   const pathname = usePathname();
-  const [sidebarOpen, setSidebarOpen] = React.useState(true);
-  const [logoHover, setLogoHover] = React.useState(false); // NEW
+  const [logoHover, setLogoHover] = React.useState(false);
 
-  const toggleSidebar = () => setSidebarOpen((prev) => !prev);
+  return (
+    <>
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent={sidebarOpen ? "space-between" : "center"}
+        px={theme.spacing(2)}
+        py={theme.spacing(2)}
+      >
+        {sidebarOpen && (
+          <Link href="/" passHref legacyBehavior>
+            <Box
+              component="a"
+              display="flex"
+              alignItems="center"
+              gap={theme.spacing(1.5)}
+              pl={theme.spacing(1.5)}
+              sx={{
+                textDecoration: "none",
+                color: theme.palette.text.primary,
+                transition: "opacity 0.3s",
+                "&:hover": {
+                  opacity: 0.75,
+                },
+              }}
+              onMouseEnter={() => setLogoHover(true)}
+              onMouseLeave={() => setLogoHover(false)}
+            >
+              <Image
+                src={logoHover ? LogoClosed : LogoOpen}
+                alt="Logo"
+                height={32}
+              />
+              <Typography variant="h6" fontWeight={600} ml={2}>
+                Freerooms
+              </Typography>
+            </Box>
+          </Link>
+        )}
+        <IconButton
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          color="inherit"
+        >
+          <PanelLeftIcon size={20} />
+        </IconButton>
+      </Box>
+
+      <Divider sx={{ backgroundColor: theme.palette.divider }} />
+
+      <List sx={{ px: theme.spacing(1), pt: theme.spacing(1) }}>
+        {navItems.map(({ label, href, icon }) => (
+          <SidebarItem
+            key={href}
+            icon={icon}
+            label={label}
+            href={href}
+            sidebarOpen={sidebarOpen}
+            active={pathname === href}
+          />
+        ))}
+      </List>
+
+      <Box flexGrow={1} />
+      <Box px={theme.spacing(1)} pb={theme.spacing(2)}>
+        <DarkModeToggle sidebarOpen={sidebarOpen} />
+      </Box>
+    </>
+  );
+};
+
+const Sidebar = ({ children }: { children: React.ReactNode }) => {
+  const theme = useTheme();
+  const [sidebarOpen, setSidebarOpen] = React.useState(true);
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
+  const toggleMobileSidebar = () => {
+    setMobileOpen((prev) => !prev);
+  };
 
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <Drawer variant="permanent" open={sidebarOpen}>
+
+      {/* Mobile Top Bar */}
+      {isMobile && (
         <Box
-          display="flex"
-          alignItems="center"
-          justifyContent={sidebarOpen ? "space-between" : "center"}
-          px={theme.spacing(2)}
-          py={theme.spacing(2)}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            px: theme.spacing(2),
+            py: theme.spacing(1),
+            backgroundColor: theme.palette.background.default,
+            borderBottom: `1px solid ${theme.palette.divider}`,
+            width: "100%",
+            position: "fixed",
+            zIndex: theme.zIndex.appBar + 1,
+          }}
         >
-          {sidebarOpen && (
-            <Link href="/" passHref legacyBehavior>
-              <Box
-                component="a"
-                display="flex"
-                alignItems="center"
-                gap={theme.spacing(1.5)}
-                pl={theme.spacing(1.5)}
-                sx={{
-                  textDecoration: "none",
-                  color: theme.palette.text.primary,
-                  transition: "opacity 0.3s",
-                  "&:hover": {
-                    opacity: 0.75,
-                  },
-                }}
-                onMouseEnter={() => setLogoHover(true)}
-                onMouseLeave={() => setLogoHover(false)}
-              >
-                <Image
-                  src={logoHover ? LogoClosed : LogoOpen}
-                  alt="Logo"
-                  height={32}
-                />
-                <Typography variant="h6" fontWeight={600} ml={2}>
-                  Freerooms
-                </Typography>
-              </Box>
-            </Link>
-          )}
-          <IconButton onClick={toggleSidebar}>
-            <PanelLeftIcon size={20} color={theme.palette.text.primary} />
+          <IconButton onClick={toggleMobileSidebar} color="inherit">
+            <MenuIcon />
+          </IconButton>
+          <Typography
+            variant="h6"
+            fontWeight={600}
+            sx={{ ml: theme.spacing(2) }}
+          >
+            Freerooms
+          </Typography>
+          <Box sx={{ flexGrow: 1 }} />
+          <IconButton LinkComponent={Link} href="/">
+            <Image src={LogoOpen} alt="Logo" height={32} width={32} />
           </IconButton>
         </Box>
+      )}
 
-        <Divider sx={{ backgroundColor: theme.palette.divider }} />
+      {/* Desktop Drawer */}
+      <Box sx={{ display: { xs: "none", md: "block" } }}>
+        <Drawer variant="permanent" open={sidebarOpen}>
+          <SidebarContent
+            sidebarOpen={sidebarOpen}
+            setSidebarOpen={setSidebarOpen}
+          />
+        </Drawer>
+      </Box>
 
-        <List sx={{ px: theme.spacing(1), pt: theme.spacing(1) }}>
-          {navItems.map(({ label, href, icon }) => (
-            <SidebarItem
-              key={href}
-              icon={icon}
-              label={label}
-              href={href}
-              sidebarOpen={sidebarOpen}
-              active={pathname === href}
-            />
-          ))}
-        </List>
+      {/* Mobile Drawer */}
+      <MuiDrawer
+        variant="temporary"
+        open={mobileOpen}
+        onClose={toggleMobileSidebar}
+        ModalProps={{
+          keepMounted: true,
+        }}
+        sx={{
+          display: { xs: "block", md: "none" },
+          "& .MuiDrawer-paper": {
+            width: drawerWidth,
+            backgroundColor: theme.palette.background.default,
+          },
+        }}
+      >
+        <SidebarContent
+          sidebarOpen={true}
+          setSidebarOpen={toggleMobileSidebar}
+        />
+      </MuiDrawer>
 
-        <Box flexGrow={1} />
-
-        <Box px={theme.spacing(1)} pb={theme.spacing(2)}>
-          <DarkModeToggle sidebarOpen={sidebarOpen} />
-        </Box>
-      </Drawer>
-      {children}
+      {/* Main Content */}
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          width: "100%",
+          pt: isMobile ? theme.spacing(7) : 0, // pushes content below topbar
+        }}
+      >
+        {children}
+      </Box>
     </Box>
   );
 };
