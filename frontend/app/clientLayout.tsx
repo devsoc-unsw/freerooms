@@ -13,7 +13,6 @@ import Sidebar from "components/sidebar/Sidebar";
 import React, { createContext, useEffect, useMemo, useState } from "react";
 import { Provider as ReduxProvider } from "react-redux";
 
-import NavBar, { navHeight } from "../components/NavBar";
 import SearchModal from "../components/SearchModal";
 import store from "../redux/store";
 
@@ -103,7 +102,6 @@ const App: React.FC<{
 }> = ({ children }) => {
   return (
     <>
-      {/* <NavBar /> */}
       <Sidebar>
         <SearchModal />
         <Main>{children}</Main>
