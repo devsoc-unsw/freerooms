@@ -59,23 +59,6 @@ app.get(
   })
 );
 
-// Route to get info for specific room
-app.get(
-  "/api/rooms/:roomId",
-  asyncHandler(async (req: Request, res: Response) => {
-    const { roomId } = req.params;
-    const roomData = await getAllRooms();
-    console.log("Requested roomId:", roomId);
-    const room = Object.values(roomData.rooms).find((r) => r.id === roomId);
-    if (!room) {
-      res.status(404).json({ error: `Room ${roomId} not found` });
-      return;
-    }
-
-    res.json(room);
-  })
-);
-
 // Route to get status of all rooms
 app.get(
   "/api/rooms/status",
