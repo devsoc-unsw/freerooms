@@ -31,12 +31,21 @@ const useMapboxNavigation = async (
   userLng: number,
   building: Building
 ) => {
-  const geometry = await fetchRoute(
-    [userLng, userLat],
-    [building.long, building.lat]
-  );
+  /** TODO add proper types */
+  let geometry = undefined;
+  let error = undefined;
 
-  return geometry;
+  try {
+    const geom = await fetchRoute(
+      [userLng, userLat],
+      [building.long, building.lat]
+    );
+    geometry = geom;
+  } catch (err: any) {
+    error = err;
+    return { geometry, error };
+  }
+  return { geometry, error };
 };
 
 export default useMapboxNavigation;

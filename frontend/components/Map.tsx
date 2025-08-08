@@ -25,6 +25,7 @@ import calculateDistance from "../utils/calculateDistance";
 import getMapType from "../utils/getMapType"; // delete this file?
 import MapMarker from "./MapMarker";
 import RoomMapMarker from "./RoomMapMarker";
+import useMapboxNavigation from "hooks/useMapboxNavigation";
 
 const initialViewState = {
   longitude: 151.23129,
@@ -65,25 +66,6 @@ const LocationMarker = () => (
 if (!MAPBOX_ACCESS_TOKEN) {
   throw new Error("Missing Mapbox access token");
 }
-
-const directionsClient = mbxDirections({ accessToken: MAPBOX_ACCESS_TOKEN });
-
-const fetchRoute = async (start: [number, number], end: [number, number]) => {
-  try {
-    const response = await directionsClient
-      .getDirections({
-        profile: "walking", // or 'driving', 'cycling'
-        geometries: "geojson",
-        waypoints: [{ coordinates: start }, { coordinates: end }],
-      })
-      .send();
-
-    return response.body.routes[0].geometry;
-  } catch (error: any) {
-    console.error("Route fetch error:", error.response?.body || error.message);
-    throw error;
-  }
-};
 
 export const MapComponent = () => {
   const { buildings } = useBuildings();
@@ -127,10 +109,7 @@ export const MapComponent = () => {
   const handleMarkerClick = async (building: Building) => {
     if (!userLat || !userLng) return;
 
-    const geometry = await fetchRoute(
-      [userLng, userLat],
-      [building.long, building.lat]
-    );
+    const { geometry } = await useMapboxNavigation(userLat, userLng, building);
 
     setRouteGeoJSON({
       type: "Feature",
