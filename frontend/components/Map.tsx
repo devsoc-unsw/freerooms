@@ -100,12 +100,6 @@ export const MapComponent = () => {
     setRoomIdToFocus(params.get("roomId") ?? undefined);
   }, []);
 
-  // useEffect(() => {
-  //   // Run only on client side, no Suspense issues
-  //   const params = new URLSearchParams(window.location.search);
-  //   setRoomIdToFocus(params.get("roomId") ?? undefined);
-  // }, []);
-  // const roomIdToFocus = useSearchParams().get("roomId") ?? undefined;
   const mapRef = useRef<MapRef>(null);
 
   // Use debounce to allow moving from marker to popup without popup hiding
