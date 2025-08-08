@@ -85,6 +85,8 @@ type BuildingsAndRoomsRes = {
       school: string;
       usage: string;
       capacity: number;
+      lat: number;
+      long: number;
     }>;
   }>;
 };
