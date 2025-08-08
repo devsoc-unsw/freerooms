@@ -1,9 +1,14 @@
-import { useEffect, useState } from "react";
 import mbxDirections from "@mapbox/mapbox-sdk/services/directions";
 import { MAPBOX_ACCESS_TOKEN } from "../config";
-import { Building } from "@common/types";
+import { Room } from "@common/types";
+import useSWRImmutable from "swr/immutable";
 
-const fetchRoute = async (start: [number, number], end: [number, number]) => {
+const fetchRoute = async (
+  userLat: number,
+  userLng: number,
+  roomLat: number,
+  roomLong: number
+) => {
   if (!MAPBOX_ACCESS_TOKEN) {
     throw new Error("Missing Mapbox access token");
   }
@@ -15,37 +20,33 @@ const fetchRoute = async (start: [number, number], end: [number, number]) => {
       .getDirections({
         profile: "walking", // or 'driving', 'cycling'
         geometries: "geojson",
-        waypoints: [{ coordinates: start }, { coordinates: end }],
+        waypoints: [
+          { coordinates: [userLng, userLat] },
+          { coordinates: [roomLong, roomLat] },
+        ],
       })
       .send();
 
     return response.body.routes[0].geometry;
+    // TODO proper typing here
   } catch (error: any) {
     console.error("Route fetch error:", error.response?.body || error.message);
     throw error;
   }
 };
 
-const useMapboxNavigation = async (
-  userLat: number,
-  userLng: number,
-  building: Building
-) => {
+const useMapboxNavigation = (userLat: number, userLng: number, room: Room) => {
   /** TODO add proper types */
-  let geometry = undefined;
-  let error = undefined;
 
-  try {
-    const geom = await fetchRoute(
-      [userLng, userLat],
-      [building.long, building.lat]
-    );
-    geometry = geom;
-  } catch (err: any) {
-    error = err;
-    return { geometry, error };
-  }
-  return { geometry, error };
+  const { data, error } = useSWRImmutable(
+    [userLat, userLng, room.lat, room.long],
+    fetchRoute
+  );
+
+  return {
+    geometry: data,
+    error,
+  };
 };
 
 export default useMapboxNavigation;

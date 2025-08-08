@@ -21,6 +21,7 @@ import BuildingDrawer from "views/BuildingDrawer";
 import { MAPBOX_ACCESS_TOKEN } from "../config";
 import useBuildings from "../hooks/useBuildings";
 import useUserLocation from "../hooks/useUserLocation";
+import useRoom from "hooks/useRoom";
 import calculateDistance from "../utils/calculateDistance";
 import getMapType from "../utils/getMapType"; // delete this file?
 import MapMarker from "./MapMarker";
@@ -80,6 +81,21 @@ export const MapComponent = () => {
     // Run only on client side, no Suspense issues
     const params = new URLSearchParams(window.location.search);
     setRoomIdToFocus(params.get("roomId") ?? undefined);
+
+    if (roomIdToFocus) {
+      const { room } = useRoom(roomIdToFocus);
+      if (!userLat || !userLng) return;
+      if (!room) return;
+
+      console.log("TEST");
+      const { geometry } = useMapboxNavigation(userLat, userLng, room);
+
+      setRouteGeoJSON({
+        type: "Feature",
+        properties: {},
+        geometry,
+      });
+    }
   }, []);
 
   const mapRef = useRef<MapRef>(null);
@@ -106,17 +122,18 @@ export const MapComponent = () => {
     }
   }, [buildings, userLat, userLng]);
 
-  const handleMarkerClick = async (building: Building) => {
-    if (!userLat || !userLng) return;
+  // // TODO refactor to fetch room coordinates
+  // const handleMarkerClick = async (building: Building) => {
+  //   if (!userLat || !userLng) return;
 
-    const { geometry } = await useMapboxNavigation(userLat, userLng, building);
+  //   const { geometry } = await useMapboxNavigation(userLat, userLng, building);
 
-    setRouteGeoJSON({
-      type: "Feature",
-      properties: {},
-      geometry,
-    });
-  };
+  //   setRouteGeoJSON({
+  //     type: "Feature",
+  //     properties: {},
+  //     geometry,
+  //   });
+  // };
 
   return (
     <div style={{ height: "100%", position: "relative" }}>
@@ -133,7 +150,6 @@ export const MapComponent = () => {
             key={building.id}
             latitude={building.lat}
             longitude={building.long}
-            onClick={() => handleMarkerClick(building)}
           >
             <MapMarker
               buildingId={building.id}
