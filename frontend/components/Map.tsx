@@ -77,17 +77,23 @@ export const MapComponent = () => {
     undefined
   );
 
+  const [initialUserCoordinate, setIntialUserCoordinate] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
+
   useEffect(() => {
     // Run only on client side, no Suspense issues
     const params = new URLSearchParams(window.location.search);
     setRoomIdToFocus(params.get("roomId") ?? undefined);
+  }, []);
 
-    if (roomIdToFocus) {
-      const { room } = useRoom(roomIdToFocus);
-      if (!userLat || !userLng) return;
+  // TODO refactor hook usage here
+  useEffect(() => {
+    if (!userLat || !userLng || !roomIdToFocus) return;
+    const { room } = useRoom(roomIdToFocus);
+    if (!initialUserCoordinate) {
       if (!room) return;
-
-      console.log("TEST");
       const { geometry } = useMapboxNavigation(userLat, userLng, room);
 
       setRouteGeoJSON({
@@ -95,8 +101,9 @@ export const MapComponent = () => {
         properties: {},
         geometry,
       });
+      setIntialUserCoordinate({ lat: userLat, lng: userLng });
     }
-  }, []);
+  }, [userLat, userLng, roomIdToFocus, initialUserCoordinate]);
 
   const mapRef = useRef<MapRef>(null);
 
