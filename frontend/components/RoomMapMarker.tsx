@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
-import { Marker } from "react-map-gl/mapbox";
 import { alpha } from "@mui/material";
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
 import useRoom from "hooks/useRoom";
+import React, { useEffect, useRef } from "react";
+import { Marker } from "react-map-gl/mapbox";
 
 interface RoomMapMarkerProps {
   roomId: string;
