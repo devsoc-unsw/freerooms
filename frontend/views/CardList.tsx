@@ -98,16 +98,6 @@ const CardList: React.FC<{
       {displayedBuildings.map((building) => (
         <FlippableCard key={building.id} buildingId={building.id} />
       ))}
-
-      {displayMobile ? (
-        <div key="fake-card">
-          <FakeBuildingCardMobile />
-        </div>
-      ) : (
-        <div key="fake-card">
-          <FakeBuildingCard />
-        </div>
-      )}
     </FlipMoveGrid>
   ) : (
     <LoadingCircle />

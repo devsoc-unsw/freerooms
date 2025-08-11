@@ -11,7 +11,7 @@ Freerooms is a tool designed to help UNSW students find empty rooms on campus.
 - TypeScript (everything)
 and more! 🤓👨‍💻
 
-You can find a live build of Freerooms at [https://freerooms.csesoc.app](https://freerooms.csesoc.app/).
+You can find a live build of Freerooms at [https://freerooms.devsoc.app](https://freerooms.devsoc.app/).
 
 ## Features
 

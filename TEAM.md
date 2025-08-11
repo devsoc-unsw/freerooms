@@ -1,5 +1,21 @@
 # Freerooms Team
 
+## 2025
+
+### Leads
+- Anh Viet Duc Nguyen (@avdn-dev)
+- Michael Tanto (@mt-fns)
+
+### Developers
+- Benjamin Harold Godwin (@bengodw)
+- Connie Du (@c0nnied)
+- Brandon Tan (@BT0906)
+- Yi Yao Wang (@yiyaoW11) 
+- Shabinda Sarkaria (@shaykaria)
+- Dicko Evaldo (@dickoevaldo)
+- Chris Wong (@xleonx0x)
+- Muqueet Mohsen Chowdhury (@mmc03-ucb)
+
 ## 2024
 
 ### Leads
