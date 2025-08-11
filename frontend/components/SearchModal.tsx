@@ -1,8 +1,10 @@
 import BuildingIcon from "@mui/icons-material/Apartment";
 import RoomIcon from "@mui/icons-material/MeetingRoom";
+import MarkerIcon from "@mui/icons-material/Room"
 import SearchIcon from "@mui/icons-material/Search";
 import {
   AutocompleteRenderInputParams,
+  Box,
   FilterOptionsState,
   SvgIconProps,
   useTheme,
@@ -167,10 +169,13 @@ const SearchResult: React.FC<{ option: SearchOption }> = ({ option }) => {
     color: "primary",
   };
   const theme = useTheme();
+  const router = useRouter();
   const [name, ...aliases] = option.searchKeys;
 
+  const roomId = option.type === "Room" ? option.room.id : null;
+
   return (
-    <Stack direction="row" padding={0.5} spacing={2}>
+    <Box display="flex" alignItems="center" padding={0.5} gap={2} width="100%">
       <Stack alignItems="center" justifyContent="center">
         {option.type === "Room" ? (
           <RoomIcon {...iconProps} />
@@ -187,7 +192,36 @@ const SearchResult: React.FC<{ option: SearchOption }> = ({ option }) => {
           <b>AKA</b> {aliases.join(", ")}
         </Typography>
       </Stack>
-    </Stack>
+     {option.type === "Room" && <Box
+        sx={{
+          marginLeft: "auto",
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+          cursor: "pointer",
+          borderRadius: "8px", // rounded square
+          width: "40px",
+          height: "40px",
+          border: (theme) => `2px solid ${theme.palette.primary.main}`, // primary outline
+          transition: "background-color 0.2s ease, border-color 0.2s ease",
+          "&:hover": {
+            backgroundColor: "rgba(0, 0, 0, 0.04)", // subtle hover fill
+            borderColor: (theme) => theme.palette.primary.dark,
+          },
+        }}
+      >
+        {option.type === "Room" && (
+          <MarkerIcon
+            onClick={(e) => {
+              router.push(`/map?roomId=${roomId}`);
+              e.stopPropagation();
+            }}
+            fontSize="medium"
+            sx={{ color: (theme) => theme.palette.warning.main }}
+          />
+        )}
+      </Box>}
+    </Box>
   );
 };
 
