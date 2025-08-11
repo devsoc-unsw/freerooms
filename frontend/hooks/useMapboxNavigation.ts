@@ -14,7 +14,7 @@ const fetchRoute = async (
   }
 
   const directionsClient = mbxDirections({ accessToken: MAPBOX_ACCESS_TOKEN });
-
+  console.log(userLat, userLng);
   try {
     const response = await directionsClient
       .getDirections({
@@ -30,16 +30,21 @@ const fetchRoute = async (
     return response.body.routes[0].geometry;
     // TODO proper typing here
   } catch (error: any) {
-    console.error("Route fetch error:", error.response?.body || error.message);
+    console.log(error);
     throw error;
   }
 };
 
-const useMapboxNavigation = (userLat: number, userLng: number, room: Room) => {
+const useMapboxNavigation = (
+  userLat: number | undefined,
+  userLng: number | undefined,
+  room: Room | undefined
+) => {
   /** TODO add proper types */
 
+  console.log("TEST", room);
   const { data, error } = useSWRImmutable(
-    [userLat, userLng, room.lat, room.long],
+    [userLat, userLng, room ? room.lat : null, room ? room.long : null],
     fetchRoute
   );
 

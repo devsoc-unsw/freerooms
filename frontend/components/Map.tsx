@@ -73,37 +73,31 @@ export const MapComponent = () => {
   const { isDarkMode } = useContext(DarkModeContext);
   const { userLat, userLng } = useUserLocation();
 
-  const [roomIdToFocus, setRoomIdToFocus] = useState<string | undefined>(
-    undefined
-  );
+  const [roomIdToFocus, setRoomIdToFocus] = useState<string>("");
 
-  const [initialUserCoordinate, setIntialUserCoordinate] = useState<{
-    lat: number;
-    lng: number;
-  } | null>(null);
+  const { room } = useRoom(roomIdToFocus);
+
+  // TODO check if I need to only call this once? this is currently getting called every user change
+  const { geometry } = useMapboxNavigation(userLat, userLng, room);
 
   useEffect(() => {
     // Run only on client side, no Suspense issues
     const params = new URLSearchParams(window.location.search);
-    setRoomIdToFocus(params.get("roomId") ?? undefined);
+    setRoomIdToFocus(params.get("roomId") ?? "");
   }, []);
 
-  // TODO refactor hook usage here
   useEffect(() => {
     if (!userLat || !userLng || !roomIdToFocus) return;
-    const { room } = useRoom(roomIdToFocus);
-    if (!initialUserCoordinate) {
-      if (!room) return;
-      const { geometry } = useMapboxNavigation(userLat, userLng, room);
+    if (!room) return;
 
-      setRouteGeoJSON({
-        type: "Feature",
-        properties: {},
-        geometry,
-      });
-      setIntialUserCoordinate({ lat: userLat, lng: userLng });
-    }
-  }, [userLat, userLng, roomIdToFocus, initialUserCoordinate]);
+    // -33.917347,151.2286926
+
+    setRouteGeoJSON({
+      type: "Feature",
+      properties: {},
+      geometry,
+    });
+  }, [userLat, userLng, roomIdToFocus]);
 
   const mapRef = useRef<MapRef>(null);
 
