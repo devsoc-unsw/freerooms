@@ -111,6 +111,8 @@ export const queryBuildingsAndRooms =
           school
           usage
           capacity
+          lat
+          long
         }
       }
     }

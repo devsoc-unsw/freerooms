@@ -4,17 +4,21 @@ import { Room } from "@common/types";
 import useSWRImmutable from "swr/immutable";
 
 const fetchRoute = async (
-  userLat: number,
-  userLng: number,
-  roomLat: number,
-  roomLong: number
+  userLat: number | undefined,
+  userLng: number | undefined,
+  roomLat: number | undefined,
+  roomLong: number | undefined
 ) => {
   if (!MAPBOX_ACCESS_TOKEN) {
     throw new Error("Missing Mapbox access token");
   }
 
+  if (!userLat || !userLng || !roomLat || !roomLong) {
+    throw new Error("Invalid user or room coordinate");
+  }
+
   const directionsClient = mbxDirections({ accessToken: MAPBOX_ACCESS_TOKEN });
-  console.log(userLat, userLng);
+  console.log(userLat, userLng, roomLat, roomLong);
   try {
     const response = await directionsClient
       .getDirections({
@@ -27,10 +31,10 @@ const fetchRoute = async (
       })
       .send();
 
+    console.log("TEST", response.body.routes[0].geometry);
     return response.body.routes[0].geometry;
     // TODO proper typing here
   } catch (error: any) {
-    console.log(error);
     throw error;
   }
 };
@@ -42,9 +46,13 @@ const useMapboxNavigation = (
 ) => {
   /** TODO add proper types */
 
-  console.log("TEST", room);
   const { data, error } = useSWRImmutable(
-    [userLat, userLng, room ? room.lat : null, room ? room.long : null],
+    [
+      userLat,
+      userLng,
+      room ? room.lat : undefined,
+      room ? room.long : undefined,
+    ],
     fetchRoute
   );
 

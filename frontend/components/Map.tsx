@@ -2,21 +2,18 @@
 import "mapbox-gl/dist/mapbox-gl.css";
 
 import { Building } from "@common/types";
-import mbxDirections from "@mapbox/mapbox-sdk/services/directions";
 import Box from "@mui/material/Box";
 import { DarkModeContext } from "app/clientLayout";
-import { useSearchParams } from "next/navigation";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import {
-  Layer,
   LngLatBoundsLike,
   Map,
   MapRef,
   Marker,
   Source,
+  Layer,
 } from "react-map-gl/mapbox";
 import { useDebounceValue } from "usehooks-ts";
-import BuildingDrawer from "views/BuildingDrawer";
 
 import { MAPBOX_ACCESS_TOKEN } from "../config";
 import useBuildings from "../hooks/useBuildings";
@@ -69,12 +66,18 @@ if (!MAPBOX_ACCESS_TOKEN) {
 }
 
 export const MapComponent = () => {
+  // Use debounce to allow moving from marker to popup without popup hiding
+  const [currentHover, setCurrentHover] = useState<Building | null>(null);
+  const [debouncedCurrentHover] = useDebounceValue(currentHover, 50);
+  const [routeGeoJSON, setRouteGeoJSON] = useState<any | null>(null);
+  const [distances, setDistances] = useState<number[]>([]);
+  const [roomIdToFocus, setRoomIdToFocus] = useState<string>("");
+
+  const mapRef = useRef<MapRef>(null);
+
   const { buildings } = useBuildings();
   const { isDarkMode } = useContext(DarkModeContext);
   const { userLat, userLng } = useUserLocation();
-
-  const [roomIdToFocus, setRoomIdToFocus] = useState<string>("");
-
   const { room } = useRoom(roomIdToFocus);
 
   // TODO check if I need to only call this once? this is currently getting called every user change
@@ -87,31 +90,24 @@ export const MapComponent = () => {
   }, []);
 
   useEffect(() => {
+    console.log("HERE");
     if (!userLat || !userLng || !roomIdToFocus) return;
-    if (!room) return;
-
-    // -33.917347,151.2286926
+    console.log("test1");
+    // Only set route once
+    if (routeGeoJSON && routeGeoJSON.geometry) return;
+    console.log("tes2");
+    console.log(geometry);
 
     setRouteGeoJSON({
       type: "Feature",
       properties: {},
       geometry,
     });
-  }, [userLat, userLng, roomIdToFocus]);
-
-  const mapRef = useRef<MapRef>(null);
-
-  // Use debounce to allow moving from marker to popup without popup hiding
-  const [currentHover, setCurrentHover] = useState<Building | null>(null);
-  const [debouncedCurrentHover] = useDebounceValue(currentHover, 50);
-
-  const [routeGeoJSON, setRouteGeoJSON] = useState<any | null>(null);
+  }, [userLat, userLng, roomIdToFocus, geometry]);
 
   const style = isDarkMode
     ? "mapbox://styles/bengodw/cmcimql2101qo01sp7dricgzq"
     : "mapbox://styles/bengodw/cmcimp1tz002p01rcfzbd8btn";
-
-  const [distances, setDistances] = useState<number[]>([]);
 
   useEffect(() => {
     if (buildings && userLat && userLng && isInBounds(userLat, userLng)) {
@@ -122,19 +118,6 @@ export const MapComponent = () => {
       );
     }
   }, [buildings, userLat, userLng]);
-
-  // // TODO refactor to fetch room coordinates
-  // const handleMarkerClick = async (building: Building) => {
-  //   if (!userLat || !userLng) return;
-
-  //   const { geometry } = await useMapboxNavigation(userLat, userLng, building);
-
-  //   setRouteGeoJSON({
-  //     type: "Feature",
-  //     properties: {},
-  //     geometry,
-  //   });
-  // };
 
   return (
     <div style={{ height: "100%", position: "relative" }}>
@@ -167,16 +150,18 @@ export const MapComponent = () => {
           </Marker>
         )}
 
-        <RoomMapMarker
-          roomId={roomIdToFocus}
-          roomLocation={(lat, long) => {
-            mapRef.current?.flyTo({
-              center: [long, lat],
-              zoom: 19.5,
-              duration: 1000,
-            });
-          }}
-        />
+        {roomIdToFocus && (
+          <RoomMapMarker
+            roomId={roomIdToFocus}
+            roomLocation={(lat, long) => {
+              mapRef.current?.flyTo({
+                center: [long, lat],
+                zoom: 19.5,
+                duration: 1000,
+              });
+            }}
+          />
+        )}
 
         {routeGeoJSON && (
           <>
@@ -190,7 +175,7 @@ export const MapComponent = () => {
                 "line-join": "round",
               }}
               paint={{
-                "line-color": "#1DB954",
+                "line-color": "#1976d2",
                 "line-width": 4,
               }}
             />
