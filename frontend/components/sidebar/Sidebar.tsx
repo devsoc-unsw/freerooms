@@ -16,8 +16,8 @@ import {
   DoorOpenIcon,
   LayoutGridIcon,
   MapIcon,
-  XIcon,
   MenuIcon,
+  PanelLeftIcon,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -141,7 +141,11 @@ const SidebarContent = ({
           onClick={() => setSidebarOpen(!sidebarOpen)}
           color="inherit"
         >
-          {sidebarOpen ? <XIcon size={20} /> : <MenuIcon size={20} />}
+          {sidebarOpen ? (
+            <PanelLeftIcon size={20} />
+          ) : (
+            <PanelLeftIcon size={20} />
+          )}
         </IconButton>
       </Box>
 
