@@ -14,9 +14,9 @@ const BookingButton: React.FC<{
   let link = "";
   if (school === " " && usage === "LIB")
     link = "https://unswlibrary-bookings.libcal.com";
-  else if (school === " ")
-    link =
-      "https://www.learningenvironments.unsw.edu.au/make-booking/book-room";
+  // else if (school === " ")
+  //   link =
+  //     "https://www.learningenvironments.unsw.edu.au/make-booking/book-room";
 
   if (link) {
     return (
@@ -53,6 +53,7 @@ const BookingButton: React.FC<{
         my: { xs: 1, sm: 0 },
         width: { xs: "100%", sm: "160px" },
       }}
+      disabled
     >
       <Typography variant="body2" fontWeight="bold">
         Make a Booking
