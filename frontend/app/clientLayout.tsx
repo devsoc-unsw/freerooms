@@ -50,12 +50,13 @@ const ClientLayout: React.FC<{
       ...(mode === "light"
         ? {
             primary: {
-              main: orange[800],
+              main: "#D4613C",
             },
             secondary: {
               main: "rgba(0, 0, 0, 0.12)",
             },
             background: {
+              default: "#FFFBF9",
               paper: grey[200],
             },
             text: {
@@ -65,7 +66,7 @@ const ClientLayout: React.FC<{
           }
         : {
             primary: {
-              main: orange[800],
+              main: "#D4613C",
             },
             secondary: {
               main: grey[800],
