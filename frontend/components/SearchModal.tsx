@@ -1,6 +1,6 @@
 import BuildingIcon from "@mui/icons-material/Apartment";
 import RoomIcon from "@mui/icons-material/MeetingRoom";
-import MarkerIcon from "@mui/icons-material/Room"
+import MarkerIcon from "@mui/icons-material/Room";
 import SearchIcon from "@mui/icons-material/Search";
 import {
   AutocompleteRenderInputParams,
@@ -192,35 +192,37 @@ const SearchResult: React.FC<{ option: SearchOption }> = ({ option }) => {
           <b>AKA</b> {aliases.join(", ")}
         </Typography>
       </Stack>
-     {option.type === "Room" && <Box
-        sx={{
-          marginLeft: "auto",
-          display: "inline-flex",
-          alignItems: "center",
-          justifyContent: "center",
-          cursor: "pointer",
-          borderRadius: "8px", // rounded square
-          width: "40px",
-          height: "40px",
-          border: (theme) => `2px solid ${theme.palette.primary.main}`, // primary outline
-          transition: "background-color 0.2s ease, border-color 0.2s ease",
-          "&:hover": {
-            backgroundColor: "rgba(0, 0, 0, 0.04)", // subtle hover fill
-            borderColor: (theme) => theme.palette.primary.dark,
-          },
-        }}
-      >
-        {option.type === "Room" && (
-          <MarkerIcon
-            onClick={(e) => {
-              router.push(`/map?roomId=${roomId}`);
-              e.stopPropagation();
-            }}
-            fontSize="medium"
-            sx={{ color: (theme) => theme.palette.warning.main }}
-          />
-        )}
-      </Box>}
+      {option.type === "Room" && (
+        <Box
+          sx={{
+            marginLeft: "auto",
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: "pointer",
+            borderRadius: "8px", // rounded square
+            width: "40px",
+            height: "40px",
+            border: (theme) => `2px solid ${theme.palette.primary.main}`, // primary outline
+            transition: "background-color 0.2s ease, border-color 0.2s ease",
+            "&:hover": {
+              backgroundColor: "rgba(0, 0, 0, 0.04)", // subtle hover fill
+              borderColor: (theme) => theme.palette.primary.dark,
+            },
+          }}
+        >
+          {option.type === "Room" && (
+            <MarkerIcon
+              onClick={(e) => {
+                router.push(`/map?roomId=${roomId}`);
+                e.stopPropagation();
+              }}
+              fontSize="medium"
+              sx={{ color: (theme) => theme.palette.warning.main }}
+            />
+          )}
+        </Box>
+      )}
     </Box>
   );
 };
