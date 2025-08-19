@@ -1,8 +1,6 @@
 import { Building } from "@common/types";
 import { useMediaQuery } from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
-import FakeBuildingCard from "components/FakeBuildingCard";
-import FakeBuildingCardMobile from "components/FakeBuildingCardMobile";
 import React from "react";
 import FlipMove from "react-flip-move";
 
