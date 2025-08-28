@@ -27,6 +27,7 @@ import { setCurrentBuilding } from "../redux/currentBuildingSlice";
 import { useDispatch, useSelector } from "../redux/hooks";
 import { closeSearch, selectSearchOpen } from "../redux/searchOpenSlice";
 import { SearchOption } from "../types";
+import { close } from "node:inspector/promises";
 
 const RECENT_SEARCH_LIMIT = 3;
 interface SearchProps {}
@@ -170,6 +171,7 @@ const SearchResult: React.FC<{ option: SearchOption }> = ({ option }) => {
   };
   const theme = useTheme();
   const router = useRouter();
+  const dispatch = useDispatch();
   const [name, ...aliases] = option.searchKeys;
 
   const roomId = option.type === "Room" ? option.room.id : null;
@@ -216,6 +218,7 @@ const SearchResult: React.FC<{ option: SearchOption }> = ({ option }) => {
               onClick={(e) => {
                 router.push(`/map?roomId=${roomId}`);
                 e.stopPropagation();
+                dispatch(closeSearch());
               }}
               fontSize="medium"
               sx={{ color: (theme) => theme.palette.warning.main }}
