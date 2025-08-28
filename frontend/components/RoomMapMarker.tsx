@@ -5,7 +5,7 @@ import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
 import useRoom from "hooks/useRoom";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Marker } from "react-map-gl/mapbox";
 
 interface RoomMapMarkerProps {
@@ -18,13 +18,11 @@ const RoomMapMarker: React.FC<RoomMapMarkerProps> = ({
   roomLocation,
 }) => {
   const { room } = useRoom(roomId);
-  const hasFocusedRef = useRef(false);
   const theme = useTheme();
 
   useEffect(() => {
-    if (!hasFocusedRef.current && room && roomLocation) {
+    if (room && roomLocation) {
       roomLocation(room.lat, room.long);
-      hasFocusedRef.current = true;
     }
   }, [room, roomLocation]);
 

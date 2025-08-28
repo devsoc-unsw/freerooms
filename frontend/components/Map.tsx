@@ -15,6 +15,7 @@ import calculateDistance from "../utils/calculateDistance";
 import getMapType from "../utils/getMapType"; // delete this file?
 import MapMarker from "./MapMarker";
 import RoomMapMarker from "./RoomMapMarker";
+import { useSearchParams } from "next/navigation";
 
 const initialViewState = {
   longitude: 151.23129,
@@ -61,15 +62,8 @@ export const MapComponent = () => {
   const { isDarkMode } = useContext(DarkModeContext);
   const { userLat, userLng } = useUserLocation();
 
-  const [roomIdToFocus, setRoomIdToFocus] = useState<string | undefined>(
-    undefined
-  );
-
-  useEffect(() => {
-    // Run only on client side, no Suspense issues
-    const params = new URLSearchParams(window.location.search);
-    setRoomIdToFocus(params.get("roomId") ?? undefined);
-  }, []);
+  const searchParms = useSearchParams();
+  const roomIdToFocus = searchParms.get("roomId") ?? undefined;
 
   const mapRef = useRef<MapRef>(null);
 
