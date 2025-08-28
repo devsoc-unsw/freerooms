@@ -72,6 +72,7 @@ export const MapComponent = () => {
   const [routeGeoJSON, setRouteGeoJSON] = useState<any | null>(null);
   const [distances, setDistances] = useState<number[]>([]);
   const [roomIdToFocus, setRoomIdToFocus] = useState<string>("");
+  const [isMapLoaded, setIsMapLoaded] = useState<boolean>(false);
 
   const mapRef = useRef<MapRef>(null);
 
@@ -90,20 +91,16 @@ export const MapComponent = () => {
   }, []);
 
   useEffect(() => {
-    console.log("HERE");
-    if (!userLat || !userLng || !roomIdToFocus) return;
-    console.log("test1");
+    if (!userLat || !userLng || !roomIdToFocus || !isMapLoaded) return;
     // Only set route once
     if (routeGeoJSON && routeGeoJSON.geometry) return;
-    console.log("tes2");
-    console.log(geometry);
 
     setRouteGeoJSON({
       type: "Feature",
       properties: {},
       geometry,
     });
-  }, [userLat, userLng, roomIdToFocus, geometry]);
+  }, [isMapLoaded, userLat, userLng, roomIdToFocus, geometry]);
 
   const style = isDarkMode
     ? "mapbox://styles/bengodw/cmcimql2101qo01sp7dricgzq"
@@ -127,6 +124,9 @@ export const MapComponent = () => {
         mapStyle={style}
         mapboxAccessToken={MAPBOX_ACCESS_TOKEN}
         maxBounds={bounds}
+        onLoad={() => {
+          setIsMapLoaded(true);
+        }}
         style={{ width: "100%", height: "100%" }}
       >
         {buildings?.map((building, index) => (

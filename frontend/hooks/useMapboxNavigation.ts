@@ -31,7 +31,6 @@ const fetchRoute = async (
       })
       .send();
 
-    console.log("TEST", response.body.routes[0].geometry);
     return response.body.routes[0].geometry;
     // TODO proper typing here
   } catch (error: any) {
