@@ -51,6 +51,7 @@ const ClientLayout: React.FC<{
         ? {
             primary: {
               main: "#D4613C",
+              light: "#F3D0C5",
             },
             secondary: {
               main: "rgba(0, 0, 0, 0.12)",
@@ -67,6 +68,7 @@ const ClientLayout: React.FC<{
         : {
             primary: {
               main: "#D4613C",
+              dark: "#EF6C00",
             },
             secondary: {
               main: grey[800],

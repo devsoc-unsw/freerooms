@@ -25,7 +25,7 @@ const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
   flexDirection: "column",
   height: 379,
   borderRadius: 12,
-  border: "1px solid #F3D0C5",
+  border: `1px solid ${theme.palette.mode === "light" ? theme.palette.primary.light : theme.palette.secondary.main}`,
   overflow: "hidden",
   [theme.breakpoints.down("lg")]: {
     height: 300,
@@ -90,14 +90,14 @@ const DetailPill = styled(Box)<BoxProps>(({ theme }) => ({
   padding: 6,
   paddingLeft: 12,
   paddingRight: 12,
-  backgroundColor: "#FDE7E1",
+  backgroundColor: `${theme.palette.mode === "light" ? theme.palette.primary.light : theme.palette.primary.dark}`,
 }));
 
 const DetailPillText = styled(Typography)<TypographyProps>(({ theme }) => ({
   fontFamily: "TT Commons Pro Trial Variable",
   fontSize: 12,
   fontWeight: 500,
-  color: theme.palette.primary.main,
+  color: `${theme.palette.mode === "light" ? theme.palette.primary.main : theme.palette.text.primary}`,
   paddingBottom: "2px",
   gap: 10,
 }));
