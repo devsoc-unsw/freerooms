@@ -93,11 +93,11 @@ const DetailPill = styled(Box)<BoxProps>(({ theme }) => ({
   backgroundColor: "#FDE7E1",
 }));
 
-const DetailPillText = styled(Typography)<TypographyProps>(() => ({
+const DetailPillText = styled(Typography)<TypographyProps>(({theme}) => ({
   fontFamily: "TT Commons Pro Trial Variable",
   fontSize: 12,
-  fontWeight: 400,
-  color: "#D4613C",
+  fontWeight: 500,
+  color: theme.palette.primary.main,
   paddingBottom: "2px",
   gap: 10,
 }));
@@ -109,6 +109,12 @@ const NameRatingBox = styled(Box)<BoxProps>(({ theme }) => ({
   justifyContent: "space-between",
   alignItems: "flex-start",
 }));
+
+// Location of building - upper or lower
+const getLocation = (buildingId: string) => {
+  const UPPER = 19;
+  return +buildingId.substring(3) < UPPER ? "Lower" : "Upper";
+};
 
 const BuildingCard: React.FC<{
   buildingId: string;
@@ -171,15 +177,15 @@ const BuildingCard: React.FC<{
         {isCompact ? (
           <NameRatingBox>
             <Typography
-              sx={{
+              sx={(theme) => ({
                 fontFamily: "TT Commons Pro Trial Variable",
                 fontWeight: 700,
                 fontSize: 15,
-                color: "#632410",
+                color: theme.palette.mode === "light" ? "#632410" : "#ffffff",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 whiteSpace: "nowrap",
-              }}
+              })}
             >
               {building.name}
             </Typography>
@@ -196,15 +202,15 @@ const BuildingCard: React.FC<{
         ) : (
           <>
             <Typography
-              sx={{
+              sx={(theme) => ({
                 fontFamily: "TT Commons Pro Trial Variable",
                 fontWeight: 700,
                 fontSize: 20,
-                color: "#632410",
+                color: theme.palette.mode === "light" ? "#632410" : "#ffffff",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 whiteSpace: "nowrap",
-              }}
+              })}
             >
               {building.name}
             </Typography>
@@ -221,11 +227,11 @@ const BuildingCard: React.FC<{
             <InfoFooterBox>
               <Stack direction="row" gap="8px">
                 <DetailPill>
-                  <DetailPillText>Category</DetailPillText>
+                  <DetailPillText>{buildingId}</DetailPillText>
                 </DetailPill>
 
                 <DetailPill>
-                  <DetailPillText>{buildingId}</DetailPillText>
+                  <DetailPillText>{getLocation(buildingId)}</DetailPillText>
                 </DetailPill>
               </Stack>
 
