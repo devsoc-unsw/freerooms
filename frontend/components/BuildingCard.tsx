@@ -93,7 +93,7 @@ const DetailPill = styled(Box)<BoxProps>(({ theme }) => ({
   backgroundColor: "#FDE7E1",
 }));
 
-const DetailPillText = styled(Typography)<TypographyProps>(({theme}) => ({
+const DetailPillText = styled(Typography)<TypographyProps>(({ theme }) => ({
   fontFamily: "TT Commons Pro Trial Variable",
   fontSize: 12,
   fontWeight: 500,
