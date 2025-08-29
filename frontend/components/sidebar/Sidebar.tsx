@@ -32,7 +32,7 @@ const drawerWidth = 250;
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
-  backgroundColor: theme.palette.background.default,
+  backgroundColor: theme.palette.background.paper,
   color: theme.palette.text.primary,
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
@@ -43,7 +43,7 @@ const openedMixin = (theme: Theme): CSSObject => ({
 
 const closedMixin = (theme: Theme): CSSObject => ({
   width: theme.spacing(7.5),
-  backgroundColor: theme.palette.background.default,
+  backgroundColor: theme.palette.background.paper,
   color: theme.palette.text.primary,
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
@@ -102,7 +102,7 @@ const SidebarContent = ({
         px={theme.spacing(2)}
         py={theme.spacing(2)}
       >
-        {sidebarOpen && (
+        {sidebarOpen ? (
           <Link href="/" passHref legacyBehavior>
             <Box
               component="a"
@@ -136,22 +136,26 @@ const SidebarContent = ({
               </Typography>
             </Box>
           </Link>
+        ) : (
+          <Image
+            src={logoHover ? LogoClosed : LogoOpen}
+            alt="Logo"
+            height={32}
+          />
         )}
-        <IconButton
-          onClick={() => setSidebarOpen(!sidebarOpen)}
-          color="inherit"
-        >
-          {sidebarOpen ? (
-            <PanelLeftIcon size={20} />
-          ) : (
-            <PanelLeftIcon size={20} />
-          )}
-        </IconButton>
       </Box>
 
       <Divider sx={{ backgroundColor: theme.palette.divider }} />
 
       <List sx={{ px: theme.spacing(1), pt: theme.spacing(1) }}>
+        {/* TODO turn this into a custom component */}
+        <SidebarItem
+          icon={<PanelLeftIcon size={20} />}
+          label={"Close sidebar"}
+          sidebarOpen={sidebarOpen}
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+        />
+
         {navItems.map(({ label, href, icon }) => (
           <SidebarItem
             key={href}
