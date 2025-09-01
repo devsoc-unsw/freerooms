@@ -26,8 +26,13 @@ export type Booking = {
   end: Date;
 };
 
-export type BuildingStatus = {
+export type RoomStatuses = {
   [roomNumber: string]: RoomStatus;
+};
+
+export type BuildingStatus = {
+  numAvailable: number;
+  roomStatuses: RoomStatuses;
 };
 
 export type RoomStatus = {
