@@ -80,7 +80,7 @@ export const getAllRoomStatus = async (
         filters.duration || 0
       );
       if (status !== null) {
-        result[buildingId].numAvailable += 1;
+        if (status.status === "free") result[buildingId].numAvailable++;
         result[buildingId].roomStatuses[roomNumber] = status;
       }
     }

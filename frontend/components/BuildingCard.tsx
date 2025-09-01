@@ -87,7 +87,7 @@ const BuildingCard: React.FC<{
 
   if (!building) return <></>;
 
-  const freerooms = getNumFreerooms(status);
+  const freerooms = status ? status.numAvailable : 0;
 
   return (
     <MainBox onClick={() => dispatch(setCurrentBuilding(building))}>

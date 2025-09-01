@@ -20,5 +20,5 @@ export const getTotalRooms = (
 ): number => {
   if (buildingStatus === undefined) return INITIALISING;
 
-  return Object.values(buildingStatus).length;
+  return Object.values(buildingStatus.roomStatuses).length;
 };
