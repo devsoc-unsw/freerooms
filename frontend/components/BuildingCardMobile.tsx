@@ -78,7 +78,7 @@ const BuildingCardMobile: React.FC<{
 
   if (!building) return <></>;
 
-  const freerooms = status ? status.numAvailable : 0;
+  const freerooms = getNumFreerooms(status);
   const totalrooms = getTotalRooms(status);
 
   return (
