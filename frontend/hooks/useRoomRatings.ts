@@ -11,8 +11,6 @@ import { API_URL } from "../config";
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 const useRoomRatings = (roomID: string) => {
-  console.log("TEST", roomID);
-
   const { data, error } = useSWRImmutable<RatingsResponse>(
     API_URL + "/rating/" + roomID,
     fetcher
