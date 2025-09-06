@@ -7,15 +7,26 @@ import { useTheme } from "@mui/material/styles";
 import useRoom from "hooks/useRoom";
 import React, { useEffect, useRef } from "react";
 import { Marker } from "react-map-gl/mapbox";
+import GetDirectionsButton from "./GetDirectionsButton";
 
 interface RoomMapMarkerProps {
   roomId: string;
   roomLocation?: (lat: number, long: number) => void;
+  userLat: number | undefined;
+  userLng: number | undefined;
+  requestLocation: () => void;
+  setRouteGeoJSON: (geojson: any) => void;
+  geometry?: any;
 }
 
 const RoomMapMarker: React.FC<RoomMapMarkerProps> = ({
   roomId,
   roomLocation,
+  userLat,
+  userLng,
+  requestLocation,
+  setRouteGeoJSON,
+  geometry,
 }) => {
   const { room } = useRoom(roomId);
   const hasFocusedRef = useRef(false);
@@ -32,7 +43,7 @@ const RoomMapMarker: React.FC<RoomMapMarkerProps> = ({
   const blue = "#1976d2";
 
   return (
-    <Marker latitude={room.lat} longitude={room.long} anchor="bottom">
+    <Marker latitude={room.lat} longitude={room.long} anchor="top">
       <div
         style={{
           display: "flex",
@@ -71,6 +82,15 @@ const RoomMapMarker: React.FC<RoomMapMarkerProps> = ({
             },
           })}
         />
+        <Box sx={{ mt: 1 }}>
+          <GetDirectionsButton
+            userLat={userLat}
+            userLng={userLng}
+            requestLocation={requestLocation}
+            setRouteGeoJSON={setRouteGeoJSON}
+            geometry={geometry}
+          />
+        </Box>
       </div>
     </Marker>
   );

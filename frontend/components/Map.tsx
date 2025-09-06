@@ -160,6 +160,26 @@ export const MapComponent = () => {
                 duration: 1000,
               });
             }}
+            userLat={userLat}
+            userLng={userLng}
+            requestLocation={() => {
+              if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(
+                  (position) => {
+                    console.log(
+                      "User location:",
+                      position.coords.latitude,
+                      position.coords.longitude
+                    );
+                  },
+                  () => alert("No user location")
+                );
+              } else {
+                alert("Geolocation not supported");
+              }
+            }}
+            setRouteGeoJSON={setRouteGeoJSON}
+            geometry={geometry}
           />
         )}
 
