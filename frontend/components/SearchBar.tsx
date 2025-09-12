@@ -38,7 +38,7 @@ const SearchBar = ({ setQuery }: { setQuery: (query: string) => void }) => {
             fontSize: 16,
             fontWeight: 500,
             color: theme.palette.primary.main,
-            opacity: 1
+            opacity: 1,
           },
         }}
         fullWidth
