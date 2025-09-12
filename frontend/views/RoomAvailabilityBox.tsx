@@ -55,15 +55,16 @@ const RoomAvailabilityBox: React.FC<RoomAvailabilityBoxProps> = ({
   buildingId,
 }) => {
   const { room } = useRoom(`${buildingId}-${roomNumber}`);
-  const { ratings, error } = useRoomRatings(room ? room.id : "");
   let ratingValue = 0;
 
-  if (!error) {
-    if (ratings && ratings.length > 0) {
-      ratings.forEach((rating) => {
+  if (room) {
+    const ratings = useRoomRatings(room.id);
+
+    if (ratings.ratings && ratings.ratings.length > 0) {
+      ratings.ratings.forEach((rating) => {
         ratingValue += rating.overall;
       });
-      ratingValue = ratingValue / ratings.length;
+      ratingValue = ratingValue / ratings.ratings.length;
       ratingValue = Math.round(ratingValue * 10) / 10;
     }
   }
