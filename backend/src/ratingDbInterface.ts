@@ -102,7 +102,7 @@ export async function insertBuldingRating(
   }
 }
 
-export async function getRatings(roomId: string): Promise<RatingsResponse> {
+export async function getRatings(roomId: string): Promise<Rating[]> {
   if (!MONGO_URI) {
     throw new Error("MONGO_URI not found");
   }
@@ -125,15 +125,15 @@ export async function getRatings(roomId: string): Promise<RatingsResponse> {
     // Document found, return ratings array
     if (roomDoc !== null) {
       const roomRating = roomDoc as unknown as RatingsResponse;
-      return roomRating;
+      return roomRating.ratings;
     }
   } catch (error) {
     console.error("Error finding item:", error);
   } finally {
     await client.close();
   }
-  // No document found, return empty object
-  return { roomId: roomId, overallRating: 0, ratings: [] };
+  // No document found, return empty array
+  return [];
 }
 
 export async function getBuildingRatings(
