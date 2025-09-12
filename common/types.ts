@@ -90,7 +90,6 @@ export type BookingsResponse = {
 // how ratings are stored in Mongo
 export type RawRatingDocument = { 
   roomId: string, 
-  overallRating: number, 
   ratings: Rating[] 
 }
 

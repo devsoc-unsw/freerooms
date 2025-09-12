@@ -133,10 +133,13 @@ export async function getRatings(roomId: string): Promise<RatingsResponse> {
     // Document found, return ratings array
     if (roomDoc !== null) {
       const foundDoc = roomDoc as unknown as RawRatingDocument;
+      let averagedOverallRating = 0;
+
       foundDoc.ratings.map((doc: Rating) => {
         averagedRatings.cleanliness += doc.cleanliness;
         averagedRatings.location += doc.location;
         averagedRatings.quietness += doc.quietness;
+        averagedOverallRating += doc.overall;
       });
 
       const numFound = foundDoc.ratings.length;
@@ -144,11 +147,12 @@ export async function getRatings(roomId: string): Promise<RatingsResponse> {
         averagedRatings.cleanliness /= numFound;
         averagedRatings.location /= numFound;
         averagedRatings.quietness /= numFound;
+        averagedOverallRating /= numFound;
       }
 
       const res = {
         roomId: foundDoc.roomId,
-        overallRating: foundDoc.overallRating,
+        overallRating: averagedOverallRating,
         averageRating: averagedRatings,
       };
 
