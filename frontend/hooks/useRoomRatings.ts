@@ -17,7 +17,7 @@ const useRoomRatings = (roomID: string) => {
   );
 
   return {
-    ratings: data?.ratings,
+    data: data,
     error,
   };
 };
