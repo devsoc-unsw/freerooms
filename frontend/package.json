@@ -23,7 +23,7 @@
     "@reduxjs/toolkit": "^1.9.5",
     "@types/css-mediaquery": "^0.1.4",
     "antd": "^5.24.7",
-    "axios": "^1.7.4",
+    "axios": "^1.12.0",
     "css-mediaquery": "^0.1.2",
     "date-fns": "^2.29.3",
     "date-fns-tz": "^2.0.0",
