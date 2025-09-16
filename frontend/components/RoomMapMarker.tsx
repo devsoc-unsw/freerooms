@@ -12,21 +12,11 @@ import GetDirectionsButton from "./GetDirectionsButton";
 interface RoomMapMarkerProps {
   roomId: string;
   roomLocation?: (lat: number, long: number) => void;
-  userLat: number | undefined;
-  userLng: number | undefined;
-  requestLocation: () => void;
-  setRouteGeoJSON: (geojson: any) => void;
-  geometry?: any;
 }
 
 const RoomMapMarker: React.FC<RoomMapMarkerProps> = ({
   roomId,
   roomLocation,
-  userLat,
-  userLng,
-  requestLocation,
-  setRouteGeoJSON,
-  geometry,
 }) => {
   const { room } = useRoom(roomId);
   const hasFocusedRef = useRef(false);
@@ -82,15 +72,6 @@ const RoomMapMarker: React.FC<RoomMapMarkerProps> = ({
             },
           })}
         />
-        <Box sx={{ mt: 1 }}>
-          <GetDirectionsButton
-            userLat={userLat}
-            userLng={userLng}
-            requestLocation={requestLocation}
-            setRouteGeoJSON={setRouteGeoJSON}
-            geometry={geometry}
-          />
-        </Box>
       </div>
     </Marker>
   );

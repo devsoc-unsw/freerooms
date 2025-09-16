@@ -24,6 +24,7 @@ import getMapType from "../utils/getMapType"; // delete this file?
 import MapMarker from "./MapMarker";
 import RoomMapMarker from "./RoomMapMarker";
 import useMapboxNavigation from "hooks/useMapboxNavigation";
+import GetDirectionsBox from "./GetDirectionsBox";
 
 const initialViewState = {
   longitude: 151.23129,
@@ -90,17 +91,17 @@ export const MapComponent = () => {
     setRoomIdToFocus(params.get("roomId") ?? "");
   }, []);
 
-  useEffect(() => {
-    if (!userLat || !userLng || !roomIdToFocus || !isMapLoaded) return;
-    // Only set route once
-    if (routeGeoJSON && routeGeoJSON.geometry) return;
+  // useEffect(() => {
+  //   if (!userLat || !userLng || !roomIdToFocus || !isMapLoaded) return;
+  //   // Only set route once
+  //   if (routeGeoJSON && routeGeoJSON.geometry) return;
 
-    setRouteGeoJSON({
-      type: "Feature",
-      properties: {},
-      geometry,
-    });
-  }, [isMapLoaded, userLat, userLng, roomIdToFocus, geometry]);
+  //   setRouteGeoJSON({
+  //     type: "Feature",
+  //     properties: {},
+  //     geometry,
+  //   });
+  // }, [isMapLoaded, userLat, userLng, roomIdToFocus, geometry]);
 
   const style = isDarkMode
     ? "mapbox://styles/bengodw/cmcimql2101qo01sp7dricgzq"
@@ -160,26 +161,6 @@ export const MapComponent = () => {
                 duration: 1000,
               });
             }}
-            userLat={userLat}
-            userLng={userLng}
-            requestLocation={() => {
-              if ("geolocation" in navigator) {
-                navigator.geolocation.getCurrentPosition(
-                  (position) => {
-                    console.log(
-                      "User location:",
-                      position.coords.latitude,
-                      position.coords.longitude
-                    );
-                  },
-                  () => alert("No user location")
-                );
-              } else {
-                alert("Geolocation not supported");
-              }
-            }}
-            setRouteGeoJSON={setRouteGeoJSON}
-            geometry={geometry}
           />
         )}
 
@@ -202,6 +183,13 @@ export const MapComponent = () => {
           </>
         )}
       </Map>
+      <GetDirectionsBox
+        userLat={userLat}
+        userLng={userLng}
+        setRouteGeoJSON={setRouteGeoJSON}
+        geometry={geometry}
+        roomName={room?.name ?? ""}
+      />
     </div>
   );
 };

@@ -2,14 +2,13 @@
 
 import { useTheme } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import React, { useEffect } from "react";
+import React from "react";
 
 import Button from "./Button";
 
 type GetDirectionsProps = {
   userLat: number | undefined;
   userLng: number | undefined;
-  requestLocation: () => void;
   setRouteGeoJSON: (geojson: any) => void;
   geometry?: any;
 };
@@ -17,7 +16,6 @@ type GetDirectionsProps = {
 const GetDirectionsButton: React.FC<GetDirectionsProps> = ({
   userLat,
   userLng,
-  requestLocation,
   setRouteGeoJSON,
   geometry,
 }) => {
@@ -37,19 +35,9 @@ const GetDirectionsButton: React.FC<GetDirectionsProps> = ({
       });
     } else {
       // Request user location
-      requestLocation();
+      alert("User location not available.");
     }
   };
-
-  //   const handleClick = () => {
-  //     if (userLat != null && userLng != null) {
-  //       // User location available -> show route
-  //       setRouteGeoJSON();
-  //     } else {
-  //       // Request user location
-  //       requestLocation();
-  //     }
-  //   };
 
   return (
     <Button
