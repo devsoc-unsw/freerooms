@@ -13,12 +13,12 @@ const DarkModeToggle = ({ sidebarOpen }: { sidebarOpen: boolean }) => {
     <SidebarItem
       icon={
         isDarkMode ? (
-          <MoonIcon size={20} color={theme.palette.text.primary} />
-        ) : (
           <SunIcon size={20} color={theme.palette.text.primary} />
+        ) : (
+          <MoonIcon size={20} color={theme.palette.text.primary} />
         )
       }
-      label="Dark Mode"
+      label={isDarkMode ? "Light Mode" : "Dark Mode"}
       onClick={toggleDarkMode}
       sidebarOpen={sidebarOpen}
     />
