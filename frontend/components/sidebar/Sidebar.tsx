@@ -1,6 +1,5 @@
 import LogoClosed from "@frontend/public/assets/easterEggButton/logo-closed.svg";
 import LogoOpen from "@frontend/public/assets/easterEggButton/logo-open.svg";
-import MenuIcon from "@mui/icons-material/Menu";
 import {
   Box,
   CssBaseline,
@@ -14,9 +13,10 @@ import {
 import { CSSObject, styled, Theme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {
-  BookOpenIcon,
+  DoorOpenIcon,
   LayoutGridIcon,
   MapIcon,
+  MenuIcon,
   PanelLeftIcon,
 } from "lucide-react";
 import Image from "next/image";
@@ -26,6 +26,7 @@ import React from "react";
 
 import DarkModeToggle from "./DarkModeToggle";
 import SidebarItem from "./SidebarItem";
+import { Button } from "antd";
 
 const drawerWidth = 250;
 
@@ -67,7 +68,7 @@ const navItems = [
   {
     label: "Browse Buildings",
     href: "/browse",
-    icon: <BookOpenIcon size={20} />,
+    icon: <LayoutGridIcon size={20} />,
   },
   {
     label: "View Map",
@@ -77,7 +78,7 @@ const navItems = [
   {
     label: "All Rooms",
     href: "/allRooms",
-    icon: <LayoutGridIcon size={20} />,
+    icon: <DoorOpenIcon size={20} />,
   },
 ];
 
@@ -125,7 +126,12 @@ const SidebarContent = ({
                 alt="Logo"
                 height={32}
               />
-              <Typography variant="h6" fontWeight={600} ml={2}>
+              <Typography
+                variant="h6"
+                fontWeight={600}
+                ml={2}
+                sx={{ color: theme.palette.primary.main }}
+              >
                 Freerooms
               </Typography>
             </Box>
@@ -135,7 +141,11 @@ const SidebarContent = ({
           onClick={() => setSidebarOpen(!sidebarOpen)}
           color="inherit"
         >
-          <PanelLeftIcon size={20} />
+          {sidebarOpen ? (
+            <PanelLeftIcon size={20} />
+          ) : (
+            <PanelLeftIcon size={20} />
+          )}
         </IconButton>
       </Box>
 
@@ -195,17 +205,16 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
           <IconButton onClick={toggleMobileSidebar} color="inherit">
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            fontWeight={600}
-            sx={{ ml: theme.spacing(2) }}
-          >
-            Freerooms
-          </Typography>
-          <Box sx={{ flexGrow: 1 }} />
           <IconButton LinkComponent={Link} href="/">
             <Image src={LogoOpen} alt="Logo" height={32} width={32} />
           </IconButton>
+          <Typography
+            variant="h6"
+            fontWeight={600}
+            sx={{ color: theme.palette.primary.main }}
+          >
+            Freerooms
+          </Typography>
         </Box>
       )}
 
