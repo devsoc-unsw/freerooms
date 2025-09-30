@@ -132,11 +132,11 @@ const BuildingDrawer: React.FC = () => {
 
           <RoomBox>
             {rooms ? (
-              Object.keys(rooms).map((roomNumber) => (
+              Object.keys(rooms.roomStatuses).map((roomNumber) => (
                 <RoomAvailabilityBox
                   key={roomNumber}
                   roomNumber={roomNumber}
-                  roomStatus={rooms[roomNumber]}
+                  roomStatus={rooms.roomStatuses[roomNumber]}
                   buildingId={building.id}
                 />
               ))

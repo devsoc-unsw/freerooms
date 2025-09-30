@@ -57,12 +57,12 @@ export const getAllRoomStatus = async (
     // Skip building if it does not match filter
     const roomLocation = +buildingId.substring(3) < UPPER ? "lower" : "upper";
     if (filters.location && filters.location != roomLocation) {
-      result[buildingId] = {};
+      result[buildingId] = { numAvailable: 0, roomStatuses: {} };
       continue;
     }
 
     const buildingRooms = buildingData[buildingId].rooms;
-    result[buildingId] = {};
+    result[buildingId] = { numAvailable: 0, roomStatuses: {} };
     for (const roomNumber in buildingRooms) {
       const roomData = buildingRooms[roomNumber];
 
@@ -80,7 +80,8 @@ export const getAllRoomStatus = async (
         filters.duration || 0
       );
       if (status !== null) {
-        result[buildingId][roomNumber] = status;
+        if (status.status === "free") result[buildingId].numAvailable++;
+        result[buildingId].roomStatuses[roomNumber] = status;
       }
     }
   }
