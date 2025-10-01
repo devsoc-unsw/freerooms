@@ -43,7 +43,10 @@ const TimePicker = () => {
                 fontFamily: "TT Commons Pro Trial Variable",
                 fontSize: 16,
                 fontWeight: 500,
-                color: theme.palette.mode === "light" ? "#6C6562" : "#FFFFFF",
+                color:
+                  theme.palette.mode === "light"
+                    ? theme.palette.text.secondary
+                    : "#FFFFFF",
               },
             },
           },
