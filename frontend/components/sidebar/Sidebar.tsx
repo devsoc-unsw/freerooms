@@ -1,5 +1,7 @@
 import LogoClosed from "@frontend/public/assets/easterEggButton/logo-closed.svg";
 import LogoOpen from "@frontend/public/assets/easterEggButton/logo-open.svg";
+import { useDispatch } from "@frontend/redux/hooks";
+import { openSearch } from "@frontend/redux/searchOpenSlice";
 import {
   Box,
   CssBaseline,
@@ -18,6 +20,7 @@ import {
   MapIcon,
   MenuIcon,
   PanelLeftIcon,
+  SearchIcon,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -26,7 +29,6 @@ import React from "react";
 
 import DarkModeToggle from "./DarkModeToggle";
 import SidebarItem from "./SidebarItem";
-import { Button } from "antd";
 
 const drawerWidth = 250;
 
@@ -66,6 +68,10 @@ const Drawer = styled(MuiDrawer, {
 
 const navItems = [
   {
+    label: "Search",
+    icon: <SearchIcon size={20} />,
+  },
+  {
     label: "Browse Buildings",
     href: "/browse",
     icon: <LayoutGridIcon size={20} />,
@@ -92,6 +98,7 @@ const SidebarContent = ({
   const theme = useTheme();
   const pathname = usePathname();
   const [logoHover, setLogoHover] = React.useState(false);
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -158,10 +165,13 @@ const SidebarContent = ({
 
         {navItems.map(({ label, href, icon }) => (
           <SidebarItem
-            key={href}
+            key={label}
             icon={icon}
             label={label}
             href={href}
+            onClick={
+              label === "Search" ? () => dispatch(openSearch()) : undefined
+            }
             sidebarOpen={sidebarOpen}
             active={pathname === href}
           />

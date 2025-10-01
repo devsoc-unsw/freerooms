@@ -55,19 +55,8 @@ const RoomAvailabilityBox: React.FC<RoomAvailabilityBoxProps> = ({
   buildingId,
 }) => {
   const { room } = useRoom(`${buildingId}-${roomNumber}`);
-  let ratingValue = 0;
-
-  if (room) {
-    const ratings = useRoomRatings(room.id);
-
-    if (ratings.ratings && ratings.ratings.length > 0) {
-      ratings.ratings.forEach((rating) => {
-        ratingValue += rating.overall;
-      });
-      ratingValue = ratingValue / ratings.ratings.length;
-      ratingValue = Math.round(ratingValue * 10) / 10;
-    }
-  }
+  const { data } = useRoomRatings(room ? room.id : "");
+  let ratingValue = data ? data.overallRating : 0;
 
   return (
     <Link href={`/room/${buildingId}-${roomNumber}`}>
