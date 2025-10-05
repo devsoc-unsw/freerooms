@@ -22,8 +22,6 @@ const RoomCard: React.FC<RoomCardProps> = ({
     nav.navigate("Room", { roomName, roomId, status });
   };
 
-  //   console.log(roomName);
-
   const date = new Date(status.endtime);
   const hoursMinutes = date.toLocaleTimeString("en-AU", {
     hour: "numeric",
