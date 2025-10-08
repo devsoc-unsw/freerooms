@@ -84,7 +84,7 @@ export const Map = () => {
 
   const renderMap = () => {
     return (
-      <div style={{ position: "relative", height: "100%" }}>
+      <div style={{ position: "relative", height: "100svh" }}>
         <GoogleMap
           mapContainerStyle={{ height: "100%" }}
           center={center}

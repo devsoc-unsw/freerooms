@@ -20,7 +20,7 @@ const useRoomStatus = (roomId: string) => {
   }
 
   // Try find building
-  const roomStatus = status[roomNumber];
+  const roomStatus = status.roomStatuses[roomNumber];
   if (!roomStatus) {
     return {
       status: undefined,
