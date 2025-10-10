@@ -64,7 +64,7 @@ const CardList: React.FC<{
       .filter(
         (building) =>
           building.name.toLowerCase().includes(query.toLowerCase()) &&
-          Object.keys(persistedData[building.id]).length > 0
+          Object.keys(persistedData[building.id].roomStatuses).length > 0
       )
       .sort((a, b) => {
         switch (sort) {
