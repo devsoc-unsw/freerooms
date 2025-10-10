@@ -18,7 +18,7 @@ const SearchBar = ({ setQuery }: { setQuery: (query: string) => void }) => {
     >
       <TextField
         id="input-with-sx"
-        placeholder="Looking for a free room?"
+        placeholder="Search for a building..."
         sx={{
           "& .MuiOutlinedInput-root": {
             height: 56,
@@ -30,8 +30,8 @@ const SearchBar = ({ setQuery }: { setQuery: (query: string) => void }) => {
             },
           },
           "& .MuiOutlinedInput-notchedOutline": {
-            borderColor: theme.palette.primary.light,
-            borderWidth: 2,
+            borderColor: theme.palette.primary.main,
+            borderWidth: 1,
           },
           "& .MuiOutlinedInput-input::placeholder": {
             fontFamily: "TT Commons Pro Trial Variable",

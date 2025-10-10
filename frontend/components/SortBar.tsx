@@ -21,13 +21,12 @@ const StyledSortButton = styled(Box)<BoxProps>(({ theme }) => ({
   justifyItems: "center",
   position: "relative",
   borderRadius: 8,
-  borderWidth: 2,
+  borderWidth: 1,
   borderStyle: "solid",
-  borderColor: theme.palette.primary.light,
+  borderColor: theme.palette.primary.main,
   zIndex: 10,
   ":hover": {
     cursor: "pointer",
-    borderColor: theme.palette.primary.main,
   },
 }));
 

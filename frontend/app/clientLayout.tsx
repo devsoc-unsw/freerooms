@@ -51,7 +51,7 @@ const ClientLayout: React.FC<{
       ...(mode === "light"
         ? {
             primary: {
-              main: "#D4613C",
+              main: "#EF6C02",
               light: "#F3D0C5",
             },
             secondary: {
