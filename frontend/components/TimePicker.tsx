@@ -37,7 +37,7 @@ const TimePicker = () => {
               },
               "& .MuiOutlinedInput-notchedOutline": {
                 borderColor: "#CBC4C1",
-                borderWidth: 2,
+                borderWidth: 1,
               },
               "& .MuiInputBase-input": {
                 fontFamily: "TT Commons Pro Trial Variable",
@@ -47,6 +47,11 @@ const TimePicker = () => {
                   theme.palette.mode === "light"
                     ? theme.palette.text.secondary
                     : "#FFFFFF",
+              },
+              "& .MuiOutlinedInput-root": {
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#CBC4C1",
+                },
               },
             },
           },

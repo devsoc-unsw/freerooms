@@ -32,7 +32,7 @@ const DatePicker = () => {
           },
           "& .MuiOutlinedInput-notchedOutline": {
             borderColor: "#CBC4C1",
-            borderWidth: 2,
+            borderWidth: 1,
           },
           "& .MuiInputBase-input": {
             fontFamily: "TT Commons Pro Trial Variable",
@@ -42,6 +42,11 @@ const DatePicker = () => {
           },
           "& .MuiInputAdornment-root svg": {
             color: theme.palette.mode === "light" ? "#6C6562" : "#FFFFFF",
+          },
+          "& .MuiOutlinedInput-root": {
+            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+              borderColor: "#CBC4C1",
+            },
           },
         }}
         aria-label="date-picker"
