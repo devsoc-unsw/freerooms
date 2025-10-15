@@ -183,13 +183,17 @@ export const MapComponent = () => {
           </>
         )}
       </Map>
-      <GetDirectionsBox
-        userLat={userLat}
-        userLng={userLng}
-        setRouteGeoJSON={setRouteGeoJSON}
-        geometry={geometry}
-        roomName={room?.name ?? ""}
-      />
+      {room && (
+        <>
+          <GetDirectionsBox
+            userLat={userLat}
+            userLng={userLng}
+            setRouteGeoJSON={setRouteGeoJSON}
+            geometry={geometry}
+            room={room}
+          />
+        </>
+      )}
     </div>
   );
 };

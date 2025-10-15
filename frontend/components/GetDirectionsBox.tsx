@@ -6,14 +6,15 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import GetDirectionsButton from "./GetDirectionsButton";
 import Typography from "@mui/material/Typography";
-import { useDistanceTime } from "hooks/useDistanceTime";
+import { Room } from "@common/types";
+import useMapboxNavigation from "hooks/useMapboxNavigation";
 
 type GetDirectionsBoxProps = {
   userLat: number | undefined;
   userLng: number | undefined;
   setRouteGeoJSON: (geojson: any) => void;
   geometry?: any;
-  roomName: string;
+  room: Room;
 };
 
 const GetDirectionsBox: React.FC<GetDirectionsBoxProps> = ({
@@ -21,19 +22,16 @@ const GetDirectionsBox: React.FC<GetDirectionsBoxProps> = ({
   userLng,
   setRouteGeoJSON,
   geometry,
-  roomName,
+  room,
 }) => {
   const [open, setOpen] = useState(true);
-  const { distance_km, duration_mins } = useDistanceTime(
+  const { distance_km, duration_mins } = useMapboxNavigation(
     userLat,
     userLng,
-    geometry
+    room
   );
 
-  console.log("User Latitude:", userLat);
-  console.log("User Longitude:", userLng);
-
-  if (!open || !roomName) return null;
+  if (!open || !room.name) return null;
 
   return (
     <Box
@@ -99,7 +97,7 @@ const GetDirectionsBox: React.FC<GetDirectionsBoxProps> = ({
               color: "black",
             }}
           >
-            {roomName || "Room"}
+            {room.name || "Room"}
           </Typography>
         </Box>
         <IconButton
@@ -128,12 +126,12 @@ const GetDirectionsBox: React.FC<GetDirectionsBoxProps> = ({
         <Box
           sx={{
             display: "flex",
-            alignItems: "flex-start",
+            alignItems: "center",
             justifyContent: "flex-start",
             borderRadius: 10,
             backgroundColor: "#fde7e1",
             color: "rgba(212, 97, 60, 1)",
-            width: 93,
+            width: "auto",
             height: 32,
             px: "12px",
             py: "6px",
@@ -155,18 +153,21 @@ const GetDirectionsBox: React.FC<GetDirectionsBoxProps> = ({
             <path d="M12 6v6l4 2" />
             <circle cx="12" cy="12" r="10" />
           </svg>
-          <Typography sx={{ fontSize: "17px", pl: "4px" }}>
-            {duration_mins !== null ? `${duration_mins.toFixed(0)} mins` : "-"}
+          <Typography sx={{ fontSize: "13px", pl: "4px" }}>
+            {duration_mins !== undefined
+              ? `${duration_mins.toFixed(3)} mins`
+              : "-"}
           </Typography>
         </Box>
         <Box
           sx={{
             display: "flex",
+            alignItems: "center",
             justifyContent: "flex-start",
             borderRadius: 10,
             backgroundColor: "#fde7e1",
             color: "#D4613C",
-            width: 93,
+            width: "auto",
             height: 32,
             px: "12px",
             py: "6px",
@@ -190,8 +191,10 @@ const GetDirectionsBox: React.FC<GetDirectionsBoxProps> = ({
             <path d="M16 17h4" />
             <path d="M4 13h4" />
           </svg>
-          <Typography sx={{ fontSize: "17px", pl: "4px" }}>
-            {distance_km !== null ? `${distance_km.toFixed(1)} km` : "-"}
+          <Typography sx={{ fontSize: "13px", pl: "4px" }}>
+            {distance_km !== undefined
+              ? `${Number(distance_km.toFixed(3))} km`
+              : "-"}
           </Typography>
         </Box>
       </Box>
