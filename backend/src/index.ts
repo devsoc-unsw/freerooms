@@ -1,5 +1,10 @@
 import { BuildingRatingsResponse } from "@common/types";
 import cors from "cors";
+import fetch from "node-fetch";
+
+import dotenv from "dotenv";
+dotenv.config();
+
 import express, {
   json,
   NextFunction,
@@ -155,6 +160,84 @@ app.get(
     next();
   })
 );
+
+// Route to get distance and time from source to destination on map
+app.get(
+  "/api/distance",
+  asyncHandler(async (req: Request, res: Response) => {
+    const { src, dest } = req.query;
+
+    if (!src || !dest) {
+      res
+        .status(400)
+        .json({ error: "Missing source or destination coordinates" });
+      return;
+    }
+
+    const MAPBOX_TOKEN = process.env.MAPBOX_TOKEN;
+    const travelType = "walking";
+    const url = `https://api.mapbox.com/directions/v5/mapbox/${travelType}/${src};${dest}?access_token=${MAPBOX_TOKEN}`;
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    // Handle API errors
+    if (!data.routes || data.routes.length === 0) {
+      res.status(500).json({ error: "No route found" });
+      return;
+    }
+
+    const route = data.routes[0];
+    const distance = route.distance;
+    const duration = route.duration;
+
+    res.json({
+      src,
+      dest,
+      distance_km: distance ? (distance / 1000).toFixed(2) : null,
+      duration_minutes: duration ? (duration / 60).toFixed(1) : null,
+    });
+  })
+);
+
+// // Gets distance and time between src and dest on map
+// app.get(
+//   "/api/distance",
+//   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+//     const { src, dest } = req.query;
+
+//     console.log("Query params:", req.query);
+
+//     if (!src || !dest) {
+//       res.status(400).json({ error: "Missing source or destination coordinates" });
+//       return;
+//     }
+
+//     const MAPBOX_TOKEN =  process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
+//     const travelType = "mapbox/walking";
+//     const url = `https://api.mapbox.com/directions-matrix/v1/${travelType}/${src};${dest}?sources=0&destinations=1&annotations=distance,duration&access_token=${MAPBOX_TOKEN}`;
+
+//     const response = await fetch(url);
+//     const data = await response.json();
+
+//     if (data.code !== "Ok") {
+//       res.status(500).json({ error: data.message || "Mapbox API error" });
+//       return;
+//     }
+
+//     // Get data from the matrix
+//     const distance = data.distances?.[0]?.[0];
+//     const duration = data.durations?.[0]?.[0];
+
+//     res.send({
+//       src,
+//       dest,
+//       distance_km: distance ? (distance / 1000).toFixed(2) : null,
+//       duration_mins: duration ? (duration / 60).toFixed(1) : null,
+//     });
+//     next();
+//   })
+// );
 
 // Error-handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {

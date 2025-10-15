@@ -6,6 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import GetDirectionsButton from "./GetDirectionsButton";
 import Typography from "@mui/material/Typography";
+import { useDistanceTime } from "hooks/useDistanceTime";
 
 type GetDirectionsBoxProps = {
   userLat: number | undefined;
@@ -23,6 +24,14 @@ const GetDirectionsBox: React.FC<GetDirectionsBoxProps> = ({
   roomName,
 }) => {
   const [open, setOpen] = useState(true);
+  const { distance_km, duration_mins } = useDistanceTime(
+    userLat,
+    userLng,
+    geometry
+  );
+
+  console.log("User Latitude:", userLat);
+  console.log("User Longitude:", userLng);
 
   if (!open || !roomName) return null;
 
@@ -43,8 +52,8 @@ const GetDirectionsBox: React.FC<GetDirectionsBoxProps> = ({
         alignItems: "center",
         zIndex: 999,
         minWidth: 260,
-        width: 288,
-        minHeight: 126,
+        width: 360,
+        minHeight: 158,
         height: "auto",
         border: "1px solid #F3D0C5",
       }}
@@ -55,7 +64,7 @@ const GetDirectionsBox: React.FC<GetDirectionsBoxProps> = ({
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          mb: "10px",
+          mb: "14px",
         }}
       >
         <Box
@@ -67,8 +76,8 @@ const GetDirectionsBox: React.FC<GetDirectionsBoxProps> = ({
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="14"
-            height="14"
+            width="17"
+            height="17"
             viewBox="0 0 24 24"
             fill="none"
             stroke="#e76b04"
@@ -76,6 +85,7 @@ const GetDirectionsBox: React.FC<GetDirectionsBoxProps> = ({
             stroke-linecap="round"
             stroke-linejoin="round"
             className="lucide lucide-map-pin-icon lucide-map-pin"
+            style={{ marginLeft: "5px", marginTop: "-1px" }}
           >
             <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
             <circle cx="12" cy="10" r="3" />
@@ -84,7 +94,7 @@ const GetDirectionsBox: React.FC<GetDirectionsBoxProps> = ({
             variant="subtitle1"
             sx={{
               fontWeight: "bold",
-              fontSize: 15,
+              fontSize: 18,
               lineHeight: 1,
               color: "black",
             }}
@@ -112,7 +122,7 @@ const GetDirectionsBox: React.FC<GetDirectionsBoxProps> = ({
           alignItems: "flex-start",
           pl: "2px",
           width: "100%",
-          mb: "13px",
+          mb: "20px",
         }}
       >
         <Box
@@ -122,17 +132,18 @@ const GetDirectionsBox: React.FC<GetDirectionsBoxProps> = ({
             justifyContent: "flex-start",
             borderRadius: 10,
             backgroundColor: "#fde7e1",
-            color: "#D4613C",
-            width: 74,
-            height: 25,
+            color: "rgba(212, 97, 60, 1)",
+            width: 93,
+            height: 32,
             px: "12px",
             py: "6px",
+            marginLeft: "2px",
           }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="15"
-            height="15"
+            width="17"
+            height="17"
             viewBox="0 0 24 24"
             fill="none"
             stroke="#e76b04"
@@ -144,7 +155,9 @@ const GetDirectionsBox: React.FC<GetDirectionsBoxProps> = ({
             <path d="M12 6v6l4 2" />
             <circle cx="12" cy="12" r="10" />
           </svg>
-          <Typography sx={{ fontSize: "10px", pl: "4px" }}>20mins</Typography>
+          <Typography sx={{ fontSize: "17px", pl: "4px" }}>
+            {duration_mins !== null ? `${duration_mins.toFixed(0)} mins` : "-"}
+          </Typography>
         </Box>
         <Box
           sx={{
@@ -153,8 +166,8 @@ const GetDirectionsBox: React.FC<GetDirectionsBoxProps> = ({
             borderRadius: 10,
             backgroundColor: "#fde7e1",
             color: "#D4613C",
-            width: 74,
-            height: 25,
+            width: 93,
+            height: 32,
             px: "12px",
             py: "6px",
             ml: "8px",
@@ -162,8 +175,8 @@ const GetDirectionsBox: React.FC<GetDirectionsBoxProps> = ({
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="15"
-            height="15"
+            width="17"
+            height="17"
             viewBox="0 0 24 24"
             fill="none"
             stroke="#e76b04"
@@ -177,7 +190,9 @@ const GetDirectionsBox: React.FC<GetDirectionsBoxProps> = ({
             <path d="M16 17h4" />
             <path d="M4 13h4" />
           </svg>
-          <Typography sx={{ fontSize: "10px", pl: "4px" }}>500m</Typography>
+          <Typography sx={{ fontSize: "17px", pl: "4px" }}>
+            {distance_km !== null ? `${distance_km.toFixed(1)} km` : "-"}
+          </Typography>
         </Box>
       </Box>
 

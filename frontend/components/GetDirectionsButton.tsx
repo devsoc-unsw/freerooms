@@ -46,14 +46,14 @@ const GetDirectionsButton: React.FC<GetDirectionsProps> = ({
       onClick={handleClick}
       sx={{
         backgroundColor: "#100100100",
-        height: 27,
-        width: 250,
+        height: 34,
+        width: 320,
         "&:hover": {
           backgroundColor: "#EF6C00",
         },
       }}
     >
-      <Typography sx={{ fontSize: "10px", fontWeight: "bold" }}>
+      <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
         Get Directions
       </Typography>
     </Button>
