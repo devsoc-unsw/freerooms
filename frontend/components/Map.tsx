@@ -4,27 +4,27 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { Building } from "@common/types";
 import Box from "@mui/material/Box";
 import { DarkModeContext } from "app/clientLayout";
+import useMapboxNavigation from "hooks/useMapboxNavigation";
+import useRoom from "hooks/useRoom";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import {
+  Layer,
   LngLatBoundsLike,
   Map,
   MapRef,
   Marker,
   Source,
-  Layer,
 } from "react-map-gl/mapbox";
 import { useDebounceValue } from "usehooks-ts";
 
 import { MAPBOX_ACCESS_TOKEN } from "../config";
 import useBuildings from "../hooks/useBuildings";
 import useUserLocation from "../hooks/useUserLocation";
-import useRoom from "hooks/useRoom";
 import calculateDistance from "../utils/calculateDistance";
 import getMapType from "../utils/getMapType"; // delete this file?
+import GetDirectionsBox from "./GetDirectionsBox";
 import MapMarker from "./MapMarker";
 import RoomMapMarker from "./RoomMapMarker";
-import useMapboxNavigation from "hooks/useMapboxNavigation";
-import GetDirectionsBox from "./GetDirectionsBox";
 
 const initialViewState = {
   longitude: 151.23129,

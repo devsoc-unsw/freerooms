@@ -1,13 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import { Room } from "@common/types";
+import CloseIcon from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
-import GetDirectionsButton from "./GetDirectionsButton";
 import Typography from "@mui/material/Typography";
-import { Room } from "@common/types";
 import useMapboxNavigation from "hooks/useMapboxNavigation";
+import React, { useState } from "react";
+
+import GetDirectionsButton from "./GetDirectionsButton";
 
 type GetDirectionsBoxProps = {
   userLat: number | undefined;

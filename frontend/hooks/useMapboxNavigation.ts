@@ -1,7 +1,8 @@
-import mbxDirections from "@mapbox/mapbox-sdk/services/directions";
-import { MAPBOX_ACCESS_TOKEN } from "../config";
 import { Room } from "@common/types";
+import mbxDirections from "@mapbox/mapbox-sdk/services/directions";
 import useSWRImmutable from "swr/immutable";
+
+import { MAPBOX_ACCESS_TOKEN } from "../config";
 
 type MapboxRouteData = {
   geometry?: GeoJSON.LineString | GeoJSON.MultiLineString;
