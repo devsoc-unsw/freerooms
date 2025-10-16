@@ -4,6 +4,7 @@ import { Room } from "@common/types";
 import CloseIcon from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
+import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import useMapboxNavigation from "hooks/useMapboxNavigation";
 import React, { useState } from "react";
@@ -26,6 +27,8 @@ const GetDirectionsBox: React.FC<GetDirectionsBoxProps> = ({
   room,
 }) => {
   const [open, setOpen] = useState(true);
+  const theme = useTheme();
+  const isDarkMode = theme.palette.mode === "dark";
   const { distance_km, duration_mins } = useMapboxNavigation(
     userLat,
     userLng,
@@ -41,7 +44,8 @@ const GetDirectionsBox: React.FC<GetDirectionsBoxProps> = ({
         bottom: 30,
         left: "50%",
         transform: "translateX(-50%)",
-        backgroundColor: "#FFFBF9",
+        backgroundColor: isDarkMode ? "#121212" : "#FFFBF9",
+        color: isDarkMode ? "#FFFFFF" : "black",
         boxShadow: 3,
         borderRadius: 2,
         p: 2,
@@ -54,7 +58,7 @@ const GetDirectionsBox: React.FC<GetDirectionsBoxProps> = ({
         width: 360,
         minHeight: 158,
         height: "auto",
-        border: "1px solid #F3D0C5",
+        border: isDarkMode ? "1px solid #121212" : "1px solid #F3D0C5",
       }}
     >
       <Box
@@ -95,7 +99,7 @@ const GetDirectionsBox: React.FC<GetDirectionsBoxProps> = ({
               fontWeight: "bold",
               fontSize: 18,
               lineHeight: 1,
-              color: "black",
+              color: isDarkMode ? "#fff" : "black",
             }}
           >
             {room.name || "Room"}
@@ -105,9 +109,11 @@ const GetDirectionsBox: React.FC<GetDirectionsBoxProps> = ({
           size="small"
           onClick={() => setOpen(false)}
           sx={{
-            color: "#707070",
+            color: isDarkMode ? "#aaa" : "#707070",
             "&:hover": {
-              backgroundColor: "rgba(0, 0, 0, 0.1)",
+              backgroundColor: isDarkMode
+                ? "rgba(255, 255, 255, 0.3)"
+                : "rgba(0, 0, 0, 0.1)",
             },
           }}
         >
@@ -156,7 +162,7 @@ const GetDirectionsBox: React.FC<GetDirectionsBoxProps> = ({
           </svg>
           <Typography sx={{ fontSize: "13px", pl: "4px" }}>
             {duration_mins !== undefined
-              ? `${duration_mins.toFixed(3)} mins`
+              ? `${duration_mins.toFixed(0)} mins`
               : "-"}
           </Typography>
         </Box>
@@ -194,7 +200,7 @@ const GetDirectionsBox: React.FC<GetDirectionsBoxProps> = ({
           </svg>
           <Typography sx={{ fontSize: "13px", pl: "4px" }}>
             {distance_km !== undefined
-              ? `${Number(distance_km.toFixed(3))} km`
+              ? `${Number(distance_km.toFixed(2))} km`
               : "-"}
           </Typography>
         </Box>
