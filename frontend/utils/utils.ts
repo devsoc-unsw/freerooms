@@ -8,11 +8,7 @@ export const getNumFreerooms = (
 ): number => {
   if (buildingStatus === undefined) return INITIALISING;
 
-  let freerooms = 0;
-  for (const room of Object.values(buildingStatus)) {
-    if (room.status === "free") freerooms++;
-  }
-  return freerooms;
+  return buildingStatus.numAvailable;
 };
 
 export const getTotalRooms = (
@@ -20,5 +16,5 @@ export const getTotalRooms = (
 ): number => {
   if (buildingStatus === undefined) return INITIALISING;
 
-  return Object.values(buildingStatus).length;
+  return Object.values(buildingStatus.roomStatuses).length;
 };
