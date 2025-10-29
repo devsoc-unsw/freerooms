@@ -17,6 +17,7 @@ ARG NEXT_PUBLIC_STAGING=false
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY /frontend .
+COPY /frontend/.env ./.env
 COPY common ../common
 
 # Set the environment variable for Next.js build
