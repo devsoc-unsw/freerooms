@@ -30,7 +30,7 @@ import React from "react";
 import DarkModeToggle from "./DarkModeToggle";
 import SidebarItem from "./SidebarItem";
 
-const drawerWidth = 250;
+const drawerWidth = 230;
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -105,7 +105,7 @@ const SidebarContent = ({
       <Box
         display="flex"
         alignItems="center"
-        justifyContent={sidebarOpen ? "space-between" : "center"}
+        justifyContent="center"
         px={theme.spacing(2)}
         py={theme.spacing(2)}
       >
@@ -116,7 +116,6 @@ const SidebarContent = ({
               display="flex"
               alignItems="center"
               gap={theme.spacing(1.5)}
-              pl={theme.spacing(1.5)}
               sx={{
                 textDecoration: "none",
                 color: theme.palette.text.primary,
@@ -128,19 +127,28 @@ const SidebarContent = ({
               onMouseEnter={() => setLogoHover(true)}
               onMouseLeave={() => setLogoHover(false)}
             >
-              <Image
-                src={logoHover ? LogoClosed : LogoOpen}
-                alt="Logo"
-                height={32}
-              />
-              <Typography
-                variant="h6"
-                fontWeight={600}
-                ml={2}
-                sx={{ color: theme.palette.primary.main }}
+              <div
+                style={{
+                  display: "flex",
+                  width: "100%",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: theme.spacing(1),
+                }}
               >
-                Freerooms
-              </Typography>
+                <Image
+                  src={logoHover ? LogoClosed : LogoOpen}
+                  alt="Logo"
+                  height={30}
+                />
+                <Typography
+                  variant="h5"
+                  fontWeight={600}
+                  sx={{ color: theme.palette.primary.main }}
+                >
+                  Freerooms
+                </Typography>
+              </div>
             </Box>
           </Link>
         ) : (
@@ -152,7 +160,9 @@ const SidebarContent = ({
         )}
       </Box>
 
-      <Divider sx={{ backgroundColor: theme.palette.divider }} />
+      <Divider
+        sx={{ backgroundColor: theme.palette.divider, mx: theme.spacing(2) }}
+      />
 
       <List sx={{ px: theme.spacing(1), pt: theme.spacing(1) }}>
         {/* TODO turn this into a custom component */}
@@ -254,6 +264,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
           display: { xs: "block", md: "none" },
           "& .MuiDrawer-paper": {
             width: drawerWidth,
+            border: "none",
             backgroundColor: theme.palette.background.default,
           },
         }}
