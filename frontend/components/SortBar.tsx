@@ -85,7 +85,6 @@ const SortBar: React.FC<{
           <Typography
             sx={{
               color: (theme) => theme.palette.primary.main,
-              fontFamily: "TT Commons Pro Trial Variable",
               fontSize: 16,
               fontWeight: 500,
             }}
@@ -99,7 +98,6 @@ const SortBar: React.FC<{
               <StyledHeader>
                 <Typography
                   sx={{
-                    fontFamily: "TT Commons Pro Trial Variable",
                     fontSize: 18,
                     fontWeight: 700,
                   }}
@@ -121,7 +119,6 @@ const SortBar: React.FC<{
                       cursor: "pointer",
 
                       "& .MuiFormControlLabel-label": {
-                        fontFamily: "TT Commons Pro Trial Variable",
                         fontSize: 14,
                         fontWeight: 500,
                       },

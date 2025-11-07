@@ -37,7 +37,6 @@ const DropdownSelections: React.FC<{
       >
         <Typography
           sx={{
-            fontFamily: "TT Commons Pro Trial Variable",
             fontSize: 14,
             fontWeight: 500,
           }}
@@ -76,7 +75,6 @@ const DropdownSelections: React.FC<{
 
             <Typography
               sx={{
-                fontFamily: "TT Commons Pro Trial Variable",
                 fontSize: 14,
                 fontWeight: 400,
               }}

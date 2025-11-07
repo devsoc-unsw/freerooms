@@ -40,7 +40,6 @@ const TimePicker = () => {
                 borderWidth: 1,
               },
               "& .MuiInputBase-input": {
-                fontFamily: "TT Commons Pro Trial Variable",
                 fontSize: 16,
                 fontWeight: 500,
                 color:

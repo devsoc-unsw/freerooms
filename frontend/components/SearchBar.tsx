@@ -34,7 +34,6 @@ const SearchBar = ({ setQuery }: { setQuery: (query: string) => void }) => {
             borderWidth: 1,
           },
           "& .MuiOutlinedInput-input::placeholder": {
-            fontFamily: "TT Commons Pro Trial Variable",
             fontSize: 16,
             fontWeight: 500,
             color: theme.palette.primary.main,

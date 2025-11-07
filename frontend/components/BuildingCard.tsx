@@ -94,7 +94,6 @@ const DetailPill = styled(Box)<BoxProps>(({ theme }) => ({
 }));
 
 const DetailPillText = styled(Typography)<TypographyProps>(({ theme }) => ({
-  fontFamily: "TT Commons Pro Trial Variable",
   fontSize: 12,
   fontWeight: 500,
   color: `${theme.palette.mode === "light" ? theme.palette.primary.main : theme.palette.text.primary}`,
@@ -156,7 +155,6 @@ const BuildingCard: React.FC<{
               ) : null}
               <Typography
                 sx={{
-                  fontFamily: "TT Commons Pro Trial Variable",
                   fontWeight: 600,
                   fontSize: 12,
                   paddingBottom: "2px",
@@ -178,7 +176,6 @@ const BuildingCard: React.FC<{
           <NameRatingBox>
             <Typography
               sx={(theme) => ({
-                fontFamily: "TT Commons Pro Trial Variable",
                 fontWeight: 700,
                 fontSize: 15,
                 color: theme.palette.mode === "light" ? "#632410" : "#ffffff",
@@ -203,7 +200,6 @@ const BuildingCard: React.FC<{
           <>
             <Typography
               sx={(theme) => ({
-                fontFamily: "TT Commons Pro Trial Variable",
                 fontWeight: 700,
                 fontSize: 20,
                 color: theme.palette.mode === "light" ? "#632410" : "#ffffff",

@@ -113,7 +113,6 @@ const FilterBar = () => {
           <Typography
             sx={{
               color: (theme) => theme.palette.primary.main,
-              fontFamily: "TT Commons Pro Trial Variable",
               fontSize: 16,
               fontWeight: 500,
             }}
@@ -127,7 +126,6 @@ const FilterBar = () => {
               <StyledHeader>
                 <Typography
                   sx={{
-                    fontFamily: "TT Commons Pro Trial Variable",
                     fontSize: 18,
                     fontWeight: 700,
                   }}
@@ -138,7 +136,6 @@ const FilterBar = () => {
                   color="primary"
                   sx={{
                     "&:hover": { cursor: "pointer" },
-                    fontFamily: "TT Commons Pro Trial Variable",
                     fontSize: 16,
                   }}
                   onClick={() => dispatch(clearFilters())}

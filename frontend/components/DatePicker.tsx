@@ -35,7 +35,6 @@ const DatePicker = () => {
             borderWidth: 1,
           },
           "& .MuiInputBase-input": {
-            fontFamily: "TT Commons Pro Trial Variable",
             fontSize: 16,
             fontWeight: 500,
             color: theme.palette.mode === "light" ? "#6C6562" : "#FFFFFF",
