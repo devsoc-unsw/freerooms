@@ -169,10 +169,10 @@
     U+FFFD;
 }
 
-/* */
+/* TT Commons Pro Trial Variable */
 @font-face {
   font-family: "TT Commons Pro Trial Variable";
   font-style: normal;
   font-weight: 100 900;
-  src: url("/fonts/TTCommonsProTrial3-400.ttf") format("truetype");
+  src: url("/fonts/TTCommonsProTrialVariable.woff2") format("woff2");
 }
