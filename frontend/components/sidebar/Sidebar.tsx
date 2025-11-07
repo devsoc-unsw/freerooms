@@ -60,10 +60,13 @@ const Drawer = styled(MuiDrawer, {
   width: drawerWidth,
   flexShrink: 0,
   whiteSpace: "nowrap",
-  boxSizing: "border-box",
   zIndex: theme.zIndex.drawer,
+  border: "none",
   ...(open ? openedMixin(theme) : closedMixin(theme)),
-  "& .MuiDrawer-paper": open ? openedMixin(theme) : closedMixin(theme),
+  "& .MuiDrawer-paper": {
+    ...(open ? openedMixin(theme) : closedMixin(theme)),
+    border: "none",
+  },
 }));
 
 const navItems = [
@@ -152,11 +155,14 @@ const SidebarContent = ({
             </Box>
           </Link>
         ) : (
-          <Image
-            src={logoHover ? LogoClosed : LogoOpen}
-            alt="Logo"
-            height={32}
-          />
+          <Link href="/" passHref legacyBehavior>
+            <Image
+              style={{ cursor: "pointer" }}
+              src={logoHover ? LogoClosed : LogoOpen}
+              alt="Logo"
+              height={32}
+            />
+          </Link>
         )}
       </Box>
 
@@ -198,7 +204,7 @@ const SidebarContent = ({
 
 const Sidebar = ({ children }: { children: React.ReactNode }) => {
   const theme = useTheme();
-  const [sidebarOpen, setSidebarOpen] = React.useState(true);
+  const [sidebarOpen, setSidebarOpen] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -208,7 +214,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", border: "none" }}>
       <CssBaseline />
 
       {/* Mobile Top Bar */}
@@ -243,7 +249,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
       )}
 
       {/* Desktop Drawer */}
-      <Box sx={{ display: { xs: "none", md: "block" } }}>
+      <Box sx={{ display: { xs: "none", md: "block", border: "none" } }}>
         <Drawer variant="permanent" open={sidebarOpen}>
           <SidebarContent
             sidebarOpen={sidebarOpen}
