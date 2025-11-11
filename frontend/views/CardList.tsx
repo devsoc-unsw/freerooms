@@ -13,7 +13,7 @@ import useUserLocation from "../hooks/useUserLocation";
 import calculateDistance from "../utils/calculateDistance";
 import { getNumFreerooms } from "../utils/utils";
 
-const FlipMoveGrid = styled(FlipMove)(() => ({
+const FlipMoveGrid = styled(FlipMove)(({ theme }) => ({
   width: "100%",
   display: "grid",
   gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
@@ -64,7 +64,7 @@ const CardList: React.FC<{
       .filter(
         (building) =>
           building.name.toLowerCase().includes(query.toLowerCase()) &&
-          Object.keys(persistedData[building.id]).length > 0
+          Object.keys(persistedData[building.id].roomStatuses).length > 0
       )
       .sort((a, b) => {
         switch (sort) {

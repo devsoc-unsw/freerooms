@@ -5,14 +5,15 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
+import NavBar from "@frontend/components/NavBar";
 import { grey, orange } from "@mui/material/colors";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, styled } from "@mui/material/styles";
 import ThemeProvider from "@mui/system/ThemeProvider";
+import Sidebar from "components/sidebar/Sidebar";
 import React, { createContext, useEffect, useMemo, useState } from "react";
 import { Provider as ReduxProvider } from "react-redux";
 
-import NavBar, { navHeight } from "../components/NavBar";
 import SearchModal from "../components/SearchModal";
 import store from "../redux/store";
 
@@ -50,12 +51,14 @@ const ClientLayout: React.FC<{
       ...(mode === "light"
         ? {
             primary: {
-              main: orange[800],
+              main: "#EF6C02",
+              light: "#F3D0C5",
             },
             secondary: {
               main: "rgba(0, 0, 0, 0.12)",
             },
             background: {
+              default: "#FFFBF9",
               paper: grey[200],
             },
             text: {
@@ -65,7 +68,8 @@ const ClientLayout: React.FC<{
           }
         : {
             primary: {
-              main: orange[800],
+              main: "#D4613C",
+              dark: "#EF6C00",
             },
             secondary: {
               main: grey[800],
@@ -102,9 +106,10 @@ const App: React.FC<{
 }> = ({ children }) => {
   return (
     <>
-      <NavBar />
-      <SearchModal />
-      <Main>{children}</Main>
+      <Sidebar>
+        <SearchModal />
+        <Main>{children}</Main>
+      </Sidebar>
     </>
   );
 };
@@ -114,7 +119,6 @@ const Main = styled("main")(({ theme }) => ({
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  paddingTop: navHeight,
   width: "100%",
   marginRight: 0,
   height: "100%",
