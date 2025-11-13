@@ -26,7 +26,6 @@ const StatusBox = styled(Box)<BoxProps>(() => ({
   paddingLeft: 10,
   paddingRight: 10,
   margin: 10,
-  //border: "1px solid #e0e0e0",
 }));
 
 type AllRoomsRoomProps = SearchResponseValue &
@@ -45,7 +44,7 @@ const Room: React.FC<AllRoomsRoomProps> = ({
 
   const roomPhoto =
     (roomPhotos as Record<string, string>)[roomNumber] ||
-    `/assets/building_photos/${campus}-${grid}.webp`
+    `/assets/building_photos/${campus}-${grid}.webp`;
 
   return (
     <Card
