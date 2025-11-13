@@ -38,9 +38,14 @@ const Room: React.FC<AllRoomsRoomProps> = ({
   ...roomStatus
 }) => {
   const theme = useTheme();
-  const roomPhoto = (roomPhotos as Record<string, string>)[roomNumber];
   const ratings = useRoomRatings(roomNumber);
   let overallRating = ratings.data ? ratings.data.overallRating : 0;
+
+  const [campus, grid] = roomNumber.split("-");
+
+  const roomPhoto =
+    (roomPhotos as Record<string, string>)[roomNumber] ||
+    `/assets/building_photos/${campus}-${grid}.webp`
 
   return (
     <Card
