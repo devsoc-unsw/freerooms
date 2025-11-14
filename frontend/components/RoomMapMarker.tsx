@@ -34,7 +34,7 @@ const RoomMapMarker: React.FC<RoomMapMarkerProps> = ({
   const blue = "#1976d2";
 
   return (
-    <Marker latitude={room.lat} longitude={room.long} anchor="top">
+    <Marker latitude={room.lat} longitude={room.long} anchor="bottom">
       <div
         style={{
           display: "flex",
