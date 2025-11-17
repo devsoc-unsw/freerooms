@@ -8,7 +8,11 @@ const useUserLocation = () => {
   const [userLng, setUserLng] = useState<number>();
 
   useEffect(() => {
+    console.log("TEST USEFFECT");
+
     if ("geolocation" in navigator) {
+      console.log("geolocation");
+
       navigator.geolocation.getCurrentPosition(
         (position: GeolocationPosition) => {
           const pos = {

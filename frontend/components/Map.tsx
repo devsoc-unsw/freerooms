@@ -82,6 +82,10 @@ export const MapComponent = () => {
   const { userLat, userLng } = useUserLocation();
   const { room } = useRoom(roomIdToFocus);
 
+  useEffect(() => {
+    console.log("TEST USER LAT: ", userLat);
+  }, [userLat]);
+
   // TODO check if I need to only call this once? this is currently getting called every user change
   const { geometry } = useMapboxNavigation(userLat, userLng, room);
 
@@ -90,6 +94,10 @@ export const MapComponent = () => {
     const params = new URLSearchParams(window.location.search);
     setRoomIdToFocus(params.get("roomId") ?? "");
   }, []);
+
+  useEffect(() => {
+    console.log("TEST ROUTE GEOJSON: ", routeGeoJSON);
+  }, [routeGeoJSON]);
 
   // useEffect(() => {
   //   if (!userLat || !userLng || !roomIdToFocus || !isMapLoaded) return;
@@ -103,9 +111,15 @@ export const MapComponent = () => {
   //   });
   // }, [isMapLoaded, userLat, userLng, roomIdToFocus, geometry]);
 
+  // TODO refactor this
   const style = isDarkMode
     ? "mapbox://styles/bengodw/cmcimql2101qo01sp7dricgzq"
     : "mapbox://styles/bengodw/cmcimp1tz002p01rcfzbd8btn";
+
+  // Reset map loaded state when style changes (light/dark mode)
+  useEffect(() => {
+    setIsMapLoaded(false);
+  }, [style]);
 
   useEffect(() => {
     if (buildings && userLat && userLng && isInBounds(userLat, userLng)) {
@@ -126,6 +140,11 @@ export const MapComponent = () => {
         mapboxAccessToken={MAPBOX_ACCESS_TOKEN}
         maxBounds={bounds}
         onLoad={() => {
+          console.log("TEST MAP LOADED");
+          setIsMapLoaded(true);
+        }}
+        onStyleData={() => {
+          console.log("TEST STYLE DATA");
           setIsMapLoaded(true);
         }}
         style={{ width: "100%", height: "100%" }}
@@ -164,7 +183,7 @@ export const MapComponent = () => {
           />
         )}
 
-        {routeGeoJSON && (
+        {routeGeoJSON && isMapLoaded && (
           <>
             <Source id="route" type="geojson" data={routeGeoJSON} />
             <Layer
@@ -176,7 +195,7 @@ export const MapComponent = () => {
                 "line-join": "round",
               }}
               paint={{
-                "line-color": "#1976d2",
+                "line-color": "#87CEEB",
                 "line-width": 4,
               }}
             />
