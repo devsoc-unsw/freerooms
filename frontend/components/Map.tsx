@@ -6,7 +6,13 @@ import Box from "@mui/material/Box";
 import { DarkModeContext } from "app/clientLayout";
 import useMapboxNavigation from "hooks/useMapboxNavigation";
 import useRoom from "hooks/useRoom";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   Layer,
   LngLatBoundsLike,
@@ -76,11 +82,25 @@ export const MapComponent = () => {
   const [isMapLoaded, setIsMapLoaded] = useState<boolean>(false);
 
   const mapRef = useRef<MapRef>(null);
+  const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const { buildings } = useBuildings();
   const { isDarkMode } = useContext(DarkModeContext);
   const { userLat, userLng } = useUserLocation();
   const { room } = useRoom(roomIdToFocus);
+
+  // debound map loaded when style changes for light/dark mode
+  const debouncedSetMapLoaded = useCallback(() => {
+    if (debounceTimeoutRef.current) {
+      clearTimeout(debounceTimeoutRef.current);
+    }
+
+    // set a new timeout to set isMapLoaded to true after 300ms of no style changes
+    debounceTimeoutRef.current = setTimeout(() => {
+      setIsMapLoaded(true);
+      debounceTimeoutRef.current = null;
+    }, 300);
+  }, []);
 
   useEffect(() => {
     console.log("TEST USER LAT: ", userLat);
@@ -116,10 +136,24 @@ export const MapComponent = () => {
     ? "mapbox://styles/bengodw/cmcimql2101qo01sp7dricgzq"
     : "mapbox://styles/bengodw/cmcimp1tz002p01rcfzbd8btn";
 
-  // Reset map loaded state when style changes (light/dark mode)
+  // reset map loaded state when style changes (light/dark mode)
   useEffect(() => {
+    // clear any pending debounce timeout
+    if (debounceTimeoutRef.current) {
+      clearTimeout(debounceTimeoutRef.current);
+      debounceTimeoutRef.current = null;
+    }
     setIsMapLoaded(false);
   }, [style]);
+
+  // clean up timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (buildings && userLat && userLng && isInBounds(userLat, userLng)) {
@@ -141,11 +175,11 @@ export const MapComponent = () => {
         maxBounds={bounds}
         onLoad={() => {
           console.log("TEST MAP LOADED");
-          setIsMapLoaded(true);
+          debouncedSetMapLoaded();
         }}
         onStyleData={() => {
           console.log("TEST STYLE DATA");
-          setIsMapLoaded(true);
+          debouncedSetMapLoaded();
         }}
         style={{ width: "100%", height: "100%" }}
       >
@@ -185,8 +219,14 @@ export const MapComponent = () => {
 
         {routeGeoJSON && isMapLoaded && (
           <>
-            <Source id="route" type="geojson" data={routeGeoJSON} />
+            <Source
+              key={`route-source-${style}`}
+              id="route"
+              type="geojson"
+              data={routeGeoJSON}
+            />
             <Layer
+              key={`route-layer-${style}`}
               id="route-line"
               type="line"
               source="route"
@@ -197,6 +237,7 @@ export const MapComponent = () => {
               paint={{
                 "line-color": "#87CEEB",
                 "line-width": 4,
+                "line-opacity": 1,
               }}
             />
           </>
