@@ -31,6 +31,7 @@ import getMapType from "../utils/getMapType"; // delete this file?
 import GetDirectionsBox from "./GetDirectionsBox";
 import MapMarker from "./MapMarker";
 import RoomMapMarker from "./RoomMapMarker";
+import BuildingDrawer from "views/BuildingDrawer";
 
 const initialViewState = {
   longitude: 151.23129,
@@ -254,6 +255,7 @@ export const MapComponent = () => {
           />
         </>
       )}
+      <BuildingDrawer />
     </div>
   );
 };

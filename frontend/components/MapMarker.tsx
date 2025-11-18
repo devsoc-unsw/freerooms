@@ -101,7 +101,10 @@ const MapMarker: React.FC<{
           },
           // transform: "translate(-50%, -50%)", // only on the dot
         })}
-        onClick={() => dispatch(setCurrentBuilding(building))}
+        onClick={() => {
+          dispatch(setCurrentBuilding(building));
+          console.log("TEST CLICKED BUILDING: ", building);
+        }}
       />
       <Fade in={showPopup} timeout={200}>
         <div style={{ position: "relative", bottom: -3 }}>
