@@ -11,8 +11,6 @@ const useUserLocation = () => {
     console.log("TEST USEFFECT");
 
     if ("geolocation" in navigator) {
-      console.log("geolocation");
-
       navigator.geolocation.getCurrentPosition(
         (position: GeolocationPosition) => {
           const pos = {
@@ -21,8 +19,32 @@ const useUserLocation = () => {
           };
           setUserLat(pos.lat);
           setUserLng(pos.lng);
+        },
+        (error: GeolocationPositionError) => {
+          console.error("Geolocation error:", error);
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              console.warn("User denied the request for Geolocation.");
+              break;
+            case error.POSITION_UNAVAILABLE:
+              console.warn("Location information is unavailable.");
+              break;
+            case error.TIMEOUT:
+              console.warn("The request to get user location timed out.");
+              break;
+            default:
+              console.warn("An unknown error occurred.");
+              break;
+          }
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0,
         }
       );
+    } else {
+      console.warn("Geolocation is not supported by this browser.");
     }
   }, []);
 
