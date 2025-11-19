@@ -6,6 +6,8 @@ on:
       - "dev"
 
 env:
+  ENVIRONMENT: ${{ github.ref_name == 'master' && 'prod' || 'staging' }}
+  IMAGE_NAME: ${{ github.ref_name == 'master' && 'freerooms' || 'freerooms-staging' }}
   BRANCH_NAME: ${{ github.base_ref || github.ref_name }}
 
 jobs:
@@ -51,9 +53,11 @@ jobs:
           platforms: linux/amd64
           file: ${{ matrix.context }}.dockerfile
           tags: |
-            ghcr.io/csesoc/freerooms-${{ matrix.name }}:${{ github.sha }}
-            ghcr.io/csesoc/freerooms-${{ matrix.name }}:latest
+            ghcr.io/devsoc-unsw/${{ env.IMAGE_NAME }}-${{ matrix.name }}:${{ github.sha }}
+            ghcr.io/devsoc-unsw/${{ env.IMAGE_NAME }}-${{ matrix.name }}:latest
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            ${{ env.BRANCH_NAME == 'dev' && matrix.context == 'frontend' && 'NEXT_PUBLIC_STAGING=true' || '' }}
   deploy:
     name: Deploy (CD)
     runs-on: ubuntu-latest
@@ -64,9 +68,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          repository: csesoc/deployment
+          repository: devsoc-unsw/deployment
           token: ${{ secrets.GH_TOKEN }}
-          ref: migration
+          ref: dev
       - name: Install yq - portable yaml processor
         uses: mikefarah/yq@v4.44.3
       - name: Update deployment
@@ -76,26 +80,12 @@ jobs:
           git config user.name "CSESoc CD"
           git config user.email "technical@csesoc.org.au"
 
-          case $BRANCH_NAME in
-          dev)
-            build_type="staging"
-            ;;
-
-          master)
-            build_type="prod"
-            ;;
-          *)
-            echo "Invalid branch '$branch'"
-            exit 1
-            ;;
-          esac
-
-          git checkout -b update/freerooms-$build_type/${{ github.sha }}
-          yq -i '.items[0].spec.template.spec.containers[0].image = "ghcr.io/csesoc/freerooms-backend:${{ github.sha }}"' projects/freerooms/$build_type/deploy-backend.yml
-          yq -i '.items[0].spec.template.spec.containers[0].image = "ghcr.io/csesoc/freerooms-frontend:${{ github.sha }}"' projects/freerooms/$build_type/deploy-frontend.yml
+          git checkout -b update/${{ env.IMAGE_NAME }}/${{ github.sha }}
+          yq -i '.items[0].spec.template.spec.containers[0].image = "ghcr.io/devsoc-unsw/${{ env.IMAGE_NAME }}-backend:${{ github.sha }}"' projects/freerooms/${{ env.ENVIRONMENT }}/deploy-backend.yml
+          yq -i '.items[0].spec.template.spec.containers[0].image = "ghcr.io/devsoc-unsw/${{ env.IMAGE_NAME }}-frontend:${{ github.sha }}"' projects/freerooms/${{ env.ENVIRONMENT }}/deploy-frontend.yml
 
           git add . 
-          git commit -m "feat(freerooms-$build_type): update images" 
-          git push -u origin update/freerooms-$build_type/${{ github.sha }}
-          gh pr create -B migration --title "feat(freerooms-$build_type): update image" --body "Updates the image for the freerooms deployment to commit csesoc/freerooms@${{ github.sha }}." > URL
+          git commit -m "feat(${{ env.IMAGE_NAME }}): update images" 
+          git push -u origin update/${{ env.IMAGE_NAME }}/${{ github.sha }}
+          gh pr create -B dev --title "feat(${{ env.IMAGE_NAME }}): update image" --body "Updates the image for the ${{ env.IMAGE_NAME }} deployment to commit devsoc-unsw/${{ env.IMAGE_NAME }}@${{ github.sha }}." > URL
           gh pr merge $(cat URL) --squash -d
