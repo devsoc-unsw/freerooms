@@ -103,7 +103,6 @@ const MapMarker: React.FC<{
         })}
         onClick={() => {
           dispatch(setCurrentBuilding(building));
-          console.log("TEST CLICKED BUILDING: ", building);
         }}
       />
       <Fade in={showPopup} timeout={200}>

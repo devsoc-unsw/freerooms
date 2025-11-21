@@ -30,17 +30,7 @@ const fetchRoute = async (
 
   const roomLat = room.lat;
   const roomLng = room.long;
-  // let roomLat: number, roomLng: number;
-  // if (room.geometry?.coordinates) {
-  //   const last = room.geometry.coordinates[room.geometry.coordinates.length - 1];
-  //   roomLng = last[0];
-  //   roomLat = last[1];
-  // } else {
-  //   roomLat = room.lat;
-  //   roomLng = room.long;
-  // }
 
-  // console.log(userLat, userLng, roomLat, roomLong);
   try {
     const response = await directionsClient
       .getDirections({

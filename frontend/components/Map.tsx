@@ -102,11 +102,6 @@ export const MapComponent = () => {
     }, 300);
   }, []);
 
-  useEffect(() => {
-    console.log("TEST USER LAT: ", userLat);
-  }, [userLat]);
-
-  // TODO check if I need to only call this once? this is currently getting called every user change
   const { geometry } = useMapboxNavigation(userLat, userLng, room);
 
   useEffect(() => {
@@ -115,23 +110,6 @@ export const MapComponent = () => {
     setRoomIdToFocus(params.get("roomId") ?? "");
   }, []);
 
-  useEffect(() => {
-    console.log("TEST ROUTE GEOJSON: ", routeGeoJSON);
-  }, [routeGeoJSON]);
-
-  // useEffect(() => {
-  //   if (!userLat || !userLng || !roomIdToFocus || !isMapLoaded) return;
-  //   // Only set route once
-  //   if (routeGeoJSON && routeGeoJSON.geometry) return;
-
-  //   setRouteGeoJSON({
-  //     type: "Feature",
-  //     properties: {},
-  //     geometry,
-  //   });
-  // }, [isMapLoaded, userLat, userLng, roomIdToFocus, geometry]);
-
-  // TODO refactor this
   const style = isDarkMode
     ? "mapbox://styles/bengodw/cmcimql2101qo01sp7dricgzq"
     : "mapbox://styles/bengodw/cmcimp1tz002p01rcfzbd8btn";
@@ -174,11 +152,9 @@ export const MapComponent = () => {
         mapboxAccessToken={MAPBOX_ACCESS_TOKEN}
         maxBounds={bounds}
         onLoad={() => {
-          console.log("TEST MAP LOADED");
           debouncedSetMapLoaded();
         }}
         onStyleData={() => {
-          console.log("TEST STYLE DATA");
           debouncedSetMapLoaded();
         }}
         style={{ width: "100%", height: "100%" }}
