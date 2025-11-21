@@ -22,11 +22,12 @@ import {
   Source,
 } from "react-map-gl/mapbox";
 import { useDebounceValue } from "usehooks-ts";
+import BuildingDrawer from "views/BuildingDrawer";
 
 import {
   MAPBOX_ACCESS_TOKEN,
-  MAPBOX_STYLE_LIGHT,
   MAPBOX_STYLE_DARK,
+  MAPBOX_STYLE_LIGHT,
 } from "../config";
 import useBuildings from "../hooks/useBuildings";
 import useUserLocation from "../hooks/useUserLocation";
@@ -34,7 +35,6 @@ import calculateDistance from "../utils/calculateDistance";
 import GetDirectionsBox from "./GetDirectionsBox";
 import MapMarker from "./MapMarker";
 import RoomMapMarker from "./RoomMapMarker";
-import BuildingDrawer from "views/BuildingDrawer";
 
 const initialViewState = {
   longitude: 151.23129,
