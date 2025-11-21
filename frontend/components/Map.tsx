@@ -27,7 +27,6 @@ import { MAPBOX_ACCESS_TOKEN } from "../config";
 import useBuildings from "../hooks/useBuildings";
 import useUserLocation from "../hooks/useUserLocation";
 import calculateDistance from "../utils/calculateDistance";
-import getMapType from "../utils/getMapType"; // delete this file?
 import GetDirectionsBox from "./GetDirectionsBox";
 import MapMarker from "./MapMarker";
 import RoomMapMarker from "./RoomMapMarker";
@@ -167,7 +166,7 @@ export const MapComponent = () => {
   }, [buildings, userLat, userLng]);
 
   return (
-    <div style={{ height: "100%", position: "relative" }}>
+    <div style={{ height: "100vh", position: "relative" }}>
       <Map
         ref={mapRef}
         initialViewState={initialViewState}
@@ -236,7 +235,7 @@ export const MapComponent = () => {
                 "line-join": "round",
               }}
               paint={{
-                "line-color": "#87CEEB",
+                "line-color": isDarkMode ? "#4ABDFA" : "#2196F3",
                 "line-width": 4,
                 "line-opacity": 1,
               }}
