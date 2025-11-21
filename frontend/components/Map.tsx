@@ -23,7 +23,11 @@ import {
 } from "react-map-gl/mapbox";
 import { useDebounceValue } from "usehooks-ts";
 
-import { MAPBOX_ACCESS_TOKEN } from "../config";
+import {
+  MAPBOX_ACCESS_TOKEN,
+  MAPBOX_STYLE_LIGHT,
+  MAPBOX_STYLE_DARK,
+} from "../config";
 import useBuildings from "../hooks/useBuildings";
 import useUserLocation from "../hooks/useUserLocation";
 import calculateDistance from "../utils/calculateDistance";
@@ -110,9 +114,7 @@ export const MapComponent = () => {
     setRoomIdToFocus(params.get("roomId") ?? "");
   }, []);
 
-  const style = isDarkMode
-    ? "mapbox://styles/bengodw/cmcimql2101qo01sp7dricgzq"
-    : "mapbox://styles/bengodw/cmcimp1tz002p01rcfzbd8btn";
+  const style = isDarkMode ? MAPBOX_STYLE_DARK : MAPBOX_STYLE_LIGHT;
 
   // reset map loaded state when style changes (light/dark mode)
   useEffect(() => {

@@ -33,3 +33,8 @@ export const GOOGLE_API_KEY = GOOGLE_API_CONFIG[env];
 // Public Mapbox access token
 export const MAPBOX_ACCESS_TOKEN =
   "pk.eyJ1IjoiYmVuZ29kdyIsImEiOiJjbWJocHFzZG0wY3A0MmtwdnB1dTNlYmZrIn0.Mk0qDr5kM3N_d8UyIm7aAQ";
+
+export const MAPBOX_STYLE_DARK =
+  "mapbox://styles/bengodw/cmcimql2101qo01sp7dricgzq";
+export const MAPBOX_STYLE_LIGHT =
+  "mapbox://styles/bengodw/cmcimp1tz002p01rcfzbd8btn";
