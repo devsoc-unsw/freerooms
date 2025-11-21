@@ -3,15 +3,15 @@ import "@testing-library/jest-dom";
 import { RoomStatus } from "@common/types";
 import { useMediaQuery } from "@mui/material";
 import { render, screen } from "@testing-library/react";
-import { useRouter, useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Provider } from "react-redux";
 
 import Page from "../app/room/[room]/page";
 import BuildingCard from "../components/BuildingCard";
+import { useDispatch, useSelector } from "../redux/hooks";
 import store from "../redux/store";
 import RoomAvailabilityBox from "../views/RoomAvailabilityBox";
 import renderWithRedux from "./utils/renderWithRedux";
-import { useDispatch, useSelector } from "../redux/hooks";
 
 jest.mock("next/navigation", () => ({
   useParams: jest.fn(),

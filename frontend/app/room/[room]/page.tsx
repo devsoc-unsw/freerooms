@@ -30,6 +30,7 @@ import BookingCalendar from "../../../components/BookingCalendar";
 import FeedbackButton from "../../../components/FeedbackButton";
 import LoadingCircle from "../../../components/LoadingCircle";
 import RoomBackButton from "../../../components/RoomBackButton";
+import ShowOnMapButton from "../../../components/ShowOnMapButton";
 import useBookings from "../../../hooks/useBookings";
 import useBuilding from "../../../hooks/useBuilding";
 import useRoom from "../../../hooks/useRoom";
@@ -154,11 +155,14 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
           <Typography variant="h4" fontWeight={550}>
             {room.name}
           </Typography>
-          <BookingButton
-            school={room.school}
-            usage={room.usage}
-            onClick={toggleDialog}
-          />
+          <Stack direction="row" spacing={2}>
+            <ShowOnMapButton roomId={room.id} />
+            <BookingButton
+              school={room.school}
+              usage={room.usage}
+              onClick={toggleDialog}
+            />
+          </Stack>
         </Stack>
         <Stack direction="row" spacing={2}>
           <Typography variant="body1" fontWeight="bold">

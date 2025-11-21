@@ -68,7 +68,7 @@ const ClientLayout: React.FC<{
           }
         : {
             primary: {
-              main: "#D4613C",
+              main: "#EF6C02",
               dark: "#EF6C00",
             },
             secondary: {
