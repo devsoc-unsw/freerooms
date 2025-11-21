@@ -1,6 +1,4 @@
 "use client";
-
-import { useTheme } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import React from "react";
 
@@ -19,8 +17,6 @@ const GetDirectionsButton: React.FC<GetDirectionsProps> = ({
   setRouteGeoJSON,
   geometry,
 }) => {
-  const theme = useTheme();
-
   const handleClick = () => {
     if (userLat != null && userLng != null) {
       if (!geometry) {

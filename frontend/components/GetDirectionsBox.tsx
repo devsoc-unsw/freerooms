@@ -136,8 +136,12 @@ const GetDirectionsBox: React.FC<GetDirectionsBoxProps> = ({
             alignItems: "center",
             justifyContent: "flex-start",
             borderRadius: 10,
-            backgroundColor: "#fde7e1",
-            color: "rgba(212, 97, 60, 1)",
+            backgroundColor: isDarkMode
+              ? theme.palette.primary.main
+              : theme.palette.primary.light,
+            color: isDarkMode
+              ? theme.palette.text.primary
+              : theme.palette.primary.main,
             width: "auto",
             height: 32,
             px: "12px",
@@ -151,7 +155,11 @@ const GetDirectionsBox: React.FC<GetDirectionsBoxProps> = ({
             height="17"
             viewBox="0 0 24 24"
             fill="none"
-            stroke="#e76b04"
+            stroke={
+              isDarkMode
+                ? theme.palette.text.primary
+                : theme.palette.primary.main
+            }
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -172,8 +180,12 @@ const GetDirectionsBox: React.FC<GetDirectionsBoxProps> = ({
             alignItems: "center",
             justifyContent: "flex-start",
             borderRadius: 10,
-            backgroundColor: "#fde7e1",
-            color: "#D4613C",
+            backgroundColor: isDarkMode
+              ? theme.palette.primary.main
+              : theme.palette.primary.light,
+            color: isDarkMode
+              ? theme.palette.text.primary
+              : theme.palette.primary.main,
             width: "auto",
             height: 32,
             px: "12px",
@@ -187,7 +199,11 @@ const GetDirectionsBox: React.FC<GetDirectionsBoxProps> = ({
             height="17"
             viewBox="0 0 24 24"
             fill="none"
-            stroke="#e76b04"
+            stroke={
+              isDarkMode
+                ? theme.palette.text.primary
+                : theme.palette.primary.main
+            }
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"

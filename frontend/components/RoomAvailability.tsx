@@ -4,8 +4,7 @@ import React from "react";
 import { RoomAvailabilityBoxProps } from "views/RoomAvailabilityBox";
 
 const RoomBoxHeading = styled(Typography)<TypographyProps>(() => ({
-  //fontSize: 16,
-  fontSize: 12,
+  fontSize: 14,
   fontWeight: 500,
   whiteSpace: "nowrap",
 }));
@@ -43,7 +42,7 @@ const RoomAvailability: React.FC<RoomAvailabilityProps> = ({ roomStatus }) => {
     soon: "at " + hoursMinutes,
   };
   return (
-    <Stack direction="row" alignItems="center" spacing={0.4}>
+    <Stack direction="column" alignItems="center" spacing={0.4}>
       <RoomBoxHeading sx={{ color: roomStatusColor[roomStatus.status] }}>
         {roomStatusMessage[roomStatus.status]}
       </RoomBoxHeading>
