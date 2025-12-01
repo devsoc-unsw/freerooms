@@ -56,7 +56,15 @@ const RoomAvailabilityBox: React.FC<RoomAvailabilityBoxProps> = ({
 }) => {
   const { room } = useRoom(`${buildingId}-${roomNumber}`);
   const { data } = useRoomRatings(room ? room.id : "");
-  let ratingValue = data ? data.overallRating : 0;
+  const ratingValue = (() => {
+    // round rating to nearest .5 if a rating exists
+    if (!data) return 0;
+    const rating = data.overallRating;
+    const frac = rating % 1;
+    return frac >= 0.3 && frac <= 0.7
+      ? Math.floor(rating) + 0.5
+      : Math.round(rating);
+  })();
 
   return (
     <Link href={`/room/${buildingId}-${roomNumber}`}>
