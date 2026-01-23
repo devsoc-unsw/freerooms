@@ -3,25 +3,11 @@ import Grid from "@mui/material/Grid2";
 import { Sponsor } from "types";
 
 export default function SponsorItem({ name, image, url, tier }: Sponsor) {
-  if (tier === "Platinum") {
-    return (
-      <Grid
-        size={{ xs: 12, sm: 6, md: 6, lg: 6 }}
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Link href={url} target="_blank">
-          <Box alt={name} component="img" src={image} sx={{ height: 30 }}></Box>
-        </Link>
-      </Grid>
-    );
-  }
+  const isPlatinum = tier === "Platinum";
+
   return (
     <Grid
-      size={{ xs: 3, sm: 6, md: 6, lg: 6 }}
+      size={isPlatinum ? { xs: 12, sm: 6 } : { xs: 6, sm: 4 }}
       sx={{
         display: "flex",
         justifyContent: "center",
@@ -29,7 +15,26 @@ export default function SponsorItem({ name, image, url, tier }: Sponsor) {
       }}
     >
       <Link href={url} target="_blank">
-        <Box alt={name} component="img" src={image} sx={{ height: 40 }}></Box>
+        <Box
+          sx={{
+            width: isPlatinum ? 220 : 180,
+            height: isPlatinum ? 120 : 90,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Box
+            component="img"
+            src={image}
+            alt={name}
+            sx={{
+              maxWidth: "100%",
+              maxHeight: "100%",
+              objectFit: "contain",
+            }}
+          />
+        </Box>
       </Link>
     </Grid>
   );
