@@ -27,7 +27,7 @@ jobs:
             name: frontend
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
         with:
@@ -63,7 +63,7 @@ jobs:
     if: ${{ github.event_name != 'pull_request' && (github.ref_name == 'dev' || github.ref_name == 'master')  }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: devsoc-unsw/deployment
           token: ${{ secrets.GH_TOKEN }}
