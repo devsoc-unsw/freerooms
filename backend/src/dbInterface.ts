@@ -85,6 +85,8 @@ type BuildingsAndRoomsRes = {
       school: string;
       usage: string;
       capacity: number;
+      lat: number;
+      long: number;
     }>;
   }>;
 };
@@ -109,6 +111,8 @@ export const queryBuildingsAndRooms =
           school
           usage
           capacity
+          lat
+          long
         }
       }
     }

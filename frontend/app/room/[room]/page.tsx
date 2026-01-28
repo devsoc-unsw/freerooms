@@ -30,6 +30,7 @@ import BookingCalendar from "../../../components/BookingCalendar";
 import FeedbackButton from "../../../components/FeedbackButton";
 import LoadingCircle from "../../../components/LoadingCircle";
 import RoomBackButton from "../../../components/RoomBackButton";
+import ShowOnMapButton from "../../../components/ShowOnMapButton";
 import useBookings from "../../../hooks/useBookings";
 import useBuilding from "../../../hooks/useBuilding";
 import useRoom from "../../../hooks/useRoom";
@@ -113,15 +114,7 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
     : "This room is managed externally by its associated school. Please contact the school to request a booking";
 
   const ratings = useRoomRatings(room.id);
-  let ratingValue = 0;
-
-  if (ratings.ratings && ratings.ratings.length > 0) {
-    ratings.ratings.forEach((rating) => {
-      ratingValue += rating.overall;
-    });
-    ratingValue = ratingValue / ratings.ratings.length;
-    ratingValue = Math.round(ratingValue * 10) / 10;
-  }
+  let ratingValue = ratings.data ? ratings.data.overallRating : 0;
 
   return (
     <Stack
@@ -162,11 +155,14 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
           <Typography variant="h4" fontWeight={550}>
             {room.name}
           </Typography>
-          <BookingButton
-            school={room.school}
-            usage={room.usage}
-            onClick={toggleDialog}
-          />
+          <Stack direction="row" spacing={2}>
+            <ShowOnMapButton roomId={room.id} />
+            <BookingButton
+              school={room.school}
+              usage={room.usage}
+              onClick={toggleDialog}
+            />
+          </Stack>
         </Stack>
         <Stack direction="row" spacing={2}>
           <Typography variant="body1" fontWeight="bold">

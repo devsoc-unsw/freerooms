@@ -27,7 +27,7 @@
     "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.0",
     "dotenv": "^16.4.5",
-    "express": "^4.19.2",
+    "express": "^4.22.1",
     "graphql": "^16.6.0",
     "graphql-request": "^6.1.0",
     "mongodb": "^6.8.0"
@@ -37,6 +37,7 @@
     "@types/express": "5.0.0",
     "@types/jest": "^29.5.12",
     "@types/node": "^22.0.0",
+    "@types/node-fetch": "^2.6.13",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
     "eslint": "^8.57.0",
