@@ -1,0 +1,39 @@
+services:
+  mongodb:
+    image: mongo:6.0.5
+    container_name: freerooms-mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - mongodb_data:/data/db
+    ports:
+      - "27017:27017"
+
+  backend:
+    image: ghcr.io/devsoc-unsw/freerooms-backend:32fdf7b95b3464123245f10d9be2bf94ecd2d172
+    container_name: freerooms-backend
+    environment:
+      MONGODB_SERVICE_HOSTNAME: mongodb
+      MONGODB_USERNAME: admin
+      MONGODB_PASSWORD: password
+      GRAPHQL_API: http://localhost:8080/v1/graphql
+    depends_on:
+      - mongodb
+    ports:
+      - "3001:3000"
+
+  frontend:
+    image: ghcr.io/devsoc-unsw/freerooms-frontend:32fdf7b95b3464123245f10d9be2bf94ecd2d172
+    container_name: freerooms-frontend
+    env_file:
+      - .env
+    environment:
+      BACKEND_URL: http://localhost:3000
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+
+volumes:
+  mongodb_data:
