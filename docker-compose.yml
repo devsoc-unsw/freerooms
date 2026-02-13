@@ -27,6 +27,7 @@ services:
     image: ghcr.io/devsoc-unsw/freerooms-frontend:32fdf7b95b3464123245f10d9be2bf94ecd2d172
     container_name: freerooms-frontend
     env_file:
+      # secrets, api keys e.g GOOGLE_API_KEY
       - .env
     environment:
       BACKEND_URL: http://localhost:3000
