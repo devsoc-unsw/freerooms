@@ -5,13 +5,13 @@
 import { RoomUtilitiesResponse } from "@common/types";
 import axios from "axios";
 import useSWRImmutable from "swr/immutable";
-import { API_URL } from "../config";
+import { BACKEND_URL } from "../config";
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 const useRoomUtilities = (roomID: string) => {
   const { data, error } = useSWRImmutable<RoomUtilitiesResponse>(
-    API_URL + "/rooms/utilities/" + roomID,
+    BACKEND_URL + "/rooms/utilities/" + roomID,
     fetcher
   );
 
