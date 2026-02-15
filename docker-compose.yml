@@ -30,7 +30,7 @@ services:
       # secrets, api keys e.g GOOGLE_API_KEY
       - .env
     environment:
-      BACKEND_URL: http://localhost:3000
+      API_URL: http://localhost:3000
     depends_on:
       - backend
     ports:
