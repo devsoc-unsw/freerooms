@@ -1,6 +1,6 @@
 import { SearchResponse } from "@common/types";
 import axios from "axios";
-import { BACKEND_URL } from "config";
+import { API_URL } from "config";
 import useSWR from "swr/immutable";
 import { AllRoomsFilters } from "types";
 
@@ -18,7 +18,7 @@ const useAllRooms = (filters: AllRoomsFilters) => {
   const datetime = useSelector(selectDatetime);
 
   const { data, isValidating, error } = useSWR<SearchResponse>(
-    [BACKEND_URL + "/rooms/search", datetime, filters],
+    [API_URL + "/rooms/search", datetime, filters],
     fetcher
   );
 

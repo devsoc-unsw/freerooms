@@ -6,7 +6,7 @@ import { StatusResponse } from "@common/types";
 import axios from "axios";
 import useSWRImmutable from "swr/immutable";
 
-import { BACKEND_URL } from "../config";
+import { API_URL } from "../config";
 import { selectDatetime } from "../redux/datetimeSlice";
 import { selectFilters } from "../redux/filtersSlice";
 import { useSelector } from "../redux/hooks";
@@ -20,7 +20,7 @@ const useStatus = () => {
   const filters = useSelector(selectFilters);
 
   const { data, error } = useSWRImmutable<StatusResponse>(
-    [BACKEND_URL + "/rooms/status", datetime, filters],
+    [API_URL + "/rooms/status", datetime, filters],
     fetcher
   );
 

@@ -7,7 +7,7 @@ import { BookingsResponse } from "@common/types";
 import axios from "axios";
 import useSWRImmutable from "swr/immutable";
 
-import { BACKEND_URL } from "../config";
+import { API_URL } from "../config";
 
 const fetcher = (url: string) =>
   axios
@@ -17,7 +17,7 @@ const fetcher = (url: string) =>
 
 const useBookings = (roomId: string) => {
   const { data, error } = useSWRImmutable<BookingsResponse>(
-    BACKEND_URL + "/rooms/bookings/" + roomId,
+    API_URL + "/rooms/bookings/" + roomId,
     fetcher
   );
 
