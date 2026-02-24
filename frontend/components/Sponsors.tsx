@@ -149,6 +149,7 @@ export default function Sponsors() {
         alignItems="center"
         justifyContent="center"
         rowSpacing={3}
+        columnSpacing={{ xs: 2, sm: 6 }}
         columns={12}
         sx={{
           mt: 5,
