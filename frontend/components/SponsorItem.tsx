@@ -4,10 +4,17 @@ import { Sponsor } from "types";
 
 export default function SponsorItem({ name, image, url, tier }: Sponsor) {
   const isPlatinum = tier === "Platinum";
+  const isGold = tier === "Gold";
 
   return (
     <Grid
-      size={isPlatinum ? { xs: 12, sm: 6 } : { xs: 6, sm: 4 }}
+      size={
+        isPlatinum
+          ? { xs: 12, sm: 6 }
+          : isGold
+            ? { xs: 6, sm: 4 }
+            : { xs: 6, sm: 3 }
+      }
       sx={{
         display: "flex",
         justifyContent: "center",
@@ -17,8 +24,8 @@ export default function SponsorItem({ name, image, url, tier }: Sponsor) {
       <Link href={url} target="_blank">
         <Box
           sx={{
-            width: isPlatinum ? 220 : 180,
-            height: isPlatinum ? 120 : 90,
+            width: isPlatinum ? 220 : isGold ? 160 : 120,
+            height: isPlatinum ? 120 : isGold ? 90 : 60,
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
