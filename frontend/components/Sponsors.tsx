@@ -74,56 +74,12 @@ export default function Sponsors() {
         : "/assets/sponsors/qrt.svg",
       url: "https://www.qube-rt.com/",
     },
-    {
-      name: "Citadel",
-      tier: "Silver",
-      image: isLightMode
-        ? "/assets/sponsors/citadel-dark.png"
-        : "/assets/sponsors/citadel.png",
-      url: "https://www.citadelsecurities.com/",
-    },
-    {
-      name: "IMC",
-      tier: "Silver",
-      image: isLightMode
-        ? "/assets/sponsors/imc-dark.png"
-        : "/assets/sponsors/imc.png",
-      url: "https://www.imc.com/",
-    },
-    {
-      name: "January Capital",
-      tier: "Silver",
-      image: isLightMode
-        ? "/assets/sponsors/januarycapital-dark.png"
-        : "/assets/sponsors/januarycapital-light.png",
-      url: "https://www.january.capital/",
-    },
-    {
-      name: "Optiver",
-      tier: "Silver",
-      image: isLightMode
-        ? "/assets/sponsors/optiver-dark.png"
-        : "/assets/sponsors/optiver.png",
-      url: "https://www.optiver.com/",
-    },
-    {
-      name: "Record Point",
-      tier: "Silver",
-      image: isLightMode
-        ? "/assets/sponsors/recordpoint-dark.png"
-        : "/assets/sponsors/recordpoint.png",
-      url: "https://www.recordpoint.com/",
-    },
   ];
   const platinumSponsors = sponsors.filter(
     (sponsor) => sponsor.tier === "Platinum"
   );
 
   const goldSponsors = sponsors.filter((sponsor) => sponsor.tier === "Gold");
-
-  const silverSponsors = sponsors.filter(
-    (sponsor) => sponsor.tier === "Silver"
-  );
 
   return (
     <Stack marginTop={4}>
@@ -178,20 +134,6 @@ export default function Sponsors() {
         {goldSponsors.map((s, idx) => (
           <SponsorItem
             key={`gold-${idx}`}
-            name={s.name}
-            image={s.image}
-            url={s.url}
-            tier={s.tier}
-          />
-        ))}
-
-        <Grid size={12}>
-          <Divider />
-        </Grid>
-
-        {silverSponsors.map((s, idx) => (
-          <SponsorItem
-            key={`silver-${idx}`}
             name={s.name}
             image={s.image}
             url={s.url}
