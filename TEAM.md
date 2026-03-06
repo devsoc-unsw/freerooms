@@ -15,6 +15,8 @@
 - Dicko Evaldo (@dickoevaldo)
 - Chris Wong (@xleonx0x)
 - Muqueet Mohsen Chowdhury (@mmc03-ucb)
+- Yanlin Li (@Yalilix)
+- Ryan Yensch (@RyanYensch)
 
 ## 2024
 
