@@ -15,6 +15,7 @@
 - Dicko Evaldo (@dickoevaldo)
 - Chris Wong (@xleonx0x)
 - Muqueet Mohsen Chowdhury (@mmc03-ucb)
+- Gabriella Lianti (@gabriellalianti)
 - Yanlin Li (@Yalilix)
 - Ryan Yensch (@RyanYensch)
 
