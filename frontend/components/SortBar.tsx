@@ -1,26 +1,27 @@
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { ClickAwayListener } from "@mui/material";
-import Accordion from "@mui/material/Accordion";
 import Box, { BoxProps } from "@mui/material/Box";
 import Container from "@mui/material/Container";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
 
 import { DropDownItem } from "../types";
 
 const StyledSortButton = styled(Box)<BoxProps>(({ theme }) => ({
-  height: 40,
-  width: 140,
-  padding: 20,
+  height: 56,
+  width: 115,
+  padding: 16,
   display: "flex",
   flexDirection: "row",
   alignSelf: "center",
   justifyItems: "center",
   position: "relative",
-  borderRadius: 10,
-  borderWidth: 2,
+  borderRadius: 8,
+  borderWidth: 1,
   borderStyle: "solid",
   borderColor: theme.palette.primary.main,
   zIndex: 10,
@@ -31,8 +32,8 @@ const StyledSortButton = styled(Box)<BoxProps>(({ theme }) => ({
 
 const StyledDropDownMenu = styled(Box)<BoxProps>(({ theme }) => ({
   width: 250,
-  top: 50,
-  right: 0,
+  top: 56,
+  left: 0,
   borderRadius: 10,
   display: "flex",
   flexDirection: "column",
@@ -44,18 +45,22 @@ const StyledDropDownMenu = styled(Box)<BoxProps>(({ theme }) => ({
   ":hover": {
     cursor: "auto",
   },
+
+  paddingLeft: "10px",
+  paddingRight: "10px",
 }));
 
 const StyledHeader = styled(Box)<BoxProps>(() => ({
-  paddingLeft: 15,
   height: 60,
   display: "inline-flex",
+  alignItems: "center",
   gap: 135,
 }));
 
-const StyledAccordian = styled(Accordion)(({ theme }) => ({
+const StyledBox = styled(Box)(({ theme }) => ({
   transition: "all 0.1s ease-in-out",
   backgroundColor: theme.palette.background.default,
+  borderTop: `1px solid ${theme.palette.secondary.main}`,
 }));
 
 const SortBar: React.FC<{
@@ -70,35 +75,56 @@ const SortBar: React.FC<{
       <StyledSortButton onClick={() => setOpen(!open)}>
         <Stack
           direction="row"
-          spacing={1.5}
+          spacing="16px"
           alignItems="center"
           // onBlur={(e: React.FocusEvent) => dismissHandler(e)}
         >
-          <p>
-            {open ? (
-              <FilterListIcon style={{ color: "#F77F00" }} />
-            ) : (
-              <FilterListIcon style={{ color: "#F77F00" }} />
-            )}
-          </p>
-          <p style={{ color: "#F77F00", fontWeight: "bold" }}>Sort</p>
+          <FilterListIcon
+            sx={{ color: (theme) => theme.palette.primary.main }}
+          />
+          <Typography
+            sx={{
+              color: (theme) => theme.palette.primary.main,
+              fontSize: 16,
+              fontWeight: 500,
+            }}
+          >
+            Sort
+          </Typography>
         </Stack>
         {open && (
           <Container onClick={(e) => e.stopPropagation()}>
             <StyledDropDownMenu>
               <StyledHeader>
-                <h3>Sort</h3>
+                <Typography
+                  sx={{
+                    fontSize: 18,
+                    fontWeight: 700,
+                  }}
+                >
+                  Sort
+                </Typography>
               </StyledHeader>
               {dropdowns.map((dropdown) => (
-                <StyledAccordian key={dropdown.value}>
-                  <div
+                <StyledBox key={dropdown.value}>
+                  <FormControlLabel
+                    control={
+                      <Radio checked={sort === dropdown.value} sx={{}} />
+                    }
+                    label={dropdown.text}
                     onClick={() => setSort(dropdown.value)}
-                    key={dropdown.value}
-                  >
-                    <Radio checked={sort === dropdown.value} />
-                    {dropdown.text}
-                  </div>
-                </StyledAccordian>
+                    sx={{
+                      width: "100%",
+                      py: 0.5,
+                      cursor: "pointer",
+
+                      "& .MuiFormControlLabel-label": {
+                        fontSize: 14,
+                        fontWeight: 500,
+                      },
+                    }}
+                  />
+                </StyledBox>
               ))}
             </StyledDropDownMenu>
           </Container>

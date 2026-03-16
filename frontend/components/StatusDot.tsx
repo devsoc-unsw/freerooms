@@ -6,8 +6,8 @@ const StatusDot: React.FC<{ colour: "green" | "orange" | "red" }> = ({
   return (
     <Box
       sx={(theme) => ({
-        width: 10,
-        height: 10,
+        width: 8,
+        height: 8,
         borderRadius: "50%",
         backgroundColor:
           colour === "green"
@@ -15,7 +15,6 @@ const StatusDot: React.FC<{ colour: "green" | "orange" | "red" }> = ({
             : colour === "orange"
               ? theme.palette.warning.light
               : theme.palette.error.light,
-        marginRight: theme.spacing(1.25),
       })}
     />
   );
