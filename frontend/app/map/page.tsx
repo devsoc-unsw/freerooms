@@ -1,6 +1,12 @@
 "use client";
 
-import { Map } from "../../components/Map";
+import dynamic from "next/dynamic";
+const Map = dynamic(
+  () => import("../../components/Map").then((mod) => mod.MapComponent),
+  {
+    ssr: false,
+  }
+);
 
 export default function Page() {
   return <Map />;
