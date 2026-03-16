@@ -5,14 +5,15 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
+import NavBar from "@frontend/components/NavBar";
 import { grey, orange } from "@mui/material/colors";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, styled } from "@mui/material/styles";
 import ThemeProvider from "@mui/system/ThemeProvider";
+import Sidebar from "components/sidebar/Sidebar";
 import React, { createContext, useEffect, useMemo, useState } from "react";
 import { Provider as ReduxProvider } from "react-redux";
 
-import NavBar, { navHeight } from "../components/NavBar";
 import SearchModal from "../components/SearchModal";
 import store from "../redux/store";
 
@@ -102,9 +103,10 @@ const App: React.FC<{
 }> = ({ children }) => {
   return (
     <>
-      <NavBar />
-      <SearchModal />
-      <Main>{children}</Main>
+      <Sidebar>
+        <SearchModal />
+        <Main>{children}</Main>
+      </Sidebar>
     </>
   );
 };
@@ -114,7 +116,6 @@ const Main = styled("main")(({ theme }) => ({
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  paddingTop: navHeight,
   width: "100%",
   marginRight: 0,
   height: "100%",

@@ -113,15 +113,7 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
     : "This room is managed externally by its associated school. Please contact the school to request a booking";
 
   const ratings = useRoomRatings(room.id);
-  let ratingValue = 0;
-
-  if (ratings.ratings && ratings.ratings.length > 0) {
-    ratings.ratings.forEach((rating) => {
-      ratingValue += rating.overall;
-    });
-    ratingValue = ratingValue / ratings.ratings.length;
-    ratingValue = Math.round(ratingValue * 10) / 10;
-  }
+  let ratingValue = ratings.data ? ratings.data.overallRating : 0;
 
   return (
     <Stack
