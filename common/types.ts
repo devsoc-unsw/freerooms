@@ -83,6 +83,7 @@ export type BookingsResponse = {
 export type RatingsResponse = {
   // roomId refers to room name
   roomId: string;
+  overallRating: number;
   ratings: Rating[];
 };
 
