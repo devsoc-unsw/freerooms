@@ -1,7 +1,9 @@
 import {
+  AverageRating,
   BuildingRatingsResponse,
   Rating,
   RatingsResponse,
+  RawRatingDocument,
 } from "@common/types";
 import dotenv from "dotenv";
 import { Collection, MongoClient } from "mongodb";
@@ -102,12 +104,18 @@ export async function insertBuldingRating(
   }
 }
 
-export async function getRatings(roomId: string): Promise<Rating[]> {
+export async function getRatings(roomId: string): Promise<RatingsResponse> {
   if (!MONGO_URI) {
     throw new Error("MONGO_URI not found");
   }
 
   const client = new MongoClient(MONGO_URI);
+
+  const averagedRatings: AverageRating = {
+    cleanliness: 0,
+    location: 0,
+    quietness: 0,
+  };
 
   try {
     await client.connect();
@@ -124,16 +132,39 @@ export async function getRatings(roomId: string): Promise<Rating[]> {
 
     // Document found, return ratings array
     if (roomDoc !== null) {
-      const roomRating = roomDoc as unknown as RatingsResponse;
-      return roomRating.ratings;
+      const foundDoc = roomDoc as unknown as RawRatingDocument;
+      let averagedOverallRating = 0;
+
+      foundDoc.ratings.map((doc: Rating) => {
+        averagedRatings.cleanliness += doc.cleanliness;
+        averagedRatings.location += doc.location;
+        averagedRatings.quietness += doc.quietness;
+        averagedOverallRating += doc.overall;
+      });
+
+      const numFound = foundDoc.ratings.length;
+      if (foundDoc.ratings.length > 0) {
+        averagedRatings.cleanliness /= numFound;
+        averagedRatings.location /= numFound;
+        averagedRatings.quietness /= numFound;
+        averagedOverallRating /= numFound;
+      }
+
+      const res = {
+        roomId: foundDoc.roomId,
+        overallRating: averagedOverallRating,
+        averageRating: averagedRatings,
+      };
+
+      return res;
     }
   } catch (error) {
     console.error("Error finding item:", error);
   } finally {
     await client.close();
   }
-  // No document found, return empty array
-  return [];
+  // No document found, return empty object
+  return { roomId: roomId, overallRating: 0, averageRating: averagedRatings };
 }
 
 export async function getBuildingRatings(

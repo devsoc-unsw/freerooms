@@ -11,10 +11,16 @@ RUN npm ci
 # Rebuild the source code only when needed
 FROM node:22-alpine AS builder
 
+# Accept build args for environment variables
+ARG NEXT_PUBLIC_STAGING=false
+
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY /frontend .
 COPY common ../common
+
+# Set the environment variable for Next.js build
+ENV NEXT_PUBLIC_STAGING=$NEXT_PUBLIC_STAGING
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
