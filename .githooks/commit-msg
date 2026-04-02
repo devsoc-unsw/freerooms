@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Get the commit message from the temporary file passed as $1
+commit_message=$(cat "$1")
+
+# from https://www.conventionalcommits.org/en/v1.0.0/
+regex="^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test){1}(\([[:alnum:]._-]+\))?(!)?: ([[:alnum:]])+([[:space:][:print:]]*)"
+
+if [[ ! $commit_message =~ $regex ]]; then
+  echo -e "ERROR: Commit message must match format of conventional commit messages: e.g chore: removed unused component files.\nSee https://docs.devsoc.app/doc/git-practice-KjFSN8hWkg for more information."
+  exit 1
+fi
