@@ -110,16 +110,24 @@ export const allRoomsFilterDropdown: DropDown[] = [
     ],
   },
   {
-    text: "ID Required",
-    key: "id",
+    text: "Duration Free",
+    key: "duration",
     items: [
       {
-        text: "Not Required",
-        value: "false",
+        text: "30+ minutes",
+        value: "30",
       },
       {
-        text: "Required",
-        value: "true",
+        text: "1+ hours",
+        value: "60",
+      },
+      {
+        text: "2+ hours",
+        value: "120",
+      },
+      {
+        text: "3+ hours",
+        value: "180",
       },
     ],
   },

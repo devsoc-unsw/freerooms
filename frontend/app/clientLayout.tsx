@@ -9,16 +9,12 @@ import { grey, orange } from "@mui/material/colors";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, styled } from "@mui/material/styles";
 import ThemeProvider from "@mui/system/ThemeProvider";
-import { usePathname } from "next/navigation";
 import React, { createContext, useEffect, useMemo, useState } from "react";
 import { Provider as ReduxProvider } from "react-redux";
 
 import NavBar, { navHeight } from "../components/NavBar";
 import SearchModal from "../components/SearchModal";
-import { selectCurrentBuilding } from "../redux/currentBuildingSlice";
-import { useSelector } from "../redux/hooks";
 import store from "../redux/store";
-import BuildingDrawer, { drawerWidth } from "../views/BuildingDrawer";
 
 export const DarkModeContext = createContext({
   isDarkMode: false,
@@ -104,23 +100,16 @@ const ClientLayout: React.FC<{
 const App: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
-  const currentBuilding = useSelector(selectCurrentBuilding);
-  const path = usePathname();
-  const drawerOpen = !!currentBuilding && (path == "/browse" || path == "/map");
-
   return (
     <>
-      <NavBar drawerOpen={drawerOpen} />
+      <NavBar />
       <SearchModal />
-      <Main drawerOpen={drawerOpen}>{children}</Main>
-      <BuildingDrawer open={drawerOpen} />
+      <Main>{children}</Main>
     </>
   );
 };
 
-const Main = styled("main", {
-  shouldForwardProp: (prop) => prop !== "drawerOpen",
-})<{ drawerOpen: boolean }>(({ theme, drawerOpen }) => ({
+const Main = styled("main")(({ theme }) => ({
   transition: theme.transitions.create(["margin", "width"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -129,14 +118,6 @@ const Main = styled("main", {
   width: "100%",
   marginRight: 0,
   height: "100%",
-  ...(drawerOpen && {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginRight: drawerWidth,
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
 }));
 
 export default ClientLayout;

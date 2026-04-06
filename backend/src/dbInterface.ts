@@ -152,3 +152,45 @@ export const queryBookingsForRoom = async (
 
   return await doRequest<BookingsForRoomRes>(query, variables);
 };
+
+///////////////////////////////////////////////////////////////
+// Type definition of room utilities from GraphQL query
+type RoomUtilitiesRes = {
+  rooms_by_pk: {
+    id: string;
+    name: string;
+    floor: string | null;
+    seating: string | null;
+    microphone: string[];
+    accessibility: string[];
+    audiovisual: string[];
+    infotechnology: string[];
+    writingMedia: string[];
+    service: string[];
+  };
+};
+
+// Requesting API to return information for the room utilities under a specific roomId
+export const queryRoomUtilities = async (
+  roomId: string
+): Promise<RoomUtilitiesRes> => {
+  const query = `
+    query RoomUtilities($roomId: String!) {
+      rooms_by_pk(id: $roomId) {
+        id
+        name
+        floor
+        seating
+        microphone
+        accessibility
+        audiovisual
+        infotechnology
+        writingMedia
+        service
+      }
+    }
+  `;
+
+  const variables = { roomId };
+  return await doRequest<RoomUtilitiesRes>(query, variables);
+};

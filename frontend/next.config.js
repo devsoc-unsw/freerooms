@@ -2,8 +2,15 @@
 const nextConfig = {
   output: "standalone",
   experimental: {
-    appDir: true,
     externalDir: true,
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "www.learningenvironments.unsw.edu.au",
+      },
+    ],
   },
 };
 

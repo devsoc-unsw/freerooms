@@ -44,6 +44,8 @@ const CardList: React.FC<{
   const { status: roomStatusData } = useStatus();
   const { userLat, userLng } = useUserLocation();
 
+  const displayMobile = useMediaQuery(useTheme().breakpoints.down("sm"));
+
   // This exists so that while new filtered data is loading, the old one stays there
   const [persistedData, setPersistedData] = React.useState(roomStatusData);
   React.useEffect(() => {

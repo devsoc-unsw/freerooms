@@ -10,22 +10,30 @@ import {
   DialogContentText,
   DialogTitle,
   IconButton,
-  useTheme,
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
+import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import { Dictionary } from "@reduxjs/toolkit";
+import RoomRating from "components/Rating/RoomRating";
+import RoomUtilityTags from "components/RoomUtilityTags";
+import useRoomRatings from "hooks/useRoomRatings";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 import React, { useState } from "react";
 
 import BookingButton from "../../../components/BookingButton";
 import BookingCalendar from "../../../components/BookingCalendar";
+import FeedbackButton from "../../../components/FeedbackButton";
 import LoadingCircle from "../../../components/LoadingCircle";
+import RoomBackButton from "../../../components/RoomBackButton";
 import useBookings from "../../../hooks/useBookings";
 import useBuilding from "../../../hooks/useBuilding";
 import useRoom from "../../../hooks/useRoom";
+import room_photos from "../../../public/room-photos.json";
 
 const adjustDateIfMidnight = (inputDate: Date): Date => {
   // Check if the time is midnight (00:00:00)
@@ -44,19 +52,22 @@ const adjustDateIfMidnight = (inputDate: Date): Date => {
   }
 };
 
-export default function Page({ params }: { params: { room: string } }) {
-  const { bookings } = useBookings(params.room);
+export default function Page() {
+  const params = useParams();
+  const roomParam = params.room as string;
+  const { bookings } = useBookings(roomParam);
   const adjustedBookings: Booking[] | undefined = bookings?.map((booking) => ({
     ...booking,
     end: adjustDateIfMidnight(booking.end),
   }));
 
-  const { room } = useRoom(params.room);
+  const { room } = useRoom(roomParam);
   const [campus, grid] = room ? room.id.split("-") : ["", ""];
   const { building } = useBuilding(`${campus}-${grid}`);
 
   return (
     <Container maxWidth="xl">
+      <FeedbackButton />
       {room && building ? (
         <Stack
           justifyContent="center"
@@ -67,8 +78,16 @@ export default function Page({ params }: { params: { room: string } }) {
           px={{ xs: 3, md: 15 }}
         >
           <RoomPageHeader room={room} buildingName={building.name} />
-          <RoomImage src={`/assets/building_photos/${campus}-${grid}.webp`} />
-          <BookingCalendar events={adjustedBookings ?? []} />
+          <RoomImage
+            src={
+              roomParam in room_photos
+                ? `${(room_photos as Dictionary<String>)[roomParam]}`
+                : `/assets/building_photos/${campus}-${grid}.webp`
+            }
+          />
+          <BookingCalendar events={adjustedBookings ?? []} roomID={room.id} />
+          <RoomUtilityTags roomId={room?.id} />
+          <RoomRating buildingID={building.id} roomID={room.id} />
         </Stack>
       ) : (
         <LoadingCircle />
@@ -93,6 +112,17 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
     ? `This room is managed by ${schoolDetails.name}. Please contact the school to request a booking`
     : "This room is managed externally by its associated school. Please contact the school to request a booking";
 
+  const ratings = useRoomRatings(room.id);
+  const ratingValue = (() => {
+    // round rating to nearest .5 if a rating exists
+    if (!ratings || !ratings.data) return 0;
+    const rating = ratings.data.overallRating;
+    const frac = rating % 1;
+    return frac >= 0.3 && frac <= 0.7
+      ? Math.floor(rating) + 0.5
+      : Math.round(rating);
+  })();
+
   return (
     <Stack
       width="100%"
@@ -101,6 +131,7 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
       justifyContent="space-between"
     >
       <Stack direction="column" spacing={1} width="100%" mb={1}>
+        <RoomBackButton />
         {buildingName != "" && (
           <Stack
             direction="row"
@@ -156,6 +187,24 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
               </Typography>
             </Typography>
           )}
+        </Stack>
+
+        <Stack
+          direction="row"
+          alignItems="center"
+          spacing={0.3}
+          aria-label="5-star-info"
+        >
+          <Typography variant="body1" fontWeight="bold">
+            {ratingValue == 0 ? 0 : ratingValue}
+          </Typography>
+          <Rating
+            readOnly
+            value={ratingValue}
+            size="small"
+            precision={0.5}
+            sx={{ color: "rgb(255, 169, 12)" }}
+          />
         </Stack>
       </Stack>
       <Dialog

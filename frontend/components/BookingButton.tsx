@@ -53,9 +53,10 @@ const BookingButton: React.FC<{
         my: { xs: 1, sm: 0 },
         width: { xs: "100%", sm: "160px" },
       }}
+      disabled
     >
       <Typography variant="body2" fontWeight="bold">
-        Make a Booking
+        Booking Unavailable
       </Typography>
     </Button>
   );

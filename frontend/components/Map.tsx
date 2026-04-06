@@ -9,6 +9,7 @@ import {
 import { DarkModeContext } from "app/clientLayout";
 import React, { useContext, useEffect, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
+import BuildingDrawer from "views/BuildingDrawer";
 
 import { GOOGLE_API_KEY } from "../config";
 import useBuildings from "../hooks/useBuildings";
@@ -130,6 +131,7 @@ export const Map = () => {
             </OverlayViewF>
           )}
         </GoogleMap>
+        <BuildingDrawer />
       </div>
     );
   };

@@ -2,7 +2,6 @@
 
 ///////////////////////////////////////////////////////////////
 // Data types
-
 export type Building = {
   name: string;
   id: string;
@@ -27,8 +26,13 @@ export type Booking = {
   end: Date;
 };
 
-export type BuildingStatus = {
+export type RoomStatuses = {
   [roomNumber: string]: RoomStatus;
+};
+
+export type BuildingStatus = {
+  numAvailable: number;
+  roomStatuses: RoomStatuses;
 };
 
 export type RoomStatus = {
@@ -37,9 +41,22 @@ export type RoomStatus = {
 };
 
 export type School = {
-    name : string;
-    homepage : string;
-    contactLink : string
+  name: string;
+  homepage: string;
+  contactLink: string;
+};
+
+export type Rating = {
+  cleanliness: number;
+  location: number;
+  quietness: number;
+  overall: number;
+};
+
+export type AverageRating = {
+  cleanliness: number;
+  location: number;
+  quietness: number;
 }
 
 ///////////////////////////////////////////////////////////////
@@ -59,6 +76,44 @@ export type StatusResponse = {
   [buildingId: string]: BuildingStatus;
 };
 
+export type SearchResponseValue = RoomStatus & Pick<Room, "name">;
+
+export type SearchResponse = {
+  [roomId: string]: SearchResponseValue;
+};
+
 export type BookingsResponse = {
   bookings: Booking[];
+};
+
+
+// how ratings are stored in Mongo
+export type RawRatingDocument = { 
+  roomId: string, 
+  ratings: Rating[] 
+}
+
+export type RatingsResponse = {
+  // roomId refers to room name
+  roomId: string;
+  overallRating: number;
+  averageRating: AverageRating;
+};
+
+export type BuildingRatingsResponse = {
+  buildingId: string;
+  overallRating: number;
+};
+
+export type RoomUtilitiesResponse = {
+  id: string;
+  name: string;
+  floor: string | null;
+  seating: string | null;
+  microphone: string[];
+  accessibility: string[];
+  audiovisual: string[];
+  infotechnology: string[];
+  writingMedia: string[];
+  service: string[];
 };

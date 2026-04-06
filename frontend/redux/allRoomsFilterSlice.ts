@@ -3,15 +3,23 @@
  */
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { AllRoomsFilter } from "../types";
+import { AllRoomsFilters } from "../types";
 import { RootState } from "./store";
 
 interface RoomsFilterState {
-  value: AllRoomsFilter;
+  value: AllRoomsFilters;
 }
 
 const initialState: RoomsFilterState = {
-  value: {},
+  value: {
+    capacity: "",
+    usage: "",
+    location: "",
+    duration: "",
+    id: "",
+  },
+  // Needs to be initalised to silence errors
+  // TODO: Get values from constants.ts
 };
 
 const filtersSlice = createSlice({
@@ -20,27 +28,17 @@ const filtersSlice = createSlice({
   reducers: {
     setAllRoomsFilter: (
       state,
-      action: PayloadAction<{ key: keyof AllRoomsFilter; value: string }>
+      action: PayloadAction<{ key: keyof AllRoomsFilters; value: string }>
     ) => {
       const { key, value } = action.payload;
-      if (!Object.keys(state.value).includes(key)) {
-        state.value[key] = [];
-      }
-      state.value[key]?.push(value);
+      state.value[key] = value;
     },
     unsetAllRoomsFilter: (
       state,
-      action: PayloadAction<{ key: keyof AllRoomsFilter; value: string }>
+      action: PayloadAction<{ key: keyof AllRoomsFilters; value: string }>
     ) => {
       const { key, value } = action.payload;
-      if (Object.keys(state.value).includes(key)) {
-        console.log(key, value);
-        const { ...otherFilters } = state.value;
-        const targetIndex = otherFilters["usage"]?.indexOf(value);
-        if (targetIndex && targetIndex > -1)
-          otherFilters["usage"]?.splice(targetIndex, 1);
-        state.value = otherFilters;
-      }
+      state.value[key] = value;
     },
     clearAllRoomsFilters: (state) => {
       state.value = {};
