@@ -5,7 +5,7 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
-import NavBar from "@frontend/components/NavBar";
+import NavBar, { navHeight } from "@frontend/components/NavBar";
 import { grey, orange } from "@mui/material/colors";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, styled } from "@mui/material/styles";
@@ -106,10 +106,9 @@ const App: React.FC<{
 }> = ({ children }) => {
   return (
     <>
-      <Sidebar>
-        <SearchModal />
-        <Main>{children}</Main>
-      </Sidebar>
+      <NavBar />
+      <SearchModal />
+      <Main>{children}</Main>
     </>
   );
 };
@@ -119,6 +118,7 @@ const Main = styled("main")(({ theme }) => ({
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
+  paddingTop: navHeight,
   width: "100%",
   marginRight: 0,
   height: "100%",
