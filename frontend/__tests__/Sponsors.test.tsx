@@ -40,11 +40,19 @@ describe("Sponsors", () => {
     expect(tradeDesk).toBeInTheDocument();
   });
 
-  it("shows SafetyCulture", () => {
+  it("shows Lyra", () => {
     render(<Sponsors />);
 
-    const safetyCulture = screen.getByRole("img", { name: "SafetyCulture" });
+    const lyra = screen.getByRole("img", { name: "Lyra" });
 
-    expect(safetyCulture).toBeInTheDocument();
+    expect(lyra).toBeInTheDocument();
+  });
+
+  it("shows Airwallex", () => {
+    render(<Sponsors />);
+
+    const airwallex = screen.getByRole("img", { name: "Airwallex" });
+
+    expect(airwallex).toBeInTheDocument();
   });
 });
