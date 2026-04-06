@@ -38,7 +38,7 @@ const Page = () => {
           >
             <Stack
               direction="row"
-              spacing={1}
+              spacing={2}
               justifyContent="space-between"
               alignItems="center"
               alignSelf="center"
@@ -53,7 +53,7 @@ const Page = () => {
               direction="row"
               justifyContent="space-between"
               marginTop={{ xs: 1, sm: 0 }}
-              spacing={1}
+              spacing={2}
             >
               <DatePicker />
               <TimePicker />

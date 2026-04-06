@@ -21,7 +21,8 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@common/*": ["../common/*"]
+      "@common/*": ["../common/*"],
+      "@frontend/*": ["./*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

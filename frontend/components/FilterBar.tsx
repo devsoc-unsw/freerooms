@@ -19,16 +19,16 @@ import { filterBarDropdown } from "../utils/constants";
 import DropdownSelections from "./DropdownSelections";
 
 const StyledFilterButton = styled(Box)<BoxProps>(({ theme }) => ({
-  height: 40,
-  width: 140,
-  padding: 20,
+  height: 56,
+  width: 115,
+  padding: 16,
   display: "flex",
   flexDirection: "row",
   alignSelf: "center",
   justifyItems: "center",
   position: "relative",
-  borderRadius: 10,
-  borderWidth: 2,
+  borderRadius: 8,
+  borderWidth: 1,
   borderStyle: "solid",
   borderColor: theme.palette.primary.main,
   zIndex: 10,
@@ -39,7 +39,7 @@ const StyledFilterButton = styled(Box)<BoxProps>(({ theme }) => ({
 
 const StyledDropDownMenu = styled(Box)<BoxProps>(({ theme }) => ({
   width: 250,
-  top: 50,
+  top: 56,
   left: 0,
   borderRadius: 10,
   display: "flex",
@@ -102,24 +102,42 @@ const FilterBar = () => {
   return (
     <ClickAwayListener onClickAway={() => setOpen(false)}>
       <StyledFilterButton onClick={() => setOpen(!open)}>
-        <Stack direction="row" spacing={1.5} alignItems="center">
-          <p>
-            {open ? (
-              <FilterAltIcon style={{ color: "#F77F00" }} />
-            ) : (
-              <FilterAltIcon style={{ color: "#F77F00" }} />
-            )}
-          </p>
-          <p style={{ color: "#F77F00", fontWeight: "bold" }}>Filters</p>
+        <Stack direction="row" spacing="16px" alignItems="center">
+          <FilterAltIcon
+            sx={{
+              fill: "none",
+              stroke: (theme) => theme.palette.primary.main,
+              strokeWidth: 2,
+            }}
+          />
+          <Typography
+            sx={{
+              color: (theme) => theme.palette.primary.main,
+              fontSize: 16,
+              fontWeight: 500,
+            }}
+          >
+            Filters
+          </Typography>
         </Stack>
         {open && (
           <Container onClick={(e) => e.stopPropagation()}>
             <StyledDropDownMenu>
               <StyledHeader>
-                <h3>Filter</h3>
+                <Typography
+                  sx={{
+                    fontSize: 18,
+                    fontWeight: 700,
+                  }}
+                >
+                  Filter
+                </Typography>
                 <Typography
                   color="primary"
-                  sx={{ "&:hover": { cursor: "pointer" } }}
+                  sx={{
+                    "&:hover": { cursor: "pointer" },
+                    fontSize: 16,
+                  }}
                   onClick={() => dispatch(clearFilters())}
                 >
                   Reset

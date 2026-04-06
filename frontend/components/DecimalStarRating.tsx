@@ -6,9 +6,6 @@ const DecimalStarRating: React.FC<{
   roomID: string;
 }> = ({ roomID }) => {
   const ratings = useRoomRatings(roomID);
-
-  console.log(ratings);
-
   let overallRating = ratings.data ? ratings.data.overallRating : 0;
 
   return (

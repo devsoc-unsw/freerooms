@@ -23,14 +23,34 @@ const TimePicker = () => {
         onChange={(value) =>
           value && dispatch(setDatetime(toSydneyTime(value.toDate())))
         }
+        format="hh:mm a"
         slotProps={{
           textField: {
             sx: {
-              svg: { color: theme.palette.text.primary },
-              input: { color: theme.palette.text.primary },
-              width: 140,
+              svg: {
+                color: theme.palette.mode === "light" ? "#6C6562" : "#FFFFFF",
+              },
+              width: 133,
               "& .MuiInputBase-root": {
-                height: 45,
+                height: 56,
+                borderRadius: "8px",
+              },
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#CBC4C1",
+                borderWidth: 1,
+              },
+              "& .MuiInputBase-input": {
+                fontSize: 16,
+                fontWeight: 500,
+                color:
+                  theme.palette.mode === "light"
+                    ? theme.palette.text.secondary
+                    : "#FFFFFF",
+              },
+              "& .MuiOutlinedInput-root": {
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#CBC4C1",
+                },
               },
             },
           },
