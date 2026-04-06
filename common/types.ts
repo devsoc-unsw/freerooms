@@ -53,6 +53,12 @@ export type Rating = {
   overall: number;
 };
 
+export type AverageRating = {
+  cleanliness: number;
+  location: number;
+  quietness: number;
+}
+
 ///////////////////////////////////////////////////////////////
 // API Response Types
 
@@ -80,10 +86,18 @@ export type BookingsResponse = {
   bookings: Booking[];
 };
 
+
+// how ratings are stored in Mongo
+export type RawRatingDocument = { 
+  roomId: string, 
+  ratings: Rating[] 
+}
+
 export type RatingsResponse = {
   // roomId refers to room name
   roomId: string;
-  ratings: Rating[];
+  overallRating: number;
+  averageRating: AverageRating;
 };
 
 export type BuildingRatingsResponse = {
