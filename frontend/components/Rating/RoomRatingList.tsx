@@ -12,26 +12,17 @@ const RoomRatingList: React.FC<{
 }> = ({ roomID }) => {
   const isDesktop = useMediaQuery("(min-width: 970px)");
 
-  const { ratings } = useRoomRatings(roomID);
+  const ratings = useRoomRatings(roomID);
 
-  let cleanlinessRating = 0;
-  let locationRating = 0;
-  let quietnessRating = 0;
-  let overallRating = 0;
-
-  if (ratings && ratings.length > 0) {
-    ratings.forEach((rating) => {
-      cleanlinessRating += rating.cleanliness;
-      locationRating += rating.location;
-      quietnessRating += rating.quietness;
-      overallRating += rating.overall;
-    });
-
-    cleanlinessRating = cleanlinessRating / ratings.length;
-    locationRating = locationRating / ratings.length;
-    quietnessRating = quietnessRating / ratings.length;
-    overallRating = overallRating / ratings.length;
-  }
+  let cleanlinessRating = ratings.data
+    ? ratings.data.averageRating.cleanliness
+    : 0;
+  let locationRating = ratings.data
+    ? ratings.data.averageRating.cleanliness
+    : 0;
+  let quietnessRating = ratings.data
+    ? ratings.data.averageRating.cleanliness
+    : 0;
   return (
     <>
       {isDesktop ? (

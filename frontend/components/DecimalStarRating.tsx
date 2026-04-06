@@ -5,15 +5,11 @@ import React from "react";
 const DecimalStarRating: React.FC<{
   roomID: string;
 }> = ({ roomID }) => {
-  const { ratings } = useRoomRatings(roomID);
-  let overallRating = 0;
+  const ratings = useRoomRatings(roomID);
 
-  if (ratings && ratings.length > 0) {
-    ratings.forEach((rating) => {
-      overallRating += rating.overall;
-    });
-    overallRating = Math.round((overallRating / ratings.length) * 10) / 10;
-  }
+  console.log(ratings);
+
+  let overallRating = ratings.data ? ratings.data.overallRating : 0;
 
   return (
     <Stack alignItems="center">
