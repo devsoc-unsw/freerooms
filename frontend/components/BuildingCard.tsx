@@ -75,7 +75,6 @@ const InfoBox = styled(Box)<BoxProps>(({ theme }) => ({
   borderBottomRightRadius: 12,
   padding: 12,
   gap: 4,
-  //width: "100%",
 }));
 
 const InfoFooterBox = styled(Box)<BoxProps>(({ theme }) => ({
