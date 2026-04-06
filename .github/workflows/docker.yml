@@ -8,6 +8,7 @@ on:
 env:
   ENVIRONMENT: ${{ github.ref_name == 'master' && 'prod' || 'staging' }}
   IMAGE_NAME: ${{ github.ref_name == 'master' && 'freerooms' || 'freerooms-staging' }}
+  BRANCH_NAME: ${{ github.base_ref || github.ref_name }}
 
 jobs:
   build:
@@ -55,6 +56,8 @@ jobs:
             ghcr.io/devsoc-unsw/${{ env.IMAGE_NAME }}-${{ matrix.name }}:${{ github.sha }}
             ghcr.io/devsoc-unsw/${{ env.IMAGE_NAME }}-${{ matrix.name }}:latest
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            ${{ env.BRANCH_NAME == 'dev' && matrix.context == 'frontend' && 'NEXT_PUBLIC_STAGING=true' || '' }}
   deploy:
     name: Deploy (CD)
     runs-on: ubuntu-latest
