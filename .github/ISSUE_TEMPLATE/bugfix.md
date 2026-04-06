@@ -1,6 +1,6 @@
 ---
 name: Bug Report
-about: Template for reporting a mobile app bug
+about: Template for reporting a website bug
 title: 'BUG#[issue number]: [short description]'
 labels: ''
 assignees: ''
@@ -14,10 +14,10 @@ assignees: ''
 
 # Behavior
 ## Expected
-[What the app should have done]
+[What the website should have done]
 
 ## Actual
-[What the app currently does]
+[What the website currently does]
 
 # Resources
-- [Attach any useful context e.g device version]
+- [Attach any useful context e.g screen size]
