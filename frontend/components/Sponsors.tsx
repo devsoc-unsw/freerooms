@@ -11,6 +11,14 @@ export default function Sponsors() {
 
   const sponsors: Sponsor[] = [
     {
+      name: "Hudon River Trading",
+      tier: "Platinum",
+      image: isLightMode
+        ? "/assets/sponsors/hrt.png"
+        : "/assets/sponsors/hrt.png",
+      url: "https://www.hudsonrivertrading.com",
+    },
+    {
       name: "The Trade Desk",
       tier: "Platinum",
       image: isLightMode
@@ -50,6 +58,22 @@ export default function Sponsors() {
         : "/assets/sponsors/airwallex-light.png",
       url: "https://www.airwallex.com/au",
     },
+    {
+      name: "Atlassian",
+      tier: "Gold",
+      image: isLightMode
+        ? "/assets/sponsors/atlassian.png"
+        : "/assets/sponsors/atlassian.png",
+      url: "https://www.atlassian.com/",
+    },
+    {
+      name: "QRT",
+      tier: "Gold",
+      image: isLightMode
+        ? "/assets/sponsors/qrt-dark.png"
+        : "/assets/sponsors/qrt.svg",
+      url: "https://www.qube-rt.com/",
+    },
   ];
   const platinumSponsors = sponsors.filter(
     (sponsor) => sponsor.tier === "Platinum"
@@ -81,6 +105,7 @@ export default function Sponsors() {
         alignItems="center"
         justifyContent="center"
         rowSpacing={3}
+        columnSpacing={{ xs: 2, sm: 6 }}
         columns={12}
         sx={{
           mt: 5,
