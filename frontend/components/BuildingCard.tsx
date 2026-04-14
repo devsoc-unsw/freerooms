@@ -33,6 +33,7 @@ const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
     height: 200,
   },
+  cursor: "pointer",
 }));
 
 const ImageBox = styled(Box)<BoxProps>(({ theme }) => ({
