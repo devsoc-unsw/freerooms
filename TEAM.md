@@ -1,5 +1,17 @@
 # Freerooms Team
 
+## 2026
+
+### Leads
+- Ryan Yensch (@RyanYensch)
+
+### Developers
+- Ray Miles (@disarrayx)
+- Christopher Khim (@CrispyKhim)
+- Cormac Flahive (@Cfla446)
+- Caelan Gray (@caelan-g)
+
+
 ## 2025
 
 ### Leads
