@@ -70,7 +70,7 @@ export default function Sponsors() {
       name: "QRT",
       tier: "Gold",
       image: isLightMode
-        ? "/assets/sponsors/qrt-dark.png"
+        ? "/assets/sponsors/qrt-dark.svg"
         : "/assets/sponsors/qrt.svg",
       url: "https://www.qube-rt.com/",
     },
