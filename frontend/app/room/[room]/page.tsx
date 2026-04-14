@@ -24,7 +24,7 @@ import useRoomRatings from "hooks/useRoomRatings";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useState } from "react";
-
+import ViewOnMapButton from "../../../components/ViewOnMapButton";
 import BookingButton from "../../../components/BookingButton";
 import BookingCalendar from "../../../components/BookingCalendar";
 import FeedbackButton from "../../../components/FeedbackButton";
@@ -162,11 +162,17 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
           <Typography variant="h4" fontWeight={550}>
             {room.name}
           </Typography>
-          <BookingButton
-            school={room.school}
-            usage={room.usage}
-            onClick={toggleDialog}
-          />
+          <Stack
+            direction={{ xs: "column", sm: "row" }}
+            justifyContent="space-between"
+          >
+            <ViewOnMapButton buildingId={room.id} />
+            <BookingButton
+              school={room.school}
+              usage={room.usage}
+              onClick={toggleDialog}
+            />
+          </Stack>
         </Stack>
         <Stack direction="row" spacing={2}>
           <Typography variant="body1" fontWeight="bold">
