@@ -10,6 +10,7 @@ import { DarkModeContext } from "app/clientLayout";
 import React, { useContext, useEffect, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import BuildingDrawer from "views/BuildingDrawer";
+import { navHeight } from "./NavBar";
 
 import { GOOGLE_API_KEY } from "../config";
 import useBuildings from "../hooks/useBuildings";
@@ -84,7 +85,7 @@ export const Map = () => {
 
   const renderMap = () => {
     return (
-      <div style={{ position: "relative", height: "100svh" }}>
+      <div style={{ position: "relative", height: `calc(100svh - ${navHeight}px)` }}>
         <GoogleMap
           mapContainerStyle={{ height: "100%" }}
           center={center}
