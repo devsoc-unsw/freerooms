@@ -56,9 +56,9 @@ export const Map = () => {
   const { isDarkMode } = useContext(DarkModeContext);
 
   const [currentHover, setCurrentHover] = useState<Building | null>(null);
-  const [debouncedCurrentHover, _] = useDebounceValue(currentHover, 50);
+  const [debouncedCurrentHover] = useDebounceValue(currentHover, 50);
 
-  const styleArray = getMapType(isDarkMode);
+  const styleArray = useMemo(() => getMapType(isDarkMode), [isDarkMode]);
 
   const { userLat, userLng } = useUserLocation();
 
@@ -76,6 +76,20 @@ export const Map = () => {
     );
   }, [buildings, userLat, userLng]);
 
+  const mapOptions = useMemo(
+    () => ({
+      clickableIcons: false,
+      fullscreenControl: false,
+      mapTypeControl: false,
+      restriction: {
+        latLngBounds: mapBounds,
+        strictBounds: false,
+      },
+      styles: styleArray,
+    }),
+    [styleArray]
+  );
+
   const renderMap = () => {
     return (
       <div
@@ -85,18 +99,10 @@ export const Map = () => {
         }}
       >
         <GoogleMap
+          key={isDarkMode ? "dark-map" : "light-map"}
           mapContainerStyle={{ height: "100%" }}
           center={center}
-          options={{
-            clickableIcons: false,
-            fullscreenControl: false,
-            mapTypeControl: false,
-            restriction: {
-              latLngBounds: mapBounds,
-              strictBounds: false,
-            },
-            styles: styleArray,
-          }}
+          options={mapOptions}
           zoom={17.5}
         >
           {buildings &&
@@ -118,6 +124,7 @@ export const Map = () => {
                 />
               </OverlayViewF>
             ))}
+
           {userLat && userLng && isInBounds(userLat, userLng) && (
             <OverlayViewF
               mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}

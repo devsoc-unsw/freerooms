@@ -10,16 +10,43 @@ import { grey } from "@mui/material/colors";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, styled } from "@mui/material/styles";
 import ThemeProvider from "@mui/system/ThemeProvider";
-import React, { createContext, useMemo, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useMemo,
+  useSyncExternalStore,
+} from "react";
 import { Provider as ReduxProvider } from "react-redux";
 
 import SearchModal from "../components/SearchModal";
 import store from "../redux/store";
 
+type ThemeMode = "light" | "dark";
+
 export const DarkModeContext = createContext({
   isDarkMode: false,
   toggleDarkMode: () => { },
 });
+
+const subscribeToDarkMode = (callback: () => void) => {
+  const handleStorage = (event: StorageEvent) => {
+    if (event.key === "darkMode") {
+      callback();
+    }
+  };
+
+  window.addEventListener("storage", handleStorage);
+  return () => {
+    window.removeEventListener("storage", handleStorage);
+  };
+};
+
+const getClientModeSnapshot = (): ThemeMode => {
+  const storedMode = window.localStorage.getItem("darkMode");
+  return storedMode === "dark" ? "dark" : "light";
+};
+
+const getServerModeSnapshot = (): ThemeMode => "light";
 
 /**
  * Any global components like providers or configs should go here
@@ -27,70 +54,78 @@ export const DarkModeContext = createContext({
 const ClientLayout: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
-  const [mode, setMode] = useState<"light" | "dark">(() => {
-    if (typeof window === "undefined") {
-      return "light";
-    }
+  const mode = useSyncExternalStore(
+    subscribeToDarkMode,
+    getClientModeSnapshot,
+    getServerModeSnapshot
+  );
 
-    const storedMode = localStorage.getItem("darkMode");
-    return storedMode === "dark" ? "dark" : "light";
-  });
+  const toggleDarkMode = useCallback(() => {
+    const nextMode = mode === "light" ? "dark" : "light";
+    window.localStorage.setItem("darkMode", nextMode);
+    window.dispatchEvent(
+      new StorageEvent("storage", {
+        key: "darkMode",
+        newValue: nextMode,
+      })
+    );
+  }, [mode]);
 
-  const toggle = useMemo(
+  const darkModeContextValue = useMemo(
     () => ({
       isDarkMode: mode === "dark",
-      toggleDarkMode: () => {
-        const nextMode = mode === "light" ? "dark" : "light";
-        setMode(nextMode);
-        localStorage.setItem("darkMode", nextMode);
-      },
+      toggleDarkMode,
     }),
+    [mode, toggleDarkMode]
+  );
+
+  const theme = useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode,
+          ...(mode === "light"
+            ? {
+              primary: {
+                main: "#EF6C02",
+                light: "#F3D0C5",
+              },
+              secondary: {
+                main: "rgba(0, 0, 0, 0.12)",
+              },
+              background: {
+                default: "#FFFBF9",
+                paper: grey[200],
+              },
+              text: {
+                primary: "#000000",
+                secondary: grey[600],
+              },
+            }
+            : {
+              primary: {
+                main: "#D4613C",
+                dark: "#EF6C00",
+              },
+              secondary: {
+                main: grey[800],
+              },
+              background: {
+                default: "#101214",
+                paper: grey[800],
+              },
+              text: {
+                primary: "#ffffff",
+                secondary: grey[400],
+              },
+            }),
+        },
+      }),
     [mode]
   );
 
-  const theme = createTheme({
-    palette: {
-      mode,
-      ...(mode === "light"
-        ? {
-          primary: {
-            main: "#EF6C02",
-            light: "#F3D0C5",
-          },
-          secondary: {
-            main: "rgba(0, 0, 0, 0.12)",
-          },
-          background: {
-            default: "#FFFBF9",
-            paper: grey[200],
-          },
-          text: {
-            primary: "#000000",
-            secondary: grey[600],
-          },
-        }
-        : {
-          primary: {
-            main: "#D4613C",
-            dark: "#EF6C00",
-          },
-          secondary: {
-            main: grey[800],
-          },
-          background: {
-            default: "#101214",
-            paper: grey[800],
-          },
-          text: {
-            primary: "#ffffff",
-            secondary: grey[400],
-          },
-        }),
-    },
-  });
-
   return (
-    <DarkModeContext.Provider value={toggle}>
+    <DarkModeContext.Provider value={darkModeContextValue}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <ReduxProvider store={store}>
