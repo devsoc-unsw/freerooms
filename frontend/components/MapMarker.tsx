@@ -87,6 +87,8 @@ const MapMarker: React.FC<{
         sx={{
           fontSize: 11,
           fontWeight: 500,
+          translate: isCurrentBuilding ? "0px -10px" : "0px 0px",
+          transition: "all 0.2s ease-in-out",
           textShadow:
             theme.palette.mode === "light"
               ? "-.5px -.5px 1px #f2f2f2, .5px -.5px 1px #f2f2f2, -.5px .5px 1px #f2f2f2, .5px .5px 1px #f2f2f2"
@@ -103,6 +105,8 @@ const MapMarker: React.FC<{
           borderRadius: "50%",
           border: isCurrentBuilding ? `5px solid ${colour}` : "4px solid white",
           backgroundColor: isCurrentBuilding ? "white" : colour,
+          scale: isCurrentBuilding ? 2 : 1,
+          transition: "all 0.2s ease-in-out",
           boxShadow: isCurrentBuilding
             ? `0px 0px 6px 4px ${alpha(colour, 0.5)}`
             : "",
