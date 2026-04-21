@@ -3,7 +3,7 @@ import "@testing-library/jest-dom";
 import { RoomStatus } from "@common/types";
 import { useMediaQuery } from "@mui/material";
 import { render, screen } from "@testing-library/react";
-import { useParams,useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Provider } from "react-redux";
 
 import Page from "../app/room/[room]/page";

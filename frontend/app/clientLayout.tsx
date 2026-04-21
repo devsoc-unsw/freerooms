@@ -25,7 +25,7 @@ type ThemeMode = "light" | "dark";
 
 export const DarkModeContext = createContext({
   isDarkMode: false,
-  toggleDarkMode: () => { },
+  toggleDarkMode: () => {},
 });
 
 const subscribeToDarkMode = (callback: () => void) => {
@@ -86,39 +86,39 @@ const ClientLayout: React.FC<{
           mode,
           ...(mode === "light"
             ? {
-              primary: {
-                main: "#EF6C02",
-                light: "#F3D0C5",
-              },
-              secondary: {
-                main: "rgba(0, 0, 0, 0.12)",
-              },
-              background: {
-                default: "#FFFBF9",
-                paper: grey[200],
-              },
-              text: {
-                primary: "#000000",
-                secondary: grey[600],
-              },
-            }
+                primary: {
+                  main: "#EF6C02",
+                  light: "#F3D0C5",
+                },
+                secondary: {
+                  main: "rgba(0, 0, 0, 0.12)",
+                },
+                background: {
+                  default: "#FFFBF9",
+                  paper: grey[200],
+                },
+                text: {
+                  primary: "#000000",
+                  secondary: grey[600],
+                },
+              }
             : {
-              primary: {
-                main: "#D4613C",
-                dark: "#EF6C00",
-              },
-              secondary: {
-                main: grey[800],
-              },
-              background: {
-                default: "#101214",
-                paper: grey[800],
-              },
-              text: {
-                primary: "#ffffff",
-                secondary: grey[400],
-              },
-            }),
+                primary: {
+                  main: "#D4613C",
+                  dark: "#EF6C00",
+                },
+                secondary: {
+                  main: grey[800],
+                },
+                background: {
+                  default: "#101214",
+                  paper: grey[800],
+                },
+                text: {
+                  primary: "#ffffff",
+                  secondary: grey[400],
+                },
+              }),
         },
       }),
     [mode]

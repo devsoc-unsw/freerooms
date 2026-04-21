@@ -1,7 +1,7 @@
 import { Building, BuildingStatus } from "@common/types";
 import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 import RoomIcon from "@mui/icons-material/Room";
-import { alpha,Fade } from "@mui/material";
+import { alpha, Fade } from "@mui/material";
 import { Typography } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import { styled, useTheme } from "@mui/material/styles";

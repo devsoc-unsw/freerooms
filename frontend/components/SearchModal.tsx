@@ -27,7 +27,7 @@ import { closeSearch, selectSearchOpen } from "../redux/searchOpenSlice";
 import { SearchOption } from "../types";
 
 const RECENT_SEARCH_LIMIT = 3;
-interface SearchProps { }
+interface SearchProps {}
 
 const SearchModal: React.FC<SearchProps> = () => {
   const router = useRouter();
@@ -67,18 +67,18 @@ const SearchModal: React.FC<SearchProps> = () => {
   const options = React.useMemo(() => {
     const buildingOptions: SearchOption[] = buildings
       ? buildings.map((building) => ({
-        type: "Building",
-        searchKeys: [building.name, ...building.aliases, building.id],
-        building,
-      }))
+          type: "Building",
+          searchKeys: [building.name, ...building.aliases, building.id],
+          building,
+        }))
       : [];
 
     const roomOptions: SearchOption[] = rooms
       ? Object.values(rooms).map((room) => ({
-        type: "Room",
-        searchKeys: [room.name, room.abbr, room.id],
-        room,
-      }))
+          type: "Room",
+          searchKeys: [room.name, room.abbr, room.id],
+          room,
+        }))
       : [];
 
     return [...roomOptions, ...buildingOptions];
@@ -223,7 +223,7 @@ const InputBox = (params: AutocompleteRenderInputParams) => {
           ),
           endAdornment: undefined,
           sx: {
-            ...(((slotProps?.input as { sx?: object } | undefined)?.sx) ?? {}),
+            ...((slotProps?.input as { sx?: object } | undefined)?.sx ?? {}),
             backgroundColor: "background.paper",
             borderRadius: "10px 10px 0 0",
           },
@@ -231,8 +231,8 @@ const InputBox = (params: AutocompleteRenderInputParams) => {
         htmlInput: {
           ...(slotProps?.htmlInput ?? {}),
           style: {
-            ...(((slotProps?.htmlInput as { style?: object } | undefined)
-              ?.style) ?? {}),
+            ...((slotProps?.htmlInput as { style?: object } | undefined)
+              ?.style ?? {}),
             padding: 10,
           },
         },

@@ -6,8 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "prettier --check **/*.ts{,x} && next lint",
-    "lint:fix": "prettier --write **/*.ts{,x} && next lint --fix",
+    "lint": "prettier --check \"**/*.{ts,tsx}\" && eslint .",
+    "lint:fix": "prettier --write \"**/*.{ts,tsx}\" && eslint . --fix",
     "test": "jest",
     "test:watch": "jest --watch"
   },
