@@ -1,17 +1,24 @@
 {
   "compilerOptions": {
     "target": "ES2018",
-    "module": "commonjs",
+    "module": "node18",
+    "moduleResolution": "node16",
     "outDir": "dist",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
     "paths": {
-      "@common/*": ["../common/*"]
+      "@common/*": [
+        "../common/*"
+      ]
     },
-    "types": ["jest"]
+    "types": [
+      "jest"
+    ]
   },
-  "include": ["./src/*.ts", "./__tests__/*.ts"]
+  "include": [
+    "./src/*.ts",
+    "./__tests__/*.ts"
+  ]
 }
