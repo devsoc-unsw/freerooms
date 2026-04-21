@@ -7,8 +7,8 @@ import { Typography } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import { styled, useTheme } from "@mui/material/styles";
 import Image, { ImageProps } from "next/image";
-import React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import React from "react";
 
 import useBuilding from "../hooks/useBuilding";
 import useBuildingStatus from "../hooks/useBuildingStatus";

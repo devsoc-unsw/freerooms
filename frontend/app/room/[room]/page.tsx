@@ -24,12 +24,13 @@ import useRoomRatings from "hooks/useRoomRatings";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useState } from "react";
-import ViewOnMapButton from "../../../components/ViewOnMapButton";
+
 import BookingButton from "../../../components/BookingButton";
 import BookingCalendar from "../../../components/BookingCalendar";
 import FeedbackButton from "../../../components/FeedbackButton";
 import LoadingCircle from "../../../components/LoadingCircle";
 import RoomBackButton from "../../../components/RoomBackButton";
+import ViewOnMapButton from "../../../components/ViewOnMapButton";
 import useBookings from "../../../hooks/useBookings";
 import useBuilding from "../../../hooks/useBuilding";
 import useRoom from "../../../hooks/useRoom";

@@ -1,4 +1,5 @@
 import { Building } from "@common/types";
+import useBuilding from "@frontend/hooks/useBuilding";
 import Box from "@mui/material/Box";
 import {
   GoogleMap,
@@ -7,6 +8,7 @@ import {
   useJsApiLoader,
 } from "@react-google-maps/api";
 import { DarkModeContext } from "app/clientLayout";
+import { useSearchParams } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import BuildingDrawer from "views/BuildingDrawer";
@@ -14,13 +16,11 @@ import BuildingDrawer from "views/BuildingDrawer";
 import { GOOGLE_API_KEY } from "../config";
 import useBuildings from "../hooks/useBuildings";
 import useUserLocation from "../hooks/useUserLocation";
+import { setCurrentBuilding } from "../redux/currentBuildingSlice";
+import { useDispatch } from "../redux/hooks";
 import calculateDistance from "../utils/calculateDistance";
 import getMapType from "../utils/getMapType";
 import MapMarker from "./MapMarker";
-import { useSearchParams } from "next/navigation";
-import { setCurrentBuilding } from "../redux/currentBuildingSlice";
-import { useDispatch } from "../redux/hooks";
-import useBuilding from "@frontend/hooks/useBuilding";
 
 const center = {
   lat: -33.91767,

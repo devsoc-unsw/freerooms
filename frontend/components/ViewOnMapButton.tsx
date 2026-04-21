@@ -1,14 +1,15 @@
+import { Building } from "@common/types";
+import useBuilding from "@frontend/hooks/useBuilding";
 import { useTheme } from "@mui/material";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
+import { useRouter } from "next/navigation";
 import React from "react";
-import { getBuildingIdFromRoomId } from "../utils/utils";
-import { Building } from "@common/types";
+
 import { setCurrentBuilding } from "../redux/currentBuildingSlice";
 import { useDispatch } from "../redux/hooks";
-import { useRouter } from "next/navigation";
+import { getBuildingIdFromRoomId } from "../utils/utils";
 import Button from "./Button";
-import useBuilding from "@frontend/hooks/useBuilding";
 
 const ViewOnMapButton: React.FC<{
   buildingId: string;
