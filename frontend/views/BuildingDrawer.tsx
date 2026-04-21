@@ -14,6 +14,7 @@ import {
 } from "../redux/currentBuildingSlice";
 import { useDispatch, useSelector } from "../redux/hooks";
 import RoomAvailabilityBox from "./RoomAvailabilityBox";
+import ViewOnMapButton from "@frontend/components/ViewOnMapButton";
 
 const AppBox = styled(Box)(({ theme }) => ({
   boxShadow: "none",
@@ -128,6 +129,7 @@ const BuildingDrawer: React.FC = () => {
               style={{ objectFit: "cover" }}
               priority={true}
             />
+            <ViewOnMapButton buildingId={building.id} variant="full-width" />
           </div>
 
           <RoomBox>

@@ -11,10 +11,11 @@ import Button from "./Button";
 import useBuilding from "@frontend/hooks/useBuilding";
 
 const ViewOnMapButton: React.FC<{
-  roomId: string;
-}> = ({ roomId }) => {
+  buildingId: string;
+  variant?: "default" | "full-width";
+}> = ({ buildingId, variant = "default" }) => {
   const theme = useTheme();
-  const buildingId = getBuildingIdFromRoomId(roomId);
+
   const dispatch = useDispatch();
   const router = useRouter();
   const { building } = useBuilding(buildingId);
@@ -30,9 +31,11 @@ const ViewOnMapButton: React.FC<{
       name="View on Map"
       sx={{
         height: 45,
-        ml: { xs: 0, sm: 1 },
+        ml: variant === "full-width" ? "0px" : { xs: 0, sm: 1 },
         my: { xs: 1, sm: 0 },
-        width: { xs: "100%", sm: "160px" },
+        width: variant === "full-width" ? "100%" : { xs: "100%", sm: "160px" },
+        position: "relative",
+        //right: variant === "full-width" ? "6px" : "0px", //this is because building drawer has weird margin idk
         backgroundColor: theme.palette.background.default,
         color: theme.palette.primary.main,
       }}
