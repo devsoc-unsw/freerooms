@@ -54,7 +54,7 @@
     "@types/node": "24.12.2",
     "@types/react": "^18.0.33",
     "@types/react-big-calendar": "^1.6.3",
-    "eslint": "^8.57.1",
+    "eslint": "^9.39.4",
     "eslint-config-next": "^15.5.14",
     "eslint-config-prettier": "^10.0.0",
     "eslint-plugin-react-hooks": "^7.0.0",

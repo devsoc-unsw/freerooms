@@ -7,7 +7,7 @@ import {
   useJsApiLoader,
 } from "@react-google-maps/api";
 import { DarkModeContext } from "app/clientLayout";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import BuildingDrawer from "views/BuildingDrawer";
 
@@ -39,48 +39,41 @@ const isInBounds = (lat: number, lng: number) =>
 
 const LocationMarker = () => {
   return (
-    <>
-      <Box
-        sx={() => ({
-          width: 18,
-          height: 18,
-          borderRadius: "50%",
-          border: "4px solid #BEDCF9",
-          backgroundColor: "#4ABDFA",
-        })}
-      />
-    </>
+    <Box
+      sx={{
+        width: 18,
+        height: 18,
+        borderRadius: "50%",
+        border: "4px solid #BEDCF9",
+        backgroundColor: "#4ABDFA",
+      }}
+    />
   );
 };
 
 export const Map = () => {
-  // Fetch data
   const { buildings } = useBuildings();
   const { isDarkMode } = useContext(DarkModeContext);
 
-  // Use debounce to allow moving from marker to popup without popup hiding
   const [currentHover, setCurrentHover] = useState<Building | null>(null);
   const [debouncedCurrentHover, _] = useDebounceValue(currentHover, 50);
 
   const styleArray = getMapType(isDarkMode);
 
-  // Get current location of user
   const { userLat, userLng } = useUserLocation();
 
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: GOOGLE_API_KEY,
   });
 
-  const [distances, setDistances] = useState<number[]>([]);
-
-  useEffect(() => {
-    if (buildings && userLat && userLng && isInBounds(userLat, userLng)) {
-      setDistances(
-        buildings.map((building) =>
-          calculateDistance(userLat, userLng, building.lat, building.long)
-        )
-      );
+  const distances = useMemo(() => {
+    if (!(buildings && userLat && userLng && isInBounds(userLat, userLng))) {
+      return [];
     }
+
+    return buildings.map((building) =>
+      calculateDistance(userLat, userLng, building.lat, building.long)
+    );
   }, [buildings, userLat, userLng]);
 
   const renderMap = () => {

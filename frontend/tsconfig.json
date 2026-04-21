@@ -29,6 +29,30 @@
       ],
       "@frontend/*": [
         "./*"
+      ],
+      "components/*": [
+        "./components/*"
+      ],
+      "hooks/*": [
+        "./hooks/*"
+      ],
+      "redux/*": [
+        "./redux/*"
+      ],
+      "views/*": [
+        "./views/*"
+      ],
+      "app/*": [
+        "./app/*"
+      ],
+      "utils/*": [
+        "./utils/*"
+      ],
+      "types": [
+        "./types.ts"
+      ],
+      "types/*": [
+        "./types/*"
       ]
     }
   },

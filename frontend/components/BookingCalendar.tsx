@@ -161,13 +161,11 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
   events,
   roomID,
 }) => {
-  const [currView, setCurrView] = React.useState<View>(Views.WEEK);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
-  React.useEffect(() => {
-    setCurrView(isMobile ? Views.DAY : Views.WEEK);
-  }, [isMobile]);
+  const [desktopView, setDesktopView] = React.useState<View>(Views.WEEK);
+  const currView = isMobile ? Views.DAY : desktopView;
 
   const datetime = useSelector(selectDatetime);
   const [date, setDate] = React.useState<Date>(datetime);
@@ -338,7 +336,11 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
           localizer={localizer}
           scrollToTime={scrollToTime}
           view={currView}
-          onView={setCurrView}
+          onView={(nextView) => {
+            if (!isMobile) {
+              setDesktopView(nextView);
+            }
+          }}
           eventPropGetter={() => ({
             style: {
               backgroundColor: "#f57c00",

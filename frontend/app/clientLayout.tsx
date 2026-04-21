@@ -6,12 +6,11 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
 import NavBar, { navHeight } from "@frontend/components/NavBar";
-import { grey, orange } from "@mui/material/colors";
+import { grey } from "@mui/material/colors";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, styled } from "@mui/material/styles";
 import ThemeProvider from "@mui/system/ThemeProvider";
-import Sidebar from "components/sidebar/Sidebar";
-import React, { createContext, useEffect, useMemo, useState } from "react";
+import React, { createContext, useMemo, useState } from "react";
 import { Provider as ReduxProvider } from "react-redux";
 
 import SearchModal from "../components/SearchModal";
@@ -19,7 +18,7 @@ import store from "../redux/store";
 
 export const DarkModeContext = createContext({
   isDarkMode: false,
-  toggleDarkMode: () => {},
+  toggleDarkMode: () => { },
 });
 
 /**
@@ -28,18 +27,22 @@ export const DarkModeContext = createContext({
 const ClientLayout: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
-  const [mode, setMode] = useState<"light" | "dark">("light");
+  const [mode, setMode] = useState<"light" | "dark">(() => {
+    if (typeof window === "undefined") {
+      return "light";
+    }
 
-  useEffect(() => {
-    setMode((localStorage.getItem("darkMode") as any) || "light");
-  }, []);
+    const storedMode = localStorage.getItem("darkMode");
+    return storedMode === "dark" ? "dark" : "light";
+  });
 
   const toggle = useMemo(
     () => ({
       isDarkMode: mode === "dark",
       toggleDarkMode: () => {
-        setMode((prev) => (prev === "light" ? "dark" : "light"));
-        localStorage.setItem("darkMode", mode === "light" ? "dark" : "light");
+        const nextMode = mode === "light" ? "dark" : "light";
+        setMode(nextMode);
+        localStorage.setItem("darkMode", nextMode);
       },
     }),
     [mode]
@@ -50,39 +53,39 @@ const ClientLayout: React.FC<{
       mode,
       ...(mode === "light"
         ? {
-            primary: {
-              main: "#EF6C02",
-              light: "#F3D0C5",
-            },
-            secondary: {
-              main: "rgba(0, 0, 0, 0.12)",
-            },
-            background: {
-              default: "#FFFBF9",
-              paper: grey[200],
-            },
-            text: {
-              primary: "#000000",
-              secondary: grey[600],
-            },
-          }
+          primary: {
+            main: "#EF6C02",
+            light: "#F3D0C5",
+          },
+          secondary: {
+            main: "rgba(0, 0, 0, 0.12)",
+          },
+          background: {
+            default: "#FFFBF9",
+            paper: grey[200],
+          },
+          text: {
+            primary: "#000000",
+            secondary: grey[600],
+          },
+        }
         : {
-            primary: {
-              main: "#D4613C",
-              dark: "#EF6C00",
-            },
-            secondary: {
-              main: grey[800],
-            },
-            background: {
-              default: "#101214",
-              paper: grey[800],
-            },
-            text: {
-              primary: "#ffffff",
-              secondary: grey[400],
-            },
-          }),
+          primary: {
+            main: "#D4613C",
+            dark: "#EF6C00",
+          },
+          secondary: {
+            main: grey[800],
+          },
+          background: {
+            default: "#101214",
+            paper: grey[800],
+          },
+          text: {
+            primary: "#ffffff",
+            secondary: grey[400],
+          },
+        }),
     },
   });
 
