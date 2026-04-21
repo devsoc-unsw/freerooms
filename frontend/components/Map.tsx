@@ -17,6 +17,10 @@ import useUserLocation from "../hooks/useUserLocation";
 import calculateDistance from "../utils/calculateDistance";
 import getMapType from "../utils/getMapType";
 import MapMarker from "./MapMarker";
+import { useSearchParams } from "next/navigation";
+import { setCurrentBuilding } from "../redux/currentBuildingSlice";
+import { useDispatch } from "../redux/hooks";
+import useBuilding from "@frontend/hooks/useBuilding";
 
 const center = {
   lat: -33.91767,
@@ -56,7 +60,7 @@ export const Map = () => {
   // Fetch data
   const { buildings } = useBuildings();
   const { isDarkMode } = useContext(DarkModeContext);
-
+  const dispatch = useDispatch();
   // Use debounce to allow moving from marker to popup without popup hiding
   const [currentHover, setCurrentHover] = useState<Building | null>(null);
   const [debouncedCurrentHover, _] = useDebounceValue(currentHover, 50);
@@ -71,6 +75,17 @@ export const Map = () => {
   });
 
   const [distances, setDistances] = useState<number[]>([]);
+
+  //set current building to search param query - THIS IS WHERE OTHER QUERIES CAN GO
+  const searchParams = useSearchParams();
+  const buildingId = searchParams.get("building");
+  const { building } = useBuilding(buildingId || "");
+
+  useEffect(() => {
+    if (building) {
+      dispatch(setCurrentBuilding(building || null));
+    }
+  }, [building]);
 
   useEffect(() => {
     if (buildings && userLat && userLng && isInBounds(userLat, userLng)) {

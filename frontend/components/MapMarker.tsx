@@ -8,6 +8,7 @@ import Box, { BoxProps } from "@mui/material/Box";
 import { styled, useTheme } from "@mui/material/styles";
 import Image, { ImageProps } from "next/image";
 import React from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import useBuilding from "../hooks/useBuilding";
 import useBuildingStatus from "../hooks/useBuildingStatus";
@@ -28,7 +29,7 @@ const MapMarker: React.FC<{
   const { building } = useBuilding(buildingId);
   const { status: liveStatus } = useBuildingStatus(buildingId);
   const theme = useTheme();
-
+  const router = useRouter();
   // This one uses stale data so markers don't disappear
   const [status, setStatus] = React.useState<BuildingStatus>();
   React.useEffect(() => {
@@ -36,12 +37,21 @@ const MapMarker: React.FC<{
   }, [liveStatus]);
   const freerooms = getNumFreerooms(status);
   const totalRooms = getTotalRooms(status);
+  const searchParams = useSearchParams();
+  const params = new URLSearchParams(searchParams);
 
   const dispatch = useDispatch();
   const currentBuilding = useSelector(selectCurrentBuilding);
   const isCurrentBuilding = currentBuilding?.id === building?.id;
 
   const [showPopup, setShowPopup] = React.useState(false);
+
+  const handleSelectBuilding = () => {
+    dispatch(setCurrentBuilding(building || null));
+    params.set("building", buildingId); // Add or update the 'query' param
+    router.push(`/map?${params.toString()}`);
+  };
+
   React.useEffect(() => {
     setShowPopup(currentHover?.id === building?.id);
   }, [currentHover, building]);
@@ -101,7 +111,7 @@ const MapMarker: React.FC<{
             cursor: "pointer",
           },
         })}
-        onClick={() => dispatch(setCurrentBuilding(building))}
+        onClick={() => handleSelectBuilding()}
       />
       <Fade in={showPopup} timeout={200}>
         <div style={{ position: "relative", bottom: -3 }}>
