@@ -17,9 +17,7 @@ const RoomRatingList: React.FC<{
   const cleanlinessRating = ratings.data
     ? ratings.data.averageRating.cleanliness
     : 0;
-  const locationRating = ratings.data
-    ? ratings.data.averageRating.location
-    : 0;
+  const locationRating = ratings.data ? ratings.data.averageRating.location : 0;
   const quietnessRating = ratings.data
     ? ratings.data.averageRating.quietness
     : 0;
