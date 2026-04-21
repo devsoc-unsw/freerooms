@@ -18,10 +18,10 @@ const RoomRatingList: React.FC<{
     ? ratings.data.averageRating.cleanliness
     : 0;
   const locationRating = ratings.data
-    ? ratings.data.averageRating.cleanliness
+    ? ratings.data.averageRating.location
     : 0;
   const quietnessRating = ratings.data
-    ? ratings.data.averageRating.cleanliness
+    ? ratings.data.averageRating.quietness
     : 0;
 
   return (
