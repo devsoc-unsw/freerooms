@@ -41,7 +41,6 @@ const SearchModal: React.FC<SearchProps> = () => {
   );
 
   const addRecentSearch = (newOption: SearchOption) => {
-    // Check if newOption for search already exists in previous state
     setRecentSearches((prevState) => {
       const prevIndex = prevState.findIndex((prevOption) => {
         if (newOption.type === "Building" && prevOption.type === "Building") {
@@ -62,9 +61,9 @@ const SearchModal: React.FC<SearchProps> = () => {
     });
   };
 
-  // Fetch options
   const { buildings } = useBuildings();
   const { rooms } = useRooms();
+
   const options = React.useMemo(() => {
     const buildingOptions: SearchOption[] = buildings
       ? buildings.map((building) => ({
@@ -94,12 +93,10 @@ const SearchModal: React.FC<SearchProps> = () => {
         keys: ["searchKeys"],
       });
 
-      // Make sure buildings come before rooms
       const buildings = filtered.filter((opt) => opt.type === "Building");
       const rooms = filtered.filter((opt) => opt.type === "Room");
       return [...buildings, ...rooms];
     } else {
-      // Return recent searches
       return recentSearches.map((option) => ({ ...option, recent: true }));
     }
   };
@@ -119,7 +116,6 @@ const SearchModal: React.FC<SearchProps> = () => {
     if (option.type === "Room") {
       router.push("/room/" + option.room.id);
     } else {
-      // option.type === "Building"
       if (path !== "/browse" && path !== "/map") {
         router.push("/browse");
       }
@@ -170,8 +166,13 @@ const SearchResult: React.FC<{ option: SearchOption }> = ({ option }) => {
   const [name, ...aliases] = option.searchKeys;
 
   return (
-    <Stack direction="row" padding={0.5} spacing={2}>
-      <Stack alignItems="center" justifyContent="center">
+    <Stack direction="row" spacing={2} sx={{ padding: 0.5 }}>
+      <Stack
+        sx={{
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         {option.type === "Room" ? (
           <RoomIcon {...iconProps} />
         ) : (
@@ -192,6 +193,11 @@ const SearchResult: React.FC<{ option: SearchOption }> = ({ option }) => {
 };
 
 const InputBox = (params: AutocompleteRenderInputParams) => {
+  const forwarded = params as AutocompleteRenderInputParams & {
+    InputProps: { ref: React.Ref<any> };
+    inputProps: React.InputHTMLAttributes<HTMLInputElement>;
+  };
+
   return (
     <TextField
       {...params}
@@ -199,19 +205,24 @@ const InputBox = (params: AutocompleteRenderInputParams) => {
       fullWidth
       variant="standard"
       placeholder="Search a building or room..."
-      InputProps={{
-        ...params.InputProps,
-        startAdornment: (
-          <InputAdornment position="start">
-            <SearchIcon />
-          </InputAdornment>
-        ),
-        endAdornment: undefined,
-        sx: {
-          backgroundColor: "background.paper",
-          borderRadius: "10px 10px 0 0",
+      slotProps={{
+        input: {
+          ref: forwarded.InputProps.ref,
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon />
+            </InputAdornment>
+          ),
+          endAdornment: undefined,
+          sx: {
+            backgroundColor: "background.paper",
+            borderRadius: "10px 10px 0 0",
+          },
         },
-        slotProps: { root: { style: { padding: 10 } } },
+        htmlInput: {
+          ...forwarded.inputProps,
+          style: { padding: 10 },
+        },
       }}
     />
   );

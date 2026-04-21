@@ -37,7 +37,7 @@ describe("Booking Calendar Desktop", () => {
   it("renders the calendar", () => {
     render(
       <Provider store={store}>
-        <BookingCalendar events={events} />
+        <BookingCalendar events={events} roomID="test-room" />
       </Provider>
     );
 
@@ -51,7 +51,7 @@ describe("Booking Calendar Desktop", () => {
   it("does not render previous and next day arrow icon buttons", () => {
     render(
       <Provider store={store}>
-        <BookingCalendar events={events} />
+        <BookingCalendar events={events} roomID="test-room" />
       </Provider>
     );
 
@@ -65,12 +65,11 @@ describe("Booking Calendar Desktop", () => {
 
 describe("Booking Calendar Mobile", () => {
   it("renders previous and next day arrow icon buttons", async () => {
-    // Breakpoint is set to show arrows when width < 900px
     window.matchMedia = createMatchMedia(350);
 
     render(
       <Provider store={store}>
-        <BookingCalendar events={events} />
+        <BookingCalendar events={events} roomID="test-room" />
       </Provider>
     );
 

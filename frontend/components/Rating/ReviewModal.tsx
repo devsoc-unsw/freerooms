@@ -34,7 +34,6 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
 
   const handleSubmit = () => {
-    // prevent default submission
     if (
       cleanlinesRating === 0 ||
       locationRating === 0 ||
@@ -106,7 +105,14 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
             >
               <CloseIcon />
             </IconButton>
-            <Stack gap={3} marginBottom={4} paddingX={8}>
+            <Stack
+              sx={{
+                gap: 3,
+                marginBottom: 4,
+                paddingLeft: 8,
+                paddingRight: 8,
+              }}
+            >
               <Typography variant="h6">Leave a Rating</Typography>
               <ReviewRating
                 category="Cleanliness"

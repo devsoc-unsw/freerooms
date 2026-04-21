@@ -106,20 +106,24 @@ const SidebarContent = ({
   return (
     <>
       <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        px={theme.spacing(2)}
-        py={theme.spacing(2)}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          paddingLeft: theme.spacing(2),
+          paddingRight: theme.spacing(2),
+          paddingTop: theme.spacing(2),
+          paddingBottom: theme.spacing(2),
+        }}
       >
         {sidebarOpen ? (
           <Link href="/" passHref legacyBehavior>
             <Box
               component="a"
-              display="flex"
-              alignItems="center"
-              gap={theme.spacing(1.5)}
               sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: theme.spacing(1.5),
                 textDecoration: "none",
                 color: theme.palette.text.primary,
                 transition: "opacity 0.3s",
@@ -146,8 +150,10 @@ const SidebarContent = ({
                 />
                 <Typography
                   variant="h5"
-                  fontWeight={600}
-                  sx={{ color: theme.palette.primary.main }}
+                  sx={{
+                    fontWeight: 600,
+                    color: theme.palette.primary.main,
+                  }}
                 >
                   Freerooms
                 </Typography>
@@ -171,7 +177,6 @@ const SidebarContent = ({
       />
 
       <List sx={{ px: theme.spacing(1), pt: theme.spacing(1) }}>
-        {/* TODO turn this into a custom component */}
         <SidebarItem
           icon={<PanelLeftIcon size={20} />}
           label={"Close sidebar"}
@@ -194,8 +199,14 @@ const SidebarContent = ({
         ))}
       </List>
 
-      <Box flexGrow={1} />
-      <Box px={theme.spacing(1)} pb={theme.spacing(2)}>
+      <Box sx={{ flexGrow: 1 }} />
+      <Box
+        sx={{
+          paddingLeft: theme.spacing(1),
+          paddingRight: theme.spacing(1),
+          paddingBottom: theme.spacing(2),
+        }}
+      >
         <DarkModeToggle sidebarOpen={sidebarOpen} />
       </Box>
     </>
@@ -217,7 +228,6 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
     <Box sx={{ display: "flex", border: "none" }}>
       <CssBaseline />
 
-      {/* Mobile Top Bar */}
       {isMobile && (
         <Box
           sx={{
@@ -240,15 +250,13 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
           </IconButton>
           <Typography
             variant="h6"
-            fontWeight={600}
-            sx={{ color: theme.palette.primary.main }}
+            sx={{ fontWeight: 600, color: theme.palette.primary.main }}
           >
             Freerooms
           </Typography>
         </Box>
       )}
 
-      {/* Desktop Drawer */}
       <Box sx={{ display: { xs: "none", md: "block", border: "none" } }}>
         <Drawer variant="permanent" open={sidebarOpen}>
           <SidebarContent
@@ -258,7 +266,6 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
         </Drawer>
       </Box>
 
-      {/* Mobile Drawer */}
       <MuiDrawer
         variant="temporary"
         open={mobileOpen}
@@ -281,13 +288,12 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
         />
       </MuiDrawer>
 
-      {/* Main Content */}
       <Box
         component="main"
         sx={{
           flexGrow: 1,
           width: "100%",
-          pt: isMobile ? theme.spacing(7) : 0, // pushes content below topbar
+          paddingTop: isMobile ? theme.spacing(7) : 0,
         }}
       >
         {children}

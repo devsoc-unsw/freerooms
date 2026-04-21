@@ -10,11 +10,15 @@ const SearchBar = ({ setQuery }: { setQuery: (query: string) => void }) => {
 
   return (
     <Box
-      width={{ xs: "100%", sm: "100%", md: "100%" }}
-      my={1}
-      mx={{ sm: 2 }}
-      flexShrink={{ sm: 3 }}
-      order={{ xs: -1, sm: -1, md: "unset" }}
+      sx={{
+        width: { xs: "100%", sm: "100%", md: "100%" },
+        marginTop: 1,
+        marginBottom: 1,
+        marginLeft: { sm: 2 },
+        marginRight: { sm: 2 },
+        flexShrink: { sm: 3 },
+        order: { xs: -1, sm: -1, md: "unset" },
+      }}
     >
       <TextField
         id="input-with-sx"
@@ -41,30 +45,30 @@ const SearchBar = ({ setQuery }: { setQuery: (query: string) => void }) => {
           },
         }}
         fullWidth
-        inputProps={{ style: { height: "12px" } }}
-        //entering the target
         onKeyDown={(event) => {
           const target = event.target as HTMLInputElement;
           if (event.key === "Enter") {
             setQuery(target.value);
           }
         }}
-        //clearing the search bar
         onChange={(event) => {
           if (event.target.value === "") {
             setQuery(event.target.value);
           }
         }}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start" sx={{ mr: "16px" }}>
-              <SearchIcon
-                sx={{ color: (theme) => theme.palette.primary.main }}
-              />
-            </InputAdornment>
-          ),
-        }}
         variant="outlined"
+        slotProps={{
+          input: {
+            startAdornment: (
+              <InputAdornment position="start" sx={{ marginRight: "16px" }}>
+                <SearchIcon
+                  sx={{ color: (theme) => theme.palette.primary.main }}
+                />
+              </InputAdornment>
+            ),
+          },
+          htmlInput: { style: { height: "12px" } },
+        }}
       />
     </Box>
   );

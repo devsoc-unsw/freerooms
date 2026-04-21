@@ -16,10 +16,12 @@ const AllRoomsFilter: React.FC<{ filters: AllRoomsFilters }> = ({
   return (
     <StyledMainFilter>
       <Stack
-        alignContent="center"
-        alignItems="center"
         direction="row"
-        justifyContent="space-between"
+        sx={{
+          alignContent: "center",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
       >
         <Typography
           sx={{

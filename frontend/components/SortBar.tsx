@@ -45,7 +45,6 @@ const StyledDropDownMenu = styled(Box)<BoxProps>(({ theme }) => ({
   ":hover": {
     cursor: "auto",
   },
-
   paddingLeft: "10px",
   paddingRight: "10px",
 }));
@@ -67,7 +66,6 @@ const SortBar: React.FC<{
   sort: string;
   setSort: (sort: string) => void;
 }> = ({ sort, setSort }) => {
-  // Hide and close Dropdown
   const [open, setOpen] = useState(false);
 
   return (
@@ -76,8 +74,9 @@ const SortBar: React.FC<{
         <Stack
           direction="row"
           spacing="16px"
-          alignItems="center"
-          // onBlur={(e: React.FocusEvent) => dismissHandler(e)}
+          sx={{
+            alignItems: "center",
+          }}
         >
           <FilterListIcon
             sx={{ color: (theme) => theme.palette.primary.main }}
@@ -117,7 +116,6 @@ const SortBar: React.FC<{
                       width: "100%",
                       py: 0.5,
                       cursor: "pointer",
-
                       "& .MuiFormControlLabel-label": {
                         fontSize: 14,
                         fontWeight: 500,
@@ -134,7 +132,6 @@ const SortBar: React.FC<{
   );
 };
 
-// Dropdowns and items.
 const dropdowns: DropDownItem[] = [
   {
     text: "Most Available Rooms",

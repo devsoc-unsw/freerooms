@@ -79,9 +79,9 @@ const CustomToolBar: React.FC<ToolbarProps<Booking>> = ({
   return (
     <Stack
       direction="row"
-      justifyContent="space-between"
-      mb={2}
       sx={(theme) => ({
+        justifyContent: "space-between",
+        marginBottom: 2,
         [theme.breakpoints.down("md")]: {
           display: "none",
         },
@@ -161,15 +161,17 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
   events,
   roomID,
 }) => {
-  // Enforce day view on mobile
   const [currView, setCurrView] = React.useState<View>(Views.WEEK);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
   React.useEffect(() => {
     setCurrView(isMobile ? Views.DAY : Views.WEEK);
   }, [isMobile]);
+
   const datetime = useSelector(selectDatetime);
   const [date, setDate] = React.useState<Date>(datetime);
+
   const handleDateChange = (newDate: Date | null) => {
     setDate(newDate ?? datetime);
   };
@@ -221,14 +223,12 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
     );
   };
 
-  // Only render booking type on day view (wide)
   const titleAccessor = React.useCallback(
     (booking: Booking): string => {
-      if (currView == Views.DAY) {
+      if (currView === Views.DAY) {
         return `${booking.name} (${booking.bookingType})`;
-      } else {
-        return booking.name;
       }
+      return booking.name;
     },
     [currView]
   );
@@ -236,124 +236,135 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
   const timeInDay = 24 * 60 * 60 * 1000;
 
   return (
-    <>
-      <Stack justifyContent="flex-start" height="100%" width="100%" pt={3}>
-        <Stack
-          direction={{ xs: "column", md: "row" }}
-          justifyContent="space-between"
-          spacing={1}
-          width="100%"
-          pb={2}
-        >
-          <Typography variant="h5" fontWeight="bold">
-            Room Bookings
-          </Typography>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <Stack direction="row" alignItems="center">
-              {isMobile && (
-                <IconButton
-                  aria-label="Previous day"
-                  sx={{
-                    borderRadius: 3,
-                    mr: 1,
-                  }}
-                  onClick={() =>
-                    handleDateChange(new Date(date.getTime() - timeInDay))
-                  }
-                >
-                  <NavigateBeforeIcon
-                    style={{ color: "#f57c00", fontSize: 40 }}
-                  ></NavigateBeforeIcon>
-                </IconButton>
-              )}
-              <DatePicker
-                aria-label="Date picker"
-                format="iii, d MMM yyyy"
-                value={date}
-                onChange={(newDate) => {
-                  handleDateChange(newDate);
+    <Stack
+      sx={{
+        justifyContent: "flex-start",
+        height: "100%",
+        width: "100%",
+        paddingTop: 3,
+      }}
+    >
+      <Stack
+        direction={{ xs: "column", md: "row" }}
+        spacing={1}
+        sx={{
+          justifyContent: "space-between",
+          width: "100%",
+          paddingBottom: 2,
+        }}
+      >
+        <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+          Room Bookings
+        </Typography>
+
+        <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enAU}>
+          <Stack direction="row" sx={{ alignItems: "center" }}>
+            {isMobile && (
+              <IconButton
+                aria-label="Previous day"
+                sx={{
+                  borderRadius: 3,
+                  marginRight: 1,
                 }}
-                slotProps={{
-                  textField: {
-                    size: "small",
-                    sx: {
-                      svg: { color: theme.palette.text.primary },
-                      input: { color: theme.palette.text.primary },
-                      width: { xs: "100%", md: 200 },
-                      borderColor: theme.palette.secondary.main,
-                    },
+                onClick={() =>
+                  handleDateChange(new Date(date.getTime() - timeInDay))
+                }
+              >
+                <NavigateBeforeIcon
+                  style={{ color: "#f57c00", fontSize: 40 }}
+                />
+              </IconButton>
+            )}
+
+            <DatePicker
+              aria-label="Date picker"
+              format="iii, d MMM yyyy"
+              value={date}
+              onChange={(newDate) => {
+                handleDateChange(newDate);
+              }}
+              slotProps={{
+                textField: {
+                  size: "small",
+                  sx: {
+                    svg: { color: theme.palette.text.primary },
+                    input: { color: theme.palette.text.primary },
+                    width: { xs: "100%", md: 200 },
+                    borderColor: theme.palette.secondary.main,
                   },
+                },
+              }}
+            />
+
+            {isMobile && (
+              <IconButton
+                aria-label="Next day"
+                sx={{
+                  borderRadius: 3,
+                  marginLeft: 1,
                 }}
-              />
-              {isMobile && (
-                <IconButton
-                  aria-label="Next day"
-                  sx={{
-                    borderRadius: 3,
-                    ml: 1,
-                  }}
-                  onClick={() =>
-                    handleDateChange(new Date(date.getTime() + timeInDay))
-                  }
-                >
-                  <NavigateNextIcon
-                    style={{ color: "#f57c00", fontSize: 40 }}
-                  ></NavigateNextIcon>
-                </IconButton>
-              )}
-            </Stack>
-          </LocalizationProvider>
-        </Stack>
-        <StyledCalendarContainer
-          aria-label="Room Booking Calendar"
-          overflow="auto"
-          p={0.5}
-          role="table"
-          view={currView}
-        >
-          <Calendar
-            components={components}
-            dayLayoutAlgorithm={"no-overlap"}
-            date={date}
-            onNavigate={handleDateChange}
-            defaultView={Views.WEEK}
-            events={myEvents}
-            titleAccessor={titleAccessor}
-            tooltipAccessor={({ name, bookingType }) =>
-              `${name} (${bookingType})`
-            }
-            getNow={getNow}
-            localizer={localizer}
-            scrollToTime={scrollToTime}
-            view={currView}
-            onView={setCurrView}
-            eventPropGetter={() => ({
-              style: {
-                backgroundColor: "#f57c00",
-                borderColor: "#f57c00",
-                opacity: theme.palette.mode === "light" ? 1 : 0.8,
-              },
-            })}
-            slotGroupPropGetter={() => ({ style: { minHeight: "50px" } })}
-            dayPropGetter={(date) => ({
-              style: {
-                backgroundColor: isToday(date)
-                  ? theme.palette.mode === "light"
-                    ? "#fff3e0"
-                    : grey[900]
-                  : theme.palette.background.default,
-              },
-            })}
-            min={new Date(0, 0, 0, 9)}
-            showMultiDayTimes={true}
-            formats={{
-              timeGutterFormat: formatTime,
-              eventTimeRangeFormat: formatTimeRange,
-            }}
-          />
-        </StyledCalendarContainer>
+                onClick={() =>
+                  handleDateChange(new Date(date.getTime() + timeInDay))
+                }
+              >
+                <NavigateNextIcon style={{ color: "#f57c00", fontSize: 40 }} />
+              </IconButton>
+            )}
+          </Stack>
+        </LocalizationProvider>
       </Stack>
-    </>
+
+      <StyledCalendarContainer
+        aria-label="Room Booking Calendar"
+        role="table"
+        view={currView}
+        sx={{
+          overflow: "auto",
+          padding: 0.5,
+        }}
+      >
+        <Calendar
+          components={components}
+          dayLayoutAlgorithm="no-overlap"
+          date={date}
+          onNavigate={handleDateChange}
+          defaultView={Views.WEEK}
+          events={myEvents}
+          titleAccessor={titleAccessor}
+          tooltipAccessor={({ name, bookingType }) =>
+            `${name} (${bookingType})`
+          }
+          getNow={getNow}
+          localizer={localizer}
+          scrollToTime={scrollToTime}
+          view={currView}
+          onView={setCurrView}
+          eventPropGetter={() => ({
+            style: {
+              backgroundColor: "#f57c00",
+              borderColor: "#f57c00",
+              opacity: theme.palette.mode === "light" ? 1 : 0.8,
+            },
+          })}
+          slotGroupPropGetter={() => ({ style: { minHeight: "50px" } })}
+          dayPropGetter={(date) => ({
+            style: {
+              backgroundColor: isToday(date)
+                ? theme.palette.mode === "light"
+                  ? "#fff3e0"
+                  : grey[900]
+                : theme.palette.background.default,
+            },
+          })}
+          min={new Date(0, 0, 0, 9)}
+          showMultiDayTimes={true}
+          formats={{
+            timeGutterFormat: formatTime,
+            eventTimeRangeFormat: formatTimeRange,
+          }}
+        />
+      </StyledCalendarContainer>
+    </Stack>
   );
 };
 

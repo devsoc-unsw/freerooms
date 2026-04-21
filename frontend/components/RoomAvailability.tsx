@@ -41,8 +41,14 @@ const RoomAvailability: React.FC<RoomAvailabilityProps> = ({ roomStatus }) => {
     busy: hoursMinutes == "Invalid Date" ? "" : "until " + hoursMinutes,
     soon: "at " + hoursMinutes,
   };
+
   return (
-    <Stack direction="column" alignItems="flex-end">
+    <Stack
+      direction="column"
+      sx={{
+        alignItems: "flex-end",
+      }}
+    >
       <RoomBoxHeading sx={{ color: roomStatusColor[roomStatus.status] }}>
         {roomStatusMessage[roomStatus.status]}
       </RoomBoxHeading>
