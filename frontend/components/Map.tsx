@@ -17,6 +17,7 @@ import useUserLocation from "../hooks/useUserLocation";
 import calculateDistance from "../utils/calculateDistance";
 import getMapType from "../utils/getMapType";
 import MapMarker from "./MapMarker";
+import { navHeight } from "./NavBar";
 
 const center = {
   lat: -33.91767,
@@ -84,7 +85,12 @@ export const Map = () => {
 
   const renderMap = () => {
     return (
-      <div style={{ position: "relative", height: "100svh" }}>
+      <div
+        style={{
+          position: "relative",
+          height: `calc(100svh - ${navHeight}px)`,
+        }}
+      >
         <GoogleMap
           mapContainerStyle={{ height: "100%" }}
           center={center}
