@@ -1,2 +1,5 @@
-.github/ @csesoc/technical
-renovate.json @csesoc/technical
+frontend/ @devsoc-unsw/freerooms-leads
+backend/ @devsoc-unsw/freerooms-leads
+
+.github/ @devsoc-unsw/platform
+renovate.json @devsoc-unsw/platform

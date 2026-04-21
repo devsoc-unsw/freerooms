@@ -20,7 +20,7 @@ const FeedbackNotification = () => {
     );
 
     notification.info({
-      message: "Found a bug or want to see a new feature added to Freerooms?",
+      title: "Found a bug or want to see a new feature added to Freerooms?",
       description: (
         <>
           Submit your{" "}
