@@ -2,16 +2,18 @@ import { useTheme } from "@mui/material";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import React from "react";
+import { getBuildingIdFromRoomId } from "../utils/utils";
 
 import Button from "./Button";
 
 const ViewOnMapButton: React.FC<{
-  buildingId: string;
-}> = ({ buildingId }) => {
+  roomId: string;
+}> = ({ roomId }) => {
   const theme = useTheme();
+  const buildingId = getBuildingIdFromRoomId(roomId);
 
   return (
-    <Link href={`/map`}>
+    <Link href={`/map?buildingId=${buildingId}`}>
       <Button
         aria-label="View on Map"
         name="View on Map"
