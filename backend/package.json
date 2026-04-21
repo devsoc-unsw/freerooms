@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/csesoc/Freerooms.git"
+    "url": "git+https://github.com/devsoc-unsw/Freerooms.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/csesoc/Freerooms/issues"
+    "url": "https://github.com/devsoc-unsw/Freerooms/issues"
   },
-  "homepage": "https://github.com/csesoc/Freerooms#readme",
+  "homepage": "https://github.com/devsoc-unsw/Freerooms#readme",
   "dependencies": {
     "@graphql-typed-document-node/core": "^3.2.0",
     "cors": "^2.8.5",
