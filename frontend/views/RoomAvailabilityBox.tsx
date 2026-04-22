@@ -57,6 +57,7 @@ const RoomAvailabilityBox: React.FC<RoomAvailabilityBoxProps> = ({
   const { room } = useRoom(`${buildingId}-${roomNumber}`);
   const { data } = useRoomRatings(room ? room.id : "");
   const ratingValue = (() => {
+    // round rating to nearest .5 if a rating exists
     if (!data) return 0;
     const rating = data.overallRating;
     const frac = rating % 1;

@@ -74,7 +74,7 @@ export default function UtilityAccordion({ title, icon, items = [] }: Props) {
             variant="caption"
             sx={{
               color: primary,
-              backgroundColor: `${primary}1A`,
+              backgroundColor: `${primary}1A`, // ~10% opacity
               px: theme.spacing(1),
               py: theme.spacing(0.25),
               borderRadius: theme.shape.borderRadius,

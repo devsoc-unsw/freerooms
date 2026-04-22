@@ -41,6 +41,7 @@ const SearchModal: React.FC<SearchProps> = () => {
   );
 
   const addRecentSearch = (newOption: SearchOption) => {
+    // Check if newOption for search already exists in previous state
     setRecentSearches((prevState) => {
       const prevIndex = prevState.findIndex((prevOption) => {
         if (newOption.type === "Building" && prevOption.type === "Building") {
@@ -61,6 +62,7 @@ const SearchModal: React.FC<SearchProps> = () => {
     });
   };
 
+  // Fetch options
   const { buildings } = useBuildings();
   const { rooms } = useRooms();
 
@@ -93,10 +95,12 @@ const SearchModal: React.FC<SearchProps> = () => {
         keys: ["searchKeys"],
       });
 
+      // Make sure buildings come before rooms
       const buildings = filtered.filter((opt) => opt.type === "Building");
       const rooms = filtered.filter((opt) => opt.type === "Room");
       return [...buildings, ...rooms];
     } else {
+      // Return recent searches
       return recentSearches.map((option) => ({ ...option, recent: true }));
     }
   };
@@ -116,6 +120,7 @@ const SearchModal: React.FC<SearchProps> = () => {
     if (option.type === "Room") {
       router.push("/room/" + option.room.id);
     } else {
+      // option.type === "Building"
       if (path !== "/browse" && path !== "/map") {
         router.push("/browse");
       }

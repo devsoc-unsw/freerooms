@@ -64,15 +64,21 @@ const StyledHeader = styled(Box)<BoxProps>(() => ({
 }));
 
 const FilterBar = () => {
+  // Get filters from Redux
   const dispatch = useDispatch();
   const filters = useSelector(selectFilters);
+
+  // Hide and close Dropdown
   const [open, setOpen] = useState(false);
 
+  // Handle user selecting a filter, each dropdown select has an associated key
   const handleSelect = useCallback(
     (key: keyof Filters, item: DropDownItem) => {
       if (filters[key] === item.value) {
+        // If the same as already selected, unset key
         dispatch(unsetFilter(key));
       } else {
+        // Otherwise, spread existing filters and set key
         dispatch(setFilter({ key, value: item.value }));
       }
     },

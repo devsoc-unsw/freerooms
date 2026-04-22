@@ -52,14 +52,17 @@ const LocationMarker = () => {
 };
 
 export const Map = () => {
+  // Fetch data
   const { buildings } = useBuildings();
   const { isDarkMode } = useContext(DarkModeContext);
 
+  // Use debounce to allow moving from marker to popup without popup hiding
   const [currentHover, setCurrentHover] = useState<Building | null>(null);
   const [debouncedCurrentHover] = useDebounceValue(currentHover, 50);
 
   const styleArray = useMemo(() => getMapType(isDarkMode), [isDarkMode]);
 
+  // Get current location of user
   const { userLat, userLng } = useUserLocation();
 
   const { isLoaded, loadError } = useJsApiLoader({

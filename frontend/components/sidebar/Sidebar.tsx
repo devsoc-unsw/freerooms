@@ -177,6 +177,7 @@ const SidebarContent = ({
       />
 
       <List sx={{ px: theme.spacing(1), pt: theme.spacing(1) }}>
+        {/* TODO turn this into a custom component */}
         <SidebarItem
           icon={<PanelLeftIcon size={20} />}
           label={"Close sidebar"}
@@ -228,6 +229,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
     <Box sx={{ display: "flex", border: "none" }}>
       <CssBaseline />
 
+      {/* Mobile Top Bar */}
       {isMobile && (
         <Box
           sx={{
@@ -257,6 +259,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
         </Box>
       )}
 
+      {/* Desktop Drawer */}
       <Box sx={{ display: { xs: "none", md: "block", border: "none" } }}>
         <Drawer variant="permanent" open={sidebarOpen}>
           <SidebarContent
@@ -288,12 +291,13 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
         />
       </MuiDrawer>
 
+      {/* Main Content */}
       <Box
         component="main"
         sx={{
           flexGrow: 1,
           width: "100%",
-          paddingTop: isMobile ? theme.spacing(7) : 0,
+          paddingTop: isMobile ? theme.spacing(7) : 0, // pushes content below topbar
         }}
       >
         {children}

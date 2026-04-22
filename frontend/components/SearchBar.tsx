@@ -45,12 +45,14 @@ const SearchBar = ({ setQuery }: { setQuery: (query: string) => void }) => {
           },
         }}
         fullWidth
+        //entering the target
         onKeyDown={(event) => {
           const target = event.target as HTMLInputElement;
           if (event.key === "Enter") {
             setQuery(target.value);
           }
         }}
+        //clearing the search bar
         onChange={(event) => {
           if (event.target.value === "") {
             setQuery(event.target.value);

@@ -35,8 +35,8 @@ const Features = () => {
           <StyledBackgroudVector
             src="/assets/landing_page/feature_background.png"
             alt="background vector"
-            width={1125}
-            height={485}
+            width={1125} // Set the actual width of the image
+            height={485} // Set the actual height of the image
           />
         </div>
 
@@ -100,8 +100,8 @@ const StyledBackgroudVector = styled(Image)(({ theme }) => ({
   left: "50%",
   transform: "translate(-50%, -50%)",
   zIndex: "-1",
-  width: "100%",
-  height: "auto",
+  width: "100%", // Or specify a specific width
+  height: "auto", // This will maintain the aspect ratio
   [theme.breakpoints.down("lg")]: {
     display: "none",
   },

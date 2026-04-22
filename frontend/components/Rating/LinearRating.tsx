@@ -9,6 +9,7 @@ interface LinearRatingProps {
 }
 
 const LinearRating: React.FC<LinearRatingProps> = ({ category, value }) => {
+  // Since ratings are out of 5 while LinearProgress is out of 100, multiply by 20
   const progress = value * 20;
 
   return (

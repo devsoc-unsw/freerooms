@@ -162,6 +162,7 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
   roomID,
 }) => {
   const theme = useTheme();
+  // Enforce day view on mobile
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const [desktopView, setDesktopView] = React.useState<View>(Views.WEEK);
@@ -221,6 +222,7 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
     );
   };
 
+  // Only render booking type on day view (wide)
   const titleAccessor = React.useCallback(
     (booking: Booking): string => {
       if (currView === Views.DAY) {

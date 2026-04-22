@@ -66,6 +66,7 @@ const SortBar: React.FC<{
   sort: string;
   setSort: (sort: string) => void;
 }> = ({ sort, setSort }) => {
+  // Hide and close Dropdown
   const [open, setOpen] = useState(false);
 
   return (
@@ -132,6 +133,7 @@ const SortBar: React.FC<{
   );
 };
 
+// Dropdowns and items.
 const dropdowns: DropDownItem[] = [
   {
     text: "Most Available Rooms",

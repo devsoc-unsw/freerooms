@@ -34,6 +34,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
 
   const handleSubmit = () => {
+    // prevent default submission
     if (
       cleanlinesRating === 0 ||
       locationRating === 0 ||

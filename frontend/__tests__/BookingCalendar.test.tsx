@@ -65,6 +65,7 @@ describe("Booking Calendar Desktop", () => {
 
 describe("Booking Calendar Mobile", () => {
   it("renders previous and next day arrow icon buttons", async () => {
+    // Breakpoint is set to show arrows when width < 900px
     window.matchMedia = createMatchMedia(350);
 
     render(

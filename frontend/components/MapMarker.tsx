@@ -65,10 +65,12 @@ const MapMarker: React.FC<{
   currentHover: Building | null;
   setCurrentHover: (building: Building | null) => void;
 }> = ({ buildingId, distance, currentHover, setCurrentHover }) => {
+  // Get building data
   const { building } = useBuilding(buildingId);
   const { status: liveStatus } = useBuildingStatus(buildingId);
   const theme = useTheme();
 
+  // This one uses stale data so markers don't disappear
   const status: BuildingStatus | undefined = liveStatus;
   const freerooms = getNumFreerooms(status);
   const totalRooms = getTotalRooms(status);

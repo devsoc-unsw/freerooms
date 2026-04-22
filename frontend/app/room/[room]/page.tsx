@@ -36,11 +36,13 @@ import useRoom from "../../../hooks/useRoom";
 import room_photos from "../../../public/room-photos.json";
 
 const adjustDateIfMidnight = (inputDate: Date): Date => {
+  // Check if the time is midnight (00:00:00)
   if (
     inputDate.getHours() === 0 &&
     inputDate.getMinutes() === 0 &&
     inputDate.getSeconds() === 0
   ) {
+    // Set the time to 11:59:00 and subtract one day
     const adjusted = new Date(inputDate);
     adjusted.setHours(23, 59);
     adjusted.setDate(inputDate.getDate() - 1);
@@ -115,6 +117,7 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
 
   const ratings = useRoomRatings(room.id);
   const ratingValue = (() => {
+    // round rating to nearest .5 if a rating exists
     if (!ratings || !ratings.data) return 0;
     const rating = ratings.data.overallRating;
     const frac = rating % 1;
