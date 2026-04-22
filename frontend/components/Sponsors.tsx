@@ -1,5 +1,5 @@
 import { Divider, Stack, Typography, useTheme } from "@mui/material";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import Image from "next/image";
 import { Sponsor } from "types";
 
@@ -82,7 +82,7 @@ export default function Sponsors() {
   const goldSponsors = sponsors.filter((sponsor) => sponsor.tier === "Gold");
 
   return (
-    <Stack marginTop={4}>
+    <Stack sx={{ marginTop: 4 }}>
       <Typography
         align="center"
         variant="h1"
@@ -102,18 +102,18 @@ export default function Sponsors() {
       />
       <Grid
         container
-        alignItems="center"
-        justifyContent="center"
         rowSpacing={3}
         columnSpacing={{ xs: 2, sm: 6 }}
         columns={12}
         sx={{
           mt: 5,
+          justifyContent: "center",
+          alignItems: "center",
           backgroundColor: isLightMode
             ? "#ffffff"
             : theme.palette.background?.paper,
-          padding: "30px",
-          paddingTop: "0px",
+          p: "30px",
+          pt: 0,
           borderRadius: "10px",
         }}
       >

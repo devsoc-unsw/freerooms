@@ -28,12 +28,13 @@ const BookingButton: React.FC<{
             backgroundColor: theme.palette.secondary.main,
             color: theme.palette.text.primary,
             height: 45,
-            ml: { xs: 0, sm: 1 },
-            my: { xs: 1, sm: 0 },
+            marginLeft: { xs: 0, sm: 1 },
+            marginTop: { xs: 1, sm: 0 },
+            marginBottom: { xs: 1, sm: 0 },
             width: { xs: "100%", sm: "160px" },
           }}
         >
-          <Typography variant="body2" fontWeight="bold">
+          <Typography variant="body2" sx={{ fontWeight: "bold" }}>
             Make a Booking
           </Typography>
         </Button>
@@ -49,13 +50,14 @@ const BookingButton: React.FC<{
         backgroundColor: theme.palette.secondary.main,
         color: theme.palette.text.primary,
         height: 45,
-        ml: { xs: 0, sm: 1 },
-        my: { xs: 1, sm: 0 },
+        marginLeft: { xs: 0, sm: 1 },
+        marginTop: { xs: 1, sm: 0 },
+        marginBottom: { xs: 1, sm: 0 },
         width: { xs: "100%", sm: "160px" },
       }}
       disabled
     >
-      <Typography variant="body2" fontWeight="bold">
+      <Typography variant="body2" sx={{ fontWeight: "bold" }}>
         Booking Unavailable
       </Typography>
     </Button>

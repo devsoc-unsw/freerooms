@@ -1,8 +1,7 @@
 import { Building, BuildingStatus } from "@common/types";
 import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 import RoomIcon from "@mui/icons-material/Room";
-import { alpha } from "@mui/material";
-import { Fade } from "@mui/material";
+import { alpha, Fade } from "@mui/material";
 import { Typography } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import { styled, useTheme } from "@mui/material/styles";
@@ -18,6 +17,48 @@ import {
 import { useDispatch, useSelector } from "../redux/hooks";
 import { getNumFreerooms, getTotalRooms } from "../utils/utils";
 
+const MarkerHoverMainBox = styled(Box)<BoxProps>(({ theme }) => ({
+  position: "absolute",
+  flex: 1,
+  backgroundColor: theme.palette.primary.main,
+  height: 200,
+  width: 300,
+  borderRadius: 20,
+  overflow: "hidden",
+  boxShadow: "1px 1px 5px #1f1f1f",
+}));
+
+const MarkerHoverImage = styled(Image)<ImageProps>(() => ({
+  objectFit: "cover",
+}));
+
+const MarkerHoverInfoBox = styled(Box)<BoxProps>(() => ({
+  display: "flex",
+  flexDirection: "row",
+  pointerEvents: "none",
+  alignItems: "center",
+  fontSize: "small",
+  gap: 10,
+}));
+
+const MarkerHoverTitleBox = styled(Box)<BoxProps>(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  right: 0,
+  backgroundColor: theme.palette.primary.main,
+  color: "white",
+  borderRadius: 8,
+  padding: 8,
+  paddingLeft: 12,
+  paddingRight: 12,
+  margin: 10,
+  pointerEvents: "none",
+}));
+
 const MapMarker: React.FC<{
   buildingId: string;
   distance: number | undefined;
@@ -30,10 +71,7 @@ const MapMarker: React.FC<{
   const theme = useTheme();
 
   // This one uses stale data so markers don't disappear
-  const [status, setStatus] = React.useState<BuildingStatus>();
-  React.useEffect(() => {
-    if (liveStatus) setStatus(liveStatus);
-  }, [liveStatus]);
+  const status: BuildingStatus | undefined = liveStatus;
   const freerooms = getNumFreerooms(status);
   const totalRooms = getTotalRooms(status);
 
@@ -41,19 +79,10 @@ const MapMarker: React.FC<{
   const currentBuilding = useSelector(selectCurrentBuilding);
   const isCurrentBuilding = currentBuilding?.id === building?.id;
 
-  const [showPopup, setShowPopup] = React.useState(false);
-  React.useEffect(() => {
-    setShowPopup(currentHover?.id === building?.id);
-  }, [currentHover, building]);
+  const showPopup = currentHover?.id === building?.id;
 
-  const [colour, setColour] = React.useState("#e57373");
-  React.useEffect(() => {
-    freerooms >= 5
-      ? setColour("#66bb6a")
-      : freerooms !== 0
-        ? setColour("#ffa726")
-        : setColour("#f44336");
-  }, [freerooms]);
+  const colour =
+    freerooms >= 5 ? "#66bb6a" : freerooms !== 0 ? "#ffa726" : "#f44336";
 
   if (!building) return <></>;
 
@@ -87,7 +116,7 @@ const MapMarker: React.FC<{
         {building.name}
       </Typography>
       <Box
-        sx={(theme) => ({
+        sx={{
           width: 18,
           height: 18,
           borderRadius: "50%",
@@ -100,7 +129,7 @@ const MapMarker: React.FC<{
           "&:hover": {
             cursor: "pointer",
           },
-        })}
+        }}
         onClick={() => dispatch(setCurrentBuilding(building))}
       />
       <Fade in={showPopup} timeout={200}>
@@ -123,61 +152,19 @@ const MarkerHover: React.FC<{
   totalRooms: number;
   distance: number | undefined;
 }> = ({ building, freerooms, totalRooms, distance }) => {
-  const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
-    position: "absolute",
-    flex: 1,
-    backgroundColor: theme.palette.primary.main,
-    height: 200,
-    width: 300,
-    borderRadius: 20,
-    overflow: "hidden",
-    boxShadow: "1px 1px 5px #1f1f1f",
-  }));
-
-  const StyledImage = styled(Image)<ImageProps>(({ theme }) => ({
-    objectFit: "cover",
-  }));
-
-  const InfoBox = styled(Box)<BoxProps>(({ theme }) => ({
-    display: "flex",
-    flexDirection: "row",
-    pointerEvents: "none",
-    alignItems: "center",
-    fontSize: "small",
-    gap: 10,
-  }));
-
-  const TitleBox = styled(Box)<BoxProps>(({ theme }) => ({
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: theme.palette.primary.main,
-    color: "white",
-    borderRadius: 8,
-    padding: 8,
-    paddingLeft: 12,
-    paddingRight: 12,
-    margin: 10,
-    pointerEvents: "none",
-  }));
-
   return (
-    <MainBox>
-      <StyledImage
+    <MarkerHoverMainBox>
+      <MarkerHoverImage
         alt={`Image of ${building.id}`}
         src={`/assets/building_photos/${building.id}.webp`}
         fill={true}
         priority={true}
       />
-      <TitleBox>
+      <MarkerHoverTitleBox>
         <Typography sx={{ fontSize: 15, fontWeight: 500 }}>
           {building.name}
         </Typography>
-        <InfoBox>
+        <MarkerHoverInfoBox>
           <div
             style={{
               display: "flex",
@@ -204,9 +191,9 @@ const MarkerHover: React.FC<{
               </Typography>
             </div>
           )}
-        </InfoBox>
-      </TitleBox>
-    </MainBox>
+        </MarkerHoverInfoBox>
+      </MarkerHoverTitleBox>
+    </MarkerHoverMainBox>
   );
 };
 

@@ -83,13 +83,22 @@ export default function RoomUtilities({ roomId }: { roomId: string }) {
     });
 
   return (
-    <Box height="100%" width="100%" pt={6} pb={3}>
+    <Box
+      sx={{
+        height: "100%",
+        width: "100%",
+        paddingTop: 6,
+        paddingBottom: 3,
+      }}
+    >
       <Typography
-        sx={{ mb: 3 }}
         variant="h5"
         component="h2"
-        fontWeight="bold"
         gutterBottom
+        sx={{
+          marginBottom: 3,
+          fontWeight: "bold",
+        }}
       >
         Room Utilities
       </Typography>
@@ -106,7 +115,13 @@ export default function RoomUtilities({ roomId }: { roomId: string }) {
       </Stack>
 
       {categories.length === 0 && (
-        <Box sx={{ textAlign: "center", py: 4 }}>
+        <Box
+          sx={{
+            textAlign: "center",
+            paddingTop: 4,
+            paddingBottom: 4,
+          }}
+        >
           <Typography variant="body2" color="text.secondary">
             No utilities information available for this room.
           </Typography>

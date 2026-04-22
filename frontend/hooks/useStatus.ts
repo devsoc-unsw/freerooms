@@ -21,7 +21,10 @@ const useStatus = () => {
 
   const { data, error } = useSWRImmutable<StatusResponse>(
     [API_URL + "/rooms/status", datetime, filters],
-    fetcher
+    fetcher,
+    {
+      keepPreviousData: true,
+    }
   );
 
   return {

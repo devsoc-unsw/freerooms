@@ -102,7 +102,13 @@ const FilterBar = () => {
   return (
     <ClickAwayListener onClickAway={() => setOpen(false)}>
       <StyledFilterButton onClick={() => setOpen(!open)}>
-        <Stack direction="row" spacing="16px" alignItems="center">
+        <Stack
+          direction="row"
+          spacing="16px"
+          sx={{
+            alignItems: "center",
+          }}
+        >
           <FilterAltIcon
             sx={{
               fill: "none",

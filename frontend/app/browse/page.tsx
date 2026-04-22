@@ -3,8 +3,9 @@
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { enAU } from "date-fns/locale";
 import React from "react";
 import BuildingDrawer from "views/BuildingDrawer";
 
@@ -23,37 +24,46 @@ const Page = () => {
   return (
     <Container maxWidth={false}>
       <FeedbackButton />
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enAU}>
         <Tiles>
           <Stack
             direction={{ xs: "column", sm: "row" }}
-            justifyContent={{
-              xs: "center",
-              sm: "space-between",
+            sx={{
+              justifyContent: {
+                xs: "center",
+                sm: "space-between",
+              },
+              alignItems: "center",
+              marginTop: 1,
+              marginBottom: 1,
+              flexWrap: { sm: "wrap", md: "nowrap" },
+              width: "100%",
             }}
-            alignItems="center"
-            my={1}
-            flexWrap={{ sm: "wrap", md: "nowrap" }}
-            width="100%"
           >
             <Stack
               direction="row"
               spacing={2}
-              justifyContent="space-between"
-              alignItems="center"
-              alignSelf="center"
+              sx={{
+                justifyContent: "space-between",
+                alignItems: "center",
+                alignSelf: "center",
+              }}
             >
               <FilterBar />
               <SortBar setSort={setSort} sort={sort} />
             </Stack>
+
             <SearchBar setQuery={setQuery} />
+
             <Stack
-              alignItems="center"
-              alignSelf="center"
               direction="row"
-              justifyContent="space-between"
-              marginTop={{ xs: 1, sm: 0 }}
               spacing={2}
+              sx={{
+                alignItems: "center",
+                alignSelf: "center",
+                justifyContent: "space-between",
+                marginTop: { xs: 1, sm: 0 },
+              }}
             >
               <DatePicker />
               <TimePicker />

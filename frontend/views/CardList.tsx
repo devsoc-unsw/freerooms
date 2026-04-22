@@ -44,27 +44,17 @@ const CardList: React.FC<{
   const { status: roomStatusData } = useStatus();
   const { userLat, userLng } = useUserLocation();
 
-  const displayMobile = useMediaQuery(useTheme().breakpoints.down("sm"));
-
-  // This exists so that while new filtered data is loading, the old one stays there
-  const [persistedData, setPersistedData] = React.useState(roomStatusData);
-  React.useEffect(() => {
-    if (roomStatusData) {
-      setPersistedData(roomStatusData);
-    }
-  }, [roomStatusData]);
-
   let displayedBuildings: Building[] | undefined = buildings;
 
   // If we have all data, apply filters
-  if (buildings && persistedData && Object.keys(persistedData).length != 0) {
+  if (buildings && roomStatusData && Object.keys(roomStatusData).length !== 0) {
     // Filter any out that don't start with query
     // If hideUnavailable is true, filter any that have no available rooms
     displayedBuildings = buildings
       .filter(
         (building) =>
           building.name.toLowerCase().includes(query.toLowerCase()) &&
-          Object.keys(persistedData[building.id].roomStatuses).length > 0
+          Object.keys(roomStatusData[building.id].roomStatuses).length > 0
       )
       .sort((a, b) => {
         switch (sort) {
@@ -79,8 +69,8 @@ const CardList: React.FC<{
               : 0;
           case "mostRooms":
             return (
-              getNumFreerooms(persistedData[b.id]) -
-              getNumFreerooms(persistedData[a.id])
+              getNumFreerooms(roomStatusData[b.id]) -
+              getNumFreerooms(roomStatusData[a.id])
             );
           case "reverseAlphabetical":
             return b.name.localeCompare(a.name);

@@ -7,7 +7,7 @@ import {
   useJsApiLoader,
 } from "@react-google-maps/api";
 import { DarkModeContext } from "app/clientLayout";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import BuildingDrawer from "views/BuildingDrawer";
 
@@ -39,17 +39,15 @@ const isInBounds = (lat: number, lng: number) =>
 
 const LocationMarker = () => {
   return (
-    <>
-      <Box
-        sx={() => ({
-          width: 18,
-          height: 18,
-          borderRadius: "50%",
-          border: "4px solid #BEDCF9",
-          backgroundColor: "#4ABDFA",
-        })}
-      />
-    </>
+    <Box
+      sx={{
+        width: 18,
+        height: 18,
+        borderRadius: "50%",
+        border: "4px solid #BEDCF9",
+        backgroundColor: "#4ABDFA",
+      }}
+    />
   );
 };
 
@@ -60,9 +58,9 @@ export const Map = () => {
 
   // Use debounce to allow moving from marker to popup without popup hiding
   const [currentHover, setCurrentHover] = useState<Building | null>(null);
-  const [debouncedCurrentHover, _] = useDebounceValue(currentHover, 50);
+  const [debouncedCurrentHover] = useDebounceValue(currentHover, 50);
 
-  const styleArray = getMapType(isDarkMode);
+  const styleArray = useMemo(() => getMapType(isDarkMode), [isDarkMode]);
 
   // Get current location of user
   const { userLat, userLng } = useUserLocation();
@@ -71,17 +69,29 @@ export const Map = () => {
     googleMapsApiKey: GOOGLE_API_KEY,
   });
 
-  const [distances, setDistances] = useState<number[]>([]);
-
-  useEffect(() => {
-    if (buildings && userLat && userLng && isInBounds(userLat, userLng)) {
-      setDistances(
-        buildings.map((building) =>
-          calculateDistance(userLat, userLng, building.lat, building.long)
-        )
-      );
+  const distances = useMemo(() => {
+    if (!(buildings && userLat && userLng && isInBounds(userLat, userLng))) {
+      return [];
     }
+
+    return buildings.map((building) =>
+      calculateDistance(userLat, userLng, building.lat, building.long)
+    );
   }, [buildings, userLat, userLng]);
+
+  const mapOptions = useMemo(
+    () => ({
+      clickableIcons: false,
+      fullscreenControl: false,
+      mapTypeControl: false,
+      restriction: {
+        latLngBounds: mapBounds,
+        strictBounds: false,
+      },
+      styles: styleArray,
+    }),
+    [styleArray]
+  );
 
   const renderMap = () => {
     return (
@@ -92,18 +102,10 @@ export const Map = () => {
         }}
       >
         <GoogleMap
+          key={isDarkMode ? "dark-map" : "light-map"}
           mapContainerStyle={{ height: "100%" }}
           center={center}
-          options={{
-            clickableIcons: false,
-            fullscreenControl: false,
-            mapTypeControl: false,
-            restriction: {
-              latLngBounds: mapBounds,
-              strictBounds: false,
-            },
-            styles: styleArray,
-          }}
+          options={mapOptions}
           zoom={17.5}
         >
           {buildings &&
@@ -125,6 +127,7 @@ export const Map = () => {
                 />
               </OverlayViewF>
             ))}
+
           {userLat && userLng && isInBounds(userLat, userLng) && (
             <OverlayViewF
               mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}

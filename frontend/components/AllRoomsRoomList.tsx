@@ -23,9 +23,19 @@ const RoomList = ({
   return (
     <StyledStack>
       {isValidating ? (
-        <Stack maxWidth={540} width="100vw">
+        <Stack
+          sx={{
+            maxWidth: 540,
+            width: "100vw",
+          }}
+        >
           <LinearProgress />
-          <Typography alignSelf="center" marginTop={1}>
+          <Typography
+            sx={{
+              alignSelf: "center",
+              marginTop: 1,
+            }}
+          >
             Loading free rooms
           </Typography>
         </Stack>

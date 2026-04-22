@@ -2,9 +2,9 @@
 
 import { useTheme } from "@mui/material/styles";
 import { DesktopTimePicker } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import dayjs from "dayjs";
+import { enAU } from "date-fns/locale";
 import React from "react";
 
 import { selectDatetime, setDatetime } from "../redux/datetimeSlice";
@@ -17,11 +17,11 @@ const TimePicker = () => {
   const theme = useTheme();
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enAU}>
       <DesktopTimePicker
-        value={dayjs(datetime)}
-        onChange={(value) =>
-          value && dispatch(setDatetime(toSydneyTime(value.toDate())))
+        value={datetime}
+        onChange={(value: Date | null) =>
+          value && dispatch(setDatetime(toSydneyTime(value)))
         }
         format="hh:mm a"
         slotProps={{
