@@ -65,7 +65,7 @@ const CardList: React.FC<{
           case "nearest":
             return userLat && userLng
               ? calculateDistance(userLat, userLng, a.lat, a.long) -
-              calculateDistance(userLat, userLng, b.lat, b.long)
+                  calculateDistance(userLat, userLng, b.lat, b.long)
               : 0;
           case "mostRooms":
             return (
