@@ -1,3 +1,4 @@
+// https://stackoverflow.com/questions/45514676/react-check-if-element-is-visible-in-dom
 import { MutableRefObject, useEffect, useState } from "react";
 
 export default function useOnScreen(ref: MutableRefObject<any>) {

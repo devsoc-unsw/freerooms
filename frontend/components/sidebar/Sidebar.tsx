@@ -269,6 +269,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
         </Drawer>
       </Box>
 
+      {/* Mobile Drawer */}
       <MuiDrawer
         variant="temporary"
         open={mobileOpen}
