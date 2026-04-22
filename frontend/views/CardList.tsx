@@ -46,6 +46,7 @@ const CardList: React.FC<{
 
   let displayedBuildings: Building[] | undefined = buildings;
 
+  // If we have all data, apply filters
   if (buildings && roomStatusData && Object.keys(roomStatusData).length !== 0) {
     // Filter any out that don't start with query
     // If hideUnavailable is true, filter any that have no available rooms
@@ -64,7 +65,7 @@ const CardList: React.FC<{
           case "nearest":
             return userLat && userLng
               ? calculateDistance(userLat, userLng, a.lat, a.long) -
-                  calculateDistance(userLat, userLng, b.lat, b.long)
+              calculateDistance(userLat, userLng, b.lat, b.long)
               : 0;
           case "mostRooms":
             return (
@@ -74,6 +75,7 @@ const CardList: React.FC<{
           case "reverseAlphabetical":
             return b.name.localeCompare(a.name);
           default:
+            // default is alphabetical
             return a.name.localeCompare(b.name);
         }
       });
