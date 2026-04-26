@@ -12,7 +12,7 @@ import { selectFilters } from "../redux/filtersSlice";
 import { useSelector } from "../redux/hooks";
 import { Filters } from "../types";
 
-const fetcher = (url: string, datetime: Date, filters: Filters) =>
+const fetcher = ([url, datetime, filters]: [string, Date, Filters]) =>
   axios.get(url, { params: { datetime, ...filters } }).then((res) => res.data);
 
 const useStatus = () => {
