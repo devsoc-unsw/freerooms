@@ -83,6 +83,8 @@ const BuildingDrawer: React.FC = () => {
           boxShadow: "none",
           backgroundImage: "none",
           borderLeft: "none",
+          overflowX: "hidden",
+          overflowY: "auto",
         },
       }}
       anchor={isMobile ? "bottom" : "right"}
