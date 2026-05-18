@@ -17,7 +17,6 @@ import Link from "@mui/material/Link";
 import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { Dictionary } from "@reduxjs/toolkit";
 import RoomRating from "components/Rating/RoomRating";
 import RoomUtilityTags from "components/RoomUtilityTags";
 import useRoomRatings from "hooks/useRoomRatings";
@@ -85,7 +84,7 @@ export default function Page() {
           <RoomImage
             src={
               roomParam in room_photos
-                ? `${(room_photos as Dictionary<String>)[roomParam]}`
+                ? `${(room_photos as Record<string, string>)[roomParam]}`
                 : `/assets/building_photos/${campus}-${grid}.webp`
             }
           />
