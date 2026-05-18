@@ -7,7 +7,7 @@ import { API_URL } from "../config";
 import { selectDatetime } from "../redux/datetimeSlice";
 import { useSelector } from "../redux/hooks";
 
-const fetcher = (url: string, datetime: Date, filters: AllRoomsFilters) =>
+const fetcher = ([url, datetime, filters]: [string, Date, AllRoomsFilters]) =>
   axios
     .get(url, {
       params: { datetime, ...filters },
