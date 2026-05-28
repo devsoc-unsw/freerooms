@@ -81,6 +81,8 @@ const MapMarker: React.FC<{
 
   const showPopup = currentHover?.id === building?.id;
 
+  const [appearLeft, setAppearLeft] = React.useState(false);
+
   const colour =
     freerooms >= 5 ? "#66bb6a" : freerooms !== 0 ? "#ffa726" : "#f44336";
 
@@ -95,8 +97,14 @@ const MapMarker: React.FC<{
         position: "relative",
         transform: "translate(-50%, -50%)",
       }}
-      onMouseEnter={() => {
+      onMouseEnter={(e) => {
         setCurrentHover(building);
+        const markerScreenPos = e.currentTarget.getBoundingClientRect();
+        if (markerScreenPos.right + 300 > window.innerWidth) {
+          setAppearLeft(true);
+        } else {
+          setAppearLeft(false);
+        }
       }}
       onMouseLeave={() => {
         setCurrentHover(null);
@@ -139,6 +147,7 @@ const MapMarker: React.FC<{
             freerooms={freerooms}
             totalRooms={totalRooms}
             distance={distance}
+            appearLeft={appearLeft}
           />
         </div>
       </Fade>
@@ -151,9 +160,14 @@ const MarkerHover: React.FC<{
   freerooms: number;
   totalRooms: number;
   distance: number | undefined;
-}> = ({ building, freerooms, totalRooms, distance }) => {
+  appearLeft?: boolean;
+}> = ({ building, freerooms, totalRooms, distance, appearLeft = false }) => {
   return (
-    <MarkerHoverMainBox>
+    <MarkerHoverMainBox
+      style={
+        appearLeft ? { right: 0, left: "auto" } : { left: 0, right: "auto" }
+      }
+    >
       <MarkerHoverImage
         alt={`Image of ${building.id}`}
         src={`/assets/building_photos/${building.id}.webp`}
