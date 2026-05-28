@@ -170,14 +170,21 @@ const MarkerHover: React.FC<{
   distance: number | undefined;
   appearLeft?: boolean;
   appearAbove?: boolean;
-}> = ({ building, freerooms, totalRooms, distance, appearLeft = false, appearAbove = false }) => {
+}> = ({
+  building,
+  freerooms,
+  totalRooms,
+  distance,
+  appearLeft = false,
+  appearAbove = false,
+}) => {
   return (
     <MarkerHoverMainBox
       style={{
         left: appearLeft ? "auto" : 0,
         right: appearLeft ? 0 : "auto",
         top: appearAbove ? "auto" : 0,
-        bottom: appearAbove ? 24: "auto"
+        bottom: appearAbove ? 24 : "auto",
       }}
     >
       <MarkerHoverImage
