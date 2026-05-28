@@ -177,7 +177,7 @@ const MarkerHover: React.FC<{
         left: appearLeft ? "auto" : 0,
         right: appearLeft ? 0 : "auto",
         top: appearAbove ? "auto" : 0,
-        bottom: appearAbove ? 0: "auto"
+        bottom: appearAbove ? 24: "auto"
       }}
     >
       <MarkerHoverImage
