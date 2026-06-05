@@ -82,17 +82,15 @@ const MapMarker: React.FC<{
   const currentBuilding = useSelector(selectCurrentBuilding);
   const isCurrentBuilding = currentBuilding?.id === building?.id;
 
-  const [showPopup, setShowPopup] = React.useState(false);
+  const showPopup = currentHover?.id === building?.id;
+  const [appearAbove, setAppearAbove] = React.useState(false);
+  const [appearLeft, setAppearLeft] = React.useState(false);
 
   const handleSelectBuilding = () => {
     dispatch(setCurrentBuilding(building || null));
     params.set("building", buildingId); // Add or update the 'query' param
     router.push(`/map?${params.toString()}`);
   };
-
-  React.useEffect(() => {
-    setShowPopup(currentHover?.id === building?.id);
-  }, [currentHover, building]);
 
   const colour =
     freerooms >= 5 ? "#66bb6a" : freerooms !== 0 ? "#ffa726" : "#f44336";
@@ -158,7 +156,7 @@ const MapMarker: React.FC<{
           "&:hover": {
             cursor: "pointer",
           },
-        })}
+        }}
         onClick={() => handleSelectBuilding()}
       />
       <Fade in={showPopup} timeout={200}>

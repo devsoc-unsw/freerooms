@@ -9,7 +9,7 @@ import {
 } from "@react-google-maps/api";
 import { DarkModeContext } from "app/clientLayout";
 import { useSearchParams } from "next/navigation";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import BuildingDrawer from "views/BuildingDrawer";
 
@@ -73,7 +73,14 @@ export const Map = () => {
     googleMapsApiKey: GOOGLE_API_KEY,
   });
 
-  const [distances, setDistances] = useState<number[]>([]);
+  const distances = useMemo(() => {
+    if (buildings && userLat && userLng && isInBounds(userLat, userLng)) {
+      return buildings.map((building) =>
+        calculateDistance(userLat, userLng, building.lat, building.long)
+      );
+    }
+    return [];
+  }, [buildings, userLat, userLng]);
 
   //set current building to search param query - THIS IS WHERE OTHER QUERIES CAN GO
   const searchParams = useSearchParams();
@@ -84,21 +91,7 @@ export const Map = () => {
     if (building) {
       dispatch(setCurrentBuilding(building || null));
     }
-  }, [building]);
-
-  useEffect(() => {
-    if (buildings && userLat && userLng && isInBounds(userLat, userLng)) {
-      setDistances(
-        buildings.map((building) =>
-          calculateDistance(userLat, userLng, building.lat, building.long)
-        )
-      );
-    }
-
-    return buildings.map((building) =>
-      calculateDistance(userLat, userLng, building.lat, building.long)
-    );
-  }, [buildings, userLat, userLng]);
+  }, [building, dispatch]);
 
   const mapOptions = useMemo(
     () => ({

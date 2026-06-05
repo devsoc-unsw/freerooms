@@ -1,3 +1,4 @@
+import ViewOnMapButton from "@frontend/components/ViewOnMapButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { Slide, Typography, useMediaQuery } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
@@ -14,7 +15,6 @@ import {
 } from "../redux/currentBuildingSlice";
 import { useDispatch, useSelector } from "../redux/hooks";
 import RoomAvailabilityBox from "./RoomAvailabilityBox";
-import ViewOnMapButton from "@frontend/components/ViewOnMapButton";
 
 const AppBox = styled(Box)(({ theme }) => ({
   boxShadow: "none",
