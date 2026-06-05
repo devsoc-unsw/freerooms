@@ -1,14 +1,11 @@
-import { Building } from "@common/types";
 import useBuilding from "@frontend/hooks/useBuilding";
 import { useTheme } from "@mui/material";
-import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import { useRouter } from "next/navigation";
 import React from "react";
 
 import { setCurrentBuilding } from "../redux/currentBuildingSlice";
 import { useDispatch } from "../redux/hooks";
-import { getBuildingIdFromRoomId } from "../utils/utils";
 import Button from "./Button";
 
 const ViewOnMapButton: React.FC<{
@@ -44,7 +41,7 @@ const ViewOnMapButton: React.FC<{
       color="primary"
       onClick={() => handleMapRedirect(buildingId)}
     >
-      <Typography variant="body2" fontWeight="bold">
+      <Typography variant="body2" sx={{ fontWeight: "bold" }}>
         View on Map
       </Typography>
     </Button>
