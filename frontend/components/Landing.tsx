@@ -25,7 +25,7 @@ const Landing = () => {
   };
 
   return (
-    <Stack alignItems="center">
+    <Stack sx={{ alignItems: "center" }}>
       <AnimationContainer>
         <DoorContainer>
           <Image

@@ -6,11 +6,11 @@ import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import RoomAvailability from "components/RoomAvailability";
+import useRoomRatings from "hooks/useRoomRatings";
 import Link from "next/link";
 import React from "react";
 
 import useRoom from "../hooks/useRoom";
-import useRoomRatings from "hooks/useRoomRatings";
 
 const IndiviRoomBox = styled(Box)<BoxProps>(({ theme }) => ({
   display: "flex",
@@ -87,8 +87,10 @@ const RoomAvailabilityBox: React.FC<RoomAvailabilityBoxProps> = ({
         </Stack>
         <Stack
           direction="row"
-          justifyContent="space-around"
-          alignItems="center"
+          sx={{
+            justifyContent: "space-around",
+            alignItems: "center",
+          }}
         >
           <RoomAvailability roomStatus={roomStatus} />
           <ChevronRightIcon style={{ color: "grey" }} />

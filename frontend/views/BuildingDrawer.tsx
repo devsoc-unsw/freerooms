@@ -80,6 +80,12 @@ const BuildingDrawer: React.FC = () => {
         "& .MuiDrawer-paper": {
           width: isMobile ? drawerWidthMobile : drawerWidth,
           boxSizing: "border-box",
+          backgroundColor: "transparent",
+          boxShadow: "none",
+          backgroundImage: "none",
+          borderLeft: "none",
+          overflowX: "hidden",
+          overflowY: "auto",
         },
       }}
       anchor={isMobile ? "bottom" : "right"}

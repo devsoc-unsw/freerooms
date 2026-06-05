@@ -87,7 +87,7 @@ app.get(
 app.get(
   "/api/rooms/bookings/:roomID",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const { roomID } = req.params;
+    const { roomID } = req.params as { roomID: string };
     const data = await getRoomBookings(roomID);
     res.send(data);
     next();
@@ -98,7 +98,7 @@ app.get(
 app.get(
   "/api/rating/:roomID",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const { roomID } = req.params;
+    const { roomID } = req.params as { roomID: string };
     const roomRatings = await getRatings(roomID);
     res.send(roomRatings);
     next();
@@ -109,7 +109,10 @@ app.get(
 app.post(
   "/api/rating/rate/:buildingID/:roomID",
   async (req: Request, res: Response) => {
-    const { buildingID, roomID } = req.params;
+    const { buildingID, roomID } = req.params as {
+      buildingID: string;
+      roomID: string;
+    };
     const { cleanliness, location, quietness, overall } = req.body;
     const ratings = [cleanliness, location, quietness, overall];
     try {
@@ -128,7 +131,7 @@ app.post(
 app.get(
   "/api/buildingRating/:buildingID",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const { buildingID } = req.params;
+    const { buildingID } = req.params as { buildingID: string };
     let buildingRating: BuildingRatingsResponse | null =
       await getBuildingRatings(buildingID);
 
@@ -149,7 +152,7 @@ app.get(
 app.get(
   "/api/rooms/utilities/:roomId",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const { roomId } = req.params;
+    const { roomId } = req.params as { roomId: string };
     const roomUtilities = await getRoomUtilities(roomId);
     res.send(roomUtilities);
     next();

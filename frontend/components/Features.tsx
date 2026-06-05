@@ -25,9 +25,11 @@ const Features = () => {
       </div>
 
       <Box
-        mt={10}
-        width="100%"
-        height={{ xs: "50rem", md: "45rem", lg: "25rem" }}
+        sx={{
+          marginTop: 10,
+          width: "100%",
+          height: { xs: "50rem", md: "45rem", lg: "25rem" },
+        }}
       >
         <div>
           <StyledBackgroudVector

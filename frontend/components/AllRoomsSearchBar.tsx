@@ -5,8 +5,8 @@ import {
   LocalizationProvider,
   TimePicker,
 } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs from "dayjs";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { enAU } from "date-fns/locale";
 
 import { selectDatetime, setDatetime } from "../redux/datetimeSlice";
 import { useDispatch, useSelector } from "../redux/hooks";
@@ -20,30 +20,32 @@ export default function AllRoomsSearchBar() {
   return (
     <Stack
       direction="row"
-      gap={2}
-      justifyContent="space-between"
-      left="0px"
-      paddingTop="10px"
-      position="sticky"
-      top="0px"
-      zIndex={1}
-      sx={{ backgroundColor: theme.palette.background.default }}
+      sx={{
+        gap: 2,
+        justifyContent: "space-between",
+        left: "0px",
+        paddingTop: "10px",
+        position: "sticky",
+        top: "0px",
+        zIndex: 1,
+        backgroundColor: theme.palette.background.default,
+      }}
     >
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enAU}>
         <DatePicker
           label="Date"
-          value={dayjs(datetime)}
+          value={datetime}
           sx={{ width: "50%" }}
-          onChange={(value) =>
-            value && dispatch(setDatetime(toSydneyTime(value.toDate())))
+          onChange={(value: Date | null) =>
+            value && dispatch(setDatetime(toSydneyTime(value)))
           }
         />
         <TimePicker
           label="Start Time"
-          value={dayjs(datetime)}
+          value={datetime}
           sx={{ width: "50%" }}
-          onAccept={(value) =>
-            value && dispatch(setDatetime(toSydneyTime(value.toDate())))
+          onAccept={(value: Date | null) =>
+            value && dispatch(setDatetime(toSydneyTime(value)))
           }
         />
       </LocalizationProvider>

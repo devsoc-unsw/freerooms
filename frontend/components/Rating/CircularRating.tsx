@@ -15,8 +15,14 @@ const CircularRating: React.FC<CircularRatingProps> = ({
   const normalizedRating = 100 - (rating / 5) * 100;
 
   return (
-    <Box textAlign="center" mx={1}>
-      <Typography variant="subtitle1" fontWeight={500}>
+    <Box
+      sx={{
+        textAlign: "center",
+        marginLeft: 1,
+        marginRight: 1,
+      }}
+    >
+      <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>
         {category}
       </Typography>
       <Box

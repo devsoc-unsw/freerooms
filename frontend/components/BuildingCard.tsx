@@ -33,6 +33,7 @@ const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
     height: 200,
   },
+  cursor: "pointer",
 }));
 
 const ImageBox = styled(Box)<BoxProps>(({ theme }) => ({
@@ -188,9 +189,11 @@ const BuildingCard: React.FC<{
 
             <Stack
               direction="row"
-              alignItems="center"
-              gap="1px"
               aria-label="star-info"
+              sx={{
+                alignItems: "center",
+                gap: "1px",
+              }}
             >
               <BuildingRating overallRating={ratings?.overallRating ?? 0} />
             </Stack>
@@ -212,15 +215,22 @@ const BuildingCard: React.FC<{
 
             <Stack
               direction="row"
-              alignItems="center"
-              gap="1px"
               aria-label="star-info"
+              sx={{
+                alignItems: "center",
+                gap: "1px",
+              }}
             >
               <BuildingRating overallRating={ratings?.overallRating ?? 0} />
             </Stack>
 
             <InfoFooterBox>
-              <Stack direction="row" gap="8px">
+              <Stack
+                direction="row"
+                sx={{
+                  gap: "8px",
+                }}
+              >
                 <DetailPill>
                   <DetailPillText>{buildingId}</DetailPillText>
                 </DetailPill>
