@@ -185,7 +185,7 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
           </Typography>
           <Stack
             direction={{ xs: "column", sm: "row" }}
-            justifyContent="space-between"
+            sx={{ justifyContent: "space-between" }}
           >
             <ViewOnMapButton buildingId={buildingId} />
             <BookingButton
