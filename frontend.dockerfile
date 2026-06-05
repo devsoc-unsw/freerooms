@@ -14,6 +14,9 @@ FROM node:24-alpine AS builder
 # Accept build args for environment variables
 ARG NEXT_PUBLIC_STAGING=false
 
+# Accept build args for environment variables
+ARG NEXT_PUBLIC_STAGING=false
+
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY /frontend .
