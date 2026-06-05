@@ -6,6 +6,7 @@ import { Typography } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import { styled, useTheme } from "@mui/material/styles";
 import Image, { ImageProps } from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 
 import useBuilding from "../hooks/useBuilding";
@@ -69,20 +70,27 @@ const MapMarker: React.FC<{
   const { building } = useBuilding(buildingId);
   const { status: liveStatus } = useBuildingStatus(buildingId);
   const theme = useTheme();
-
+  const router = useRouter();
   // This one uses stale data so markers don't disappear
   const status: BuildingStatus | undefined = liveStatus;
   const freerooms = getNumFreerooms(status);
   const totalRooms = getTotalRooms(status);
+  const searchParams = useSearchParams();
+  const params = new URLSearchParams(searchParams);
 
   const dispatch = useDispatch();
   const currentBuilding = useSelector(selectCurrentBuilding);
   const isCurrentBuilding = currentBuilding?.id === building?.id;
 
   const showPopup = currentHover?.id === building?.id;
-
-  const [appearLeft, setAppearLeft] = React.useState(false);
   const [appearAbove, setAppearAbove] = React.useState(false);
+  const [appearLeft, setAppearLeft] = React.useState(false);
+
+  const handleSelectBuilding = () => {
+    dispatch(setCurrentBuilding(building || null));
+    params.set("building", buildingId); // Add or update the 'query' param
+    router.push(`/map?${params.toString()}`);
+  };
 
   const colour =
     freerooms >= 5 ? "#66bb6a" : freerooms !== 0 ? "#ffa726" : "#f44336";
@@ -121,6 +129,8 @@ const MapMarker: React.FC<{
         sx={{
           fontSize: 11,
           fontWeight: 500,
+          translate: isCurrentBuilding ? "0px -10px" : "0px 0px",
+          transition: "all 0.2s ease-in-out",
           textShadow:
             theme.palette.mode === "light"
               ? "-.5px -.5px 1px #f2f2f2, .5px -.5px 1px #f2f2f2, -.5px .5px 1px #f2f2f2, .5px .5px 1px #f2f2f2"
@@ -137,6 +147,8 @@ const MapMarker: React.FC<{
           borderRadius: "50%",
           border: isCurrentBuilding ? `5px solid ${colour}` : "4px solid white",
           backgroundColor: isCurrentBuilding ? "white" : colour,
+          scale: isCurrentBuilding ? 2 : 1,
+          transition: "all 0.2s ease-in-out",
           boxShadow: isCurrentBuilding
             ? `0px 0px 6px 4px ${alpha(colour, 0.5)}`
             : "",
@@ -145,7 +157,7 @@ const MapMarker: React.FC<{
             cursor: "pointer",
           },
         }}
-        onClick={() => dispatch(setCurrentBuilding(building))}
+        onClick={() => handleSelectBuilding()}
       />
       <Fade in={showPopup} timeout={200}>
         <div style={{ position: "relative", bottom: -3 }}>
