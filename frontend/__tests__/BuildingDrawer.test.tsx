@@ -14,6 +14,13 @@ jest.mock("@mui/material", () => ({
   ...jest.requireActual("@mui/material"),
   useMediaQuery: jest.fn().mockReturnValue(false),
 }));
+jest.mock("next/navigation", () => ({
+  ...jest.requireActual("next/navigation"),
+  useRouter: jest.fn().mockReturnValue({
+    push: jest.fn(),
+    replace: jest.fn(),
+  }),
+}));
 
 describe("BuildingDrawer", () => {
   it("Building Drawer shows close button", () => {
