@@ -55,13 +55,13 @@ export default function Page() {
   const totalRooms = rooms ? Object.keys(rooms).length : 0;
 
   return (
-    <Stack alignItems="center">
+    <Stack sx={{ alignItems: "center" }}>
       <FeedbackButton />
-      <Stack marginTop={4} paddingX={1}>
-        <Typography fontWeight="bold" variant="h4">
+      <Stack sx={{ marginTop: 4, paddingX: 1 }}>
+        <Typography variant="h4" sx={{ fontWeight: "bold" }}>
           All Free Rooms
         </Typography>
-        <Typography marginTop={1} variant="body1">
+        <Typography variant="body1" sx={{ marginTop: 1 }}>
           Not looking for a specific building? See all free rooms in this easy
           to search list!
         </Typography>

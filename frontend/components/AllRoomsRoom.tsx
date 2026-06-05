@@ -33,12 +33,15 @@ const Room: React.FC<AllRoomsRoomProps> = ({
       <CardActionArea href={`/room/${roomNumber}`} target="_blank">
         <CardContent>
           <Stack
-            alignItems="center"
             direction="row"
-            height="40px"
-            justifyContent="space-between"
-            paddingX={1}
             spacing={1}
+            sx={{
+              alignItems: "center",
+              height: "40px",
+              justifyContent: "space-between",
+              paddingLeft: 1,
+              paddingRight: 1,
+            }}
           >
             <Stack>
               <Typography

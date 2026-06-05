@@ -2,9 +2,9 @@
 
 import { useTheme } from "@mui/material/styles";
 import { DesktopTimePicker } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import dayjs from "dayjs";
+import { enAU } from "date-fns/locale";
 import React from "react";
 
 import { selectDatetime, setDatetime } from "../redux/datetimeSlice";
@@ -17,20 +17,40 @@ const TimePicker = () => {
   const theme = useTheme();
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enAU}>
       <DesktopTimePicker
-        value={dayjs(datetime)}
-        onChange={(value) =>
-          value && dispatch(setDatetime(toSydneyTime(value.toDate())))
+        value={datetime}
+        onChange={(value: Date | null) =>
+          value && dispatch(setDatetime(toSydneyTime(value)))
         }
+        format="hh:mm a"
         slotProps={{
           textField: {
             sx: {
-              svg: { color: theme.palette.text.primary },
-              input: { color: theme.palette.text.primary },
-              width: 140,
+              svg: {
+                color: theme.palette.mode === "light" ? "#6C6562" : "#FFFFFF",
+              },
+              width: 133,
               "& .MuiInputBase-root": {
-                height: 45,
+                height: 56,
+                borderRadius: "8px",
+              },
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#CBC4C1",
+                borderWidth: 1,
+              },
+              "& .MuiInputBase-input": {
+                fontSize: 16,
+                fontWeight: 500,
+                color:
+                  theme.palette.mode === "light"
+                    ? theme.palette.text.secondary
+                    : "#FFFFFF",
+              },
+              "& .MuiOutlinedInput-root": {
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#CBC4C1",
+                },
               },
             },
           },

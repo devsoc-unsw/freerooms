@@ -96,9 +96,11 @@ const BuildingCardMobile: React.FC<{
         </Typography>
         <Stack
           direction="column"
-          justifyContent="center"
-          alignItems="flex-end"
           spacing={0.5}
+          sx={{
+            justifyContent: "center",
+            alignItems: "flex-end",
+          }}
         >
           <StatusBox>
             {freerooms > INITIALISING ? (
@@ -128,11 +130,13 @@ const BuildingCardMobile: React.FC<{
           </StatusBox>
           <StatusBox>
             <Stack
-              alignItems="center"
-              aria-label="star-info"
               direction="row"
-              justifyContent="center"
               spacing={0.3}
+              aria-label="star-info"
+              sx={{
+                alignItems: "center",
+                justifyContent: "center",
+              }}
             >
               <Typography
                 sx={{ fontSize: 12, fontWeight: 500, color: "#000000" }}

@@ -17,7 +17,6 @@ import Link from "@mui/material/Link";
 import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { Dictionary } from "@reduxjs/toolkit";
 import RoomRating from "components/Rating/RoomRating";
 import RoomUtilityTags from "components/RoomUtilityTags";
 import useRoomRatings from "hooks/useRoomRatings";
@@ -70,18 +69,22 @@ export default function Page() {
       <FeedbackButton />
       {room && building ? (
         <Stack
-          justifyContent="center"
-          alignItems="center"
-          width="100%"
-          py={5}
-          height="100%"
-          px={{ xs: 3, md: 15 }}
+          sx={{
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            paddingTop: 5,
+            paddingBottom: 5,
+            height: "100%",
+            paddingLeft: { xs: 3, md: 15 },
+            paddingRight: { xs: 3, md: 15 },
+          }}
         >
           <RoomPageHeader room={room} buildingName={building.name} />
           <RoomImage
             src={
               roomParam in room_photos
-                ? `${(room_photos as Dictionary<String>)[roomParam]}`
+                ? `${(room_photos as Record<string, string>)[roomParam]}`
                 : `/assets/building_photos/${campus}-${grid}.webp`
             }
           />
@@ -101,10 +104,9 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
   buildingName,
 }) => {
   const [openDialog, setDialog] = useState(false);
+
   const toggleDialog = () => {
-    setDialog((isOpen) => {
-      return !isOpen;
-    });
+    setDialog((isOpen) => !isOpen);
   };
 
   const schoolDetails = getSchoolDetails(room.school);
@@ -125,29 +127,43 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
 
   return (
     <Stack
-      width="100%"
       direction="row"
-      alignItems="center"
-      justifyContent="space-between"
+      sx={{
+        width: "100%",
+        alignItems: "center",
+        justifyContent: "space-between",
+      }}
     >
-      <Stack direction="column" spacing={1} width="100%" mb={1}>
+      <Stack
+        direction="column"
+        spacing={1}
+        sx={{
+          width: "100%",
+          marginBottom: 1,
+        }}
+      >
         <RoomBackButton />
-        {buildingName != "" && (
+
+        {buildingName !== "" && (
           <Stack
             direction="row"
             spacing={2}
             divider={
-              <Typography display="inline" variant="subtitle2">
+              <Typography variant="subtitle2" sx={{ display: "inline" }}>
                 /
               </Typography>
             }
           >
-            <Typography variant="subtitle2">{buildingName} </Typography>
+            <Typography variant="subtitle2">{buildingName}</Typography>
             <Typography variant="subtitle2">
               {translateRoomUsage(room.usage)}
             </Typography>
-            {room.school != " " && (
-              <Typography fontWeight="bold" color="#e65100" variant="subtitle2">
+            {room.school !== " " && (
+              <Typography
+                variant="subtitle2"
+                color="#e65100"
+                sx={{ fontWeight: "bold" }}
+              >
                 ID Required
               </Typography>
             )}
@@ -156,10 +172,12 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
 
         <Stack
           direction={{ xs: "column", sm: "row" }}
-          justifyContent="space-between"
-          width="100%"
+          sx={{
+            justifyContent: "space-between",
+            width: "100%",
+          }}
         >
-          <Typography variant="h4" fontWeight={550}>
+          <Typography variant="h4" sx={{ fontWeight: 550 }}>
             {room.name}
           </Typography>
           <BookingButton
@@ -168,21 +186,22 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
             onClick={toggleDialog}
           />
         </Stack>
+
         <Stack direction="row" spacing={2}>
-          <Typography variant="body1" fontWeight="bold">
+          <Typography variant="body1" sx={{ fontWeight: "bold" }}>
             ID: {room.id}
           </Typography>
-          <Typography variant="body1" fontWeight="bold">
+          <Typography variant="body1" sx={{ fontWeight: "bold" }}>
             Capacity: {room.capacity}
           </Typography>
-          <Typography variant="body1" fontWeight="bold">
+          <Typography variant="body1" sx={{ fontWeight: "bold" }}>
             Abbreviation: {room.abbr}
           </Typography>
 
-          {room.school != " " && (
-            <Typography variant="body1" fontWeight="bold">
+          {room.school !== " " && (
+            <Typography variant="body1" sx={{ fontWeight: "bold" }}>
               School:{" "}
-              <Typography display="inline" variant="body1">
+              <Typography variant="body1" sx={{ display: "inline" }}>
                 {schoolDetails ? schoolDetails.name : room.school}
               </Typography>
             </Typography>
@@ -191,12 +210,12 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
 
         <Stack
           direction="row"
-          alignItems="center"
           spacing={0.3}
           aria-label="5-star-info"
+          sx={{ alignItems: "center" }}
         >
-          <Typography variant="body1" fontWeight="bold">
-            {ratingValue == 0 ? 0 : ratingValue}
+          <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+            {ratingValue === 0 ? 0 : ratingValue}
           </Typography>
           <Rating
             readOnly
@@ -207,16 +226,20 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
           />
         </Stack>
       </Stack>
+
       <Dialog
         open={openDialog}
         onClose={toggleDialog}
-        PaperProps={{ sx: { borderRadius: "10px" } }}
+        slotProps={{
+          paper: { sx: { borderRadius: "10px" } },
+        }}
       >
         <DialogTitle>
-          <Typography variant="h6" fontWeight="Bold">
+          <Typography variant="h6" sx={{ fontWeight: "bold" }}>
             Booking this Room
           </Typography>
         </DialogTitle>
+
         <IconButton
           aria-label="close"
           onClick={() => setDialog(false)}
@@ -229,6 +252,7 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
         >
           <CloseIcon />
         </IconButton>
+
         <DialogContent dividers>
           <DialogContentText>
             <Stack direction="column" spacing={2}>
@@ -252,7 +276,13 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
 
 const RoomImage: React.FC<{ src: string }> = ({ src }) => {
   return (
-    <Box minWidth="100%" minHeight={300} position="relative">
+    <Box
+      sx={{
+        minWidth: "100%",
+        minHeight: 300,
+        position: "relative",
+      }}
+    >
       <Image
         src={src}
         alt="Room Image"

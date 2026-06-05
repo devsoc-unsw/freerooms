@@ -65,6 +65,7 @@ const SearchModal: React.FC<SearchProps> = () => {
   // Fetch options
   const { buildings } = useBuildings();
   const { rooms } = useRooms();
+
   const options = React.useMemo(() => {
     const buildingOptions: SearchOption[] = buildings
       ? buildings.map((building) => ({
@@ -170,8 +171,13 @@ const SearchResult: React.FC<{ option: SearchOption }> = ({ option }) => {
   const [name, ...aliases] = option.searchKeys;
 
   return (
-    <Stack direction="row" padding={0.5} spacing={2}>
-      <Stack alignItems="center" justifyContent="center">
+    <Stack direction="row" spacing={2} sx={{ padding: 0.5 }}>
+      <Stack
+        sx={{
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         {option.type === "Room" ? (
           <RoomIcon {...iconProps} />
         ) : (
@@ -192,26 +198,49 @@ const SearchResult: React.FC<{ option: SearchOption }> = ({ option }) => {
 };
 
 const InputBox = (params: AutocompleteRenderInputParams) => {
+  const compatParams = params as typeof params & {
+    InputProps?: unknown;
+    inputProps?: unknown;
+  };
+
+  const {
+    slotProps,
+    InputProps: _legacyInputProps,
+    inputProps: _legacyHtmlInputProps,
+    ...textFieldProps
+  } = compatParams;
+
   return (
     <TextField
-      {...params}
+      {...textFieldProps}
       autoFocus
       fullWidth
       variant="standard"
       placeholder="Search a building or room..."
-      InputProps={{
-        ...params.InputProps,
-        startAdornment: (
-          <InputAdornment position="start">
-            <SearchIcon />
-          </InputAdornment>
-        ),
-        endAdornment: undefined,
-        sx: {
-          backgroundColor: "background.paper",
-          borderRadius: "10px 10px 0 0",
+      slotProps={{
+        ...slotProps,
+        input: {
+          ...(slotProps?.input ?? {}),
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon />
+            </InputAdornment>
+          ),
+          endAdornment: undefined,
+          sx: {
+            ...((slotProps?.input as { sx?: object } | undefined)?.sx ?? {}),
+            backgroundColor: "background.paper",
+            borderRadius: "10px 10px 0 0",
+          },
         },
-        slotProps: { root: { style: { padding: 10 } } },
+        htmlInput: {
+          ...(slotProps?.htmlInput ?? {}),
+          style: {
+            ...((slotProps?.htmlInput as { style?: object } | undefined)
+              ?.style ?? {}),
+            padding: 10,
+          },
+        },
       }}
     />
   );

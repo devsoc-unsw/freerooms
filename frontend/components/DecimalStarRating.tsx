@@ -6,13 +6,10 @@ const DecimalStarRating: React.FC<{
   roomID: string;
 }> = ({ roomID }) => {
   const ratings = useRoomRatings(roomID);
-
-  console.log(ratings);
-
-  let overallRating = ratings.data ? ratings.data.overallRating : 0;
+  const overallRating = ratings.data ? ratings.data.overallRating : 0;
 
   return (
-    <Stack alignItems="center">
+    <Stack sx={{ alignItems: "center" }}>
       <Typography
         component="legend"
         variant="h3"
@@ -22,7 +19,7 @@ const DecimalStarRating: React.FC<{
           textAlign: "center",
         }}
       >
-        {overallRating == 0 ? 0 : overallRating.toFixed(1)}
+        {overallRating === 0 ? 0 : overallRating.toFixed(1)}
       </Typography>
       <Rating
         name="decimal-rating"

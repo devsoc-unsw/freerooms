@@ -14,10 +14,15 @@ const LinearRating: React.FC<LinearRatingProps> = ({ category, value }) => {
 
   return (
     <Box>
-      <Typography variant="subtitle1" fontWeight={500}>
+      <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>
         {category}
       </Typography>
-      <Box display="flex" alignItems="center">
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
         <Typography variant="body1" sx={{ marginRight: "8px" }}>
           {value.toFixed(1)}
         </Typography>

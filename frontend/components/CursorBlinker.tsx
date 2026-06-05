@@ -1,5 +1,5 @@
 import { styled } from "@mui/material/styles";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
 const cursorVariants = {
   blinking: {
@@ -12,7 +12,7 @@ const cursorVariants = {
       times: [0, 0.5, 0.5, 1],
     },
   },
-};
+} satisfies Variants;
 
 export default function CursorBlinker() {
   return <CursorStyle variants={cursorVariants} animate="blinking" />;

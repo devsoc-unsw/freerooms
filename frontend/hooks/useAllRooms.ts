@@ -1,13 +1,13 @@
 import { SearchResponse } from "@common/types";
 import axios from "axios";
-import { API_URL } from "config";
 import useSWR from "swr/immutable";
 import { AllRoomsFilters, Filters } from "types";
 
+import { API_URL } from "../config";
 import { selectDatetime } from "../redux/datetimeSlice";
 import { useSelector } from "../redux/hooks";
 
-const fetcher = (url: string, datetime: Date, filters: AllRoomsFilters) =>
+const fetcher = ([url, datetime, filters]: [string, Date, AllRoomsFilters]) =>
   axios
     .get(url, {
       params: { datetime, ...filters },

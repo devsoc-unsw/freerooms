@@ -53,12 +53,20 @@ export default function UtilityAccordion({ title, icon, items = [] }: Props) {
           },
         }}
       >
-        <Stack direction="row" spacing={1.5} alignItems="center">
+        <Stack
+          direction="row"
+          spacing={1.5}
+          sx={{
+            alignItems: "center",
+          }}
+        >
           {icon}
           <Typography
             variant="subtitle2"
-            fontWeight={theme.typography.fontWeightMedium}
             color="text.primary"
+            sx={{
+              fontWeight: theme.typography.fontWeightMedium,
+            }}
           >
             {title}
           </Typography>

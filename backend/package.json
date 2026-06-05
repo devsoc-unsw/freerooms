@@ -7,42 +7,43 @@
     "start": "nodemon src/index.ts",
     "dev": "NODE_ENV=development npm start",
     "build": "tsc -p tsconfig.json && tsc-alias -p tsconfig.json",
-    "lint": "prettier --check **/*.ts && eslint **/*.ts",
-    "lint:fix": "prettier --write **/*.ts && eslint --fix **/*.ts",
+    "lint": "prettier --check \"**/*.ts\" && cross-env ESLINT_USE_FLAT_CONFIG=false eslint .",
+    "lint:fix": "prettier --write \"**/*.ts\" && cross-env ESLINT_USE_FLAT_CONFIG=false eslint . --fix",
     "test": "jest"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/csesoc/Freerooms.git"
+    "url": "git+https://github.com/devsoc-unsw/Freerooms.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/csesoc/Freerooms/issues"
+    "url": "https://github.com/devsoc-unsw/Freerooms/issues"
   },
-  "homepage": "https://github.com/csesoc/Freerooms#readme",
+  "homepage": "https://github.com/devsoc-unsw/Freerooms#readme",
   "dependencies": {
     "@graphql-typed-document-node/core": "^3.2.0",
     "cors": "^2.8.5",
     "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.0",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
+    "dotenv": "^17.4.1",
+    "express": "^5.2.1",
     "graphql": "^16.6.0",
     "graphql-request": "^6.1.0",
-    "mongodb": "^6.8.0"
+    "mongodb": "^7.1.1"
   },
   "devDependencies": {
-    "@types/cors": "2.8.17",
-    "@types/express": "5.0.0",
-    "@types/jest": "^29.5.12",
-    "@types/node": "^22.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.0.0",
-    "@typescript-eslint/parser": "^8.0.0",
-    "eslint": "^8.57.0",
+    "@types/cors": "2.8.19",
+    "@types/express": "5.0.6",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.59.0",
+    "@typescript-eslint/parser": "^8.59.0",
+    "cross-env": "^10.1.0",
+    "eslint": "^9.39.4",
     "eslint-config-prettier": "^10.0.0",
-    "eslint-plugin-simple-import-sort": "^12.0.0",
-    "jest": "^29.7.0",
+    "eslint-plugin-simple-import-sort": "^13.0.0",
+    "jest": "^30.0.0",
     "nodemon": "^3.0.0",
     "prettier": "^3.2.5",
     "ts-jest": "^29.1.2",

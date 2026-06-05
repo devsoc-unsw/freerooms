@@ -25,29 +25,27 @@ const RoomBackButton = () => {
   };
 
   return (
-    <>
-      <Button
-        aria-label="back"
-        onClick={handleBackButton}
-        style={{
-          backgroundColor: "transparent",
-          position: "relative",
-          right: "12px",
-          width: "max-content",
+    <Button
+      aria-label="back"
+      onClick={handleBackButton}
+      style={{
+        backgroundColor: "transparent",
+        position: "relative",
+        right: "12px",
+        width: "max-content",
+      }}
+    >
+      <ArrowBack />
+      <Typography
+        variant="body1"
+        sx={{
+          marginLeft: 1,
+          textDecoration: "underline",
         }}
       >
-        <ArrowBack />
-        <Typography
-          variant="body1"
-          marginLeft={1}
-          sx={{
-            textDecoration: "underline",
-          }}
-        >
-          Back
-        </Typography>
-      </Button>
-    </>
+        Back
+      </Typography>
+    </Button>
   );
 };
 

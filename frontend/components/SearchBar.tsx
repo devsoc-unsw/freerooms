@@ -1,23 +1,50 @@
 import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
 import InputAdornment from "@mui/material/InputAdornment";
+import { useTheme } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import React from "react";
 
 const SearchBar = ({ setQuery }: { setQuery: (query: string) => void }) => {
+  const theme = useTheme();
+
   return (
     <Box
-      width={{ xs: "100%", sm: "100%", md: "50%" }}
-      my={1}
-      mx={{ sm: 1 }}
-      flexShrink={{ sm: 3 }}
-      order={{ xs: -1, sm: -1, md: "unset" }}
+      sx={{
+        width: { xs: "100%", sm: "100%", md: "100%" },
+        marginTop: 1,
+        marginBottom: 1,
+        marginLeft: { sm: 2 },
+        marginRight: { sm: 2 },
+        flexShrink: { sm: 3 },
+        order: { xs: -1, sm: -1, md: "unset" },
+      }}
     >
       <TextField
         id="input-with-sx"
         placeholder="Search for a building..."
+        sx={{
+          "& .MuiOutlinedInput-root": {
+            height: 56,
+            borderRadius: "8px",
+            padding: "16px",
+
+            "&:hover .MuiOutlinedInput-notchedOutline": {
+              borderColor: theme.palette.primary.main,
+            },
+          },
+          "& .MuiOutlinedInput-notchedOutline": {
+            borderColor: theme.palette.primary.main,
+            borderWidth: 1,
+          },
+          "& .MuiOutlinedInput-input::placeholder": {
+            fontSize: 16,
+            fontWeight: 500,
+            color: theme.palette.primary.main,
+            opacity: 1,
+          },
+        }}
         fullWidth
-        inputProps={{ style: { height: "12px" } }}
         //entering the target
         onKeyDown={(event) => {
           const target = event.target as HTMLInputElement;
@@ -31,14 +58,19 @@ const SearchBar = ({ setQuery }: { setQuery: (query: string) => void }) => {
             setQuery(event.target.value);
           }
         }}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchIcon />
-            </InputAdornment>
-          ),
-        }}
         variant="outlined"
+        slotProps={{
+          input: {
+            startAdornment: (
+              <InputAdornment position="start" sx={{ marginRight: "16px" }}>
+                <SearchIcon
+                  sx={{ color: (theme) => theme.palette.primary.main }}
+                />
+              </InputAdornment>
+            ),
+          },
+          htmlInput: { style: { height: "12px" } },
+        }}
       />
     </Box>
   );

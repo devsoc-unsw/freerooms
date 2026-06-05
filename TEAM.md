@@ -1,5 +1,17 @@
 # Freerooms Team
 
+## 2026
+
+### Leads
+- Ryan Yensch (@RyanYensch)
+
+### Developers
+- Ray Miles (@disarrayx)
+- Christopher Khim (@CrispyKhim)
+- Cormac Flahive (@Cfla446)
+- Caelan Gray (@caelan-g)
+
+
 ## 2025
 
 ### Leads
@@ -15,6 +27,9 @@
 - Dicko Evaldo (@dickoevaldo)
 - Chris Wong (@xleonx0x)
 - Muqueet Mohsen Chowdhury (@mmc03-ucb)
+- Gabriella Lianti (@gabriellalianti)
+- Yanlin Li (@Yalilix)
+- Ryan Yensch (@RyanYensch)
 
 ## 2024
 

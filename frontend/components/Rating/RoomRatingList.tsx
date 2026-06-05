@@ -14,20 +14,31 @@ const RoomRatingList: React.FC<{
 
   const ratings = useRoomRatings(roomID);
 
-  let cleanlinessRating = ratings.data
+  const cleanlinessRating = ratings.data
     ? ratings.data.averageRating.cleanliness
     : 0;
-  let locationRating = ratings.data
-    ? ratings.data.averageRating.cleanliness
+  const locationRating = ratings.data ? ratings.data.averageRating.location : 0;
+  const quietnessRating = ratings.data
+    ? ratings.data.averageRating.quietness
     : 0;
-  let quietnessRating = ratings.data
-    ? ratings.data.averageRating.cleanliness
-    : 0;
+
   return (
     <>
       {isDesktop ? (
-        <Box display="flex" justifyContent="center" mt={2}>
-          <Stack alignItems="center" direction="row" gap={4}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: 2,
+          }}
+        >
+          <Stack
+            direction="row"
+            sx={{
+              alignItems: "center",
+              gap: 4,
+            }}
+          >
             <DecimalStarRating roomID={roomID} />
             <Stack direction="row">
               <CircularRating
@@ -40,7 +51,13 @@ const RoomRatingList: React.FC<{
           </Stack>
         </Box>
       ) : (
-        <Stack gap={2} marginTop={2} width="100%">
+        <Stack
+          sx={{
+            gap: 2,
+            marginTop: 2,
+            width: "100%",
+          }}
+        >
           <DecimalStarRating roomID={roomID} />
           <LinearRating category="Cleanliness" value={cleanlinessRating} />
           <LinearRating category="Location" value={locationRating} />
