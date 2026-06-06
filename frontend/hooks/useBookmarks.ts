@@ -12,6 +12,10 @@ import store from "../redux/store";
 
 
 const EMPTY_BOOKMARKS: string[] = [];
+const BOOKMARKS_EVENT = "bookmarks_change";
+let cacheRaw: string | null = null;
+let cacheParsed: string[] = [];
+
 
 // const getBookmarksSnapshot = (): string[] => {
 //     const bookmarks = localStorage.getItem("bookmarks");
@@ -33,29 +37,30 @@ const EMPTY_BOOKMARKS: string[] = [];
 
 
 const subscribeBookmarks = (callback: () => void) => {
-    const handleStorage = (event: StorageEvent) => {
-        if (event.key === "bookmarks") callback(); // 
-    };
+    // const handleStorage = (event: StorageEvent) => {
+    //     if (event.key === "bookmarks") callback(); // 
+    // };
 
-    window.addEventListener("storage", handleStorage);
+    window.addEventListener(BOOKMARKS_EVENT, callback);
     return () => {
-        window.removeEventListener("storage", handleStorage);
+        window.removeEventListener(BOOKMARKS_EVENT, callback);
     }
 };
 
 const getClientBookmarkSnapshot = (): string[] => {
-    if (typeof window === "undefined") return []; // SSR safety
+    if (typeof window === "undefined") return EMPTY_BOOKMARKS; // SSR safety
   const stored = window.localStorage.getItem("bookmarks");
-  if (!stored) return [];
+  if (stored === cacheRaw) return cacheParsed;
+  cacheRaw = stored;
+  cacheParsed = stored ? JSON.parse(stored) : [];
 
-  // ...
-  return JSON.parse(stored);
+  return cacheParsed;
 };
 
 const getServerBookmarkSnapshot = (): string[] => EMPTY_BOOKMARKS;
 
 export default function useBookmarks() {
-    const bookmarks = useSyncExternalStore( // External database from react.
+    const bookmarks = useSyncExternalStore(
         subscribeBookmarks, // tells when bookmarks change
         getClientBookmarkSnapshot, // read current bookmarks
         getServerBookmarkSnapshot // if we are not in the browser yet, what should the value be (????)
@@ -76,7 +81,7 @@ export default function useBookmarks() {
         window.localStorage.setItem("bookmarks", JSON.stringify(nextBookmarks));
         
         // Manually trigger event so current page refreshes immediately
-        window.dispatchEvent(new StorageEvent("storage", { key: "bookmarks", newValue: JSON.stringify(nextBookmarks) }));
+        window.dispatchEvent(new Event(BOOKMARKS_EVENT));
     };
 
 
