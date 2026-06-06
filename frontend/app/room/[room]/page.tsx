@@ -68,8 +68,6 @@ export default function Page() {
   const { room } = useRoom(roomParam);
   const [campus, grid] = room ? room.id.split("-") : ["", ""];
   const { building } = useBuilding(`${campus}-${grid}`);
-
-  // ADD FAVOURITE BUTTON HERE
   const { isBookmarked, toggleBookmark } = useBookmarks();
 
   return (

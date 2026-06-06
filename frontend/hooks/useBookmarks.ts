@@ -1,51 +1,22 @@
 "use client";
 
-import React, {
-  createContext,
-  useCallback,
-  useMemo,
-  useSyncExternalStore,
-} from "react";
-import { Provider as ReduxProvider } from "react-redux";
-
-import store from "../redux/store";
+import { useSyncExternalStore } from "react";
 
 const EMPTY_BOOKMARKS: string[] = [];
 const BOOKMARKS_EVENT = "bookmarks_change";
 let cacheRaw: string | null = null;
 let cacheParsed: string[] = [];
 
-// const getBookmarksSnapshot = (): string[] => {
-//     const bookmarks = localStorage.getItem("bookmarks");
-
-//     return bookmarks ? JSON.parse(bookmarks) : [];
-// };
-
-// type BookmarkContextType {
-//     bookmarks: string[];
-//     isBookmarked: (roomId: string) => boolean;
-//     toggleBookmark: (roomId: string) => void;
-// };
-
-// export const BookmarkContext = createContext({
-//     bookmarks: [],
-//     isBookmarked: () => false,
-//     toggleBookmark: () => {},
-// });
-
 const subscribeBookmarks = (callback: () => void) => {
-  // const handleStorage = (event: StorageEvent) => {
-  //     if (event.key === "bookmarks") callback(); //
-  // };
-
   window.addEventListener(BOOKMARKS_EVENT, callback);
+
   return () => {
     window.removeEventListener(BOOKMARKS_EVENT, callback);
   };
 };
 
 const getClientBookmarkSnapshot = (): string[] => {
-  if (typeof window === "undefined") return EMPTY_BOOKMARKS; // SSR safety
+  if (typeof window === "undefined") return EMPTY_BOOKMARKS;
   const stored = window.localStorage.getItem("bookmarks");
   if (stored === cacheRaw) return cacheParsed;
   cacheRaw = stored;
@@ -58,9 +29,9 @@ const getServerBookmarkSnapshot = (): string[] => EMPTY_BOOKMARKS;
 
 export default function useBookmarks() {
   const bookmarks = useSyncExternalStore(
-    subscribeBookmarks, // tells when bookmarks change
-    getClientBookmarkSnapshot, // read current bookmarks
-    getServerBookmarkSnapshot // if we are not in the browser yet, what should the value be (????)
+    subscribeBookmarks,
+    getClientBookmarkSnapshot,
+    getServerBookmarkSnapshot
   );
 
   const isBookmarked = (roomId: string) => {
@@ -76,8 +47,6 @@ export default function useBookmarks() {
     }
 
     window.localStorage.setItem("bookmarks", JSON.stringify(nextBookmarks));
-
-    // Manually trigger event so current page refreshes immediately
     window.dispatchEvent(new Event(BOOKMARKS_EVENT));
   };
 
