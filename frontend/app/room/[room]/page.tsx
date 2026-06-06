@@ -194,20 +194,22 @@ const RoomPageHeader: React.FC<{
           <Typography variant="h4" sx={{ fontWeight: 550 }}>
             {room.name}
           </Typography>
-          <Stack direction="row" spacing={1}>
-            <IconButton onClick={onToggleBookmark}>
+
+          <Stack direction="row" spacing={1} align-items="center">
+            <IconButton onClick={onToggleBookmark} aria-label={bookmarked ? "Remove as bookmark" : "Add as bookmark"}>
               {bookmarked ? (
                 <BookmarkIcon color="primary" />
               ) : (
                 <BookmarkBorderIcon />
               )}
             </IconButton>
+
+            <BookingButton
+              school={room.school}
+              usage={room.usage}
+              onClick={toggleDialog}
+            />
           </Stack>
-          <BookingButton
-            school={room.school}
-            usage={room.usage}
-            onClick={toggleDialog}
-          />
         </Stack>
 
         <Stack direction="row" spacing={2}>
