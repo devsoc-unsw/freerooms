@@ -25,6 +25,9 @@ import { useParams } from "next/navigation";
 import React, { useState } from "react";
 
 import BookingButton from "../../../components/BookingButton";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import useBookmarks from "../../../hooks/useBookmarks";
 import BookingCalendar from "../../../components/BookingCalendar";
 import FeedbackButton from "../../../components/FeedbackButton";
 import LoadingCircle from "../../../components/LoadingCircle";
@@ -66,6 +69,10 @@ export default function Page() {
   const [campus, grid] = room ? room.id.split("-") : ["", ""];
   const { building } = useBuilding(`${campus}-${grid}`);
 
+  // ADD FAVOURITE BUTTON HERE
+  const { isBookmarked, toggleBookmark } = useBookmarks();
+
+
   return (
     <Container maxWidth="xl">
       <FeedbackButton />
@@ -82,7 +89,7 @@ export default function Page() {
             paddingRight: { xs: 3, md: 15 },
           }}
         >
-          <RoomPageHeader room={room} buildingName={building.name} />
+          <RoomPageHeader room={room} buildingName={building.name} bookmarked={isBookmarked(room.id)} onToggleBookmark={() => toggleBookmark(room.id)} />
           <RoomImage
             src={
               roomParam in room_photos
@@ -101,9 +108,11 @@ export default function Page() {
   );
 }
 
-const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
+const RoomPageHeader: React.FC<{ room: Room; buildingName: string; bookmarked: boolean; onToggleBookmark: () => void; }> = ({
   room,
   buildingName,
+  bookmarked,
+  onToggleBookmark
 }) => {
   const [openDialog, setDialog] = useState(false);
 
@@ -183,17 +192,16 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
           <Typography variant="h4" sx={{ fontWeight: 550 }}>
             {room.name}
           </Typography>
-          <Stack
-            direction={{ xs: "column", sm: "row" }}
-            sx={{ justifyContent: "space-between" }}
-          >
-            <ViewOnMapButton buildingId={buildingId} />
-            <BookingButton
-              school={room.school}
-              usage={room.usage}
-              onClick={toggleDialog}
-            />
+          <Stack direction="row" spacing={1}>
+            <IconButton onClick={onToggleBookmark}>
+              {bookmarked ? (<BookmarkIcon color="primary" />) : (<BookmarkBorderIcon />)}
+            </IconButton>
           </Stack>
+          <BookingButton
+            school={room.school}
+            usage={room.usage}
+            onClick={toggleDialog}
+          />
         </Stack>
 
         <Stack direction="row" spacing={2}>
