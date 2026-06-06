@@ -3,6 +3,8 @@
 import translateRoomUsage from "@common/roomUsages";
 import getSchoolDetails from "@common/schools";
 import type { Booking, Room } from "@common/types";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import CloseIcon from "@mui/icons-material/Close";
 import {
   Dialog,
@@ -25,15 +27,13 @@ import { useParams } from "next/navigation";
 import React, { useState } from "react";
 
 import BookingButton from "../../../components/BookingButton";
-import BookmarkIcon from "@mui/icons-material/Bookmark";
-import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-import useBookmarks from "../../../hooks/useBookmarks";
 import BookingCalendar from "../../../components/BookingCalendar";
 import FeedbackButton from "../../../components/FeedbackButton";
 import LoadingCircle from "../../../components/LoadingCircle";
 import RoomBackButton from "../../../components/RoomBackButton";
 import ViewOnMapButton from "../../../components/ViewOnMapButton";
 import useBookings from "../../../hooks/useBookings";
+import useBookmarks from "../../../hooks/useBookmarks";
 import useBuilding from "../../../hooks/useBuilding";
 import useRoom from "../../../hooks/useRoom";
 import room_photos from "../../../public/room-photos.json";
@@ -72,7 +72,6 @@ export default function Page() {
   // ADD FAVOURITE BUTTON HERE
   const { isBookmarked, toggleBookmark } = useBookmarks();
 
-
   return (
     <Container maxWidth="xl">
       <FeedbackButton />
@@ -89,7 +88,12 @@ export default function Page() {
             paddingRight: { xs: 3, md: 15 },
           }}
         >
-          <RoomPageHeader room={room} buildingName={building.name} bookmarked={isBookmarked(room.id)} onToggleBookmark={() => toggleBookmark(room.id)} />
+          <RoomPageHeader
+            room={room}
+            buildingName={building.name}
+            bookmarked={isBookmarked(room.id)}
+            onToggleBookmark={() => toggleBookmark(room.id)}
+          />
           <RoomImage
             src={
               roomParam in room_photos
@@ -108,12 +112,12 @@ export default function Page() {
   );
 }
 
-const RoomPageHeader: React.FC<{ room: Room; buildingName: string; bookmarked: boolean; onToggleBookmark: () => void; }> = ({
-  room,
-  buildingName,
-  bookmarked,
-  onToggleBookmark
-}) => {
+const RoomPageHeader: React.FC<{
+  room: Room;
+  buildingName: string;
+  bookmarked: boolean;
+  onToggleBookmark: () => void;
+}> = ({ room, buildingName, bookmarked, onToggleBookmark }) => {
   const [openDialog, setDialog] = useState(false);
 
   const toggleDialog = () => {
@@ -194,7 +198,11 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string; bookmarked: b
           </Typography>
           <Stack direction="row" spacing={1}>
             <IconButton onClick={onToggleBookmark}>
-              {bookmarked ? (<BookmarkIcon color="primary" />) : (<BookmarkBorderIcon />)}
+              {bookmarked ? (
+                <BookmarkIcon color="primary" />
+              ) : (
+                <BookmarkBorderIcon />
+              )}
             </IconButton>
           </Stack>
           <BookingButton
