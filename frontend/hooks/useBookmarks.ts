@@ -10,6 +10,9 @@ import React, {
 import { Provider as ReduxProvider } from "react-redux";
 import store from "../redux/store";
 
+
+const EMPTY_BOOKMARKS: string[] = [];
+
 // const getBookmarksSnapshot = (): string[] => {
 //     const bookmarks = localStorage.getItem("bookmarks");
 
@@ -41,6 +44,7 @@ const subscribeBookmarks = (callback: () => void) => {
 };
 
 const getClientBookmarkSnapshot = (): string[] => {
+    if (typeof window === "undefined") return []; // SSR safety
   const stored = window.localStorage.getItem("bookmarks");
   if (!stored) return [];
 
@@ -48,7 +52,7 @@ const getClientBookmarkSnapshot = (): string[] => {
   return JSON.parse(stored);
 };
 
-const getServerBookmarkSnapshot = (): string[] => [];
+const getServerBookmarkSnapshot = (): string[] => EMPTY_BOOKMARKS;
 
 export default function useBookmarks() {
     const bookmarks = useSyncExternalStore( // External database from react.
@@ -72,7 +76,7 @@ export default function useBookmarks() {
         window.localStorage.setItem("bookmarks", JSON.stringify(nextBookmarks));
         
         // Manually trigger event so current page refreshes immediately
-        window.dispatchEvent(new StorageEvent("storage", { key: "bookmarks" }));
+        window.dispatchEvent(new StorageEvent("storage", { key: "bookmarks", newValue: JSON.stringify(nextBookmarks) }));
     };
 
 
