@@ -196,7 +196,10 @@ const RoomPageHeader: React.FC<{
           </Typography>
 
           <Stack direction="row" spacing={1} align-items="center">
-            <IconButton onClick={onToggleBookmark} aria-label={bookmarked ? "Remove as bookmark" : "Add as bookmark"}>
+            <IconButton
+              onClick={onToggleBookmark}
+              aria-label={bookmarked ? "Remove as bookmark" : "Add as bookmark"}
+            >
               {bookmarked ? (
                 <BookmarkIcon color="primary" />
               ) : (
