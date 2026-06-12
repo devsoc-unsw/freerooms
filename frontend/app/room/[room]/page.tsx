@@ -207,6 +207,8 @@ const RoomPageHeader: React.FC<{
               )}
             </IconButton>
 
+            <ViewOnMapButton buildingId={buildingId} />
+
             <BookingButton
               school={room.school}
               usage={room.usage}
