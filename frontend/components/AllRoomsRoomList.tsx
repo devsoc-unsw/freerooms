@@ -26,7 +26,8 @@ const RoomList = ({
         <Stack
           sx={{
             maxWidth: 540,
-            width: "100vw",
+            flex: 1,
+            width: "100%",
           }}
         >
           <LinearProgress />
