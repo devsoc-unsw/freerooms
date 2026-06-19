@@ -35,7 +35,7 @@ export default function AllRoomsSearchBar() {
         <DatePicker
           label="Date"
           value={datetime}
-          sx={{ width: "50%" }}
+          sx={{ flex: 1 }}
           onChange={(value: Date | null) =>
             value && dispatch(setDatetime(toSydneyTime(value)))
           }
@@ -43,7 +43,7 @@ export default function AllRoomsSearchBar() {
         <TimePicker
           label="Start Time"
           value={datetime}
-          sx={{ width: "50%" }}
+          sx={{ flex: 1 }}
           onAccept={(value: Date | null) =>
             value && dispatch(setDatetime(toSydneyTime(value)))
           }

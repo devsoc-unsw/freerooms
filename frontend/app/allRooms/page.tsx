@@ -55,9 +55,16 @@ export default function Page() {
   const totalRooms = rooms ? Object.keys(rooms).length : 0;
 
   return (
-    <Stack sx={{ alignItems: "center" }}>
+    <Stack sx={{ alignItems: "center", flex: 1, width: "100%" }}>
       <FeedbackButton />
-      <Stack sx={{ marginTop: 4, paddingX: 1 }}>
+      <Stack
+        sx={{
+          marginTop: 4,
+          paddingX: { xs: 2, md: 1 },
+          width: { xs: "100%", md: "auto" },
+          boxSizing: "border-box",
+        }}
+      >
         <Typography variant="h4" sx={{ fontWeight: "bold" }}>
           All Free Rooms
         </Typography>
