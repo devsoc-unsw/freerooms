@@ -1,13 +1,11 @@
 "use client";
 
-import React, {
-  createContext,
-  useCallback,
-  useMemo,
-  useSyncExternalStore,
-} from "react";
-import { Provider as ReduxProvider } from "react-redux";
-import store from "../redux/store";
+import { useCallback, useSyncExternalStore } from "react";
+
+// Caches last parsed bookmarks to avoid re-parsing identical arrays (which would create a duplicate array with different reference).
+// JS compares by reference rather than contents of array.
+let lastStoredBookmarks: string | null = null;
+let lastParsedBookmarks: string[] = [];
 
 const subscribeToBookmarks = (callback: () => void) => {
   const handleStorage = (event: StorageEvent) => {
@@ -24,8 +22,16 @@ const subscribeToBookmarks = (callback: () => void) => {
 
 const getClientBookmarkSnapshot = (): string[] => {
   const storedBookmarks = window.localStorage.getItem("bookmark");
+  
+  // Ensuring JSON.parse does not create a new array each call.
+  if (storedBookmarks === lastStoredBookmarks) {
+    return lastParsedBookmarks;
+  }
 
-  return storedBookmarks ? JSON.parse(storedBookmarks) : [];
+  lastStoredBookmarks = storedBookmarks;
+  lastParsedBookmarks = storedBookmarks ? JSON.parse(storedBookmarks) : [];
+
+  return lastParsedBookmarks;
 };
 
 const getServerBookmarkSnapshot = (): string[] => [];
