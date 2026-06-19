@@ -44,7 +44,7 @@ jest.mock("../hooks/useRoom", () => ({
   },
 }));
 
-describe("Bookmark button", () => {
+describe("Favourite button", () => {
   beforeEach(() => {
     window.localStorage.clear();
 
@@ -60,59 +60,59 @@ describe("Bookmark button", () => {
     );
   };
 
-  test("shows add bookmark button when the room is not bookmarked", () => {
+  test("shows add favourite button when the room is not favourited", () => {
     renderRoomPage();
 
-    const bookmarkIcon = screen.getByRole("button", {
-      name: /add as bookmark/i,
+    const favouriteIcon = screen.getByRole("button", {
+      name: /Add as favourite/i,
     });
-    expect(bookmarkIcon).toBeInTheDocument();
+    expect(favouriteIcon).toBeInTheDocument();
   });
 
-  test("shows remove bookmark button when the room is not bookmarked", () => {
+  test("shows remove favourite button when the room is not favourited", () => {
     renderRoomPage();
 
-    fireEvent.click(screen.getByRole("button", { name: /add as bookmark/i })); // Trigger button click event.
+    fireEvent.click(screen.getByRole("button", { name: /Add as favourite/i })); // Trigger button click event.
 
-    const removeBookmarkIcon = screen.getByRole("button", {
-      name: /remove as bookmark/i,
+    const removeFavouriteIcon = screen.getByRole("button", {
+      name: /Remove as favourite/i,
     });
-    expect(removeBookmarkIcon).toBeInTheDocument();
+    expect(removeFavouriteIcon).toBeInTheDocument();
   });
 
   test("adds the room to localStorage when clicked", () => {
     renderRoomPage();
 
-    fireEvent.click(screen.getByRole("button", { name: /add as bookmark/i }));
+    fireEvent.click(screen.getByRole("button", { name: /Add as favourite/i }));
 
-    const storedBookmarks = JSON.parse(
-      window.localStorage.getItem("bookmark") ?? "[]"
+    const storedFavourites = JSON.parse(
+      window.localStorage.getItem("favourite") ?? "[]"
     );
-    expect(storedBookmarks).toContain("K-J17-101");
+    expect(storedFavourites).toContain("K-J17-101");
 
-    const removeBookmarkIcon = screen.getByRole("button", {
-      name: /remove as bookmark/i,
+    const removefavouriteIcon = screen.getByRole("button", {
+      name: /Remove as favourite/i,
     });
-    expect(removeBookmarkIcon).toBeInTheDocument();
+    expect(removefavouriteIcon).toBeInTheDocument();
   });
 
   test("removes the room from localStorage when clicked again", () => {
-    window.localStorage.setItem("bookmark", JSON.stringify(["K-J17-101"]));
+    window.localStorage.setItem("favourite", JSON.stringify(["K-J17-101"]));
 
     renderRoomPage();
 
     fireEvent.click(
-      screen.getByRole("button", { name: /remove as bookmark/i })
+      screen.getByRole("button", { name: /Remove as favourite/i })
     );
 
-    const storedBookmarks = JSON.parse(
-      window.localStorage.getItem("bookmark") ?? "[]"
+    const storedFavourites = JSON.parse(
+      window.localStorage.getItem("favourite") ?? "[]"
     );
-    expect(storedBookmarks).not.toContain("K-J17-101");
+    expect(storedFavourites).not.toContain("K-J17-101");
 
-    const bookmarkIcon = screen.getByRole("button", {
-      name: /add as bookmark/i,
+    const favouriteIcon = screen.getByRole("button", {
+      name: /Add as favourite/i,
     });
-    expect(bookmarkIcon).toBeInTheDocument();
+    expect(favouriteIcon).toBeInTheDocument();
   });
 });
