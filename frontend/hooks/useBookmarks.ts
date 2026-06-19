@@ -22,7 +22,7 @@ const subscribeToBookmarks = (callback: () => void) => {
 
 const getClientBookmarkSnapshot = (): string[] => {
   const storedBookmarks = window.localStorage.getItem("bookmark");
-  
+
   // Ensuring JSON.parse does not create a new array each call.
   if (storedBookmarks === lastStoredBookmarks) {
     return lastParsedBookmarks;
@@ -47,18 +47,23 @@ export default function useBookmarks() {
     return bookmarks.includes(roomId);
   };
 
-  const toggleBookmark = useCallback((roomId: string) => {
-    const nextBookmarks = bookmarks.includes(roomId) ? bookmarks.filter((id) => id !== roomId) : [...bookmarks, roomId];
-    const nextValue = JSON.stringify(nextBookmarks)
+  const toggleBookmark = useCallback(
+    (roomId: string) => {
+      const nextBookmarks = bookmarks.includes(roomId)
+        ? bookmarks.filter((id) => id !== roomId)
+        : [...bookmarks, roomId];
+      const nextValue = JSON.stringify(nextBookmarks);
 
-    window.localStorage.setItem("bookmark", nextValue);
-    window.dispatchEvent(
-      new StorageEvent("storage", {
-        key: "bookmark",
-        newValue: nextValue
-      })
-    );
-  }, [bookmarks]);
+      window.localStorage.setItem("bookmark", nextValue);
+      window.dispatchEvent(
+        new StorageEvent("storage", {
+          key: "bookmark",
+          newValue: nextValue,
+        })
+      );
+    },
+    [bookmarks]
+  );
 
   return {
     bookmarks,

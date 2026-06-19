@@ -3,9 +3,9 @@
 import translateRoomUsage from "@common/roomUsages";
 import getSchoolDetails from "@common/schools";
 import type { Booking, Room } from "@common/types";
+import CloseIcon from "@mui/icons-material/Close";
 import BookmarkIcon from "@mui/icons-material/Favorite";
 import BookmarkBorderIcon from "@mui/icons-material/FavoriteBorder";
-import CloseIcon from "@mui/icons-material/Close";
 import {
   Dialog,
   DialogContent,
