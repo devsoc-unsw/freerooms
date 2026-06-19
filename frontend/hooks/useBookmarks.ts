@@ -1,35 +1,38 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useMemo,
+  useSyncExternalStore,
+} from "react";
+import { Provider as ReduxProvider } from "react-redux";
+import store from "../redux/store";
 
-const EMPTY_BOOKMARKS: string[] = [];
-const BOOKMARKS_EVENT = "bookmarks_change";
-let cacheRaw: string | null = null;
-let cacheParsed: string[] = [];
+const subscribeToBookmarks = (callback: () => void) => {
+  const handleStorage = (event: StorageEvent) => {
+    if (event.key === "bookmark") {
+      callback();
+    }
+  };
 
-const subscribeBookmarks = (callback: () => void) => {
-  window.addEventListener(BOOKMARKS_EVENT, callback);
-
+  window.addEventListener("storage", handleStorage);
   return () => {
-    window.removeEventListener(BOOKMARKS_EVENT, callback);
+    window.removeEventListener("storage", handleStorage);
   };
 };
 
 const getClientBookmarkSnapshot = (): string[] => {
-  if (typeof window === "undefined") return EMPTY_BOOKMARKS;
-  const stored = window.localStorage.getItem("bookmarks");
-  if (stored === cacheRaw) return cacheParsed;
-  cacheRaw = stored;
-  cacheParsed = stored ? JSON.parse(stored) : [];
+  const storedBookmarks = window.localStorage.getItem("bookmark");
 
-  return cacheParsed;
+  return storedBookmarks ? JSON.parse(storedBookmarks) : [];
 };
 
-const getServerBookmarkSnapshot = (): string[] => EMPTY_BOOKMARKS;
+const getServerBookmarkSnapshot = (): string[] => [];
 
 export default function useBookmarks() {
   const bookmarks = useSyncExternalStore(
-    subscribeBookmarks,
+    subscribeToBookmarks,
     getClientBookmarkSnapshot,
     getServerBookmarkSnapshot
   );
@@ -38,17 +41,18 @@ export default function useBookmarks() {
     return bookmarks.includes(roomId);
   };
 
-  const toggleBookmark = (roomId: string) => {
-    let nextBookmarks: string[];
-    if (isBookmarked(roomId)) {
-      nextBookmarks = bookmarks.filter((id) => id !== roomId);
-    } else {
-      nextBookmarks = [...bookmarks, roomId];
-    }
+  const toggleBookmark = useCallback((roomId: string) => {
+    const nextBookmarks = bookmarks.includes(roomId) ? bookmarks.filter((id) => id !== roomId) : [...bookmarks, roomId];
+    const nextValue = JSON.stringify(nextBookmarks)
 
-    window.localStorage.setItem("bookmarks", JSON.stringify(nextBookmarks));
-    window.dispatchEvent(new Event(BOOKMARKS_EVENT));
-  };
+    window.localStorage.setItem("bookmark", nextValue);
+    window.dispatchEvent(
+      new StorageEvent("storage", {
+        key: "bookmark",
+        newValue: nextValue
+      })
+    );
+  }, [bookmarks]);
 
   return {
     bookmarks,
