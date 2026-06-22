@@ -40,7 +40,6 @@ export default function AllRoomsSearchBar() {
             value && dispatch(setDatetime(toSydneyTime(value)))
           }
         />
-        { /* Issue here */ }
         <TimePicker
           label="Start Time"
           defaultValue={datetime}
