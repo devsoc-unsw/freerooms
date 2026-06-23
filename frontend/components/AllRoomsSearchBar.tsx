@@ -42,7 +42,7 @@ export default function AllRoomsSearchBar() {
         />
         <TimePicker
           label="Start Time"
-          value={datetime}
+          defaultValue={datetime}
           sx={{ flex: 1 }}
           onAccept={(value: Date | null) =>
             value && dispatch(setDatetime(toSydneyTime(value)))
