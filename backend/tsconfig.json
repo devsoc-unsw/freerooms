@@ -4,6 +4,8 @@
     "module": "node18",
     "moduleResolution": "node16",
     "outDir": "dist",
+    "rootDir": "..", 
+    "isolatedModules": true,
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
