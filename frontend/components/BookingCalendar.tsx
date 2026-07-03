@@ -188,7 +188,7 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
         );
       }
 
-      const weekStart = startOfWeek(date, { weekStartsOn: 1 });
+      const weekStart = startOfWeek(date, { weekStartsOn: 0 });
       const weekEnd = new Date(weekStart);
       weekEnd.setDate(weekEnd.getDate() + 7);
 
