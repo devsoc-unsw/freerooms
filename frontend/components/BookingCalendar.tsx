@@ -192,21 +192,20 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
       const weekEnd = new Date(weekStart);
       weekEnd.setDate(weekEnd.getDate() + 7);
 
-      return event.end > weekStart && event.start < weekEnd;
+      return event.start >= weekStart && event.start < weekEnd;
     });
 
     if (visibleEvents.length === 0) {
       return new Date(0, 0, 0, DEFAULT_START_HOUR, 0, 0);
     }
 
-    const earliestStart = visibleEvents.reduce(
-      (earliest, event) => (event.start < earliest ? event.start : earliest),
-      visibleEvents[0].start
+    const earliestHour = Math.min(
+      ...visibleEvents.map((e) => e.start.getHours())
     );
 
-    const startHour = earliestStart.getHours() < DEFAULT_START_HOUR
-        ? Math.max(EARLIEST_ALLOWED_HOUR, earliestStart.getHours())
-        : DEFAULT_START_HOUR;
+    const startHour = earliestHour < DEFAULT_START_HOUR
+      ? Math.max(EARLIEST_ALLOWED_HOUR, earliestHour)
+      : DEFAULT_START_HOUR;
 
     return new Date(0, 0, 0, startHour, 0, 0);
   }, [events, currView, date]);
