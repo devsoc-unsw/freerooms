@@ -203,9 +203,10 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
       ...visibleEvents.map((e) => e.start.getHours())
     );
 
-    const startHour = earliestHour < DEFAULT_START_HOUR
-      ? Math.max(EARLIEST_ALLOWED_HOUR, earliestHour)
-      : DEFAULT_START_HOUR;
+    const startHour =
+      earliestHour < DEFAULT_START_HOUR
+        ? Math.max(EARLIEST_ALLOWED_HOUR, earliestHour)
+        : DEFAULT_START_HOUR;
 
     return new Date(0, 0, 0, startHour, 0, 0);
   }, [events, currView, date]);
@@ -227,7 +228,7 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
         myEvents: events,
         scrollToTime: calendarMin,
       };
-    }, [datetime, events, calendarMin]);
+    }, [events, calendarMin]);
 
   const formatTime = (
     date: Date,
