@@ -6,7 +6,7 @@ import { styled } from "@mui/material/styles";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { enAU } from "date-fns/locale";
-import React from "react";
+import React, { Suspense } from "react";
 import BuildingDrawer from "views/BuildingDrawer";
 
 import DatePicker from "../../components/DatePicker";
@@ -16,64 +16,67 @@ import SearchBar from "../../components/SearchBar";
 import SortBar from "../../components/SortBar";
 import TimePicker from "../../components/TimePicker";
 import CardList from "../../views/CardList";
+import useQuerySort from "../../hooks/useQuerySort";
 
 const Page = () => {
-  const [sort, setSort] = React.useState<string>("alphabetical");
+  const [sort, setSort] = useQuerySort();
   const [query, setQuery] = React.useState<string>("");
 
   return (
-    <Container maxWidth={false}>
-      <FeedbackButton />
-      <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enAU}>
-        <Tiles>
-          <Stack
-            direction={{ xs: "column", sm: "row" }}
-            sx={{
-              justifyContent: {
-                xs: "center",
-                sm: "space-between",
-              },
-              alignItems: "center",
-              marginTop: 1,
-              marginBottom: 1,
-              flexWrap: { sm: "wrap", md: "nowrap" },
-              width: "100%",
-            }}
-          >
+    <Suspense fallback={null}>
+      <Container maxWidth={false}>
+        <FeedbackButton />
+        <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enAU}>
+          <Tiles>
             <Stack
-              direction="row"
-              spacing={2}
+              direction={{ xs: "column", sm: "row" }}
               sx={{
-                justifyContent: "space-between",
+                justifyContent: {
+                  xs: "center",
+                  sm: "space-between",
+                },
                 alignItems: "center",
-                alignSelf: "center",
+                marginTop: 1,
+                marginBottom: 1,
+                flexWrap: { sm: "wrap", md: "nowrap" },
+                width: "100%",
               }}
             >
-              <FilterBar />
-              <SortBar setSort={setSort} sort={sort} />
-            </Stack>
+              <Stack
+                direction="row"
+                spacing={2}
+                sx={{
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  alignSelf: "center",
+                }}
+              >
+                <FilterBar />
+                <SortBar setSort={setSort} sort={sort} />
+              </Stack>
 
-            <SearchBar setQuery={setQuery} />
+              <SearchBar setQuery={setQuery} />
 
-            <Stack
-              direction="row"
-              spacing={2}
-              sx={{
-                alignItems: "center",
-                alignSelf: "center",
-                justifyContent: "space-between",
-                marginTop: { xs: 1, sm: 0 },
-              }}
-            >
-              <DatePicker />
-              <TimePicker />
+              <Stack
+                direction="row"
+                spacing={2}
+                sx={{
+                  alignItems: "center",
+                  alignSelf: "center",
+                  justifyContent: "space-between",
+                  marginTop: { xs: 1, sm: 0 },
+                }}
+              >
+                <DatePicker />
+                <TimePicker />
+              </Stack>
             </Stack>
-          </Stack>
-          <CardList sort={sort} query={query} />
-        </Tiles>
-      </LocalizationProvider>
-      <BuildingDrawer />
-    </Container>
+            <CardList sort={sort} query={query} />
+          </Tiles>
+        </LocalizationProvider>
+        <BuildingDrawer />
+      </Container>
+    </Suspense>
   );
 };
 
