@@ -17,7 +17,7 @@ import { useDispatch, useSelector } from "../redux/hooks";
 import { DropDownItem, Filters } from "../types";
 import { filterBarDropdown } from "../utils/constants";
 import DropdownSelections from "./DropdownSelections";
-import useFilterQuery from "../hooks/useFilterQuery";
+import useQueryFilter from "../hooks/useQueryFilter";
 
 const StyledFilterButton = styled(Box)<BoxProps>(({ theme }) => ({
   height: 56,
@@ -72,9 +72,6 @@ const FilterBar = () => {
   // Hide and close Dropdown
   const [open, setOpen] = useState(false);
 
-  // Apply filters from query strings
-  useFilterQuery();
-
   // Handle user selecting a filter, each dropdown select has an associated key
   const handleSelect = useCallback(
     (key: keyof Filters, item: DropDownItem) => {
@@ -88,6 +85,9 @@ const FilterBar = () => {
     },
     [dispatch, filters]
   );
+  
+  // Apply filters from query strings
+  useQueryFilter();
 
   const dropdownMap = useMemo(
     () =>

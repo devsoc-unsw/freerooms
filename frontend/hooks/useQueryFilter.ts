@@ -1,15 +1,14 @@
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { useEffect, useRef } from "react";
 import {
     selectFilters,
     setFilter
 } from "redux/filtersSlice";
 import { Filters } from "../types";
-
 import { useDispatch, useSelector } from "../redux/hooks";
 
 // Type for the keys of the Filters type
-const FilterQuery: (keyof Filters)[] = [
+const queryFilter: (keyof Filters)[] = [
     "capacity",
     "usage",
     "location",
@@ -18,15 +17,19 @@ const FilterQuery: (keyof Filters)[] = [
 ];
 
 // Function to handle query string parameters for filters in page.tsx (browse page)
-const useFilterQuery = () => {
+const useQueryFilter = () => {
     const dispatch = useDispatch();
     const router = useRouter();
     const searchParams = useSearchParams();
+    const pathname = usePathname();
     const filters = useSelector(selectFilters);
+
+    // Only write to query parameters on initial load
+    const initialLoad = useRef(true);
     
     // On initial load, apply filters from query parameters to Redux state
     useEffect(() => {
-        FilterQuery.forEach((key) => {
+        queryFilter.forEach((key) => {
             const value = searchParams.get(key);
             if (value) {
                 dispatch(setFilter({ key, value }));
@@ -36,8 +39,14 @@ const useFilterQuery = () => {
 
     // Apply filters from Redux state to URL query parameters when filters change
     useEffect(() => {
-        const params = new URLSearchParams();
-        FilterQuery.forEach((key) => {
+        // Skip first run to avoid overwriting query parameters on initial load with empty state
+        if (initialLoad.current) {
+            initialLoad.current = false;
+            return;
+        }
+
+        const params = new URLSearchParams(searchParams.toString());
+        queryFilter.forEach((key) => {
             const value = filters[key];
             if (value) {
                 // If the filter value exists, apply to query parameters
@@ -49,8 +58,8 @@ const useFilterQuery = () => {
         })
         
         // Update the URL with new query parameters
-        router.replace(`/browse?${params.toString()}`);
+        router.replace(`${pathname}?${params.toString()}`, { scroll: false });
     }, [filters]) // Update query parameters whenever filters change
 }
 
-export default useFilterQuery;
+export default useQueryFilter;
