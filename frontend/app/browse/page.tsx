@@ -18,64 +18,70 @@ import TimePicker from "../../components/TimePicker";
 import useQuerySort from "../../hooks/useQuerySort";
 import CardList from "../../views/CardList";
 
-const Page = () => {
+const BrowseContent = () => {
   const [sort, setSort] = useQuerySort();
   const [query, setQuery] = React.useState<string>("");
 
   return (
-    <Suspense fallback={null}>
-      <Container maxWidth={false}>
-        <FeedbackButton />
-        <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enAU}>
-          <Tiles>
+    <Container maxWidth={false}>
+      <FeedbackButton />
+      <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enAU}>
+        <Tiles>
+          <Stack
+            direction={{ xs: "column", sm: "row" }}
+            sx={{
+              justifyContent: {
+                xs: "center",
+                sm: "space-between",
+              },
+              alignItems: "center",
+              marginTop: 1,
+              marginBottom: 1,
+              flexWrap: { sm: "wrap", md: "nowrap" },
+              width: "100%",
+            }}
+          >
             <Stack
-              direction={{ xs: "column", sm: "row" }}
+              direction="row"
+              spacing={2}
               sx={{
-                justifyContent: {
-                  xs: "center",
-                  sm: "space-between",
-                },
+                justifyContent: "space-between",
                 alignItems: "center",
-                marginTop: 1,
-                marginBottom: 1,
-                flexWrap: { sm: "wrap", md: "nowrap" },
-                width: "100%",
+                alignSelf: "center",
               }}
             >
-              <Stack
-                direction="row"
-                spacing={2}
-                sx={{
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  alignSelf: "center",
-                }}
-              >
-                <FilterBar />
-                <SortBar setSort={setSort} sort={sort} />
-              </Stack>
-
-              <SearchBar setQuery={setQuery} />
-
-              <Stack
-                direction="row"
-                spacing={2}
-                sx={{
-                  alignItems: "center",
-                  alignSelf: "center",
-                  justifyContent: "space-between",
-                  marginTop: { xs: 1, sm: 0 },
-                }}
-              >
-                <DatePicker />
-                <TimePicker />
-              </Stack>
+              <FilterBar />
+              <SortBar setSort={setSort} sort={sort} />
             </Stack>
-            <CardList sort={sort} query={query} />
-          </Tiles>
-        </LocalizationProvider>
-        <BuildingDrawer />
-      </Container>
+
+            <SearchBar setQuery={setQuery} />
+
+            <Stack
+              direction="row"
+              spacing={2}
+              sx={{
+                alignItems: "center",
+                alignSelf: "center",
+                justifyContent: "space-between",
+                marginTop: { xs: 1, sm: 0 },
+              }}
+            >
+              <DatePicker />
+              <TimePicker />
+            </Stack>
+          </Stack>
+          <CardList sort={sort} query={query} />
+        </Tiles>
+      </LocalizationProvider>
+      <BuildingDrawer />
+    </Container>
+  );
+};
+
+const Page = () => {
+  return (
+    <Suspense fallback={null}>
+      <BrowseContent />
     </Suspense>
   );
 };
