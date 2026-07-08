@@ -6,6 +6,14 @@ import { Provider } from "react-redux";
 import Page from "../app/browse/page";
 import store from "../redux/store";
 
+// Mock next/navigation since the app router is not mounted in the test environment.
+const mockReplace = jest.fn();
+jest.mock("next/navigation", () => ({
+  useRouter: () => ({ replace: mockReplace }),
+  useSearchParams: () => new URLSearchParams(),
+  usePathname: () => "/browse",
+}));
+
 describe("Browsing Page", () => {
   it("renders DesktopTimePicker", () => {
     render(
