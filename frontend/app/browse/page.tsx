@@ -15,8 +15,8 @@ import FilterBar from "../../components/FilterBar";
 import SearchBar from "../../components/SearchBar";
 import SortBar from "../../components/SortBar";
 import TimePicker from "../../components/TimePicker";
-import CardList from "../../views/CardList";
 import useQuerySort from "../../hooks/useQuerySort";
+import CardList from "../../views/CardList";
 
 const Page = () => {
   const [sort, setSort] = useQuerySort();

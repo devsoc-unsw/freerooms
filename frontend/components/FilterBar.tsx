@@ -7,6 +7,7 @@ import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import React, { useCallback, useMemo, useState } from "react";
 
+import useQueryFilter from "../hooks/useQueryFilter";
 import {
   clearFilters,
   selectFilters,
@@ -17,7 +18,6 @@ import { useDispatch, useSelector } from "../redux/hooks";
 import { DropDownItem, Filters } from "../types";
 import { filterBarDropdown } from "../utils/constants";
 import DropdownSelections from "./DropdownSelections";
-import useQueryFilter from "../hooks/useQueryFilter";
 
 const StyledFilterButton = styled(Box)<BoxProps>(({ theme }) => ({
   height: 56,
@@ -85,7 +85,7 @@ const FilterBar = () => {
     },
     [dispatch, filters]
   );
-  
+
   // Apply filters from query strings
   useQueryFilter();
 
