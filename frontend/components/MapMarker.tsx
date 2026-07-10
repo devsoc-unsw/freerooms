@@ -168,6 +168,7 @@ const MapMarker: React.FC<{
             distance={distance}
             appearLeft={appearLeft}
             appearAbove={appearAbove}
+            onClick={handleSelectBuilding}
           />
         </div>
       </Fade>
@@ -182,6 +183,7 @@ const MarkerHover: React.FC<{
   distance: number | undefined;
   appearLeft?: boolean;
   appearAbove?: boolean;
+  onClick: () => void;
 }> = ({
   building,
   freerooms,
@@ -189,10 +191,13 @@ const MarkerHover: React.FC<{
   distance,
   appearLeft = false,
   appearAbove = false,
+  onClick,
 }) => {
   return (
     <MarkerHoverMainBox
+      onClick={onClick}
       style={{
+        cursor: "pointer",
         left: appearLeft ? "auto" : 0,
         right: appearLeft ? 0 : "auto",
         top: appearAbove ? "auto" : 0,
