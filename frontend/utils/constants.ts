@@ -56,6 +56,16 @@ export const filterBarDropdown: DropDown[] = [
     ],
   },
   {
+    text: "Recurring",
+    key: "recurring",
+    items: [
+      {
+        text: "3 weeks",
+        value: "3",
+      }
+    ]
+  },
+  {
     text: "Location",
     key: "location",
     items: [
@@ -131,4 +141,14 @@ export const allRoomsFilterDropdown: DropDown[] = [
       },
     ],
   },
+  {
+    text: "Recurring",
+    key: "recurring",
+    items: [
+      {
+        text: "3 weeks",
+        value: "3",
+      }
+    ]
+  }
 ];
