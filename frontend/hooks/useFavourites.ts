@@ -6,6 +6,7 @@ import { useCallback, useSyncExternalStore } from "react";
 // JS compares by reference rather than contents of array.
 let lastStoredFavourites: string | null = null;
 let lastParsedFavourites: string[] = [];
+const empty: string[] = [];
 
 const subscribeToFavourites = (callback: () => void) => {
   const handleStorage = (event: StorageEvent) => {
@@ -34,7 +35,7 @@ const getClientFavouriteSnapshot = (): string[] => {
   return lastParsedFavourites;
 };
 
-const getServerFavouriteSnapshot = (): string[] => [];
+const getServerFavouriteSnapshot = (): string[] => empty;
 
 export default function useFavourites() {
   const favourites = useSyncExternalStore(
