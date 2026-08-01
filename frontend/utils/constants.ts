@@ -1,5 +1,5 @@
 import { roomUsages } from "@common/roomUsages";
-import { DropDown } from "types";
+import { DropDown, DropDownItem } from "types";
 
 // Dropdown & items for FilterBar in building browse page
 export const filterBarDropdown: DropDown[] = [
@@ -130,5 +130,33 @@ export const allRoomsFilterDropdown: DropDown[] = [
         value: "180",
       },
     ],
+  },
+];
+
+// Dropdowns and items for SortBar in building browse page
+export const sortBarDropdown: DropDownItem[] = [
+  {
+    text: "Most Available Rooms",
+    value: "mostRooms",
+  },
+  {
+    text: "Nearest",
+    value: "nearest",
+  },
+  {
+    text: "Alphabetical",
+    value: "alphabetical",
+  },
+  {
+    text: "Reverse Alphabetical",
+    value: "reverseAlphabetical",
+  },
+  {
+    text: "Lower Campus",
+    value: "lowerToUpper",
+  },
+  {
+    text: "Upper Campus",
+    value: "upperToLower",
   },
 ];
