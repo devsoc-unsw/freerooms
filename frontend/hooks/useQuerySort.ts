@@ -7,7 +7,7 @@ const validSortQueries: string[] = sortBarDropdown.map((item) => item.value);
 
 const isValidSort = (value: string): boolean => {
   return validSortQueries.includes(value);
-}
+};
 
 // Function to handle query string parameters for sorting in page.tsx (browse page)
 const useQuerySort = (): [string, (sort: string) => void] => {
@@ -19,7 +19,7 @@ const useQuerySort = (): [string, (sort: string) => void] => {
   // On initial load, fallback to alphabetical sort if no sort query parameter provided
   const [sort, setSort] = useState<string>(() => {
     const value = searchParams.get("sort");
-    return value && isValidSort(value) ? value : "alphabetical"
+    return value && isValidSort(value) ? value : "alphabetical";
   });
 
   // Apply sort to URL when sort changes
