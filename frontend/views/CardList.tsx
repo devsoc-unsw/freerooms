@@ -20,7 +20,6 @@ const FlipMoveGrid = styled(FlipMove)(({ theme }) => ({
   gridGap: "20px",
 }));
 
-
 const getBuildingPosition = (building: Building): number | null => {
   const match = building.id.match(/(\d+)$/);
 
@@ -29,7 +28,7 @@ const getBuildingPosition = (building: Building): number | null => {
   }
 
   return Number(match[1]);
-}
+};
 
 const compareBuildingPosition = (
   a: Building,
@@ -64,8 +63,7 @@ const compareBuildingPosition = (
   }
 
   return a.name.localeCompare(b.name);
-}
-
+};
 
 const FlippableCard = React.forwardRef<HTMLDivElement, { buildingId: string }>(
   ({ buildingId }, ref) => {
