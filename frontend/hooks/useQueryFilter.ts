@@ -4,6 +4,7 @@ import { selectFilters, setFilter } from "redux/filtersSlice";
 
 import { useDispatch, useSelector } from "../redux/hooks";
 import { Filters } from "../types";
+import { filterBarDropdown } from "../utils/constants";
 
 // Type for the keys of the Filters type
 const queryFilter: (keyof Filters)[] = [
@@ -13,6 +14,21 @@ const queryFilter: (keyof Filters)[] = [
   "duration",
   "id",
 ];
+
+// Create an object that maps each filter key to its values in an array
+const validFilterQueries: Partial<Record<keyof Filters, string[]>> =
+  Object.fromEntries(
+    filterBarDropdown.map(({ key, items }) => [
+      key,
+      items.map((item) => item.value),
+    ])
+  );
+
+const isValidFilter = (key: keyof Filters, value: string): boolean => {
+  const isValid = validFilterQueries[key];
+  if (isValid === undefined) return false;
+  return isValid.includes(value);
+};
 
 // Function to handle query string parameters for filters in page.tsx (browse page)
 const useQueryFilter = () => {
@@ -27,12 +43,24 @@ const useQueryFilter = () => {
 
   // On initial load, apply filters from query parameters to Redux state
   useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString());
+    let hasInvalidFilter = false;
+
     queryFilter.forEach((key) => {
       const value = searchParams.get(key);
-      if (value) {
+      if (value && isValidFilter(key, value)) {
         dispatch(setFilter({ key, value }));
+      } else {
+        params.delete(key);
+        hasInvalidFilter = true;
       }
     });
+
+    // Check if need to update URL to remove invalid parameters
+    if (hasInvalidFilter) {
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]); // Apply filters on initial load (when user shares link with query params), and not on subsequent loads
 
@@ -47,8 +75,8 @@ const useQueryFilter = () => {
     const params = new URLSearchParams(searchParams.toString());
     queryFilter.forEach((key) => {
       const value = filters[key];
-      if (value) {
-        // If the filter value exists, apply to query parameters
+      if (value && isValidFilter(key, value)) {
+        // If the filter value exists and is a valid filter key, apply to query parameters
         params.set(key, value);
       } else {
         // Remove the key if the filter value is not in the filter
