@@ -2,9 +2,7 @@ import "@testing-library/jest-dom";
 
 import { act, renderHook, waitFor } from "@testing-library/react";
 
-import useUserLocation, {
-  type UserLocation,
-} from "../hooks/useUserLocation";
+import useUserLocation, { type UserLocation } from "../hooks/useUserLocation";
 
 const createPosition = (
   latitude: number,
@@ -62,11 +60,9 @@ afterEach(() => {
 
 describe("useUserLocation", () => {
   it("gets and stores the user's location when mounted", async () => {
-    const getCurrentPosition = jest.fn(
-      (success: PositionCallback) => {
-        success(createPosition(-33.91767, 151.23129));
-      }
-    );
+    const getCurrentPosition = jest.fn((success: PositionCallback) => {
+      success(createPosition(-33.91767, 151.23129));
+    });
     setGeolocationMock(getCurrentPosition);
 
     const { result } = renderHook(() => useUserLocation());
@@ -95,10 +91,7 @@ describe("useUserLocation", () => {
 
   it("stores a readable error when location permission is denied", async () => {
     const getCurrentPosition = jest.fn(
-      (
-        _success: PositionCallback,
-        error: PositionErrorCallback
-      ) => {
+      (_success: PositionCallback, error: PositionErrorCallback) => {
         error(createPositionError(1));
       }
     );
@@ -156,10 +149,7 @@ describe("useUserLocation", () => {
 
     await act(async () => {
       refreshSuccess?.(
-        createPosition(
-          refreshedLocation.lat,
-          refreshedLocation.lng
-        )
+        createPosition(refreshedLocation.lat, refreshedLocation.lng)
       );
       returnedLocation = await refreshPromise;
     });
@@ -179,10 +169,7 @@ describe("useUserLocation", () => {
         success(createPosition(-33.91767, 151.23129));
       })
       .mockImplementationOnce(
-        (
-          _success: PositionCallback,
-          error: PositionErrorCallback
-        ) => {
+        (_success: PositionCallback, error: PositionErrorCallback) => {
           error(createPositionError(3));
         }
       );
