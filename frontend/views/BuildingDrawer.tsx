@@ -1,5 +1,7 @@
+import type { Building } from "@common/types";
 import ViewOnMapButton from "@frontend/components/ViewOnMapButton";
 import CloseIcon from "@mui/icons-material/Close";
+import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
 import { Slide, Typography, useMediaQuery } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -56,10 +58,29 @@ const CloseButton = styled(Button)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
 }));
 
+const DirectionsButton = styled(Button)(({ theme }) => ({
+  width: "100%",
+  marginTop: theme.spacing(1.5),
+  backgroundColor: theme.palette.primary.main,
+  color: theme.palette.primary.contrastText,
+
+  "&:hover": {
+    backgroundColor: theme.palette.primary.dark,
+  },
+}));
+
+type BuildingDrawerProps = {
+  onGetDirections?: (building: Building) => void | Promise<void>;
+  isDirectionsLoading?: boolean;
+};
+
 const drawerWidth = 400;
 const drawerWidthMobile = "100%";
 
-const BuildingDrawer: React.FC = () => {
+const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
+  onGetDirections,
+  isDirectionsLoading = false,
+}) => {
   const dispatch = useDispatch();
   const building = useSelector(selectCurrentBuilding);
   const { status: rooms } = useBuildingStatus(building?.id ?? "");
@@ -70,7 +91,17 @@ const BuildingDrawer: React.FC = () => {
     return <></>;
   }
 
-  const onClose = () => dispatch(setCurrentBuilding(null));
+  const onClose = () => {
+    dispatch(setCurrentBuilding(null));
+  };
+
+  const handleGetDirections = () => {
+    if (!onGetDirections) {
+      return;
+    }
+
+    void onGetDirections(building);
+  };
 
   return (
     <Drawer
@@ -113,20 +144,21 @@ const BuildingDrawer: React.FC = () => {
               <StatusBox>
                 {!rooms ? (
                   // loading
-                  <CircularProgress size={20} thickness={5} disableShrink />
+                  <CircularProgress
+                    size={20}
+                    thickness={5}
+                    disableShrink
+                  />
                 ) : null}
               </StatusBox>
             </div>
+
             <CloseButton aria-label="Close" onClick={onClose}>
               <CloseIcon />
             </CloseButton>
           </AppBox>
 
-          <div
-            style={{
-              margin: 10,
-            }}
-          >
+          <div style={{ margin: 10 }}>
             <StyledImage
               alt={`Image of building ${building.id}`}
               src={`/assets/building_photos/${building.id}.webp`}
@@ -135,7 +167,32 @@ const BuildingDrawer: React.FC = () => {
               style={{ objectFit: "cover" }}
               priority={true}
             />
-            <ViewOnMapButton buildingId={building.id} variant="full-width" />
+
+            {onGetDirections ? (
+              <DirectionsButton
+                disabled={isDirectionsLoading}
+                startIcon={
+                  isDirectionsLoading ? (
+                    <CircularProgress
+                      size={18}
+                      color="inherit"
+                    />
+                  ) : (
+                    <DirectionsWalkIcon />
+                  )
+                }
+                onClick={handleGetDirections}
+              >
+                {isDirectionsLoading
+                  ? "Getting directions..."
+                  : "Get Directions"}
+              </DirectionsButton>
+            ) : (
+              <ViewOnMapButton
+                buildingId={building.id}
+                variant="full-width"
+              />
+            )}
           </div>
 
           <RoomBox>
