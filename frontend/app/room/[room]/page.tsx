@@ -4,6 +4,8 @@ import translateRoomUsage from "@common/roomUsages";
 import getSchoolDetails from "@common/schools";
 import type { Booking, Room } from "@common/types";
 import CloseIcon from "@mui/icons-material/Close";
+import FavouriteIcon from "@mui/icons-material/Favorite";
+import FavouriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import {
   Dialog,
   DialogContent,
@@ -29,10 +31,13 @@ import BookingCalendar from "../../../components/BookingCalendar";
 import FeedbackButton from "../../../components/FeedbackButton";
 import LoadingCircle from "../../../components/LoadingCircle";
 import RoomBackButton from "../../../components/RoomBackButton";
+import ViewOnMapButton from "../../../components/ViewOnMapButton";
 import useBookings from "../../../hooks/useBookings";
 import useBuilding from "../../../hooks/useBuilding";
+import useFavourites from "../../../hooks/useFavourites";
 import useRoom from "../../../hooks/useRoom";
 import room_photos from "../../../public/room-photos.json";
+import { getBuildingIdFromRoomId } from "../../../utils/utils";
 
 const adjustDateIfMidnight = (inputDate: Date): Date => {
   // Check if the time is midnight (00:00:00)
@@ -63,6 +68,7 @@ export default function Page() {
   const { room } = useRoom(roomParam);
   const [campus, grid] = room ? room.id.split("-") : ["", ""];
   const { building } = useBuilding(`${campus}-${grid}`);
+  const { isFavourite, toggleFavourite } = useFavourites();
 
   return (
     <Container maxWidth="xl">
@@ -80,7 +86,12 @@ export default function Page() {
             paddingRight: { xs: 3, md: 15 },
           }}
         >
-          <RoomPageHeader room={room} buildingName={building.name} />
+          <RoomPageHeader
+            room={room}
+            buildingName={building.name}
+            favourite={isFavourite(room.id)}
+            onToggleFavourite={() => toggleFavourite(room.id)}
+          />
           <RoomImage
             src={
               roomParam in room_photos
@@ -99,10 +110,12 @@ export default function Page() {
   );
 }
 
-const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
-  room,
-  buildingName,
-}) => {
+const RoomPageHeader: React.FC<{
+  room: Room;
+  buildingName: string;
+  favourite: boolean;
+  onToggleFavourite: () => void;
+}> = ({ room, buildingName, favourite, onToggleFavourite }) => {
   const [openDialog, setDialog] = useState(false);
 
   const toggleDialog = () => {
@@ -115,6 +128,7 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
     : "This room is managed externally by its associated school. Please contact the school to request a booking";
 
   const ratings = useRoomRatings(room.id);
+  const buildingId = getBuildingIdFromRoomId(room.id);
   const ratingValue = (() => {
     // round rating to nearest .5 if a rating exists
     if (!ratings || !ratings.data) return 0;
@@ -180,11 +194,29 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
           <Typography variant="h4" sx={{ fontWeight: 550 }}>
             {room.name}
           </Typography>
-          <BookingButton
-            school={room.school}
-            usage={room.usage}
-            onClick={toggleDialog}
-          />
+
+          <Stack direction="row" spacing={1} align-items="center">
+            <IconButton
+              onClick={onToggleFavourite}
+              aria-label={
+                favourite ? "Remove as favourite" : "Add as favourite"
+              }
+            >
+              {favourite ? (
+                <FavouriteIcon color="primary" />
+              ) : (
+                <FavouriteBorderIcon />
+              )}
+            </IconButton>
+
+            <ViewOnMapButton buildingId={buildingId} />
+
+            <BookingButton
+              school={room.school}
+              usage={room.usage}
+              onClick={toggleDialog}
+            />
+          </Stack>
         </Stack>
 
         <Stack direction="row" spacing={2}>

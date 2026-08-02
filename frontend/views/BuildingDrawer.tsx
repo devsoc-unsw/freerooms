@@ -1,3 +1,4 @@
+import ViewOnMapButton from "@frontend/components/ViewOnMapButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { Slide, Typography, useMediaQuery } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
@@ -134,6 +135,7 @@ const BuildingDrawer: React.FC = () => {
               style={{ objectFit: "cover" }}
               priority={true}
             />
+            <ViewOnMapButton buildingId={building.id} variant="full-width" />
           </div>
 
           <RoomBox>

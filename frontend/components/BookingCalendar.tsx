@@ -175,6 +175,42 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
     setDate(newDate ?? datetime);
   };
 
+  const calendarMin = React.useMemo(() => {
+    const DEFAULT_START_HOUR = 9;
+    const EARLIEST_ALLOWED_HOUR = 5;
+
+    const visibleEvents = events.filter((event) => {
+      if (currView === Views.DAY) {
+        return (
+          event.start.getFullYear() === date.getFullYear() &&
+          event.start.getMonth() === date.getMonth() &&
+          event.start.getDate() === date.getDate()
+        );
+      }
+
+      const weekStart = startOfWeek(date, { weekStartsOn: 0 });
+      const weekEnd = new Date(weekStart);
+      weekEnd.setDate(weekEnd.getDate() + 7);
+
+      return event.start >= weekStart && event.start < weekEnd;
+    });
+
+    if (visibleEvents.length === 0) {
+      return new Date(0, 0, 0, DEFAULT_START_HOUR, 0, 0);
+    }
+
+    const earliestHour = Math.min(
+      ...visibleEvents.map((e) => e.start.getHours())
+    );
+
+    const startHour =
+      earliestHour < DEFAULT_START_HOUR
+        ? Math.max(EARLIEST_ALLOWED_HOUR, earliestHour)
+        : DEFAULT_START_HOUR;
+
+    return new Date(0, 0, 0, startHour, 0, 0);
+  }, [events, currView, date]);
+
   const { components, getNow, localizer, myEvents, scrollToTime } =
     React.useMemo(() => {
       return {
@@ -190,9 +226,9 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
           locales: enAU,
         }),
         myEvents: events,
-        scrollToTime: datetime,
+        scrollToTime: calendarMin,
       };
-    }, [datetime, events]);
+    }, [events, calendarMin]);
 
   const formatTime = (
     date: Date,
@@ -360,7 +396,7 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
                 : theme.palette.background.default,
             },
           })}
-          min={new Date(0, 0, 0, 9)}
+          min={calendarMin}
           showMultiDayTimes={true}
           formats={{
             timeGutterFormat: formatTime,
