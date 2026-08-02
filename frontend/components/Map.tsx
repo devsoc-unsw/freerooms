@@ -1,5 +1,4 @@
 import { Building } from "@common/types";
-import useBuilding from "@frontend/hooks/useBuilding";
 import Box from "@mui/material/Box";
 import {
   GoogleMap,
@@ -8,16 +7,13 @@ import {
   useJsApiLoader,
 } from "@react-google-maps/api";
 import { DarkModeContext } from "app/clientLayout";
-import { useSearchParams } from "next/navigation";
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import BuildingDrawer from "views/BuildingDrawer";
 
 import { GOOGLE_API_KEY } from "../config";
 import useBuildings from "../hooks/useBuildings";
 import useUserLocation from "../hooks/useUserLocation";
-import { setCurrentBuilding } from "../redux/currentBuildingSlice";
-import { useDispatch } from "../redux/hooks";
 import calculateDistance from "../utils/calculateDistance";
 import getMapType from "../utils/getMapType";
 import MapMarker from "./MapMarker";
@@ -59,7 +55,7 @@ export const Map = () => {
   // Fetch data
   const { buildings } = useBuildings();
   const { isDarkMode } = useContext(DarkModeContext);
-  const dispatch = useDispatch();
+
   // Use debounce to allow moving from marker to popup without popup hiding
   const [currentHover, setCurrentHover] = useState<Building | null>(null);
   const [debouncedCurrentHover] = useDebounceValue(currentHover, 50);
@@ -74,24 +70,14 @@ export const Map = () => {
   });
 
   const distances = useMemo(() => {
-    if (buildings && userLat && userLng && isInBounds(userLat, userLng)) {
-      return buildings.map((building) =>
-        calculateDistance(userLat, userLng, building.lat, building.long)
-      );
+    if (!(buildings && userLat && userLng && isInBounds(userLat, userLng))) {
+      return [];
     }
-    return [];
+
+    return buildings.map((building) =>
+      calculateDistance(userLat, userLng, building.lat, building.long)
+    );
   }, [buildings, userLat, userLng]);
-
-  //set current building to search param query - THIS IS WHERE OTHER QUERIES CAN GO
-  const searchParams = useSearchParams();
-  const buildingId = searchParams.get("building");
-  const { building } = useBuilding(buildingId || "");
-
-  useEffect(() => {
-    if (building) {
-      dispatch(setCurrentBuilding(building || null));
-    }
-  }, [building, dispatch]);
 
   const mapOptions = useMemo(
     () => ({
