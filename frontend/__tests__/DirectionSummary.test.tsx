@@ -40,9 +40,7 @@ describe("DirectionsSummary", () => {
 
     render(<DirectionsSummary summary={createSummary()} onClose={onClose} />);
 
-    fireEvent.click(
-      screen.getByRole("button", { name: "Close directions" })
-    );
+    fireEvent.click(screen.getByRole("button", { name: "Close directions" }));
 
     expect(onClose).toHaveBeenCalledTimes(1);
   });

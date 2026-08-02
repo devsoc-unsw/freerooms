@@ -133,7 +133,9 @@ export const Map = () => {
     const longitudes = route.geometry.coordinates.map(
       ([longitude]) => longitude
     );
-    const latitudes = route.geometry.coordinates.map(([, latitude]) => latitude);
+    const latitudes = route.geometry.coordinates.map(
+      ([, latitude]) => latitude
+    );
 
     const routeBounds: LngLatBoundsLike = [
       [Math.min(...longitudes), Math.min(...latitudes)],
