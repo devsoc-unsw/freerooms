@@ -121,8 +121,7 @@ const MapMarker: React.FC<{
       onMouseEnter={(e) => {
         setCurrentHover(building);
 
-        const markerScreenPos =
-          e.currentTarget.getBoundingClientRect();
+        const markerScreenPos = e.currentTarget.getBoundingClientRect();
 
         if (markerScreenPos.bottom + 200 > window.innerHeight) {
           setAppearAbove(true);
