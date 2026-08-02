@@ -20,6 +20,51 @@ const FlipMoveGrid = styled(FlipMove)(({ theme }) => ({
   gridGap: "20px",
 }));
 
+const getBuildingPosition = (building: Building): number | null => {
+  const match = building.id.match(/(\d+)$/);
+
+  if (!match) {
+    return null;
+  }
+
+  return Number(match[1]);
+};
+
+const compareBuildingPosition = (
+  a: Building,
+  b: Building,
+  direction: "lowerToUpper" | "upperToLower"
+): number => {
+  const aPosition = getBuildingPosition(a);
+  const bPosition = getBuildingPosition(b);
+
+  if (aPosition == null && bPosition == null) {
+    return a.name.localeCompare(b.name);
+  }
+
+  if (aPosition == null) {
+    return 1;
+  }
+
+  if (bPosition == null) {
+    return -1;
+  }
+
+  const positionDiff = aPosition - bPosition;
+
+  if (positionDiff !== 0) {
+    return direction === "lowerToUpper" ? positionDiff : -positionDiff;
+  }
+
+  const longDiff = a.long - b.long;
+
+  if (longDiff !== 0) {
+    return direction === "lowerToUpper" ? longDiff : -longDiff;
+  }
+
+  return a.name.localeCompare(b.name);
+};
+
 const FlippableCard = React.forwardRef<HTMLDivElement, { buildingId: string }>(
   ({ buildingId }, ref) => {
     const displayMobile = useMediaQuery(useTheme().breakpoints.down("sm"));
@@ -59,9 +104,9 @@ const CardList: React.FC<{
       .sort((a, b) => {
         switch (sort) {
           case "lowerToUpper":
-            return a.long - b.long;
+            return compareBuildingPosition(a, b, "lowerToUpper");
           case "upperToLower":
-            return b.long - a.long;
+            return compareBuildingPosition(a, b, "upperToLower");
           case "nearest":
             return userLat && userLng
               ? calculateDistance(userLat, userLng, a.lat, a.long) -
