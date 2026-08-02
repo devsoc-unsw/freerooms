@@ -6,12 +6,16 @@ import { clearAllRoomsFilters } from "redux/allRoomsFilterSlice";
 import { useDispatch } from "redux/hooks";
 import { AllRoomsFilters } from "types";
 
+import useAllRoomsQuery from "../hooks/useAllRoomsQuery";
 import FilterSideBar from "./FilterSideBar";
 
 const AllRoomsFilter: React.FC<{ filters: AllRoomsFilters }> = ({
   filters,
 }) => {
   const dispatch = useDispatch();
+
+  // Apply redux filters to URL query parameters
+  useAllRoomsQuery();
 
   return (
     <StyledMainFilter>
