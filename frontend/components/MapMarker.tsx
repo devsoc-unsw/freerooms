@@ -65,12 +65,20 @@ const MapMarker: React.FC<{
   distance: number | undefined;
   currentHover: Building | null;
   setCurrentHover: (building: Building | null) => void;
-}> = ({ buildingId, distance, currentHover, setCurrentHover }) => {
+  isRouteDestination?: boolean;
+}> = ({
+  buildingId,
+  distance,
+  currentHover,
+  setCurrentHover,
+  isRouteDestination = false,
+}) => {
   // Get building data
   const { building } = useBuilding(buildingId);
   const { status: liveStatus } = useBuildingStatus(buildingId);
   const theme = useTheme();
   const router = useRouter();
+
   // This one uses stale data so markers don't disappear
   const status: BuildingStatus | undefined = liveStatus;
   const freerooms = getNumFreerooms(status);
@@ -81,6 +89,9 @@ const MapMarker: React.FC<{
   const dispatch = useDispatch();
   const currentBuilding = useSelector(selectCurrentBuilding);
   const isCurrentBuilding = currentBuilding?.id === building?.id;
+
+  // Visible if selected or current destination
+  const isSelected = isCurrentBuilding || isRouteDestination;
 
   const showPopup = currentHover?.id === building?.id;
   const [appearAbove, setAppearAbove] = React.useState(false);
@@ -95,7 +106,9 @@ const MapMarker: React.FC<{
   const colour =
     freerooms >= 5 ? "#66bb6a" : freerooms !== 0 ? "#ffa726" : "#f44336";
 
-  if (!building) return <></>;
+  if (!building) {
+    return <></>;
+  }
 
   return (
     <div
@@ -104,11 +117,13 @@ const MapMarker: React.FC<{
         flexDirection: "column",
         alignItems: "center",
         position: "relative",
-        transform: "translate(-50%, -50%)",
       }}
       onMouseEnter={(e) => {
         setCurrentHover(building);
-        const markerScreenPos = e.currentTarget.getBoundingClientRect();
+
+        const markerScreenPos =
+          e.currentTarget.getBoundingClientRect();
+
         if (markerScreenPos.bottom + 200 > window.innerHeight) {
           setAppearAbove(true);
         } else {
@@ -129,7 +144,7 @@ const MapMarker: React.FC<{
         sx={{
           fontSize: 11,
           fontWeight: 500,
-          translate: isCurrentBuilding ? "0px -10px" : "0px 0px",
+          translate: isSelected ? "0px -10px" : "0px 0px",
           transition: "all 0.2s ease-in-out",
           textShadow:
             theme.palette.mode === "light"
@@ -140,27 +155,33 @@ const MapMarker: React.FC<{
       >
         {building.name}
       </Typography>
+
       <Box
         sx={{
           width: 18,
           height: 18,
           borderRadius: "50%",
-          border: isCurrentBuilding ? `5px solid ${colour}` : "4px solid white",
-          backgroundColor: isCurrentBuilding ? "white" : colour,
-          scale: isCurrentBuilding ? 2 : 1,
+          border: isSelected ? `5px solid ${colour}` : "4px solid white",
+          backgroundColor: isSelected ? "white" : colour,
+          scale: isSelected ? 2 : 1,
           transition: "all 0.2s ease-in-out",
-          boxShadow: isCurrentBuilding
-            ? `0px 0px 6px 4px ${alpha(colour, 0.5)}`
-            : "",
+          boxShadow: isSelected ? `0px 0px 6px 4px ${alpha(colour, 0.5)}` : "",
           position: "relative",
+
           "&:hover": {
             cursor: "pointer",
           },
         }}
-        onClick={() => handleSelectBuilding()}
+        onClick={handleSelectBuilding}
       />
+
       <Fade in={showPopup} timeout={200}>
-        <div style={{ position: "relative", bottom: -3 }}>
+        <div
+          style={{
+            position: "relative",
+            bottom: -3,
+          }}
+        >
           <MarkerHover
             building={building}
             freerooms={freerooms}

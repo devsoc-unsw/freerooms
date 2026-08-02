@@ -144,11 +144,7 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
               <StatusBox>
                 {!rooms ? (
                   // loading
-                  <CircularProgress
-                    size={20}
-                    thickness={5}
-                    disableShrink
-                  />
+                  <CircularProgress size={20} thickness={5} disableShrink />
                 ) : null}
               </StatusBox>
             </div>
@@ -173,10 +169,7 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
                 disabled={isDirectionsLoading}
                 startIcon={
                   isDirectionsLoading ? (
-                    <CircularProgress
-                      size={18}
-                      color="inherit"
-                    />
+                    <CircularProgress size={18} color="inherit" />
                   ) : (
                     <DirectionsWalkIcon />
                   )
@@ -188,10 +181,7 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
                   : "Get Directions"}
               </DirectionsButton>
             ) : (
-              <ViewOnMapButton
-                buildingId={building.id}
-                variant="full-width"
-              />
+              <ViewOnMapButton buildingId={building.id} variant="full-width" />
             )}
           </div>
 
