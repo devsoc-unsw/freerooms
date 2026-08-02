@@ -89,7 +89,7 @@ const DirectionsSummary = ({ summary, onClose }: DirectionsSummaryProps) => {
           }}
         >
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            {formatDuration(summary.durationSeconds)}(
+            {formatDuration(summary.durationSeconds)} (
             {formatDistance(summary.distanceMeters)})
           </Typography>
 
