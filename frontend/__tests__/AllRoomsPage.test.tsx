@@ -26,6 +26,23 @@ jest.mock("next/navigation", () => ({
   usePathname: () => "/all-rooms",
 }));
 
+// Mock nuqs
+jest.mock("nuqs", () => ({
+  useQueryState: (_key: string, options: { defaultValue: string }) => [
+    options.defaultValue,
+    jest.fn(),
+  ],
+  useQueryStates: (keys: Record<string, { defaultValue: string }>) => [
+    Object.fromEntries(
+      Object.entries(keys).map(([key, options]) => [key, options.defaultValue])
+    ),
+    jest.fn(),
+  ],
+  parseAsString: {
+    withDefault: (defaultValue: string) => ({ defaultValue }),
+  },
+}));
+
 describe("AllRooms page", () => {
   it("renders AllRooms top icon", () => {
     render(
