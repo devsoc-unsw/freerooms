@@ -14,6 +14,24 @@ jest.mock("next/navigation", () => ({
   usePathname: () => "/browse",
 }));
 
+// Mock nuqs since useQuerySort and useQueryFilter both use it,
+// and it requires the app router context to be mounted.
+jest.mock("nuqs", () => ({
+  useQueryState: (_key: string, options: { defaultValue: string }) => [
+    options.defaultValue,
+    jest.fn(),
+  ],
+  useQueryStates: (keys: Record<string, { defaultValue: string }>) => [
+    Object.fromEntries(
+      Object.entries(keys).map(([key, options]) => [key, options.defaultValue])
+    ),
+    jest.fn(),
+  ],
+  parseAsString: {
+    withDefault: (defaultValue: string) => ({ defaultValue }),
+  },
+}));
+
 describe("Browsing Page", () => {
   it("renders DesktopTimePicker", () => {
     render(
