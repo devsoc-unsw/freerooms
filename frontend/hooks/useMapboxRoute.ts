@@ -77,7 +77,6 @@ const useMapboxRoute = () => {
     setRouteError(null);
   }, []);
 
-
   // Remove and cancel current route
   const clearRoute = useCallback(() => {
     requestNumberRef.current += 1;
@@ -90,7 +89,6 @@ const useMapboxRoute = () => {
     setRouteError(null);
     setIsRouteLoading(false);
   }, []);
-
 
   // Request a walking route, returns if valid route
   const calculateRoute = useCallback(
@@ -122,7 +120,6 @@ const useMapboxRoute = () => {
         return false;
       }
 
-
       // Cancel current request
       requestControllerRef.current?.abort();
 
@@ -133,7 +130,6 @@ const useMapboxRoute = () => {
 
       setIsRouteLoading(true);
       setRouteError(null);
-
 
       // Long, Lat order
       const coordinates = [
@@ -158,7 +154,6 @@ const useMapboxRoute = () => {
 
         const responseBody =
           (await response.json()) as MapboxDirectionsResponse;
-
 
         // Ignore request if not the newest
         if (requestNumber !== requestNumberRef.current) {
@@ -222,7 +217,6 @@ const useMapboxRoute = () => {
     },
     []
   );
-
 
   // Cancels any outgoing request
   useEffect(() => {
