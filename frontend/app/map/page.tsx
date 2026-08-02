@@ -1,13 +1,12 @@
 "use client";
 
-import { Suspense } from "react";
+import dynamic from "next/dynamic";
 
-import { Map } from "../../components/Map";
+const Map = dynamic(
+  () => import("../../components/Map").then((module) => module.Map),
+  { ssr: false }
+);
 
 export default function Page() {
-  return (
-    <Suspense fallback={null}>
-      <Map />
-    </Suspense>
-  );
+  return <Map />;
 }
