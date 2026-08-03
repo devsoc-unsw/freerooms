@@ -79,7 +79,6 @@ export const Map = () => {
   const [currentHover, setCurrentHover] = useState<Building | null>(null);
   const [debouncedCurrentHover] = useDebounceValue(currentHover, 50);
 
-
   const styleArray = isDarkMode ? MAPBOX_STYLE_DARK : MAPBOX_STYLE_LIGHT;
 
   // Get current location of user
