@@ -194,3 +194,22 @@ export const queryRoomUtilities = async (
   const variables = { roomId };
   return await doRequest<RoomUtilitiesRes>(query, variables);
 };
+
+///////////////////////////////////////////////////////////////
+
+type RoomIdsRes = {
+  rooms: Array<{
+    id: string
+  }>
+}
+
+export const queryRoomIds = 
+  async (): Promise<RoomIdsRes> => {
+  
+  const query = `
+    query rooms(order_by: {id: asc}) {
+      id
+    }
+  `
+  return await doRequest<RoomIdsRes>(query)
+}

@@ -1,5 +1,8 @@
 "use client";
-
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Navigation } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
 import translateRoomUsage from "@common/roomUsages";
 import getSchoolDetails from "@common/schools";
 import type { Booking, Room } from "@common/types";
@@ -69,7 +72,7 @@ export default function Page() {
   const [campus, grid] = room ? room.id.split("-") : ["", ""];
   const { building } = useBuilding(`${campus}-${grid}`);
   const { isFavourite, toggleFavourite } = useFavourites();
-
+  
   return (
     <Container maxWidth="xl">
       <FeedbackButton />
@@ -92,13 +95,12 @@ export default function Page() {
             favourite={isFavourite(room.id)}
             onToggleFavourite={() => toggleFavourite(room.id)}
           />
-          <RoomImage
-            src={
-              roomParam in room_photos
-                ? `${(room_photos as Record<string, string>)[roomParam]}`
-                : `/assets/building_photos/${campus}-${grid}.webp`
-            }
-          />
+          { /* Here */ }
+          <Carousel photos={
+            roomParam in room_photos && room_photos[roomParam].length > 0 
+              ? room_photos[roomParam]
+              : [`/assets/building_photos/${campus}-${grid}.webp`]
+          }/>
           <BookingCalendar events={adjustedBookings ?? []} roomID={room.id} />
           <RoomUtilityTags roomId={room?.id} />
           <RoomRating buildingID={building.id} roomID={room.id} />
@@ -306,6 +308,7 @@ const RoomPageHeader: React.FC<{
   );
 };
 
+{ /* Replace this with Carousel */ }
 const RoomImage: React.FC<{ src: string }> = ({ src }) => {
   return (
     <Box
@@ -324,3 +327,43 @@ const RoomImage: React.FC<{ src: string }> = ({ src }) => {
     </Box>
   );
 };
+
+const Carousel: React.FC<{ photos: string[] }> = ({ photos }) => {
+  const hasMultiplePhotos = photos.length > 1;
+  return (
+    <Box
+      sx={{
+        maxWidth: "100%",
+        height: 500,
+        position: "relative",
+      }}>
+        <Swiper
+          modules={[Autoplay, Navigation]}
+          navigation={hasMultiplePhotos}
+          autoplay={hasMultiplePhotos ? { delay: 5000, disableOnInteraction: false } : false}
+          speed={600}
+          loop={hasMultiplePhotos}
+          spaceBetween={50}
+          slidesPerView={1}
+          onSlideChange={() => console.log('slide change')}
+          onSwiper={(swiper) => console.log(swiper)}
+          style={{
+            height: "100%",
+            "--swiper-navigation-color": "#ffffff" 
+          }}
+        >
+          {photos.map((p) => (
+            <SwiperSlide style={{ position: "relative" }}>
+              <Image
+                src={p}
+                alt="Room Image"
+                fill
+                style={{ objectFit: "cover", borderRadius: 10}}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </Box>
+
+  );
+}
