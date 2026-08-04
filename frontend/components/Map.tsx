@@ -73,6 +73,7 @@ export const Map = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const mapRef = useRef<MapRef>(null);
+  const [isMapLoaded, setIsMapLoaded] = useState(false);
 
   // Use debounce to allow moving from marker to popup without popup hiding
   const [currentHover, setCurrentHover] = useState<Building | null>(null);
@@ -121,9 +122,16 @@ export const Map = () => {
 
   useEffect(() => {
     if (building) {
-      dispatch(setCurrentBuilding(building || null));
+      dispatch(setCurrentBuilding(building));
+
+      if (isMapLoaded) {
+        mapRef.current?.flyTo({
+          center: [building.long, building.lat],
+          duration: 800,
+        });
+      }
     }
-  }, [building, dispatch]);
+  }, [building, dispatch, isMapLoaded]);
 
   useEffect(() => {
     if (!route || route.geometry.coordinates.length === 0) {
@@ -196,6 +204,7 @@ export const Map = () => {
         <MapboxMap
           ref={mapRef}
           key={isDarkMode ? "dark-map" : "light-map"}
+          onLoad={() => setIsMapLoaded(true)}
           initialViewState={{
             latitude: center.lat,
             longitude: center.lng,
