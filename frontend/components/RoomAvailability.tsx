@@ -15,8 +15,8 @@ const RoomBoxSubheading = styled(Typography)<TypographyProps>(({ theme }) => ({
 }));
 
 const roomStatusColor = {
-  free: "#33FF33",
-  busy: "#FF000C",
+  free: "#3bdd03",
+  busy: "#FF3855",
   soon: "#ffa600",
 };
 

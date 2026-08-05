@@ -1,5 +1,6 @@
 import { RoomStatus } from "@common/types";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
 import { Typography, TypographyProps } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
@@ -9,16 +10,16 @@ import RoomAvailability from "components/RoomAvailability";
 import useRoomRatings from "hooks/useRoomRatings";
 import Link from "next/link";
 import React from "react";
-import roomPhotos from "../public/room-photos.json"
 
 import useRoom from "../hooks/useRoom";
+import roomPhotos from "../public/room-photos.json";
 
 interface IndiviRoomBoxProps extends BoxProps {
   bgImage: string;
 }
 
 const IndiviRoomBox = styled(Box, {
-  shouldForwardProp: (prop) => prop !== "bgImage"
+  shouldForwardProp: (prop) => prop !== "bgImage",
 })<IndiviRoomBoxProps>(({ theme, bgImage }) => ({
   display: "flex",
   flexDirection: "row",
@@ -29,7 +30,7 @@ const IndiviRoomBox = styled(Box, {
   fontSize: 20,
   fontWeight: 500,
   backgroundColor: "transparent",
-  backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), ${bgImage}`,
+  backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), ${bgImage}`,
   backgroundSize: "cover",
   backgroundPosition: "center",
   backgroundRepeat: "no-repeat",
@@ -77,10 +78,13 @@ const RoomAvailabilityBox: React.FC<RoomAvailabilityBoxProps> = ({
       ? Math.floor(rating) + 0.5
       : Math.round(rating);
   })();
-  
-  const key = `${buildingId}-${roomNumber}` as keyof typeof roomPhotos 
-  const photos = roomPhotos[key]
-  const photoURL = photos?.length > 0 ? photos[0] : `/assets/building_photos/${buildingId}.webp` 
+
+  const key = `${buildingId}-${roomNumber}` as keyof typeof roomPhotos;
+  const photos = roomPhotos[key];
+  const photoURL =
+    photos?.length > 0
+      ? photos[0]
+      : `/assets/building_photos/${buildingId}.webp`;
 
   return (
     <Link href={`/room/${buildingId}-${roomNumber}`}>
@@ -96,7 +100,9 @@ const RoomAvailabilityBox: React.FC<RoomAvailabilityBoxProps> = ({
               value={ratingValue}
               size="small"
               precision={0.5}
-              sx={{ color: "rgb(255, 169, 12)" }}
+              emptyIcon={
+                <StarBorderIcon sx={{ color: "#969696" }} fontSize="inherit" />
+              }
             />
           </Stack>
           <RoomBoxSubheading>{!room ? "" : room.name}</RoomBoxSubheading>
@@ -108,7 +114,7 @@ const RoomAvailabilityBox: React.FC<RoomAvailabilityBoxProps> = ({
             alignItems: "center",
           }}
         >
-          <RoomAvailability roomStatus={roomStatus}/>
+          <RoomAvailability roomStatus={roomStatus} />
           <ChevronRightIcon style={{ color: "grey" }} />
         </Stack>
       </IndiviRoomBox>

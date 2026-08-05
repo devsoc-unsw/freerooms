@@ -199,17 +199,15 @@ export const queryRoomUtilities = async (
 
 type RoomIdsRes = {
   rooms: Array<{
-    id: string
-  }>
-}
+    id: string;
+  }>;
+};
 
-export const queryRoomIds = 
-  async (): Promise<RoomIdsRes> => {
-  
+export const queryRoomIds = async (): Promise<RoomIdsRes> => {
   const query = `
     query rooms(order_by: {id: asc}) {
       id
     }
-  `
-  return await doRequest<RoomIdsRes>(query)
-}
+  `;
+  return await doRequest<RoomIdsRes>(query);
+};

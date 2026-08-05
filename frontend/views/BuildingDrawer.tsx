@@ -55,7 +55,7 @@ const RoomBox = styled(Box)<BoxProps>(({ theme }) => ({
 }));
 
 const CloseButton = styled(Button)(({ theme }) => ({
-  backgroundColor: theme.palette.background.paper,
+  backgroundColor: "#E8E8E8",
 }));
 
 const DirectionsButton = styled(Button)(({ theme }) => ({

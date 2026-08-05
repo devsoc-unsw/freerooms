@@ -1,8 +1,7 @@
 "use client";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Navigation } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
+import "swiper/css";
+import "swiper/css/navigation";
+
 import translateRoomUsage from "@common/roomUsages";
 import getSchoolDetails from "@common/schools";
 import type { Booking, Room } from "@common/types";
@@ -28,6 +27,8 @@ import useRoomRatings from "hooks/useRoomRatings";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useState } from "react";
+import { Autoplay, Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 import BookingButton from "../../../components/BookingButton";
 import BookingCalendar from "../../../components/BookingCalendar";
@@ -72,7 +73,7 @@ export default function Page() {
   const [campus, grid] = room ? room.id.split("-") : ["", ""];
   const { building } = useBuilding(`${campus}-${grid}`);
   const { isFavourite, toggleFavourite } = useFavourites();
-  
+
   return (
     <Container maxWidth="xl">
       <FeedbackButton />
@@ -95,12 +96,13 @@ export default function Page() {
             favourite={isFavourite(room.id)}
             onToggleFavourite={() => toggleFavourite(room.id)}
           />
-          { /* Here */ }
-          <Carousel photos={
-            roomParam in room_photos && room_photos[roomParam].length > 0 
-              ? room_photos[roomParam]
-              : [`/assets/building_photos/${campus}-${grid}.webp`]
-          }/>
+          <Carousel
+            photos={
+              roomParam in room_photos && room_photos[roomParam].length > 0
+                ? room_photos[roomParam]
+                : [`/assets/building_photos/${campus}-${grid}.webp`]
+            }
+          />
           <BookingCalendar events={adjustedBookings ?? []} roomID={room.id} />
           <RoomUtilityTags roomId={room?.id} />
           <RoomRating buildingID={building.id} roomID={room.id} />
@@ -308,13 +310,12 @@ const RoomPageHeader: React.FC<{
   );
 };
 
-{ /* Replace this with Carousel */ }
 const RoomImage: React.FC<{ src: string }> = ({ src }) => {
   return (
     <Box
       sx={{
-        minWidth: "100%",
-        minHeight: 300,
+        width: "100%",
+        height: 500,
         position: "relative",
       }}
     >
@@ -329,41 +330,63 @@ const RoomImage: React.FC<{ src: string }> = ({ src }) => {
 };
 
 const Carousel: React.FC<{ photos: string[] }> = ({ photos }) => {
-  const hasMultiplePhotos = photos.length > 1;
+  if (photos.length <= 1) {
+    return <RoomImage src={photos[0]} />;
+  }
+
   return (
     <Box
-      sx={{
+      sx={(theme) => ({
         maxWidth: "100%",
         height: 500,
         position: "relative",
-      }}>
-        <Swiper
-          modules={[Autoplay, Navigation]}
-          navigation={hasMultiplePhotos}
-          autoplay={hasMultiplePhotos ? { delay: 5000, disableOnInteraction: false } : false}
-          speed={600}
-          loop={hasMultiplePhotos}
-          spaceBetween={50}
-          slidesPerView={1}
-          onSlideChange={() => console.log('slide change')}
-          onSwiper={(swiper) => console.log(swiper)}
-          style={{
-            height: "100%",
-            "--swiper-navigation-color": "#ffffff" 
-          }}
-        >
-          {photos.map((p) => (
-            <SwiperSlide style={{ position: "relative" }}>
-              <Image
-                src={p}
-                alt="Room Image"
-                fill
-                style={{ objectFit: "cover", borderRadius: 10}}
-              />
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </Box>
+        "& .swiper-button-prev, & .swiper-button-next": {
+          backgroundColor: theme.palette.background.default,
+          width: 50,
+          height: 50,
+        },
+        "& .swiper-button-prev:hover, & .swiper-button-next:hover": {
+          backgroundColor: theme.palette.background.paper,
+        },
 
+        "& .swiper-button-prev svg, & .swiper-button-next svg": {
+          width: "50%",
+          height: "50%",
+          color: theme.palette.text.primary,
+        },
+        "& .swiper-button-prev svg path, & .swiper-button-next svg path": {
+          stroke: "currentColor",
+          strokeWidth: 0.8,
+        },
+      })}
+    >
+      <Swiper
+        modules={[Autoplay, Navigation]}
+        navigation
+        autoplay={{ delay: 5000, disableOnInteraction: false }}
+        speed={600}
+        loop={true}
+        spaceBetween={50}
+        slidesPerView={1}
+        onSlideChange={() => console.log("slide change")}
+        onSwiper={(swiper) => console.log(swiper)}
+        style={{
+          height: "100%",
+          "--swiper-navigation-color": "#333333",
+          "--swiper-navigation-sides-offset": "0px",
+        }}
+      >
+        {photos.map((p) => (
+          <SwiperSlide key={p} style={{ position: "relative" }}>
+            <Image
+              src={p}
+              alt="Room Image"
+              fill
+              style={{ objectFit: "cover", borderRadius: 10 }}
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </Box>
   );
-}
+};
