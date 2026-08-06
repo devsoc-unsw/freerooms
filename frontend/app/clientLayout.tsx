@@ -93,6 +93,9 @@ const ClientLayout: React.FC<{
                 success: {
                   main: "#3bdd03",
                 },
+                warning: {
+                  main: "#FF0000",
+                },
                 secondary: {
                   main: "rgba(0, 0, 0, 0.12)",
                 },

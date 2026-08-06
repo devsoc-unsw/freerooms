@@ -7,6 +7,7 @@ import Box, { BoxProps } from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Drawer from "@mui/material/Drawer";
 import { styled, useTheme } from "@mui/material/styles";
+import { alpha } from "@mui/material/styles";
 import Image, { ImageProps } from "next/image";
 
 import Button from "../components/Button";
@@ -55,7 +56,7 @@ const RoomBox = styled(Box)<BoxProps>(({ theme }) => ({
 }));
 
 const CloseButton = styled(Button)(({ theme }) => ({
-  backgroundColor: "#E8E8E8",
+  backgroundColor: alpha(theme.palette.grey[500], 0.5),
 }));
 
 const DirectionsButton = styled(Button)(({ theme }) => ({

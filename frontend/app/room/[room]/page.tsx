@@ -74,6 +74,12 @@ export default function Page() {
   const { building } = useBuilding(`${campus}-${grid}`);
   const { isFavourite, toggleFavourite } = useFavourites();
 
+  const roomPhotoUrls = room_photos[roomParam as keyof typeof room_photos];
+  const photos =
+    roomPhotoUrls && roomPhotoUrls.length > 0
+      ? roomPhotoUrls
+      : [`/assets/building_photos/${campus}-${grid}.webp`];
+
   return (
     <Container maxWidth="xl">
       <FeedbackButton />
@@ -96,13 +102,7 @@ export default function Page() {
             favourite={isFavourite(room.id)}
             onToggleFavourite={() => toggleFavourite(room.id)}
           />
-          <Carousel
-            photos={
-              roomParam in room_photos && room_photos[roomParam].length > 0
-                ? room_photos[roomParam]
-                : [`/assets/building_photos/${campus}-${grid}.webp`]
-            }
-          />
+          <Carousel photos={photos} />
           <BookingCalendar events={adjustedBookings ?? []} roomID={room.id} />
           <RoomUtilityTags roomId={room?.id} />
           <RoomRating buildingID={building.id} roomID={room.id} />
@@ -370,11 +370,12 @@ const Carousel: React.FC<{ photos: string[] }> = ({ photos }) => {
         slidesPerView={1}
         onSlideChange={() => console.log("slide change")}
         onSwiper={(swiper) => console.log(swiper)}
-        style={{
-          height: "100%",
-          "--swiper-navigation-color": "#333333",
-          "--swiper-navigation-sides-offset": "0px",
-        }}
+        style={
+          {
+            height: "100%",
+            "--swiper-navigation-sides-offset": "0px",
+          } as React.CSSProperties
+        }
       >
         {photos.map((p) => (
           <SwiperSlide key={p} style={{ position: "relative" }}>
