@@ -1,6 +1,7 @@
 "use client";
 import "swiper/css";
 import "swiper/css/navigation";
+
 import translateRoomUsage from "@common/roomUsages";
 import getSchoolDetails from "@common/schools";
 import type { Booking, Room } from "@common/types";
@@ -72,17 +73,17 @@ export default function Page() {
   const [campus, grid] = room ? room.id.split("-") : ["", ""];
   const { building } = useBuilding(`${campus}-${grid}`);
   const { isFavourite, toggleFavourite } = useFavourites();
-  
+
   const roomPhotoUrls = room_photos[roomParam as keyof typeof room_photos];
-  const photos = 
-          roomPhotoUrls && roomPhotoUrls.length > 0
-              ? roomPhotoUrls                
-              : [`/assets/building_photos/${campus}-${grid}.webp`];
+  const photos =
+    roomPhotoUrls && roomPhotoUrls.length > 0
+      ? roomPhotoUrls
+      : [`/assets/building_photos/${campus}-${grid}.webp`];
 
   return (
     <Container maxWidth="xl">
       <FeedbackButton />
-      {room && building ? ( 
+      {room && building ? (
         <Stack
           sx={{
             justifyContent: "center",
@@ -101,9 +102,7 @@ export default function Page() {
             favourite={isFavourite(room.id)}
             onToggleFavourite={() => toggleFavourite(room.id)}
           />
-          <Carousel
-            photos={photos}
-          />
+          <Carousel photos={photos} />
           <BookingCalendar events={adjustedBookings ?? []} roomID={room.id} />
           <RoomUtilityTags roomId={room?.id} />
           <RoomRating buildingID={building.id} roomID={room.id} />
@@ -371,10 +370,12 @@ const Carousel: React.FC<{ photos: string[] }> = ({ photos }) => {
         slidesPerView={1}
         onSlideChange={() => console.log("slide change")}
         onSwiper={(swiper) => console.log(swiper)}
-        style={{
-          height: "100%",
-          "--swiper-navigation-sides-offset": "0px",
-        } as React.CSSProperties}
+        style={
+          {
+            height: "100%",
+            "--swiper-navigation-sides-offset": "0px",
+          } as React.CSSProperties
+        }
       >
         {photos.map((p) => (
           <SwiperSlide key={p} style={{ position: "relative" }}>
