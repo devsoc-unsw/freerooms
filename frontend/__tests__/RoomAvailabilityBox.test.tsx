@@ -13,9 +13,9 @@ jest.mock("../public/room-photos.json", () => ({
 }));
 
 const roomStatus = {
-  status: "soon" as const, 
-  endtime: new Date().toISOString()
-}
+  status: "soon" as const,
+  endtime: new Date().toISOString(),
+};
 
 describe("RoomAvailabilityBox", () => {
   test('renders "Available Soon" without wrapping', () => {
@@ -53,16 +53,14 @@ describe("RoomAvailabilityBox", () => {
       />
     );
 
-    const box = screen.getByRole("link").firstElementChild as HTMLElement
-    const backgroundImage = getComputedStyle(box).getPropertyValue("background-image");
+    const box = screen.getByRole("link").firstElementChild as HTMLElement;
+    const backgroundImage =
+      getComputedStyle(box).getPropertyValue("background-image");
 
-    expect(backgroundImage).toContain(
-      "https://example.com/room-photo-1.jpg"
-    );
+    expect(backgroundImage).toContain("https://example.com/room-photo-1.jpg");
   });
 
   test("room box background image defaults to building if it has no photos", () => {
-
     render(
       <RoomAvailabilityBox
         roomNumber="888"
@@ -71,9 +69,10 @@ describe("RoomAvailabilityBox", () => {
       />
     );
 
-    const box = screen.getByRole("link").firstElementChild as HTMLElement
-    const backgroundImage = getComputedStyle(box).getPropertyValue("background-image");
+    const box = screen.getByRole("link").firstElementChild as HTMLElement;
+    const backgroundImage =
+      getComputedStyle(box).getPropertyValue("background-image");
 
-    expect(backgroundImage).toContain('/assets/building_photos/K-G14.webp');
-  })
+    expect(backgroundImage).toContain("/assets/building_photos/K-G14.webp");
+  });
 });

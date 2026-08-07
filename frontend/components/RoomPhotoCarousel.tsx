@@ -1,7 +1,8 @@
 import "swiper/css";
 import "swiper/css/navigation";
+
 import Box from "@mui/material/Box";
-import Image from "next/image"
+import Image from "next/image";
 import { Autoplay, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -85,4 +86,4 @@ const RoomPhotoCarousel: React.FC<{ photos: string[] }> = ({ photos }) => {
   );
 };
 
-export default RoomPhotoCarousel
+export default RoomPhotoCarousel;

@@ -31,6 +31,7 @@ import BookingCalendar from "../../../components/BookingCalendar";
 import FeedbackButton from "../../../components/FeedbackButton";
 import LoadingCircle from "../../../components/LoadingCircle";
 import RoomBackButton from "../../../components/RoomBackButton";
+import RoomPhotoCarousel from "../../../components/RoomPhotoCarousel";
 import ViewOnMapButton from "../../../components/ViewOnMapButton";
 import useBookings from "../../../hooks/useBookings";
 import useBuilding from "../../../hooks/useBuilding";
@@ -38,7 +39,6 @@ import useFavourites from "../../../hooks/useFavourites";
 import useRoom from "../../../hooks/useRoom";
 import room_photos from "../../../public/room-photos.json";
 import { getBuildingIdFromRoomId } from "../../../utils/utils";
-import RoomPhotoCarousel from "../../../components/RoomPhotoCarousel";
 
 const adjustDateIfMidnight = (inputDate: Date): Date => {
   // Check if the time is midnight (00:00:00)
@@ -196,14 +196,14 @@ const RoomPageHeader: React.FC<{
           <Typography variant="h4" sx={{ fontWeight: 550 }}>
             {room.name}
           </Typography>
-          
-          <Stack 
-            direction="row" 
-            spacing={1}   
-            sx={{ 
+
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{
               alignItems: "center",
             }}
-            >
+          >
             <IconButton
               onClick={onToggleFavourite}
               aria-label={
@@ -313,4 +313,3 @@ const RoomPageHeader: React.FC<{
     </Stack>
   );
 };
-
