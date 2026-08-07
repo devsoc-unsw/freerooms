@@ -55,10 +55,12 @@ describe("AllRooms page", () => {
     const roomType = screen.getByText("Room Type");
     const location = screen.getByText("Location");
     const duration = screen.getByText("Duration Free");
+    const recurring = screen.getByText("Recurring");
 
     expect(roomType).toBeInTheDocument();
     expect(location).toBeInTheDocument();
     expect(duration).toBeInTheDocument();
+    expect(recurring).toBeInTheDocument();
   });
 
   describe("renders AllRoomsRoom", () => {
