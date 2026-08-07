@@ -6,7 +6,7 @@ import { styled } from "@mui/material/styles";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { enAU } from "date-fns/locale";
-import React from "react";
+import React, { Suspense } from "react";
 import BuildingDrawer from "views/BuildingDrawer";
 
 import DatePicker from "../../components/DatePicker";
@@ -15,10 +15,11 @@ import FilterBar from "../../components/FilterBar";
 import SearchBar from "../../components/SearchBar";
 import SortBar from "../../components/SortBar";
 import TimePicker from "../../components/TimePicker";
+import useQuerySort from "../../hooks/useQuerySort";
 import CardList from "../../views/CardList";
 
-const Page = () => {
-  const [sort, setSort] = React.useState<string>("alphabetical");
+const BrowseContent = () => {
+  const [sort, setSort] = useQuerySort();
   const [query, setQuery] = React.useState<string>("");
 
   return (
@@ -74,6 +75,14 @@ const Page = () => {
       </LocalizationProvider>
       <BuildingDrawer />
     </Container>
+  );
+};
+
+const Page = () => {
+  return (
+    <Suspense fallback={null}>
+      <BrowseContent />
+    </Suspense>
   );
 };
 
