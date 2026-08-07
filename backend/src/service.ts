@@ -99,7 +99,7 @@ export const searchAllRoom = async (
   const recurringBookings = filters.recurring
   ? await getBookingsForRange(
       date,
-      new Date(date.getTime() + 21 * 24 * 60 * 60 * 1000) // 3 weeks (21 days) from current time.
+      new Date(date.getTime() + 21 * 24 * 60 * 60 * 1000) // 3 weeks (21 days) from chosen time.
     )
   : null;
 
