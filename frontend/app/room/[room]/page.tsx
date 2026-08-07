@@ -189,14 +189,21 @@ const RoomPageHeader: React.FC<{
           direction={{ xs: "column", sm: "row" }}
           sx={{
             justifyContent: "space-between",
+            alignItems: { xs: "stretch", sm: "start" },
             width: "100%",
           }}
         >
           <Typography variant="h4" sx={{ fontWeight: 550 }}>
             {room.name}
           </Typography>
-
-          <Stack direction="row" spacing={1} align-items="center">
+          
+          <Stack 
+            direction="row" 
+            spacing={1}   
+            sx={{ 
+              alignItems: "center",
+            }}
+            >
             <IconButton
               onClick={onToggleFavourite}
               aria-label={
