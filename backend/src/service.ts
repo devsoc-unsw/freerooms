@@ -10,10 +10,10 @@ import { queryBookingsForRoom } from "./dbInterface";
 import {
   calculateStatus,
   getBookingsForDate,
+  getBookingsForRange,
   getBookingsFromStartTime,
   getBuildingRoomData,
   isRecurringFree,
-  getBookingsForRange,
 } from "./helpers";
 import { SearchFilters, StatusFilters } from "./types";
 
@@ -97,11 +97,11 @@ export const searchAllRoom = async (
 ): Promise<SearchResponse> => {
   const bookings = await getBookingsFromStartTime(date);
   const recurringBookings = filters.recurring
-  ? await getBookingsForRange(
-      date,
-      new Date(date.getTime() + 21 * 24 * 60 * 60 * 1000) // 3 weeks (21 days) from chosen time.
-    )
-  : null;
+    ? await getBookingsForRange(
+        date,
+        new Date(date.getTime() + 21 * 24 * 60 * 60 * 1000) // 3 weeks (21 days) from chosen time.
+      )
+    : null;
 
   const buildingData = await getBuildingRoomData();
   const result: SearchResponse = {};
@@ -134,7 +134,12 @@ export const searchAllRoom = async (
 
       if (filters.recurring && recurringBookings) {
         const roomBookings = recurringBookings[roomData.id]?.bookings ?? [];
-        const available = isRecurringFree(date, filters.duration || 0, roomBookings, 3);
+        const available = isRecurringFree(
+          date,
+          filters.duration || 0,
+          roomBookings,
+          3
+        );
 
         if (!available) {
           continue;

@@ -147,8 +147,8 @@ export const isSlotFree = (
   // return true if specific timeframe has no bookings at all.
   return !bookings.some((booking) => {
     return start < booking.end && end > booking.start;
-  })
-}
+  });
+};
 
 // Checks if a room is available at the chosen time for multiple weeks.
 // Used for the recurring filter feature
@@ -167,13 +167,10 @@ export const isRecurringFree = (
     }
   }
   return true;
-}
+};
 
 // Gets all bookings affecting rooms within a given datetime range.
-export const getBookingsForRange = async (
-  start: Date,
-  end: Date
-) => {
+export const getBookingsForRange = async (start: Date, end: Date) => {
   const res = await queryBookingsInRange(start, end);
   return Object.fromEntries(res.rooms.map((room) => [room.id, room]));
 };
