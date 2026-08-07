@@ -11,6 +11,38 @@ import NavBar from "../components/NavBar";
 import store from "../redux/store";
 import renderWithRedux from "./utils/renderWithRedux";
 
+// Mock DarkModeContext to avoid test failing due to importing NuqsAdapter
+jest.mock("../app/clientLayout", () => ({
+  DarkModeContext: require("react").createContext({
+    isDarkMode: false,
+    toggleDarkMode: () => {},
+  }),
+}));
+
+// Mock next/navigation since the app router is not mounted in the test environment.
+jest.mock("next/navigation", () => ({
+  useRouter: () => ({ replace: jest.fn() }),
+  useSearchParams: () => new URLSearchParams(),
+  usePathname: () => "/all-rooms",
+}));
+
+// Mock nuqs
+jest.mock("nuqs", () => ({
+  useQueryState: (_key: string, options: { defaultValue: string }) => [
+    options.defaultValue,
+    jest.fn(),
+  ],
+  useQueryStates: (keys: Record<string, { defaultValue: string }>) => [
+    Object.fromEntries(
+      Object.entries(keys).map(([key, options]) => [key, options.defaultValue])
+    ),
+    jest.fn(),
+  ],
+  parseAsString: {
+    withDefault: (defaultValue: string) => ({ defaultValue }),
+  },
+}));
+
 describe("AllRooms page", () => {
   it("renders AllRooms top icon", () => {
     render(

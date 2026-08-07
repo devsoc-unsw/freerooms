@@ -6,6 +6,31 @@ import { Provider } from "react-redux";
 import Page from "../app/browse/page";
 import store from "../redux/store";
 
+// Mock next/navigation since the app router is not mounted in the test environment.
+const mockReplace = jest.fn();
+jest.mock("next/navigation", () => ({
+  useRouter: () => ({ replace: mockReplace }),
+  useSearchParams: () => new URLSearchParams(),
+  usePathname: () => "/browse",
+}));
+
+// Mock nuqs
+jest.mock("nuqs", () => ({
+  useQueryState: (_key: string, options: { defaultValue: string }) => [
+    options.defaultValue,
+    jest.fn(),
+  ],
+  useQueryStates: (keys: Record<string, { defaultValue: string }>) => [
+    Object.fromEntries(
+      Object.entries(keys).map(([key, options]) => [key, options.defaultValue])
+    ),
+    jest.fn(),
+  ],
+  parseAsString: {
+    withDefault: (defaultValue: string) => ({ defaultValue }),
+  },
+}));
+
 describe("Browsing Page", () => {
   it("renders DesktopTimePicker", () => {
     render(
