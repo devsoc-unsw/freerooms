@@ -7,6 +7,7 @@ import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import React, { useCallback, useMemo, useState } from "react";
 
+import useDateTimeQuery from "../hooks/useDateTimeQuery";
 import useQueryFilter from "../hooks/useQueryFilter";
 import {
   clearFilters,
@@ -88,6 +89,7 @@ const FilterBar = () => {
 
   // Apply filters from query strings
   useQueryFilter();
+  useDateTimeQuery();
 
   const dropdownMap = useMemo(
     () =>
