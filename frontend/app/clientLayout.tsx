@@ -10,6 +10,7 @@ import { grey } from "@mui/material/colors";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, styled } from "@mui/material/styles";
 import ThemeProvider from "@mui/system/ThemeProvider";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import React, {
   createContext,
   useCallback,
@@ -129,7 +130,9 @@ const ClientLayout: React.FC<{
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <ReduxProvider store={store}>
-          <App>{children}</App>
+          <NuqsAdapter>
+            <App>{children}</App>
+          </NuqsAdapter>
         </ReduxProvider>
       </ThemeProvider>
     </DarkModeContext.Provider>
