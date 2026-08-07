@@ -62,8 +62,8 @@ export const filterBarDropdown: DropDown[] = [
       {
         text: "3 weeks",
         value: "3",
-      }
-    ]
+      },
+    ],
   },
   {
     text: "Location",
@@ -148,7 +148,7 @@ export const allRoomsFilterDropdown: DropDown[] = [
       {
         text: "3 weeks",
         value: "3",
-      }
-    ]
-  }
+      },
+    ],
+  },
 ];
