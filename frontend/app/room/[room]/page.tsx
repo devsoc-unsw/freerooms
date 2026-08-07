@@ -15,7 +15,6 @@ import {
   DialogTitle,
   IconButton,
 } from "@mui/material";
-import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import Rating from "@mui/material/Rating";
@@ -24,11 +23,8 @@ import Typography from "@mui/material/Typography";
 import RoomRating from "components/Rating/RoomRating";
 import RoomUtilityTags from "components/RoomUtilityTags";
 import useRoomRatings from "hooks/useRoomRatings";
-import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useState } from "react";
-import { Autoplay, Navigation } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
 
 import BookingButton from "../../../components/BookingButton";
 import BookingCalendar from "../../../components/BookingCalendar";
@@ -42,6 +38,7 @@ import useFavourites from "../../../hooks/useFavourites";
 import useRoom from "../../../hooks/useRoom";
 import room_photos from "../../../public/room-photos.json";
 import { getBuildingIdFromRoomId } from "../../../utils/utils";
+import RoomPhotoCarousel from "../../../components/RoomPhotoCarousel";
 
 const adjustDateIfMidnight = (inputDate: Date): Date => {
   // Check if the time is midnight (00:00:00)
@@ -102,7 +99,7 @@ export default function Page() {
             favourite={isFavourite(room.id)}
             onToggleFavourite={() => toggleFavourite(room.id)}
           />
-          <Carousel photos={photos} />
+          <RoomPhotoCarousel photos={photos} />
           <BookingCalendar events={adjustedBookings ?? []} roomID={room.id} />
           <RoomUtilityTags roomId={room?.id} />
           <RoomRating buildingID={building.id} roomID={room.id} />
@@ -310,82 +307,3 @@ const RoomPageHeader: React.FC<{
   );
 };
 
-const RoomImage: React.FC<{ src: string }> = ({ src }) => {
-  return (
-    <Box
-      sx={{
-        width: "100%",
-        height: 500,
-        position: "relative",
-      }}
-    >
-      <Image
-        src={src}
-        alt="Room Image"
-        fill
-        style={{ objectFit: "cover", borderRadius: 10 }}
-      />
-    </Box>
-  );
-};
-
-const Carousel: React.FC<{ photos: string[] }> = ({ photos }) => {
-  if (photos.length <= 1) {
-    return <RoomImage src={photos[0]} />;
-  }
-
-  return (
-    <Box
-      sx={(theme) => ({
-        maxWidth: "100%",
-        height: 500,
-        position: "relative",
-        "& .swiper-button-prev, & .swiper-button-next": {
-          backgroundColor: theme.palette.background.default,
-          width: 50,
-          height: 50,
-        },
-        "& .swiper-button-prev:hover, & .swiper-button-next:hover": {
-          backgroundColor: theme.palette.background.paper,
-        },
-
-        "& .swiper-button-prev svg, & .swiper-button-next svg": {
-          width: "50%",
-          height: "50%",
-          color: theme.palette.text.primary,
-        },
-        "& .swiper-button-prev svg path, & .swiper-button-next svg path": {
-          stroke: "currentColor",
-          strokeWidth: 0.8,
-        },
-      })}
-    >
-      <Swiper
-        modules={[Autoplay, Navigation]}
-        navigation
-        autoplay={{ delay: 5000, disableOnInteraction: false }}
-        speed={600}
-        loop={true}
-        spaceBetween={50}
-        slidesPerView={1}
-        style={
-          {
-            height: "100%",
-            "--swiper-navigation-sides-offset": "0px",
-          } as React.CSSProperties
-        }
-      >
-        {photos.map((p) => (
-          <SwiperSlide key={p} style={{ position: "relative" }}>
-            <Image
-              src={p}
-              alt="Room Image"
-              fill
-              style={{ objectFit: "cover", borderRadius: 10 }}
-            />
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </Box>
-  );
-};
