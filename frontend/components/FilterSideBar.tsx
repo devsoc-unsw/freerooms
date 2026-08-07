@@ -28,7 +28,7 @@ const FilterSideBar = ({ filters }: { filters: AllRoomsFilters }) => {
   // Handle user selecting a filter, each dropdown select has an associated key
   const handleSelect = useCallback(
     (key: keyof AllRoomsFilters, item: DropDownItem) => {
-      if (filters[key]?.includes(item.value)) {
+      if (filters[key] === item.value) {
         // If the same as already selected, unset key
         dispatch(unsetAllRoomsFilter({ key, value: item.value }));
       } else {

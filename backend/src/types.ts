@@ -13,6 +13,7 @@ export type StatusFilters = {
   usage?: string;
   location?: "upper" | "lower";
   duration?: number;
+  recurring?: string;
   id?: boolean;
 };
 

@@ -43,7 +43,7 @@ export type Filters = {
   usage?: string;
   location?: string;
   duration?: string;
-  recurring?: boolean;
+  recurring?: string;
   id?: string;
 };
 
