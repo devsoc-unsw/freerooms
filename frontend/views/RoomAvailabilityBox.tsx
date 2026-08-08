@@ -1,5 +1,6 @@
 import { RoomStatus } from "@common/types";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
 import { Typography, TypographyProps } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
@@ -11,8 +12,15 @@ import Link from "next/link";
 import React from "react";
 
 import useRoom from "../hooks/useRoom";
+import roomPhotos from "../public/room-photos.json";
 
-const IndiviRoomBox = styled(Box)<BoxProps>(({ theme }) => ({
+interface IndiviRoomBoxProps extends BoxProps {
+  bgImage: string;
+}
+
+const IndiviRoomBox = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "bgImage",
+})<IndiviRoomBoxProps>(({ theme, bgImage }) => ({
   display: "flex",
   flexDirection: "row",
   justifyContent: "space-between",
@@ -21,8 +29,13 @@ const IndiviRoomBox = styled(Box)<BoxProps>(({ theme }) => ({
   height: 90,
   fontSize: 20,
   fontWeight: 500,
-  backgroundColor: theme.palette.background.default,
-  color: theme.palette.text.primary,
+  backgroundColor: "transparent",
+  backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), ${bgImage}`,
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+  backgroundRepeat: "no-repeat",
+  backgroundBlendMode: "darken",
+  color: theme.palette.mode === "light" ? "#FFFFFF" : "000000",
   padding: theme.spacing(2, 2, 2, 3),
   margin: theme.spacing(1.5, 1),
   "&:hover": {
@@ -66,9 +79,16 @@ const RoomAvailabilityBox: React.FC<RoomAvailabilityBoxProps> = ({
       : Math.round(rating);
   })();
 
+  const key = `${buildingId}-${roomNumber}` as keyof typeof roomPhotos;
+  const photos = roomPhotos[key];
+  const photoURL =
+    photos?.length > 0
+      ? photos[0]
+      : `/assets/building_photos/${buildingId}.webp`;
+
   return (
     <Link href={`/room/${buildingId}-${roomNumber}`}>
-      <IndiviRoomBox>
+      <IndiviRoomBox bgImage={`url(${photoURL})`}>
         <Stack direction="column">
           <RoomBoxHeading> {roomNumber} </RoomBoxHeading>
           <Stack direction="row" spacing={0.3} aria-label="5-star-info">
@@ -80,7 +100,9 @@ const RoomAvailabilityBox: React.FC<RoomAvailabilityBoxProps> = ({
               value={ratingValue}
               size="small"
               precision={0.5}
-              sx={{ color: "rgb(255, 169, 12)" }}
+              emptyIcon={
+                <StarBorderIcon sx={{ color: "#969696" }} fontSize="inherit" />
+              }
             />
           </Stack>
           <RoomBoxSubheading>{!room ? "" : room.name}</RoomBoxSubheading>

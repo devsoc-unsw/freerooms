@@ -1,4 +1,6 @@
 "use client";
+import "swiper/css";
+import "swiper/css/navigation";
 
 import translateRoomUsage from "@common/roomUsages";
 import getSchoolDetails from "@common/schools";
@@ -13,7 +15,6 @@ import {
   DialogTitle,
   IconButton,
 } from "@mui/material";
-import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import Rating from "@mui/material/Rating";
@@ -22,7 +23,6 @@ import Typography from "@mui/material/Typography";
 import RoomRating from "components/Rating/RoomRating";
 import RoomUtilityTags from "components/RoomUtilityTags";
 import useRoomRatings from "hooks/useRoomRatings";
-import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useState } from "react";
 
@@ -31,6 +31,7 @@ import BookingCalendar from "../../../components/BookingCalendar";
 import FeedbackButton from "../../../components/FeedbackButton";
 import LoadingCircle from "../../../components/LoadingCircle";
 import RoomBackButton from "../../../components/RoomBackButton";
+import RoomPhotoCarousel from "../../../components/RoomPhotoCarousel";
 import ViewOnMapButton from "../../../components/ViewOnMapButton";
 import useBookings from "../../../hooks/useBookings";
 import useBuilding from "../../../hooks/useBuilding";
@@ -70,6 +71,12 @@ export default function Page() {
   const { building } = useBuilding(`${campus}-${grid}`);
   const { isFavourite, toggleFavourite } = useFavourites();
 
+  const roomPhotoUrls = room_photos[roomParam as keyof typeof room_photos];
+  const photos =
+    roomPhotoUrls && roomPhotoUrls.length > 0
+      ? roomPhotoUrls
+      : [`/assets/building_photos/${campus}-${grid}.webp`];
+
   return (
     <Container maxWidth="xl">
       <FeedbackButton />
@@ -92,13 +99,7 @@ export default function Page() {
             favourite={isFavourite(room.id)}
             onToggleFavourite={() => toggleFavourite(room.id)}
           />
-          <RoomImage
-            src={
-              roomParam in room_photos
-                ? `${(room_photos as Record<string, string>)[roomParam]}`
-                : `/assets/building_photos/${campus}-${grid}.webp`
-            }
-          />
+          <RoomPhotoCarousel photos={photos} />
           <BookingCalendar events={adjustedBookings ?? []} roomID={room.id} />
           <RoomUtilityTags roomId={room?.id} />
           <RoomRating buildingID={building.id} roomID={room.id} />
@@ -188,6 +189,7 @@ const RoomPageHeader: React.FC<{
           direction={{ xs: "column", sm: "row" }}
           sx={{
             justifyContent: "space-between",
+            alignItems: { xs: "stretch", sm: "start" },
             width: "100%",
           }}
         >
@@ -195,7 +197,13 @@ const RoomPageHeader: React.FC<{
             {room.name}
           </Typography>
 
-          <Stack direction="row" spacing={1} align-items="center">
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{
+              alignItems: "center",
+            }}
+          >
             <IconButton
               onClick={onToggleFavourite}
               aria-label={
@@ -303,24 +311,5 @@ const RoomPageHeader: React.FC<{
         </DialogContent>
       </Dialog>
     </Stack>
-  );
-};
-
-const RoomImage: React.FC<{ src: string }> = ({ src }) => {
-  return (
-    <Box
-      sx={{
-        minWidth: "100%",
-        minHeight: 300,
-        position: "relative",
-      }}
-    >
-      <Image
-        src={src}
-        alt="Room Image"
-        fill
-        style={{ objectFit: "cover", borderRadius: 10 }}
-      />
-    </Box>
   );
 };

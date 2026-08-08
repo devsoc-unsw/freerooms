@@ -20,6 +20,9 @@ const ReviewRating: React.FC<ReviewRatingProps> = ({
         defaultValue={0}
         onChange={(event, value) => ratingCallback(category, value)}
         size="large"
+        sx={{
+          "& .MuiRating-iconEmpty": { color: "#FFFFFF !important" },
+        }}
       />
     </Stack>
   );
