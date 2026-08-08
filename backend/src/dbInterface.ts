@@ -194,4 +194,3 @@ export const queryRoomUtilities = async (
   const variables = { roomId };
   return await doRequest<RoomUtilitiesRes>(query, variables);
 };
-
