@@ -18,8 +18,9 @@ import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { format, getDay, isToday, parse, startOfWeek } from "date-fns";
+import { format, getDay, isSameDay, parse, startOfWeek } from "date-fns";
 import { enAU } from "date-fns/locale";
+import { toZonedTime } from "date-fns-tz";
 import React from "react";
 import type { DateRange, View } from "react-big-calendar";
 import type { NavigateAction, ToolbarProps } from "react-big-calendar";
@@ -272,6 +273,13 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
 
   const timeInDay = 24 * 60 * 60 * 1000;
 
+  // Render light / dark background based on whether today is in AEST time
+  const isTodaySydney = (date: Date) =>
+    isSameDay(
+      toZonedTime(date, "Australia/Sydney"),
+      toZonedTime(new Date(), "Australia/Sydney")
+    );
+
   return (
     <Stack
       sx={{
@@ -390,7 +398,7 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
           slotGroupPropGetter={() => ({ style: { minHeight: "50px" } })}
           dayPropGetter={(date) => ({
             style: {
-              backgroundColor: isToday(date)
+              backgroundColor: isTodaySydney(date)
                 ? theme.palette.mode === "light"
                   ? "#fff3e0"
                   : grey[900]
