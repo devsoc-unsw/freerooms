@@ -3,6 +3,7 @@ import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import React from "react";
 
+import toSydneyTime from "../utils/toSydneyTime";
 import RoomAvailabilityBox from "../views/RoomAvailabilityBox";
 
 jest.mock("../public/room-photos.json", () => ({
@@ -14,7 +15,7 @@ jest.mock("../public/room-photos.json", () => ({
 
 const roomStatus = {
   status: "soon" as const,
-  endtime: new Date().toISOString(),
+  endtime: toSydneyTime(new Date()).toISOString(),
 };
 
 describe("RoomAvailabilityBox", () => {
@@ -22,7 +23,7 @@ describe("RoomAvailabilityBox", () => {
     // Mock roomStatus representing "available soon" status
     const roomStatus = {
       status: "soon" as const,
-      endtime: new Date().toISOString(),
+      endtime: toSydneyTime(new Date()).toISOString(),
     };
 
     // Render RoomAvailabilityBox with mock data
