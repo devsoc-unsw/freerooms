@@ -32,6 +32,7 @@ import {
 
 import { selectDatetime } from "../redux/datetimeSlice";
 import { useSelector } from "../redux/hooks";
+import toSydneyTime from "../utils/toSydneyTime";
 
 const ToolBarButton = styled(Button)(({ theme }) => ({
   borderColor: theme.palette.secondary.main,
@@ -217,7 +218,7 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
         components: {
           toolbar: CustomToolBar,
         },
-        getNow: () => new Date(),
+        getNow: () => toSydneyTime(new Date()),
         localizer: dateFnsLocalizer({
           format,
           parse,
