@@ -3,7 +3,6 @@
  */
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import toSydneyTime from "../utils/toSydneyTime";
 import { RootState } from "./store";
 
 interface DatetimeSlice {
@@ -11,7 +10,7 @@ interface DatetimeSlice {
 }
 
 const initialState: DatetimeSlice = {
-  value: toSydneyTime(new Date()),
+  value: new Date(),
 };
 
 const datetimeSlice = createSlice({

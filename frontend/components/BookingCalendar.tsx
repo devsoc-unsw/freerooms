@@ -20,7 +20,6 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { format, getDay, isSameDay, parse, startOfWeek } from "date-fns";
 import { enAU } from "date-fns/locale";
-import { toZonedTime } from "date-fns-tz";
 import React from "react";
 import type { DateRange, View } from "react-big-calendar";
 import type { NavigateAction, ToolbarProps } from "react-big-calendar";
@@ -171,7 +170,7 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
   const currView = isMobile ? Views.DAY : desktopView;
 
   const datetime = useSelector(selectDatetime);
-  const [date, setDate] = React.useState<Date>(datetime);
+  const [date, setDate] = React.useState<Date>(() => toSydneyTime(datetime));
 
   const handleDateChange = (newDate: Date | null) => {
     setDate(newDate ?? datetime);
@@ -181,7 +180,13 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
     const DEFAULT_START_HOUR = 9;
     const EARLIEST_ALLOWED_HOUR = 5;
 
-    const visibleEvents = events.filter((event) => {
+    const sydneyEvents = events.map((event) => ({
+      ...event,
+      start: toSydneyTime(event.start),
+      end: toSydneyTime(event.end),
+    }));
+
+    const visibleEvents = sydneyEvents.filter((event) => {
       if (currView === Views.DAY) {
         return (
           event.start.getFullYear() === date.getFullYear() &&
@@ -227,7 +232,11 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
           getDay,
           locales: enAU,
         }),
-        myEvents: events,
+        myEvents: events.map((event) => ({
+          ...event,
+          start: toSydneyTime(event.start),
+          end: toSydneyTime(event.end),
+        })),
         scrollToTime: calendarMin,
       };
     }, [events, calendarMin]);
@@ -273,12 +282,9 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
 
   const timeInDay = 24 * 60 * 60 * 1000;
 
-  // Render light / dark background based on whether today is in AEST time
+  // Render light / dark background based on whether today is in Sydney time.
   const isTodaySydney = (date: Date) =>
-    isSameDay(
-      toZonedTime(date, "Australia/Sydney"),
-      toZonedTime(new Date(), "Australia/Sydney")
-    );
+    isSameDay(date, toSydneyTime(new Date()));
 
   return (
     <Stack
