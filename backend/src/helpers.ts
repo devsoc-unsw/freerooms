@@ -11,7 +11,7 @@ import {
   queryBuildingsAndRooms,
   queryRoomUtilities,
 } from "./dbInterface";
-import { BuildingDatabase, SearchFilters } from "./types";
+import { BuildingDatabase, StatusFilters } from "./types";
 import { start } from "repl";
 
 const FIFTEEN_MIN = 15 * 1000 * 60;
@@ -43,7 +43,7 @@ export const getBookingsFromStartTime = async (startTime: Date) => {
 
 export const getsearchRangeEnd = (
   start: Date,
-  filters: SearchFilters
+  filters: StatusFilters
 ): Date => {
   if (filters.recurring) {
     const weeksAhead = filters.recurring - 1;
