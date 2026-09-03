@@ -1,6 +1,18 @@
 import { roomUsages } from "@common/roomUsages";
 import { DropDown, DropDownItem } from "types";
 
+const MAX_RECURRING = 10;
+const recurringWeekItems: DropDownItem[] = Array.from(
+  { length: MAX_RECURRING },
+  (_, index) => {
+    const weeks = index + 1;
+    return {
+      text: weeks === 1 ? "1 week" : `${weeks} weeks`,
+      value: `${weeks}`,
+    };
+  }
+);
+
 // Dropdown & items for FilterBar in building browse page
 export const filterBarDropdown: DropDown[] = [
   {
@@ -58,12 +70,7 @@ export const filterBarDropdown: DropDown[] = [
   {
     text: "Recurring",
     key: "recurring",
-    items: [
-      {
-        text: "3 weeks",
-        value: "3",
-      },
-    ],
+    items: recurringWeekItems,
   },
   {
     text: "Location",
@@ -144,12 +151,7 @@ export const allRoomsFilterDropdown: DropDown[] = [
   {
     text: "Recurring",
     key: "recurring",
-    items: [
-      {
-        text: "3 weeks",
-        value: "3",
-      },
-    ],
+    items: recurringWeekItems,
   },
 ];
 
