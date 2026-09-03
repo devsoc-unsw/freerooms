@@ -11,9 +11,11 @@ import {
   queryBuildingsAndRooms,
   queryRoomUtilities,
 } from "./dbInterface";
-import { BuildingDatabase } from "./types";
+import { BuildingDatabase, SearchFilters } from "./types";
+import { start } from "repl";
 
 const FIFTEEN_MIN = 15 * 1000 * 60;
+const ONE_WEEK = 7 * 24 * 60 * 60 * 1000;
 
 // Get all bookings for a certain date
 export const getBookingsForDate = async (
@@ -37,6 +39,20 @@ export const getBookingsFromStartTime = async (startTime: Date) => {
   const endTime = zonedTimeToUtc(base, "Australia/Sydney");
   const res = await queryBookingsInRange(startTime, endTime);
   return Object.fromEntries(res.rooms.map((room) => [room.id, room]));
+};
+
+export const getsearchRangeEnd = (
+  start: Date,
+  filters: SearchFilters
+): Date => {
+  if (filters.recurring) {
+    const weeksAhead = filters.recurring - 1;
+    return new Date(start.getTime() + weeksAhead * ONE_WEEK + (filters.duration || 0) * 60 * 1000);
+  }
+
+  const base = utcToZonedTime(start, "Australia/Sydney");
+  base.setHours(23, 59);
+  return zonedTimeToUtc(base, "Australia/Sydney");
 };
 
 export const getBuildingRoomData = async (): Promise<BuildingDatabase> => {

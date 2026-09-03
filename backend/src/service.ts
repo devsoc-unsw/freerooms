@@ -13,6 +13,7 @@ import {
   getBookingsForRange,
   getBookingsFromStartTime,
   getBuildingRoomData,
+  getsearchRangeEnd,
   isRecurringFree,
 } from "./helpers";
 import { SearchFilters, StatusFilters } from "./types";
@@ -95,13 +96,8 @@ export const searchAllRoom = async (
   date: Date,
   filters: SearchFilters
 ): Promise<SearchResponse> => {
-  const bookings = await getBookingsFromStartTime(date);
-  const recurringBookings = filters.recurring
-    ? await getBookingsForRange(
-        date,
-        new Date(date.getTime() + 21 * 24 * 60 * 60 * 1000) // 3 weeks (21 days) from chosen time.
-      )
-    : null;
+  const rangeEnd = getsearchRangeEnd(date, filters);
+  const bookings = await getBookingsForRange(date, rangeEnd);
 
   const buildingData = await getBuildingRoomData();
   const result: SearchResponse = {};
@@ -121,6 +117,8 @@ export const searchAllRoom = async (
         (filters.id != undefined && (roomData.school != " ") != filters.id) // id is required if managed by a school (non-CATS)
       )
         continue;
+      
+        const roomBookings = bookings[roomData.id]?.bookings ?? [];
 
       const status = calculateStatus(
         date,
@@ -132,13 +130,12 @@ export const searchAllRoom = async (
         continue;
       }
 
-      if (filters.recurring && recurringBookings) {
-        const roomBookings = recurringBookings[roomData.id]?.bookings ?? [];
+      if (filters.recurring) {
         const available = isRecurringFree(
           date,
           filters.duration || 0,
           roomBookings,
-          3
+          filters.recurring
         );
 
         if (!available) {
