@@ -51,9 +51,9 @@ export const parseStatusFilters = (req: Request): StatusFilters => {
   }
 
   if (req.query.recurring) {
-    const recurring = req.query.recurring as string;
+    const recurring = parseInt(req.query.recurring as string);
 
-    if (recurring !== "3") {
+    if (isNaN(recurring) || recurring < 1 || recurring > 10) {
       throw new Error("Invalid recurring filter");
     }
     filters.recurring = recurring;
