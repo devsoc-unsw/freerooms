@@ -9,11 +9,9 @@ import {
 import { queryBookingsForRoom } from "./dbInterface";
 import {
   calculateStatus,
-  getBookingsForDate,
   getBookingsForRange,
-  getBookingsFromStartTime,
   getBuildingRoomData,
-  getsearchRangeEnd,
+  getSearchRangeEnd,
   isRecurringFree,
 } from "./helpers";
 import { SearchFilters, StatusFilters } from "./types";
@@ -52,7 +50,7 @@ export const getAllRoomStatus = async (
   date: Date,
   filters: StatusFilters
 ): Promise<StatusResponse> => {
-  const rangeEnd = getsearchRangeEnd(date, filters);
+  const rangeEnd = getSearchRangeEnd(date, filters);
   const bookings = await getBookingsForRange(date, rangeEnd);
   const buildingData = await getBuildingRoomData();
 
@@ -103,7 +101,7 @@ export const searchAllRoom = async (
   date: Date,
   filters: SearchFilters
 ): Promise<SearchResponse> => {
-  const rangeEnd = getsearchRangeEnd(date, filters);
+  const rangeEnd = getSearchRangeEnd(date, filters);
   const bookings = await getBookingsForRange(date, rangeEnd);
 
   const buildingData = await getBuildingRoomData();
@@ -129,7 +127,7 @@ export const searchAllRoom = async (
 
       const status = calculateStatus(
         date,
-        bookings[roomData.id].bookings,
+        roomBookings,
         filters.duration || 0
       );
 

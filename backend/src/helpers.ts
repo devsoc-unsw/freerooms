@@ -12,7 +12,6 @@ import {
   queryRoomUtilities,
 } from "./dbInterface";
 import { BuildingDatabase, StatusFilters } from "./types";
-import { start } from "repl";
 
 const FIFTEEN_MIN = 15 * 1000 * 60;
 const ONE_WEEK = 7 * 24 * 60 * 60 * 1000;
@@ -41,7 +40,7 @@ export const getBookingsFromStartTime = async (startTime: Date) => {
   return Object.fromEntries(res.rooms.map((room) => [room.id, room]));
 };
 
-export const getsearchRangeEnd = (
+export const getSearchRangeEnd = (
   start: Date,
   filters: StatusFilters
 ): Date => {
