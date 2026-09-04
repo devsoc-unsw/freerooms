@@ -57,7 +57,7 @@ const AllRoomsFilter: React.FC<{ filters: AllRoomsFilters }> = ({
 const StyledMainFilter = styled(Stack)(({ theme }) => ({
   alignItems: "stretch",
   flexDirection: "column",
-  flexGrow: 3,
+  flexGrow: 0,
 }));
 
 export default AllRoomsFilter;
