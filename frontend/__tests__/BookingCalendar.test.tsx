@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 
 import BookingCalendar from "../components/BookingCalendar";
 import store from "../redux/store";
+import toSydneyTime from "../utils/toSydneyTime";
 
 // Ref: https://stackoverflow.com/questions/56180772/jest-material-ui-correctly-mocking-usemediaquery
 function createMatchMedia(width: number) {
@@ -22,8 +23,8 @@ function createMatchMedia(width: number) {
   });
 }
 
-const start: Date = new Date();
-const end: Date = new Date();
+const start: Date = toSydneyTime(new Date());
+const end: Date = toSydneyTime(new Date());
 const events: Booking[] = [
   {
     name: "MARK5827 TUT",

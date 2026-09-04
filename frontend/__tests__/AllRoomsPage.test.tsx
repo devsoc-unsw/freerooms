@@ -9,6 +9,7 @@ import Room from "../components/AllRoomsRoom";
 import AllRoomsSearchBar from "../components/AllRoomsSearchBar";
 import NavBar from "../components/NavBar";
 import store from "../redux/store";
+import toSydneyTime from "../utils/toSydneyTime";
 import renderWithRedux from "./utils/renderWithRedux";
 
 // Mock DarkModeContext to avoid test failing due to importing NuqsAdapter
@@ -99,7 +100,7 @@ describe("AllRooms page", () => {
     it("renders AllRoomsRoom - Available", () => {
       const roomStatus = {
         status: "free" as const,
-        endtime: new Date().toISOString(),
+        endtime: toSydneyTime(new Date()).toISOString(),
       };
 
       render(
@@ -118,7 +119,7 @@ describe("AllRooms page", () => {
     it("renders AllRoomsRoom - Unavailable", () => {
       const roomStatus = {
         status: "busy" as const,
-        endtime: new Date().toISOString(),
+        endtime: toSydneyTime(new Date()).toISOString(),
       };
 
       render(
@@ -137,7 +138,7 @@ describe("AllRooms page", () => {
     it("renders AllRoomsRoom - Available Soon", () => {
       const roomStatus = {
         status: "soon" as const,
-        endtime: new Date().toISOString(),
+        endtime: toSydneyTime(new Date()).toISOString(),
       };
 
       render(
