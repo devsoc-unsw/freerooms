@@ -1,8 +1,10 @@
+import { formatInTimeZone, fromZonedTime } from "date-fns-tz";
 import { parseAsString, useQueryStates } from "nuqs";
 import { useEffect, useRef } from "react";
 import { selectDatetime, setDatetime } from "redux/datetimeSlice";
 
 import { useDispatch, useSelector } from "../redux/hooks";
+import { SYDNEY_TIMEZONE } from "../utils/toSydneyTime";
 
 const isValidDate = (date: string): boolean => {
   // Valid format is YYYY-MM-DD
@@ -49,28 +51,10 @@ const useQueryDatetime = () => {
       setDatetimeParams(invalidKeys);
     }
 
-    // Construct new Date object in UTC format from query parameters to Redux state
+    // Construct datetime string in Sydney time to store in Redux
     if ((date && isValidDate(date)) || (time && isValidTime(time))) {
-      const updateDate = new Date(datetime);
-
-      // Get the actual date in UTC format
-      if (date && isValidDate(date)) {
-        const currentDate = new Date(date);
-        updateDate.setFullYear(
-          currentDate.getFullYear(),
-          currentDate.getMonth(),
-          currentDate.getDate()
-        );
-      }
-
-      // Get the actual time in UTC format
-      if (time && isValidTime(time)) {
-        const [hours, minutes] = time.split(":").map(Number);
-        updateDate.setHours(hours, minutes, 0, 0);
-      }
-
-      // Update Redux datetime
-      dispatch(setDatetime(updateDate));
+      const sydneyDate = `${date || formatInTimeZone(datetime, SYDNEY_TIMEZONE, "yyyy-MM-dd")}T${time || formatInTimeZone(datetime, SYDNEY_TIMEZONE, "HH:mm")}:00`;
+      dispatch(setDatetime(fromZonedTime(sydneyDate, SYDNEY_TIMEZONE)));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
@@ -84,12 +68,14 @@ const useQueryDatetime = () => {
 
     // Set date to YYYY-MM-DD format
     const date =
-      datetime instanceof Date ? datetime.toISOString().split("T")[0] : null;
+      datetime instanceof Date
+        ? formatInTimeZone(datetime, SYDNEY_TIMEZONE, "yyyy-MM-dd")
+        : null;
 
     // Set time to HH:MM format
     const time =
       datetime instanceof Date
-        ? `${String(datetime.getHours()).padStart(2, "0")}:${String(datetime.getMinutes()).padStart(2, "0")}`
+        ? formatInTimeZone(datetime, SYDNEY_TIMEZONE, "HH:mm")
         : null;
 
     setDatetimeParams({ date, time });
