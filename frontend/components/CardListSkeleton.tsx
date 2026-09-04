@@ -9,7 +9,9 @@ const Grid = styled("div")({
 });
 
 const NUM_BUILDINGS = 44
+
 export default function CardListSkeleton() {
+
   return (
     <Grid>
       {Array.from({length: NUM_BUILDINGS}, (_, i) => (
