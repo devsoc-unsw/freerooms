@@ -12,6 +12,7 @@ import useStatus from "../hooks/useStatus";
 import useUserLocation from "../hooks/useUserLocation";
 import calculateDistance from "../utils/calculateDistance";
 import { getNumFreerooms } from "../utils/utils";
+import CardListSkeleton from "@frontend/components/CardListSkeleton";
 
 const FlipMoveGrid = styled(FlipMove)(({ theme }) => ({
   width: "100%",
@@ -133,7 +134,7 @@ const CardList: React.FC<{
       ))}
     </FlipMoveGrid>
   ) : (
-    <LoadingCircle />
+    <CardListSkeleton/>
   );
 };
 
