@@ -28,7 +28,7 @@
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
     "esri-loader": "^3.7.0",
-    "framer-motion": "^12.38.0",
+    "motion": "^12.38.0",
     "lucide-react": "^1.7.0",
     "mapbox-gl": "^3.24.0",
     "match-sorter": "^8.2.0",
