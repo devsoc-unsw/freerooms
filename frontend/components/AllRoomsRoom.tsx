@@ -1,4 +1,5 @@
 import { SearchResponseValue } from "@common/types";
+import getRoomHref from "@frontend/utils/getRoomHref";
 import {
   Card,
   CardActionArea,
@@ -10,7 +11,6 @@ import {
 import { RoomAvailabilityBoxProps } from "views/RoomAvailabilityBox";
 
 import RoomAvailability from "./RoomAvailability";
-import getRoomHref from "@frontend/utils/getRoomHref";
 
 type AllRoomsRoomProps = SearchResponseValue &
   Pick<RoomAvailabilityBoxProps, "roomNumber" | "date">;
