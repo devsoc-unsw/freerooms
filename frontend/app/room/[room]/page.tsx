@@ -204,7 +204,8 @@ const RoomPageHeader: React.FC<{
               alignItems: "center",
             }}
           >
-            <IconButton
+            {/* Remove the false when we actually want to use it*/}
+            {false && <IconButton
               onClick={onToggleFavourite}
               aria-label={
                 favourite ? "Remove as favourite" : "Add as favourite"
@@ -215,7 +216,7 @@ const RoomPageHeader: React.FC<{
               ) : (
                 <FavouriteBorderIcon />
               )}
-            </IconButton>
+            </IconButton>}
 
             <ViewOnMapButton buildingId={buildingId} />
 
