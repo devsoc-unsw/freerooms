@@ -1,9 +1,13 @@
+import type { Building } from "@common/types";
+import ViewOnMapButton from "@frontend/components/ViewOnMapButton";
 import CloseIcon from "@mui/icons-material/Close";
+import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
 import { Slide, Typography, useMediaQuery } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Drawer from "@mui/material/Drawer";
 import { styled, useTheme } from "@mui/material/styles";
+import { alpha } from "@mui/material/styles";
 import Image, { ImageProps } from "next/image";
 
 import Button from "../components/Button";
@@ -52,13 +56,34 @@ const RoomBox = styled(Box)<BoxProps>(({ theme }) => ({
 }));
 
 const CloseButton = styled(Button)(({ theme }) => ({
-  backgroundColor: theme.palette.background.paper,
+  backgroundColor: alpha(theme.palette.grey[500], 0.5),
 }));
+
+const DirectionsButton = styled(Button)(({ theme }) => ({
+  width: "100%",
+  marginTop: theme.spacing(1.5),
+  backgroundColor: theme.palette.primary.main,
+  color: theme.palette.primary.contrastText,
+
+  "&:hover": {
+    backgroundColor: theme.palette.primary.dark,
+  },
+}));
+
+type BuildingDrawerProps = {
+  onGetDirections?: (building: Building) => void | Promise<void>;
+  isDirectionsLoading?: boolean;
+  date?: string;
+};
 
 const drawerWidth = 400;
 const drawerWidthMobile = "100%";
 
-const BuildingDrawer: React.FC = () => {
+const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
+  onGetDirections,
+  isDirectionsLoading = false,
+  date,
+}) => {
   const dispatch = useDispatch();
   const building = useSelector(selectCurrentBuilding);
   const { status: rooms } = useBuildingStatus(building?.id ?? "");
@@ -69,7 +94,17 @@ const BuildingDrawer: React.FC = () => {
     return <></>;
   }
 
-  const onClose = () => dispatch(setCurrentBuilding(null));
+  const onClose = () => {
+    dispatch(setCurrentBuilding(null));
+  };
+
+  const handleGetDirections = () => {
+    if (!onGetDirections) {
+      return;
+    }
+
+    void onGetDirections(building);
+  };
 
   return (
     <Drawer
@@ -116,16 +151,13 @@ const BuildingDrawer: React.FC = () => {
                 ) : null}
               </StatusBox>
             </div>
+
             <CloseButton aria-label="Close" onClick={onClose}>
               <CloseIcon />
             </CloseButton>
           </AppBox>
 
-          <div
-            style={{
-              margin: 10,
-            }}
-          >
+          <div style={{ margin: 10 }}>
             <StyledImage
               alt={`Image of building ${building.id}`}
               src={`/assets/building_photos/${building.id}.webp`}
@@ -134,6 +166,26 @@ const BuildingDrawer: React.FC = () => {
               style={{ objectFit: "cover" }}
               priority={true}
             />
+
+            {onGetDirections ? (
+              <DirectionsButton
+                disabled={isDirectionsLoading}
+                startIcon={
+                  isDirectionsLoading ? (
+                    <CircularProgress size={18} color="inherit" />
+                  ) : (
+                    <DirectionsWalkIcon />
+                  )
+                }
+                onClick={handleGetDirections}
+              >
+                {isDirectionsLoading
+                  ? "Getting directions..."
+                  : "Get Directions"}
+              </DirectionsButton>
+            ) : (
+              <ViewOnMapButton buildingId={building.id} variant="full-width" />
+            )}
           </div>
 
           <RoomBox>
@@ -144,6 +196,7 @@ const BuildingDrawer: React.FC = () => {
                   roomNumber={roomNumber}
                   roomStatus={rooms.roomStatuses[roomNumber]}
                   buildingId={building.id}
+                  date={date}
                 />
               ))
             ) : (

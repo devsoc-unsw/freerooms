@@ -1,9 +1,13 @@
 "use client";
+import "swiper/css";
+import "swiper/css/navigation";
 
 import translateRoomUsage from "@common/roomUsages";
 import getSchoolDetails from "@common/schools";
 import type { Booking, Room } from "@common/types";
 import CloseIcon from "@mui/icons-material/Close";
+import FavouriteIcon from "@mui/icons-material/Favorite";
+import FavouriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import {
   Dialog,
   DialogContent,
@@ -11,7 +15,6 @@ import {
   DialogTitle,
   IconButton,
 } from "@mui/material";
-import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import Rating from "@mui/material/Rating";
@@ -20,7 +23,6 @@ import Typography from "@mui/material/Typography";
 import RoomRating from "components/Rating/RoomRating";
 import RoomUtilityTags from "components/RoomUtilityTags";
 import useRoomRatings from "hooks/useRoomRatings";
-import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useState } from "react";
 
@@ -29,10 +31,14 @@ import BookingCalendar from "../../../components/BookingCalendar";
 import FeedbackButton from "../../../components/FeedbackButton";
 import LoadingCircle from "../../../components/LoadingCircle";
 import RoomBackButton from "../../../components/RoomBackButton";
+import RoomPhotoCarousel from "../../../components/RoomPhotoCarousel";
+import ViewOnMapButton from "../../../components/ViewOnMapButton";
 import useBookings from "../../../hooks/useBookings";
 import useBuilding from "../../../hooks/useBuilding";
+import useFavourites from "../../../hooks/useFavourites";
 import useRoom from "../../../hooks/useRoom";
 import room_photos from "../../../public/room-photos.json";
+import { getBuildingIdFromRoomId } from "../../../utils/utils";
 
 const adjustDateIfMidnight = (inputDate: Date): Date => {
   // Check if the time is midnight (00:00:00)
@@ -63,6 +69,13 @@ export default function Page() {
   const { room } = useRoom(roomParam);
   const [campus, grid] = room ? room.id.split("-") : ["", ""];
   const { building } = useBuilding(`${campus}-${grid}`);
+  const { isFavourite, toggleFavourite } = useFavourites();
+
+  const roomPhotoUrls = room_photos[roomParam as keyof typeof room_photos];
+  const photos =
+    roomPhotoUrls && roomPhotoUrls.length > 0
+      ? roomPhotoUrls
+      : [`/assets/building_photos/${campus}-${grid}.webp`];
 
   return (
     <Container maxWidth="xl">
@@ -80,14 +93,13 @@ export default function Page() {
             paddingRight: { xs: 3, md: 15 },
           }}
         >
-          <RoomPageHeader room={room} buildingName={building.name} />
-          <RoomImage
-            src={
-              roomParam in room_photos
-                ? `${(room_photos as Record<string, string>)[roomParam]}`
-                : `/assets/building_photos/${campus}-${grid}.webp`
-            }
+          <RoomPageHeader
+            room={room}
+            buildingName={building.name}
+            favourite={isFavourite(room.id)}
+            onToggleFavourite={() => toggleFavourite(room.id)}
           />
+          <RoomPhotoCarousel photos={photos} />
           <BookingCalendar events={adjustedBookings ?? []} roomID={room.id} />
           <RoomUtilityTags roomId={room?.id} />
           <RoomRating buildingID={building.id} roomID={room.id} />
@@ -99,10 +111,12 @@ export default function Page() {
   );
 }
 
-const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
-  room,
-  buildingName,
-}) => {
+const RoomPageHeader: React.FC<{
+  room: Room;
+  buildingName: string;
+  favourite: boolean;
+  onToggleFavourite: () => void;
+}> = ({ room, buildingName, favourite, onToggleFavourite }) => {
   const [openDialog, setDialog] = useState(false);
 
   const toggleDialog = () => {
@@ -115,6 +129,7 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
     : "This room is managed externally by its associated school. Please contact the school to request a booking";
 
   const ratings = useRoomRatings(room.id);
+  const buildingId = getBuildingIdFromRoomId(room.id);
   const ratingValue = (() => {
     // round rating to nearest .5 if a rating exists
     if (!ratings || !ratings.data) return 0;
@@ -174,17 +189,45 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
           direction={{ xs: "column", sm: "row" }}
           sx={{
             justifyContent: "space-between",
+            alignItems: { xs: "stretch", sm: "start" },
             width: "100%",
           }}
         >
           <Typography variant="h4" sx={{ fontWeight: 550 }}>
             {room.name}
           </Typography>
-          <BookingButton
-            school={room.school}
-            usage={room.usage}
-            onClick={toggleDialog}
-          />
+
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{
+              alignItems: "center",
+            }}
+          >
+            {/* Remove the false when we actually want to use it*/}
+            {false && (
+              <IconButton
+                onClick={onToggleFavourite}
+                aria-label={
+                  favourite ? "Remove as favourite" : "Add as favourite"
+                }
+              >
+                {favourite ? (
+                  <FavouriteIcon color="primary" />
+                ) : (
+                  <FavouriteBorderIcon />
+                )}
+              </IconButton>
+            )}
+
+            <ViewOnMapButton buildingId={buildingId} />
+
+            <BookingButton
+              school={room.school}
+              usage={room.usage}
+              onClick={toggleDialog}
+            />
+          </Stack>
         </Stack>
 
         <Stack direction="row" spacing={2}>
@@ -271,24 +314,5 @@ const RoomPageHeader: React.FC<{ room: Room; buildingName: string }> = ({
         </DialogContent>
       </Dialog>
     </Stack>
-  );
-};
-
-const RoomImage: React.FC<{ src: string }> = ({ src }) => {
-  return (
-    <Box
-      sx={{
-        minWidth: "100%",
-        minHeight: 300,
-        position: "relative",
-      }}
-    >
-      <Image
-        src={src}
-        alt="Room Image"
-        fill
-        style={{ objectFit: "cover", borderRadius: 10 }}
-      />
-    </Box>
   );
 };

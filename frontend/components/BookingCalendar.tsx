@@ -3,6 +3,7 @@
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
 import { Booking } from "@common/types";
+import useBookingCalenderQuery from "@frontend/hooks/useBookingCalenderQuery";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import Box, { BoxProps } from "@mui/material/Box";
@@ -18,7 +19,7 @@ import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { format, getDay, isToday, parse, startOfWeek } from "date-fns";
+import { format, getDay, isSameDay, parse, startOfWeek } from "date-fns";
 import { enAU } from "date-fns/locale";
 import React from "react";
 import type { DateRange, View } from "react-big-calendar";
@@ -32,6 +33,7 @@ import {
 
 import { selectDatetime } from "../redux/datetimeSlice";
 import { useSelector } from "../redux/hooks";
+import toSydneyTime from "../utils/toSydneyTime";
 
 const ToolBarButton = styled(Button)(({ theme }) => ({
   borderColor: theme.palette.secondary.main,
@@ -165,15 +167,59 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
   // Enforce day view on mobile
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
-  const [desktopView, setDesktopView] = React.useState<View>(Views.WEEK);
+  const dateTime = useSelector(selectDatetime);
+  const defaultDate = React.useMemo(() => toSydneyTime(dateTime), [dateTime]);
+
+  const [desktopView, date, setDesktopView, setDate] =
+    useBookingCalenderQuery(defaultDate);
+
   const currView = isMobile ? Views.DAY : desktopView;
 
-  const datetime = useSelector(selectDatetime);
-  const [date, setDate] = React.useState<Date>(datetime);
-
   const handleDateChange = (newDate: Date | null) => {
-    setDate(newDate ?? datetime);
+    setDate(newDate ?? defaultDate);
   };
+
+  const calendarMin = React.useMemo(() => {
+    const DEFAULT_START_HOUR = 9;
+    const EARLIEST_ALLOWED_HOUR = 5;
+
+    const sydneyEvents = events.map((event) => ({
+      ...event,
+      start: toSydneyTime(event.start),
+      end: toSydneyTime(event.end),
+    }));
+
+    const visibleEvents = sydneyEvents.filter((event) => {
+      if (currView === Views.DAY) {
+        return (
+          event.start.getFullYear() === date.getFullYear() &&
+          event.start.getMonth() === date.getMonth() &&
+          event.start.getDate() === date.getDate()
+        );
+      }
+
+      const weekStart = startOfWeek(date, { weekStartsOn: 0 });
+      const weekEnd = new Date(weekStart);
+      weekEnd.setDate(weekEnd.getDate() + 7);
+
+      return event.start >= weekStart && event.start < weekEnd;
+    });
+
+    if (visibleEvents.length === 0) {
+      return new Date(0, 0, 0, DEFAULT_START_HOUR, 0, 0);
+    }
+
+    const earliestHour = Math.min(
+      ...visibleEvents.map((e) => e.start.getHours())
+    );
+
+    const startHour =
+      earliestHour < DEFAULT_START_HOUR
+        ? Math.max(EARLIEST_ALLOWED_HOUR, earliestHour)
+        : DEFAULT_START_HOUR;
+
+    return new Date(0, 0, 0, startHour, 0, 0);
+  }, [events, currView, date]);
 
   const { components, getNow, localizer, myEvents, scrollToTime } =
     React.useMemo(() => {
@@ -181,7 +227,7 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
         components: {
           toolbar: CustomToolBar,
         },
-        getNow: () => new Date(),
+        getNow: () => toSydneyTime(new Date()),
         localizer: dateFnsLocalizer({
           format,
           parse,
@@ -189,10 +235,14 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
           getDay,
           locales: enAU,
         }),
-        myEvents: events,
-        scrollToTime: datetime,
+        myEvents: events.map((event) => ({
+          ...event,
+          start: toSydneyTime(event.start),
+          end: toSydneyTime(event.end),
+        })),
+        scrollToTime: calendarMin,
       };
-    }, [datetime, events]);
+    }, [events, calendarMin]);
 
   const formatTime = (
     date: Date,
@@ -234,6 +284,10 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
   );
 
   const timeInDay = 24 * 60 * 60 * 1000;
+
+  // Render light / dark background based on whether today is in Sydney time.
+  const isTodaySydney = (date: Date) =>
+    isSameDay(date, toSydneyTime(new Date()));
 
   return (
     <Stack
@@ -353,14 +407,14 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
           slotGroupPropGetter={() => ({ style: { minHeight: "50px" } })}
           dayPropGetter={(date) => ({
             style: {
-              backgroundColor: isToday(date)
+              backgroundColor: isTodaySydney(date)
                 ? theme.palette.mode === "light"
                   ? "#fff3e0"
                   : grey[900]
                 : theme.palette.background.default,
             },
           })}
-          min={new Date(0, 0, 0, 9)}
+          min={calendarMin}
           showMultiDayTimes={true}
           formats={{
             timeGutterFormat: formatTime,
