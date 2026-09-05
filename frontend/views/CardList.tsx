@@ -1,4 +1,5 @@
 import { Building } from "@common/types";
+import CardListSkeleton from "@frontend/components/skeletons/CardListSkeleton";
 import { useMediaQuery } from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
 import React from "react";
@@ -6,7 +7,6 @@ import FlipMove from "react-flip-move";
 
 import BuildingCard from "../components/BuildingCard";
 import BuildingCardMobile from "../components/BuildingCardMobile";
-import LoadingCircle from "../components/LoadingCircle";
 import useBuildings from "../hooks/useBuildings";
 import useStatus from "../hooks/useStatus";
 import useUserLocation from "../hooks/useUserLocation";
@@ -133,7 +133,7 @@ const CardList: React.FC<{
       ))}
     </FlipMoveGrid>
   ) : (
-    <LoadingCircle />
+    <CardListSkeleton/>
   );
 };
 

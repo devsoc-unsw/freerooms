@@ -2,7 +2,6 @@ import StarIcon from "@mui/icons-material/Star";
 import { Typography, TypographyProps } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
-import CircularProgress from "@mui/material/CircularProgress";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import useBuildingRatings from "hooks/useBuildingRatings";
@@ -166,8 +165,9 @@ const BuildingCard: React.FC<{
               </Typography>
             </>
           ) : (
-            <CircularProgress size={20} thickness={5} disableShrink />
+            <div></div>
           )}
+
         </StatusBox>
       </ImageBox>
 
