@@ -5,6 +5,7 @@ import "swiper/css/navigation";
 import translateRoomUsage from "@common/roomUsages";
 import getSchoolDetails from "@common/schools";
 import type { Booking, Room } from "@common/types";
+import RoomPageSkeleton from "@frontend/components/skeletons/RoomPageSkeleton";
 import CloseIcon from "@mui/icons-material/Close";
 import FavouriteIcon from "@mui/icons-material/Favorite";
 import FavouriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -29,7 +30,6 @@ import React, { useState } from "react";
 import BookingButton from "../../../components/BookingButton";
 import BookingCalendar from "../../../components/BookingCalendar";
 import FeedbackButton from "../../../components/FeedbackButton";
-import LoadingCircle from "../../../components/LoadingCircle";
 import RoomBackButton from "../../../components/RoomBackButton";
 import RoomPhotoCarousel from "../../../components/RoomPhotoCarousel";
 import ViewOnMapButton from "../../../components/ViewOnMapButton";
@@ -39,7 +39,6 @@ import useFavourites from "../../../hooks/useFavourites";
 import useRoom from "../../../hooks/useRoom";
 import room_photos from "../../../public/room-photos.json";
 import { getBuildingIdFromRoomId } from "../../../utils/utils";
-import RoomPageSkeleton from "@frontend/components/RoomPageSkeleton";
 
 const adjustDateIfMidnight = (inputDate: Date): Date => {
   // Check if the time is midnight (00:00:00)

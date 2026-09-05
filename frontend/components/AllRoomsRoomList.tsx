@@ -1,8 +1,9 @@
 import { LinearProgress, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/system";
-import AllRoomsRoomListSkeleton from "./AllRoomsRoomListSkeleton";
 import AllRoomsSearchBar from "components/AllRoomsSearchBar";
+
+import AllRoomsRoomListSkeleton from "./skeletons/AllRoomsRoomListSkeleton";
 
 const StyledStack = styled(Stack)(({ theme }) => ({
   flexDirection: "column",

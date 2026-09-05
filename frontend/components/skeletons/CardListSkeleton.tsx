@@ -1,5 +1,6 @@
-import BuildingCardSkeleton from "./BuildingCardSkeleton";
 import { styled } from "@mui/material/styles";
+
+import BuildingCardSkeleton from "./BuildingCardSkeleton";
 
 const Grid = styled("div")({
   width: "100%",

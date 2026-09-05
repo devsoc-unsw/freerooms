@@ -1,6 +1,6 @@
+import Box, { BoxProps } from "@mui/material/Box";
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
-import Box, { BoxProps } from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 
 const MainBox = styled(Box)<BoxProps>(({ theme }) => ({

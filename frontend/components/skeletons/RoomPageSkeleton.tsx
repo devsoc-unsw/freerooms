@@ -150,7 +150,7 @@ const RoomRatingSkeleton = () => (
 
     <Stack direction={{ xs: "column", sm: "row" }} sx={{ gap: 4, alignItems: "center" }}>
       {/* DecimalStarRating: overall rating box */}
-      <Stack sx={{ alignItems: "center", gap: 0.25, pb: 2}}>
+      <Stack sx={{ alignItems: "center", gap: 0.25, pb: 2 }}>
         <Skeleton animation="wave" variant="text" width={70} sx={{ fontSize: 75 }} />
         <Skeleton animation="wave" variant="rounded" width={120} height={24} />
       </Stack>

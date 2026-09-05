@@ -1,8 +1,10 @@
 import { Building } from "@common/types";
+import CardListSkeleton from "@frontend/components/skeletons/CardListSkeleton";
 import { useMediaQuery } from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
 import React from "react";
 import FlipMove from "react-flip-move";
+
 import BuildingCard from "../components/BuildingCard";
 import BuildingCardMobile from "../components/BuildingCardMobile";
 import useBuildings from "../hooks/useBuildings";
@@ -10,7 +12,6 @@ import useStatus from "../hooks/useStatus";
 import useUserLocation from "../hooks/useUserLocation";
 import calculateDistance from "../utils/calculateDistance";
 import { getNumFreerooms } from "../utils/utils";
-import CardListSkeleton from "@frontend/components/CardListSkeleton";
 
 const FlipMoveGrid = styled(FlipMove)(({ theme }) => ({
   width: "100%",
