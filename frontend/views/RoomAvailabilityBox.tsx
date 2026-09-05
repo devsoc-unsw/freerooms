@@ -1,4 +1,5 @@
 import { RoomStatus } from "@common/types";
+import getRoomHref from "@frontend/utils/getRoomHref";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import { Typography, TypographyProps } from "@mui/material";
@@ -60,12 +61,14 @@ export interface RoomAvailabilityBoxProps {
   roomNumber: string;
   roomStatus: RoomStatus;
   buildingId: string;
+  date?: string;
 }
 
 const RoomAvailabilityBox: React.FC<RoomAvailabilityBoxProps> = ({
   roomNumber,
   roomStatus,
   buildingId,
+  date,
 }) => {
   const { room } = useRoom(`${buildingId}-${roomNumber}`);
   const { data } = useRoomRatings(room ? room.id : "");
@@ -86,8 +89,10 @@ const RoomAvailabilityBox: React.FC<RoomAvailabilityBoxProps> = ({
       ? photos[0]
       : `/assets/building_photos/${buildingId}.webp`;
 
+  const roomHref = getRoomHref(`${buildingId}-${roomNumber}`, date);
+
   return (
-    <Link href={`/room/${buildingId}-${roomNumber}`}>
+    <Link href={roomHref}>
       <IndiviRoomBox bgImage={`url(${photoURL})`}>
         <Stack direction="column">
           <RoomBoxHeading> {roomNumber} </RoomBoxHeading>

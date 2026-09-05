@@ -168,4 +168,48 @@ describe("AllRooms page", () => {
       expect(enterTime).not.toHaveValue("01:00 PM");
     });
   });
+
+  it("room link includes selected date", () => {
+    const roomStatus = {
+      status: "free" as const,
+      endtime: toSydneyTime(new Date()).toISOString(),
+    };
+
+    render(
+      <ThemeProvider theme={createTheme({})}>
+        <Room
+          name="Ainsworth G03"
+          roomNumber="K-H13-1003"
+          date="2026-09-16"
+          {...roomStatus}
+        />
+      </ThemeProvider>
+    );
+
+    const room = screen.getByRole("link");
+
+    expect(room).toHaveAttribute("href", "/room/K-H13-1003?date=2026-09-16");
+  });
+
+  it("room link does not include invalid date", () => {
+    const roomStatus = {
+      status: "free" as const,
+      endtime: toSydneyTime(new Date()).toISOString(),
+    };
+
+    render(
+      <ThemeProvider theme={createTheme({})}>
+        <Room
+          name="Ainsworth G03"
+          roomNumber="K-H13-1003"
+          date="invalid-date"
+          {...roomStatus}
+        />
+      </ThemeProvider>
+    );
+
+    const room = screen.getByRole("link");
+
+    expect(room).toHaveAttribute("href", "/room/K-H13-1003");
+  });
 });

@@ -73,6 +73,7 @@ const DirectionsButton = styled(Button)(({ theme }) => ({
 type BuildingDrawerProps = {
   onGetDirections?: (building: Building) => void | Promise<void>;
   isDirectionsLoading?: boolean;
+  date?: string;
 };
 
 const drawerWidth = 400;
@@ -81,6 +82,7 @@ const drawerWidthMobile = "100%";
 const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
   onGetDirections,
   isDirectionsLoading = false,
+  date,
 }) => {
   const dispatch = useDispatch();
   const building = useSelector(selectCurrentBuilding);
@@ -194,6 +196,7 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
                   roomNumber={roomNumber}
                   roomStatus={rooms.roomStatuses[roomNumber]}
                   buildingId={building.id}
+                  date={date}
                 />
               ))
             ) : (

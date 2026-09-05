@@ -6,6 +6,7 @@ import { styled } from "@mui/material/styles";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { enAU } from "date-fns/locale";
+import { parseAsString, useQueryState } from "nuqs";
 import React, { Suspense } from "react";
 import BuildingDrawer from "views/BuildingDrawer";
 
@@ -21,6 +22,7 @@ import CardList from "../../views/CardList";
 const BrowseContent = () => {
   const [sort, setSort] = useQuerySort();
   const [query, setQuery] = React.useState<string>("");
+  const [date] = useQueryState("date", parseAsString.withDefault(""));
 
   return (
     <Container maxWidth={false}>
@@ -73,7 +75,7 @@ const BrowseContent = () => {
           <CardList sort={sort} query={query} />
         </Tiles>
       </LocalizationProvider>
-      <BuildingDrawer />
+      <BuildingDrawer date={date} />
     </Container>
   );
 };
