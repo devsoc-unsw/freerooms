@@ -43,6 +43,7 @@ export type Filters = {
   usage?: string;
   location?: string;
   duration?: string;
+  recurring?: string;
   id?: string;
 };
 
@@ -51,6 +52,7 @@ export type AllRoomsFilters = {
   usage?: string;
   location?: string;
   duration?: string;
+  recurring?: string;
   id?: string;
 };
 

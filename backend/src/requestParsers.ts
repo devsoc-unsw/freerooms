@@ -50,6 +50,15 @@ export const parseStatusFilters = (req: Request): StatusFilters => {
     filters.duration = duration;
   }
 
+  if (req.query.recurring) {
+    const recurring = parseInt(req.query.recurring as string);
+
+    if (isNaN(recurring) || recurring < 1 || recurring > 10) {
+      throw new Error("Invalid recurring filter");
+    }
+    filters.recurring = recurring;
+  }
+
   if (req.query.usage) {
     const usage = req.query.usage as string;
     if (!Object.keys(roomUsages).includes(usage)) {

@@ -5,6 +5,8 @@ import { styled } from "@mui/system";
 const StyledStack = styled(Stack)(({ theme }) => ({
   flexDirection: "column",
   overflowY: "scroll",
+  flexGrow: 1,
+  minWidth: 0,
   [theme.breakpoints.down("sm")]: {
     maxHeight: "calc(100vh - 90px)",
   },

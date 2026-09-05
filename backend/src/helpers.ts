@@ -11,9 +11,10 @@ import {
   queryBuildingsAndRooms,
   queryRoomUtilities,
 } from "./dbInterface";
-import { BuildingDatabase } from "./types";
+import { BuildingDatabase, StatusFilters } from "./types";
 
 const FIFTEEN_MIN = 15 * 1000 * 60;
+const ONE_WEEK = 7 * 24 * 60 * 60 * 1000;
 
 // Get all bookings for a certain date
 export const getBookingsForDate = async (
@@ -37,6 +38,20 @@ export const getBookingsFromStartTime = async (startTime: Date) => {
   const endTime = zonedTimeToUtc(base, "Australia/Sydney");
   const res = await queryBookingsInRange(startTime, endTime);
   return Object.fromEntries(res.rooms.map((room) => [room.id, room]));
+};
+
+export const getSearchRangeEnd = (
+  start: Date,
+  filters: StatusFilters
+): Date => {
+  if (filters.recurring) {
+    const weeksAhead = filters.recurring - 1;
+    return new Date(start.getTime() + weeksAhead * ONE_WEEK + (filters.duration || 0) * 60 * 1000);
+  }
+
+  const base = utcToZonedTime(start, "Australia/Sydney");
+  base.setHours(23, 59);
+  return zonedTimeToUtc(base, "Australia/Sydney");
 };
 
 export const getBuildingRoomData = async (): Promise<BuildingDatabase> => {
@@ -134,4 +149,43 @@ export const calculateStatus = (
   }
 
   return roomStatus;
+};
+
+// Checks if a specific time slot is available.
+export const isSlotFree = (
+  start: Date,
+  duration: number,
+  bookings: Booking[]
+): boolean => {
+  const end = new Date(start.getTime() + duration * 60 * 1000);
+
+  // return true if specific timeframe has no bookings at all.
+  return !bookings.some((booking) => {
+    return start < booking.end && end > booking.start;
+  });
+};
+
+// Checks if a room is available at the chosen time for multiple weeks.
+// Used for the recurring filter feature
+export const isRecurringFree = (
+  start: Date,
+  duration: number,
+  bookings: Booking[],
+  weeks: number
+): boolean => {
+  for (let i = 0; i < weeks; i++) {
+    const occurence = new Date(start);
+    occurence.setDate(start.getDate() + i * 7);
+
+    if (!isSlotFree(occurence, duration, bookings)) {
+      return false;
+    }
+  }
+  return true;
+};
+
+// Gets all bookings affecting rooms within a given datetime range.
+export const getBookingsForRange = async (start: Date, end: Date) => {
+  const res = await queryBookingsInRange(start, end);
+  return Object.fromEntries(res.rooms.map((room) => [room.id, room]));
 };

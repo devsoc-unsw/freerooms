@@ -38,6 +38,7 @@ describe("DropdownSelections", () => {
             usage: "",
             location: "",
             duration: "",
+            recurring: "",
             id: "",
           }}
           handleSelect={(key, item) => {

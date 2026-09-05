@@ -9,9 +9,10 @@ import {
 import { queryBookingsForRoom } from "./dbInterface";
 import {
   calculateStatus,
-  getBookingsForDate,
-  getBookingsFromStartTime,
+  getBookingsForRange,
   getBuildingRoomData,
+  getSearchRangeEnd,
+  isRecurringFree,
 } from "./helpers";
 import { SearchFilters, StatusFilters } from "./types";
 
@@ -49,7 +50,8 @@ export const getAllRoomStatus = async (
   date: Date,
   filters: StatusFilters
 ): Promise<StatusResponse> => {
-  const bookings = await getBookingsForDate(date);
+  const rangeEnd = getSearchRangeEnd(date, filters);
+  const bookings = await getBookingsForRange(date, rangeEnd);
   const buildingData = await getBuildingRoomData();
 
   const result: StatusResponse = {};
@@ -74,15 +76,21 @@ export const getAllRoomStatus = async (
       )
         continue;
 
+      const roomBookings = bookings[roomData.id]?.bookings ?? [];
       const status = calculateStatus(
         date,
-        bookings[roomData.id].bookings,
+        roomBookings,
         filters.duration || 0
       );
-      if (status !== null) {
-        if (status.status === "free") result[buildingId].numAvailable++;
-        result[buildingId].roomStatuses[roomNumber] = status;
+
+      if (status == null) continue;
+
+      if (filters.recurring && !isRecurringFree(date, filters.duration || 0, roomBookings, filters.recurring)) {
+        continue;
       }
+
+      if (status.status == "free") result[buildingId].numAvailable++;
+      result[buildingId].roomStatuses[roomNumber] = status;
     }
   }
 
@@ -93,7 +101,8 @@ export const searchAllRoom = async (
   date: Date,
   filters: SearchFilters
 ): Promise<SearchResponse> => {
-  const bookings = await getBookingsFromStartTime(date);
+  const rangeEnd = getSearchRangeEnd(date, filters);
+  const bookings = await getBookingsForRange(date, rangeEnd);
 
   const buildingData = await getBuildingRoomData();
   const result: SearchResponse = {};
@@ -113,15 +122,30 @@ export const searchAllRoom = async (
         (filters.id != undefined && (roomData.school != " ") != filters.id) // id is required if managed by a school (non-CATS)
       )
         continue;
+      
+        const roomBookings = bookings[roomData.id]?.bookings ?? [];
 
       const status = calculateStatus(
         date,
-        bookings[roomData.id].bookings,
+        roomBookings,
         filters.duration || 0
       );
 
       if (status === null) {
         continue;
+      }
+
+      if (filters.recurring) {
+        const available = isRecurringFree(
+          date,
+          filters.duration || 0,
+          roomBookings,
+          filters.recurring
+        );
+
+        if (!available) {
+          continue;
+        }
       }
 
       result[`${buildingId}-${roomNumber}`] = {
