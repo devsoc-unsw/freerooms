@@ -121,7 +121,7 @@ describe("Booking Calendar Desktop", () => {
 
     const dayButton = screen.getByRole("button", { name: "Day" });
 
-    expect(dayButton).toHaveClass("rbc-active");
+    expect(dayButton).toHaveAttribute("aria-pressed", "true");
   });
 });
 

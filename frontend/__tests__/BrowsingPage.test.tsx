@@ -31,7 +31,7 @@ jest.mock("nuqs", () => ({
   },
 }));
 
-jest.mock("views/BuildingDrawer", () => ({
+jest.mock("../views/BuildingDrawer", () => ({
   __esModule: true,
   default: ({ date }: { date?: string }) => (
     <div data-testid="building-drawer" data-date={date} />
