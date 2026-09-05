@@ -75,7 +75,6 @@ function AllRoomsContent() {
         <StyledBody>
           <AllRoomsFilter filters={filters} />
           <RoomList isValidating={isValidating}>
-            <AllRoomsSearchBar />
             {roomsDisplay}
             {visibleRooms < totalRooms && (
               <Button

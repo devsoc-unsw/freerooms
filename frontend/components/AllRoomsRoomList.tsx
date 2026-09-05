@@ -1,6 +1,8 @@
 import { LinearProgress, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/system";
+import AllRoomsRoomListSkeleton from "./AllRoomsRoomListSkeleton";
+import AllRoomsSearchBar from "components/AllRoomsSearchBar";
 
 const StyledStack = styled(Stack)(({ theme }) => ({
   flexDirection: "column",
@@ -22,24 +24,26 @@ const RoomList = ({
 }) => {
   return (
     <StyledStack>
+      <AllRoomsSearchBar />
       {isValidating ? (
-        <Stack
-          sx={{
-            maxWidth: 540,
-            flex: 1,
-            width: "100%",
-          }}
-        >
-          <LinearProgress />
-          <Typography
-            sx={{
-              alignSelf: "center",
-              marginTop: 1,
-            }}
-          >
-            Loading free rooms
-          </Typography>
-        </Stack>
+        <AllRoomsRoomListSkeleton/>
+        // <Stack
+        //   sx={{
+        //     maxWidth: 540,
+        //     flex: 1,
+        //     width: "100%",
+        //   }}
+        // >
+        //   <LinearProgress />
+        //   <Typography
+        //     sx={{
+        //       alignSelf: "center",
+        //       marginTop: 1,
+        //     }}
+        //   >
+        //     Loading free rooms
+        //   </Typography>
+        // </Stack>
       ) : (
         children
       )}

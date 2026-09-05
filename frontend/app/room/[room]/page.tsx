@@ -39,6 +39,7 @@ import useFavourites from "../../../hooks/useFavourites";
 import useRoom from "../../../hooks/useRoom";
 import room_photos from "../../../public/room-photos.json";
 import { getBuildingIdFromRoomId } from "../../../utils/utils";
+import RoomPageSkeleton from "@frontend/components/RoomPageSkeleton";
 
 const adjustDateIfMidnight = (inputDate: Date): Date => {
   // Check if the time is midnight (00:00:00)
@@ -105,7 +106,7 @@ export default function Page() {
           <RoomRating buildingID={building.id} roomID={room.id} />
         </Stack>
       ) : (
-        <LoadingCircle />
+        <RoomPageSkeleton/>
       )}
     </Container>
   );
