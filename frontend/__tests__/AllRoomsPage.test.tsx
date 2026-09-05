@@ -10,6 +10,7 @@ import AllRoomsSearchBar from "../components/AllRoomsSearchBar";
 import NavBar from "../components/NavBar";
 import store from "../redux/store";
 import toSydneyTime from "../utils/toSydneyTime";
+import renderWithRedux from "./utils/renderWithRedux";
 
 // Mock DarkModeContext to avoid test failing due to importing NuqsAdapter
 jest.mock("../app/clientLayout", () => ({
@@ -42,7 +43,6 @@ jest.mock("nuqs", () => ({
     withDefault: (defaultValue: string) => ({ defaultValue }),
   },
 }));
-import renderWithRedux from "./utils/renderWithRedux";
 
 describe("AllRooms page", () => {
   it("renders AllRooms top icon", () => {
