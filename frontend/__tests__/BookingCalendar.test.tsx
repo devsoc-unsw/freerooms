@@ -9,6 +9,15 @@ import BookingCalendar from "../components/BookingCalendar";
 import store from "../redux/store";
 import toSydneyTime from "../utils/toSydneyTime";
 
+const mockUseQueryStates = jest.fn();
+
+jest.mock("nuqs", () => ({
+  useQueryStates: (...args: unknown[]) => mockUseQueryStates(...args),
+  parseAsString: {
+    withDefault: (defaultValue: string) => ({ defaultValue }),
+  },
+}));
+
 // Ref: https://stackoverflow.com/questions/56180772/jest-material-ui-correctly-mocking-usemediaquery
 function createMatchMedia(width: number) {
   return (query: string): MediaQueryList => ({
@@ -33,6 +42,18 @@ const events: Booking[] = [
     end: end,
   },
 ];
+
+beforeEach(() => {
+  window.matchMedia = createMatchMedia(1024);
+
+  mockUseQueryStates.mockReturnValue([
+    {
+      view: "week",
+      date: "",
+    },
+    jest.fn(),
+  ]);
+});
 
 describe("Booking Calendar Desktop", () => {
   it("renders the calendar", () => {
@@ -61,6 +82,46 @@ describe("Booking Calendar Desktop", () => {
 
     expect(beforeButton).not.toBeInTheDocument();
     expect(nextButton).not.toBeInTheDocument();
+  });
+
+  it("uses date from query parameters", () => {
+    mockUseQueryStates.mockReturnValue([
+      {
+        view: "week",
+        date: "2026-09-11",
+      },
+      jest.fn(),
+    ]);
+
+    render(
+      <Provider store={store}>
+        <BookingCalendar events={events} roomID="test-room" />
+      </Provider>
+    );
+
+    const datePicker = screen.getByDisplayValue("Fri, 11 Sep 2026");
+
+    expect(datePicker).toBeInTheDocument();
+  });
+
+  it("uses view from query parameters", () => {
+    mockUseQueryStates.mockReturnValue([
+      {
+        view: "day",
+        date: "2026-09-11",
+      },
+      jest.fn(),
+    ]);
+
+    render(
+      <Provider store={store}>
+        <BookingCalendar events={events} roomID="test-room" />
+      </Provider>
+    );
+
+    const dayButton = screen.getByRole("button", { name: "Day" });
+
+    expect(dayButton).toHaveClass("rbc-active");
   });
 });
 
