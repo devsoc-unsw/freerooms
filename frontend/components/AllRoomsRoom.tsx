@@ -10,16 +10,19 @@ import {
 import { RoomAvailabilityBoxProps } from "views/RoomAvailabilityBox";
 
 import RoomAvailability from "./RoomAvailability";
+import getRoomHref from "@frontend/utils/getRoomHref";
 
 type AllRoomsRoomProps = SearchResponseValue &
-  Pick<RoomAvailabilityBoxProps, "roomNumber">;
+  Pick<RoomAvailabilityBoxProps, "roomNumber" | "date">;
 
 const Room: React.FC<AllRoomsRoomProps> = ({
   name,
   roomNumber,
+  date,
   ...roomStatus
 }) => {
   const theme = useTheme();
+  const roomHref = getRoomHref(roomNumber, date);
 
   return (
     <Card
@@ -30,7 +33,7 @@ const Room: React.FC<AllRoomsRoomProps> = ({
         overflow: "visible",
       }}
     >
-      <CardActionArea href={`/room/${roomNumber}`} target="_blank">
+      <CardActionArea href={roomHref} target="_blank">
         <CardContent>
           <Stack
             direction="row"
