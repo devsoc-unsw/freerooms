@@ -205,18 +205,20 @@ const RoomPageHeader: React.FC<{
             }}
           >
             {/* Remove the false when we actually want to use it*/}
-            {false && <IconButton
-              onClick={onToggleFavourite}
-              aria-label={
-                favourite ? "Remove as favourite" : "Add as favourite"
-              }
-            >
-              {favourite ? (
-                <FavouriteIcon color="primary" />
-              ) : (
-                <FavouriteBorderIcon />
-              )}
-            </IconButton>}
+            {false && (
+              <IconButton
+                onClick={onToggleFavourite}
+                aria-label={
+                  favourite ? "Remove as favourite" : "Add as favourite"
+                }
+              >
+                {favourite ? (
+                  <FavouriteIcon color="primary" />
+                ) : (
+                  <FavouriteBorderIcon />
+                )}
+              </IconButton>
+            )}
 
             <ViewOnMapButton buildingId={buildingId} />
 
