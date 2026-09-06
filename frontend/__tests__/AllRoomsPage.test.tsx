@@ -9,7 +9,40 @@ import Room from "../components/AllRoomsRoom";
 import AllRoomsSearchBar from "../components/AllRoomsSearchBar";
 import NavBar from "../components/NavBar";
 import store from "../redux/store";
+import toSydneyTime from "../utils/toSydneyTime";
 import renderWithRedux from "./utils/renderWithRedux";
+
+// Mock DarkModeContext to avoid test failing due to importing NuqsAdapter
+jest.mock("../app/clientLayout", () => ({
+  DarkModeContext: require("react").createContext({
+    isDarkMode: false,
+    toggleDarkMode: () => {},
+  }),
+}));
+
+// Mock next/navigation since the app router is not mounted in the test environment.
+jest.mock("next/navigation", () => ({
+  useRouter: () => ({ replace: jest.fn() }),
+  useSearchParams: () => new URLSearchParams(),
+  usePathname: () => "/all-rooms",
+}));
+
+// Mock nuqs
+jest.mock("nuqs", () => ({
+  useQueryState: (_key: string, options: { defaultValue: string }) => [
+    options.defaultValue,
+    jest.fn(),
+  ],
+  useQueryStates: (keys: Record<string, { defaultValue: string }>) => [
+    Object.fromEntries(
+      Object.entries(keys).map(([key, options]) => [key, options.defaultValue])
+    ),
+    jest.fn(),
+  ],
+  parseAsString: {
+    withDefault: (defaultValue: string) => ({ defaultValue }),
+  },
+}));
 
 describe("AllRooms page", () => {
   it("renders AllRooms top icon", () => {
@@ -65,7 +98,7 @@ describe("AllRooms page", () => {
     it("renders AllRoomsRoom - Available", () => {
       const roomStatus = {
         status: "free" as const,
-        endtime: new Date().toISOString(),
+        endtime: toSydneyTime(new Date()).toISOString(),
       };
 
       render(
@@ -84,7 +117,7 @@ describe("AllRooms page", () => {
     it("renders AllRoomsRoom - Unavailable", () => {
       const roomStatus = {
         status: "busy" as const,
-        endtime: new Date().toISOString(),
+        endtime: toSydneyTime(new Date()).toISOString(),
       };
 
       render(
@@ -103,7 +136,7 @@ describe("AllRooms page", () => {
     it("renders AllRoomsRoom - Available Soon", () => {
       const roomStatus = {
         status: "soon" as const,
-        endtime: new Date().toISOString(),
+        endtime: toSydneyTime(new Date()).toISOString(),
       };
 
       render(
@@ -134,5 +167,49 @@ describe("AllRooms page", () => {
 
       expect(enterTime).not.toHaveValue("01:00 PM");
     });
+  });
+
+  it("room link includes selected date", () => {
+    const roomStatus = {
+      status: "free" as const,
+      endtime: toSydneyTime(new Date()).toISOString(),
+    };
+
+    render(
+      <ThemeProvider theme={createTheme({})}>
+        <Room
+          name="Ainsworth G03"
+          roomNumber="K-H13-1003"
+          date="2026-09-16"
+          {...roomStatus}
+        />
+      </ThemeProvider>
+    );
+
+    const room = screen.getByRole("link");
+
+    expect(room).toHaveAttribute("href", "/room/K-H13-1003?date=2026-09-16");
+  });
+
+  it("room link does not include invalid date", () => {
+    const roomStatus = {
+      status: "free" as const,
+      endtime: toSydneyTime(new Date()).toISOString(),
+    };
+
+    render(
+      <ThemeProvider theme={createTheme({})}>
+        <Room
+          name="Ainsworth G03"
+          roomNumber="K-H13-1003"
+          date="invalid-date"
+          {...roomStatus}
+        />
+      </ThemeProvider>
+    );
+
+    const room = screen.getByRole("link");
+
+    expect(room).toHaveAttribute("href", "/room/K-H13-1003");
   });
 });

@@ -5,7 +5,8 @@ import Stack from "@mui/material/Stack";
 import { styled } from "@mui/system";
 import AllRoomsSearchBar from "components/AllRoomsSearchBar";
 import useAllRooms from "hooks/useAllRooms";
-import { useMemo, useState } from "react";
+import { parseAsString, useQueryState } from "nuqs";
+import { Suspense, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectAllRoomsFilters } from "redux/allRoomsFilterSlice";
 
@@ -14,10 +15,11 @@ import Room from "../../components/AllRoomsRoom";
 import RoomList from "../../components/AllRoomsRoomList";
 import FeedbackButton from "../../components/FeedbackButton";
 
-export default function Page() {
+function AllRoomsContent() {
   const filters = useSelector(selectAllRoomsFilters);
   const { rooms, isValidating } = useAllRooms(filters);
   const [visibleRooms, setVisibleRooms] = useState(20);
+  const [date] = useQueryState("date", parseAsString.withDefault(""));
 
   const roomsDisplay = useMemo(() => {
     if (!rooms) return;
@@ -43,10 +45,11 @@ export default function Page() {
           name={name}
           status={status}
           endtime={endtime}
+          date={date}
         />
       );
     });
-  }, [rooms, visibleRooms]);
+  }, [rooms, visibleRooms, date]);
 
   const handleLoadMore = () => {
     setVisibleRooms((prev) => prev + 20);
@@ -102,3 +105,11 @@ const StyledBody = styled(Stack)(({ theme }) => ({
     flexDirection: "column",
   },
 }));
+
+export default function Page() {
+  return (
+    <Suspense fallback={null}>
+      <AllRoomsContent />
+    </Suspense>
+  );
+}

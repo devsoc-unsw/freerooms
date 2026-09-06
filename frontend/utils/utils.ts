@@ -18,3 +18,8 @@ export const getTotalRooms = (
 
   return Object.values(buildingStatus.roomStatuses).length;
 };
+
+//gets the building id from a room id
+export const getBuildingIdFromRoomId = (roomId: string): string => {
+  return roomId.split("-").slice(0, 2).join("-");
+};

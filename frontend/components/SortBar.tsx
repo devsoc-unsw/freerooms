@@ -9,7 +9,7 @@ import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
 
-import { DropDownItem } from "../types";
+import { sortBarDropdown } from "../utils/constants";
 
 const StyledSortButton = styled(Box)<BoxProps>(({ theme }) => ({
   height: 56,
@@ -105,7 +105,7 @@ const SortBar: React.FC<{
                   Sort
                 </Typography>
               </StyledHeader>
-              {dropdowns.map((dropdown) => (
+              {sortBarDropdown.map((dropdown) => (
                 <StyledBox key={dropdown.value}>
                   <FormControlLabel
                     control={
@@ -132,33 +132,5 @@ const SortBar: React.FC<{
     </ClickAwayListener>
   );
 };
-
-// Dropdowns and items.
-const dropdowns: DropDownItem[] = [
-  {
-    text: "Most Available Rooms",
-    value: "mostRooms",
-  },
-  {
-    text: "Nearest",
-    value: "nearest",
-  },
-  {
-    text: "Alphabetical",
-    value: "alphabetical",
-  },
-  {
-    text: "Reverse Alphabetical",
-    value: "reverseAlphabetical",
-  },
-  {
-    text: "Lower Campus",
-    value: "lowerToUpper",
-  },
-  {
-    text: "Upper Campus",
-    value: "upperToLower",
-  },
-];
 
 export default SortBar;

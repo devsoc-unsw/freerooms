@@ -18,14 +18,13 @@ const API_CONFIG: Record<string, string> = Object.freeze({
 
 export const API_URL: string = API_CONFIG[env] + "/api";
 
-// Google Maps API Keys
-const DEV_KEY = "AIzaSyA8CNPhNUvBjLwxGPQ0mBZU5MJSVopEb2o";
-const PROD_KEY = "AIzaSyAfwBfVaKd7bzJlTGa2MJyijm_wDH68lKM";
+export const MAPBOX_ACCESS_TOKEN =
+  process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN ?? "";
 
-const GOOGLE_API_CONFIG: Record<string, string> = Object.freeze({
-  [Env.DEV]: DEV_KEY,
-  [Env.PROD]: PROD_KEY,
-  [Env.STAGING]: PROD_KEY,
-});
+export const MAPBOX_STYLE_LIGHT =
+  process.env.NEXT_PUBLIC_MAPBOX_STYLE_LIGHT ??
+  "mapbox://styles/mapbox/light-v11";
 
-export const GOOGLE_API_KEY = GOOGLE_API_CONFIG[env];
+export const MAPBOX_STYLE_DARK =
+  process.env.NEXT_PUBLIC_MAPBOX_STYLE_DARK ??
+  "mapbox://styles/mapbox/dark-v11";

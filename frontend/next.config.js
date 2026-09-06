@@ -4,6 +4,7 @@ const nextConfig = {
   experimental: {
     externalDir: true,
   },
+  transpilePackages: ["swiper", "ssr-window", "dom7"],
   images: {
     remotePatterns: [
       {
