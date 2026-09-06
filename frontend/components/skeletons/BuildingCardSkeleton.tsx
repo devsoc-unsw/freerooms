@@ -1,6 +1,6 @@
 import Box, { BoxProps } from "@mui/material/Box";
-import Skeleton from '@mui/material/Skeleton';
-import Stack from '@mui/material/Stack';
+import Skeleton from "@mui/material/Skeleton";
+import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 
 const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
@@ -16,23 +16,52 @@ const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
 }));
 
 export default function BuildingCardSkeleton() {
-  
-
   return (
-
     <MainBox>
       <Skeleton animation="wave" variant="rounded" height={249} />
-      <Stack sx={{gap:0.5, pt:1.5, display: { xs: "none", sm: "flex"} }}>
-        <Skeleton animation="wave" variant="text" width="40%" sx={{ fontSize: 25}}/>
-        <Skeleton animation="wave" variant="text" width="30%" sx={{ fontSize: 15}}/>
-        <Stack direction="row" sx={{justifyContent: "space-between", display: {xs: "none", md:"flex"}}}>
-          <Stack direction="row" sx={{ gap: 1, pt:1 }}>
-            <Skeleton animation="wave" variant="rounded" width={64} height={30}/>
-            <Skeleton animation="wave" variant="rounded" width={64} height={30}/>
+      <Stack sx={{ gap: 0.5, pt: 1.5, display: { xs: "none", sm: "flex" } }}>
+        <Skeleton
+          animation="wave"
+          variant="text"
+          width="40%"
+          sx={{ fontSize: 25 }}
+        />
+        <Skeleton
+          animation="wave"
+          variant="text"
+          width="30%"
+          sx={{ fontSize: 15 }}
+        />
+        <Stack
+          direction="row"
+          sx={{
+            justifyContent: "space-between",
+            display: { xs: "none", md: "flex" },
+          }}
+        >
+          <Stack direction="row" sx={{ gap: 1, pt: 1 }}>
+            <Skeleton
+              animation="wave"
+              variant="rounded"
+              width={64}
+              height={30}
+            />
+            <Skeleton
+              animation="wave"
+              variant="rounded"
+              width={64}
+              height={30}
+            />
           </Stack>
-          <Skeleton animation="wave" variant="rounded" width={32} height={30} sx={{pt:1}}/>
-        </Stack>   
+          <Skeleton
+            animation="wave"
+            variant="rounded"
+            width={32}
+            height={30}
+            sx={{ pt: 1 }}
+          />
+        </Stack>
       </Stack>
     </MainBox>
-  )
+  );
 }

@@ -14,14 +14,16 @@ describe("RoomPageSkeleton", () => {
     const { container } = render(<RoomPageSkeleton />);
 
     const skeletons = container.querySelectorAll(".MuiSkeleton-root");
-    // header, photo, booking calendar, utility tags and ratings sections 
+    // header, photo, booking calendar, utility tags and ratings sections
     expect(skeletons.length).toBeGreaterThan(20);
   });
 
   it("renders circular placeholders for the favourite icon and the three rating circles", () => {
     const { container } = render(<RoomPageSkeleton />);
 
-    const circularSkeletons = container.querySelectorAll(".MuiSkeleton-circular");
+    const circularSkeletons = container.querySelectorAll(
+      ".MuiSkeleton-circular"
+    );
     // favourite icon (1) + Cleanliness / Location / Quietness circles (3)
     expect(circularSkeletons.length).toBe(4);
   });

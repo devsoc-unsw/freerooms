@@ -167,7 +167,6 @@ const BuildingCard: React.FC<{
           ) : (
             <div></div>
           )}
-
         </StatusBox>
       </ImageBox>
 

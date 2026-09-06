@@ -2,9 +2,7 @@ import Divider from "@mui/material/Divider";
 import Skeleton from "@mui/material/Skeleton";
 import { Stack } from "@mui/system";
 
-
 const RoomPageHeaderSkeleton = () => (
-
   <Stack
     direction="row"
     sx={{
@@ -23,9 +21,24 @@ const RoomPageHeaderSkeleton = () => (
 
       {/* building / usage breadcrumb */}
       <Stack direction="row" spacing={2}>
-        <Skeleton animation="wave" variant="text" width={140} sx={{ fontSize: 14 }} />
-        <Skeleton animation="wave" variant="text" width={90} sx={{ fontSize: 14 }} />
-        <Skeleton animation="wave" variant="text" width={90} sx={{ fontSize: 14 }} />
+        <Skeleton
+          animation="wave"
+          variant="text"
+          width={140}
+          sx={{ fontSize: 14 }}
+        />
+        <Skeleton
+          animation="wave"
+          variant="text"
+          width={90}
+          sx={{ fontSize: 14 }}
+        />
+        <Skeleton
+          animation="wave"
+          variant="text"
+          width={90}
+          sx={{ fontSize: 14 }}
+        />
       </Stack>
 
       {/* title row */}
@@ -68,14 +81,34 @@ const RoomPageHeaderSkeleton = () => (
 
       {/* ID / capacity / abbreviation row */}
       <Stack direction="row" spacing={2}>
-        <Skeleton animation="wave" variant="text" width={150} sx={{ fontSize: 16 }} />
-        <Skeleton animation="wave" variant="text" width={150} sx={{ fontSize: 16 }} />
-        <Skeleton animation="wave" variant="text" width={150} sx={{ fontSize: 16 }} />
+        <Skeleton
+          animation="wave"
+          variant="text"
+          width={150}
+          sx={{ fontSize: 16 }}
+        />
+        <Skeleton
+          animation="wave"
+          variant="text"
+          width={150}
+          sx={{ fontSize: 16 }}
+        />
+        <Skeleton
+          animation="wave"
+          variant="text"
+          width={150}
+          sx={{ fontSize: 16 }}
+        />
       </Stack>
 
       {/* rating row */}
       <Stack direction="row" spacing={0.5} sx={{ alignItems: "center" }}>
-        <Skeleton animation="wave" variant="text" width={16} sx={{ fontSize: 16 }} />
+        <Skeleton
+          animation="wave"
+          variant="text"
+          width={16}
+          sx={{ fontSize: 16 }}
+        />
         <Skeleton animation="wave" variant="rounded" width={110} height={20} />
       </Stack>
     </Stack>
@@ -90,7 +123,12 @@ const BookingCalendarSkeleton = () => (
       spacing={1}
       sx={{ justifyContent: "space-between", width: "100%", paddingBottom: 2 }}
     >
-      <Skeleton animation="wave" variant="text" width={160} sx={{ fontSize: 24 }} />
+      <Skeleton
+        animation="wave"
+        variant="text"
+        width={160}
+        sx={{ fontSize: 24 }}
+      />
 
       <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
         {/* Previous day (mobile only) */}
@@ -144,7 +182,12 @@ const BookingCalendarSkeleton = () => (
 
 const RoomUtilityTagsSkeleton = () => (
   <Stack sx={{ width: "100%", pt: 6, pb: 3, gap: 1 }}>
-    <Skeleton animation="wave" variant="text" width={180} sx={{ fontSize: 24, mb: 2 }} />
+    <Skeleton
+      animation="wave"
+      variant="text"
+      width={180}
+      sx={{ fontSize: 24, mb: 2 }}
+    />
     {Array.from({ length: 4 }, (_, i) => (
       <Skeleton key={i} animation="wave" variant="rounded" height={48} />
     ))}
@@ -153,7 +196,12 @@ const RoomUtilityTagsSkeleton = () => (
 
 const RoomRatingSkeleton = () => (
   <Stack direction="column" sx={{ width: "100%", alignSelf: "start" }}>
-    <Skeleton animation="wave" variant="text" width={160} sx={{ fontSize: 24, mt: 3, mb: 1 }} />
+    <Skeleton
+      animation="wave"
+      variant="text"
+      width={160}
+      sx={{ fontSize: 24, mt: 3, mb: 1 }}
+    />
 
     {/* column on mobile, row (with vertical divider) from 675px — matches RoomRating.tsx */}
     <Stack
@@ -178,19 +226,42 @@ const RoomRatingSkeleton = () => (
       >
         {/* DecimalStarRating: overall rating box */}
         <Stack sx={{ alignItems: "center", gap: 0.25, pb: 2 }}>
-          <Skeleton animation="wave" variant="text" width={70} sx={{ fontSize: 75 }} />
-          <Skeleton animation="wave" variant="rounded" width={120} height={24} />
+          <Skeleton
+            animation="wave"
+            variant="text"
+            width={70}
+            sx={{ fontSize: 75 }}
+          />
+          <Skeleton
+            animation="wave"
+            variant="rounded"
+            width={120}
+            height={24}
+          />
         </Stack>
 
         {/* >=970px: 3 CircularRating circles (Cleanliness / Location / Quietness) */}
         <Stack
           direction="row"
-          sx={{ display: "none", "@media (min-width:970px)": { display: "flex" } }}
+          sx={{
+            display: "none",
+            "@media (min-width:970px)": { display: "flex" },
+          }}
         >
           {Array.from({ length: 3 }, (_, i) => (
             <Stack key={i} sx={{ alignItems: "center", mx: 1 }}>
-              <Skeleton animation="wave" variant="text" width={80} sx={{ fontSize: 16 }} />
-              <Skeleton animation="wave" variant="circular" width={100} height={100} />
+              <Skeleton
+                animation="wave"
+                variant="text"
+                width={80}
+                sx={{ fontSize: 16 }}
+              />
+              <Skeleton
+                animation="wave"
+                variant="circular"
+                width={100}
+                height={100}
+              />
             </Stack>
           ))}
         </Stack>
@@ -217,7 +288,10 @@ const RoomRatingSkeleton = () => (
       <Divider
         flexItem
         orientation="vertical"
-        sx={{ display: "none", "@media (min-width:675px)": { display: "block" } }}
+        sx={{
+          display: "none",
+          "@media (min-width:675px)": { display: "block" },
+        }}
       />
 
       {/* section 2: "Share your thoughts" (>=675px only) + Leave a Rating button */}

@@ -4,8 +4,7 @@ import { render } from "@testing-library/react";
 import AllRoomsRoomListSkeleton from "components/skeletons/AllRoomsRoomListSkeleton";
 
 describe("AllRoomsRoomListSkeleton", () => {
-  
-  const NUM_PLACEHOLDER_ROOM_SKELETONS = 5
+  const NUM_PLACEHOLDER_ROOM_SKELETONS = 5;
 
   it("renders a placeholder row for each expected room", () => {
     const { container } = render(<AllRoomsRoomListSkeleton />);

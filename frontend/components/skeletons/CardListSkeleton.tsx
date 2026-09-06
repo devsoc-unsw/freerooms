@@ -9,15 +9,14 @@ const Grid = styled("div")({
   gridGap: "20px",
 });
 
-const NUM_BUILDINGS = 44
+const NUM_BUILDINGS = 44;
 
 export default function CardListSkeleton() {
-
   return (
     <Grid>
-      {Array.from({length: NUM_BUILDINGS}, (_, i) => (
-        <BuildingCardSkeleton key={i}/>
+      {Array.from({ length: NUM_BUILDINGS }, (_, i) => (
+        <BuildingCardSkeleton key={i} />
       ))}
-    </Grid> 
-  )
+    </Grid>
+  );
 }

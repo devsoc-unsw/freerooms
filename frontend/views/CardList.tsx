@@ -133,7 +133,7 @@ const CardList: React.FC<{
       ))}
     </FlipMoveGrid>
   ) : (
-    <CardListSkeleton/>
+    <CardListSkeleton />
   );
 };
 

@@ -27,7 +27,8 @@ const RoomList = ({
     <StyledStack>
       <AllRoomsSearchBar />
       {isValidating ? (
-        <AllRoomsRoomListSkeleton/>
+        <AllRoomsRoomListSkeleton />
+      ) : (
         // <Stack
         //   sx={{
         //     maxWidth: 540,
@@ -45,7 +46,6 @@ const RoomList = ({
         //     Loading free rooms
         //   </Typography>
         // </Stack>
-      ) : (
         children
       )}
     </StyledStack>
