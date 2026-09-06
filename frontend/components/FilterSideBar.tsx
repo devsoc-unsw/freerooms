@@ -11,6 +11,7 @@ import { AllRoomsFilters, DropDownItem } from "types";
 import { allRoomsFilterDropdown } from "utils/constants";
 
 import DropdownSelections from "./DropdownSelections";
+import RecurringWeeksSlider from "./RecurringWeeksSlider";
 
 const StyledFilterSideBarContainer = styled(Box)<BoxProps>(({ theme }) => ({
   display: "flex",
@@ -39,18 +40,39 @@ const FilterSideBar = ({ filters }: { filters: AllRoomsFilters }) => {
     [dispatch, filters]
   );
 
-  const dropdownMap = useMemo(
+  // Recurring needs its own commiter as it's a slider instead of select list.
+  const handleRecurringChange = useCallback(
+    (weeks: number | null) => {
+      if (weeks == null) {
+        dispatch(unsetAllRoomsFilter({ key: "recurring", value: ""}));
+      } else {
+        dispatch(setAllRoomsFilter({ key: "recurring", value: String(weeks) }));
+      }
+    },
+    [dispatch]
+  )
+
+const dropdownMap = useMemo(
     () =>
-      allRoomsFilterDropdown.map((dropdown) => (
-        <DropdownSelections
-          key={dropdown.key}
-          dropdown={dropdown}
-          canSelectMultiple={false}
-          filters={filters}
-          handleSelect={handleSelect}
-        />
-      )),
-    [filters, handleSelect]
+     allRoomsFilterDropdown.map((dropdown) =>
+       dropdown.key === "recurring" ? (
+         <RecurringWeeksSlider
+           key={dropdown.key}
+           dropdown={dropdown}
+           value={filters.recurring}
+           onCommit={handleRecurringChange}
+         />
+       ) : (
+         <DropdownSelections
+           key={dropdown.key}
+           dropdown={dropdown}
+           canSelectMultiple={false}
+           filters={filters}
+           handleSelect={handleSelect}
+         />
+       )
+     ),
+   [filters, handleSelect, handleRecurringChange]
   );
 
   return (

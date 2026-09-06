@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "../redux/hooks";
 import { DropDownItem, Filters } from "../types";
 import { filterBarDropdown } from "../utils/constants";
 import DropdownSelections from "./DropdownSelections";
+import RecurringWeeksSlider from "./RecurringWeeksSlider";
 
 const StyledFilterButton = styled(Box)<BoxProps>(({ theme }) => ({
   height: 56,
@@ -87,22 +88,42 @@ const FilterBar = () => {
     [dispatch, filters]
   );
 
+  const handleRecurringChange = useCallback(
+    (weeks: number | null) => {
+      if (weeks === null) {
+        dispatch(unsetFilter("recurring"));
+      } else {
+        dispatch(setFilter({ key: "recurring", value: String(weeks) }));
+      }
+    },
+    [dispatch]
+ );
+
   // Apply filters from query strings
   useQueryFilter();
   useDateTimeQuery();
 
   const dropdownMap = useMemo(
     () =>
-      filterBarDropdown.map((dropdown) => (
-        <DropdownSelections
-          key={dropdown.key}
-          dropdown={dropdown}
-          canSelectMultiple={false}
-          filters={filters}
-          handleSelect={handleSelect}
-        />
-      )),
-    [filters, handleSelect]
+      filterBarDropdown.map((dropdown) =>
+       dropdown.key === "recurring" ? (
+         <RecurringWeeksSlider
+           key={dropdown.key}
+           dropdown={dropdown}
+           value={filters.recurring}
+           onCommit={handleRecurringChange}
+         />
+       ) : (
+         <DropdownSelections
+           key={dropdown.key}
+           dropdown={dropdown}
+           canSelectMultiple={false}
+           filters={filters}
+           handleSelect={handleSelect}
+         />
+       )
+     ),
+   [filters, handleSelect, handleRecurringChange]
   );
 
   return (

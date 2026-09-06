@@ -9,7 +9,7 @@ import { styled } from "@mui/system";
 import React from "react";
 import { AllRoomsFilters, DropDown, DropDownItem, Filters } from "types";
 
-const StyledAccordion = styled(Accordion)(({ theme }) => ({
+export const StyledAccordion = styled(Accordion)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   transition: "all 0.1s ease-in-out",
   borderTop: `1px solid ${theme.palette.secondary.main}`,
