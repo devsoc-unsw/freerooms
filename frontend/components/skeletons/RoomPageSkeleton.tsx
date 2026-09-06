@@ -1,8 +1,10 @@
 import Divider from "@mui/material/Divider";
 import Skeleton from "@mui/material/Skeleton";
-import Stack from "@mui/material/Stack";
+import { Stack } from "@mui/system";
+
 
 const RoomPageHeaderSkeleton = () => (
+
   <Stack
     direction="row"
     sx={{
@@ -35,14 +37,20 @@ const RoomPageHeaderSkeleton = () => (
           width: "100%",
         }}
       >
-        <Skeleton animation="wave" variant="text" width="40%" sx={{ fontSize: 34 }} />
+        <Skeleton animation="wave" variant="rounded" width="40%" height={45} />
 
         <Stack
           direction="row"
           spacing={1}
           sx={{ alignItems: "center", mt: { xs: 1, sm: 0 } }}
         >
-          <Skeleton animation="wave" variant="circular" width={40} height={40} />
+          <Skeleton
+            animation="wave"
+            variant="circular"
+            width={40}
+            height={40}
+            sx={{ flexShrink: 0 }}
+          />
           <Skeleton
             animation="wave"
             variant="rounded"
@@ -60,10 +68,9 @@ const RoomPageHeaderSkeleton = () => (
 
       {/* ID / capacity / abbreviation row */}
       <Stack direction="row" spacing={2}>
-        <Skeleton animation="wave" variant="text" width={110} sx={{ fontSize: 16 }} />
-        <Skeleton animation="wave" variant="text" width={110} sx={{ fontSize: 16 }} />
-        <Skeleton animation="wave" variant="text" width={140} sx={{ fontSize: 16 }} />
-        <Skeleton animation="wave" variant="text" width={180} sx={{ fontSize: 16 }} />
+        <Skeleton animation="wave" variant="text" width={150} sx={{ fontSize: 16 }} />
+        <Skeleton animation="wave" variant="text" width={150} sx={{ fontSize: 16 }} />
+        <Skeleton animation="wave" variant="text" width={150} sx={{ fontSize: 16 }} />
       </Stack>
 
       {/* rating row */}
@@ -89,8 +96,8 @@ const BookingCalendarSkeleton = () => (
         {/* Previous day (mobile only) */}
         <Skeleton
           animation="wave"
-          variant="circular"
-          width={40}
+          variant="rounded"
+          width={50}
           height={40}
           sx={{ display: { xs: "block", md: "none" } }}
         />
@@ -104,8 +111,8 @@ const BookingCalendarSkeleton = () => (
         {/* Next day (mobile only) */}
         <Skeleton
           animation="wave"
-          variant="circular"
-          width={40}
+          variant="rounded"
+          width={50}
           height={40}
           sx={{ display: { xs: "block", md: "none" } }}
         />
@@ -145,36 +152,99 @@ const RoomUtilityTagsSkeleton = () => (
 );
 
 const RoomRatingSkeleton = () => (
-  <Stack sx={{ width: "100%", alignSelf: "start" }}>
+  <Stack direction="column" sx={{ width: "100%", alignSelf: "start" }}>
     <Skeleton animation="wave" variant="text" width={160} sx={{ fontSize: 24, mt: 3, mb: 1 }} />
 
-    <Stack direction={{ xs: "column", sm: "row" }} sx={{ gap: 4, alignItems: "center" }}>
-      {/* DecimalStarRating: overall rating box */}
-      <Stack sx={{ alignItems: "center", gap: 0.25, pb: 2 }}>
-        <Skeleton animation="wave" variant="text" width={70} sx={{ fontSize: 75 }} />
-        <Skeleton animation="wave" variant="rounded" width={120} height={24} />
+    {/* column on mobile, row (with vertical divider) from 675px — matches RoomRating.tsx */}
+    <Stack
+      sx={{
+        flexDirection: "column",
+        gap: 1,
+        "@media (min-width:675px)": {
+          flexDirection: "row",
+          alignItems: "center",
+        },
+      }}
+    >
+      {/* section 1: DecimalStarRating + circles (>=970px) / linear bars (<970px) */}
+      <Stack
+        sx={{
+          width: "100%",
+          flexDirection: "column",
+          gap: 1,
+          alignItems: "center",
+          "@media (min-width:970px)": { flexDirection: "row" },
+        }}
+      >
+        {/* DecimalStarRating: overall rating box */}
+        <Stack sx={{ alignItems: "center", gap: 0.25, pb: 2 }}>
+          <Skeleton animation="wave" variant="text" width={70} sx={{ fontSize: 75 }} />
+          <Skeleton animation="wave" variant="rounded" width={120} height={24} />
+        </Stack>
+
+        {/* >=970px: 3 CircularRating circles (Cleanliness / Location / Quietness) */}
+        <Stack
+          direction="row"
+          sx={{ display: "none", "@media (min-width:970px)": { display: "flex" } }}
+        >
+          {Array.from({ length: 3 }, (_, i) => (
+            <Stack key={i} sx={{ alignItems: "center", mx: 1 }}>
+              <Skeleton animation="wave" variant="text" width={80} sx={{ fontSize: 16 }} />
+              <Skeleton animation="wave" variant="circular" width={100} height={100} />
+            </Stack>
+          ))}
+        </Stack>
+
+        {/* <970px: 3 LinearRating bars */}
+        <Stack
+          sx={{
+            gap: 2,
+            marginTop: 2,
+            width: "100%",
+            "@media (min-width:970px)": { display: "none" },
+          }}
+        >
+          {Array.from({ length: 3 }, (_, i) => (
+            <Stack key={i} direction="column">
+              <Skeleton animation="wave" variant="text" width="20%" />
+              <Skeleton animation="wave" variant="text" width="100%" />
+            </Stack>
+          ))}
+        </Stack>
       </Stack>
 
-      {/* three CircularRating circles: Cleanliness / Location / Quietness */}
-      <Stack direction="row">
-        {Array.from({ length: 3 }, (_, i) => (
-          <Stack key={i} sx={{ alignItems: "center", mx: 1 }}>
-            <Skeleton animation="wave" variant="text" width={80} sx={{ fontSize: 16 }} />
-            <Skeleton animation="wave" variant="circular" width={100} height={100} />
-          </Stack>
-        ))}
-      </Stack>
-
+      {/* vertical divider — only in the >=675px row layout */}
       <Divider
         flexItem
         orientation="vertical"
-        sx={{ display: { xs: "none", sm: "block" } }}
+        sx={{ display: "none", "@media (min-width:675px)": { display: "block" } }}
       />
 
-      {/* "Share your thoughts" + Leave a Rating button */}
-      <Stack sx={{ gap: 1, justifyContent: "center" }}>
-        <Skeleton animation="wave" variant="text" width={180} sx={{ fontSize: 16 }} />
-        <Skeleton animation="wave" variant="rounded" width={180} height={36} />
+      {/* section 2: "Share your thoughts" (>=675px only) + Leave a Rating button */}
+      <Stack
+        sx={{
+          gap: 0.5,
+          justifyContent: "center",
+          width: "100%",
+          "@media (min-width:675px)": { width: "auto" },
+        }}
+      >
+        <Skeleton
+          animation="wave"
+          variant="text"
+          width={180}
+          sx={{
+            fontSize: 16,
+            display: "none",
+            "@media (min-width:675px)": { display: "block" },
+          }}
+        />
+        <Skeleton
+          animation="wave"
+          variant="rounded"
+          height={36}
+          sx={{ width: "100%", "@media (min-width:675px)": { width: 180 } }}
+        />
       </Stack>
     </Stack>
   </Stack>

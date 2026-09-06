@@ -18,11 +18,12 @@ describe("RoomPageSkeleton", () => {
     expect(skeletons.length).toBeGreaterThan(20);
   });
 
-  it("renders a circular placeholder for the favourite icon, day navigation and rating circles", () => {
+  it("renders circular placeholders for the favourite icon and the three rating circles", () => {
     const { container } = render(<RoomPageSkeleton />);
 
     const circularSkeletons = container.querySelectorAll(".MuiSkeleton-circular");
-    expect(circularSkeletons.length).toBe(6);
+    // favourite icon (1) + Cleanliness / Location / Quietness circles (3)
+    expect(circularSkeletons.length).toBe(4);
   });
 
   it("renders a rounded placeholder for the photo carousel", () => {
