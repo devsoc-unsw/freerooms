@@ -9,6 +9,7 @@ import Room from "../components/AllRoomsRoom";
 import AllRoomsSearchBar from "../components/AllRoomsSearchBar";
 import NavBar from "../components/NavBar";
 import store from "../redux/store";
+import toSydneyTime from "../utils/toSydneyTime";
 import renderWithRedux from "./utils/renderWithRedux";
 
 // Mock DarkModeContext to avoid test failing due to importing NuqsAdapter
@@ -97,7 +98,7 @@ describe("AllRooms page", () => {
     it("renders AllRoomsRoom - Available", () => {
       const roomStatus = {
         status: "free" as const,
-        endtime: new Date().toISOString(),
+        endtime: toSydneyTime(new Date()).toISOString(),
       };
 
       render(
@@ -116,7 +117,7 @@ describe("AllRooms page", () => {
     it("renders AllRoomsRoom - Unavailable", () => {
       const roomStatus = {
         status: "busy" as const,
-        endtime: new Date().toISOString(),
+        endtime: toSydneyTime(new Date()).toISOString(),
       };
 
       render(
@@ -135,7 +136,7 @@ describe("AllRooms page", () => {
     it("renders AllRoomsRoom - Available Soon", () => {
       const roomStatus = {
         status: "soon" as const,
-        endtime: new Date().toISOString(),
+        endtime: toSydneyTime(new Date()).toISOString(),
       };
 
       render(
@@ -166,5 +167,49 @@ describe("AllRooms page", () => {
 
       expect(enterTime).not.toHaveValue("01:00 PM");
     });
+  });
+
+  it("room link includes selected date", () => {
+    const roomStatus = {
+      status: "free" as const,
+      endtime: toSydneyTime(new Date()).toISOString(),
+    };
+
+    render(
+      <ThemeProvider theme={createTheme({})}>
+        <Room
+          name="Ainsworth G03"
+          roomNumber="K-H13-1003"
+          date="2026-09-16"
+          {...roomStatus}
+        />
+      </ThemeProvider>
+    );
+
+    const room = screen.getByRole("link");
+
+    expect(room).toHaveAttribute("href", "/room/K-H13-1003?date=2026-09-16");
+  });
+
+  it("room link does not include invalid date", () => {
+    const roomStatus = {
+      status: "free" as const,
+      endtime: toSydneyTime(new Date()).toISOString(),
+    };
+
+    render(
+      <ThemeProvider theme={createTheme({})}>
+        <Room
+          name="Ainsworth G03"
+          roomNumber="K-H13-1003"
+          date="invalid-date"
+          {...roomStatus}
+        />
+      </ThemeProvider>
+    );
+
+    const room = screen.getByRole("link");
+
+    expect(room).toHaveAttribute("href", "/room/K-H13-1003");
   });
 });

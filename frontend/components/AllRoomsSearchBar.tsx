@@ -7,10 +7,11 @@ import {
 } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { enAU } from "date-fns/locale";
+import { fromZonedTime } from "date-fns-tz";
 
 import { selectDatetime, setDatetime } from "../redux/datetimeSlice";
 import { useDispatch, useSelector } from "../redux/hooks";
-import toSydneyTime from "../utils/toSydneyTime";
+import { SYDNEY_TIMEZONE } from "../utils/toSydneyTime";
 
 export default function AllRoomsSearchBar() {
   const dispatch = useDispatch();
@@ -37,7 +38,8 @@ export default function AllRoomsSearchBar() {
           value={datetime}
           sx={{ flex: 1 }}
           onChange={(value: Date | null) =>
-            value && dispatch(setDatetime(toSydneyTime(value)))
+            value &&
+            dispatch(setDatetime(fromZonedTime(value, SYDNEY_TIMEZONE)))
           }
         />
         <TimePicker
@@ -45,7 +47,8 @@ export default function AllRoomsSearchBar() {
           defaultValue={datetime}
           sx={{ flex: 1 }}
           onAccept={(value: Date | null) =>
-            value && dispatch(setDatetime(toSydneyTime(value)))
+            value &&
+            dispatch(setDatetime(fromZonedTime(value, SYDNEY_TIMEZONE)))
           }
         />
       </LocalizationProvider>

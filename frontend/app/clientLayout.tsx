@@ -113,7 +113,7 @@ const ClientLayout: React.FC<{
                 },
                 background: {
                   default: "#FFFBF9",
-                  paper: grey[200],
+                  paper: grey[300],
                 },
                 text: {
                   primary: "#000000",
