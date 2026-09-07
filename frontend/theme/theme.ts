@@ -13,7 +13,7 @@ export function createAppTheme(mode: ThemeMode) {
         primary: {
             main: colours.accent.primary,
             light: colours.accent.secondary,
-            dark: colours.text.secondary,
+            dark: colours.accent.hover,
             contrastText: colours.text.onAccent,
         },
         secondary: {
@@ -27,6 +27,9 @@ export function createAppTheme(mode: ThemeMode) {
         error: {
             main: colours.status.unavailable.text,
             light: colours.status.unavailable.main,
+        },
+        warning: {
+            main: colours.status.soon.main,
         },
         background: {
             default: colours.background.primary,

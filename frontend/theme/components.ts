@@ -53,4 +53,14 @@ export const components: Components<Theme> = {
             root: ({ theme }) => ({ borderRadius: theme.radius.md }),
         },
     },
+    MuiRating: {
+        styleOverrides: {
+            root: ({ theme }) => ({
+                color: theme.colours.rating.active,
+            }),
+            iconEmpty: ({ theme }) => ({
+                color: theme.colours.rating.empty,
+            }),
+        },
+    },
 };

@@ -4,7 +4,7 @@ const values = {
     light: {
         accentPrimary: "#D4613C",
         accentSecondary: "#FEB99C",
-        accentTertiary: "#FDD7c7",
+        accentTertiary: "#FDD7C7",
         accentQuaternary: "#FDE7E1",
         labelPrimary: "#632410",
         labelDeemphasized: "#926658",
@@ -16,10 +16,14 @@ const values = {
         disabledBackground: "#D3D3D3",
         available: "#2FB702",
         availableBackground: "rgba(47, 183, 2, 0.4)",
-        availableText: "#00500E",
+        availableText: "#00600E",
         unavailable: "#FF6060",
         unavailableBackground: "rgba(255, 96, 96, 0.4)",
         unavailableText: "#AD0000",
+        accentHover: "#9C4326",
+        backgroundMuted: "#F0F0F0",
+        toolbar: "#F8F8F9",
+        yellow: "#FFA600",
     },
     dark: {
         accentPrimary: "rgba(212, 97, 60, 0.8)",
@@ -40,7 +44,21 @@ const values = {
         unavailable: "#B62B32",
         unavailableBackground: "rgba(182, 43, 50, 0.4)",
         unavailableText: "#ED6353",
+        accentHover: "#B75232",
+        backgroundMuted: "#363636",
+        toolbar: "#313132",
+        yellow: "#863D00",
     },
+} as const;
+
+const neutral = {
+    black: "#000000",
+    white: "#FFFFFF",
+} as const;
+
+const mapLocation = {
+    main: "#4ABDFA",
+    border: "BEDCF9",
 } as const;
 
 
@@ -53,19 +71,24 @@ export function getColours(mode: ThemeMode) {
             secondary: c.accentSecondary,
             tertiary: c.accentTertiary,
             quaternary: c.accentQuaternary,
+            hover: c.accentHover,
         },
         text: {
             primary: c.labelPrimary,
             secondary: c.labelDeemphasized,
             disabled: c.disabledText,
-            onAccent: "#FFFFFF",
+            onAccent: neutral.white,
+            onImage: neutral.white,
         },
         background: {
             primary: c.backgroundPrimary,
+            muted: c.backgroundMuted,
         },
         surface: {
             paper: c.paper,
+            toolbar: c.toolbar,
             zebra: c.tableZebra,
+            muted: c.backgroundMuted,
         },
         border: {
             default: c.accentTertiary,
@@ -77,12 +100,21 @@ export function getColours(mode: ThemeMode) {
                 background: c.availableBackground,
                 text: c.availableText,
             },
+            soon: {
+                main: c.yellow,
+                text: c.yellow,
+            },
             unavailable: {
                 main: c.unavailable,
                 background: c.unavailableBackground,
                 text: c.unavailableText,
             },
         },
+        rating: {
+            active: c.yellow,
+            empty: c.disabledOutline,
+        },
+        neutral,
         disabled: {
             background: c.disabledBackground,
             text: c.disabledText,
