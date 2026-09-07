@@ -37,9 +37,7 @@ describe("RoomAvailabilityBox", () => {
 
     const availableSoonText = screen.getByText(/available soon/i);
     expect(availableSoonText).toBeInTheDocument();
-    // check if there is wrapping of the text, if offsetWidth < scrollWidth,
-    // then there is wrapping involved because the total width of the content
-    // is overflowing (i.e. some of the content is not visible)
+
     const isWrapping =
       availableSoonText.offsetWidth < availableSoonText.scrollWidth;
     expect(isWrapping).toBe(false);
@@ -75,5 +73,35 @@ describe("RoomAvailabilityBox", () => {
       getComputedStyle(box).getPropertyValue("background-image");
 
     expect(backgroundImage).toContain("/assets/building_photos/K-G14.webp");
+  });
+
+  test("room link includes selected date", () => {
+    render(
+      <RoomAvailabilityBox
+        roomNumber="334"
+        buildingId="K-G14"
+        roomStatus={roomStatus}
+        date="2026-09-11"
+      />
+    );
+
+    const link = screen.getByRole("link");
+
+    expect(link).toHaveAttribute("href", "/room/K-G14-334?date=2026-09-11");
+  });
+
+  test("room link does not include invalid date", () => {
+    render(
+      <RoomAvailabilityBox
+        roomNumber="334"
+        buildingId="K-G14"
+        roomStatus={roomStatus}
+        date="invalid-date"
+      />
+    );
+
+    const link = screen.getByRole("link");
+
+    expect(link).toHaveAttribute("href", "/room/K-G14-334");
   });
 });

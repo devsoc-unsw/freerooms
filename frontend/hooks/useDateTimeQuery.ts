@@ -1,3 +1,4 @@
+import { isValidDate, isValidTime } from "@frontend/utils/queryValidation";
 import { formatInTimeZone, fromZonedTime } from "date-fns-tz";
 import { parseAsString, useQueryStates } from "nuqs";
 import { useEffect, useRef } from "react";
@@ -5,17 +6,6 @@ import { selectDatetime, setDatetime } from "redux/datetimeSlice";
 
 import { useDispatch, useSelector } from "../redux/hooks";
 import { SYDNEY_TIMEZONE } from "../utils/toSydneyTime";
-
-const isValidDate = (date: string): boolean => {
-  // Valid format is YYYY-MM-DD
-  const newDate = new Date(date);
-  return !isNaN(newDate.getTime());
-};
-
-const isValidTime = (time: string): boolean => {
-  // Valid format is HH:MM (24-hour)
-  return /^([01]\d|2[0-3]):([0-5]\d)$/.test(time);
-};
 
 const useQueryDatetime = () => {
   const dispatch = useDispatch();

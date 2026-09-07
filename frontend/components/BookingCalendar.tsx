@@ -3,6 +3,7 @@
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
 import { Booking } from "@common/types";
+import useBookingCalenderQuery from "@frontend/hooks/useBookingCalenderQuery";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import Box, { BoxProps } from "@mui/material/Box";
@@ -166,14 +167,16 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
   // Enforce day view on mobile
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
-  const [desktopView, setDesktopView] = React.useState<View>(Views.WEEK);
+  const dateTime = useSelector(selectDatetime);
+  const defaultDate = React.useMemo(() => toSydneyTime(dateTime), [dateTime]);
+
+  const [desktopView, date, setDesktopView, setDate] =
+    useBookingCalenderQuery(defaultDate);
+
   const currView = isMobile ? Views.DAY : desktopView;
 
-  const datetime = useSelector(selectDatetime);
-  const [date, setDate] = React.useState<Date>(() => toSydneyTime(datetime));
-
   const handleDateChange = (newDate: Date | null) => {
-    setDate(newDate ?? datetime);
+    setDate(newDate ?? defaultDate);
   };
 
   const calendarMin = React.useMemo(() => {
