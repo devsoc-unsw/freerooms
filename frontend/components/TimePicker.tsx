@@ -10,8 +10,8 @@ import React from "react";
 
 import { selectDatetime, setDatetime } from "../redux/datetimeSlice";
 import { useDispatch, useSelector } from "../redux/hooks";
-import { SYDNEY_TIMEZONE } from "../utils/toSydneyTime";
 import { getPickerFieldStyles } from "../theme/fieldStyles";
+import { SYDNEY_TIMEZONE } from "../utils/toSydneyTime";
 
 const TimePicker = () => {
   const dispatch = useDispatch();
