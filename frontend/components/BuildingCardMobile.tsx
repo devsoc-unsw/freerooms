@@ -154,7 +154,7 @@ const BuildingCardMobile: React.FC<{
                 {ratings?.overallRating}
               </Typography>
               <StarIcon
-                sx={{ fontSize: "1rem", color: theme.colours.rating.active }}
+                sx={{ fontSize: "1rem", color: theme.colours.rating.display }}
               />
             </Stack>
           </StatusBox>

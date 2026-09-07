@@ -59,7 +59,7 @@ const StyledHeader = styled(Box)<BoxProps>(() => ({
 const StyledBox = styled(Box)(({ theme }) => ({
   transition: "all 0.1s ease-in-out",
   backgroundColor: theme.palette.background.default,
-  borderTop: `1px solid ${theme.palette.secondary.main}`,
+  borderTop: `1px solid ${theme.colours.border.subtle}`,
 }));
 
 const SortBar: React.FC<{

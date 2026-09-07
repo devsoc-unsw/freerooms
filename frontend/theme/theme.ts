@@ -30,6 +30,7 @@ export function createAppTheme(mode: ThemeMode) {
     },
     warning: {
       main: colours.status.soon.main,
+      light: colours.status.soon.main,
     },
     background: {
       default: colours.background.primary,

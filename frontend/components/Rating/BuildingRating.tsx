@@ -20,7 +20,7 @@ export default function BuildingRating({
       <span
         style={{
           width: `${(overallRating / 5) * 100}%`,
-          color: "var(--colour-accent-primary)",
+          color: "var(--colour-rating-display)",
           overflow: "hidden",
           position: "absolute",
           top: 0,

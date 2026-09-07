@@ -1,8 +1,8 @@
 import { Building } from "@common/types";
 import { useMediaQuery } from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
+import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
-import FlipMove from "react-flip-move";
 
 import BuildingCard from "../components/BuildingCard";
 import BuildingCardMobile from "../components/BuildingCardMobile";
@@ -13,7 +13,7 @@ import useUserLocation from "../hooks/useUserLocation";
 import calculateDistance from "../utils/calculateDistance";
 import { getNumFreerooms } from "../utils/utils";
 
-const FlipMoveGrid = styled(FlipMove)(({ theme }) => ({
+const CardGrid = styled("div")(() => ({
   width: "100%",
   display: "grid",
   gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
@@ -127,11 +127,32 @@ const CardList: React.FC<{
   }
 
   return displayedBuildings ? (
-    <FlipMoveGrid duration={500}>
-      {displayedBuildings.map((building) => (
-        <FlippableCard key={building.id} buildingId={building.id} />
-      ))}
-    </FlipMoveGrid>
+    <CardGrid>
+      <AnimatePresence initial={false} mode="popLayout">
+        {displayedBuildings.map((building) => (
+          <motion.div
+            key={building.id}
+            layout="position"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{
+              layout: {
+                type: "tween",
+                duration: 0.75,
+                ease: "easeInOut",
+              },
+              opacity: {
+                duration: 0.2,
+                ease: "easeInOut",
+              },
+            }}
+          >
+            <FlippableCard buildingId={building.id} />
+          </motion.div>
+        ))}
+      </AnimatePresence>
+    </CardGrid>
   ) : (
     <LoadingCircle />
   );

@@ -56,6 +56,12 @@ const neutral = {
   white: "#FFFFFF",
 } as const;
 
+// Legacy until replaced
+const controlNeutral = {
+  light: "rgba(0, 0, 0, 0.12)",
+  dark: "#424242",
+} as const;
+
 const mapLocation = {
   main: "#4ABDFA",
   border: "#BEDCF9",
@@ -85,6 +91,9 @@ const calendarColours = {
   },
 } as const;
 
+const statusSoon = "#FFA600";
+const ratingDisplay = "#D4613C";
+
 export function getColours(mode: ThemeMode) {
   const c = values[mode];
 
@@ -113,9 +122,11 @@ export function getColours(mode: ThemeMode) {
       toolbar: c.toolbar,
       zebra: c.tableZebra,
       muted: c.backgroundMuted,
+      control: controlNeutral[mode],
     },
     border: {
       default: c.accentTertiary,
+      subtle: controlNeutral[mode],
       disabled: c.disabledOutline,
     },
     status: {
@@ -125,8 +136,8 @@ export function getColours(mode: ThemeMode) {
         text: c.availableText,
       },
       soon: {
-        main: c.yellow,
-        text: c.yellow,
+        main: statusSoon,
+        text: statusSoon,
       },
       unavailable: {
         main: c.unavailable,
@@ -137,6 +148,7 @@ export function getColours(mode: ThemeMode) {
     rating: {
       active: c.yellow,
       empty: c.disabledOutline,
+      display: ratingDisplay,
     },
     map: {
       location: mapLocation,
