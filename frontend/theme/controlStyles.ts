@@ -2,16 +2,21 @@ import type { CSSObject, Theme } from "@mui/material/styles";
 
 type ControlStyle = "base" | "primary" | "outlined" | "selected" | "text";
 
-export function getControlStyles(theme: Theme): Record<ControlStyle, CSSObject> {
+export function getControlStyles(
+  theme: Theme
+): Record<ControlStyle, CSSObject> {
   const colours = theme.colours;
 
   return {
     base: {
       ...theme.typography.button,
       borderRadius: theme.radius.lg,
-      transition: theme.transitions.create(["background-color", "border-color", "color"], {
-        duration: theme.transitions.duration.shorter,
-      }),
+      transition: theme.transitions.create(
+        ["background-color", "border-color", "color"],
+        {
+          duration: theme.transitions.duration.shorter,
+        }
+      ),
       "&.Mui-focusVisible": {
         outline: `2px solid ${colours.accent.primary}`,
         outlineOffset: 2,

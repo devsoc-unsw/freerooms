@@ -16,12 +16,21 @@ const StyledButton = styled(MuiButton, {
 
   return {
     ...styles.base,
-    ...(selected ? styles.selected : variant === "contained" ? styles.primary : variant === "text" ? styles.text : styles.outlined),
+    ...(selected
+      ? styles.selected
+      : variant === "contained"
+        ? styles.primary
+        : variant === "text"
+          ? styles.text
+          : styles.outlined),
   };
 });
 
 export const AppButton = React.forwardRef<HTMLButtonElement, AppButtonProps>(
-  ({ selected = false, variant = "outlined", type = "button", ...props }, ref) => (
+  (
+    { selected = false, variant = "outlined", type = "button", ...props },
+    ref
+  ) => (
     <StyledButton
       {...props}
       ref={ref}
@@ -52,15 +61,16 @@ const StyledIconButton = styled(MuiIconButton, {
   };
 });
 
-export const AppIconButton = React.forwardRef<HTMLButtonElement, AppIconButtonProps>(
-  ({ selected = false, type = "button", ...props }, ref) => (
-    <StyledIconButton
-      {...props}
-      ref={ref}
-      type={type}
-      color="primary"
-      selected={selected}
-    />
-  )
-);
+export const AppIconButton = React.forwardRef<
+  HTMLButtonElement,
+  AppIconButtonProps
+>(({ selected = false, type = "button", ...props }, ref) => (
+  <StyledIconButton
+    {...props}
+    ref={ref}
+    type={type}
+    color="primary"
+    selected={selected}
+  />
+));
 AppIconButton.displayName = "AppIconButton";
