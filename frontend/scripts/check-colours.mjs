@@ -4,7 +4,7 @@ import { join, relative, resolve } from "node:path";
 const root = resolve(import.meta.dirname, "..");
 const sourceDirectories = ["app", "components", "views", "hooks", "utils", "redux", "config", "styles"];
 const extensions = /\.(?:[cm]?[jt]sx?|scss|css)$/;
-const rawColour = /#(?:[\da-f]{8}|[\da-f]{6}|[\da-f{3}])(?![\da-f])|\b(?:rgba?|hsla?|hwb|lab|lch|oklab|oklch)\s*\(/gi;
+const rawColour = /#(?:[\da-f]{8}|[\da-f]{6}|[\da-f]{4}|[\da-f]{3})(?![\da-f])|\b(?:rgba?|hsla?|hwb|lab|lch|oklab|oklch)\s*\(/gi;
 const ignored = new Set(["node_modules", ".next", "__tests__", "theme"]);
 let failures = 0;
 

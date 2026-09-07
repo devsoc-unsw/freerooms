@@ -21,7 +21,7 @@ import { getNumFreerooms, getTotalRooms } from "../utils/utils";
 const MarkerHoverMainBox = styled(Box)<BoxProps>(({ theme }) => ({
   position: "absolute",
   flex: 1,
-  backgroundColor: theme.palette.primary.main,
+  backgroundColor: theme.colours.map.popup,
   height: 200,
   width: 300,
   borderRadius: 20,
@@ -50,7 +50,7 @@ const MarkerHoverTitleBox = styled(Box)<BoxProps>(({ theme }) => ({
   bottom: 0,
   left: 0,
   right: 0,
-  backgroundColor: theme.palette.primary.main,
+  backgroundColor: theme.colours.map.popup,
   color: theme.colours.text.onImage,
   borderRadius: 8,
   padding: 8,
@@ -105,10 +105,10 @@ const MapMarker: React.FC<{
 
   const colour =
     freerooms >= 5
-      ? theme.colours.status.available.main
+      ? theme.colours.map.availability.available
       : freerooms !== 0
-        ? theme.colours.status.soon.main
-        : theme.colours.status.unavailable.main;
+        ? theme.colours.map.availability.soon
+        : theme.colours.map.availability.unavailable;
 
   if (!building) {
     return <></>;

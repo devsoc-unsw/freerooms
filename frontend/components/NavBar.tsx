@@ -69,7 +69,7 @@ const NavBar: React.FC = () => {
 };
 
 const AppBar = styled(MuiAppBar)<MuiAppBarProps>(({ theme }) => ({
-  background: theme.colours.surface.toolbar,
+  background: theme.colours.surface.appBar,
   color: theme.colours.text.primary,
   boxShadow: "none",
   display: "flex",

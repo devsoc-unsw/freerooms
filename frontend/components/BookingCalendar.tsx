@@ -115,17 +115,17 @@ const CustomToolBar: React.FC<ToolbarProps<Booking>> = ({
 const StyledCalendarContainer = styled(Box)<BoxProps & { view: View }>(
   ({ view, theme }) => ({
     "& .rbc-time-slot, & .rbc-day-slot, & .rbc-timeslot-group": {
-      borderColor: `${theme.palette.background.paper} !important`,
+      borderColor: `${theme.colours.calendar.grid} !important`,
     },
     "& .rbc-allday-cell": {
       display: "none",
     },
     "& .rbc-time-view .rbc-header": {
-      borderColor: theme.palette.background.paper,
+      borderColor: theme.colours.calendar.grid,
       borderBottom: "none",
     },
     "& .rbc-events-container": {
-      borderColor: theme.palette.background.paper,
+      borderColor: theme.colours.calendar.grid,
       margin: "1px !important",
     },
     "& .rbc-header": {
@@ -136,7 +136,7 @@ const StyledCalendarContainer = styled(Box)<BoxProps & { view: View }>(
       fontWeight: 500,
     },
     "& .rbc-time-view": {
-      borderColor: theme.palette.background.paper,
+      borderColor: theme.colours.calendar.grid,
       boxShadow: theme.shadows[1],
       border: "none",
       borderRadius: "12px",
@@ -146,7 +146,7 @@ const StyledCalendarContainer = styled(Box)<BoxProps & { view: View }>(
       borderRight: "none !important",
     },
     "& .rbc-time-content": {
-      borderColor: theme.palette.background.paper,
+      borderColor: theme.colours.calendar.grid,
       borderBottomLeftRadius: "12px",
       borderBottomRightRadius: "12px",
       ...(view === "day" && {
@@ -408,7 +408,7 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
           dayPropGetter={(date) => ({
             style: {
               backgroundColor: isTodaySydney(date)
-                ? theme.colours.surface.zebra
+                ? theme.colours.calendar.today
                 : theme.palette.background.default,
             },
           })}

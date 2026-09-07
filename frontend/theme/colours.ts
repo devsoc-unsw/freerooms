@@ -61,6 +61,30 @@ const mapLocation = {
   border: "#BEDCF9",
 } as const;
 
+const mapColours = {
+  availability: {
+    available: "#66BB6A",
+    soon: "#FFA726",
+    unavailable: "#F44336",
+  },
+  route: "#EF6C02",
+  popup: {
+    light: "#EF6C02",
+    dark: "#D4613C",
+  },
+} as const;
+
+const calendarColours = {
+  light: {
+    grid: "#E0E0E0",
+    today: "#FFF3E0",
+  },
+  dark: {
+    grid: "#424242",
+    today: "#212121",
+  },
+} as const;
+
 export function getColours(mode: ThemeMode) {
   const c = values[mode];
 
@@ -85,6 +109,7 @@ export function getColours(mode: ThemeMode) {
     },
     surface: {
       paper: c.paper,
+      appBar: c.backgroundPrimary,
       toolbar: c.toolbar,
       zebra: c.tableZebra,
       muted: c.backgroundMuted,
@@ -115,7 +140,11 @@ export function getColours(mode: ThemeMode) {
     },
     map: {
       location: mapLocation,
+      availability: mapColours.availability,
+      route: mapColours.route,
+      popup: mapColours.popup[mode],
     },
+    calendar: calendarColours[mode],
     neutral,
     disabled: {
       background: c.disabledBackground,

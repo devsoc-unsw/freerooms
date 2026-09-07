@@ -266,7 +266,7 @@ export const Map = () => {
                   "line-join": "round",
                 }}
                 paint={{
-                  "line-color": theme.colours.accent.primary,
+                  "line-color": theme.colours.map.route,
                   "line-width": 6,
                   "line-opacity": 1,
                 }}
