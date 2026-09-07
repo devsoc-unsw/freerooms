@@ -359,7 +359,9 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
                   handleDateChange(new Date(date.getTime() + timeInDay))
                 }
               >
-                <NavigateNextIcon style={{ color: theme.colours.accent.primary, fontSize: 40 }} />
+                <NavigateNextIcon
+                  style={{ color: theme.colours.accent.primary, fontSize: 40 }}
+                />
               </IconButton>
             )}
           </Stack>

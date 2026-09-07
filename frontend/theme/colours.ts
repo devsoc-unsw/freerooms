@@ -58,7 +58,7 @@ const neutral = {
 
 const mapLocation = {
   main: "#4ABDFA",
-  border: "BEDCF9",
+  border: "#BEDCF9",
 } as const;
 
 export function getColours(mode: ThemeMode) {
@@ -112,6 +112,9 @@ export function getColours(mode: ThemeMode) {
     rating: {
       active: c.yellow,
       empty: c.disabledOutline,
+    },
+    map: {
+      location: mapLocation,
     },
     neutral,
     disabled: {

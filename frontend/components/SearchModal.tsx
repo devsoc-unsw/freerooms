@@ -185,10 +185,7 @@ const SearchResult: React.FC<{ option: SearchOption }> = ({ option }) => {
       </Stack>
       <Stack direction="column">
         <Typography>{name}</Typography>
-        <Typography
-          variant="body2"
-          color={theme.colours.text.secondary}
-        >
+        <Typography variant="body2" color={theme.colours.text.secondary}>
           <b>AKA</b> {aliases.join(", ")}
         </Typography>
       </Stack>

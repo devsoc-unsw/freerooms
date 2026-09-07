@@ -100,15 +100,7 @@ const RoomAvailabilityBox: React.FC<RoomAvailabilityBoxProps> = ({
             <Typography sx={{ fontSize: 12, fontWeight: 400 }}>
               {ratingValue}
             </Typography>
-            <Rating
-              readOnly
-              value={ratingValue}
-              size="small"
-              precision={0.5}
-              emptyIcon={
-                <StarBorderIcon sx={{ color: "#969696" }} fontSize="inherit" />
-              }
-            />
+            <Rating readOnly value={ratingValue} size="small" precision={0.5} />
           </Stack>
           <RoomBoxSubheading>{!room ? "" : room.name}</RoomBoxSubheading>
         </Stack>

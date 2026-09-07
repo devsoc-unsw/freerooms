@@ -104,11 +104,11 @@ const MapMarker: React.FC<{
   };
 
   const colour =
-  freerooms >= 5
-    ? theme.colours.status.available.main
-    : freerooms !== 0
-      ? theme.colours.status.soon.main
-      : theme.colours.status.unavailable.main;
+    freerooms >= 5
+      ? theme.colours.status.available.main
+      : freerooms !== 0
+        ? theme.colours.status.soon.main
+        : theme.colours.status.unavailable.main;
 
   if (!building) {
     return <></>;
@@ -167,9 +167,7 @@ const MapMarker: React.FC<{
           border: isSelected
             ? `5px solid ${colour}`
             : `4px solid ${theme.colours.neutral.white}`,
-          backgroundColor: isSelected
-            ? theme.colours.neutral.white
-            : colour,
+          backgroundColor: isSelected ? theme.colours.neutral.white : colour,
           scale: isSelected ? 2 : 1,
           transition: "all 0.2s ease-in-out",
           boxShadow: isSelected ? `0px 0px 6px 4px ${alpha(colour, 0.5)}` : "",

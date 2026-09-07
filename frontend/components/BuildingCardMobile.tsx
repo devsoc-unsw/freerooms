@@ -119,7 +119,11 @@ const BuildingCardMobile: React.FC<{
                   />
                 ) : null}
                 <Typography
-                  sx={{ fontSize: 12, fontWeight: 500, color: theme.colours.neutral.black }}
+                  sx={{
+                    fontSize: 12,
+                    fontWeight: 500,
+                    color: theme.colours.neutral.black,
+                  }}
                 >
                   {freerooms !== FAILED
                     ? `${freerooms} / ${totalrooms}`
@@ -141,11 +145,17 @@ const BuildingCardMobile: React.FC<{
               }}
             >
               <Typography
-                sx={{ fontSize: 12, fontWeight: 500, color: theme.colours.neutral.black }}
+                sx={{
+                  fontSize: 12,
+                  fontWeight: 500,
+                  color: theme.colours.neutral.black,
+                }}
               >
                 {ratings?.overallRating}
               </Typography>
-              <StarIcon sx={{ fontSize: "1rem", color: theme.colours.rating.active }} />
+              <StarIcon
+                sx={{ fontSize: "1rem", color: theme.colours.rating.active }}
+              />
             </Stack>
           </StatusBox>
         </Stack>

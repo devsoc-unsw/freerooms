@@ -44,7 +44,9 @@ const AccordionItem: React.FC<AccordionItemProps> = ({ title, content }) => {
       <AccordionSummary
         expandIcon={
           expandedPanel ? (
-            <IndeterminateCheckBoxIcon style={{ color: theme.colours.accent.primary }} />
+            <IndeterminateCheckBoxIcon
+              style={{ color: theme.colours.accent.primary }}
+            />
           ) : (
             <AddBoxIcon style={{ color: theme.colours.accent.primary }} />
           )
