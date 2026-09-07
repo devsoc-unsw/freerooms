@@ -92,6 +92,15 @@ export const calculateStatus = (
     endtime: "",
   };
 
+  // Recurring searches fetch booking across multiple weeks (see getSearchRangeEnd).
+  // We must restrict to datetime's own day so a future week booking can't be mistaken as todays.
+  const dayBase = utcToZonedTime(datetime, "Australia/Sydney");
+  dayBase.setHours(0, 0, 0, 0);
+  const dayStart = zonedTimeToUtc(dayBase, "Australia/Sydney");
+  dayBase.setHours(23, 59, 59, 999);
+  const dayEnd = zonedTimeToUtc(dayBase, "Australia/Sydney");
+  classes = classes.filter((cls) => cls.start <= dayEnd && cls.end >= dayStart);
+
   // Sort classes by start time, then end time.
   classes.sort((a, b) => {
     if (a.start != b.start) {
