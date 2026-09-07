@@ -18,8 +18,20 @@ const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
 export default function BuildingCardSkeleton() {
   return (
     <MainBox>
-      <Skeleton animation="wave" variant="rounded" height={249} />
-      <Stack sx={{ gap: 0.5, pt: 1.5, display: { xs: "none", sm: "flex" } }}>
+      <Skeleton
+        animation="wave"
+        variant="rounded"
+        height={249}
+        sx={{ flexShrink: 1, minHeight: 0 }}
+      />
+      <Stack
+        sx={{
+          gap: { xs: 0.25, md: 0.4 },
+          py: 1.5,
+          flexShrink: 0,
+          display: { xs: "none", sm: "flex" },
+        }}
+      >
         <Skeleton
           animation="wave"
           variant="text"
@@ -39,7 +51,7 @@ export default function BuildingCardSkeleton() {
             display: { xs: "none", md: "flex" },
           }}
         >
-          <Stack direction="row" sx={{ gap: 1, pt: 1 }}>
+          <Stack direction="row" sx={{ gap: 1, pt: 1 }} width="40%">
             <Skeleton
               animation="wave"
               variant="rounded"

@@ -157,7 +157,7 @@ const BookingCalendarSkeleton = () => (
       </Stack>
     </Stack>
 
-    {/* Previous / Today / Next + Week / Day toggle (desktop only) */}
+    {/* Previous / Today / Next / Week / Day (desktop only) */}
     <Stack
       direction="row"
       sx={{
@@ -203,7 +203,7 @@ const RoomRatingSkeleton = () => (
       sx={{ fontSize: 24, mt: 3, mb: 1 }}
     />
 
-    {/* column on mobile, row (with vertical divider) from 675px — matches RoomRating.tsx */}
+    {/* column on mobile, row (with vertical divider) */}
     <Stack
       sx={{
         flexDirection: "column",
@@ -217,11 +217,11 @@ const RoomRatingSkeleton = () => (
       {/* section 1: DecimalStarRating + circles (>=970px) / linear bars (<970px) */}
       <Stack
         sx={{
-          width: "100%",
           flexDirection: "column",
           gap: 1,
           alignItems: "center",
-          "@media (min-width:970px)": { flexDirection: "row" },
+          width: "100%",
+          "@media (min-width:970px)": { flexDirection: "row", width: "auto" },
         }}
       >
         {/* DecimalStarRating: overall rating box */}
@@ -240,7 +240,7 @@ const RoomRatingSkeleton = () => (
           />
         </Stack>
 
-        {/* >=970px: 3 CircularRating circles (Cleanliness / Location / Quietness) */}
+        {/* 3 CircularRating circles (Cleanliness / Location / Quietness) for >= 970px */}
         <Stack
           direction="row"
           sx={{
@@ -284,7 +284,7 @@ const RoomRatingSkeleton = () => (
         </Stack>
       </Stack>
 
-      {/* vertical divider — only in the >=675px row layout */}
+      {/* vertical divider for >= 675px */}
       <Divider
         flexItem
         orientation="vertical"
@@ -294,7 +294,7 @@ const RoomRatingSkeleton = () => (
         }}
       />
 
-      {/* section 2: "Share your thoughts" (>=675px only) + Leave a Rating button */}
+      {/* section 2: "Share your thoughts" */}
       <Stack
         sx={{
           gap: 0.5,
