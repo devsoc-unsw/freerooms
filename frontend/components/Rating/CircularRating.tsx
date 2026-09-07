@@ -40,7 +40,7 @@ const CircularRating: React.FC<CircularRatingProps> = ({
           size={100}
           thickness={3}
           sx={{
-            color: "#f57c00",
+            color: "primary.main",
             position: "absolute",
           }}
         />
@@ -50,7 +50,7 @@ const CircularRating: React.FC<CircularRatingProps> = ({
           size={100}
           thickness={3}
           sx={{
-            color: "#e0e0e0",
+            color: (theme) => theme.colours.rating.empty,
           }}
         />
 

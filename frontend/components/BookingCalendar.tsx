@@ -9,7 +9,6 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import Box, { BoxProps } from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
-import { grey } from "@mui/material/colors";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import { styled, useTheme } from "@mui/material/styles";
@@ -43,7 +42,7 @@ const ToolBarButton = styled(Button)(({ theme }) => ({
   "&:hover": {
     backgroundColor: theme.palette.primary.main,
     borderColor: theme.palette.primary.main,
-    color: "#fff",
+    color: theme.colours.text.onAccent,
   },
 }));
 
@@ -55,7 +54,7 @@ const ViewToggleButton = styled(ToggleButton)(({ theme }) => ({
   "&.Mui-selected, &.Mui-selected:hover": {
     backgroundColor: theme.palette.primary.main,
     borderColor: theme.palette.primary.main,
-    color: "#fff",
+    color: theme.colours.text.onAccent,
   },
   "&:hover": {
     borderColor: theme.palette.primary.main,
@@ -138,8 +137,7 @@ const StyledCalendarContainer = styled(Box)<BoxProps & { view: View }>(
     },
     "& .rbc-time-view": {
       borderColor: theme.palette.background.paper,
-      boxShadow:
-        "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
+      boxShadow: theme.shadows[1],
       border: "none",
       borderRadius: "12px",
     },
@@ -325,7 +323,7 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
                 }
               >
                 <NavigateBeforeIcon
-                  style={{ color: "#f57c00", fontSize: 40 }}
+                  style={{ color: theme.colours.accent.primary, fontSize: 40 }}
                 />
               </IconButton>
             )}
@@ -361,7 +359,7 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
                   handleDateChange(new Date(date.getTime() + timeInDay))
                 }
               >
-                <NavigateNextIcon style={{ color: "#f57c00", fontSize: 40 }} />
+                <NavigateNextIcon style={{ color: theme.colours.accent.primary, fontSize: 40 }} />
               </IconButton>
             )}
           </Stack>
@@ -399,8 +397,8 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
           }}
           eventPropGetter={() => ({
             style: {
-              backgroundColor: "#f57c00",
-              borderColor: "#f57c00",
+              backgroundColor: theme.colours.accent.primary,
+              borderColor: theme.colours.accent.primary,
               opacity: 0.8,
             },
           })}
@@ -408,9 +406,7 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
           dayPropGetter={(date) => ({
             style: {
               backgroundColor: isTodaySydney(date)
-                ? theme.palette.mode === "light"
-                  ? "#fff3e0"
-                  : grey[900]
+                ? theme.colours.surface.zebra
                 : theme.palette.background.default,
             },
           })}

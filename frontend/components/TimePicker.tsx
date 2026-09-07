@@ -29,7 +29,7 @@ const TimePicker = () => {
           textField: {
             sx: {
               svg: {
-                color: theme.palette.mode === "light" ? "#6C6562" : "#FFFFFF",
+                color: theme.colours.text.secondary,
               },
               width: 133,
               "& .MuiInputBase-root": {
@@ -37,20 +37,17 @@ const TimePicker = () => {
                 borderRadius: "8px",
               },
               "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#CBC4C1",
+                borderColor: theme.colours.border.default,
                 borderWidth: 1,
               },
               "& .MuiInputBase-input": {
                 fontSize: 16,
                 fontWeight: 500,
-                color:
-                  theme.palette.mode === "light"
-                    ? theme.palette.text.secondary
-                    : "#FFFFFF",
+                color: theme.colours.text.secondary,
               },
               "& .MuiOutlinedInput-root": {
                 "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#CBC4C1",
+                  borderColor: theme.colours.border.default,
                 },
               },
             },

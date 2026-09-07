@@ -12,7 +12,7 @@ export default function BuildingRating({
       style={{
         position: "relative",
         display: "inline-block",
-        color: "#ccc",
+        color: "var(--colour-rating-empty)",
       }}
     >
       <span aria-label="rating">{content}</span>
@@ -20,7 +20,7 @@ export default function BuildingRating({
       <span
         style={{
           width: `${(overallRating / 5) * 100}%`,
-          color: "#D4613C",
+          color: "var(--colour-accent-primary)",
           overflow: "hidden",
           position: "absolute",
           top: 0,

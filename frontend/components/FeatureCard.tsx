@@ -11,13 +11,10 @@ interface FeatureCardProps {
 }
 
 const StyledParentDiv = styled("div")(({ theme }) => ({
-  backgroundColor:
-    theme.palette.mode === "light"
-      ? "#ffffff"
-      : theme.palette.background?.paper,
+  backgroundColor: theme.colours.surface.paper,
   padding: "1rem",
   borderRadius: "15px",
-  boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.1)",
+  boxShadow: theme.shadows[4],
   height: "20rem",
   width: "19rem",
   transition: "transform 0.3s",
@@ -41,7 +38,7 @@ const StyledHeading = styled("h2")(({ theme }) => ({
 const StyledLine = styled("h2")(({ theme }) => ({
   height: "0.5rem",
   width: "10rem",
-  backgroundColor: "#FF5C18",
+  backgroundColor: theme.colours.accent.primary,
   borderRadius: "2rem",
   marginTop: "-1rem",
 }));

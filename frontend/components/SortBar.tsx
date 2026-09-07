@@ -41,7 +41,7 @@ const StyledDropDownMenu = styled(Box)<BoxProps>(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   borderWidth: 1,
   borderStyle: "solid",
-  borderColor: theme.palette.mode === "light" ? "#BCBCBC" : "#3F3F3F",
+  borderColor: theme.colours.border.default,
   ":hover": {
     cursor: "auto",
   },

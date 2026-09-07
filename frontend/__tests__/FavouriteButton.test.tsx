@@ -64,7 +64,7 @@ jest.mock("../hooks/useRoom", () => ({
   },
 }));
 
-describe.skip("Favourite button", () => {
+describe("Favourite button", () => {
   beforeEach(() => {
     window.localStorage.clear();
 

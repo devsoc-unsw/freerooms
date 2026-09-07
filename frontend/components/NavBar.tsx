@@ -29,7 +29,7 @@ const NavBar: React.FC = () => {
     <AppBar
       position="fixed"
       sx={{
-        borderBottom: `1px solid ${isDarkMode ? "#2c2c2c" : "#e0e0e0"}`,
+        borderBottom: (theme) => `1px solid ${theme.colours.border.default}`,
         alignItems: "center",
         display: "flex",
         justifyContent: "space-between",
@@ -69,8 +69,8 @@ const NavBar: React.FC = () => {
 };
 
 const AppBar = styled(MuiAppBar)<MuiAppBarProps>(({ theme }) => ({
-  background: theme.palette.background.default,
-  color: theme.palette.getContrastText(theme.palette.background.default),
+  background: theme.colours.surface.toolbar,
+  color: theme.colours.text.primary,
   boxShadow: "none",
   display: "flex",
   flexDirection: "row",

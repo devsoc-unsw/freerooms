@@ -178,7 +178,7 @@ const BuildingCard: React.FC<{
               sx={(theme) => ({
                 fontWeight: 700,
                 fontSize: 15,
-                color: theme.palette.mode === "light" ? "#632410" : "#ffffff",
+                color: theme.colours.text.primary,
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 whiteSpace: "nowrap",
@@ -204,7 +204,7 @@ const BuildingCard: React.FC<{
               sx={(theme) => ({
                 fontWeight: 700,
                 fontSize: 20,
-                color: theme.palette.mode === "light" ? "#632410" : "#ffffff",
+                color: theme.colours.text.primary,
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 whiteSpace: "nowrap",

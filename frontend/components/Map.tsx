@@ -5,6 +5,7 @@ import useBuilding from "@frontend/hooks/useBuilding";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Snackbar from "@mui/material/Snackbar";
+import { useTheme } from "@mui/material/styles";
 import { DarkModeContext } from "app/clientLayout";
 import type { LngLatBoundsLike } from "mapbox-gl";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -53,14 +54,16 @@ const isInBounds = (lat: number, lng: number) =>
   lng <= mapBounds.east;
 
 const LocationMarker = () => {
+  const theme = useTheme();
+
   return (
     <Box
       sx={{
         width: 18,
         height: 18,
         borderRadius: "50%",
-        border: "4px solid #BEDCF9",
-        backgroundColor: "#4ABDFA",
+        border: `4px solid ${theme.colours.map.location.border}`,
+        backgroundColor: theme.colours.map.location.main,
       }}
     />
   );
@@ -80,6 +83,7 @@ export const Map = () => {
   const [debouncedCurrentHover] = useDebounceValue(currentHover, 50);
 
   const styleArray = isDarkMode ? MAPBOX_STYLE_DARK : MAPBOX_STYLE_LIGHT;
+  const theme = useTheme();
 
   // Get current location of user
   const {
@@ -262,7 +266,7 @@ export const Map = () => {
                   "line-join": "round",
                 }}
                 paint={{
-                  "line-color": "#EF6C02",
+                  "line-color": theme.colours.accent.primary,
                   "line-width": 6,
                   "line-opacity": 1,
                 }}

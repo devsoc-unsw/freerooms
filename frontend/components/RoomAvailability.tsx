@@ -1,4 +1,4 @@
-import { styled, Typography, TypographyProps } from "@mui/material";
+import { styled, Typography, TypographyProps, useTheme } from "@mui/material";
 import { Stack } from "@mui/system";
 import React from "react";
 import { RoomAvailabilityBoxProps } from "views/RoomAvailabilityBox";
@@ -14,12 +14,6 @@ const RoomBoxSubheading = styled(Typography)<TypographyProps>(({ theme }) => ({
   fontWeight: 400,
 }));
 
-const roomStatusColor = {
-  free: "#3bdd03",
-  busy: "#FF0000",
-  soon: "#ffa600",
-};
-
 const roomStatusMessage = {
   free: "Available",
   busy: "Unavailable",
@@ -29,6 +23,14 @@ const roomStatusMessage = {
 type RoomAvailabilityProps = Pick<RoomAvailabilityBoxProps, "roomStatus">;
 
 const RoomAvailability: React.FC<RoomAvailabilityProps> = ({ roomStatus }) => {
+  const theme = useTheme();
+
+  const roomStatusColor = {
+    free: theme.colours.status.available.text,
+    busy: theme.colours.status.unavailable.text,
+    soon: theme.colours.status.soon.text,
+  };
+
   const date = new Date(roomStatus.endtime);
   const hoursMinutes = date.toLocaleTimeString("en-AU", {
     hour: "2-digit",

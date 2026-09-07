@@ -6,7 +6,7 @@ import { Typography, TypographyProps } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
-import { styled } from "@mui/material/styles";
+import { alpha, styled } from "@mui/material/styles";
 import RoomAvailability from "components/RoomAvailability";
 import useRoomRatings from "hooks/useRoomRatings";
 import Link from "next/link";
@@ -31,12 +31,12 @@ const IndiviRoomBox = styled(Box, {
   fontSize: 20,
   fontWeight: 500,
   backgroundColor: "transparent",
-  backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), ${bgImage}`,
+  backgroundImage: `linear-gradient(${alpha(theme.colours.neutral.black, 0.6)}, ${alpha(theme.colours.neutral.black, 0.6)}), ${bgImage}`,
   backgroundSize: "cover",
   backgroundPosition: "center",
   backgroundRepeat: "no-repeat",
   backgroundBlendMode: "darken",
-  color: theme.palette.mode === "light" ? "#FFFFFF" : "000000",
+  color: theme.colours.text.onImage,
   padding: theme.spacing(2, 2, 2, 3),
   margin: theme.spacing(1.5, 1),
   "&:hover": {
@@ -120,7 +120,7 @@ const RoomAvailabilityBox: React.FC<RoomAvailabilityBoxProps> = ({
           }}
         >
           <RoomAvailability roomStatus={roomStatus} />
-          <ChevronRightIcon style={{ color: "grey" }} />
+          <ChevronRightIcon sx={{ color: "inherit" }} />
         </Stack>
       </IndiviRoomBox>
     </Link>

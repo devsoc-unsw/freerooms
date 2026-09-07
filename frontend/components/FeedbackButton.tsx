@@ -1,6 +1,6 @@
 import { BugOutlined } from "@ant-design/icons";
 import { useMediaQuery } from "@mui/material";
-import { styled } from "@mui/system";
+import { styled } from "@mui/material/styles";
 import { Button as AntdButton, Tooltip } from "antd";
 import React from "react";
 
@@ -12,25 +12,21 @@ const StyledWrapper = styled("div")(({ theme }) => ({
 }));
 
 const StyledButton = styled(AntdButton)(({ theme }) => {
-  const bgColor =
-    theme.palette.mode === "light"
-      ? "#ffffff"
-      : theme.palette.background?.paper;
-
-  const borderColor = theme.palette.mode === "light" ? "#d9d9d9" : "#555555";
+  const bgColor = theme.colours.surface.paper;
+  const borderColor = theme.colours.border.default;
 
   return {
     backgroundColor: bgColor,
     borderColor: borderColor,
     "&:hover": {
-      borderColor: "#FB905E !important",
+      borderColor: `${theme.colours.accent.primary} !important`,
       backgroundColor: `${bgColor} !important`,
     },
   };
 });
 
 const ThemedBugIcon = styled(BugOutlined)(({ theme }) => ({
-  color: theme.palette.mode === "light" ? "#323739" : "#f1f1f1",
+  color: theme.colours.text.primary,
 }));
 
 // in all rooms, browse and room timetable pages

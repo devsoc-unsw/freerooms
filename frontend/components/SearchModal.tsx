@@ -8,7 +8,6 @@ import {
   useTheme,
 } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
-import { grey } from "@mui/material/colors";
 import InputAdornment from "@mui/material/InputAdornment";
 import Modal from "@mui/material/Modal";
 import Stack from "@mui/material/Stack";
@@ -188,7 +187,7 @@ const SearchResult: React.FC<{ option: SearchOption }> = ({ option }) => {
         <Typography>{name}</Typography>
         <Typography
           variant="body2"
-          color={theme.palette.mode === "light" ? grey[600] : grey[500]}
+          color={theme.colours.text.secondary}
         >
           <b>AKA</b> {aliases.join(", ")}
         </Typography>

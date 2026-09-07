@@ -50,13 +50,13 @@ const StatusBox = styled(Box)<BoxProps>(({ theme }) => ({
 
 const RoomBox = styled(Box)<BoxProps>(({ theme }) => ({
   borderRadius: 10,
-  backgroundColor: theme.palette.mode === "light" ? "#F1F1F1" : "#2c2c2c",
+  backgroundColor: theme.colours.surface.muted,
   margin: 10,
   padding: theme.spacing(0.5),
 }));
 
 const CloseButton = styled(Button)(({ theme }) => ({
-  backgroundColor: alpha(theme.palette.grey[500], 0.5),
+  backgroundColor: alpha(theme.colours.text.secondary, 0.5),
 }));
 
 const DirectionsButton = styled(Button)(({ theme }) => ({

@@ -1,6 +1,7 @@
 "use client";
 
 import NavBar, { navHeight } from "@frontend/components/NavBar";
+import { createAppTheme, type ThemeMode } from "@frontend/theme";
 import CssBaseline from "@mui/material/CssBaseline";
 import { styled, ThemeProvider } from "@mui/material/styles";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
@@ -14,8 +15,6 @@ import { Provider as ReduxProvider } from "react-redux";
 
 import SearchModal from "../components/SearchModal";
 import store from "../redux/store";
-
-import { createAppTheme, type ThemeMode } from "@frontend/theme";
 
 export const DarkModeContext = createContext({
   isDarkMode: false,

@@ -26,7 +26,7 @@ const MarkerHoverMainBox = styled(Box)<BoxProps>(({ theme }) => ({
   width: 300,
   borderRadius: 20,
   overflow: "hidden",
-  boxShadow: "1px 1px 5px #1f1f1f",
+  boxShadow: theme.shadows[2],
 }));
 
 const MarkerHoverImage = styled(Image)<ImageProps>(() => ({
@@ -51,7 +51,7 @@ const MarkerHoverTitleBox = styled(Box)<BoxProps>(({ theme }) => ({
   left: 0,
   right: 0,
   backgroundColor: theme.palette.primary.main,
-  color: "white",
+  color: theme.colours.text.onImage,
   borderRadius: 8,
   padding: 8,
   paddingLeft: 12,
@@ -104,7 +104,11 @@ const MapMarker: React.FC<{
   };
 
   const colour =
-    freerooms >= 5 ? "#66bb6a" : freerooms !== 0 ? "#ffa726" : "#f44336";
+  freerooms >= 5
+    ? theme.colours.status.available.main
+    : freerooms !== 0
+      ? theme.colours.status.soon.main
+      : theme.colours.status.unavailable.main;
 
   if (!building) {
     return <></>;
@@ -147,7 +151,7 @@ const MapMarker: React.FC<{
           transition: "all 0.2s ease-in-out",
           textShadow:
             theme.palette.mode === "light"
-              ? "-.5px -.5px 1px #f2f2f2, .5px -.5px 1px #f2f2f2, -.5px .5px 1px #f2f2f2, .5px .5px 1px #f2f2f2"
+              ? `-.5px -.5px 1px ${theme.colours.neutral.white}, .5px -.5px 1px ${theme.colours.neutral.white}, -.5px .5px 1px ${theme.colours.neutral.white}, .5px .5px 1px ${theme.colours.neutral.white}`
               : "",
           color: theme.palette.text.primary,
         }}
@@ -160,8 +164,12 @@ const MapMarker: React.FC<{
           width: 18,
           height: 18,
           borderRadius: "50%",
-          border: isSelected ? `5px solid ${colour}` : "4px solid white",
-          backgroundColor: isSelected ? "white" : colour,
+          border: isSelected
+            ? `5px solid ${colour}`
+            : `4px solid ${theme.colours.neutral.white}`,
+          backgroundColor: isSelected
+            ? theme.colours.neutral.white
+            : colour,
           scale: isSelected ? 2 : 1,
           transition: "all 0.2s ease-in-out",
           boxShadow: isSelected ? `0px 0px 6px 4px ${alpha(colour, 0.5)}` : "",

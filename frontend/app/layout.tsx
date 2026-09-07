@@ -1,8 +1,8 @@
-import { DM_Sans } from "next/font/google";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "../styles/globals.css";
 
 import { Metadata } from "next";
+import { DM_Sans } from "next/font/google";
 import React from "react";
 
 import ClientLayout from "./clientLayout";
