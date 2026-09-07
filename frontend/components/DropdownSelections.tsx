@@ -6,11 +6,11 @@ import Checkbox from "@mui/material/Checkbox";
 import Radio from "@mui/material/Radio";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import React from "react";
+import React, { useId } from "react";
 import { AllRoomsFilters, DropDown, DropDownItem, Filters } from "types";
 
 const StyledAccordion = styled(Accordion)(({ theme }) => ({
-  backgroundColor: theme.palette.background.default,
+  backgroundColor: theme.colours.surface.paper,
   transition: "all 0.1s ease-in-out",
   borderTop: `1px solid ${theme.colours.border.subtle}`,
 }));
@@ -24,12 +24,14 @@ const DropdownSelections: React.FC<{
     item: DropDownItem
   ) => void;
 }> = ({ dropdown, canSelectMultiple, filters, handleSelect }) => {
+  const id = useId();
+
   return (
     <StyledAccordion disableGutters={true} elevation={0}>
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
-        aria-controls="panel1a-content"
-        id="panel1a-header"
+        aria-controls={`${id}-content`}
+        id={`${id}-header`}
         sx={{ paddingX: 0 }}
       >
         <Typography
@@ -42,6 +44,7 @@ const DropdownSelections: React.FC<{
         </Typography>
       </AccordionSummary>
       <AccordionDetails
+        id={`${id}-content`}
         sx={{
           padding: 0,
         }}

@@ -53,14 +53,25 @@ const NavBar: React.FC = () => {
         <IconButton
           aria-label="All rooms"
           active={path === "/allRooms"}
+          aria-current={path === "/allRooms" ? "page" : undefined}
           href="/allRooms"
         >
           <MeetingRoomIcon />
         </IconButton>
-        <IconButton aria-label="Go to map" active={path === "/map"} href="/map">
+        <IconButton
+          aria-label="Go to map"
+          active={path === "/map"}
+          aria-current={path === "/map" ? "page" : undefined}
+          href="/map"
+        >
           <MapIcon />
         </IconButton>
-        <IconButton active={isDarkMode} onClick={toggleDarkMode}>
+        <IconButton
+          aria-label={isDarkMode ? "Use light mode" : "Use dark mode"}
+          aria-pressed={isDarkMode}
+          active={isDarkMode}
+          onClick={toggleDarkMode}
+        >
           <DarkMode />
         </IconButton>
       </Stack>

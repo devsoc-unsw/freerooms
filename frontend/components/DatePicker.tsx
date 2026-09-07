@@ -10,6 +10,7 @@ import React from "react";
 
 import { selectDatetime, setDatetime } from "../redux/datetimeSlice";
 import { useDispatch, useSelector } from "../redux/hooks";
+import { getPickerFieldStyles } from "../theme/fieldStyles";
 import { SYDNEY_TIMEZONE } from "../utils/toSydneyTime";
 
 const DatePicker = () => {
@@ -25,28 +26,10 @@ const DatePicker = () => {
         onChange={(value: Date | null) =>
           value && dispatch(setDatetime(fromZonedTime(value, SYDNEY_TIMEZONE)))
         }
-        sx={{
-          width: 133,
-          "& .MuiInputBase-root": {
-            height: 56,
-            borderRadius: "8px",
-          },
-          "& .MuiOutlinedInput-notchedOutline": {
-            borderColor: theme.colours.border.default,
-            borderWidth: 1,
-          },
-          "& .MuiInputBase-input": {
-            fontSize: 16,
-            fontWeight: 500,
-            color: theme.colours.text.secondary,
-          },
-          "& .MuiInputAdornment-root svg": {
-            color: theme.colours.text.secondary,
-          },
-          "& .MuiOutlinedInput-root": {
-            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-              borderColor: theme.colours.border.default,
-            },
+        slotProps={{
+          textField: {
+            variant: "outlined",
+            sx: getPickerFieldStyles(theme),
           },
         }}
         aria-label="date-picker"

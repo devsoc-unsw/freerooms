@@ -11,6 +11,7 @@ import React from "react";
 import { selectDatetime, setDatetime } from "../redux/datetimeSlice";
 import { useDispatch, useSelector } from "../redux/hooks";
 import { SYDNEY_TIMEZONE } from "../utils/toSydneyTime";
+import { getPickerFieldStyles } from "../theme/fieldStyles";
 
 const TimePicker = () => {
   const dispatch = useDispatch();
@@ -27,30 +28,8 @@ const TimePicker = () => {
         format="hh:mm a"
         slotProps={{
           textField: {
-            sx: {
-              svg: {
-                color: theme.colours.text.secondary,
-              },
-              width: 133,
-              "& .MuiInputBase-root": {
-                height: 56,
-                borderRadius: "8px",
-              },
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: theme.colours.border.default,
-                borderWidth: 1,
-              },
-              "& .MuiInputBase-input": {
-                fontSize: 16,
-                fontWeight: 500,
-                color: theme.colours.text.secondary,
-              },
-              "& .MuiOutlinedInput-root": {
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: theme.colours.border.default,
-                },
-              },
-            },
+            variant: "outlined",
+            sx: getPickerFieldStyles(theme),
           },
         }}
         aria-label="time-picker"

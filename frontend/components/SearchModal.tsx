@@ -11,7 +11,6 @@ import Autocomplete from "@mui/material/Autocomplete";
 import InputAdornment from "@mui/material/InputAdornment";
 import Modal from "@mui/material/Modal";
 import Stack from "@mui/material/Stack";
-import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { matchSorter } from "match-sorter";
 import { usePathname, useRouter } from "next/navigation";
@@ -24,6 +23,7 @@ import { setCurrentBuilding } from "../redux/currentBuildingSlice";
 import { useDispatch, useSelector } from "../redux/hooks";
 import { closeSearch, selectSearchOpen } from "../redux/searchOpenSlice";
 import { SearchOption } from "../types";
+import { AppSurface, AppTextField } from "./ui";
 
 const RECENT_SEARCH_LIMIT = 3;
 interface SearchProps {}
@@ -149,6 +149,7 @@ const SearchModal: React.FC<SearchProps> = () => {
             <SearchResult option={option} />
           </li>
         )}
+        slots={{ paper: AppSurface }}
         slotProps={{
           paper: { sx: { borderRadius: "0 0 10px 10px" } },
         }}
@@ -207,7 +208,7 @@ const InputBox = (params: AutocompleteRenderInputParams) => {
   } = compatParams;
 
   return (
-    <TextField
+    <AppTextField
       {...textFieldProps}
       autoFocus
       fullWidth
