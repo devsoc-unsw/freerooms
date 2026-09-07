@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
 
-import type { AppColours } from "./colours"
-import type { radius, space} from "./space";
+import type { AppColours } from "./colours";
+import type { radius, space } from "./spacing";
 
 declare module "@mui/material/styles" {
     interface Theme {
@@ -15,7 +15,9 @@ declare module "@mui/material/styles" {
         space?: typeof space;
         radius?: typeof radius;
     }
+}
 
+declare module "@mui/material/styles/createTypography" {
     interface TypographyVariants {
         brand: CSSProperties;
         cardTitle: CSSProperties;
@@ -25,7 +27,7 @@ declare module "@mui/material/styles" {
         metadata: CSSProperties;
     }
 
-    interface TypographyVariantOptions {
+    interface TypographyVariantsOptions {
         brand?: CSSProperties;
         cardTitle?: CSSProperties;
         sectionHeading?: CSSProperties;

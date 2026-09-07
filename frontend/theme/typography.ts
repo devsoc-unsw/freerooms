@@ -1,8 +1,19 @@
-import type { ThemeOptions } from "@mui/material/styles";
+import type { CSSProperties } from "react";
+import type { ThemeOptions, TypographyVariant, TypographyVariantsOptions } from "@mui/material/styles";
+
+type CustomTypographyVariant =
+    | "brand"
+    | "cardTitle"
+    | "sectionHeading"
+    | "heroSubtitle"
+    | "heroWordmark"
+    | "metadata";
+
+type AppTypographyOptions = TypographyVariantsOptions & Partial<Record<CustomTypographyVariant, CSSProperties>>;
 
 export const fontFamily = 'var(--font-dm-sans), "DM Sans", sans-serif';
 
-export const typography: ThemeOptions["typography"] = {
+export const typography = {
     fontFamily,
     htmlFontSize: 16,
     fontWeightRegular: 400,
@@ -43,4 +54,4 @@ export const typography: ThemeOptions["typography"] = {
         letterSpacing: "-0.05em",
     },
     metadata: { fontSize: 12, lineHeight: 1, fontWeight: 400 },
-};
+} satisfies AppTypographyOptions;
