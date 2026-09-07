@@ -1,5 +1,5 @@
 import { DropDown } from "@frontend/types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { StyledAccordion } from "./DropdownSelections";
 import { AccordionDetails, AccordionSummary, Slider, Typography } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -18,10 +18,12 @@ const RecurringWeeksSlider = ({
 
     const currValue = Number(value) || min;
     const [weeks, setWeeks] = useState(currValue);
+    const [prevValue, setPrevValue] = useState(currValue);
 
-    useEffect(() => {
-        setWeeks(currValue)
-    }, [currValue])
+    if (currValue !== prevValue) {
+        setPrevValue(currValue);
+        setWeeks(currValue);
+    }
 
     const label = weeks <= min ? "Any" : `${weeks} week${weeks === 1 ? "" : "s"}`;
     return (
