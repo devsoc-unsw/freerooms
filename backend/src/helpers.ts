@@ -45,8 +45,10 @@ export const getSearchRangeEnd = (
   filters: StatusFilters
 ): Date => {
   if (filters.recurring) {
-    const weeksAhead = filters.recurring - 1;
-    return new Date(start.getTime() + weeksAhead * ONE_WEEK + (filters.duration || 0) * 60 * 1000);
+    const zoned = utcToZonedTime(start, "Australia/Sydney");
+    zoned.setDate(zoned.getDate() + (filters.recurring - 1) * 7);
+    const lastOccurrence = zonedTimeToUtc(zoned, "Australia/Sydney");
+    return new Date(lastOccurrence.getTime() + (filters.duration || 0) * 60 * 1000);
   }
 
   const base = utcToZonedTime(start, "Australia/Sydney");
@@ -157,6 +159,9 @@ export const isSlotFree = (
   duration: number,
   bookings: Booking[]
 ): boolean => {
+  if (duration === 0) {
+    return !bookings.some((b) => start >= b.start && start < b.end);
+  }
   const end = new Date(start.getTime() + duration * 60 * 1000);
 
   // return true if specific timeframe has no bookings at all.
@@ -174,10 +179,11 @@ export const isRecurringFree = (
   weeks: number
 ): boolean => {
   for (let i = 0; i < weeks; i++) {
-    const occurence = new Date(start);
-    occurence.setDate(start.getDate() + i * 7);
+    const zoned = utcToZonedTime(start, "Australia/Sydney");
+    zoned.setDate(zoned.getDate() + i * 7);
+    const occurrence = zonedTimeToUtc(zoned, "Australia/Sydney");
 
-    if (!isSlotFree(occurence, duration, bookings)) {
+    if (!isSlotFree(occurrence, duration, bookings)) {
       return false;
     }
   }
