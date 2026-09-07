@@ -1,5 +1,6 @@
 import { Rating, Stack, Typography } from "@mui/material";
-import React from "react";
+import { DarkModeContext } from "app/clientLayout";
+import React, { useContext } from "react";
 
 interface ReviewRatingProps {
   category: string;
@@ -10,6 +11,8 @@ const ReviewRating: React.FC<ReviewRatingProps> = ({
   category,
   ratingCallback,
 }) => {
+  const { isDarkMode } = useContext(DarkModeContext);
+
   return (
     <Stack>
       <Typography id="modal-modal-title" variant="body1">
@@ -21,7 +24,9 @@ const ReviewRating: React.FC<ReviewRatingProps> = ({
         onChange={(event, value) => ratingCallback(category, value)}
         size="large"
         sx={{
-          "& .MuiRating-iconEmpty": { color: "#FFFFFF !important" },
+          "& .MuiRating-iconEmpty": {
+            color: `${isDarkMode ? "#FFFFFF" : "#101214"} !important`,
+          },
         }}
       />
     </Stack>

@@ -401,7 +401,7 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
             style: {
               backgroundColor: "#f57c00",
               borderColor: "#f57c00",
-              opacity: theme.palette.mode === "light" ? 1 : 0.8,
+              opacity: 0.8,
             },
           })}
           slotGroupPropGetter={() => ({ style: { minHeight: "50px" } })}

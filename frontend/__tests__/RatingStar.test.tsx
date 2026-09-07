@@ -13,6 +13,14 @@ import store from "../redux/store";
 import RoomAvailabilityBox from "../views/RoomAvailabilityBox";
 import renderWithRedux from "./utils/renderWithRedux";
 
+// Mock DarkModeContext to avoid test failing due to importing NuqsAdapter
+jest.mock("../app/clientLayout", () => ({
+  DarkModeContext: require("react").createContext({
+    isDarkMode: false,
+    toggleDarkMode: () => {},
+  }),
+}));
+
 jest.mock("nuqs", () => ({
   useQueryStates: (keys: Record<string, { defaultValue: string }>) => [
     Object.fromEntries(
