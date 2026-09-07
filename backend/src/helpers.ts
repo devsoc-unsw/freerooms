@@ -14,7 +14,6 @@ import {
 import { BuildingDatabase, StatusFilters } from "./types";
 
 const FIFTEEN_MIN = 15 * 1000 * 60;
-const ONE_WEEK = 7 * 24 * 60 * 60 * 1000;
 
 // Get all bookings for a certain date
 export const getBookingsForDate = async (
@@ -48,7 +47,9 @@ export const getSearchRangeEnd = (
     const zoned = utcToZonedTime(start, "Australia/Sydney");
     zoned.setDate(zoned.getDate() + (filters.recurring - 1) * 7);
     const lastOccurrence = zonedTimeToUtc(zoned, "Australia/Sydney");
-    return new Date(lastOccurrence.getTime() + (filters.duration || 0) * 60 * 1000);
+    return new Date(
+      lastOccurrence.getTime() + (filters.duration || 0) * 60 * 1000
+    );
   }
 
   const base = utcToZonedTime(start, "Australia/Sydney");

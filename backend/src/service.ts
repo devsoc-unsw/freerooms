@@ -77,15 +77,19 @@ export const getAllRoomStatus = async (
         continue;
 
       const roomBookings = bookings[roomData.id]?.bookings ?? [];
-      const status = calculateStatus(
-        date,
-        roomBookings,
-        filters.duration || 0
-      );
+      const status = calculateStatus(date, roomBookings, filters.duration || 0);
 
       if (status == null) continue;
 
-      if (filters.recurring && !isRecurringFree(date, filters.duration || 0, roomBookings, filters.recurring)) {
+      if (
+        filters.recurring &&
+        !isRecurringFree(
+          date,
+          filters.duration || 0,
+          roomBookings,
+          filters.recurring
+        )
+      ) {
         continue;
       }
 
@@ -122,14 +126,10 @@ export const searchAllRoom = async (
         (filters.id != undefined && (roomData.school != " ") != filters.id) // id is required if managed by a school (non-CATS)
       )
         continue;
-      
-        const roomBookings = bookings[roomData.id]?.bookings ?? [];
 
-      const status = calculateStatus(
-        date,
-        roomBookings,
-        filters.duration || 0
-      );
+      const roomBookings = bookings[roomData.id]?.bookings ?? [];
+
+      const status = calculateStatus(date, roomBookings, filters.duration || 0);
 
       if (status === null) {
         continue;

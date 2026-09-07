@@ -97,7 +97,7 @@ const FilterBar = () => {
       }
     },
     [dispatch]
- );
+  );
 
   // Apply filters from query strings
   useQueryFilter();
@@ -106,24 +106,24 @@ const FilterBar = () => {
   const dropdownMap = useMemo(
     () =>
       filterBarDropdown.map((dropdown) =>
-       dropdown.key === "recurring" ? (
-         <RecurringWeeksSlider
-           key={dropdown.key}
-           dropdown={dropdown}
-           value={filters.recurring}
-           onCommit={handleRecurringChange}
-         />
-       ) : (
-         <DropdownSelections
-           key={dropdown.key}
-           dropdown={dropdown}
-           canSelectMultiple={false}
-           filters={filters}
-           handleSelect={handleSelect}
-         />
-       )
-     ),
-   [filters, handleSelect, handleRecurringChange]
+        dropdown.key === "recurring" ? (
+          <RecurringWeeksSlider
+            key={dropdown.key}
+            dropdown={dropdown}
+            value={filters.recurring}
+            onCommit={handleRecurringChange}
+          />
+        ) : (
+          <DropdownSelections
+            key={dropdown.key}
+            dropdown={dropdown}
+            canSelectMultiple={false}
+            filters={filters}
+            handleSelect={handleSelect}
+          />
+        )
+      ),
+    [filters, handleSelect, handleRecurringChange]
   );
 
   return (

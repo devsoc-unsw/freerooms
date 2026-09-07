@@ -44,35 +44,35 @@ const FilterSideBar = ({ filters }: { filters: AllRoomsFilters }) => {
   const handleRecurringChange = useCallback(
     (weeks: number | null) => {
       if (weeks == null) {
-        dispatch(unsetAllRoomsFilter({ key: "recurring", value: ""}));
+        dispatch(unsetAllRoomsFilter({ key: "recurring", value: "" }));
       } else {
         dispatch(setAllRoomsFilter({ key: "recurring", value: String(weeks) }));
       }
     },
     [dispatch]
-  )
+  );
 
-const dropdownMap = useMemo(
+  const dropdownMap = useMemo(
     () =>
-     allRoomsFilterDropdown.map((dropdown) =>
-       dropdown.key === "recurring" ? (
-         <RecurringWeeksSlider
-           key={dropdown.key}
-           dropdown={dropdown}
-           value={filters.recurring}
-           onCommit={handleRecurringChange}
-         />
-       ) : (
-         <DropdownSelections
-           key={dropdown.key}
-           dropdown={dropdown}
-           canSelectMultiple={false}
-           filters={filters}
-           handleSelect={handleSelect}
-         />
-       )
-     ),
-   [filters, handleSelect, handleRecurringChange]
+      allRoomsFilterDropdown.map((dropdown) =>
+        dropdown.key === "recurring" ? (
+          <RecurringWeeksSlider
+            key={dropdown.key}
+            dropdown={dropdown}
+            value={filters.recurring}
+            onCommit={handleRecurringChange}
+          />
+        ) : (
+          <DropdownSelections
+            key={dropdown.key}
+            dropdown={dropdown}
+            canSelectMultiple={false}
+            filters={filters}
+            handleSelect={handleSelect}
+          />
+        )
+      ),
+    [filters, handleSelect, handleRecurringChange]
   );
 
   return (
