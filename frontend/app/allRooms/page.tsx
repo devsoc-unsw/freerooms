@@ -1,6 +1,6 @@
 "use client";
 
-import { Alert, Button, Typography } from "@mui/material";
+import { Alert, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/system";
 import AllRoomsSearchBar from "components/AllRoomsSearchBar";
@@ -14,6 +14,7 @@ import AllRoomsFilter from "../../components/AllRoomsFilter";
 import Room from "../../components/AllRoomsRoom";
 import RoomList from "../../components/AllRoomsRoomList";
 import FeedbackButton from "../../components/FeedbackButton";
+import { AppButton } from "../../components/ui";
 
 function AllRoomsContent() {
   const filters = useSelector(selectAllRoomsFilters);
@@ -81,13 +82,13 @@ function AllRoomsContent() {
             <AllRoomsSearchBar />
             {roomsDisplay}
             {visibleRooms < totalRooms && (
-              <Button
+              <AppButton
                 variant="outlined"
                 onClick={handleLoadMore}
                 sx={{ marginY: 1 }}
               >
                 Load More Rooms
-              </Button>
+              </AppButton>
             )}
           </RoomList>
         </StyledBody>

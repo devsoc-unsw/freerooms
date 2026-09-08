@@ -16,7 +16,7 @@ const StyledFilterSideBarContainer = styled(Box)<BoxProps>(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   backgroundColor: theme.palette.background.default,
-  borderColor: theme.palette.mode === "light" ? "#BCBCBC" : "#3F3F3F",
+  borderColor: theme.colours.border.default,
   ":hover": {
     cursor: "auto",
   },

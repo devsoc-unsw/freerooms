@@ -1,4 +1,5 @@
 import { Chip, Stack, useTheme } from "@mui/material";
+import { alpha } from "@mui/material/styles";
 
 interface Props {
   items: string[];
@@ -28,7 +29,7 @@ export default function UtilityChips({ items }: Props) {
               backgroundColor: theme.palette.action.hover,
               borderColor: theme.palette.warning.main,
               transform: "translateY(-1px)",
-              boxShadow: `0 2px 4px ${theme.palette.warning.main}33`, // 33 = 20% opacity
+              boxShadow: `0 2px 4px ${alpha(theme.palette.warning.main, 0.2)}`,
             },
             transition: theme.transitions.create(
               ["background-color", "border", "transform", "box-shadow"],

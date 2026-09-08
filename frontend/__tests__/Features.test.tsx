@@ -1,8 +1,9 @@
 import "@testing-library/jest-dom";
 
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 
 import Features from "../components/Features";
+import { renderWithTheme as render } from "./utils/renderWithRedux";
 
 jest.mock("react-redux", () => ({
   ...jest.requireActual("react-redux"),

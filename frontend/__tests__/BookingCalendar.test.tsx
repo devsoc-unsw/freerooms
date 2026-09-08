@@ -1,13 +1,14 @@
 import "@testing-library/jest-dom";
 
 import { Booking } from "@common/types";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import mediaQuery from "css-mediaquery";
 import { Provider } from "react-redux";
 
 import BookingCalendar from "../components/BookingCalendar";
 import store from "../redux/store";
 import toSydneyTime from "../utils/toSydneyTime";
+import { renderWithTheme as render } from "./utils/renderWithRedux";
 
 const mockUseQueryStates = jest.fn();
 

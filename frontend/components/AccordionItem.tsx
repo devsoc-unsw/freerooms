@@ -3,8 +3,8 @@ import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
+import { styled, useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import { styled } from "@mui/system";
 import React, { ReactElement, useState } from "react";
 
 interface AccordionItemProps {
@@ -17,11 +17,10 @@ const StyledAccordion = styled(Accordion)(({ theme }) => ({
   padding: "1rem",
   maxWidth: "100%",
   borderRadius: "0.75rem",
-  boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.15)",
-  backgroundColor:
-    theme.palette.mode === "light" ? "#ffffff" : theme.palette.background.paper,
+  boxShadow: theme.shadows[1],
+  backgroundColor: theme.colours.surface.paper,
   "&:before": {
-    backgroundColor: "rgba(0,0,0,0)",
+    backgroundColor: "transparent",
   },
   [theme.breakpoints.down("lg")]: {
     maxWidth: "100%",
@@ -31,6 +30,7 @@ const StyledAccordion = styled(Accordion)(({ theme }) => ({
 
 const AccordionItem: React.FC<AccordionItemProps> = ({ title, content }) => {
   const [expandedPanel, setExpandedPanel] = useState(false);
+  const theme = useTheme();
 
   const handleChangePanel = (
     event: React.ChangeEvent<{}>,
@@ -44,9 +44,11 @@ const AccordionItem: React.FC<AccordionItemProps> = ({ title, content }) => {
       <AccordionSummary
         expandIcon={
           expandedPanel ? (
-            <IndeterminateCheckBoxIcon style={{ color: "#FF5C18" }} />
+            <IndeterminateCheckBoxIcon
+              style={{ color: theme.colours.accent.primary }}
+            />
           ) : (
-            <AddBoxIcon style={{ color: "#FA8C5E" }} />
+            <AddBoxIcon style={{ color: theme.colours.accent.primary }} />
           )
         }
         aria-controls="panel2a-content"

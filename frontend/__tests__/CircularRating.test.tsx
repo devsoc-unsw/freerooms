@@ -1,7 +1,9 @@
 import "@testing-library/jest-dom";
 
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import RoomRatingList from "components/Rating/RoomRatingList";
+
+import { renderWithTheme as render } from "./utils/renderWithRedux";
 
 describe("Rooms page with circular rating component", () => {
   it("renders the CircularRating component", () => {

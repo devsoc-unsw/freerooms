@@ -9,7 +9,8 @@
     "lint": "prettier --check \"**/*.{ts,tsx}\" && eslint .",
     "lint:fix": "prettier --write \"**/*.{ts,tsx}\" && eslint . --fix",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "lint:colours": "node scripts/check-colours.mjs"
   },
   "dependencies": {
     "@ant-design/icons": "^6.0.0",
