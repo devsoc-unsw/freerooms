@@ -29,23 +29,6 @@ const RoomList = ({
       {isValidating ? (
         <AllRoomsRoomListSkeleton />
       ) : (
-        // <Stack
-        //   sx={{
-        //     maxWidth: 540,
-        //     flex: 1,
-        //     width: "100%",
-        //   }}
-        // >
-        //   <LinearProgress />
-        //   <Typography
-        //     sx={{
-        //       alignSelf: "center",
-        //       marginTop: 1,
-        //     }}
-        //   >
-        //     Loading free rooms
-        //   </Typography>
-        // </Stack>
         children
       )}
     </StyledStack>
