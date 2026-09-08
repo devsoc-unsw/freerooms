@@ -26,11 +26,7 @@ const RoomList = ({
   return (
     <StyledStack>
       <AllRoomsSearchBar />
-      {isValidating ? (
-        <AllRoomsRoomListSkeleton />
-      ) : (
-        children
-      )}
+      {isValidating ? <AllRoomsRoomListSkeleton /> : children}
     </StyledStack>
   );
 };
