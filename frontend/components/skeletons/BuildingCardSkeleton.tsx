@@ -51,7 +51,7 @@ export default function BuildingCardSkeleton() {
             display: { xs: "none", md: "flex" },
           }}
         >
-          <Stack direction="row" sx={{ gap: 1, pt: 1 }} width="40%">
+          <Stack direction="row" sx={{ gap: 1, pt: 1 }}>
             <Skeleton
               animation="wave"
               variant="rounded"

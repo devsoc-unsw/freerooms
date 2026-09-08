@@ -80,13 +80,13 @@ describe("RoomPageSkeleton", () => {
   it("keeps both the circular and linear rating placeholders mounted for either breakpoint", () => {
     const { container } = render(<RoomPageSkeleton />);
 
-    // >= 970px layout: three rating circles     
+    // >= 970px layout: three rating circles
     const ratingCircles = Array.from(
       container.querySelectorAll<HTMLElement>(".MuiSkeleton-circular")
     ).filter((el) => el.style.width === "100px");
     expect(ratingCircles).toHaveLength(3);
 
-    // < 970px layout: three linear rating bars 
+    // < 970px layout: three linear rating bars
     const textSkeletons = Array.from(
       container.querySelectorAll<HTMLElement>(".MuiSkeleton-text")
     );
@@ -104,7 +104,7 @@ describe("RoomPageSkeleton", () => {
 
     const { container, rerender, queryByText, getByText } = render(<Page />);
 
-    // loading = skeleton 
+    // loading = skeleton
     expect(
       container.querySelectorAll(".MuiSkeleton-root").length
     ).toBeGreaterThan(20);
@@ -125,7 +125,7 @@ describe("RoomPageSkeleton", () => {
     });
     rerender(<Page />);
 
-    // loaded = no skeleton 
+    // loaded = no skeleton
     expect(container.querySelectorAll(".MuiSkeleton-root").length).toBe(0);
     expect(getByText("Ainsworth 101")).toBeInTheDocument();
   });
