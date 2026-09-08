@@ -21,14 +21,12 @@ const RecurringWeeksSlider = ({
 }) => {
   const min = Number(dropdown.items[0].value);
   const max = Number(dropdown.items[dropdown.items.length - 1].value);
+  const [prevValueProp, setPrevValueProp] = useState(value);
+  const [weeks, setWeeks] = useState(() => Number(value) || min);
 
-  const currValue = Number(value) || min;
-  const [weeks, setWeeks] = useState(currValue);
-  const [prevValue, setPrevValue] = useState(currValue);
-
-  if (currValue !== prevValue) {
-    setPrevValue(currValue);
-    setWeeks(currValue);
+  if (value !== prevValueProp) {
+    setPrevValueProp(value);
+    setWeeks(Number(value) || min);
   }
 
   const label = weeks <= min ? "Any" : `${weeks} week${weeks === 1 ? "" : "s"}`;
