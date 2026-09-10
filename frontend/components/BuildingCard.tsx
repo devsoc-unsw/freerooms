@@ -181,14 +181,12 @@ const BuildingCard: React.FC<{
 
       <InfoBox>
         {loading ? (
-          // CSS-only responsiveness: isCompact is false on the first paint, so
-          // branching on it here would flash the pills before it resolves.
           <>
             <Typography
               sx={(theme) => ({
                 fontWeight: 700,
                 fontSize: { xs: 15, md: 20 },
-                color: theme.palette.mode === "light" ? "#632410" : "#ffffff",
+                color: theme.palette.labelPrimary,
                 whiteSpace: "nowrap",
                 width: "100%",
               })}
