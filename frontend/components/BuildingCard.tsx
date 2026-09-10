@@ -186,7 +186,7 @@ const BuildingCard: React.FC<{
               sx={(theme) => ({
                 fontWeight: 700,
                 fontSize: { xs: 15, md: 20 },
-                color: theme.palette.labelPrimary,
+                color: theme.colours.text.primary,
                 whiteSpace: "nowrap",
                 width: "100%",
               })}
