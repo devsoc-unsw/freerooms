@@ -147,7 +147,7 @@ const BuildingCard: React.FC<{
               priority={true}
             />
             <StatusBox>
-              {freerooms > INITIALISING ? (
+              {freerooms > INITIALISING && (
                 <>
                   {freerooms !== FAILED ? (
                     <StatusDot
@@ -172,8 +172,6 @@ const BuildingCard: React.FC<{
                       : "Data Unavailable"}
                   </Typography>
                 </>
-              ) : (
-                <div></div>
               )}
             </StatusBox>
           </>
