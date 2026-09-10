@@ -15,6 +15,8 @@ import Room from "../../components/AllRoomsRoom";
 import RoomList from "../../components/AllRoomsRoomList";
 import FeedbackButton from "../../components/FeedbackButton";
 
+const NUM_PLACEHOLDER_ROOMS = 5;
+
 function AllRoomsContent() {
   const filters = useSelector(selectAllRoomsFilters);
   const { rooms, isValidating } = useAllRooms(filters);
@@ -56,6 +58,7 @@ function AllRoomsContent() {
   };
 
   const totalRooms = rooms ? Object.keys(rooms).length : 0;
+  const showSkeletons = isValidating || !rooms;
 
   return (
     <Stack sx={{ alignItems: "center", flex: 1, width: "100%" }}>
@@ -77,16 +80,24 @@ function AllRoomsContent() {
         </Typography>
         <StyledBody>
           <AllRoomsFilter filters={filters} />
-          <RoomList isValidating={isValidating}>
-            {roomsDisplay}
-            {visibleRooms < totalRooms && (
-              <Button
-                variant="outlined"
-                onClick={handleLoadMore}
-                sx={{ marginY: 1 }}
-              >
-                Load More Rooms
-              </Button>
+          <RoomList>
+            {showSkeletons ? (
+              Array.from({ length: NUM_PLACEHOLDER_ROOMS }, (_, i) => (
+                <Room key={`placeholder-${i}`} loading />
+              ))
+            ) : (
+              <>
+                {roomsDisplay}
+                {visibleRooms < totalRooms && (
+                  <Button
+                    variant="outlined"
+                    onClick={handleLoadMore}
+                    sx={{ marginY: 1 }}
+                  >
+                    Load More Rooms
+                  </Button>
+                )}
+              </>
             )}
           </RoomList>
         </StyledBody>

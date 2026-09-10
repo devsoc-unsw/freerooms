@@ -11,6 +11,7 @@ import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import { grey } from "@mui/material/colors";
 import IconButton from "@mui/material/IconButton";
+import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
 import { styled, useTheme } from "@mui/material/styles";
 import ToggleButton from "@mui/material/ToggleButton";
@@ -159,10 +160,77 @@ const StyledCalendarContainer = styled(Box)<BoxProps & { view: View }>(
   })
 );
 
-const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
-  events,
-  roomID,
-}) => {
+const BookingCalendarSkeleton = () => (
+  <Stack sx={{ width: "100%", paddingTop: 3 }}>
+    {/* "Room Bookings" heading + date picker row */}
+    <Stack
+      direction={{ xs: "column", md: "row" }}
+      spacing={1}
+      sx={{ justifyContent: "space-between", width: "100%", paddingBottom: 2 }}
+    >
+      <Skeleton
+        animation="wave"
+        variant="text"
+        width={160}
+        sx={{ fontSize: 24 }}
+      />
+
+      <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
+        {/* previous day (mobile only) */}
+        <Skeleton
+          animation="wave"
+          variant="rounded"
+          width={50}
+          height={40}
+          sx={{ display: { xs: "block", md: "none" } }}
+        />
+        {/* date picker */}
+        <Skeleton
+          animation="wave"
+          variant="rounded"
+          height={40}
+          sx={{ width: { xs: "100%", md: 200 } }}
+        />
+        {/* next day (mobile only) */}
+        <Skeleton
+          animation="wave"
+          variant="rounded"
+          width={50}
+          height={40}
+          sx={{ display: { xs: "block", md: "none" } }}
+        />
+      </Stack>
+    </Stack>
+
+    {/* Previous / Today / Next + Week / Day toolbar (desktop only) */}
+    <Stack
+      direction="row"
+      sx={{
+        justifyContent: "space-between",
+        marginBottom: 2,
+        display: { xs: "none", md: "flex" },
+      }}
+    >
+      <Skeleton animation="wave" variant="rounded" width={200} height={30} />
+      <Skeleton animation="wave" variant="rounded" width={110} height={30} />
+    </Stack>
+
+    {/* calendar grid */}
+    <Skeleton
+      animation="wave"
+      variant="rounded"
+      width="100%"
+      height={500}
+      sx={{ borderRadius: "12px" }}
+    />
+  </Stack>
+);
+
+const BookingCalendar: React.FC<{
+  events: Array<Booking>;
+  roomID: string;
+  loading?: boolean;
+}> = ({ events, roomID, loading }) => {
   const theme = useTheme();
   // Enforce day view on mobile
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -288,6 +356,10 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
   // Render light / dark background based on whether today is in Sydney time.
   const isTodaySydney = (date: Date) =>
     isSameDay(date, toSydneyTime(new Date()));
+
+  if (loading) {
+    return <BookingCalendarSkeleton />;
+  }
 
   return (
     <Stack

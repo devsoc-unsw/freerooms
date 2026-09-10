@@ -1,7 +1,6 @@
 import { Building } from "@common/types";
-import CardListSkeleton from "@frontend/components/skeletons/CardListSkeleton";
-import { useMediaQuery } from "@mui/material";
-import { styled, useTheme } from "@mui/material/styles";
+import { Box } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import React from "react";
 import FlipMove from "react-flip-move";
 
@@ -29,7 +28,6 @@ const getBuildingPosition = (building: Building): number | null => {
 
   return Number(match[1]);
 };
-
 const compareBuildingPosition = (
   a: Building,
   b: Building,
@@ -65,21 +63,27 @@ const compareBuildingPosition = (
   return a.name.localeCompare(b.name);
 };
 
-const FlippableCard = React.forwardRef<HTMLDivElement, { buildingId: string }>(
+const FlippableCard = React.forwardRef<HTMLDivElement, { buildingId?: string }>(
   ({ buildingId }, ref) => {
-    const displayMobile = useMediaQuery(useTheme().breakpoints.down("sm"));
     return (
       <div ref={ref}>
-        {displayMobile ? (
+        <Box sx={{ display: { xs: "block", sm: "none" } }}>
           <BuildingCardMobile buildingId={buildingId} />
-        ) : (
+        </Box>
+        <Box sx={{ display: { xs: "none", sm: "block" } }}>
           <BuildingCard buildingId={buildingId} />
-        )}
+        </Box>
       </div>
     );
   }
 );
 FlippableCard.displayName = "FlippableCard";
+
+const NUM_PLACEHOLDER_CARDS = 12;
+const PLACEHOLDER_KEYS = Array.from(
+  { length: NUM_PLACEHOLDER_CARDS },
+  (_, i) => `placeholder-${i}`
+);
 
 const CardList: React.FC<{
   sort: string;
@@ -126,14 +130,16 @@ const CardList: React.FC<{
       });
   }
 
-  return displayedBuildings ? (
+  return (
     <FlipMoveGrid duration={500}>
-      {displayedBuildings.map((building) => (
-        <FlippableCard key={building.id} buildingId={building.id} />
-      ))}
+      {displayedBuildings
+        ? displayedBuildings.map((building) => (
+            <FlippableCard key={building.id} buildingId={building.id} />
+          ))
+        : PLACEHOLDER_KEYS.map((key) => (
+            <FlippableCard key={key} buildingId={undefined} />
+          ))}
     </FlipMoveGrid>
-  ) : (
-    <CardListSkeleton />
   );
 };
 

@@ -4,8 +4,13 @@
  */
 import useStatus from "./useStatus";
 
-const useBuildingStatus = (buildingId: string) => {
+const useBuildingStatus = (buildingId?: string) => {
   const { status, error } = useStatus();
+
+  // No id yet (e.g. a loading placeholder card)
+  if (!buildingId) {
+    return { status: undefined, error };
+  }
 
   // Error occurred while fetching all buildings
   if (error) {

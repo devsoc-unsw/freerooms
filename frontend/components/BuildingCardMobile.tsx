@@ -2,6 +2,7 @@ import StarIcon from "@mui/icons-material/Star";
 import { Typography } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
+import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import useBuildingRatings from "hooks/useBuildingRatings";
@@ -68,7 +69,7 @@ const TitleBox = styled(Box)<BoxProps>(() => ({
 }));
 
 const BuildingCardMobile: React.FC<{
-  buildingId: string;
+  buildingId?: string;
 }> = ({ buildingId }) => {
   const dispatch = useDispatch();
 
@@ -76,7 +77,18 @@ const BuildingCardMobile: React.FC<{
   const { status } = useBuildingStatus(buildingId);
   const { ratings } = useBuildingRatings(buildingId);
 
-  if (!building) return <></>;
+  // No id (placeholder) or the building list hasn't resolved yet so load skeleton
+  if (!buildingId || !building) {
+    return (
+      <Skeleton
+        animation="wave"
+        variant="rounded"
+        width="100%"
+        height={100}
+        sx={{ borderRadius: "10px" }}
+      />
+    );
+  }
 
   const freerooms = getNumFreerooms(status);
   const totalrooms = getTotalRooms(status);
