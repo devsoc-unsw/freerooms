@@ -29,9 +29,6 @@ const DecimalStarRating: React.FC<{
         readOnly
         size="medium"
         aria-label="decimal-rating"
-        sx={{
-          "& .MuiRating-iconEmpty": { color: "#FFFFFF !important" },
-        }}
       />
     </Stack>
   );

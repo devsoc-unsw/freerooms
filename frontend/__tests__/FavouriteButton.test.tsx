@@ -1,11 +1,12 @@
 import "@testing-library/jest-dom";
 
 import store from "@frontend/redux/store";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, screen } from "@testing-library/react";
 import { useParams, useRouter } from "next/navigation";
 import { Provider } from "react-redux";
 
 import Page from "../app/room/[room]/page";
+import { renderWithTheme as render } from "./utils/renderWithRedux";
 
 // Mock DarkModeContext to avoid test failing due to importing NuqsAdapter
 jest.mock("../app/clientLayout", () => ({
@@ -64,7 +65,7 @@ jest.mock("../hooks/useRoom", () => ({
   },
 }));
 
-describe.skip("Favourite button", () => {
+describe("Favourite button", () => {
   beforeEach(() => {
     window.localStorage.clear();
 

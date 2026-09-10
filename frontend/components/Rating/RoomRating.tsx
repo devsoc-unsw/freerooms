@@ -126,6 +126,7 @@ const RoomRatingSkeleton = () => (
           sx={{
             fontSize: 16,
             display: "none",
+            width: 180,
             "@media (min-width:675px)": { display: "block" },
           }}
         />

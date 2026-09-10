@@ -1,15 +1,9 @@
 "use client";
 
-import "@fontsource/roboto/300.css";
-import "@fontsource/roboto/400.css";
-import "@fontsource/roboto/500.css";
-import "@fontsource/roboto/700.css";
-
 import NavBar, { navHeight } from "@frontend/components/NavBar";
-import { grey } from "@mui/material/colors";
+import { createAppTheme, type ThemeMode } from "@frontend/theme";
 import CssBaseline from "@mui/material/CssBaseline";
-import { createTheme, styled } from "@mui/material/styles";
-import ThemeProvider from "@mui/system/ThemeProvider";
+import { styled, ThemeProvider } from "@mui/material/styles";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import React, {
   createContext,
@@ -22,8 +16,6 @@ import { Provider as ReduxProvider } from "react-redux";
 
 import SearchModal from "../components/SearchModal";
 import store from "../redux/store";
-
-type ThemeMode = "light" | "dark";
 
 export const DarkModeContext = createContext({
   isDarkMode: false,
@@ -91,56 +83,7 @@ const ClientLayout: React.FC<{
     [mode, toggleDarkMode]
   );
 
-  const theme = useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode,
-          ...(mode === "light"
-            ? {
-                primary: {
-                  main: "#EF6C02",
-                  light: "#F3D0C5",
-                },
-                success: {
-                  main: "#3bdd03",
-                },
-                warning: {
-                  main: "#FF0000",
-                },
-                secondary: {
-                  main: "rgba(0, 0, 0, 0.12)",
-                },
-                background: {
-                  default: "#FFFBF9",
-                  paper: grey[300],
-                },
-                text: {
-                  primary: "#000000",
-                  secondary: grey[600],
-                },
-              }
-            : {
-                primary: {
-                  main: "#D4613C",
-                  dark: "#EF6C00",
-                },
-                secondary: {
-                  main: grey[800],
-                },
-                background: {
-                  default: "#101214",
-                  paper: grey[800],
-                },
-                text: {
-                  primary: "#ffffff",
-                  secondary: grey[400],
-                },
-              }),
-        },
-      }),
-    [mode]
-  );
+  const theme = useMemo(() => createAppTheme(mode), [mode]);
 
   return (
     <DarkModeContext.Provider value={darkModeContextValue}>

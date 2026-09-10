@@ -7,10 +7,10 @@ import Link from "next/link";
 import Logo from "../public/assets/favicon/free_rooms_logo.png";
 
 const StyledText = styled(Typography)<TypographyProps>(({ theme }) => ({
-  color: theme.palette.primary.main,
-  fontWeight: 600,
-  fontFamily: "Josefin Sans",
-  fontSize: "2rem",
+  color: theme.colours.accent.primary,
+  fontWeight: 700,
+  fontFamily: theme.typography.fontFamily,
+  fontSize: 24,
   [theme.breakpoints.down("sm")]: {
     display: "none",
   },

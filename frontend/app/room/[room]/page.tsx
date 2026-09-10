@@ -172,6 +172,14 @@ const RoomPageHeaderSkeleton = () => (
           spacing={1}
           sx={{ alignItems: "center", mt: { xs: 1, sm: 0 } }}
         >
+          {/* favourite icon button */}
+          <Skeleton
+            animation="wave"
+            variant="circular"
+            width={40}
+            height={40}
+            sx={{ flexShrink: 0 }}
+          />
           <Skeleton
             animation="wave"
             variant="rounded"
@@ -293,7 +301,7 @@ const RoomPageHeader: React.FC<{
             {room.school !== " " && (
               <Typography
                 variant="subtitle2"
-                color="#e65100"
+                color="primary"
                 sx={{ fontWeight: "bold" }}
               >
                 ID Required
@@ -321,21 +329,18 @@ const RoomPageHeader: React.FC<{
               alignItems: "center",
             }}
           >
-            {/* Remove the false when we actually want to use it*/}
-            {false && (
-              <IconButton
-                onClick={onToggleFavourite}
-                aria-label={
-                  favourite ? "Remove as favourite" : "Add as favourite"
-                }
-              >
-                {favourite ? (
-                  <FavouriteIcon color="primary" />
-                ) : (
-                  <FavouriteBorderIcon />
-                )}
-              </IconButton>
-            )}
+            <IconButton
+              onClick={onToggleFavourite}
+              aria-label={
+                favourite ? "Remove as favourite" : "Add as favourite"
+              }
+            >
+              {favourite ? (
+                <FavouriteIcon color="primary" />
+              ) : (
+                <FavouriteBorderIcon />
+              )}
+            </IconButton>
 
             <ViewOnMapButton buildingId={buildingId} />
 
@@ -382,7 +387,7 @@ const RoomPageHeader: React.FC<{
             value={ratingValue}
             size="small"
             precision={0.5}
-            sx={{ color: "rgb(255, 169, 12)" }}
+            sx={{ color: (theme) => theme.colours.rating.active }}
           />
         </Stack>
       </Stack>
@@ -407,7 +412,7 @@ const RoomPageHeader: React.FC<{
             position: "absolute",
             right: 12,
             top: 12,
-            color: (theme) => theme.palette.grey[500],
+            color: (theme) => theme.colours.text.secondary,
           }}
         >
           <CloseIcon />

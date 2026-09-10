@@ -23,7 +23,7 @@ const CursorStyle = styled(motion.div)(({ theme }) => ({
   height: "4rem",
   width: "4px",
   transform: "translateY(0.25rem)",
-  backgroundColor: "#FF9361",
+  backgroundColor: theme.colours.accent.primary,
   [theme.breakpoints.down("md")]: {
     height: "1.7rem",
     width: "2px",

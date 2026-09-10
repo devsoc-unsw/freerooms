@@ -1,9 +1,9 @@
 import "@testing-library/jest-dom";
 
-import { render } from "@testing-library/react";
 import React from "react";
 
 import Page from "../app/room/[room]/page";
+import { renderWithTheme } from "./utils/renderWithRedux";
 
 const mockUseRoom = jest.fn();
 const mockUseBuilding = jest.fn();
@@ -49,7 +49,9 @@ describe("Room page loading state", () => {
     mockUseRoom.mockReturnValue({ room: undefined });
     mockUseBuilding.mockReturnValue({ building: undefined });
 
-    const { container, rerender, queryByText, getByText } = render(<Page />);
+    const { container, rerender, queryByText, getByText } = renderWithTheme(
+      <Page />
+    );
 
     // loading = one placeholder per section, no room name yet
     expect(

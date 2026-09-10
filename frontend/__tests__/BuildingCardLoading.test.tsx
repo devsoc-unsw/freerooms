@@ -6,10 +6,20 @@ import React from "react";
 import useBuildings from "../hooks/useBuildings";
 import CardList from "../views/CardList";
 
-jest.mock("react-flip-move", () => ({
+// CardList animates the grid with framer-motion; stub it so exiting children
+// unmount immediately (jsdom never completes the exit animation otherwise).
+jest.mock("framer-motion", () => ({
   __esModule: true,
-  default: ({ children }: { children: React.ReactNode }) => (
-    <div>{children}</div>
+  AnimatePresence: ({ children }: { children: React.ReactNode }) => (
+    <>{children}</>
+  ),
+  motion: new Proxy(
+    {},
+    {
+      get:
+        () =>
+        ({ children }: { children?: React.ReactNode }) => <div>{children}</div>,
+    }
   ),
 }));
 jest.mock("../hooks/useBuildings", () => ({

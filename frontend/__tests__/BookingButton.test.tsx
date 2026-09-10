@@ -1,8 +1,9 @@
 import "@testing-library/jest-dom";
 
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 
 import BookingButton from "../components/BookingButton";
+import { renderWithTheme as render } from "./utils/renderWithRedux";
 
 describe("BookingButton", () => {
   test("links to library booking", () => {

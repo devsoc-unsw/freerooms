@@ -109,9 +109,7 @@ export default function Sponsors() {
           mt: 5,
           justifyContent: "center",
           alignItems: "center",
-          backgroundColor: isLightMode
-            ? "#ffffff"
-            : theme.palette.background?.paper,
+          backgroundColor: theme.colours.surface.paper,
           p: "30px",
           pt: 0,
           borderRadius: "10px",

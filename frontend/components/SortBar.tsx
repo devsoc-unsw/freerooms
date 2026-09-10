@@ -1,7 +1,6 @@
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { ClickAwayListener } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
-import Container from "@mui/material/Container";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
 import Stack from "@mui/material/Stack";
@@ -10,27 +9,15 @@ import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
 
 import { sortBarDropdown } from "../utils/constants";
+import { AppButton, AppSurface } from "./ui";
 
-const StyledSortButton = styled(Box)<BoxProps>(({ theme }) => ({
-  height: 56,
-  width: 115,
-  padding: 16,
-  display: "flex",
-  flexDirection: "row",
-  alignSelf: "center",
-  justifyItems: "center",
+const StyledMenuAnchor = styled(Box)<BoxProps>(() => ({
   position: "relative",
-  borderRadius: 8,
-  borderWidth: 1,
-  borderStyle: "solid",
-  borderColor: theme.palette.primary.main,
+  alignSelf: "center",
   zIndex: 10,
-  ":hover": {
-    cursor: "pointer",
-  },
 }));
 
-const StyledDropDownMenu = styled(Box)<BoxProps>(({ theme }) => ({
+const StyledDropDownMenu = styled(AppSurface)(() => ({
   width: 250,
   top: 56,
   left: 0,
@@ -38,15 +25,11 @@ const StyledDropDownMenu = styled(Box)<BoxProps>(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   position: "absolute",
-  backgroundColor: theme.palette.background.default,
-  borderWidth: 1,
-  borderStyle: "solid",
-  borderColor: theme.palette.mode === "light" ? "#BCBCBC" : "#3F3F3F",
+  paddingLeft: 10,
+  paddingRight: 10,
   ":hover": {
     cursor: "auto",
   },
-  paddingLeft: "10px",
-  paddingRight: "10px",
 }));
 
 const StyledHeader = styled(Box)<BoxProps>(() => ({
@@ -59,7 +42,7 @@ const StyledHeader = styled(Box)<BoxProps>(() => ({
 const StyledBox = styled(Box)(({ theme }) => ({
   transition: "all 0.1s ease-in-out",
   backgroundColor: theme.palette.background.default,
-  borderTop: `1px solid ${theme.palette.secondary.main}`,
+  borderTop: `1px solid ${theme.colours.border.subtle}`,
 }));
 
 const SortBar: React.FC<{
@@ -71,64 +54,75 @@ const SortBar: React.FC<{
 
   return (
     <ClickAwayListener onClickAway={() => setOpen(false)}>
-      <StyledSortButton onClick={() => setOpen(!open)}>
-        <Stack
-          direction="row"
-          spacing="16px"
+      <StyledMenuAnchor>
+        <AppButton
+          variant="outlined"
+          aria-expanded={open}
+          aria-controls={open ? "browse-sort-menu" : undefined}
+          onClick={() => setOpen(!open)}
           sx={{
-            alignItems: "center",
+            height: 56,
+            width: 115,
+            padding: 2,
+            justifyContent: "flex-start",
+            borderColor: "primary.main",
+            color: "primary.main",
           }}
         >
-          <FilterListIcon
-            sx={{ color: (theme) => theme.palette.primary.main }}
-          />
-          <Typography
+          <Stack
+            direction="row"
+            spacing="16px"
             sx={{
-              color: (theme) => theme.palette.primary.main,
-              fontSize: 16,
-              fontWeight: 500,
+              alignItems: "center",
             }}
           >
-            Sort
-          </Typography>
-        </Stack>
+            <FilterListIcon
+              sx={{ color: (theme) => theme.palette.primary.main }}
+            />
+            <Typography
+              sx={{
+                color: (theme) => theme.palette.primary.main,
+                fontSize: 16,
+                fontWeight: 500,
+              }}
+            >
+              Sort
+            </Typography>
+          </Stack>
+        </AppButton>
         {open && (
-          <Container onClick={(e) => e.stopPropagation()}>
-            <StyledDropDownMenu>
-              <StyledHeader>
-                <Typography
+          <StyledDropDownMenu id="browse-sort-menu">
+            <StyledHeader>
+              <Typography
+                sx={{
+                  fontSize: 18,
+                  fontWeight: 700,
+                }}
+              >
+                Sort
+              </Typography>
+            </StyledHeader>
+            {sortBarDropdown.map((dropdown) => (
+              <StyledBox key={dropdown.value}>
+                <FormControlLabel
+                  control={<Radio checked={sort === dropdown.value} sx={{}} />}
+                  label={dropdown.text}
+                  onClick={() => setSort(dropdown.value)}
                   sx={{
-                    fontSize: 18,
-                    fontWeight: 700,
+                    width: "100%",
+                    py: 0.5,
+                    cursor: "pointer",
+                    "& .MuiFormControlLabel-label": {
+                      fontSize: 14,
+                      fontWeight: 500,
+                    },
                   }}
-                >
-                  Sort
-                </Typography>
-              </StyledHeader>
-              {sortBarDropdown.map((dropdown) => (
-                <StyledBox key={dropdown.value}>
-                  <FormControlLabel
-                    control={
-                      <Radio checked={sort === dropdown.value} sx={{}} />
-                    }
-                    label={dropdown.text}
-                    onClick={() => setSort(dropdown.value)}
-                    sx={{
-                      width: "100%",
-                      py: 0.5,
-                      cursor: "pointer",
-                      "& .MuiFormControlLabel-label": {
-                        fontSize: 14,
-                        fontWeight: 500,
-                      },
-                    }}
-                  />
-                </StyledBox>
-              ))}
-            </StyledDropDownMenu>
-          </Container>
+                />
+              </StyledBox>
+            ))}
+          </StyledDropDownMenu>
         )}
-      </StyledSortButton>
+      </StyledMenuAnchor>
     </ClickAwayListener>
   );
 };

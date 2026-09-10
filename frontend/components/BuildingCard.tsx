@@ -25,7 +25,8 @@ const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
   flexDirection: "column",
   height: 379,
   borderRadius: 12,
-  border: `1px solid ${theme.palette.mode === "light" ? theme.palette.primary.light : theme.palette.secondary.main}`,
+  border: `1px solid ${theme.colours.border.default}`,
+  backgroundColor: theme.colours.surface.paper,
   overflow: "hidden",
   [theme.breakpoints.down("lg")]: {
     height: 300,
@@ -89,13 +90,13 @@ const DetailPill = styled(Box)<BoxProps>(({ theme }) => ({
   padding: 6,
   paddingLeft: 12,
   paddingRight: 12,
-  backgroundColor: `${theme.palette.mode === "light" ? theme.palette.primary.light : theme.palette.primary.dark}`,
+  backgroundColor: theme.colours.accent.quaternary,
 }));
 
 const DetailPillText = styled(Typography)<TypographyProps>(({ theme }) => ({
   fontSize: 12,
   fontWeight: 500,
-  color: `${theme.palette.mode === "light" ? theme.palette.primary.main : theme.palette.text.primary}`,
+  color: theme.colours.text.primary,
   paddingBottom: "2px",
   gap: 10,
 }));
@@ -208,9 +209,6 @@ const BuildingCard: React.FC<{
               />
             </Stack>
 
-            {/* the real card only shows the pills from md up.
-                Real DetailPill: text(12px/1.5 = 18) + 2px pb + 6px pt/pb
-                = 32 tall, ~12px l/r padding + ~5 chars ≈ 58 wide. */}
             <InfoFooterBox sx={{ display: { xs: "none", md: "flex" } }}>
               <Stack direction="row" sx={{ gap: "8px" }}>
                 <Skeleton
@@ -239,14 +237,13 @@ const BuildingCard: React.FC<{
         ) : isCompact ? (
           <NameRatingBox sx={{ width: "100%" }}>
             <Typography
-              sx={(theme) => ({
-                fontWeight: 700,
-                fontSize: 15,
-                color: theme.palette.mode === "light" ? "#632410" : "#ffffff",
+              variant="cardTitle"
+              sx={{
+                color: "text.primary",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 whiteSpace: "nowrap",
-              })}
+              }}
             >
               {building.name}
             </Typography>
@@ -268,7 +265,7 @@ const BuildingCard: React.FC<{
               sx={(theme) => ({
                 fontWeight: 700,
                 fontSize: 20,
-                color: theme.palette.mode === "light" ? "#632410" : "#ffffff",
+                color: theme.colours.text.primary,
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 whiteSpace: "nowrap",

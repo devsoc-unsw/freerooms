@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 
 import { createTheme, ThemeProvider } from "@mui/material";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 
 import AllRoomsFilter from "../components/AllRoomsFilter";
@@ -11,6 +11,7 @@ import NavBar from "../components/NavBar";
 import store from "../redux/store";
 import toSydneyTime from "../utils/toSydneyTime";
 import renderWithRedux from "./utils/renderWithRedux";
+import { renderWithTheme as render } from "./utils/renderWithRedux";
 
 // Mock DarkModeContext to avoid test failing due to importing NuqsAdapter
 jest.mock("../app/clientLayout", () => ({
@@ -47,11 +48,9 @@ jest.mock("nuqs", () => ({
 describe("AllRooms page", () => {
   it("renders AllRooms top icon", () => {
     render(
-      <ThemeProvider theme={createTheme({})}>
-        <Provider store={store}>
-          <NavBar />
-        </Provider>
-      </ThemeProvider>
+      <Provider store={store}>
+        <NavBar />
+      </Provider>
     );
 
     const button = screen.getByRole("link", { name: /All rooms/i });
@@ -73,15 +72,13 @@ describe("AllRooms page", () => {
   it("renders AllRoomsFilter", () => {
     render(
       <Provider store={store}>
-        <ThemeProvider theme={createTheme({})}>
-          <AllRoomsFilter
-            filters={{
-              usage: "Tutorial Room",
-              location: "Lower Campus",
-              duration: "1+ hours",
-            }}
-          />
-        </ThemeProvider>
+        <AllRoomsFilter
+          filters={{
+            usage: "Tutorial Room",
+            location: "Lower Campus",
+            duration: "1+ hours",
+          }}
+        />
       </Provider>
     );
 
@@ -101,11 +98,7 @@ describe("AllRooms page", () => {
         endtime: toSydneyTime(new Date()).toISOString(),
       };
 
-      render(
-        <ThemeProvider theme={createTheme({})}>
-          <Room name="Ainsworth G03" roomNumber="5" {...roomStatus} />
-        </ThemeProvider>
-      );
+      render(<Room name="Ainsworth G03" roomNumber="5" {...roomStatus} />);
 
       const room = screen.getByText("Ainsworth G03");
       const availability = screen.getByText("Available");
@@ -120,11 +113,7 @@ describe("AllRooms page", () => {
         endtime: toSydneyTime(new Date()).toISOString(),
       };
 
-      render(
-        <ThemeProvider theme={createTheme({})}>
-          <Room name="Ainsworth G03" roomNumber="5" {...roomStatus} />
-        </ThemeProvider>
-      );
+      render(<Room name="Ainsworth G03" roomNumber="5" {...roomStatus} />);
 
       const room = screen.getByText("Ainsworth G03");
       const availability = screen.getByText("Unavailable");
@@ -139,11 +128,7 @@ describe("AllRooms page", () => {
         endtime: toSydneyTime(new Date()).toISOString(),
       };
 
-      render(
-        <ThemeProvider theme={createTheme({})}>
-          <Room name="Ainsworth G03" roomNumber="5" {...roomStatus} />
-        </ThemeProvider>
-      );
+      render(<Room name="Ainsworth G03" roomNumber="5" {...roomStatus} />);
 
       const room = screen.getByText("Ainsworth G03");
       const availability = screen.getByText("Available Soon");
@@ -176,14 +161,12 @@ describe("AllRooms page", () => {
     };
 
     render(
-      <ThemeProvider theme={createTheme({})}>
-        <Room
-          name="Ainsworth G03"
-          roomNumber="K-H13-1003"
-          date="2026-09-16"
-          {...roomStatus}
-        />
-      </ThemeProvider>
+      <Room
+        name="Ainsworth G03"
+        roomNumber="K-H13-1003"
+        date="2026-09-16"
+        {...roomStatus}
+      />
     );
 
     const room = screen.getByRole("link");
@@ -198,14 +181,12 @@ describe("AllRooms page", () => {
     };
 
     render(
-      <ThemeProvider theme={createTheme({})}>
-        <Room
-          name="Ainsworth G03"
-          roomNumber="K-H13-1003"
-          date="invalid-date"
-          {...roomStatus}
-        />
-      </ThemeProvider>
+      <Room
+        name="Ainsworth G03"
+        roomNumber="K-H13-1003"
+        date="invalid-date"
+        {...roomStatus}
+      />
     );
 
     const room = screen.getByRole("link");

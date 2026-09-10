@@ -2,10 +2,17 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import "../styles/globals.css";
 
 import { Metadata } from "next";
+import { DM_Sans } from "next/font/google";
 import { cookies } from "next/headers";
 import React from "react";
 
 import ClientLayout from "./clientLayout";
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-dm-sans",
+});
 
 export const metadata: Metadata = {
   title: "Freerooms",
@@ -24,7 +31,7 @@ export default async function RootLayout({
     cookieStore.get("darkMode")?.value === "dark" ? "dark" : "light";
   return (
     <html lang="en">
-      <body>
+      <body className={dmSans.variable}>
         <ClientLayout initialTheme={initialTheme}>{children}</ClientLayout>
       </body>
     </html>

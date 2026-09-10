@@ -1,8 +1,8 @@
 import { Building } from "@common/types";
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
-import FlipMove from "react-flip-move";
 
 import BuildingCard from "../components/BuildingCard";
 import BuildingCardMobile from "../components/BuildingCardMobile";
@@ -12,7 +12,7 @@ import useUserLocation from "../hooks/useUserLocation";
 import calculateDistance from "../utils/calculateDistance";
 import { getNumFreerooms } from "../utils/utils";
 
-const FlipMoveGrid = styled(FlipMove)(({ theme }) => ({
+const CardGrid = styled("div")(() => ({
   width: "100%",
   display: "grid",
   gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
@@ -130,16 +130,37 @@ const CardList: React.FC<{
       });
   }
 
+  const items: { key: string; buildingId?: string }[] = displayedBuildings
+    ? displayedBuildings.map((b) => ({ key: b.id, buildingId: b.id }))
+    : PLACEHOLDER_KEYS.map((key) => ({ key, buildingId: undefined }));
+
   return (
-    <FlipMoveGrid duration={500}>
-      {displayedBuildings
-        ? displayedBuildings.map((building) => (
-            <FlippableCard key={building.id} buildingId={building.id} />
-          ))
-        : PLACEHOLDER_KEYS.map((key) => (
-            <FlippableCard key={key} buildingId={undefined} />
-          ))}
-    </FlipMoveGrid>
+    <CardGrid>
+      <AnimatePresence initial={false} mode="popLayout">
+        {items.map(({ key, buildingId }) => (
+          <motion.div
+            key={key}
+            layout="position"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{
+              layout: {
+                type: "tween",
+                duration: 0.75,
+                ease: "easeInOut",
+              },
+              opacity: {
+                duration: 0.2,
+                ease: "easeInOut",
+              },
+            }}
+          >
+            <FlippableCard buildingId={buildingId} />
+          </motion.div>
+        ))}
+      </AnimatePresence>
+    </CardGrid>
   );
 };
 

@@ -10,6 +10,7 @@
 - Christopher Khim (@CrispyKhim)
 - Cormac Flahive (@Cfla446)
 - Caelan Gray (@caelan-g)
+- Joshua Pozzolungo (@joshuapozzolungo)
 
 
 ## 2025
@@ -22,7 +23,7 @@
 - Benjamin Harold Godwin (@bengodw)
 - Connie Du (@c0nnied)
 - Brandon Tan (@BT0906)
-- Yi Yao Wang (@yiyaoW11) 
+- Yi Yao Wang (@yiyaoW11)
 - Shabinda Sarkaria (@shaykaria)
 - Dicko Evaldo (@dickoevaldo)
 - Chris Wong (@xleonx0x)
