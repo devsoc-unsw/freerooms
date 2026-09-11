@@ -61,7 +61,12 @@ const ClientLayout: React.FC<{
   );
 
   useEffect(() => {
-    document.cookie = `darkMode=${mode};path=/;max-age=315360000;samesite=lax`;
+    const isValidMode = mode === "light" || mode === "dark";
+    if (isValidMode) {
+      document.cookie = `darkMode=${mode};path=/;max-age=315360000;samesite=lax`;
+    } else {
+      console.warn("Invalid theme mode provided.");
+    }
   }, [mode]);
 
   const toggleDarkMode = useCallback(() => {
