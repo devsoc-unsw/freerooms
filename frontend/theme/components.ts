@@ -1,11 +1,15 @@
 import type { Components, Theme } from "@mui/material/styles";
 
 import { getColourVariables } from "./colours";
+import { getLayoutVariables } from "./variables";
 
 export const components: Components<Theme> = {
   MuiCssBaseline: {
     styleOverrides: (theme) => ({
-      ":root": getColourVariables(theme.colours),
+      ":root": {
+        ...getColourVariables(theme.colours),
+        ...getLayoutVariables(),
+      },
       "html, body": { fontFamily: theme.typography.fontFamily },
       body: {
         backgroundColor: theme.colours.background.primary,
