@@ -28,6 +28,8 @@ declare module "@mui/material/styles/createTypography" {
     heroSubtitle: CSSProperties;
     heroWordmark: CSSProperties;
     metadata: CSSProperties;
+    filterTitle: CSSProperties;
+    filterOption: CSSProperties;
   }
 
   interface TypographyVariantsOptions {
@@ -37,6 +39,8 @@ declare module "@mui/material/styles/createTypography" {
     heroSubtitle?: CSSProperties;
     heroWordmark?: CSSProperties;
     metadata?: CSSProperties;
+    filterTitle?: CSSProperties;
+    filterOption?: CSSProperties;
   }
 }
 
@@ -48,5 +52,7 @@ declare module "@mui/material/Typography" {
     heroSubtitle: true;
     heroWordmark: true;
     metadata: true;
+    filterTitle: true;
+    filterOption: true;
   }
 }

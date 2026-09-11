@@ -38,7 +38,7 @@ const RecurringWeeksSlider = ({
         id="panel1a-header"
         sx={{ paddingX: 0 }}
       >
-        <Typography sx={{ fontSize: 14, fontWeight: 500 }}>
+        <Typography variant="filterTitle">
           {dropdown.text}
         </Typography>
       </AccordionSummary>
@@ -48,12 +48,7 @@ const RecurringWeeksSlider = ({
           ml: theme.spacing(0.375),
         })}
       >
-        <Typography
-          sx={(theme) => ({
-            fontSize: 14,
-            fontWeight: 400,
-          })}
-        >
+        <Typography variant="filterOption">
           {label}
         </Typography>
         <Slider
