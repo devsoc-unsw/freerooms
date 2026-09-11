@@ -1,0 +1,32 @@
+"use client";
+
+import { AppButton } from "@frontend/components/ui";
+import { type ButtonProps } from "@mui/material/Button";
+import Link from "next/link";
+import React from "react";
+
+interface StyledIconButtonProps extends ButtonProps {
+  active?: boolean;
+  href?: string;
+}
+
+const StyledIconButton: React.FC<StyledIconButtonProps> = ({
+  children,
+  active,
+  sx,
+  ...otherProps
+}) => (
+  <AppButton
+    {...otherProps}
+    sx={[
+      { padding: (theme) => `${theme.space.sm}px`, minWidth: 0 },
+      ...(sx ? (Array.isArray(sx) ? sx : [sx]) : []),
+    ]}
+    LinkComponent={Link}
+    variant={active ? "contained" : "outlined"}
+  >
+    {children}
+  </AppButton>
+);
+
+export default StyledIconButton;

@@ -2,9 +2,8 @@
  * Redux slice to manage the current building
  */
 import { Building } from "@common/types";
+import { RootState } from "@frontend/redux/store";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-import { RootState } from "./store";
 
 interface CurrentBuildingState {
   value: Building | null;

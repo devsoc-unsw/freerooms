@@ -1,7 +1,6 @@
+import { getColourVariables } from "@frontend/theme/colours";
+import { getLayoutVariables } from "@frontend/theme/variables";
 import type { Components, Theme } from "@mui/material/styles";
-
-import { getColourVariables } from "./colours";
-import { getLayoutVariables } from "./variables";
 
 export const components: Components<Theme> = {
   MuiCssBaseline: {

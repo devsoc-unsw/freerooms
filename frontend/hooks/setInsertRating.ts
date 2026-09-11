@@ -3,9 +3,8 @@
  */
 
 import { Rating } from "@common//types";
+import { API_URL } from "@frontend/config";
 import axios from "axios";
-
-import { API_URL } from "../config";
 
 const fetcher = (url: string, body: Rating) =>
   axios.post(url, body).then((res) => res.data);

@@ -1,10 +1,9 @@
+import { selectFilters, setFilter } from "@frontend/redux/filtersSlice";
+import { useDispatch, useSelector } from "@frontend/redux/hooks";
+import { Filters } from "@frontend/types";
+import { filterBarDropdown } from "@frontend/utils/constants";
 import { parseAsString, useQueryStates } from "nuqs";
 import { useEffect, useRef } from "react";
-import { selectFilters, setFilter } from "redux/filtersSlice";
-
-import { useDispatch, useSelector } from "../redux/hooks";
-import { Filters } from "../types";
-import { filterBarDropdown } from "../utils/constants";
 
 // Type for the keys of the Filters type
 const filterQueries: (keyof Filters)[] = filterBarDropdown.map(

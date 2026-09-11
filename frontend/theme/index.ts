@@ -1,8 +1,8 @@
-export type { AppColours, ThemeMode } from "./colours";
-export { getColours } from "./colours";
-export type { AppSizes } from "./sizes";
-export { sizes } from "./sizes";
-export { radius, space } from "./spacing";
-export { createAppTheme } from "./theme";
-export { fontFamily, typography } from "./typography";
-export { getLayoutVariables } from "./variables";
+export type { AppColours, ThemeMode } from "@frontend/theme/colours";
+export { getColours } from "@frontend/theme/colours";
+export type { AppSizes } from "@frontend/theme/sizes";
+export { sizes } from "@frontend/theme/sizes";
+export { radius, space } from "@frontend/theme/spacing";
+export { createAppTheme } from "@frontend/theme/theme";
+export { fontFamily, typography } from "@frontend/theme/typography";
+export { getLayoutVariables } from "@frontend/theme/variables";

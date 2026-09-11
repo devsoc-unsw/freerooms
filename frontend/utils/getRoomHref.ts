@@ -1,4 +1,4 @@
-import { isValidDate } from "./queryValidation";
+import { isValidDate } from "@frontend/utils/queryValidation";
 
 const getRoomHref = (roomId: string, date?: string): string => {
   if (!date || !isValidDate(date)) {

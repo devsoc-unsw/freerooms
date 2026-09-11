@@ -1,5 +1,5 @@
-import { sizes } from "./sizes";
-import { radius, space } from "./spacing";
+import { sizes } from "@frontend/theme/sizes";
+import { radius, space } from "@frontend/theme/spacing";
 
 export function getLayoutVariables(): Record<string, string> {
   const variables: Record<string, string> = {};

@@ -1,13 +1,12 @@
-import { parseAsString, useQueryStates } from "nuqs";
-import { useEffect, useRef } from "react";
 import {
   selectAllRoomsFilters,
   setAllRoomsFilter,
-} from "redux/allRoomsFilterSlice";
-
-import { useDispatch, useSelector } from "../redux/hooks";
-import { AllRoomsFilters } from "../types";
-import { allRoomsFilterDropdown } from "../utils/constants";
+} from "@frontend/redux/allRoomsFilterSlice";
+import { useDispatch, useSelector } from "@frontend/redux/hooks";
+import { AllRoomsFilters } from "@frontend/types";
+import { allRoomsFilterDropdown } from "@frontend/utils/constants";
+import { parseAsString, useQueryStates } from "nuqs";
+import { useEffect, useRef } from "react";
 
 const useAllRoomsQuery = () => {
   const dispatch = useDispatch();

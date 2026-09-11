@@ -1,5 +1,5 @@
 import { roomUsages } from "@common/roomUsages";
-import { DropDown, DropDownItem } from "types";
+import { DropDown, DropDownItem } from "@frontend/types";
 
 const MAX_RECURRING = 10;
 const recurringWeekItems: DropDownItem[] = Array.from(
