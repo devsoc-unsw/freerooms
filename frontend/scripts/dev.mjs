@@ -1,5 +1,5 @@
-import net from "node:net";
 import { spawn } from "node:child_process";
+import net from "node:net";
 
 const START_PORT = 3001;
 
