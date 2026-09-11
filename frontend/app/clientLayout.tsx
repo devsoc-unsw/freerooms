@@ -63,7 +63,7 @@ const ClientLayout: React.FC<{
   useEffect(() => {
     const isValidMode = mode === "light" || mode === "dark";
     if (isValidMode) {
-      document.cookie = `darkMode=${mode};path=/;max-age=315360000;samesite=lax`;
+      document.cookie = `darkMode=${mode};path=/;max-age=315360000;samesite=lax;secure`;
     } else {
       console.warn("Invalid theme mode provided.");
     }
