@@ -27,10 +27,10 @@ const LogoBox = styled(Box)<BoxProps>(({ theme }) => ({
   },
 }));
 
-const LogoImageContainer = styled('div')({
+const LogoImageContainer = styled(Box)<BoxProps>(({ theme }) => ({
   display: "flex",
   alignItems: "center"
-})
+}));
 
 const Branding = (props: BoxProps) => (
   <Link href="/">

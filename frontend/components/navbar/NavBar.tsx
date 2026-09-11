@@ -37,7 +37,7 @@ const NavBar: React.FC = () => {
     >
       
       <Branding />
-      <Stack direction="row" sx={{ gap: (theme) => `${theme.space.sm}px` }}>
+      <Stack direction="row" spacing={space.sm}>
         <IconButton
           aria-label="Open search"
           onClick={() => dispatch(openSearch())}
