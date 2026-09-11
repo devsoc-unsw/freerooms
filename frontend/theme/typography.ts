@@ -11,7 +11,9 @@ type CustomTypographyVariant =
   | "sectionHeading"
   | "heroSubtitle"
   | "heroWordmark"
-  | "metadata";
+  | "metadata"
+  | "filterTitle"
+  | "filterOption";
 
 type AppTypographyOptions = TypographyVariantsOptions &
   Partial<Record<CustomTypographyVariant, CSSProperties>>;
@@ -69,4 +71,16 @@ export const typography = {
     letterSpacing: "-0.05em",
   },
   metadata: { fontSize: 12, lineHeight: 1, fontWeight: 400 },
+  filterTitle: {
+    fontFamily,
+    fontSize: 14,
+    lineHeight: 1.5,
+    fontWeight: 500,
+  },
+  filterOption: {
+    fontFamily,
+    fontSize: 14,
+    lineHeight: 1.5,
+    fontWeight: 400,
+  },
 } satisfies AppTypographyOptions;

@@ -43,6 +43,7 @@ const useQueryFilter = () => {
       usage: parseAsString.withDefault(""),
       location: parseAsString.withDefault(""),
       duration: parseAsString.withDefault(""),
+      recurring: parseAsString.withDefault(""),
       id: parseAsString.withDefault(""),
     },
     { shallow: true }

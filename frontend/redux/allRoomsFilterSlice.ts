@@ -16,6 +16,7 @@ const initialState: RoomsFilterState = {
     usage: "",
     location: "",
     duration: "",
+    recurring: "",
     id: "",
   },
   // Needs to be initalised to silence errors

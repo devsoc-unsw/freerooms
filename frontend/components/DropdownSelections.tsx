@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 import React, { useId } from "react";
 import { AllRoomsFilters, DropDown, DropDownItem, Filters } from "types";
 
-const StyledAccordion = styled(Accordion)(({ theme }) => ({
+export const StyledAccordion = styled(Accordion)(({ theme }) => ({
   backgroundColor: theme.colours.surface.paper,
   transition: "all 0.1s ease-in-out",
   borderTop: `1px solid ${theme.colours.border.subtle}`,
