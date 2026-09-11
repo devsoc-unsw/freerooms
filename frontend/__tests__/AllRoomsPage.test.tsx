@@ -1,17 +1,16 @@
 import "@testing-library/jest-dom";
 
-import { createTheme, ThemeProvider } from "@mui/material";
-import { fireEvent, screen } from "@testing-library/react";
-import { Provider } from "react-redux";
-
+import renderWithRedux from "@frontend/__tests__/utils/renderWithRedux";
+import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithRedux";
+import NavBar from "@frontend/components/navigation/NavBar";
 import AllRoomsFilter from "@frontend/components/rooms/AllRoomsFilter";
 import Room from "@frontend/components/rooms/AllRoomsRoom";
 import AllRoomsSearchBar from "@frontend/components/rooms/AllRoomsSearchBar";
-import NavBar from "@frontend/components/navigation/NavBar";
 import store from "@frontend/redux/store";
 import toSydneyTime from "@frontend/utils/toSydneyTime";
-import renderWithRedux from "@frontend/__tests__/utils/renderWithRedux";
-import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithRedux";
+import { createTheme, ThemeProvider } from "@mui/material";
+import { fireEvent, screen } from "@testing-library/react";
+import { Provider } from "react-redux";
 
 // Mock DarkModeContext to avoid test failing due to importing NuqsAdapter
 jest.mock("@frontend/app/clientLayout", () => ({

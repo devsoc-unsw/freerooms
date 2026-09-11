@@ -1,3 +1,4 @@
+import { StyledAccordion } from "@frontend/components/filters/DropdownSelections";
 import { DropDown } from "@frontend/types";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
@@ -7,8 +8,6 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-
-import { StyledAccordion } from "@frontend/components/filters/DropdownSelections";
 
 const RecurringWeeksSlider = ({
   dropdown,

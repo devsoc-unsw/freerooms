@@ -1,9 +1,8 @@
+import AccordionItem from "@frontend/components/ui/AccordionItem";
 import Link from "@mui/material/Link";
 import { styled } from "@mui/system";
 import Image from "next/image";
 import React from "react";
-
-import AccordionItem from "@frontend/components/ui/AccordionItem";
 
 const Faq = () => {
   return (

@@ -1,13 +1,12 @@
-import Stack from "@mui/material/Stack";
-import { styled } from "@mui/material/styles";
-import Image from "next/image";
-import React, { useState } from "react";
-
-import transientOptions from "@frontend/utils/transientOptions";
 import Faq from "@frontend/components/landing/Faq";
 import Features from "@frontend/components/landing/Features";
 import Sponsors from "@frontend/components/landing/Sponsors";
 import TextAnimation from "@frontend/components/landing/TextAnimation";
+import transientOptions from "@frontend/utils/transientOptions";
+import Stack from "@mui/material/Stack";
+import { styled } from "@mui/material/styles";
+import Image from "next/image";
+import React, { useState } from "react";
 
 const Landing = () => {
   const [isClicked, setIsClicked] = useState(false);

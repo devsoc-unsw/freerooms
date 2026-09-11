@@ -1,5 +1,13 @@
 import type { Building } from "@common/types";
 import ViewOnMapButton from "@frontend/components/navigation/ViewOnMapButton";
+import Button from "@frontend/components/ui/Button";
+import useBuildingStatus from "@frontend/hooks/useBuildingStatus";
+import {
+  selectCurrentBuilding,
+  setCurrentBuilding,
+} from "@frontend/redux/currentBuildingSlice";
+import { useDispatch, useSelector } from "@frontend/redux/hooks";
+import RoomAvailabilityBox from "@frontend/views/RoomAvailabilityBox";
 import CloseIcon from "@mui/icons-material/Close";
 import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
 import { Slide, Typography, useMediaQuery } from "@mui/material";
@@ -9,15 +17,6 @@ import Drawer from "@mui/material/Drawer";
 import { styled, useTheme } from "@mui/material/styles";
 import { alpha } from "@mui/material/styles";
 import Image, { ImageProps } from "next/image";
-
-import Button from "@frontend/components/ui/Button";
-import useBuildingStatus from "@frontend/hooks/useBuildingStatus";
-import {
-  selectCurrentBuilding,
-  setCurrentBuilding,
-} from "@frontend/redux/currentBuildingSlice";
-import { useDispatch, useSelector } from "@frontend/redux/hooks";
-import RoomAvailabilityBox from "@frontend/views/RoomAvailabilityBox";
 
 const AppBox = styled(Box)(({ theme }) => ({
   boxShadow: "none",

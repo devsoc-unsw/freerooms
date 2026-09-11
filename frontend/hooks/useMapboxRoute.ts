@@ -1,8 +1,7 @@
 import { Building } from "@common/types";
-import { useCallback, useEffect, useRef, useState } from "react";
-
 import { MAPBOX_ACCESS_TOKEN } from "@frontend/config";
 import { UserLocation } from "@frontend/hooks/useUserLocation";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export type RouteGeometry = {
   type: "LineString";

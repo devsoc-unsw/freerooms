@@ -1,11 +1,10 @@
 import "@testing-library/jest-dom";
 
+import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithRedux";
 import RoomPhotoCarousel from "@frontend/components/rooms/RoomPhotoCarousel";
 import { screen } from "@testing-library/react";
 import React from "react";
 import { Autoplay } from "swiper/modules";
-
-import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithRedux";
 
 jest.mock("swiper/react", () => ({
   Swiper: ({ children }: { children: React.ReactNode }) => (

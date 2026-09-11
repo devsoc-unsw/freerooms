@@ -1,3 +1,10 @@
+import StatusDot from "@frontend/components/ui/StatusDot";
+import useBuilding from "@frontend/hooks/useBuilding";
+import useBuildingRatings from "@frontend/hooks/useBuildingRatings";
+import useBuildingStatus from "@frontend/hooks/useBuildingStatus";
+import { setCurrentBuilding } from "@frontend/redux/currentBuildingSlice";
+import { useDispatch } from "@frontend/redux/hooks";
+import { getNumFreerooms, getTotalRooms } from "@frontend/utils/utils";
 import StarIcon from "@mui/icons-material/Star";
 import { Typography } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
@@ -5,16 +12,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
 import { styled, useTheme } from "@mui/material/styles";
-import useBuildingRatings from "@frontend/hooks/useBuildingRatings";
 import Image, { ImageProps } from "next/image";
 import React from "react";
-
-import useBuilding from "@frontend/hooks/useBuilding";
-import useBuildingStatus from "@frontend/hooks/useBuildingStatus";
-import { setCurrentBuilding } from "@frontend/redux/currentBuildingSlice";
-import { useDispatch } from "@frontend/redux/hooks";
-import { getNumFreerooms, getTotalRooms } from "@frontend/utils/utils";
-import StatusDot from "@frontend/components/ui/StatusDot";
 
 const INITIALISING = -2;
 const FAILED = -1;

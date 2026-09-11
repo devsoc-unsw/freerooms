@@ -1,5 +1,7 @@
 "use client";
 
+import UtilityAccordion from "@frontend/components/rooms/UtilityAccordian";
+import useRoomUtilities from "@frontend/hooks/useRoomUtilities";
 import {
   Accessible,
   AcUnit,
@@ -12,10 +14,7 @@ import {
   ViewQuilt,
 } from "@mui/icons-material";
 import { Box, Skeleton, Stack, Typography, useTheme } from "@mui/material";
-import useRoomUtilities from "@frontend/hooks/useRoomUtilities";
 import type React from "react";
-
-import UtilityAccordion from "@frontend/components/rooms/UtilityAccordian";
 
 const ICON_SIZE = 18;
 

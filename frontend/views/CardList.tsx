@@ -1,9 +1,4 @@
 import { Building } from "@common/types";
-import { Box } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import { AnimatePresence, motion } from "framer-motion";
-import React from "react";
-
 import BuildingCard from "@frontend/components/rooms/BuildingCard";
 import BuildingCardMobile from "@frontend/components/rooms/BuildingCardMobile";
 import useBuildings from "@frontend/hooks/useBuildings";
@@ -11,6 +6,10 @@ import useStatus from "@frontend/hooks/useStatus";
 import useUserLocation from "@frontend/hooks/useUserLocation";
 import calculateDistance from "@frontend/utils/calculateDistance";
 import { getNumFreerooms } from "@frontend/utils/utils";
+import { Box } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { AnimatePresence, motion } from "framer-motion";
+import React from "react";
 
 const CardGrid = styled("div")(() => ({
   width: "100%",

@@ -1,12 +1,11 @@
+import Button from "@frontend/components/ui/Button";
 import useBuilding from "@frontend/hooks/useBuilding";
+import { setCurrentBuilding } from "@frontend/redux/currentBuildingSlice";
+import { useDispatch } from "@frontend/redux/hooks";
 import { useTheme } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { useRouter } from "next/navigation";
 import React from "react";
-
-import { setCurrentBuilding } from "@frontend/redux/currentBuildingSlice";
-import { useDispatch } from "@frontend/redux/hooks";
-import Button from "@frontend/components/ui/Button";
 
 const ViewOnMapButton: React.FC<{
   buildingId: string;

@@ -1,10 +1,9 @@
 import "@testing-library/jest-dom";
 
+import renderWithRedux from "@frontend/__tests__/utils/renderWithRedux";
+import BuildingDrawer from "@frontend/views/BuildingDrawer";
 import { useMediaQuery } from "@mui/material";
 import { fireEvent, screen } from "@testing-library/react";
-
-import BuildingDrawer from "@frontend/views/BuildingDrawer";
-import renderWithRedux from "@frontend/__tests__/utils/renderWithRedux";
 
 jest.mock("react-redux", () => ({
   ...jest.requireActual("react-redux"),

@@ -1,9 +1,8 @@
 import "@testing-library/jest-dom";
 
-import React from "react";
-
-import Page from "@frontend/app/room/[room]/page";
 import { renderWithTheme } from "@frontend/__tests__/utils/renderWithRedux";
+import Page from "@frontend/app/room/[room]/page";
+import React from "react";
 
 const mockUseRoom = jest.fn();
 const mockUseBuilding = jest.fn();

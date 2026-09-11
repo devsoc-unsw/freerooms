@@ -1,3 +1,4 @@
+import type { RouteSummary } from "@frontend/hooks/useMapboxRoute";
 import CloseIcon from "@mui/icons-material/Close";
 import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
 import IconButton from "@mui/material/IconButton";
@@ -5,8 +6,6 @@ import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-
-import type { RouteSummary } from "@frontend/hooks/useMapboxRoute";
 
 type DirectionsSummaryProps = {
   summary: RouteSummary;

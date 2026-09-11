@@ -1,10 +1,9 @@
 import "@testing-library/jest-dom";
 
-import { render } from "@testing-library/react";
-import React from "react";
-
 import useBuildings from "@frontend/hooks/useBuildings";
 import CardList from "@frontend/views/CardList";
+import { render } from "@testing-library/react";
+import React from "react";
 
 // CardList animates the grid with framer-motion; stub it so exiting children
 // unmount immediately (jsdom never completes the exit animation otherwise).

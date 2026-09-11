@@ -1,11 +1,6 @@
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
-import { ClickAwayListener } from "@mui/material";
-import Box, { BoxProps } from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-import { styled } from "@mui/material/styles";
-import Typography from "@mui/material/Typography";
-import React, { useCallback, useMemo, useState } from "react";
-
+import RecurringWeeksSlider from "@frontend/components/booking/RecurringWeeksSlider";
+import DropdownSelections from "@frontend/components/filters/DropdownSelections";
+import { AppButton, AppSurface } from "@frontend/components/ui";
 import useDateTimeQuery from "@frontend/hooks/useDateTimeQuery";
 import useQueryFilter from "@frontend/hooks/useQueryFilter";
 import {
@@ -17,9 +12,13 @@ import {
 import { useDispatch, useSelector } from "@frontend/redux/hooks";
 import { DropDownItem, Filters } from "@frontend/types";
 import { filterBarDropdown } from "@frontend/utils/constants";
-import DropdownSelections from "@frontend/components/filters/DropdownSelections";
-import RecurringWeeksSlider from "@frontend/components/booking/RecurringWeeksSlider";
-import { AppButton, AppSurface } from "@frontend/components/ui";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import { ClickAwayListener } from "@mui/material";
+import Box, { BoxProps } from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import { styled } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
+import React, { useCallback, useMemo, useState } from "react";
 
 const StyledMenuAnchor = styled(Box)<BoxProps>(() => ({
   position: "relative",

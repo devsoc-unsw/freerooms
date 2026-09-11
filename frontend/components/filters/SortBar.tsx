@@ -1,3 +1,5 @@
+import { AppButton, AppSurface } from "@frontend/components/ui";
+import { sortBarDropdown } from "@frontend/utils/constants";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { ClickAwayListener } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
@@ -7,9 +9,6 @@ import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
-
-import { sortBarDropdown } from "@frontend/utils/constants";
-import { AppButton, AppSurface } from "@frontend/components/ui";
 
 const StyledMenuAnchor = styled(Box)<BoxProps>(() => ({
   position: "relative",

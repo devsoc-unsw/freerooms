@@ -1,5 +1,14 @@
 "use client";
 
+import DatePicker from "@frontend/components/booking/DatePicker";
+import TimePicker from "@frontend/components/booking/TimePicker";
+import FeedbackButton from "@frontend/components/feedback/FeedbackButton";
+import FilterBar from "@frontend/components/filters/FilterBar";
+import SortBar from "@frontend/components/filters/SortBar";
+import SearchBar from "@frontend/components/search/SearchBar";
+import useQuerySort from "@frontend/hooks/useQuerySort";
+import BuildingDrawer from "@frontend/views/BuildingDrawer";
+import CardList from "@frontend/views/CardList";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
@@ -8,16 +17,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { enAU } from "date-fns/locale";
 import { parseAsString, useQueryState } from "nuqs";
 import React, { Suspense } from "react";
-import BuildingDrawer from "@frontend/views/BuildingDrawer";
-
-import DatePicker from "@frontend/components/booking/DatePicker";
-import FeedbackButton from "@frontend/components/feedback/FeedbackButton";
-import FilterBar from "@frontend/components/filters/FilterBar";
-import SearchBar from "@frontend/components/search/SearchBar";
-import SortBar from "@frontend/components/filters/SortBar";
-import TimePicker from "@frontend/components/booking/TimePicker";
-import useQuerySort from "@frontend/hooks/useQuerySort";
-import CardList from "@frontend/views/CardList";
 
 const BrowseContent = () => {
   const [sort, setSort] = useQuerySort();

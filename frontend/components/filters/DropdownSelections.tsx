@@ -1,3 +1,9 @@
+import {
+  AllRoomsFilters,
+  DropDown,
+  DropDownItem,
+  Filters,
+} from "@frontend/types";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -7,7 +13,6 @@ import Radio from "@mui/material/Radio";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import React, { useId } from "react";
-import { AllRoomsFilters, DropDown, DropDownItem, Filters } from "@frontend/types";
 
 export const StyledAccordion = styled(Accordion)(({ theme }) => ({
   backgroundColor: theme.colours.surface.paper,

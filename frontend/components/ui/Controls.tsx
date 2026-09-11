@@ -1,11 +1,10 @@
 "use client";
 
+import { getControlStyles } from "@frontend/theme/controlStyles";
 import MuiButton, { type ButtonProps } from "@mui/material/Button";
 import MuiIconButton, { type IconButtonProps } from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
 import React from "react";
-
-import { getControlStyles } from "@frontend/theme/controlStyles";
 
 export type AppButtonProps = Omit<ButtonProps, "color"> & {
   href?: string;

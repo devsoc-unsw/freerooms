@@ -1,4 +1,6 @@
 import { Rating } from "@common/types";
+import ReviewRating from "@frontend/components/ratings/ReviewRating";
+import setInsertRating from "@frontend/hooks/setInsertRating";
 import CloseIcon from "@mui/icons-material/Close";
 import {
   Alert,
@@ -11,10 +13,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import setInsertRating from "@frontend/hooks/setInsertRating";
 import React, { useState } from "react";
-
-import ReviewRating from "@frontend/components/ratings/ReviewRating";
 
 interface ReviewModalProps {
   buildingID: string;

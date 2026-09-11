@@ -1,3 +1,4 @@
+import UtilityChips from "@frontend/components/rooms/UtilityChips";
 import { ExpandMore } from "@mui/icons-material";
 import {
   Accordion,
@@ -8,8 +9,6 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-
-import UtilityChips from "@frontend/components/rooms/UtilityChips";
 
 interface Props {
   title: string;

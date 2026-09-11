@@ -4,6 +4,9 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 
 import { Booking } from "@common/types";
 import useBookingCalenderQuery from "@frontend/hooks/useBookingCalenderQuery";
+import { selectDatetime } from "@frontend/redux/datetimeSlice";
+import { useSelector } from "@frontend/redux/hooks";
+import toSydneyTime from "@frontend/utils/toSydneyTime";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import Box, { BoxProps } from "@mui/material/Box";
@@ -30,10 +33,6 @@ import {
   DateLocalizer,
   Views,
 } from "react-big-calendar";
-
-import { selectDatetime } from "@frontend/redux/datetimeSlice";
-import { useSelector } from "@frontend/redux/hooks";
-import toSydneyTime from "@frontend/utils/toSydneyTime";
 
 const ToolBarButton = styled(Button)(({ theme }) => ({
   borderColor: theme.palette.secondary.main,

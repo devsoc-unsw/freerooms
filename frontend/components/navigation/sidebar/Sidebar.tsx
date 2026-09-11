@@ -1,3 +1,5 @@
+import DarkModeToggle from "@frontend/components/navigation/sidebar/DarkModeToggle";
+import SidebarItem from "@frontend/components/navigation/sidebar/SidebarItem";
 import LogoClosed from "@frontend/public/assets/easterEggButton/logo-closed.svg";
 import LogoOpen from "@frontend/public/assets/easterEggButton/logo-open.svg";
 import { useDispatch } from "@frontend/redux/hooks";
@@ -26,9 +28,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
-
-import DarkModeToggle from "@frontend/components/navigation/sidebar/DarkModeToggle";
-import SidebarItem from "@frontend/components/navigation/sidebar/SidebarItem";
 
 const drawerWidth = 230;
 

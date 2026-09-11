@@ -1,10 +1,9 @@
 import "@testing-library/jest-dom";
 
+import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithRedux";
+import DropdownSelections from "@frontend/components/filters/DropdownSelections";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { screen, within } from "@testing-library/react";
-
-import DropdownSelections from "@frontend/components/filters/DropdownSelections";
-import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithRedux";
 
 describe("DropdownSelections", () => {
   it("Displays the correct filter type given", () => {

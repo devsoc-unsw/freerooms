@@ -1,18 +1,17 @@
 import "@testing-library/jest-dom";
 
 import { RoomStatus } from "@common/types";
-import { useMediaQuery } from "@mui/material";
-import { screen } from "@testing-library/react";
-import { useParams, useRouter } from "next/navigation";
-import { Provider } from "react-redux";
-
+import renderWithRedux from "@frontend/__tests__/utils/renderWithRedux";
+import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithRedux";
 import Page from "@frontend/app/room/[room]/page";
 import BuildingCard from "@frontend/components/rooms/BuildingCard";
 import { useDispatch, useSelector } from "@frontend/redux/hooks";
 import store from "@frontend/redux/store";
 import RoomAvailabilityBox from "@frontend/views/RoomAvailabilityBox";
-import renderWithRedux from "@frontend/__tests__/utils/renderWithRedux";
-import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithRedux";
+import { useMediaQuery } from "@mui/material";
+import { screen } from "@testing-library/react";
+import { useParams, useRouter } from "next/navigation";
+import { Provider } from "react-redux";
 
 // Mock DarkModeContext to avoid test failing due to importing NuqsAdapter
 jest.mock("@frontend/app/clientLayout", () => ({

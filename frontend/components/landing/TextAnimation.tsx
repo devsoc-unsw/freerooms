@@ -1,8 +1,7 @@
+import CursorBlinker from "@frontend/components/landing/CursorBlinker";
 import { styled } from "@mui/material/styles";
 import { animate, motion, useMotionValue, useTransform } from "framer-motion";
 import { useEffect } from "react";
-
-import CursorBlinker from "@frontend/components/landing/CursorBlinker";
 
 export default function TextAnimation() {
   const baseText = "Unlock spaces, own your time, with Freerooms" as string;

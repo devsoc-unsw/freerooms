@@ -1,7 +1,5 @@
-import { Box } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import { BoxProps } from "@mui/system";
-import { useCallback, useMemo } from "react";
+import RecurringWeeksSlider from "@frontend/components/booking/RecurringWeeksSlider";
+import DropdownSelections from "@frontend/components/filters/DropdownSelections";
 import {
   setAllRoomsFilter,
   unsetAllRoomsFilter,
@@ -9,9 +7,10 @@ import {
 import { useDispatch } from "@frontend/redux/hooks";
 import { AllRoomsFilters, DropDownItem } from "@frontend/types";
 import { allRoomsFilterDropdown } from "@frontend/utils/constants";
-
-import DropdownSelections from "@frontend/components/filters/DropdownSelections";
-import RecurringWeeksSlider from "@frontend/components/booking/RecurringWeeksSlider";
+import { Box } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { BoxProps } from "@mui/system";
+import { useCallback, useMemo } from "react";
 
 const StyledFilterSideBarContainer = styled(Box)<BoxProps>(({ theme }) => ({
   display: "flex",

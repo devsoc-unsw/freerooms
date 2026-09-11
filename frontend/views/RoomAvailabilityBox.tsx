@@ -1,4 +1,8 @@
 import { RoomStatus } from "@common/types";
+import RoomAvailability from "@frontend/components/rooms/RoomAvailability";
+import useRoom from "@frontend/hooks/useRoom";
+import useRoomRatings from "@frontend/hooks/useRoomRatings";
+import roomPhotos from "@frontend/public/room-photos.json";
 import getRoomHref from "@frontend/utils/getRoomHref";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
@@ -7,13 +11,8 @@ import Box, { BoxProps } from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import { alpha, styled } from "@mui/material/styles";
-import RoomAvailability from "@frontend/components/rooms/RoomAvailability";
-import useRoomRatings from "@frontend/hooks/useRoomRatings";
 import Link from "next/link";
 import React from "react";
-
-import useRoom from "@frontend/hooks/useRoom";
-import roomPhotos from "@frontend/public/room-photos.json";
 
 interface IndiviRoomBoxProps extends BoxProps {
   bgImage: string;

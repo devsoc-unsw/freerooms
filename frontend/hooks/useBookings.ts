@@ -4,10 +4,9 @@
  */
 import parseDates from "@common/parseDates";
 import { BookingsResponse } from "@common/types";
+import { API_URL } from "@frontend/config";
 import axios from "axios";
 import useSWRImmutable from "swr/immutable";
-
-import { API_URL } from "@frontend/config";
 
 const fetcher = (url: string) =>
   axios

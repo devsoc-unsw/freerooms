@@ -1,10 +1,9 @@
+import { AppTextField } from "@frontend/components/ui";
 import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
 import InputAdornment from "@mui/material/InputAdornment";
 import { useTheme } from "@mui/material/styles";
 import React from "react";
-
-import { AppTextField } from "@frontend/components/ui";
 
 const SearchBar = ({ setQuery }: { setQuery: (query: string) => void }) => {
   const theme = useTheme();

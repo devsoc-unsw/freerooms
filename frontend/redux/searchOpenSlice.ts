@@ -1,9 +1,8 @@
 /**
  * Redux slice to manage whether the search modal is open
  */
-import { createSlice } from "@reduxjs/toolkit";
-
 import { RootState } from "@frontend/redux/store";
+import { createSlice } from "@reduxjs/toolkit";
 
 interface SearchOpenState {
   value: boolean;

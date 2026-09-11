@@ -1,9 +1,8 @@
 import { DarkModeContext } from "@frontend/app/clientLayout";
+import SidebarItem from "@frontend/components/navigation/sidebar/SidebarItem";
 import { useTheme } from "@mui/material";
 import { MoonIcon, SunIcon } from "lucide-react";
 import React from "react";
-
-import SidebarItem from "@frontend/components/navigation/sidebar/SidebarItem";
 
 const DarkModeToggle = ({ sidebarOpen }: { sidebarOpen: boolean }) => {
   const { isDarkMode, toggleDarkMode } = React.useContext(DarkModeContext);

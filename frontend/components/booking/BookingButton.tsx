@@ -1,9 +1,8 @@
+import Button from "@frontend/components/ui/Button";
 import { useTheme } from "@mui/material";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import React from "react";
-
-import Button from "@frontend/components/ui/Button";
 
 const BookingButton: React.FC<{
   school: string;

@@ -1,12 +1,11 @@
 import "@testing-library/jest-dom";
 
+import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithRedux";
+import Page from "@frontend/app/room/[room]/page";
 import store from "@frontend/redux/store";
 import { fireEvent, screen } from "@testing-library/react";
 import { useParams, useRouter } from "next/navigation";
 import { Provider } from "react-redux";
-
-import Page from "@frontend/app/room/[room]/page";
-import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithRedux";
 
 // Mock DarkModeContext to avoid test failing due to importing NuqsAdapter
 jest.mock("@frontend/app/clientLayout", () => ({

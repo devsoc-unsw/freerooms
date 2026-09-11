@@ -1,10 +1,9 @@
 /**
  * Redux slice to manage the selected filters
  */
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-import { AllRoomsFilters } from "@frontend/types";
 import { RootState } from "@frontend/redux/store";
+import { AllRoomsFilters } from "@frontend/types";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface RoomsFilterState {
   value: AllRoomsFilters;

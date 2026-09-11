@@ -1,14 +1,13 @@
+import FilterSideBar from "@frontend/components/filters/FilterSideBar";
+import useAllRoomsQuery from "@frontend/hooks/useAllRoomsQuery";
+import useDateTimeQuery from "@frontend/hooks/useDateTimeQuery";
+import { clearAllRoomsFilters } from "@frontend/redux/allRoomsFilterSlice";
+import { useDispatch } from "@frontend/redux/hooks";
+import { AllRoomsFilters } from "@frontend/types";
 import { Button } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/system";
-import { clearAllRoomsFilters } from "@frontend/redux/allRoomsFilterSlice";
-import { useDispatch } from "@frontend/redux/hooks";
-import { AllRoomsFilters } from "@frontend/types";
-
-import useAllRoomsQuery from "@frontend/hooks/useAllRoomsQuery";
-import useDateTimeQuery from "@frontend/hooks/useDateTimeQuery";
-import FilterSideBar from "@frontend/components/filters/FilterSideBar";
 
 const AllRoomsFilter: React.FC<{ filters: AllRoomsFilters }> = ({
   filters,

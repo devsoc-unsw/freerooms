@@ -1,10 +1,9 @@
 /**
  * Redux slice to manage the selected filters
  */
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-import { Filters } from "@frontend/types";
 import { RootState } from "@frontend/redux/store";
+import { Filters } from "@frontend/types";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface FiltersState {
   value: Filters;

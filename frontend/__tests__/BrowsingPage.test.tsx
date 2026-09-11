@@ -1,12 +1,11 @@
 import "@testing-library/jest-dom";
 
-import { screen } from "@testing-library/react";
-import { Provider } from "react-redux";
-
+import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithRedux";
 import Page from "@frontend/app/browse/page";
 import useUserLocation from "@frontend/hooks/useUserLocation";
 import store from "@frontend/redux/store";
-import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithRedux";
+import { screen } from "@testing-library/react";
+import { Provider } from "react-redux";
 
 // Mock next/navigation since the app router is not mounted in the test environment.
 const mockReplace = jest.fn();

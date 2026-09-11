@@ -1,4 +1,12 @@
 import { Building, BuildingStatus } from "@common/types";
+import useBuilding from "@frontend/hooks/useBuilding";
+import useBuildingStatus from "@frontend/hooks/useBuildingStatus";
+import {
+  selectCurrentBuilding,
+  setCurrentBuilding,
+} from "@frontend/redux/currentBuildingSlice";
+import { useDispatch, useSelector } from "@frontend/redux/hooks";
+import { getNumFreerooms, getTotalRooms } from "@frontend/utils/utils";
 import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 import RoomIcon from "@mui/icons-material/Room";
 import { alpha, Fade } from "@mui/material";
@@ -8,15 +16,6 @@ import { styled, useTheme } from "@mui/material/styles";
 import Image, { ImageProps } from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
-
-import useBuilding from "@frontend/hooks/useBuilding";
-import useBuildingStatus from "@frontend/hooks/useBuildingStatus";
-import {
-  selectCurrentBuilding,
-  setCurrentBuilding,
-} from "@frontend/redux/currentBuildingSlice";
-import { useDispatch, useSelector } from "@frontend/redux/hooks";
-import { getNumFreerooms, getTotalRooms } from "@frontend/utils/utils";
 
 const MarkerHoverMainBox = styled(Box)<BoxProps>(({ theme }) => ({
   position: "absolute",

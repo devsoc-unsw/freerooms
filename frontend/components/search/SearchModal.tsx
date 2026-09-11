@@ -1,3 +1,10 @@
+import { AppSurface, AppTextField } from "@frontend/components/ui";
+import useBuildings from "@frontend/hooks/useBuildings";
+import useRooms from "@frontend/hooks/useRooms";
+import { setCurrentBuilding } from "@frontend/redux/currentBuildingSlice";
+import { useDispatch, useSelector } from "@frontend/redux/hooks";
+import { closeSearch, selectSearchOpen } from "@frontend/redux/searchOpenSlice";
+import { SearchOption } from "@frontend/types";
 import BuildingIcon from "@mui/icons-material/Apartment";
 import RoomIcon from "@mui/icons-material/MeetingRoom";
 import SearchIcon from "@mui/icons-material/Search";
@@ -16,14 +23,6 @@ import { matchSorter } from "match-sorter";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import { useLocalStorage } from "usehooks-ts";
-
-import useBuildings from "@frontend/hooks/useBuildings";
-import useRooms from "@frontend/hooks/useRooms";
-import { setCurrentBuilding } from "@frontend/redux/currentBuildingSlice";
-import { useDispatch, useSelector } from "@frontend/redux/hooks";
-import { closeSearch, selectSearchOpen } from "@frontend/redux/searchOpenSlice";
-import { SearchOption } from "@frontend/types";
-import { AppSurface, AppTextField } from "@frontend/components/ui";
 
 const RECENT_SEARCH_LIMIT = 3;
 interface SearchProps {}

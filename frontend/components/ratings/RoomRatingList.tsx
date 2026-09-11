@@ -1,11 +1,10 @@
+import CircularRating from "@frontend/components/ratings/CircularRating";
+import DecimalStarRating from "@frontend/components/ratings/DecimalStarRating";
+import LinearRating from "@frontend/components/ratings/LinearRating";
+import useRoomRatings from "@frontend/hooks/useRoomRatings";
 import Box from "@mui/material/Box";
 import { Stack, useMediaQuery } from "@mui/system";
-import DecimalStarRating from "@frontend/components/ratings/DecimalStarRating";
-import useRoomRatings from "@frontend/hooks/useRoomRatings";
 import React from "react";
-
-import CircularRating from "@frontend/components/ratings/CircularRating";
-import LinearRating from "@frontend/components/ratings/LinearRating";
 
 const RoomRatingList: React.FC<{
   roomID: string;

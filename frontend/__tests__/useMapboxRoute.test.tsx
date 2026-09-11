@@ -1,9 +1,10 @@
 import "@testing-library/jest-dom";
 
 import type { Building } from "@common/types";
+import useMapboxRoute, {
+  type RouteGeometry,
+} from "@frontend/hooks/useMapboxRoute";
 import { act, renderHook } from "@testing-library/react";
-
-import useMapboxRoute, { type RouteGeometry } from "@frontend/hooks/useMapboxRoute";
 
 jest.mock("@frontend/config", () => ({
   MAPBOX_ACCESS_TOKEN: "pk.test-token",

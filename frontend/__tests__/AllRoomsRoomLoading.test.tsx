@@ -1,10 +1,9 @@
 import "@testing-library/jest-dom";
 
-import React from "react";
-
+import { renderWithTheme } from "@frontend/__tests__/utils/renderWithRedux";
 import Room from "@frontend/components/rooms/AllRoomsRoom";
 import RoomList from "@frontend/components/rooms/AllRoomsRoomList";
-import { renderWithTheme } from "@frontend/__tests__/utils/renderWithRedux";
+import React from "react";
 
 jest.mock("@frontend/components/rooms/AllRoomsSearchBar", () => ({
   __esModule: true,

@@ -1,8 +1,7 @@
-import type { CSSProperties } from "react";
-
 import type { AppColours } from "@frontend/theme/colours";
 import type { sizes } from "@frontend/theme/sizes";
 import type { radius, space } from "@frontend/theme/spacing";
+import type { CSSProperties } from "react";
 
 declare module "@mui/material/styles" {
   interface Theme {

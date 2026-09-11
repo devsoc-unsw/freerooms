@@ -1,6 +1,6 @@
+import AllRoomsSearchBar from "@frontend/components/rooms/AllRoomsSearchBar";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/system";
-import AllRoomsSearchBar from "@frontend/components/rooms/AllRoomsSearchBar";
 
 const StyledStack = styled(Stack)(({ theme }) => ({
   flexDirection: "column",

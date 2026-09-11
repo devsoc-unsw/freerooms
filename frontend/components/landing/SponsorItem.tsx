@@ -1,6 +1,6 @@
+import { Sponsor } from "@frontend/types";
 import { Box, Link } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import { Sponsor } from "@frontend/types";
 
 const LOGO_BOX = {
   Platinum: { height: 145, maxWidth: 540, pt: "28px", pb: "10px" },

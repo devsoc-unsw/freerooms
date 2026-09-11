@@ -1,9 +1,8 @@
 /**
  * Redux slice to manage the selected datetime
  */
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
 import { RootState } from "@frontend/redux/store";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface DatetimeSlice {
   value: Date;
