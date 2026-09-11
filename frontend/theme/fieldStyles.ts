@@ -12,9 +12,10 @@ export function getOutlinedFieldStyles(theme: Theme): CSSObject {
       "& .MuiOutlinedInput-notchedOutline": {
         borderColor: colours.border.default,
       },
-      "&:hover:not(.Mui-disabled):not(.Mui-error) .MuiOutlinedInput-notchedOutline": {
-        borderColor: colours.accent.primary,
-      },
+      "&:hover:not(.Mui-disabled):not(.Mui-error) .MuiOutlinedInput-notchedOutline":
+        {
+          borderColor: colours.accent.primary,
+        },
       "&.Mui-focused:not(.Mui-error) .MuiOutlinedInput-notchedOutline": {
         borderColor: colours.accent.primary,
       },
@@ -22,9 +23,10 @@ export function getOutlinedFieldStyles(theme: Theme): CSSObject {
         backgroundColor: colours.disabled.background,
       },
     },
-    "& .MuiInputLabel-root:not(.Mui-error):not(.Mui-focused):not(.Mui-disabled)": {
-      color: colours.text.secondary,
-    },
+    "& .MuiInputLabel-root:not(.Mui-error):not(.Mui-focused):not(.Mui-disabled)":
+      {
+        color: colours.text.secondary,
+      },
     "& .MuiInputBase-input::placeholder": {
       color: colours.text.secondary,
       opacity: 1,

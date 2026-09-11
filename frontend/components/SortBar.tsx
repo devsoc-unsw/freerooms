@@ -105,9 +105,7 @@ const SortBar: React.FC<{
             {sortBarDropdown.map((dropdown) => (
               <StyledBox key={dropdown.value}>
                 <FormControlLabel
-                  control={
-                    <Radio checked={sort === dropdown.value} sx={{}} />
-                  }
+                  control={<Radio checked={sort === dropdown.value} sx={{}} />}
                   label={dropdown.text}
                   onClick={() => setSort(dropdown.value)}
                   sx={{
