@@ -42,8 +42,18 @@ const RecurringWeeksSlider = ({
           {dropdown.text}
         </Typography>
       </AccordionSummary>
-      <AccordionDetails sx={{ padding: "0 8px", ml: "3px" }}>
-        <Typography sx={{ fontSize: 14, fontWeight: 400, marginBottom: 1 }}>
+      <AccordionDetails
+        sx={(theme) => ({
+          padding: theme.spacing(0, 1),
+          ml: theme.spacing(0.375),
+        })}
+      >
+        <Typography
+          sx={(theme) => ({
+            fontSize: 14,
+            fontWeight: 400,
+          })}
+        >
           {label}
         </Typography>
         <Slider
