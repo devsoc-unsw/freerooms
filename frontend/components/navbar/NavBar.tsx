@@ -17,7 +17,7 @@ import { useDispatch } from "../../redux/hooks";
 import { openSearch } from "../../redux/searchOpenSlice";
 import Branding from "./Branding";
 import IconButton from "../IconButton";
-import { sizes } from "@frontend/theme";
+import { sizes, space } from "@frontend/theme";
 
 const NavBar: React.FC = () => {
   const dispatch = useDispatch();
@@ -30,6 +30,8 @@ const NavBar: React.FC = () => {
         alignItems: "start",
         display: "flex",
         justifyContent: "space-between",
+        py: space.md,
+        px: space.xl,
         maxHeight: sizes.navBar.height // enforce max navbar height
       }}
     >

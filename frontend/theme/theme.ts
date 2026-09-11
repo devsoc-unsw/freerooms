@@ -8,7 +8,6 @@ import { typography } from "./typography";
 
 export function createAppTheme(mode: ThemeMode) {
   const colours = getColours(mode);
-
   const palette: PaletteOptions = {
     mode,
     primary: {
@@ -58,6 +57,7 @@ export function createAppTheme(mode: ThemeMode) {
     radius,
     sizes,
     shape: { borderRadius: radius.md },
+    spacing: (value:number) => `${value}px`,
     typography,
     components,
   });
