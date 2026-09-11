@@ -29,8 +29,7 @@ const NavBar: React.FC = () => {
     <AppBar
       position="fixed"
       sx={{
-        borderBottom: (theme) => `1px solid ${theme.colours.border.default}`,
-        alignItems: "center",
+        alignItems: "start",
         display: "flex",
         justifyContent: "space-between",
       }}
