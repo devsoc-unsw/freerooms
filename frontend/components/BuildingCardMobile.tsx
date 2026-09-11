@@ -3,7 +3,7 @@ import { Typography } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Stack from "@mui/material/Stack";
-import { styled } from "@mui/material/styles";
+import { styled, useTheme } from "@mui/material/styles";
 import useBuildingRatings from "hooks/useBuildingRatings";
 import Image, { ImageProps } from "next/image";
 import React from "react";
@@ -25,7 +25,7 @@ const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
   flex: 1,
   height: 100,
   borderRadius: 10,
-  backgroundColor: "black",
+  backgroundColor: theme.colours.neutral.black,
   transition: "all 0.1s ease-in-out",
   padding: 10,
   "&:hover": {
@@ -43,19 +43,19 @@ const StyledImage = styled(Image)<ImageProps>(() => ({
   },
 }));
 
-const StatusBox = styled(Box)<BoxProps>(() => ({
+const StatusBox = styled(Box)<BoxProps>(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   borderRadius: 15,
   right: 0,
-  backgroundColor: "white",
+  backgroundColor: theme.colours.neutral.white,
   padding: 8,
   paddingLeft: 10,
   paddingRight: 10,
   margin: 10,
 }));
 
-const TitleBox = styled(Box)<BoxProps>(() => ({
+const TitleBox = styled(Box)<BoxProps>(({ theme }) => ({
   display: "flex",
   borderRadius: 10,
   width: "100%",
@@ -63,7 +63,7 @@ const TitleBox = styled(Box)<BoxProps>(() => ({
   position: "relative",
   alignItems: "center",
   justifyContent: "space-between",
-  color: "white",
+  color: theme.colours.text.onImage,
   padding: 10,
 }));
 
@@ -75,6 +75,8 @@ const BuildingCardMobile: React.FC<{
   const { building } = useBuilding(buildingId);
   const { status } = useBuildingStatus(buildingId);
   const { ratings } = useBuildingRatings(buildingId);
+
+  const theme = useTheme();
 
   if (!building) return <></>;
 
@@ -117,7 +119,11 @@ const BuildingCardMobile: React.FC<{
                   />
                 ) : null}
                 <Typography
-                  sx={{ fontSize: 12, fontWeight: 500, color: "#000000" }}
+                  sx={{
+                    fontSize: 12,
+                    fontWeight: 500,
+                    color: theme.colours.neutral.black,
+                  }}
                 >
                   {freerooms !== FAILED
                     ? `${freerooms} / ${totalrooms}`
@@ -139,11 +145,17 @@ const BuildingCardMobile: React.FC<{
               }}
             >
               <Typography
-                sx={{ fontSize: 12, fontWeight: 500, color: "#000000" }}
+                sx={{
+                  fontSize: 12,
+                  fontWeight: 500,
+                  color: theme.colours.neutral.black,
+                }}
               >
                 {ratings?.overallRating}
               </Typography>
-              <StarIcon sx={{ fontSize: "1rem", color: "rgb(255, 169, 12)" }} />
+              <StarIcon
+                sx={{ fontSize: "1rem", color: theme.colours.rating.display }}
+              />
             </Stack>
           </StatusBox>
         </Stack>

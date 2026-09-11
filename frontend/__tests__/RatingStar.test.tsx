@@ -2,7 +2,7 @@ import "@testing-library/jest-dom";
 
 import { RoomStatus } from "@common/types";
 import { useMediaQuery } from "@mui/material";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { useParams, useRouter } from "next/navigation";
 import { Provider } from "react-redux";
 
@@ -12,6 +12,15 @@ import { useDispatch, useSelector } from "../redux/hooks";
 import store from "../redux/store";
 import RoomAvailabilityBox from "../views/RoomAvailabilityBox";
 import renderWithRedux from "./utils/renderWithRedux";
+import { renderWithTheme as render } from "./utils/renderWithRedux";
+
+// Mock DarkModeContext to avoid test failing due to importing NuqsAdapter
+jest.mock("../app/clientLayout", () => ({
+  DarkModeContext: require("react").createContext({
+    isDarkMode: false,
+    toggleDarkMode: () => {},
+  }),
+}));
 
 jest.mock("nuqs", () => ({
   useQueryStates: (keys: Record<string, { defaultValue: string }>) => [

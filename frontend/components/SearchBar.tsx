@@ -2,8 +2,9 @@ import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
 import InputAdornment from "@mui/material/InputAdornment";
 import { useTheme } from "@mui/material/styles";
-import TextField from "@mui/material/TextField";
 import React from "react";
+
+import { AppTextField } from "./ui";
 
 const SearchBar = ({ setQuery }: { setQuery: (query: string) => void }) => {
   const theme = useTheme();
@@ -20,7 +21,7 @@ const SearchBar = ({ setQuery }: { setQuery: (query: string) => void }) => {
         order: { xs: -1, sm: -1, md: "unset" },
       }}
     >
-      <TextField
+      <AppTextField
         id="input-with-sx"
         placeholder="Search for a building..."
         sx={{

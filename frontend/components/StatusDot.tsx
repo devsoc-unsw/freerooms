@@ -11,10 +11,10 @@ const StatusDot: React.FC<{ colour: "green" | "orange" | "red" }> = ({
         borderRadius: "50%",
         backgroundColor:
           colour === "green"
-            ? theme.palette.success.light
+            ? theme.colours.status.available.main
             : colour === "orange"
-              ? theme.palette.warning.light
-              : theme.palette.error.light,
+              ? theme.colours.status.soon.main
+              : theme.colours.status.unavailable.main,
       })}
     />
   );

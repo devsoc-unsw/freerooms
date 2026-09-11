@@ -1,7 +1,6 @@
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { ClickAwayListener } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
-import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
@@ -20,27 +19,15 @@ import { DropDownItem, Filters } from "../types";
 import { filterBarDropdown } from "../utils/constants";
 import DropdownSelections from "./DropdownSelections";
 import RecurringWeeksSlider from "./RecurringWeeksSlider";
+import { AppButton, AppSurface } from "./ui";
 
-const StyledFilterButton = styled(Box)<BoxProps>(({ theme }) => ({
-  height: 56,
-  width: 115,
-  padding: 16,
-  display: "flex",
-  flexDirection: "row",
-  alignSelf: "center",
-  justifyItems: "center",
+const StyledMenuAnchor = styled(Box)<BoxProps>(() => ({
   position: "relative",
-  borderRadius: 8,
-  borderWidth: 1,
-  borderStyle: "solid",
-  borderColor: theme.palette.primary.main,
+  alignSelf: "center",
   zIndex: 10,
-  ":hover": {
-    cursor: "pointer",
-  },
 }));
 
-const StyledDropDownMenu = styled(Box)<BoxProps>(({ theme }) => ({
+const StyledDropDownMenu = styled(AppSurface)(() => ({
   width: 250,
   top: 56,
   left: 0,
@@ -48,12 +35,8 @@ const StyledDropDownMenu = styled(Box)<BoxProps>(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   position: "absolute",
-  paddingLeft: "10px",
-  paddingRight: "10px",
-  backgroundColor: theme.palette.background.default,
-  borderWidth: 1,
-  borderStyle: "solid",
-  borderColor: theme.palette.mode === "light" ? "#BCBCBC" : "#3F3F3F",
+  paddingLeft: 10,
+  paddingRight: 10,
   ":hover": {
     cursor: "auto",
   },
@@ -128,59 +111,72 @@ const FilterBar = () => {
 
   return (
     <ClickAwayListener onClickAway={() => setOpen(false)}>
-      <StyledFilterButton onClick={() => setOpen(!open)}>
-        <Stack
-          direction="row"
-          spacing="16px"
+      <StyledMenuAnchor>
+        <AppButton
+          variant="outlined"
+          aria-expanded={open}
+          aria-controls={open ? "browse-filters-menu" : undefined}
+          onClick={() => setOpen(!open)}
           sx={{
-            alignItems: "center",
+            height: 56,
+            width: 115,
+            padding: 2,
+            justifyContent: "flex-start",
+            borderColor: "primary.main",
+            color: "primary.main",
           }}
         >
-          <FilterAltIcon
+          <Stack
+            direction="row"
+            spacing="16px"
             sx={{
-              fill: "none",
-              stroke: (theme) => theme.palette.primary.main,
-              strokeWidth: 2,
-            }}
-          />
-          <Typography
-            sx={{
-              color: (theme) => theme.palette.primary.main,
-              fontSize: 16,
-              fontWeight: 500,
+              alignItems: "center",
             }}
           >
-            Filters
-          </Typography>
-        </Stack>
+            <FilterAltIcon
+              sx={{
+                fill: "none",
+                stroke: (theme) => theme.palette.primary.main,
+                strokeWidth: 2,
+              }}
+            />
+            <Typography
+              sx={{
+                color: (theme) => theme.palette.primary.main,
+                fontSize: 16,
+                fontWeight: 500,
+              }}
+            >
+              Filters
+            </Typography>
+          </Stack>
+        </AppButton>
         {open && (
-          <Container onClick={(e) => e.stopPropagation()}>
-            <StyledDropDownMenu>
-              <StyledHeader>
-                <Typography
-                  sx={{
-                    fontSize: 18,
-                    fontWeight: 700,
-                  }}
-                >
-                  Filter
-                </Typography>
-                <Typography
-                  color="primary"
-                  sx={{
-                    "&:hover": { cursor: "pointer" },
-                    fontSize: 16,
-                  }}
-                  onClick={() => dispatch(clearFilters())}
-                >
-                  Reset
-                </Typography>
-              </StyledHeader>
-              {dropdownMap}
-            </StyledDropDownMenu>
-          </Container>
+          <StyledDropDownMenu id="browse-filters-menu">
+            <StyledHeader>
+              <Typography
+                sx={{
+                  fontSize: 18,
+                  fontWeight: 700,
+                }}
+              >
+                Filter
+              </Typography>
+              <Typography
+                color="primary"
+                sx={{
+                  "&:hover": { cursor: "pointer" },
+                  fontSize: 16,
+                }}
+                onClick={() => dispatch(clearFilters())}
+              >
+                Reset
+              </Typography>
+            </StyledHeader>
+            {dropdownMap}
+          </StyledDropDownMenu>
         )}
-      </StyledFilterButton>
+      </StyledMenuAnchor>
     </ClickAwayListener>
   );
 };

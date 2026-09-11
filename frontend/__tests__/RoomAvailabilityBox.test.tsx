@@ -1,10 +1,10 @@
 import "@testing-library/jest-dom";
 
-import { render, screen } from "@testing-library/react";
-import React from "react";
+import { screen } from "@testing-library/react";
 
 import toSydneyTime from "../utils/toSydneyTime";
 import RoomAvailabilityBox from "../views/RoomAvailabilityBox";
+import { renderWithTheme as render } from "./utils/renderWithRedux";
 
 jest.mock("../public/room-photos.json", () => ({
   "K-G14-334": [

@@ -29,7 +29,7 @@ const NavBar: React.FC = () => {
     <AppBar
       position="fixed"
       sx={{
-        borderBottom: `1px solid ${isDarkMode ? "#2c2c2c" : "#e0e0e0"}`,
+        borderBottom: (theme) => `1px solid ${theme.colours.border.default}`,
         alignItems: "center",
         display: "flex",
         justifyContent: "space-between",
@@ -53,14 +53,25 @@ const NavBar: React.FC = () => {
         <IconButton
           aria-label="All rooms"
           active={path === "/allRooms"}
+          aria-current={path === "/allRooms" ? "page" : undefined}
           href="/allRooms"
         >
           <MeetingRoomIcon />
         </IconButton>
-        <IconButton aria-label="Go to map" active={path === "/map"} href="/map">
+        <IconButton
+          aria-label="Go to map"
+          active={path === "/map"}
+          aria-current={path === "/map" ? "page" : undefined}
+          href="/map"
+        >
           <MapIcon />
         </IconButton>
-        <IconButton active={isDarkMode} onClick={toggleDarkMode}>
+        <IconButton
+          aria-label={isDarkMode ? "Use light mode" : "Use dark mode"}
+          aria-pressed={isDarkMode}
+          active={isDarkMode}
+          onClick={toggleDarkMode}
+        >
           <DarkMode />
         </IconButton>
       </Stack>
@@ -69,8 +80,8 @@ const NavBar: React.FC = () => {
 };
 
 const AppBar = styled(MuiAppBar)<MuiAppBarProps>(({ theme }) => ({
-  background: theme.palette.background.default,
-  color: theme.palette.getContrastText(theme.palette.background.default),
+  background: theme.colours.surface.appBar,
+  color: theme.colours.text.primary,
   boxShadow: "none",
   display: "flex",
   flexDirection: "row",

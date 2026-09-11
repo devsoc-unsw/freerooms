@@ -25,7 +25,7 @@ const BookingButton: React.FC<{
           aria-label="Make a Booking"
           name="Make a Booking"
           sx={{
-            backgroundColor: theme.palette.secondary.main,
+            backgroundColor: theme.colours.surface.control,
             color: theme.palette.text.primary,
             height: 45,
             marginLeft: { xs: 0, sm: 1 },
@@ -47,7 +47,7 @@ const BookingButton: React.FC<{
       aria-label="Make a Booking"
       name="Make a Booking"
       sx={{
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: theme.colours.surface.control,
         color: theme.palette.text.primary,
         height: 45,
         marginLeft: { xs: 0, sm: 1 },

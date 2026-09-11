@@ -1,14 +1,17 @@
 import { NotificationOutlined } from "@ant-design/icons";
-import { styled } from "@mui/system";
+import { styled, useTheme } from "@mui/material/styles";
 import { notification } from "antd";
 import { useEffect } from "react";
 
-const OrangeLink = styled("a")({
-  color: "#FB905E",
-});
+const OrangeLink = styled("a")(({ theme }) => ({
+  color: theme.colours.accent.primary,
+}));
 
 // feedback notification banner in landing page
 const FeedbackNotification = () => {
+  const theme = useTheme();
+  const accent = theme.colours.accent.primary;
+
   useEffect(() => {
     const cooldownMs = 1000 * 60 * 60 * 24 * 7; // notify every week
     const lastSeen = localStorage.getItem("last-seen-feedback-notification");
@@ -38,11 +41,11 @@ const FeedbackNotification = () => {
           !
         </>
       ),
-      icon: <NotificationOutlined style={{ color: "#FB905E" }} />,
+      icon: <NotificationOutlined style={{ color: accent }} />,
       duration: 15,
       placement: "bottomRight",
     });
-  }, []);
+  }, [accent]);
 
   return null;
 };

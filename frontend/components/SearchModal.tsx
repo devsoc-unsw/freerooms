@@ -8,11 +8,9 @@ import {
   useTheme,
 } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
-import { grey } from "@mui/material/colors";
 import InputAdornment from "@mui/material/InputAdornment";
 import Modal from "@mui/material/Modal";
 import Stack from "@mui/material/Stack";
-import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { matchSorter } from "match-sorter";
 import { usePathname, useRouter } from "next/navigation";
@@ -25,6 +23,7 @@ import { setCurrentBuilding } from "../redux/currentBuildingSlice";
 import { useDispatch, useSelector } from "../redux/hooks";
 import { closeSearch, selectSearchOpen } from "../redux/searchOpenSlice";
 import { SearchOption } from "../types";
+import { AppSurface, AppTextField } from "./ui";
 
 const RECENT_SEARCH_LIMIT = 3;
 interface SearchProps {}
@@ -150,6 +149,7 @@ const SearchModal: React.FC<SearchProps> = () => {
             <SearchResult option={option} />
           </li>
         )}
+        slots={{ paper: AppSurface }}
         slotProps={{
           paper: { sx: { borderRadius: "0 0 10px 10px" } },
         }}
@@ -186,10 +186,7 @@ const SearchResult: React.FC<{ option: SearchOption }> = ({ option }) => {
       </Stack>
       <Stack direction="column">
         <Typography>{name}</Typography>
-        <Typography
-          variant="body2"
-          color={theme.palette.mode === "light" ? grey[600] : grey[500]}
-        >
+        <Typography variant="body2" color={theme.colours.text.secondary}>
           <b>AKA</b> {aliases.join(", ")}
         </Typography>
       </Stack>
@@ -211,7 +208,7 @@ const InputBox = (params: AutocompleteRenderInputParams) => {
   } = compatParams;
 
   return (
-    <TextField
+    <AppTextField
       {...textFieldProps}
       autoFocus
       fullWidth

@@ -2,9 +2,16 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import "../styles/globals.css";
 
 import { Metadata } from "next";
+import { DM_Sans } from "next/font/google";
 import React from "react";
 
 import ClientLayout from "./clientLayout";
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-dm-sans",
+});
 
 export const metadata: Metadata = {
   title: "Freerooms",
@@ -20,7 +27,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className={dmSans.variable}>
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>

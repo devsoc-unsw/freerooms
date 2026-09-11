@@ -1,51 +1,50 @@
 import "@testing-library/jest-dom";
 
 import { createTheme, ThemeProvider } from "@mui/material";
-import { render, screen, within } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 
 import DropdownSelections from "../components/DropdownSelections";
+import { renderWithTheme as render } from "./utils/renderWithRedux";
 
 describe("DropdownSelections", () => {
   it("Displays the correct filter type given", () => {
     render(
-      <ThemeProvider theme={createTheme({})}>
-        <DropdownSelections
-          dropdown={{
-            text: "Room Capacity",
-            key: "capacity",
-            items: [
-              {
-                text: "25+",
-                value: "25",
-              },
-              {
-                text: "50+",
-                value: "50",
-              },
-              {
-                text: "100+",
-                value: "100",
-              },
-              {
-                text: "200+",
-                value: "200",
-              },
-            ],
-          }}
-          canSelectMultiple={false}
-          filters={{
-            capacity: "",
-            usage: "",
-            location: "",
-            duration: "",
-            recurring: "",
-            id: "",
-          }}
-          handleSelect={(key, item) => {
-            return;
-          }}
-        />
-      </ThemeProvider>
+      <DropdownSelections
+        dropdown={{
+          text: "Room Capacity",
+          key: "capacity",
+          items: [
+            {
+              text: "25+",
+              value: "25",
+            },
+            {
+              text: "50+",
+              value: "50",
+            },
+            {
+              text: "100+",
+              value: "100",
+            },
+            {
+              text: "200+",
+              value: "200",
+            },
+          ],
+        }}
+        canSelectMultiple={false}
+        filters={{
+          capacity: "",
+          usage: "",
+          location: "",
+          duration: "",
+          recurring: "",
+          id: "",
+        }}
+        handleSelect={(key, item) => {
+          return;
+        }}
+      />
     );
     const filterTitle = screen.getByText("Room Capacity");
     expect(filterTitle).toBeInTheDocument();

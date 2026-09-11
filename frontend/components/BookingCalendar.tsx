@@ -9,7 +9,6 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import Box, { BoxProps } from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
-import { grey } from "@mui/material/colors";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import { styled, useTheme } from "@mui/material/styles";
@@ -43,7 +42,7 @@ const ToolBarButton = styled(Button)(({ theme }) => ({
   "&:hover": {
     backgroundColor: theme.palette.primary.main,
     borderColor: theme.palette.primary.main,
-    color: "#fff",
+    color: theme.colours.text.onAccent,
   },
 }));
 
@@ -55,7 +54,7 @@ const ViewToggleButton = styled(ToggleButton)(({ theme }) => ({
   "&.Mui-selected, &.Mui-selected:hover": {
     backgroundColor: theme.palette.primary.main,
     borderColor: theme.palette.primary.main,
-    color: "#fff",
+    color: theme.colours.text.onAccent,
   },
   "&:hover": {
     borderColor: theme.palette.primary.main,
@@ -116,17 +115,17 @@ const CustomToolBar: React.FC<ToolbarProps<Booking>> = ({
 const StyledCalendarContainer = styled(Box)<BoxProps & { view: View }>(
   ({ view, theme }) => ({
     "& .rbc-time-slot, & .rbc-day-slot, & .rbc-timeslot-group": {
-      borderColor: `${theme.palette.background.paper} !important`,
+      borderColor: `${theme.colours.calendar.grid} !important`,
     },
     "& .rbc-allday-cell": {
       display: "none",
     },
     "& .rbc-time-view .rbc-header": {
-      borderColor: theme.palette.background.paper,
+      borderColor: theme.colours.calendar.grid,
       borderBottom: "none",
     },
     "& .rbc-events-container": {
-      borderColor: theme.palette.background.paper,
+      borderColor: theme.colours.calendar.grid,
       margin: "1px !important",
     },
     "& .rbc-header": {
@@ -137,9 +136,8 @@ const StyledCalendarContainer = styled(Box)<BoxProps & { view: View }>(
       fontWeight: 500,
     },
     "& .rbc-time-view": {
-      borderColor: theme.palette.background.paper,
-      boxShadow:
-        "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
+      borderColor: theme.colours.calendar.grid,
+      boxShadow: theme.shadows[1],
       border: "none",
       borderRadius: "12px",
     },
@@ -148,7 +146,7 @@ const StyledCalendarContainer = styled(Box)<BoxProps & { view: View }>(
       borderRight: "none !important",
     },
     "& .rbc-time-content": {
-      borderColor: theme.palette.background.paper,
+      borderColor: theme.colours.calendar.grid,
       borderBottomLeftRadius: "12px",
       borderBottomRightRadius: "12px",
       ...(view === "day" && {
@@ -325,7 +323,7 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
                 }
               >
                 <NavigateBeforeIcon
-                  style={{ color: "#f57c00", fontSize: 40 }}
+                  style={{ color: theme.colours.accent.primary, fontSize: 40 }}
                 />
               </IconButton>
             )}
@@ -361,7 +359,9 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
                   handleDateChange(new Date(date.getTime() + timeInDay))
                 }
               >
-                <NavigateNextIcon style={{ color: "#f57c00", fontSize: 40 }} />
+                <NavigateNextIcon
+                  style={{ color: theme.colours.accent.primary, fontSize: 40 }}
+                />
               </IconButton>
             )}
           </Stack>
@@ -399,18 +399,16 @@ const BookingCalendar: React.FC<{ events: Array<Booking>; roomID: string }> = ({
           }}
           eventPropGetter={() => ({
             style: {
-              backgroundColor: "#f57c00",
-              borderColor: "#f57c00",
-              opacity: theme.palette.mode === "light" ? 1 : 0.8,
+              backgroundColor: theme.colours.accent.primary,
+              borderColor: theme.colours.accent.primary,
+              opacity: 0.8,
             },
           })}
           slotGroupPropGetter={() => ({ style: { minHeight: "50px" } })}
           dayPropGetter={(date) => ({
             style: {
               backgroundColor: isTodaySydney(date)
-                ? theme.palette.mode === "light"
-                  ? "#fff3e0"
-                  : grey[900]
+                ? theme.colours.calendar.today
                 : theme.palette.background.default,
             },
           })}
