@@ -38,9 +38,7 @@ const RecurringWeeksSlider = ({
         id="panel1a-header"
         sx={{ paddingX: 0 }}
       >
-        <Typography variant="filterTitle">
-          {dropdown.text}
-        </Typography>
+        <Typography variant="filterTitle">{dropdown.text}</Typography>
       </AccordionSummary>
       <AccordionDetails
         sx={(theme) => ({
@@ -48,9 +46,7 @@ const RecurringWeeksSlider = ({
           ml: theme.spacing(0.375),
         })}
       >
-        <Typography variant="filterOption">
-          {label}
-        </Typography>
+        <Typography variant="filterOption">{label}</Typography>
         <Slider
           value={weeks}
           min={min}
