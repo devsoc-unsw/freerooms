@@ -17,8 +17,8 @@ import {
 import { useDispatch, useSelector } from "../redux/hooks";
 import { DropDownItem, Filters } from "../types";
 import { filterBarDropdown } from "../utils/constants";
-import { AppButton, AppSurface } from "./ui";
 import DropdownSelections from "./DropdownSelections";
+import { AppButton, AppSurface } from "./ui";
 
 const StyledMenuAnchor = styled(Box)<BoxProps>(() => ({
   position: "relative",
