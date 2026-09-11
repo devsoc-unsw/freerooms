@@ -4,6 +4,7 @@ import { getColours, type ThemeMode } from "./colours";
 import { components } from "./components";
 import { radius, space } from "./spacing";
 import { typography } from "./typography";
+import { sizes } from "./sizes";
 
 export function createAppTheme(mode: ThemeMode) {
   const colours = getColours(mode);
@@ -55,6 +56,7 @@ export function createAppTheme(mode: ThemeMode) {
     colours,
     space,
     radius,
+    sizes,
     shape: { borderRadius: radius.md },
     typography,
     components,
