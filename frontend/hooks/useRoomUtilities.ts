@@ -10,9 +10,9 @@ import { API_URL } from "../config";
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
-const useRoomUtilities = (roomID: string) => {
+const useRoomUtilities = (roomID?: string) => {
   const { data, error } = useSWRImmutable<RoomUtilitiesResponse>(
-    API_URL + "/rooms/utilities/" + roomID,
+    roomID ? API_URL + "/rooms/utilities/" + roomID : null,
     fetcher
   );
 

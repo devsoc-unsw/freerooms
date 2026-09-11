@@ -14,6 +14,7 @@ import {
   DialogContentText,
   DialogTitle,
   IconButton,
+  Skeleton,
 } from "@mui/material";
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
@@ -29,7 +30,6 @@ import React, { useState } from "react";
 import BookingButton from "../../../components/BookingButton";
 import BookingCalendar from "../../../components/BookingCalendar";
 import FeedbackButton from "../../../components/FeedbackButton";
-import LoadingCircle from "../../../components/LoadingCircle";
 import RoomBackButton from "../../../components/RoomBackButton";
 import RoomPhotoCarousel from "../../../components/RoomPhotoCarousel";
 import ViewOnMapButton from "../../../components/ViewOnMapButton";
@@ -80,39 +80,159 @@ export default function Page() {
   return (
     <Container maxWidth="xl">
       <FeedbackButton />
-      {room && building ? (
-        <Stack
-          sx={{
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            paddingTop: 5,
-            paddingBottom: 5,
-            height: "100%",
-            paddingLeft: { xs: 3, md: 15 },
-            paddingRight: { xs: 3, md: 15 },
+      <Stack
+        sx={{
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          paddingTop: 5,
+          paddingBottom: 5,
+          height: "100%",
+          paddingLeft: { xs: 3, md: 15 },
+          paddingRight: { xs: 3, md: 15 },
+        }}
+      >
+        <RoomPageHeader
+          room={room}
+          buildingName={building?.name ?? ""}
+          favourite={room ? isFavourite(room.id) : false}
+          onToggleFavourite={() => {
+            if (room) toggleFavourite(room.id);
           }}
-        >
-          <RoomPageHeader
-            room={room}
-            buildingName={building.name}
-            favourite={isFavourite(room.id)}
-            onToggleFavourite={() => toggleFavourite(room.id)}
-          />
-          <RoomPhotoCarousel photos={photos} />
-          <BookingCalendar events={adjustedBookings ?? []} roomID={room.id} />
-          <RoomUtilityTags roomId={room?.id} />
-          <RoomRating buildingID={building.id} roomID={room.id} />
-        </Stack>
-      ) : (
-        <LoadingCircle />
-      )}
+        />
+        <RoomPhotoCarousel photos={photos} loading={!room} />
+        <BookingCalendar
+          events={adjustedBookings ?? []}
+          roomID={room?.id ?? ""}
+          loading={!room}
+        />
+        <RoomUtilityTags roomId={room?.id} />
+        <RoomRating
+          buildingID={building?.id ?? ""}
+          roomID={room?.id ?? ""}
+          loading={!room || !building}
+        />
+      </Stack>
     </Container>
   );
 }
 
+const RoomPageHeaderSkeleton = () => (
+  <Stack
+    direction="row"
+    sx={{
+      width: "100%",
+      alignItems: "center",
+      justifyContent: "space-between",
+    }}
+  >
+    <Stack
+      direction="column"
+      spacing={1}
+      sx={{ width: "100%", marginBottom: 1 }}
+    >
+      {/* RoomBackButton */}
+      <Skeleton animation="wave" variant="rounded" width={80} height={36} />
+
+      {/* building / usage breadcrumb */}
+      <Stack direction="row" spacing={2}>
+        <Skeleton
+          animation="wave"
+          variant="text"
+          width={140}
+          sx={{ fontSize: 14 }}
+        />
+        <Skeleton
+          animation="wave"
+          variant="text"
+          width={90}
+          sx={{ fontSize: 14 }}
+        />
+        <Skeleton
+          animation="wave"
+          variant="text"
+          width={90}
+          sx={{ fontSize: 14 }}
+        />
+      </Stack>
+
+      {/* title, ViewOnMap, Booking buttons */}
+      <Stack
+        direction={{ xs: "column", sm: "row" }}
+        sx={{
+          justifyContent: "space-between",
+          alignItems: { xs: "stretch", sm: "start" },
+          width: "100%",
+        }}
+      >
+        <Skeleton animation="wave" variant="rounded" width="40%" height={45} />
+
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{ alignItems: "center", mt: { xs: 1, sm: 0 } }}
+        >
+          {/* favourite icon button */}
+          <Skeleton
+            animation="wave"
+            variant="circular"
+            width={40}
+            height={40}
+            sx={{ flexShrink: 0 }}
+          />
+          <Skeleton
+            animation="wave"
+            variant="rounded"
+            height={45}
+            sx={{ width: { xs: "100%", sm: "160px" } }}
+          />
+          <Skeleton
+            animation="wave"
+            variant="rounded"
+            height={45}
+            sx={{ width: { xs: "100%", sm: "160px" } }}
+          />
+        </Stack>
+      </Stack>
+
+      {/* ID, capacity, abbreviation row */}
+      <Stack direction="row" spacing={2}>
+        <Skeleton
+          animation="wave"
+          variant="text"
+          width={150}
+          sx={{ fontSize: 16 }}
+        />
+        <Skeleton
+          animation="wave"
+          variant="text"
+          width={150}
+          sx={{ fontSize: 16 }}
+        />
+        <Skeleton
+          animation="wave"
+          variant="text"
+          width={150}
+          sx={{ fontSize: 16 }}
+        />
+      </Stack>
+
+      {/* rating row */}
+      <Stack direction="row" spacing={0.5} sx={{ alignItems: "center" }}>
+        <Skeleton
+          animation="wave"
+          variant="text"
+          width={16}
+          sx={{ fontSize: 16 }}
+        />
+        <Skeleton animation="wave" variant="rounded" width={110} height={20} />
+      </Stack>
+    </Stack>
+  </Stack>
+);
+
 const RoomPageHeader: React.FC<{
-  room: Room;
+  room?: Room;
   buildingName: string;
   favourite: boolean;
   onToggleFavourite: () => void;
@@ -123,12 +243,17 @@ const RoomPageHeader: React.FC<{
     setDialog((isOpen) => !isOpen);
   };
 
+  const ratings = useRoomRatings(room?.id);
+
+  if (!room) {
+    return <RoomPageHeaderSkeleton />;
+  }
+
   const schoolDetails = getSchoolDetails(room.school);
   const dialogMessage = schoolDetails
     ? `This room is managed by ${schoolDetails.name}. Please contact the school to request a booking`
     : "This room is managed externally by its associated school. Please contact the school to request a booking";
 
-  const ratings = useRoomRatings(room.id);
   const buildingId = getBuildingIdFromRoomId(room.id);
   const ratingValue = (() => {
     // round rating to nearest .5 if a rating exists

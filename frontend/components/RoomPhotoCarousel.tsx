@@ -2,6 +2,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 import Box from "@mui/material/Box";
+import Skeleton from "@mui/material/Skeleton";
 import Image from "next/image";
 import { Autoplay, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -25,7 +26,22 @@ const RoomImage: React.FC<{ src: string }> = ({ src }) => {
   );
 };
 
-const RoomPhotoCarousel: React.FC<{ photos: string[] }> = ({ photos }) => {
+const RoomPhotoCarousel: React.FC<{ photos: string[]; loading?: boolean }> = ({
+  photos,
+  loading,
+}) => {
+  if (loading) {
+    return (
+      <Skeleton
+        animation="wave"
+        variant="rounded"
+        width="100%"
+        height={500}
+        sx={{ borderRadius: "10px" }}
+      />
+    );
+  }
+
   if (photos.length <= 1) {
     return <RoomImage src={photos[0]} />;
   }
