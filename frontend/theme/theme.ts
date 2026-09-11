@@ -2,9 +2,9 @@ import { createTheme, type PaletteOptions } from "@mui/material/styles";
 
 import { getColours, type ThemeMode } from "./colours";
 import { components } from "./components";
+import { sizes } from "./sizes";
 import { radius, space } from "./spacing";
 import { typography } from "./typography";
-import { sizes } from "./sizes";
 
 export function createAppTheme(mode: ThemeMode) {
   const colours = getColours(mode);

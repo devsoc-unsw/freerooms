@@ -1,5 +1,6 @@
 import type { CSSObject, Theme } from "@mui/material/styles";
 
+// Shared outlined-field appearance. Component-specific dimensions stay local.
 export function getOutlinedFieldStyles(theme: Theme): CSSObject {
   const colours = theme.colours;
 
@@ -11,10 +12,9 @@ export function getOutlinedFieldStyles(theme: Theme): CSSObject {
       "& .MuiOutlinedInput-notchedOutline": {
         borderColor: colours.border.default,
       },
-      "&:hover:not(.Mui-disabled):not(.Mui-error) .MuiOutlinedInput-notchedOutline":
-        {
-          borderColor: colours.accent.primary,
-        },
+      "&:hover:not(.Mui-disabled):not(.Mui-error) .MuiOutlinedInput-notchedOutline": {
+        borderColor: colours.accent.primary,
+      },
       "&.Mui-focused:not(.Mui-error) .MuiOutlinedInput-notchedOutline": {
         borderColor: colours.accent.primary,
       },
@@ -22,10 +22,9 @@ export function getOutlinedFieldStyles(theme: Theme): CSSObject {
         backgroundColor: colours.disabled.background,
       },
     },
-    "& .MuiInputLabel-root:not(.Mui-error):not(.Mui-focused):not(.Mui-disabled)":
-      {
-        color: colours.text.secondary,
-      },
+    "& .MuiInputLabel-root:not(.Mui-error):not(.Mui-focused):not(.Mui-disabled)": {
+      color: colours.text.secondary,
+    },
     "& .MuiInputBase-input::placeholder": {
       color: colours.text.secondary,
       opacity: 1,
@@ -36,12 +35,13 @@ export function getOutlinedFieldStyles(theme: Theme): CSSObject {
   };
 }
 
+// Keep the current picker dimensions and text treatment until their redesign.
 export function getPickerFieldStyles(theme: Theme): CSSObject {
   return {
     ...getOutlinedFieldStyles(theme),
-    width: 133,
+    width: theme.sizes.picker.width,
     "& .MuiInputBase-root": {
-      height: 56,
+      height: theme.sizes.control.xl,
     },
     "& .MuiInputBase-input": {
       fontSize: theme.typography.button.fontSize,

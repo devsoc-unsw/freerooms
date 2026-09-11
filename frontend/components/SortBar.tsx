@@ -17,9 +17,9 @@ const StyledMenuAnchor = styled(Box)<BoxProps>(() => ({
   zIndex: 10,
 }));
 
-const StyledDropDownMenu = styled(AppSurface)(() => ({
+const StyledDropDownMenu = styled(AppSurface)(({ theme }) => ({
   width: 250,
-  top: 56,
+  top: theme.sizes.control.xl,
   left: 0,
   borderRadius: 10,
   display: "flex",
@@ -61,9 +61,9 @@ const SortBar: React.FC<{
           aria-controls={open ? "browse-sort-menu" : undefined}
           onClick={() => setOpen(!open)}
           sx={{
-            height: 56,
+            height: (theme) => theme.sizes.control.xl,
             width: 115,
-            padding: 2,
+            padding: (theme) => `${theme.space.md}px`,
             justifyContent: "flex-start",
             borderColor: "primary.main",
             color: "primary.main",
@@ -71,9 +71,9 @@ const SortBar: React.FC<{
         >
           <Stack
             direction="row"
-            spacing="16px"
             sx={{
               alignItems: "center",
+              gap: (theme) => `${theme.space.md}px`,
             }}
           >
             <FilterListIcon
@@ -105,7 +105,9 @@ const SortBar: React.FC<{
             {sortBarDropdown.map((dropdown) => (
               <StyledBox key={dropdown.value}>
                 <FormControlLabel
-                  control={<Radio checked={sort === dropdown.value} sx={{}} />}
+                  control={
+                    <Radio checked={sort === dropdown.value} sx={{}} />
+                  }
                   label={dropdown.text}
                   onClick={() => setSort(dropdown.value)}
                   sx={{
