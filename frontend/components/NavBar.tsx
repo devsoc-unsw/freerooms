@@ -36,7 +36,7 @@ const NavBar: React.FC = () => {
       }}
     >
       <Branding />
-      <Stack direction="row" spacing={1}>
+      <Stack direction="row" sx={{ gap: (theme) => `${theme.space.sm}px` }}>
         <IconButton
           aria-label="Open search"
           onClick={() => dispatch(openSearch())}
@@ -46,6 +46,7 @@ const NavBar: React.FC = () => {
         <IconButton
           aria-label="Browse buildings"
           active={path === "/browse"}
+          aria-current={path === "/browse" ? "page" : undefined}
           href="/browse"
         >
           <GridIcon />
@@ -87,7 +88,8 @@ const AppBar = styled(MuiAppBar)<MuiAppBarProps>(({ theme }) => ({
   flexDirection: "row",
   alignItems: "center",
   justifyContent: "center",
-  padding: theme.spacing(0.5, 2),
+  paddingBlock: theme.space.xs,
+  paddingInline: theme.space.md,
   transition: theme.transitions.create(["margin", "width"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,

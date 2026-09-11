@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 
 import type { AppColours } from "./colours";
+import type { sizes } from "./sizes";
 import type { radius, space } from "./spacing";
 
 declare module "@mui/material/styles" {
@@ -8,12 +9,14 @@ declare module "@mui/material/styles" {
     colours: AppColours;
     space: typeof space;
     radius: typeof radius;
+    sizes: typeof sizes;
   }
 
   interface ThemeOptions {
     colours?: AppColours;
     space?: typeof space;
     radius?: typeof radius;
+    sizes?: typeof sizes;
   }
 }
 

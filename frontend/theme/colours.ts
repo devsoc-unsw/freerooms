@@ -26,7 +26,7 @@ const values = {
     yellow: "#FFA600",
   },
   dark: {
-    accentPrimary: "rgba(212, 97, 60, 0.8)",
+    accentPrimary: "#D4613C",
     accentSecondary: "#6E3A24",
     accentTertiary: "#52372C",
     accentQuaternary: "#241C19",

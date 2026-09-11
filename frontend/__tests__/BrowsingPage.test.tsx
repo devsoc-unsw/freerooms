@@ -4,6 +4,7 @@ import { screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 
 import Page from "../app/browse/page";
+import useUserLocation from "../hooks/useUserLocation";
 import store from "../redux/store";
 import { renderWithTheme as render } from "./utils/renderWithRedux";
 
@@ -32,6 +33,13 @@ jest.mock("nuqs", () => ({
   },
 }));
 
+// The browsing page tests do not use geolocation itself.
+jest.mock("../hooks/useUserLocation");
+
+const mockUseUserLocation = useUserLocation as jest.MockedFunction<
+  typeof useUserLocation
+>;
+
 jest.mock("../views/BuildingDrawer", () => ({
   __esModule: true,
   default: ({ date }: { date?: string }) => (
@@ -41,12 +49,27 @@ jest.mock("../views/BuildingDrawer", () => ({
 
 describe("Browsing Page", () => {
   beforeEach(() => {
+    jest.clearAllMocks();
+
     mockUseQueryState.mockImplementation(
       (_key: string, options: { defaultValue: string }) => [
         options.defaultValue,
         jest.fn(),
       ]
     );
+
+    mockUseUserLocation.mockReturnValue({
+      location: null,
+      userLat: undefined,
+      userLng: undefined,
+      isLocating: false,
+      locationError: null,
+      refreshLocation: jest.fn().mockResolvedValue({
+        lat: -33.91767,
+        lng: 151.23129,
+      }),
+      clearLocationError: jest.fn(),
+    });
   });
 
   it("renders DesktopTimePicker", () => {

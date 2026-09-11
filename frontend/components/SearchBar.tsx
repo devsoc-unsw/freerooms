@@ -11,24 +11,24 @@ const SearchBar = ({ setQuery }: { setQuery: (query: string) => void }) => {
 
   return (
     <Box
-      sx={{
+      sx={(theme) => ({
         width: { xs: "100%", sm: "100%", md: "100%" },
-        marginTop: 1,
-        marginBottom: 1,
-        marginLeft: { sm: 2 },
-        marginRight: { sm: 2 },
+        marginTop: `${theme.space.sm}px`,
+        marginBottom: `${theme.space.sm}px`,
+        marginLeft: { sm: `${theme.space.md}px` },
+        marginRight: { sm: `${theme.space.md}px` },
         flexShrink: { sm: 3 },
         order: { xs: -1, sm: -1, md: "unset" },
-      }}
+      })}
     >
       <AppTextField
         id="input-with-sx"
         placeholder="Search for a building..."
         sx={{
           "& .MuiOutlinedInput-root": {
-            height: 56,
-            borderRadius: "8px",
-            padding: "16px",
+            height: theme.sizes.control.xl,
+            borderRadius: theme.radius.lg,
+            padding: `${theme.space.md}px`,
 
             "&:hover .MuiOutlinedInput-notchedOutline": {
               borderColor: theme.palette.primary.main,
@@ -63,7 +63,10 @@ const SearchBar = ({ setQuery }: { setQuery: (query: string) => void }) => {
         slotProps={{
           input: {
             startAdornment: (
-              <InputAdornment position="start" sx={{ marginRight: "16px" }}>
+              <InputAdornment
+                position="start"
+                sx={{ marginRight: `${theme.space.md}px` }}
+              >
                 <SearchIcon
                   sx={{ color: (theme) => theme.palette.primary.main }}
                 />
