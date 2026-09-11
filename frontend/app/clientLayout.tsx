@@ -1,6 +1,6 @@
 "use client";
 
-import NavBar, { navHeight } from "@frontend/components/NavBar";
+import NavBar, { navHeight } from "@frontend/components/navbar/NavBar";
 import { createAppTheme, type ThemeMode } from "@frontend/theme";
 import CssBaseline from "@mui/material/CssBaseline";
 import { styled, ThemeProvider } from "@mui/material/styles";

@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { sizes, space, typography } from "@frontend/theme";
 
-import Logo from "../public/assets/favicon/free_rooms_logo.png";
+import Logo from "@frontend/public/assets/favicon/free_rooms_logo.png";
 
 const LogoText = styled(Typography)<TypographyProps>(({ theme }) => ({
   color: theme.colours.accent.primary,

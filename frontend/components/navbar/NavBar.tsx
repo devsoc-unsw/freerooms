@@ -13,10 +13,10 @@ import { DarkModeContext } from "app/clientLayout";
 import { usePathname } from "next/navigation";
 import React, { useContext } from "react";
 
-import { useDispatch } from "../redux/hooks";
-import { openSearch } from "../redux/searchOpenSlice";
+import { useDispatch } from "../../redux/hooks";
+import { openSearch } from "../../redux/searchOpenSlice";
 import Branding from "./Branding";
-import IconButton from "./IconButton";
+import IconButton from "../IconButton";
 
 // This isn't actually enforced so update this if u change the navbar
 export const navHeight = 65;
@@ -34,6 +34,7 @@ const NavBar: React.FC = () => {
         justifyContent: "space-between",
       }}
     >
+      
       <Branding />
       <Stack direction="row" sx={{ gap: (theme) => `${theme.space.sm}px` }}>
         <IconButton

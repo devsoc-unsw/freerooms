@@ -7,7 +7,7 @@ import { Provider } from "react-redux";
 import AllRoomsFilter from "../components/AllRoomsFilter";
 import Room from "../components/AllRoomsRoom";
 import AllRoomsSearchBar from "../components/AllRoomsSearchBar";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/navbar/NavBar";
 import store from "../redux/store";
 import toSydneyTime from "../utils/toSydneyTime";
 import renderWithRedux from "./utils/renderWithRedux";

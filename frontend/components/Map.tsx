@@ -28,7 +28,7 @@ import { useDispatch } from "../redux/hooks";
 import calculateDistance from "../utils/calculateDistance";
 import DirectionsSummary from "./DirectionSummary";
 import MapMarker from "./MapMarker";
-import { navHeight } from "./NavBar";
+import { navHeight } from "./navbar/NavBar";
 
 const center = {
   lat: -33.91767,
