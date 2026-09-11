@@ -10,6 +10,9 @@ export const sizes = {
     md: 24,
     lg: 32,
   },
+  navBar: {
+    height: 69
+  },
   searchBar: {
     width: 1440,
     halfWidth: 720,

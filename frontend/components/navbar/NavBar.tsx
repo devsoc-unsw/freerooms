@@ -17,9 +17,7 @@ import { useDispatch } from "../../redux/hooks";
 import { openSearch } from "../../redux/searchOpenSlice";
 import Branding from "./Branding";
 import IconButton from "../IconButton";
-
-// This isn't actually enforced so update this if u change the navbar
-export const navHeight = 65;
+import { sizes } from "@frontend/theme";
 
 const NavBar: React.FC = () => {
   const dispatch = useDispatch();
@@ -32,6 +30,7 @@ const NavBar: React.FC = () => {
         alignItems: "start",
         display: "flex",
         justifyContent: "space-between",
+        maxHeight: sizes.navBar.height // enforce max navbar height
       }}
     >
       

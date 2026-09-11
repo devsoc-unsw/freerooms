@@ -28,7 +28,8 @@ import { useDispatch } from "../redux/hooks";
 import calculateDistance from "../utils/calculateDistance";
 import DirectionsSummary from "./DirectionSummary";
 import MapMarker from "./MapMarker";
-import { navHeight } from "./navbar/NavBar";
+
+import { sizes } from "@frontend/theme";
 
 const center = {
   lat: -33.91767,
@@ -202,7 +203,7 @@ export const Map = () => {
       <div
         style={{
           position: "relative",
-          height: `calc(100svh - ${navHeight}px)`,
+          height: `calc(100svh - ${sizes.navBar.height}px)`,
         }}
       >
         <MapboxMap

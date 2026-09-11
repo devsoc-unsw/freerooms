@@ -1,7 +1,7 @@
 "use client";
 
-import NavBar, { navHeight } from "@frontend/components/navbar/NavBar";
-import { createAppTheme, type ThemeMode } from "@frontend/theme";
+import NavBar from "@frontend/components/navbar/NavBar";
+import { createAppTheme, sizes, type ThemeMode } from "@frontend/theme";
 import CssBaseline from "@mui/material/CssBaseline";
 import { styled, ThemeProvider } from "@mui/material/styles";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
@@ -124,7 +124,7 @@ const Main = styled("main")(({ theme }) => ({
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  paddingTop: navHeight,
+  paddingTop: sizes.navBar.height,
   width: "100%",
   marginRight: 0,
   height: "100%",
