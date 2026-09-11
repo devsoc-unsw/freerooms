@@ -8,6 +8,7 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 import React, {
   createContext,
   useCallback,
+  useEffect,
   useMemo,
   useSyncExternalStore,
 } from "react";
@@ -46,12 +47,27 @@ const getServerModeSnapshot = (): ThemeMode => "light";
  */
 const ClientLayout: React.FC<{
   children: React.ReactNode;
-}> = ({ children }) => {
+  initialTheme: ThemeMode;
+}> = ({ children, initialTheme }) => {
+  const getServerModeSnapshot = useCallback(
+    (): ThemeMode => initialTheme,
+    [initialTheme]
+  );
+
   const mode = useSyncExternalStore(
     subscribeToDarkMode,
     getClientModeSnapshot,
     getServerModeSnapshot
   );
+
+  useEffect(() => {
+    const isValidMode = mode === "light" || mode === "dark";
+    if (isValidMode) {
+      document.cookie = `darkMode=${mode};path=/;max-age=315360000;samesite=lax;secure`;
+    } else {
+      console.warn("Invalid theme mode provided.");
+    }
+  }, [mode]);
 
   const toggleDarkMode = useCallback(() => {
     const nextMode = mode === "light" ? "dark" : "light";

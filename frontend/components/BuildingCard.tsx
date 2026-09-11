@@ -2,7 +2,7 @@ import StarIcon from "@mui/icons-material/Star";
 import { Typography, TypographyProps } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
-import CircularProgress from "@mui/material/CircularProgress";
+import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import useBuildingRatings from "hooks/useBuildingRatings";
@@ -43,7 +43,6 @@ const ImageBox = styled(Box)<BoxProps>(({ theme }) => ({
   borderTopLeftRadius: 12,
   borderTopRightRadius: 12,
   cursor: "pointer",
-  //width: "100%",
 }));
 
 const StyledImage = styled(Image)<ImageProps>(({ theme }) => ({
@@ -117,7 +116,7 @@ const getLocation = (buildingId: string) => {
 };
 
 const BuildingCard: React.FC<{
-  buildingId: string;
+  buildingId?: string;
 }> = ({ buildingId }) => {
   const dispatch = useDispatch();
   const isCompact = useMediaQuery("(max-width:900px)");
@@ -126,55 +125,115 @@ const BuildingCard: React.FC<{
   const { status } = useBuildingStatus(buildingId);
   const { ratings } = useBuildingRatings(buildingId);
 
-  if (!building) return <></>;
-
+  // No id (placeholder card) or the building list hasn't resolved yet
+  const loading = !buildingId || !building;
   const freerooms = getNumFreerooms(status);
 
   return (
-    <MainBox onClick={() => dispatch(setCurrentBuilding(building))}>
+    <MainBox
+      onClick={
+        building ? () => dispatch(setCurrentBuilding(building)) : undefined
+      }
+    >
       <ImageBox>
-        <StyledImage
-          alt={`Image of ${buildingId}`}
-          src={`/assets/building_photos/${buildingId}.webp`}
-          fill={true}
-          style={{ objectFit: "cover" }}
-          priority={true}
-        />
-        <StatusBox>
-          {freerooms > INITIALISING ? (
-            <>
-              {freerooms !== FAILED ? (
-                <StatusDot
-                  colour={
-                    freerooms >= 5
-                      ? "green"
-                      : freerooms !== 0
-                        ? "orange"
-                        : "red"
-                  }
-                />
-              ) : null}
-              <Typography
-                sx={{
-                  fontWeight: 600,
-                  fontSize: 12,
-                  paddingBottom: "2px",
-                }}
-              >
-                {freerooms !== FAILED
-                  ? `${freerooms} room${freerooms === 1 ? "" : "s"} available`
-                  : "Data Unavailable"}
-              </Typography>
-            </>
-          ) : (
-            <CircularProgress size={20} thickness={5} disableShrink />
-          )}
-        </StatusBox>
+        {loading ? (
+          <Skeleton animation="wave" variant="rectangular" height="100%" />
+        ) : (
+          <>
+            <StyledImage
+              alt={`Image of ${buildingId}`}
+              src={`/assets/building_photos/${buildingId}.webp`}
+              fill={true}
+              style={{ objectFit: "cover" }}
+              priority={true}
+            />
+            <StatusBox>
+              {freerooms > INITIALISING && (
+                <>
+                  {freerooms !== FAILED ? (
+                    <StatusDot
+                      colour={
+                        freerooms >= 5
+                          ? "green"
+                          : freerooms !== 0
+                            ? "orange"
+                            : "red"
+                      }
+                    />
+                  ) : null}
+                  <Typography
+                    sx={{
+                      fontWeight: 600,
+                      fontSize: 12,
+                      paddingBottom: "2px",
+                    }}
+                  >
+                    {freerooms !== FAILED
+                      ? `${freerooms} room${freerooms === 1 ? "" : "s"} available`
+                      : "Data Unavailable"}
+                  </Typography>
+                </>
+              )}
+            </StatusBox>
+          </>
+        )}
       </ImageBox>
 
       <InfoBox>
-        {isCompact ? (
-          <NameRatingBox>
+        {loading ? (
+          <>
+            <Typography
+              sx={(theme) => ({
+                fontWeight: 700,
+                fontSize: { xs: 15, md: 20 },
+                color: theme.colours.text.primary,
+                whiteSpace: "nowrap",
+                width: "100%",
+              })}
+            >
+              <Skeleton animation="wave" width="60%" />
+            </Typography>
+
+            <Stack
+              direction="row"
+              aria-label="star-info"
+              sx={{ alignItems: "center", gap: "1px" }}
+            >
+              <Skeleton
+                animation="wave"
+                variant="rounded"
+                width={90}
+                height={20}
+              />
+            </Stack>
+
+            <InfoFooterBox sx={{ display: { xs: "none", md: "flex" } }}>
+              <Stack direction="row" sx={{ gap: "8px" }}>
+                <Skeleton
+                  animation="wave"
+                  variant="rounded"
+                  width={58}
+                  height={32}
+                  sx={{ borderRadius: "100px" }}
+                />
+                <Skeleton
+                  animation="wave"
+                  variant="rounded"
+                  width={58}
+                  height={32}
+                  sx={{ borderRadius: "100px" }}
+                />
+              </Stack>
+              <Skeleton
+                animation="wave"
+                variant="rounded"
+                width={24}
+                height={24}
+              />
+            </InfoFooterBox>
+          </>
+        ) : isCompact ? (
+          <NameRatingBox sx={{ width: "100%" }}>
             <Typography
               variant="cardTitle"
               sx={{
@@ -236,7 +295,7 @@ const BuildingCard: React.FC<{
                 </DetailPill>
 
                 <DetailPill>
-                  <DetailPillText>{getLocation(buildingId)}</DetailPillText>
+                  <DetailPillText>{getLocation(buildingId!)}</DetailPillText>
                 </DetailPill>
               </Stack>
 

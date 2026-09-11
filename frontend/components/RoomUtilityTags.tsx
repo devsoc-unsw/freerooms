@@ -11,7 +11,7 @@ import {
   Settings,
   ViewQuilt,
 } from "@mui/icons-material";
-import { Box, Stack, Typography, useTheme } from "@mui/material";
+import { Box, Skeleton, Stack, Typography, useTheme } from "@mui/material";
 import useRoomUtilities from "hooks/useRoomUtilities";
 import type React from "react";
 
@@ -19,7 +19,23 @@ import UtilityAccordion from "./UtilityAccordian";
 
 const ICON_SIZE = 18;
 
-export default function RoomUtilities({ roomId }: { roomId: string }) {
+const RoomUtilityTagsSkeleton = () => (
+  <Stack sx={{ width: "100%", pt: 6, pb: 3, gap: 1 }}>
+    {/* Heading */}
+    <Skeleton
+      animation="wave"
+      variant="text"
+      width={180}
+      sx={{ fontSize: 24, mb: 2 }}
+    />
+    {/* UtilityAccordion */}
+    {Array.from({ length: 4 }, (_, i) => (
+      <Skeleton key={i} animation="wave" variant="rounded" height={48} />
+    ))}
+  </Stack>
+);
+
+export default function RoomUtilities({ roomId }: { roomId?: string }) {
   const theme = useTheme();
   const primary = theme.palette.primary.main;
 
@@ -62,7 +78,9 @@ export default function RoomUtilities({ roomId }: { roomId: string }) {
   };
 
   const { utilities: roomData } = useRoomUtilities(roomId);
-  if (!roomData) return null;
+  if (!roomData) {
+    return <RoomUtilityTagsSkeleton />;
+  }
 
   const categories = Object.entries(roomData)
     .filter(([key, value]) => {

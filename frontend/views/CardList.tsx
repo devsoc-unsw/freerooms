@@ -1,12 +1,11 @@
 import { Building } from "@common/types";
-import { useMediaQuery } from "@mui/material";
-import { styled, useTheme } from "@mui/material/styles";
+import { Box } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 
 import BuildingCard from "../components/BuildingCard";
 import BuildingCardMobile from "../components/BuildingCardMobile";
-import LoadingCircle from "../components/LoadingCircle";
 import useBuildings from "../hooks/useBuildings";
 import useStatus from "../hooks/useStatus";
 import useUserLocation from "../hooks/useUserLocation";
@@ -29,7 +28,6 @@ const getBuildingPosition = (building: Building): number | null => {
 
   return Number(match[1]);
 };
-
 const compareBuildingPosition = (
   a: Building,
   b: Building,
@@ -65,21 +63,27 @@ const compareBuildingPosition = (
   return a.name.localeCompare(b.name);
 };
 
-const FlippableCard = React.forwardRef<HTMLDivElement, { buildingId: string }>(
+const FlippableCard = React.forwardRef<HTMLDivElement, { buildingId?: string }>(
   ({ buildingId }, ref) => {
-    const displayMobile = useMediaQuery(useTheme().breakpoints.down("sm"));
     return (
       <div ref={ref}>
-        {displayMobile ? (
+        <Box sx={{ display: { xs: "block", sm: "none" } }}>
           <BuildingCardMobile buildingId={buildingId} />
-        ) : (
+        </Box>
+        <Box sx={{ display: { xs: "none", sm: "block" } }}>
           <BuildingCard buildingId={buildingId} />
-        )}
+        </Box>
       </div>
     );
   }
 );
 FlippableCard.displayName = "FlippableCard";
+
+const NUM_PLACEHOLDER_CARDS = 12;
+const PLACEHOLDER_KEYS = Array.from(
+  { length: NUM_PLACEHOLDER_CARDS },
+  (_, i) => `placeholder-${i}`
+);
 
 const CardList: React.FC<{
   sort: string;
@@ -126,12 +130,16 @@ const CardList: React.FC<{
       });
   }
 
-  return displayedBuildings ? (
+  const items: { key: string; buildingId?: string }[] = displayedBuildings
+    ? displayedBuildings.map((b) => ({ key: b.id, buildingId: b.id }))
+    : PLACEHOLDER_KEYS.map((key) => ({ key, buildingId: undefined }));
+
+  return (
     <CardGrid>
       <AnimatePresence initial={false} mode="popLayout">
-        {displayedBuildings.map((building) => (
+        {items.map(({ key, buildingId }) => (
           <motion.div
-            key={building.id}
+            key={key}
             layout="position"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -148,13 +156,11 @@ const CardList: React.FC<{
               },
             }}
           >
-            <FlippableCard buildingId={building.id} />
+            <FlippableCard buildingId={buildingId} />
           </motion.div>
         ))}
       </AnimatePresence>
     </CardGrid>
-  ) : (
-    <LoadingCircle />
   );
 };
 

@@ -3,8 +3,13 @@
  */
 import useBuildings from "./useBuildings";
 
-const useBuilding = (buildingId: string) => {
+const useBuilding = (buildingId?: string) => {
   const { buildings, error } = useBuildings();
+
+  // No id yet (e.g. a loading placeholder card)
+  if (!buildingId) {
+    return { building: undefined, error };
+  }
 
   // Error occurred while fetching all buildings
   if (error) {
