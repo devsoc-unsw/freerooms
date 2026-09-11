@@ -1,10 +1,10 @@
 import "@testing-library/jest-dom";
 
 import { fireEvent, screen } from "@testing-library/react";
-import DirectionsSummary from "components/DirectionSummary";
-import type { RouteSummary } from "hooks/useMapboxRoute";
+import DirectionsSummary from "@frontend/components/map/DirectionSummary";
+import type { RouteSummary } from "@frontend/hooks/useMapboxRoute";
 
-import { renderWithTheme as render } from "./utils/renderWithRedux";
+import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithRedux";
 
 const createSummary = (
   overrides: Partial<RouteSummary> = {}

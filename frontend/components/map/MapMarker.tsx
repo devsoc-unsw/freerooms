@@ -9,14 +9,14 @@ import Image, { ImageProps } from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 
-import useBuilding from "../hooks/useBuilding";
-import useBuildingStatus from "../hooks/useBuildingStatus";
+import useBuilding from "@frontend/hooks/useBuilding";
+import useBuildingStatus from "@frontend/hooks/useBuildingStatus";
 import {
   selectCurrentBuilding,
   setCurrentBuilding,
-} from "../redux/currentBuildingSlice";
-import { useDispatch, useSelector } from "../redux/hooks";
-import { getNumFreerooms, getTotalRooms } from "../utils/utils";
+} from "@frontend/redux/currentBuildingSlice";
+import { useDispatch, useSelector } from "@frontend/redux/hooks";
+import { getNumFreerooms, getTotalRooms } from "@frontend/utils/utils";
 
 const MarkerHoverMainBox = styled(Box)<BoxProps>(({ theme }) => ({
   position: "absolute",

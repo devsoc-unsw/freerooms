@@ -9,9 +9,9 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { RoomAvailabilityBoxProps } from "views/RoomAvailabilityBox";
+import { RoomAvailabilityBoxProps } from "@frontend/views/RoomAvailabilityBox";
 
-import RoomAvailability from "./RoomAvailability";
+import RoomAvailability from "@frontend/components/rooms/RoomAvailability";
 
 type LoadingProps = { loading: true };
 

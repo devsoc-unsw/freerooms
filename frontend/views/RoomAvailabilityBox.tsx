@@ -7,13 +7,13 @@ import Box, { BoxProps } from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import { alpha, styled } from "@mui/material/styles";
-import RoomAvailability from "components/RoomAvailability";
-import useRoomRatings from "hooks/useRoomRatings";
+import RoomAvailability from "@frontend/components/rooms/RoomAvailability";
+import useRoomRatings from "@frontend/hooks/useRoomRatings";
 import Link from "next/link";
 import React from "react";
 
-import useRoom from "../hooks/useRoom";
-import roomPhotos from "../public/room-photos.json";
+import useRoom from "@frontend/hooks/useRoom";
+import roomPhotos from "@frontend/public/room-photos.json";
 
 interface IndiviRoomBoxProps extends BoxProps {
   bgImage: string;

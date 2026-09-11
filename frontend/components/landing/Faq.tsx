@@ -3,7 +3,7 @@ import { styled } from "@mui/system";
 import Image from "next/image";
 import React from "react";
 
-import AccordionItem from "./AccordionItem";
+import AccordionItem from "@frontend/components/ui/AccordionItem";
 
 const Faq = () => {
   return (

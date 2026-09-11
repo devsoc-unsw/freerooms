@@ -1,5 +1,5 @@
 import { Rating, Stack, Typography } from "@mui/material";
-import useRoomRatings from "hooks/useRoomRatings";
+import useRoomRatings from "@frontend/hooks/useRoomRatings";
 import React from "react";
 
 const DecimalStarRating: React.FC<{

@@ -1,6 +1,6 @@
-export type { AppStatus, AppStatusBadgeProps } from "./AppStatusBadge";
-export { AppStatusBadge } from "./AppStatusBadge";
-export { AppSurface } from "./AppSurface";
-export { AppTextField } from "./AppTextField";
-export type { AppButtonProps, AppIconButtonProps } from "./Controls";
-export { AppButton, AppIconButton } from "./Controls";
+export type { AppStatus, AppStatusBadgeProps } from "@frontend/components/ui/AppStatusBadge";
+export { AppStatusBadge } from "@frontend/components/ui/AppStatusBadge";
+export { AppSurface } from "@frontend/components/ui/AppSurface";
+export { AppTextField } from "@frontend/components/ui/AppTextField";
+export type { AppButtonProps, AppIconButtonProps } from "@frontend/components/ui/Controls";
+export { AppButton, AppIconButton } from "@frontend/components/ui/Controls";

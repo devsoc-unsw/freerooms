@@ -6,7 +6,7 @@ import { RoomUtilitiesResponse } from "@common/types";
 import axios from "axios";
 import useSWRImmutable from "swr/immutable";
 
-import { API_URL } from "../config";
+import { API_URL } from "@frontend/config";
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 

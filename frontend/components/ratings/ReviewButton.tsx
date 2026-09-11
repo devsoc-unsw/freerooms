@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import ReviewModal from "components/Rating/ReviewModal";
+import ReviewModal from "@frontend/components/ratings/ReviewModal";
 import { useState } from "react";
 
 interface ReviewButtonProps {

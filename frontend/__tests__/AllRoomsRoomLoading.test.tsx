@@ -2,11 +2,11 @@ import "@testing-library/jest-dom";
 
 import React from "react";
 
-import Room from "../components/AllRoomsRoom";
-import RoomList from "../components/AllRoomsRoomList";
-import { renderWithTheme } from "./utils/renderWithRedux";
+import Room from "@frontend/components/rooms/AllRoomsRoom";
+import RoomList from "@frontend/components/rooms/AllRoomsRoomList";
+import { renderWithTheme } from "@frontend/__tests__/utils/renderWithRedux";
 
-jest.mock("../components/AllRoomsSearchBar", () => ({
+jest.mock("@frontend/components/rooms/AllRoomsSearchBar", () => ({
   __esModule: true,
   default: () => <div data-testid="search-bar" />,
 }));

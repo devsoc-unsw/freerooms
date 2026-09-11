@@ -3,7 +3,7 @@ import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import React from "react";
 
-import Button from "./Button";
+import Button from "@frontend/components/ui/Button";
 
 const BookingButton: React.FC<{
   school: string;

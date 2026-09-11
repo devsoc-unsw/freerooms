@@ -4,7 +4,7 @@ import {
   useSelector as useSelectorUntyped,
 } from "react-redux";
 
-import type { AppDispatch, RootState } from "./store";
+import type { AppDispatch, RootState } from "@frontend/redux/store";
 
 // Typed versions of `useDispatch` and `useSelector` that should be used
 export const useDispatch: () => AppDispatch = useDispatchUntyped;

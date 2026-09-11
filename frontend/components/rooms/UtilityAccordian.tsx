@@ -9,7 +9,7 @@ import {
   useTheme,
 } from "@mui/material";
 
-import UtilityChips from "./UtilityChips";
+import UtilityChips from "@frontend/components/rooms/UtilityChips";
 
 interface Props {
   title: string;

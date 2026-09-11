@@ -5,11 +5,11 @@ import { fireEvent, screen } from "@testing-library/react";
 import { useParams, useRouter } from "next/navigation";
 import { Provider } from "react-redux";
 
-import Page from "../app/room/[room]/page";
-import { renderWithTheme as render } from "./utils/renderWithRedux";
+import Page from "@frontend/app/room/[room]/page";
+import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithRedux";
 
 // Mock DarkModeContext to avoid test failing due to importing NuqsAdapter
-jest.mock("../app/clientLayout", () => ({
+jest.mock("@frontend/app/clientLayout", () => ({
   DarkModeContext: require("react").createContext({
     isDarkMode: false,
     toggleDarkMode: () => {},
@@ -38,7 +38,7 @@ jest.mock("@mui/material", () => ({
   useMediaQuery: jest.fn().mockReturnValue(false),
 }));
 
-jest.mock("../hooks/useBuilding", () => ({
+jest.mock("@frontend/hooks/useBuilding", () => ({
   __esModule: true,
   default: (buildingId: string) => {
     return {
@@ -48,7 +48,7 @@ jest.mock("../hooks/useBuilding", () => ({
   },
 }));
 
-jest.mock("../hooks/useRoom", () => ({
+jest.mock("@frontend/hooks/useRoom", () => ({
   __esModule: true,
   default: (roomId: string) => {
     return {

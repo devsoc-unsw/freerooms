@@ -1,7 +1,7 @@
 import { styled, Typography, TypographyProps, useTheme } from "@mui/material";
 import { Stack } from "@mui/system";
 import React from "react";
-import { RoomAvailabilityBoxProps } from "views/RoomAvailabilityBox";
+import { RoomAvailabilityBoxProps } from "@frontend/views/RoomAvailabilityBox";
 
 const RoomBoxHeading = styled(Typography)<TypographyProps>(() => ({
   fontSize: 16,

@@ -8,8 +8,8 @@ import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
 
-import { sortBarDropdown } from "../utils/constants";
-import { AppButton, AppSurface } from "./ui";
+import { sortBarDropdown } from "@frontend/utils/constants";
+import { AppButton, AppSurface } from "@frontend/components/ui";
 
 const StyledMenuAnchor = styled(Box)<BoxProps>(() => ({
   position: "relative",

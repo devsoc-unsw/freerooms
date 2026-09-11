@@ -6,9 +6,9 @@ import { useRouter } from "next/navigation";
 import {
   selectCurrentBuilding,
   setCurrentBuilding,
-} from "../redux/currentBuildingSlice";
-import { useDispatch } from "../redux/hooks";
-import { useSelector } from "../redux/hooks";
+} from "@frontend/redux/currentBuildingSlice";
+import { useDispatch } from "@frontend/redux/hooks";
+import { useSelector } from "@frontend/redux/hooks";
 
 const RoomBackButton = () => {
   const dispatch = useDispatch();

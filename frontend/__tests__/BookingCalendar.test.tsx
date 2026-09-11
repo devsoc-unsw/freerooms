@@ -5,10 +5,10 @@ import { screen } from "@testing-library/react";
 import mediaQuery from "css-mediaquery";
 import { Provider } from "react-redux";
 
-import BookingCalendar from "../components/BookingCalendar";
-import store from "../redux/store";
-import toSydneyTime from "../utils/toSydneyTime";
-import { renderWithTheme as render } from "./utils/renderWithRedux";
+import BookingCalendar from "@frontend/components/booking/BookingCalendar";
+import store from "@frontend/redux/store";
+import toSydneyTime from "@frontend/utils/toSydneyTime";
+import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithRedux";
 
 const mockUseQueryStates = jest.fn();
 

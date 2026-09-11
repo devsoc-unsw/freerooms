@@ -6,29 +6,29 @@ import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Snackbar from "@mui/material/Snackbar";
 import { useTheme } from "@mui/material/styles";
-import { DarkModeContext } from "app/clientLayout";
+import { DarkModeContext } from "@frontend/app/clientLayout";
 import type { LngLatBoundsLike } from "mapbox-gl";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import type { MapRef } from "react-map-gl/mapbox";
 import MapboxMap, { Layer, Marker, Source } from "react-map-gl/mapbox";
 import { useDebounceValue } from "usehooks-ts";
-import BuildingDrawer from "views/BuildingDrawer";
+import BuildingDrawer from "@frontend/views/BuildingDrawer";
 
 import {
   MAPBOX_ACCESS_TOKEN,
   MAPBOX_STYLE_DARK,
   MAPBOX_STYLE_LIGHT,
-} from "../config";
-import useBuildings from "../hooks/useBuildings";
-import useMapboxRoute from "../hooks/useMapboxRoute";
-import useUserLocation from "../hooks/useUserLocation";
-import { setCurrentBuilding } from "../redux/currentBuildingSlice";
-import { useDispatch } from "../redux/hooks";
-import calculateDistance from "../utils/calculateDistance";
-import DirectionsSummary from "./DirectionSummary";
-import MapMarker from "./MapMarker";
-import { navHeight } from "./NavBar";
+} from "@frontend/config";
+import useBuildings from "@frontend/hooks/useBuildings";
+import useMapboxRoute from "@frontend/hooks/useMapboxRoute";
+import useUserLocation from "@frontend/hooks/useUserLocation";
+import { setCurrentBuilding } from "@frontend/redux/currentBuildingSlice";
+import { useDispatch } from "@frontend/redux/hooks";
+import calculateDistance from "@frontend/utils/calculateDistance";
+import DirectionsSummary from "@frontend/components/map/DirectionSummary";
+import MapMarker from "@frontend/components/map/MapMarker";
+import { navHeight } from "@frontend/components/navigation/NavBar";
 
 const center = {
   lat: -33.91767,

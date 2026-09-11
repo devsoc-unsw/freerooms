@@ -6,9 +6,9 @@ import { styled } from "@mui/system";
 import Image from "next/image";
 import React from "react";
 
-import { useDispatch } from "../redux/hooks";
-import { openSearch } from "../redux/searchOpenSlice";
-import FeatureCard from "./FeatureCard";
+import { useDispatch } from "@frontend/redux/hooks";
+import { openSearch } from "@frontend/redux/searchOpenSlice";
+import FeatureCard from "@frontend/components/landing/FeatureCard";
 
 const Features = () => {
   const dispatch = useDispatch();

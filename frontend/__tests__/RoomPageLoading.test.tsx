@@ -2,8 +2,8 @@ import "@testing-library/jest-dom";
 
 import React from "react";
 
-import Page from "../app/room/[room]/page";
-import { renderWithTheme } from "./utils/renderWithRedux";
+import Page from "@frontend/app/room/[room]/page";
+import { renderWithTheme } from "@frontend/__tests__/utils/renderWithRedux";
 
 const mockUseRoom = jest.fn();
 const mockUseBuilding = jest.fn();
@@ -11,35 +11,35 @@ const mockUseBuilding = jest.fn();
 jest.mock("next/navigation", () => ({
   useParams: () => ({ room: "K-J17-101" }),
 }));
-jest.mock("../hooks/useRoom", () => ({
+jest.mock("@frontend/hooks/useRoom", () => ({
   __esModule: true,
   default: () => mockUseRoom(),
 }));
-jest.mock("../hooks/useBuilding", () => ({
+jest.mock("@frontend/hooks/useBuilding", () => ({
   __esModule: true,
   default: () => mockUseBuilding(),
 }));
-jest.mock("../components/BookingCalendar", () => ({
+jest.mock("@frontend/components/booking/BookingCalendar", () => ({
   __esModule: true,
   default: () => <div data-testid="calendar" />,
 }));
-jest.mock("../components/RoomUtilityTags", () => ({
+jest.mock("@frontend/components/rooms/RoomUtilityTags", () => ({
   __esModule: true,
   default: () => <div />,
 }));
-jest.mock("../components/Rating/RoomRating", () => ({
+jest.mock("@frontend/components/ratings/RoomRating", () => ({
   __esModule: true,
   default: () => <div />,
 }));
-jest.mock("../components/BookingButton", () => ({
+jest.mock("@frontend/components/booking/BookingButton", () => ({
   __esModule: true,
   default: () => <div />,
 }));
-jest.mock("../components/ViewOnMapButton", () => ({
+jest.mock("@frontend/components/navigation/ViewOnMapButton", () => ({
   __esModule: true,
   default: () => <div />,
 }));
-jest.mock("../components/RoomBackButton", () => ({
+jest.mock("@frontend/components/navigation/RoomBackButton", () => ({
   __esModule: true,
   default: () => <div />,
 }));

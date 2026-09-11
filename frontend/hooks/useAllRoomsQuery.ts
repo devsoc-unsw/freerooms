@@ -3,11 +3,11 @@ import { useEffect, useRef } from "react";
 import {
   selectAllRoomsFilters,
   setAllRoomsFilter,
-} from "redux/allRoomsFilterSlice";
+} from "@frontend/redux/allRoomsFilterSlice";
 
-import { useDispatch, useSelector } from "../redux/hooks";
-import { AllRoomsFilters } from "../types";
-import { allRoomsFilterDropdown } from "../utils/constants";
+import { useDispatch, useSelector } from "@frontend/redux/hooks";
+import { AllRoomsFilters } from "@frontend/types";
+import { allRoomsFilterDropdown } from "@frontend/utils/constants";
 
 const useAllRoomsQuery = () => {
   const dispatch = useDispatch();

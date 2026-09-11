@@ -1,11 +1,11 @@
 import { SearchResponse } from "@common/types";
 import axios from "axios";
 import useSWR from "swr/immutable";
-import { AllRoomsFilters, Filters } from "types";
+import { AllRoomsFilters, Filters } from "@frontend/types";
 
-import { API_URL } from "../config";
-import { selectDatetime } from "../redux/datetimeSlice";
-import { useSelector } from "../redux/hooks";
+import { API_URL } from "@frontend/config";
+import { selectDatetime } from "@frontend/redux/datetimeSlice";
+import { useSelector } from "@frontend/redux/hooks";
 
 const fetcher = ([url, datetime, filters]: [string, Date, AllRoomsFilters]) =>
   axios

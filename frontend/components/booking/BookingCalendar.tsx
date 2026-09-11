@@ -31,9 +31,9 @@ import {
   Views,
 } from "react-big-calendar";
 
-import { selectDatetime } from "../redux/datetimeSlice";
-import { useSelector } from "../redux/hooks";
-import toSydneyTime from "../utils/toSydneyTime";
+import { selectDatetime } from "@frontend/redux/datetimeSlice";
+import { useSelector } from "@frontend/redux/hooks";
+import toSydneyTime from "@frontend/utils/toSydneyTime";
 
 const ToolBarButton = styled(Button)(({ theme }) => ({
   borderColor: theme.palette.secondary.main,

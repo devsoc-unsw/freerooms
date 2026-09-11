@@ -4,7 +4,7 @@ import Typography, { TypographyProps } from "@mui/material/Typography";
 import Image from "next/image";
 import Link from "next/link";
 
-import Logo from "../public/assets/favicon/free_rooms_logo.png";
+import Logo from "@frontend/public/assets/favicon/free_rooms_logo.png";
 
 const StyledText = styled(Typography)<TypographyProps>(({ theme }) => ({
   color: theme.colours.accent.primary,

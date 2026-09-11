@@ -1,8 +1,8 @@
 import { Divider, Skeleton, Typography } from "@mui/material";
 import { Stack, useMediaQuery } from "@mui/system";
 
-import ReviewButton from "./ReviewButton";
-import RoomRatingList from "./RoomRatingList";
+import ReviewButton from "@frontend/components/ratings/ReviewButton";
+import RoomRatingList from "@frontend/components/ratings/RoomRatingList";
 
 interface RoomRatingProps {
   buildingID: string;

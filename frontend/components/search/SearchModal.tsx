@@ -17,13 +17,13 @@ import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import { useLocalStorage } from "usehooks-ts";
 
-import useBuildings from "../hooks/useBuildings";
-import useRooms from "../hooks/useRooms";
-import { setCurrentBuilding } from "../redux/currentBuildingSlice";
-import { useDispatch, useSelector } from "../redux/hooks";
-import { closeSearch, selectSearchOpen } from "../redux/searchOpenSlice";
-import { SearchOption } from "../types";
-import { AppSurface, AppTextField } from "./ui";
+import useBuildings from "@frontend/hooks/useBuildings";
+import useRooms from "@frontend/hooks/useRooms";
+import { setCurrentBuilding } from "@frontend/redux/currentBuildingSlice";
+import { useDispatch, useSelector } from "@frontend/redux/hooks";
+import { closeSearch, selectSearchOpen } from "@frontend/redux/searchOpenSlice";
+import { SearchOption } from "@frontend/types";
+import { AppSurface, AppTextField } from "@frontend/components/ui";
 
 const RECENT_SEARCH_LIMIT = 3;
 interface SearchProps {}

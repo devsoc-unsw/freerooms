@@ -1,7 +1,7 @@
 import { parseAsString, useQueryState } from "nuqs";
 import { useEffect } from "react";
 
-import { sortBarDropdown } from "../utils/constants";
+import { sortBarDropdown } from "@frontend/utils/constants";
 
 const validSortQueries: string[] = sortBarDropdown.map((item) => item.value);
 

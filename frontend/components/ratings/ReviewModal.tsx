@@ -11,10 +11,10 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import setInsertRating from "hooks/setInsertRating";
+import setInsertRating from "@frontend/hooks/setInsertRating";
 import React, { useState } from "react";
 
-import ReviewRating from "./ReviewRating";
+import ReviewRating from "@frontend/components/ratings/ReviewRating";
 
 interface ReviewModalProps {
   buildingID: string;

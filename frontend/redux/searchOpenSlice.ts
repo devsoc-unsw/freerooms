@@ -3,7 +3,7 @@
  */
 import { createSlice } from "@reduxjs/toolkit";
 
-import { RootState } from "./store";
+import { RootState } from "@frontend/redux/store";
 
 interface SearchOpenState {
   value: boolean;

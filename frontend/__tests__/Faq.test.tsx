@@ -2,8 +2,8 @@ import "@testing-library/jest-dom";
 
 import { screen } from "@testing-library/react";
 
-import Faq from "../components/Faq";
-import { renderWithTheme as render } from "./utils/renderWithRedux";
+import Faq from "@frontend/components/landing/Faq";
+import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithRedux";
 
 describe("Faq", () => {
   it("renders Faq heading", () => {

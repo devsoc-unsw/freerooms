@@ -2,7 +2,7 @@ import "@testing-library/jest-dom";
 
 import { act, renderHook, waitFor } from "@testing-library/react";
 
-import useUserLocation, { type UserLocation } from "../hooks/useUserLocation";
+import useUserLocation, { type UserLocation } from "@frontend/hooks/useUserLocation";
 
 const createPosition = (
   latitude: number,

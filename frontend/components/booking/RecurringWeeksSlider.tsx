@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
-import { StyledAccordion } from "./DropdownSelections";
+import { StyledAccordion } from "@frontend/components/filters/DropdownSelections";
 
 const RecurringWeeksSlider = ({
   dropdown,

@@ -2,11 +2,11 @@ import "@testing-library/jest-dom";
 
 import { screen } from "@testing-library/react";
 
-import toSydneyTime from "../utils/toSydneyTime";
-import RoomAvailabilityBox from "../views/RoomAvailabilityBox";
-import { renderWithTheme as render } from "./utils/renderWithRedux";
+import toSydneyTime from "@frontend/utils/toSydneyTime";
+import RoomAvailabilityBox from "@frontend/views/RoomAvailabilityBox";
+import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithRedux";
 
-jest.mock("../public/room-photos.json", () => ({
+jest.mock("@frontend/public/room-photos.json", () => ({
   "K-G14-334": [
     "https://example.com/room-photo-1.jpg",
     "https://example.com/room-photo-2.jpg",

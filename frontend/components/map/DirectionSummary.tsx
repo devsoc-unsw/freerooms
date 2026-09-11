@@ -6,7 +6,7 @@ import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 
-import type { RouteSummary } from "../hooks/useMapboxRoute";
+import type { RouteSummary } from "@frontend/hooks/useMapboxRoute";
 
 type DirectionsSummaryProps = {
   summary: RouteSummary;

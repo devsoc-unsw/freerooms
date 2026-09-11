@@ -3,8 +3,8 @@
  */
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { Filters } from "../types";
-import { RootState } from "./store";
+import { Filters } from "@frontend/types";
+import { RootState } from "@frontend/redux/store";
 
 interface FiltersState {
   value: Filters;

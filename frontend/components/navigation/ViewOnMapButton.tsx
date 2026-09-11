@@ -4,9 +4,9 @@ import Typography from "@mui/material/Typography";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-import { setCurrentBuilding } from "../redux/currentBuildingSlice";
-import { useDispatch } from "../redux/hooks";
-import Button from "./Button";
+import { setCurrentBuilding } from "@frontend/redux/currentBuildingSlice";
+import { useDispatch } from "@frontend/redux/hooks";
+import Button from "@frontend/components/ui/Button";
 
 const ViewOnMapButton: React.FC<{
   buildingId: string;

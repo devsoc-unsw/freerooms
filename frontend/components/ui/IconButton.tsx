@@ -4,7 +4,7 @@ import { type ButtonProps } from "@mui/material/Button";
 import Link from "next/link";
 import React from "react";
 
-import { AppButton } from "./ui";
+import { AppButton } from "@frontend/components/ui";
 
 interface StyledIconButtonProps extends ButtonProps {
   active?: boolean;

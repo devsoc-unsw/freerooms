@@ -6,20 +6,20 @@ import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import React, { useCallback, useMemo, useState } from "react";
 
-import useDateTimeQuery from "../hooks/useDateTimeQuery";
-import useQueryFilter from "../hooks/useQueryFilter";
+import useDateTimeQuery from "@frontend/hooks/useDateTimeQuery";
+import useQueryFilter from "@frontend/hooks/useQueryFilter";
 import {
   clearFilters,
   selectFilters,
   setFilter,
   unsetFilter,
-} from "../redux/filtersSlice";
-import { useDispatch, useSelector } from "../redux/hooks";
-import { DropDownItem, Filters } from "../types";
-import { filterBarDropdown } from "../utils/constants";
-import DropdownSelections from "./DropdownSelections";
-import RecurringWeeksSlider from "./RecurringWeeksSlider";
-import { AppButton, AppSurface } from "./ui";
+} from "@frontend/redux/filtersSlice";
+import { useDispatch, useSelector } from "@frontend/redux/hooks";
+import { DropDownItem, Filters } from "@frontend/types";
+import { filterBarDropdown } from "@frontend/utils/constants";
+import DropdownSelections from "@frontend/components/filters/DropdownSelections";
+import RecurringWeeksSlider from "@frontend/components/booking/RecurringWeeksSlider";
+import { AppButton, AppSurface } from "@frontend/components/ui";
 
 const StyledMenuAnchor = styled(Box)<BoxProps>(() => ({
   position: "relative",

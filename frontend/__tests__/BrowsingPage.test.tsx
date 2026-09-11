@@ -3,10 +3,10 @@ import "@testing-library/jest-dom";
 import { screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 
-import Page from "../app/browse/page";
-import useUserLocation from "../hooks/useUserLocation";
-import store from "../redux/store";
-import { renderWithTheme as render } from "./utils/renderWithRedux";
+import Page from "@frontend/app/browse/page";
+import useUserLocation from "@frontend/hooks/useUserLocation";
+import store from "@frontend/redux/store";
+import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithRedux";
 
 // Mock next/navigation since the app router is not mounted in the test environment.
 const mockReplace = jest.fn();
@@ -34,13 +34,13 @@ jest.mock("nuqs", () => ({
 }));
 
 // The browsing page tests do not use geolocation itself.
-jest.mock("../hooks/useUserLocation");
+jest.mock("@frontend/hooks/useUserLocation");
 
 const mockUseUserLocation = useUserLocation as jest.MockedFunction<
   typeof useUserLocation
 >;
 
-jest.mock("../views/BuildingDrawer", () => ({
+jest.mock("@frontend/views/BuildingDrawer", () => ({
   __esModule: true,
   default: ({ date }: { date?: string }) => (
     <div data-testid="building-drawer" data-date={date} />

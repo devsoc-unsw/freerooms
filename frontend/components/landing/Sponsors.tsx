@@ -1,9 +1,9 @@
 import { Divider, Stack, Typography, useTheme } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import Image from "next/image";
-import { Sponsor } from "types";
+import { Sponsor } from "@frontend/types";
 
-import SponsorItem from "./SponsorItem";
+import SponsorItem from "@frontend/components/landing/SponsorItem";
 
 export default function Sponsors() {
   const theme = useTheme();

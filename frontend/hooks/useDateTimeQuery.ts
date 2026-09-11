@@ -2,10 +2,10 @@ import { isValidDate, isValidTime } from "@frontend/utils/queryValidation";
 import { formatInTimeZone, fromZonedTime } from "date-fns-tz";
 import { parseAsString, useQueryStates } from "nuqs";
 import { useEffect, useRef } from "react";
-import { selectDatetime, setDatetime } from "redux/datetimeSlice";
+import { selectDatetime, setDatetime } from "@frontend/redux/datetimeSlice";
 
-import { useDispatch, useSelector } from "../redux/hooks";
-import { SYDNEY_TIMEZONE } from "../utils/toSydneyTime";
+import { useDispatch, useSelector } from "@frontend/redux/hooks";
+import { SYDNEY_TIMEZONE } from "@frontend/utils/toSydneyTime";
 
 const useQueryDatetime = () => {
   const dispatch = useDispatch();

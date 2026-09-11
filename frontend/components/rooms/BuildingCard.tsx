@@ -5,17 +5,17 @@ import Box, { BoxProps } from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
-import useBuildingRatings from "hooks/useBuildingRatings";
+import useBuildingRatings from "@frontend/hooks/useBuildingRatings";
 import Image, { ImageProps } from "next/image";
 import React from "react";
 
-import useBuilding from "../hooks/useBuilding";
-import useBuildingStatus from "../hooks/useBuildingStatus";
-import { setCurrentBuilding } from "../redux/currentBuildingSlice";
-import { useDispatch } from "../redux/hooks";
-import { getNumFreerooms } from "../utils/utils";
-import BuildingRating from "./Rating/BuildingRating";
-import StatusDot from "./StatusDot";
+import useBuilding from "@frontend/hooks/useBuilding";
+import useBuildingStatus from "@frontend/hooks/useBuildingStatus";
+import { setCurrentBuilding } from "@frontend/redux/currentBuildingSlice";
+import { useDispatch } from "@frontend/redux/hooks";
+import { getNumFreerooms } from "@frontend/utils/utils";
+import BuildingRating from "@frontend/components/ratings/BuildingRating";
+import StatusDot from "@frontend/components/ui/StatusDot";
 
 const INITIALISING = -2;
 const FAILED = -1;

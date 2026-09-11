@@ -5,13 +5,13 @@ import { useCallback, useMemo } from "react";
 import {
   setAllRoomsFilter,
   unsetAllRoomsFilter,
-} from "redux/allRoomsFilterSlice";
-import { useDispatch } from "redux/hooks";
-import { AllRoomsFilters, DropDownItem } from "types";
-import { allRoomsFilterDropdown } from "utils/constants";
+} from "@frontend/redux/allRoomsFilterSlice";
+import { useDispatch } from "@frontend/redux/hooks";
+import { AllRoomsFilters, DropDownItem } from "@frontend/types";
+import { allRoomsFilterDropdown } from "@frontend/utils/constants";
 
-import DropdownSelections from "./DropdownSelections";
-import RecurringWeeksSlider from "./RecurringWeeksSlider";
+import DropdownSelections from "@frontend/components/filters/DropdownSelections";
+import RecurringWeeksSlider from "@frontend/components/booking/RecurringWeeksSlider";
 
 const StyledFilterSideBarContainer = styled(Box)<BoxProps>(({ theme }) => ({
   display: "flex",

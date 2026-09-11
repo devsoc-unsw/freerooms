@@ -6,11 +6,11 @@ import { StatusResponse } from "@common/types";
 import axios from "axios";
 import useSWRImmutable from "swr/immutable";
 
-import { API_URL } from "../config";
-import { selectDatetime } from "../redux/datetimeSlice";
-import { selectFilters } from "../redux/filtersSlice";
-import { useSelector } from "../redux/hooks";
-import { Filters } from "../types";
+import { API_URL } from "@frontend/config";
+import { selectDatetime } from "@frontend/redux/datetimeSlice";
+import { selectFilters } from "@frontend/redux/filtersSlice";
+import { useSelector } from "@frontend/redux/hooks";
+import { Filters } from "@frontend/types";
 
 const fetcher = ([url, datetime, filters]: [string, Date, Filters]) =>
   axios.get(url, { params: { datetime, ...filters } }).then((res) => res.data);

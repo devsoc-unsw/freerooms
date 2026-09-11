@@ -7,7 +7,7 @@ import Radio from "@mui/material/Radio";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import React, { useId } from "react";
-import { AllRoomsFilters, DropDown, DropDownItem, Filters } from "types";
+import { AllRoomsFilters, DropDown, DropDownItem, Filters } from "@frontend/types";
 
 export const StyledAccordion = styled(Accordion)(({ theme }) => ({
   backgroundColor: theme.colours.surface.paper,

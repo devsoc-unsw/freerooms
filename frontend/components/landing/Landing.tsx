@@ -3,11 +3,11 @@ import { styled } from "@mui/material/styles";
 import Image from "next/image";
 import React, { useState } from "react";
 
-import transientOptions from "../utils/transientOptions";
-import Faq from "./Faq";
-import Features from "./Features";
-import Sponsors from "./Sponsors";
-import TextAnimation from "./TextAnimation";
+import transientOptions from "@frontend/utils/transientOptions";
+import Faq from "@frontend/components/landing/Faq";
+import Features from "@frontend/components/landing/Features";
+import Sponsors from "@frontend/components/landing/Sponsors";
+import TextAnimation from "@frontend/components/landing/TextAnimation";
 
 const Landing = () => {
   const [isClicked, setIsClicked] = useState(false);

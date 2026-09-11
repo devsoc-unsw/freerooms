@@ -4,7 +4,7 @@
 import { Building } from "@common/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { RootState } from "./store";
+import { RootState } from "@frontend/redux/store";
 
 interface CurrentBuildingState {
   value: Building | null;

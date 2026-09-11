@@ -9,14 +9,14 @@ import MuiAppBar from "@mui/material/AppBar";
 import { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
-import { DarkModeContext } from "app/clientLayout";
+import { DarkModeContext } from "@frontend/app/clientLayout";
 import { usePathname } from "next/navigation";
 import React, { useContext } from "react";
 
-import { useDispatch } from "../redux/hooks";
-import { openSearch } from "../redux/searchOpenSlice";
-import Branding from "./Branding";
-import IconButton from "./IconButton";
+import { useDispatch } from "@frontend/redux/hooks";
+import { openSearch } from "@frontend/redux/searchOpenSlice";
+import Branding from "@frontend/components/landing/Branding";
+import IconButton from "@frontend/components/ui/IconButton";
 
 // This isn't actually enforced so update this if u change the navbar
 export const navHeight = 65;

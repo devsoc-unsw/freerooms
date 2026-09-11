@@ -8,10 +8,10 @@ import { enAU } from "date-fns/locale";
 import { fromZonedTime, toZonedTime } from "date-fns-tz";
 import React from "react";
 
-import { selectDatetime, setDatetime } from "../redux/datetimeSlice";
-import { useDispatch, useSelector } from "../redux/hooks";
-import { getPickerFieldStyles } from "../theme/fieldStyles";
-import { SYDNEY_TIMEZONE } from "../utils/toSydneyTime";
+import { selectDatetime, setDatetime } from "@frontend/redux/datetimeSlice";
+import { useDispatch, useSelector } from "@frontend/redux/hooks";
+import { getPickerFieldStyles } from "@frontend/theme/fieldStyles";
+import { SYDNEY_TIMEZONE } from "@frontend/utils/toSydneyTime";
 
 const DatePicker = () => {
   const dispatch = useDispatch();

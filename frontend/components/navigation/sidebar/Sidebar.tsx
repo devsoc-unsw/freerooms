@@ -27,8 +27,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 
-import DarkModeToggle from "./DarkModeToggle";
-import SidebarItem from "./SidebarItem";
+import DarkModeToggle from "@frontend/components/navigation/sidebar/DarkModeToggle";
+import SidebarItem from "@frontend/components/navigation/sidebar/SidebarItem";
 
 const drawerWidth = 230;
 
