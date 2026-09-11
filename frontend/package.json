@@ -6,11 +6,16 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "prettier --check \"**/*.{ts,tsx}\" && eslint .",
+    "format:check": "prettier --check \"**/*.{ts,tsx}\"",
+    "lint": "npm run format:check && eslint .",
     "lint:fix": "prettier --write \"**/*.{ts,tsx}\" && eslint . --fix",
+    "lint:colours": "node scripts/check-colours.mjs",
+    "lint:tokens": "node scripts/check-design-tokens.mjs",
+    "lint:design": "npm run lint:colours && npm run lint:tokens",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run lint && npm run lint:design && npm run typecheck && npm test -- --runInBand",
     "test": "jest",
-    "test:watch": "jest --watch",
-    "lint:colours": "node scripts/check-colours.mjs"
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@ant-design/icons": "^6.0.0",

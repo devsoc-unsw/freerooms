@@ -29,9 +29,9 @@ jobs:
       - name: Lint
         run: npm run lint
         working-directory: ${{ matrix.component }}
-      - name: Check Theme Colours
+      - name: Check design system
         if: matrix.component == 'frontend'
-        run: npm run lint:colours
+        run: npm run lint:design
         working-directory: frontend
   build-and-test:
     name: "Build and test (${{ matrix.component }})"

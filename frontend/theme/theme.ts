@@ -2,6 +2,7 @@ import { createTheme, type PaletteOptions } from "@mui/material/styles";
 
 import { getColours, type ThemeMode } from "./colours";
 import { components } from "./components";
+import { sizes } from "./sizes";
 import { radius, space } from "./spacing";
 import { typography } from "./typography";
 
@@ -55,6 +56,7 @@ export function createAppTheme(mode: ThemeMode) {
     colours,
     space,
     radius,
+    sizes,
     shape: { borderRadius: radius.md },
     typography,
     components,

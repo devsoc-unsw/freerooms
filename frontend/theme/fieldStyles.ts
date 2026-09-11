@@ -1,5 +1,6 @@
 import type { CSSObject, Theme } from "@mui/material/styles";
 
+// Shared outlined-field appearance. Component-specific dimensions stay local.
 export function getOutlinedFieldStyles(theme: Theme): CSSObject {
   const colours = theme.colours;
 
@@ -36,12 +37,13 @@ export function getOutlinedFieldStyles(theme: Theme): CSSObject {
   };
 }
 
+// Keep the current picker dimensions and text treatment until their redesign.
 export function getPickerFieldStyles(theme: Theme): CSSObject {
   return {
     ...getOutlinedFieldStyles(theme),
-    width: 133,
+    width: theme.sizes.picker.width,
     "& .MuiInputBase-root": {
-      height: 56,
+      height: theme.sizes.control.xl,
     },
     "& .MuiInputBase-input": {
       fontSize: theme.typography.button.fontSize,

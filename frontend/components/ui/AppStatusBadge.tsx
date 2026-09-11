@@ -49,7 +49,8 @@ const StyledStatusBadge = styled(MuiChip, {
     minHeight: theme.space.lg,
     "& .MuiChip-label": {
       whiteSpace: "normal",
-      padding: theme.spacing(0.5, 1),
+      paddingBlock: theme.space.xs,
+      paddingInline: theme.space.sm,
     },
   };
 });

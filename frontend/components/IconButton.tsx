@@ -20,7 +20,7 @@ const StyledIconButton: React.FC<StyledIconButtonProps> = ({
   <AppButton
     {...otherProps}
     sx={[
-      { padding: (theme) => theme.spacing(1), minWidth: 0 },
+      { padding: (theme) => `${theme.space.sm}px`, minWidth: 0 },
       ...(sx ? (Array.isArray(sx) ? sx : [sx]) : []),
     ]}
     LinkComponent={Link}
