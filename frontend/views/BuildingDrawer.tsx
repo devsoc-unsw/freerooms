@@ -75,6 +75,51 @@ type BuildingDrawerProps = {
   date?: string;
 };
 
+const formatRoomNumber = (room: string): {
+  prefixRank: number;
+  num: number;
+  suffix: string
+} => {
+  const room_order = ['B', 'LG', 'G', 'M'];
+
+  // Regex pattern to match prefix (letter), number, suffix (letter)
+  const match = room.match(/^([A-Za-z]*)(\d+)([A-Za-z]*)$/);
+  if (!match) {
+    return { prefixRank: room_order.length, num: 0, suffix: '' };
+  }
+
+  const prefix = match[1];
+  const num = parseInt(match[2]);
+  const suffix = match[3];
+
+  // Get ordering based on prefix
+  const rankIndex = room_order.indexOf(prefix.toUpperCase());
+
+  return {
+    prefixRank: rankIndex === -1 ? room_order.length : rankIndex,
+    num,
+    suffix,
+  };
+}
+
+const sortRoomNumbers = (rooms: string[]): string[] => {
+  return [...rooms].sort((a, b) => {
+    const sortedA = formatRoomNumber(a);
+    const sortedB = formatRoomNumber(b);
+
+    // Sort by prefix, then by the room number, then by suffix (if provided)
+    if (sortedA.prefixRank !== sortedB.prefixRank) {
+      return sortedA.prefixRank - sortedB.prefixRank;
+    }
+
+    if (sortedA.num !== sortedB.num) {
+      return sortedA.num - sortedB.num;
+    }
+    
+    return sortedA.suffix.localeCompare(sortedB.suffix);
+  });
+}
+
 const drawerWidth = 400;
 const drawerWidthMobile = "100%";
 
@@ -189,7 +234,7 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
 
           <RoomBox>
             {rooms ? (
-              Object.keys(rooms.roomStatuses).map((roomNumber) => (
+              sortRoomNumbers(Object.keys(rooms.roomStatuses)).map((roomNumber) => (
                 <RoomAvailabilityBox
                   key={roomNumber}
                   roomNumber={roomNumber}
