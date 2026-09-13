@@ -75,17 +75,19 @@ type BuildingDrawerProps = {
   date?: string;
 };
 
-const formatRoomNumber = (room: string): {
+const formatRoomNumber = (
+  room: string
+): {
   prefixRank: number;
   num: number;
-  suffix: string
+  suffix: string;
 } => {
-  const room_order = ['B', 'LG', 'G', 'M'];
+  const room_order = ["B", "LG", "G", "M"];
 
   // Regex pattern to match prefix (letter), number, suffix (letter)
   const match = room.match(/^([A-Za-z]*)(\d+)([A-Za-z]*)$/);
   if (!match) {
-    return { prefixRank: room_order.length, num: 0, suffix: '' };
+    return { prefixRank: room_order.length, num: 0, suffix: "" };
   }
 
   const prefix = match[1];
@@ -100,7 +102,7 @@ const formatRoomNumber = (room: string): {
     num,
     suffix,
   };
-}
+};
 
 const sortRoomNumbers = (rooms: string[]): string[] => {
   return [...rooms].sort((a, b) => {
@@ -115,10 +117,10 @@ const sortRoomNumbers = (rooms: string[]): string[] => {
     if (sortedA.num !== sortedB.num) {
       return sortedA.num - sortedB.num;
     }
-    
+
     return sortedA.suffix.localeCompare(sortedB.suffix);
   });
-}
+};
 
 const drawerWidth = 400;
 const drawerWidthMobile = "100%";
@@ -234,15 +236,17 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
 
           <RoomBox>
             {rooms ? (
-              sortRoomNumbers(Object.keys(rooms.roomStatuses)).map((roomNumber) => (
-                <RoomAvailabilityBox
-                  key={roomNumber}
-                  roomNumber={roomNumber}
-                  roomStatus={rooms.roomStatuses[roomNumber]}
-                  buildingId={building.id}
-                  date={date}
-                />
-              ))
+              sortRoomNumbers(Object.keys(rooms.roomStatuses)).map(
+                (roomNumber) => (
+                  <RoomAvailabilityBox
+                    key={roomNumber}
+                    roomNumber={roomNumber}
+                    roomStatus={rooms.roomStatuses[roomNumber]}
+                    buildingId={building.id}
+                    date={date}
+                  />
+                )
+              )
             ) : (
               <Typography
                 sx={{
