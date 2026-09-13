@@ -1,0 +1,275 @@
+import { Building, BuildingStatus } from "@common/types";
+import useBuilding from "@frontend/hooks/useBuilding";
+import useBuildingStatus from "@frontend/hooks/useBuildingStatus";
+import {
+  selectCurrentBuilding,
+  setCurrentBuilding,
+} from "@frontend/redux/currentBuildingSlice";
+import { useDispatch, useSelector } from "@frontend/redux/hooks";
+import { getNumFreerooms, getTotalRooms } from "@frontend/utils/utils";
+import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
+import RoomIcon from "@mui/icons-material/Room";
+import { alpha, Fade } from "@mui/material";
+import { Typography } from "@mui/material";
+import Box, { BoxProps } from "@mui/material/Box";
+import { styled, useTheme } from "@mui/material/styles";
+import Image, { ImageProps } from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
+import React from "react";
+
+const MarkerHoverMainBox = styled(Box)<BoxProps>(({ theme }) => ({
+  position: "absolute",
+  flex: 1,
+  backgroundColor: theme.colours.map.popup,
+  height: 200,
+  width: 300,
+  borderRadius: 20,
+  overflow: "hidden",
+  boxShadow: theme.shadows[2],
+}));
+
+const MarkerHoverImage = styled(Image)<ImageProps>(() => ({
+  objectFit: "cover",
+}));
+
+const MarkerHoverInfoBox = styled(Box)<BoxProps>(() => ({
+  display: "flex",
+  flexDirection: "row",
+  pointerEvents: "none",
+  alignItems: "center",
+  fontSize: "small",
+  gap: 10,
+}));
+
+const MarkerHoverTitleBox = styled(Box)<BoxProps>(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  right: 0,
+  backgroundColor: theme.colours.map.popup,
+  color: theme.colours.text.onImage,
+  borderRadius: 8,
+  padding: 8,
+  paddingLeft: 12,
+  paddingRight: 12,
+  margin: 10,
+  pointerEvents: "none",
+}));
+
+const MapMarker: React.FC<{
+  buildingId: string;
+  distance: number | undefined;
+  currentHover: Building | null;
+  setCurrentHover: (building: Building | null) => void;
+  isRouteDestination?: boolean;
+}> = ({
+  buildingId,
+  distance,
+  currentHover,
+  setCurrentHover,
+  isRouteDestination = false,
+}) => {
+  // Get building data
+  const { building } = useBuilding(buildingId);
+  const { status: liveStatus } = useBuildingStatus(buildingId);
+  const theme = useTheme();
+  const router = useRouter();
+
+  // This one uses stale data so markers don't disappear
+  const status: BuildingStatus | undefined = liveStatus;
+  const freerooms = getNumFreerooms(status);
+  const totalRooms = getTotalRooms(status);
+  const searchParams = useSearchParams();
+  const params = new URLSearchParams(searchParams);
+
+  const dispatch = useDispatch();
+  const currentBuilding = useSelector(selectCurrentBuilding);
+  const isCurrentBuilding = currentBuilding?.id === building?.id;
+
+  // Visible if selected or current destination
+  const isSelected = isCurrentBuilding || isRouteDestination;
+
+  const showPopup = currentHover?.id === building?.id;
+  const [appearAbove, setAppearAbove] = React.useState(false);
+  const [appearLeft, setAppearLeft] = React.useState(false);
+
+  const handleSelectBuilding = () => {
+    dispatch(setCurrentBuilding(building || null));
+    params.set("building", buildingId); // Add or update the 'query' param
+    router.push(`/map?${params.toString()}`);
+  };
+
+  const colour =
+    freerooms >= 5
+      ? theme.colours.map.availability.available
+      : freerooms !== 0
+        ? theme.colours.map.availability.soon
+        : theme.colours.map.availability.unavailable;
+
+  if (!building) {
+    return <></>;
+  }
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        position: "relative",
+      }}
+      onMouseEnter={(e) => {
+        setCurrentHover(building);
+
+        const markerScreenPos = e.currentTarget.getBoundingClientRect();
+
+        if (markerScreenPos.bottom + 200 > window.innerHeight) {
+          setAppearAbove(true);
+        } else {
+          setAppearAbove(false);
+        }
+
+        if (markerScreenPos.right + 300 > window.innerWidth) {
+          setAppearLeft(true);
+        } else {
+          setAppearLeft(false);
+        }
+      }}
+      onMouseLeave={() => {
+        setCurrentHover(null);
+      }}
+    >
+      <Typography
+        sx={{
+          fontSize: 11,
+          fontWeight: 500,
+          translate: isSelected ? "0px -10px" : "0px 0px",
+          transition: "all 0.2s ease-in-out",
+          textShadow:
+            theme.palette.mode === "light"
+              ? `-.5px -.5px 1px ${theme.colours.neutral.white}, .5px -.5px 1px ${theme.colours.neutral.white}, -.5px .5px 1px ${theme.colours.neutral.white}, .5px .5px 1px ${theme.colours.neutral.white}`
+              : "",
+          color: theme.palette.text.primary,
+        }}
+      >
+        {building.name}
+      </Typography>
+
+      <Box
+        sx={{
+          width: 18,
+          height: 18,
+          borderRadius: "50%",
+          border: isSelected
+            ? `5px solid ${colour}`
+            : `4px solid ${theme.colours.neutral.white}`,
+          backgroundColor: isSelected ? theme.colours.neutral.white : colour,
+          scale: isSelected ? 2 : 1,
+          transition: "all 0.2s ease-in-out",
+          boxShadow: isSelected ? `0px 0px 6px 4px ${alpha(colour, 0.5)}` : "",
+          position: "relative",
+
+          "&:hover": {
+            cursor: "pointer",
+          },
+        }}
+        onClick={handleSelectBuilding}
+      />
+
+      <Fade in={showPopup} timeout={200}>
+        <div
+          style={{
+            position: "relative",
+            bottom: -3,
+          }}
+        >
+          <MarkerHover
+            building={building}
+            freerooms={freerooms}
+            totalRooms={totalRooms}
+            distance={distance}
+            appearLeft={appearLeft}
+            appearAbove={appearAbove}
+            onClick={handleSelectBuilding}
+          />
+        </div>
+      </Fade>
+    </div>
+  );
+};
+
+const MarkerHover: React.FC<{
+  building: Building;
+  freerooms: number;
+  totalRooms: number;
+  distance: number | undefined;
+  appearLeft?: boolean;
+  appearAbove?: boolean;
+  onClick: () => void;
+}> = ({
+  building,
+  freerooms,
+  totalRooms,
+  distance,
+  appearLeft = false,
+  appearAbove = false,
+  onClick,
+}) => {
+  return (
+    <MarkerHoverMainBox
+      onClick={onClick}
+      style={{
+        cursor: "pointer",
+        left: appearLeft ? "auto" : 0,
+        right: appearLeft ? 0 : "auto",
+        top: appearAbove ? "auto" : 0,
+        bottom: appearAbove ? 24 : "auto",
+      }}
+    >
+      <MarkerHoverImage
+        alt={`Image of ${building.id}`}
+        src={`/assets/building_photos/${building.id}.webp`}
+        fill={true}
+        priority={true}
+      />
+      <MarkerHoverTitleBox>
+        <Typography sx={{ fontSize: 15, fontWeight: 500 }}>
+          {building.name}
+        </Typography>
+        <MarkerHoverInfoBox>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <MeetingRoomIcon />
+            <Typography sx={{ fontSize: 13, fontWeight: 500 }}>
+              {`${freerooms}/${totalRooms} available`}
+            </Typography>
+          </div>
+          {distance && (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <RoomIcon />
+              <Typography sx={{ fontSize: 13, fontWeight: 500 }}>
+                {`${distance} m`}
+              </Typography>
+            </div>
+          )}
+        </MarkerHoverInfoBox>
+      </MarkerHoverTitleBox>
+    </MarkerHoverMainBox>
+  );
+};
+
+export default MapMarker;

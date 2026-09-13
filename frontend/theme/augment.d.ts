@@ -1,8 +1,7 @@
+import type { AppColours } from "@frontend/theme/colours";
+import type { sizes } from "@frontend/theme/sizes";
+import type { radius, space } from "@frontend/theme/spacing";
 import type { CSSProperties } from "react";
-
-import type { AppColours } from "./colours";
-import type { sizes } from "./sizes";
-import type { radius, space } from "./spacing";
 
 declare module "@mui/material/styles" {
   interface Theme {
@@ -28,6 +27,8 @@ declare module "@mui/material/styles/createTypography" {
     heroSubtitle: CSSProperties;
     heroWordmark: CSSProperties;
     metadata: CSSProperties;
+    filterTitle: CSSProperties;
+    filterOption: CSSProperties;
   }
 
   interface TypographyVariantsOptions {
@@ -37,6 +38,8 @@ declare module "@mui/material/styles/createTypography" {
     heroSubtitle?: CSSProperties;
     heroWordmark?: CSSProperties;
     metadata?: CSSProperties;
+    filterTitle?: CSSProperties;
+    filterOption?: CSSProperties;
   }
 }
 
@@ -48,5 +51,7 @@ declare module "@mui/material/Typography" {
     heroSubtitle: true;
     heroWordmark: true;
     metadata: true;
+    filterTitle: true;
+    filterOption: true;
   }
 }

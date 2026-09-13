@@ -1,0 +1,51 @@
+import {
+  selectCurrentBuilding,
+  setCurrentBuilding,
+} from "@frontend/redux/currentBuildingSlice";
+import { useDispatch } from "@frontend/redux/hooks";
+import { useSelector } from "@frontend/redux/hooks";
+import { ArrowBack } from "@mui/icons-material";
+import { Button } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import { useRouter } from "next/navigation";
+
+const RoomBackButton = () => {
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const currentBuilding = useSelector(selectCurrentBuilding);
+
+  const handleBackButton = () => {
+    if (router.back() === undefined) {
+      router.push("/allRooms");
+    } else {
+      router.back();
+      dispatch(setCurrentBuilding(currentBuilding));
+    }
+  };
+
+  return (
+    <Button
+      aria-label="back"
+      onClick={handleBackButton}
+      style={{
+        backgroundColor: "transparent",
+        position: "relative",
+        right: "12px",
+        width: "max-content",
+      }}
+    >
+      <ArrowBack />
+      <Typography
+        variant="body1"
+        sx={{
+          marginLeft: 1,
+          textDecoration: "underline",
+        }}
+      >
+        Back
+      </Typography>
+    </Button>
+  );
+};
+
+export default RoomBackButton;

@@ -1,20 +1,19 @@
 "use client";
 
+import FeedbackButton from "@frontend/components/feedback/FeedbackButton";
+import AllRoomsFilter from "@frontend/components/rooms/AllRoomsFilter";
+import Room from "@frontend/components/rooms/AllRoomsRoom";
+import RoomList from "@frontend/components/rooms/AllRoomsRoomList";
+import AllRoomsSearchBar from "@frontend/components/rooms/AllRoomsSearchBar";
+import { AppButton } from "@frontend/components/ui";
+import useAllRooms from "@frontend/hooks/useAllRooms";
+import { selectAllRoomsFilters } from "@frontend/redux/allRoomsFilterSlice";
 import { Alert, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/system";
-import AllRoomsSearchBar from "components/AllRoomsSearchBar";
-import useAllRooms from "hooks/useAllRooms";
 import { parseAsString, useQueryState } from "nuqs";
 import { Suspense, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { selectAllRoomsFilters } from "redux/allRoomsFilterSlice";
-
-import AllRoomsFilter from "../../components/AllRoomsFilter";
-import Room from "../../components/AllRoomsRoom";
-import RoomList from "../../components/AllRoomsRoomList";
-import FeedbackButton from "../../components/FeedbackButton";
-import { AppButton } from "../../components/ui";
 
 const NUM_PLACEHOLDER_ROOMS = 5;
 

@@ -1,9 +1,8 @@
 import "@testing-library/jest-dom";
 
+import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithRedux";
+import Sponsors from "@frontend/components/landing/Sponsors";
 import { screen } from "@testing-library/react";
-
-import Sponsors from "../components/Sponsors";
-import { renderWithTheme as render } from "./utils/renderWithRedux";
 
 describe("Sponsors", () => {
   it("renders heading text", () => {

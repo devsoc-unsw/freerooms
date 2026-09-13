@@ -1,7 +1,7 @@
 /**
  * Data fetching hook for data of specified building
  */
-import useBuildings from "./useBuildings";
+import useBuildings from "@frontend/hooks/useBuildings";
 
 const useBuilding = (buildingId?: string) => {
   const { buildings, error } = useBuildings();

@@ -1,12 +1,11 @@
 import "mapbox-gl/dist/mapbox-gl.css";
-import "../styles/globals.css";
+import "@frontend/styles/globals.css";
 
+import ClientLayout from "@frontend/app/clientLayout";
 import { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import { cookies } from "next/headers";
 import React from "react";
-
-import ClientLayout from "./clientLayout";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],

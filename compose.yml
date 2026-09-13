@@ -1,0 +1,139 @@
+name: freerooms-local-development
+
+services:
+  mongo:
+    image: mongo:8.0
+    command:
+      - mongod
+      - --replSet
+      - rs0
+      - --bind_ip_all
+      - --oplogSize
+      - "128"
+
+    volumes:
+      - mongo_data:/data/db
+
+  mongo-init:
+    image: mongo:8.0
+
+    depends_on:
+      mongo:
+        condition: service_started
+
+    restart: "no"
+
+    command:
+      - sh
+      - -c
+      - |
+        until mongosh --host mongo:27017 --quiet --eval 'db.adminCommand({ ping: 1 }).ok' | grep -q 1; do
+          echo "Waiting for MongoDB..."
+          sleep 1
+        done
+
+        mongosh --host mongo:27017 --quiet --eval '
+          try {
+            rs.status();
+          } catch (error) {
+            rs.initiate({
+              _id: "rs0",
+              members: [
+                {
+                  _id: 0,
+                  host: "mongo:27017"
+                }
+              ]
+            });
+          }
+        '
+
+        until mongosh --host mongo:27017 --quiet --eval 'db.hello().isWritablePrimary' | grep -q true; do
+          echo "Waiting for MongoDB replica set..."
+          sleep 1
+        done
+
+        echo "MongoDB is ready."
+
+  backend:
+    image: node:24.18-alpine
+    working_dir: /workspace/backend
+    init: true
+
+    depends_on:
+      mongo-init:
+        condition: service_completed_successfully
+
+    environment:
+      NODE_ENV: development
+      MONGODB_URI: mongodb://mongo:27017/room-ratings?replicaSet=rs0
+
+    volumes:
+      - ./backend:/workspace/backend:z
+      - ./common:/workspace/common:ro,z
+      - backend_node_modules:/workspace/backend/node_modules
+      - npm_cache:/root/.npm
+
+    ports:
+      - "127.0.0.1:3000:3000"
+
+    command:
+      - sh
+      - -c
+      - |
+        LOCK_HASH="$$(sha256sum package-lock.json | cut -d ' ' -f 1)"
+        INSTALLED_HASH="$$(cat node_modules/.freerooms-lock-hash 2>/dev/null || true)"
+
+        if [ "$$LOCK_HASH" != "$$INSTALLED_HASH" ]; then
+          echo "Installing backend dependencies..."
+          npm ci
+          echo "$$LOCK_HASH" > node_modules/.freerooms-lock-hash
+        fi
+
+        exec npm run dev
+
+  frontend:
+    image: node:24.18-alpine
+    working_dir: /workspace/frontend
+    init: true
+
+    depends_on:
+      backend:
+        condition: service_started
+
+    environment:
+      NODE_ENV: development
+      INTERNAL_API_URL: http://backend:3000
+      NEXT_PUBLIC_API_URL: http://localhost:3000
+
+    volumes:
+      - ./frontend:/workspace/frontend:z
+      - ./common:/workspace/common:ro,z
+      - frontend_node_modules:/workspace/frontend/node_modules
+      - frontend_next:/workspace/frontend/.next
+      - npm_cache:/root/.npm
+
+    ports:
+      - "127.0.0.1:3001:3001"
+
+    command:
+      - sh
+      - -c
+      - |
+        LOCK_HASH="$$(sha256sum package-lock.json | cut -d ' ' -f 1)"
+        INSTALLED_HASH="$$(cat node_modules/.freerooms-lock-hash 2>/dev/null || true)"
+
+        if [ "$$LOCK_HASH" != "$$INSTALLED_HASH" ]; then
+          echo "Installing frontend dependencies..."
+          npm ci
+          echo "$$LOCK_HASH" > node_modules/.freerooms-lock-hash
+        fi
+
+        exec npm exec -- next dev --hostname 0.0.0.0 --port 3001
+
+volumes:
+  mongo_data:
+  backend_node_modules:
+  frontend_node_modules:
+  frontend_next:
+  npm_cache:

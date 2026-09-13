@@ -1,7 +1,9 @@
 "use client";
 
-import NavBar from "@frontend/components/navbar/NavBar";
-import { createAppTheme, sizes, type ThemeMode } from "@frontend/theme";
+import NavBar from "@frontend/components/navigation/NavBar";
+import SearchModal from "@frontend/components/search/SearchModal";
+import store from "@frontend/redux/store";
+import { createAppTheme, type ThemeMode } from "@frontend/theme";
 import CssBaseline from "@mui/material/CssBaseline";
 import { styled, ThemeProvider } from "@mui/material/styles";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
@@ -13,9 +15,7 @@ import React, {
   useSyncExternalStore,
 } from "react";
 import { Provider as ReduxProvider } from "react-redux";
-
-import SearchModal from "../components/SearchModal";
-import store from "../redux/store";
+import { sizes } from "@frontend/theme";
 
 export const DarkModeContext = createContext({
   isDarkMode: false,

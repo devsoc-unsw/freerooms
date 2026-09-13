@@ -1,5 +1,10 @@
 "use client";
 
+import { DarkModeContext } from "@frontend/app/clientLayout";
+import Branding from "@frontend/components/landing/Branding";
+import IconButton from "@frontend/components/ui/IconButton";
+import { useDispatch } from "@frontend/redux/hooks";
+import { openSearch } from "@frontend/redux/searchOpenSlice";
 import { DarkMode } from "@mui/icons-material";
 import GridIcon from "@mui/icons-material/GridViewRounded";
 import MapIcon from "@mui/icons-material/Map";
@@ -9,15 +14,19 @@ import MuiAppBar from "@mui/material/AppBar";
 import { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
-import { DarkModeContext } from "app/clientLayout";
 import { usePathname } from "next/navigation";
 import React, { useContext } from "react";
 
+<<<<<<<< HEAD:frontend/components/navbar/NavBar.tsx
 import { useDispatch } from "../../redux/hooks";
 import { openSearch } from "../../redux/searchOpenSlice";
 import Branding from "./Branding";
 import IconButton from "../IconButton";
 import { sizes, space } from "@frontend/theme";
+========
+// This isn't actually enforced so update this if u change the navbar
+export const navHeight = 65;
+>>>>>>>> dev:frontend/components/navigation/NavBar.tsx
 
 const NavBar: React.FC = () => {
   const dispatch = useDispatch();

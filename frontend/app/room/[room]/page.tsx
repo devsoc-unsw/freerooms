@@ -5,6 +5,21 @@ import "swiper/css/navigation";
 import translateRoomUsage from "@common/roomUsages";
 import getSchoolDetails from "@common/schools";
 import type { Booking, Room } from "@common/types";
+import BookingButton from "@frontend/components/booking/BookingButton";
+import BookingCalendar from "@frontend/components/booking/BookingCalendar";
+import FeedbackButton from "@frontend/components/feedback/FeedbackButton";
+import RoomBackButton from "@frontend/components/navigation/RoomBackButton";
+import ViewOnMapButton from "@frontend/components/navigation/ViewOnMapButton";
+import RoomRating from "@frontend/components/ratings/RoomRating";
+import RoomPhotoCarousel from "@frontend/components/rooms/RoomPhotoCarousel";
+import RoomUtilityTags from "@frontend/components/rooms/RoomUtilityTags";
+import useBookings from "@frontend/hooks/useBookings";
+import useBuilding from "@frontend/hooks/useBuilding";
+import useFavourites from "@frontend/hooks/useFavourites";
+import useRoom from "@frontend/hooks/useRoom";
+import useRoomRatings from "@frontend/hooks/useRoomRatings";
+import room_photos from "@frontend/public/room-photos.json";
+import { getBuildingIdFromRoomId } from "@frontend/utils/utils";
 import CloseIcon from "@mui/icons-material/Close";
 import FavouriteIcon from "@mui/icons-material/Favorite";
 import FavouriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -21,24 +36,8 @@ import Link from "@mui/material/Link";
 import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import RoomRating from "components/Rating/RoomRating";
-import RoomUtilityTags from "components/RoomUtilityTags";
-import useRoomRatings from "hooks/useRoomRatings";
 import { useParams } from "next/navigation";
 import React, { useState } from "react";
-
-import BookingButton from "../../../components/BookingButton";
-import BookingCalendar from "../../../components/BookingCalendar";
-import FeedbackButton from "../../../components/FeedbackButton";
-import RoomBackButton from "../../../components/RoomBackButton";
-import RoomPhotoCarousel from "../../../components/RoomPhotoCarousel";
-import ViewOnMapButton from "../../../components/ViewOnMapButton";
-import useBookings from "../../../hooks/useBookings";
-import useBuilding from "../../../hooks/useBuilding";
-import useFavourites from "../../../hooks/useFavourites";
-import useRoom from "../../../hooks/useRoom";
-import room_photos from "../../../public/room-photos.json";
-import { getBuildingIdFromRoomId } from "../../../utils/utils";
 
 const adjustDateIfMidnight = (inputDate: Date): Date => {
   // Check if the time is midnight (00:00:00)

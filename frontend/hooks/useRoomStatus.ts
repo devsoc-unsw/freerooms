@@ -2,7 +2,7 @@
  * Data fetching hook for status of specific room
  * Uses datetime and filters from Redux store
  */
-import useBuildingStatus from "./useBuildingStatus";
+import useBuildingStatus from "@frontend/hooks/useBuildingStatus";
 
 const useRoomStatus = (roomId: string) => {
   const [campus, grid, roomNumber] = roomId.split("-");

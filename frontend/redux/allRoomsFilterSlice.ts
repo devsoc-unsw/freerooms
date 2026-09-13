@@ -1,10 +1,9 @@
 /**
  * Redux slice to manage the selected filters
  */
+import { RootState } from "@frontend/redux/store";
+import { AllRoomsFilters } from "@frontend/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-import { AllRoomsFilters } from "../types";
-import { RootState } from "./store";
 
 interface RoomsFilterState {
   value: AllRoomsFilters;
@@ -16,6 +15,7 @@ const initialState: RoomsFilterState = {
     usage: "",
     location: "",
     duration: "",
+    recurring: "",
     id: "",
   },
   // Needs to be initalised to silence errors

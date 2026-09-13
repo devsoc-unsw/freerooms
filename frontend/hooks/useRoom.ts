@@ -1,7 +1,7 @@
 /**
  * Data fetching hook for data of specified room
  */
-import useRooms from "./useRooms";
+import useRooms from "@frontend/hooks/useRooms";
 
 const useRoom = (roomId: string) => {
   const { rooms, error } = useRooms();
