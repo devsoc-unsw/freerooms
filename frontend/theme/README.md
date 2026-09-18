@@ -15,6 +15,13 @@ Use semantic colours in MUI components:
 }} />
 ```
 
+## MUI Standards
+MUI has two ways of styling. With `sx` and with styled() components. Use `sx`
+for one of stylings, i.e. 
+
+Use MUI components over regular html, e.g. Box over div, Stack over div flex, 
+Container for horizontally centered divs.
+
 For ordinary CSS, use variables such as `var(--colour-text-primary)` and
 `var(--colour-status-available-background)`.
 
