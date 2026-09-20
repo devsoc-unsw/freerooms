@@ -10,7 +10,6 @@ import {
   HomeOutlined,
   LightModeOutlined,
   Map as MapIcon,
-  MoreHoriz,
   PersonOutlineOutlined,
   SvgIconComponent,
   VolunteerActivismOutlined,
@@ -284,7 +283,7 @@ const MobileNav = () => {
           aria-label="Open more options"
           aria-haspopup="true"
           aria-expanded={more.isOpen}
-          icon={<MoreHoriz />}
+          icon={<MenuIcon />}
           onClick={more.open}
         />
       </MobileNavContainer>
