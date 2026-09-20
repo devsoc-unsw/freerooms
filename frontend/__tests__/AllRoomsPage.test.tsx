@@ -46,16 +46,19 @@ jest.mock("nuqs", () => ({
 
 describe("AllRooms page", () => {
   it("renders AllRooms top icon", () => {
-    render(
-      <Provider store={store}>
-        <NavBar />
-      </Provider>
-    );
+  render(
+    <Provider store={store}>
+      <NavBar />
+    </Provider>
+  );
 
-    const button = screen.getByRole("link", { name: /All rooms/i });
-
-    expect(button).toBeInTheDocument();
+  const links = screen.getAllByRole("link", {
+    name: /Browse buildings and rooms/i,
   });
+
+  expect(links.length).toBeGreaterThan(0);
+  links.forEach((link) => expect(link).toHaveAttribute("href", "/browse"));
+});
 
   it("renders AllRoomsSearchBar", () => {
     render(
