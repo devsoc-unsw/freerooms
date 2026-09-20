@@ -1,7 +1,7 @@
 import BuildingRating from "@frontend/components/ratings/BuildingRating";
 import StatusDot from "@frontend/components/ui/StatusDot";
+import useAllBuildingRatings from "@frontend/hooks/useAllBuildingRatings";
 import useBuilding from "@frontend/hooks/useBuilding";
-import useBuildingRatings from "@frontend/hooks/useBuildingRatings";
 import useBuildingStatus from "@frontend/hooks/useBuildingStatus";
 import { setCurrentBuilding } from "@frontend/redux/currentBuildingSlice";
 import { useDispatch } from "@frontend/redux/hooks";
@@ -122,7 +122,10 @@ const BuildingCard: React.FC<{
 
   const { building } = useBuilding(buildingId);
   const { status } = useBuildingStatus(buildingId);
-  const { ratings } = useBuildingRatings(buildingId);
+  const { ratings } = useAllBuildingRatings();
+  const buildingRating = ratings?.find(
+    (rating) => rating.buildingId === buildingId
+  );
 
   // No id (placeholder card) or the building list hasn't resolved yet
   const loading = !buildingId || !building;
@@ -253,7 +256,9 @@ const BuildingCard: React.FC<{
                 gap: "1px",
               }}
             >
-              <BuildingRating overallRating={ratings?.overallRating ?? 0} />
+              <BuildingRating
+                overallRating={buildingRating?.overallRating ?? 0}
+              />
             </Stack>
           </NameRatingBox>
         ) : (
@@ -279,7 +284,9 @@ const BuildingCard: React.FC<{
                 gap: "1px",
               }}
             >
-              <BuildingRating overallRating={ratings?.overallRating ?? 0} />
+              <BuildingRating
+                overallRating={buildingRating?.overallRating ?? 0}
+              />
             </Stack>
 
             <InfoFooterBox>

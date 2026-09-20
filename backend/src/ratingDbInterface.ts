@@ -9,6 +9,7 @@ import dotenv from "dotenv";
 import { Collection, MongoClient } from "mongodb";
 
 import { MONGO_URI } from "./config";
+import { getRoomsByBuilding } from "./helpers";
 dotenv.config({ path: "src/.env.local" });
 export async function insertRating(
   roomId: string,
@@ -200,4 +201,102 @@ export async function getBuildingRatings(
   }
   // No document found, return 0
   return null;
+}
+
+export async function getAllBuildingRatings(): Promise<
+  BuildingRatingsResponse[]
+> {
+  if (!MONGO_URI) {
+    throw new Error("MONGO_URI not found");
+  }
+
+  const client = new MongoClient(MONGO_URI);
+
+  try {
+    await client.connect();
+    const database = client.db("room-ratings");
+    const collection = database.collection("building-ratings");
+
+    // Only include 'buildingId' and 'overallRating' fields in each document
+    const options = {
+      projection: { _id: 0, buildingId: 1, overallRating: 1 },
+    };
+
+    const buildingDoc = await collection.find({}, options).toArray();
+
+    if (buildingDoc !== null) {
+      const allBuildingRatings =
+        buildingDoc as unknown as BuildingRatingsResponse[];
+      return allBuildingRatings;
+    }
+  } catch (error) {
+    console.error("Error finding items:", error);
+  } finally {
+    await client.close();
+  }
+
+  return [];
+}
+
+export async function getAllRoomRatingsInBuilding(
+  buildingId: string
+): Promise<RatingsResponse[]> {
+  if (!MONGO_URI) {
+    throw new Error("MONGO_URI not found");
+  }
+
+  const buildingRooms = await getRoomsByBuilding(buildingId);
+  const roomIds = Object.keys(buildingRooms.rooms);
+
+  const client = new MongoClient(MONGO_URI);
+
+  try {
+    await client.connect();
+    const database = client.db("room-ratings");
+    const collection = database.collection("ratings");
+
+    const query = { roomId: { $in: roomIds } };
+    // Include only 'roomId' and 'ratings' fields in each document
+    const options = {
+      projection: { _id: 0, roomId: 1, ratings: 1 },
+    };
+
+    const roomDocs = await collection.find(query, options).toArray();
+
+    return (roomDocs as unknown as RawRatingDocument[]).map((doc) => {
+      const averagedRatings: AverageRating = {
+        cleanliness: 0,
+        location: 0,
+        quietness: 0,
+      };
+      let averagedOverallRating = 0;
+
+      doc.ratings.forEach((rating: Rating) => {
+        averagedRatings.cleanliness += rating.cleanliness;
+        averagedRatings.location += rating.location;
+        averagedRatings.quietness += rating.quietness;
+        averagedOverallRating += rating.overall;
+      });
+
+      const numFound = doc.ratings.length;
+      if (numFound > 0) {
+        averagedRatings.cleanliness /= numFound;
+        averagedRatings.location /= numFound;
+        averagedRatings.quietness /= numFound;
+        averagedOverallRating /= numFound;
+      }
+
+      return {
+        roomId: doc.roomId,
+        overallRating: averagedOverallRating,
+        averageRating: averagedRatings,
+      };
+    });
+  } catch (error) {
+    console.error("Error finding items:", error);
+  } finally {
+    await client.close();
+  }
+
+  return [];
 }

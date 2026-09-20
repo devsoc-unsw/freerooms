@@ -1,7 +1,7 @@
 import { RoomStatus } from "@common/types";
 import RoomAvailability from "@frontend/components/rooms/RoomAvailability";
 import useRoom from "@frontend/hooks/useRoom";
-import useRoomRatings from "@frontend/hooks/useRoomRatings";
+import useAllRoomRatingsInBuilding from "@frontend/hooks/useRoomRatingsInBuilding";
 import roomPhotos from "@frontend/public/room-photos.json";
 import getRoomHref from "@frontend/utils/getRoomHref";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -70,11 +70,15 @@ const RoomAvailabilityBox: React.FC<RoomAvailabilityBoxProps> = ({
   date,
 }) => {
   const { room } = useRoom(`${buildingId}-${roomNumber}`);
-  const { data } = useRoomRatings(room ? room.id : "");
+
+  const { data } = useAllRoomRatingsInBuilding(buildingId ? buildingId : "");
+  const roomRating = data?.find(
+    (rating) => rating.roomId === `${buildingId}-${roomNumber}`
+  );
   const ratingValue = (() => {
     // round rating to nearest .5 if a rating exists
-    if (!data) return 0;
-    const rating = data.overallRating;
+    if (!roomRating) return 0;
+    const rating = roomRating.overallRating;
     const frac = rating % 1;
     return frac >= 0.3 && frac <= 0.7
       ? Math.floor(rating) + 0.5

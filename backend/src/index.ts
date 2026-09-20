@@ -11,6 +11,8 @@ import express, {
 import { PORT } from "./config";
 import { getRoomUtilities } from "./helpers";
 import {
+  getAllBuildingRatings,
+  getAllRoomRatingsInBuilding,
   getBuildingRatings,
   getRatings,
   insertBuldingRating,
@@ -105,6 +107,17 @@ app.get(
   })
 );
 
+// Get ratings of all rooms in a building * Working on this one
+app.get(
+  "/api/rating/rooms/:buildingID",
+  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const { buildingID } = req.params as { buildingID: string };
+    const roomRatings = await getAllRoomRatingsInBuilding(buildingID);
+    res.send(roomRatings);
+    next();
+  })
+);
+
 // Insert one rating for a room
 app.post(
   "/api/rating/rate/:buildingID/:roomID",
@@ -144,6 +157,31 @@ app.get(
     }
 
     res.send(buildingRating);
+    next();
+  })
+);
+
+// Get overall ratings for all buildings
+app.get(
+  "/api/buildingRating",
+  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const buildingData = await getAllBuildings();
+    const buildingRatings = await getAllBuildingRatings();
+
+    const ratingsByBuildingId = new Map(
+      buildingRatings.map((rating) => [rating.buildingId, rating])
+    );
+
+    const allBuildingRatings: BuildingRatingsResponse[] =
+      buildingData.buildings.map(
+        (building) =>
+          ratingsByBuildingId.get(building.id) ?? {
+            buildingId: building.id,
+            overallRating: 0,
+          }
+      );
+
+    res.send(allBuildingRatings);
     next();
   })
 );
