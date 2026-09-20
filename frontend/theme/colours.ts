@@ -24,6 +24,7 @@ const values = {
     backgroundMuted: "#F0F0F0",
     toolbar: "#F8F8F9",
     yellow: "#FFA600",
+    glow: "rgba(156, 67, 38, 0.1)",
   },
   dark: {
     accentPrimary: "#D4613C",
@@ -48,6 +49,7 @@ const values = {
     backgroundMuted: "#363636",
     toolbar: "#313132",
     yellow: "#863D00",
+    glow: "rgba(203, 118, 91, 0.1)",
   },
 } as const;
 
@@ -128,6 +130,9 @@ export function getColours(mode: ThemeMode) {
       default: c.accentTertiary,
       subtle: controlNeutral[mode],
       disabled: c.disabledOutline,
+    },
+    shadow: {
+      default: c.glow,
     },
     status: {
       available: {

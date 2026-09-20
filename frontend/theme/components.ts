@@ -37,7 +37,7 @@ export const components: Components<Theme> = {
     },
   },
   MuiButton: {
-    defaultProps: { disableElevation: true },
+    defaultProps: { disableElevation: true, disableRipple: true },
     styleOverrides: {
       root: ({ theme }) => ({
         borderRadius: theme.radius.md,
@@ -63,6 +63,39 @@ export const components: Components<Theme> = {
       }),
       iconEmpty: ({ theme }) => ({
         color: theme.colours.rating.empty,
+      }),
+    },
+  },
+  MuiPopover: {
+    defaultProps: {
+      disableScrollLock: true,
+    },
+    styleOverrides: {
+      paper: ({ theme }) => ({
+        backgroundColor: theme.colours.surface.paper,
+        borderWidth: theme.sizes.border.weight,
+        borderStyle: "solid",
+        borderColor: theme.colours.accent.secondary,
+        borderRadius: theme.radius.lg,
+        boxShadow: `4px 4px 8px 0px ${theme.colours.shadow.default}`,
+        padding: theme.space.sm,
+        marginTop: theme.space.md,
+        gap: theme.space.lg,
+      }),
+    },
+  },
+  MuiListItemIcon: {
+    styleOverrides: {
+      root: ({ theme }) => ({
+        color: "inherit",
+      }),
+    },
+  },
+  MuiIconButton: {
+    defaultProps: { disableRipple: true },
+    styleOverrides: {
+      root: ({ theme }) => ({
+        color: theme.colours.text.primary,
       }),
     },
   },

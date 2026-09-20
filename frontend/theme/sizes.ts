@@ -11,7 +11,7 @@ export const sizes = {
     lg: 32,
   },
   navBar: {
-    height: 74
+    height: 74,
   },
   searchBar: {
     width: 1440,
@@ -22,6 +22,12 @@ export const sizes = {
   },
   picker: {
     width: 133,
+  },
+  loginPopover: {
+    width: 200,
+  },
+  border: {
+    weight: 1,
   },
 } as const;
 

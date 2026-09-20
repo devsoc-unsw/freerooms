@@ -22,7 +22,7 @@ const BrandingText = styled(Typography)<TypographyProps>(({ theme }) => ({
   fontWeight: typography.brand.fontWeight,
   fontFamily: theme.typography.fontFamily,
   fontSize: typography.brand.fontSize,
-  [theme.breakpoints.down("sm")]: {
+  [theme.breakpoints.down("lg")]: {
     display: "none",
   },
 }));

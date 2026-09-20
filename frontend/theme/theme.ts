@@ -56,7 +56,7 @@ export function createAppTheme(mode: ThemeMode) {
     radius,
     sizes,
     shape: { borderRadius: radius.md },
-    spacing: (value:number) => `${value}px`,
+    spacing: (value: number) => `${value}px`,
     typography,
     components,
   });
