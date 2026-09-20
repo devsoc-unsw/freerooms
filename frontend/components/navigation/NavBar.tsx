@@ -306,9 +306,11 @@ const TabletHamburgerButton = styled(IconButton)(({ theme }) => ({
 
 // Hide popovers if resized out of tablet range
 const TabletHamburgerDropdown = styled(Menu)(({ theme }) => ({
-  width: theme.sizes.navbarPopover.width,
   [theme.breakpoints.down("sm")]: { display: "none" },
   [theme.breakpoints.up("lg")]: { display: "none" },
+  "& .MuiMenu-paper": {
+    width: theme.sizes.navbarPopover.width,
+  },
 }));
 
 // ---------- React components ----------
