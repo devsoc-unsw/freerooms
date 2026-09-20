@@ -149,7 +149,7 @@ const NavMenuItem = ({ item, ...props }: NavMenuItemProps) => {
       {...props}
     >
       <ListItemIcon>
-        <Icon fontSize="small" />
+        <Icon />
       </ListItemIcon>
       <ListItemText>{label}</ListItemText>
     </MenuItem>
@@ -164,6 +164,7 @@ const NavMenuItem = ({ item, ...props }: NavMenuItemProps) => {
 // Navbar links
 const MOBILE_TAB_ITEMS = NAV_TAB_ITEMS;
 const MOBILE_MORE_ITEMS: NavItem[] = [HOME_ITEM, ...NAV_MORE_ITEMS];
+const MOBILE_MORE_TAB = "more";
 
 // Determine which tab to highlight
 const MOBILE_TAB_HREFS = MOBILE_TAB_ITEMS.map((item) => item.href);
@@ -172,7 +173,7 @@ const getMobileNavValue = (
   path: string,
   isMoreOpen: boolean
 ): string | false => {
-  if (isMoreOpen || MOBILE_MORE_HREFS.includes(path)) return "more";
+  if (isMoreOpen || MOBILE_MORE_HREFS.includes(path)) return MOBILE_MORE_TAB;
   if (MOBILE_TAB_HREFS.includes(path)) return path;
   return false;
 };
@@ -231,7 +232,7 @@ const MobileMoreMenu = ({ anchorEl, onClose }: MobileMoreMenuProps) => {
 
       <MenuItem aria-label={actionLabel} onClick={handleDarkModeClick}>
         <ListItemIcon>
-          <Icon fontSize="small" />
+          <Icon />
         </ListItemIcon>
         <ListItemText>{menuLabel}</ListItemText>
       </MenuItem>
@@ -239,10 +240,10 @@ const MobileMoreMenu = ({ anchorEl, onClose }: MobileMoreMenuProps) => {
       {/* Todo: replace when profiles implemented. not currently clickable */}
       <MenuItem disabled aria-label="Profile (coming soon)">
         <ListItemIcon>
-          <PersonOutlineOutlined fontSize="small" />
+          <PersonOutlineOutlined />
         </ListItemIcon>
         <ListItemText>Profile</ListItemText>
-        <Typography variant="caption" color="text.secondary" sx={{ ml: 2 }}>
+        <Typography variant="caption" color="text.secondary" sx={{ ml: (theme) => theme.space.xs }}>
           Coming soon!
         </Typography>
       </MenuItem>
@@ -275,7 +276,7 @@ const MobileNav = () => {
         ))}
         <BottomNavigationAction
           label="More"
-          value={MOBILE_MORE_ITEMS}
+          value={MOBILE_MORE_TAB}
           aria-label="Open more options"
           aria-haspopup="true"
           aria-expanded={more.isOpen}
