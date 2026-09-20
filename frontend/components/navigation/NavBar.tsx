@@ -187,7 +187,7 @@ const MobileNavContainer = styled(BottomNavigation)(({ theme }) => ({
   zIndex: theme.zIndex.appBar,
   background: theme.colours.surface.appBar,
   height: "auto",
-  paddingBottom: "env(safe-area-inset-bottom)", // iPhone home indicator
+  paddingBottom: "env(safe-area-inset-bottom)",
   [theme.breakpoints.up("sm")]: { display: "none" },
   "& .MuiBottomNavigationAction-root": {
     color: theme.colours.text.primary,
@@ -243,7 +243,11 @@ const MobileMoreMenu = ({ anchorEl, onClose }: MobileMoreMenuProps) => {
           <PersonOutlineOutlined />
         </ListItemIcon>
         <ListItemText>Profile</ListItemText>
-        <Typography variant="caption" color="text.secondary" sx={{ ml: (theme) => theme.space.xs }}>
+        <Typography
+          variant="caption"
+          color="text.secondary"
+          sx={{ ml: (theme) => theme.space.xs }}
+        >
           Coming soon!
         </Typography>
       </MenuItem>
@@ -297,13 +301,13 @@ const MobileNav = () => {
 // Tablet dropdown menu navigation = mobile tab + mobile more tabs
 const TABLET_DESKTOP_ITEMS: NavItem[] = [...NAV_TAB_ITEMS, ...NAV_MORE_ITEMS];
 
-// Hide hamburger menu >1200px width
 const TabletHamburgerButton = styled(IconButton)(({ theme }) => ({
   [theme.breakpoints.up("lg")]: { display: "none" },
 }));
 
 // Hide popovers if resized out of tablet range
 const TabletHamburgerDropdown = styled(Menu)(({ theme }) => ({
+  width: theme.sizes.navbarPopover.width,
   [theme.breakpoints.down("sm")]: { display: "none" },
   [theme.breakpoints.up("lg")]: { display: "none" },
 }));
@@ -459,7 +463,7 @@ const LoginButton = () => {
           sx={{
             p: (theme) => theme.space.sm,
             gap: (theme) => theme.space.xs,
-            width: (theme) => theme.sizes.loginPopover.width,
+            width: (theme) => theme.sizes.navbarPopover.width,
           }}
         >
           <Typography variant="subtitle1" component="h2">

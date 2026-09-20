@@ -23,7 +23,7 @@ export const sizes = {
   picker: {
     width: 133,
   },
-  loginPopover: {
+  navbarPopover: {
     width: 200,
   },
   border: {
