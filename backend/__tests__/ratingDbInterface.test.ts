@@ -213,7 +213,9 @@ describe("insertRating", () => {
   it("still closes the client if the update throws", async () => {
     mockCollection.updateOne.mockRejectedValueOnce(new Error("boom"));
 
-    await expect(insertRating("K-K17-G11", [4, 5, 3, 4])).resolves.toBeUndefined();
+    await expect(
+      insertRating("K-K17-G11", [4, 5, 3, 4])
+    ).resolves.toBeUndefined();
 
     expect(mockClient.close).toHaveBeenCalled();
   });
