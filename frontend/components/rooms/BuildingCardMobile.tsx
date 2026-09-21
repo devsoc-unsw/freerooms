@@ -1,6 +1,6 @@
 import StatusDot from "@frontend/components/ui/StatusDot";
+import useAllBuildingRatings from "@frontend/hooks/useAllBuildingRatings";
 import useBuilding from "@frontend/hooks/useBuilding";
-import useBuildingRatings from "@frontend/hooks/useBuildingRatings";
 import useBuildingStatus from "@frontend/hooks/useBuildingStatus";
 import { setCurrentBuilding } from "@frontend/redux/currentBuildingSlice";
 import { useDispatch } from "@frontend/redux/hooks";
@@ -75,7 +75,10 @@ const BuildingCardMobile: React.FC<{
   const theme = useTheme();
   const { building } = useBuilding(buildingId);
   const { status } = useBuildingStatus(buildingId);
-  const { ratings } = useBuildingRatings(buildingId);
+  const { ratings } = useAllBuildingRatings();
+  const buildingRating = ratings?.find(
+    (rating) => rating.buildingId === buildingId
+  );
 
   // No id (placeholder) or the building list hasn't resolved yet so load skeleton
   if (!buildingId || !building) {
@@ -161,7 +164,7 @@ const BuildingCardMobile: React.FC<{
                   color: theme.colours.neutral.black,
                 }}
               >
-                {ratings?.overallRating}
+                {buildingRating?.overallRating}
               </Typography>
               <StarIcon
                 sx={{ fontSize: "1rem", color: theme.colours.rating.display }}

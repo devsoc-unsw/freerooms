@@ -1,6 +1,7 @@
 import {
   Booking,
   BookingsResponse,
+  RoomsResponse,
   RoomStatus,
   RoomUtilitiesResponse,
 } from "@common/types";
@@ -204,4 +205,22 @@ export const isRecurringFree = (
 export const getBookingsForRange = async (start: Date, end: Date) => {
   const res = await queryBookingsInRange(start, end);
   return Object.fromEntries(res.rooms.map((room) => [room.id, room]));
+};
+
+// Get all rooms in a specific building
+export const getRoomsByBuilding = async (
+  buildingId: string
+): Promise<RoomsResponse> => {
+  const buildingData = await getBuildingRoomData();
+  const building = buildingData[buildingId];
+  if (!building) {
+    throw new Error(`Building ${buildingId} not found`);
+  }
+
+  const res: RoomsResponse = { rooms: {} };
+  Object.values(building.rooms).forEach((room) => {
+    res.rooms[room.id] = room;
+  });
+
+  return res;
 };
