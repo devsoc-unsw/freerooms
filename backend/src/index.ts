@@ -107,7 +107,7 @@ app.get(
   })
 );
 
-// Get ratings of all rooms in a building * Working on this one
+// Get ratings of all rooms in a building 
 app.get(
   "/api/rating/rooms/:buildingID",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
