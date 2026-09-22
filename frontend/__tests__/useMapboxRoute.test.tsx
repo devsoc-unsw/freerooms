@@ -3,7 +3,7 @@ import "@testing-library/jest-dom";
 import type { Building } from "@common/types";
 import useMapboxRoute, {
   type RouteGeometry,
-} from "@frontend/hooks/useMapboxRoute";
+} from "@frontend/hooks/map/useMapboxRoute";
 import { act, renderHook } from "@testing-library/react";
 
 jest.mock("@frontend/config", () => ({

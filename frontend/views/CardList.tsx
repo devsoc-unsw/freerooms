@@ -1,9 +1,9 @@
 import { Building } from "@common/types";
 import BuildingCard from "@frontend/components/rooms/BuildingCard";
 import BuildingCardMobile from "@frontend/components/rooms/BuildingCardMobile";
-import useBuildings from "@frontend/hooks/useBuildings";
-import useStatus from "@frontend/hooks/useStatus";
-import useUserLocation from "@frontend/hooks/useUserLocation";
+import useBuildings from "@frontend/hooks/buildings/useBuildings";
+import useStatus from "@frontend/hooks/rooms/useStatus";
+import useUserLocation from "@frontend/hooks/map/useUserLocation";
 import calculateDistance from "@frontend/utils/calculateDistance";
 import { getNumFreerooms } from "@frontend/utils/utils";
 import { Box } from "@mui/material";

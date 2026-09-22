@@ -1,6 +1,6 @@
 import { AppSurface, AppTextField } from "@frontend/components/ui";
-import useBuildings from "@frontend/hooks/useBuildings";
-import useRooms from "@frontend/hooks/useRooms";
+import useBuildings from "@frontend/hooks/buildings/useBuildings";
+import useRooms from "@frontend/hooks/rooms/useRooms";
 import { setCurrentBuilding } from "@frontend/redux/currentBuildingSlice";
 import { useDispatch, useSelector } from "@frontend/redux/hooks";
 import { closeSearch, selectSearchOpen } from "@frontend/redux/searchOpenSlice";

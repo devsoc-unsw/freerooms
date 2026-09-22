@@ -10,10 +10,10 @@ import {
   MAPBOX_STYLE_DARK,
   MAPBOX_STYLE_LIGHT,
 } from "@frontend/config";
-import useBuilding from "@frontend/hooks/useBuilding";
-import useBuildings from "@frontend/hooks/useBuildings";
-import useMapboxRoute from "@frontend/hooks/useMapboxRoute";
-import useUserLocation from "@frontend/hooks/useUserLocation";
+import useBuilding from "@frontend/hooks/buildings/useBuilding";
+import useBuildings from "@frontend/hooks/buildings/useBuildings";
+import useMapboxRoute from "@frontend/hooks/map/useMapboxRoute";
+import useUserLocation from "@frontend/hooks/map/useUserLocation";
 import { setCurrentBuilding } from "@frontend/redux/currentBuildingSlice";
 import { useDispatch } from "@frontend/redux/hooks";
 import calculateDistance from "@frontend/utils/calculateDistance";

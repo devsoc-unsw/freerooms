@@ -2,7 +2,7 @@
  * Data fetching hook for status of specific building
  * Uses datetime and filters from Redux store
  */
-import useStatus from "@frontend/hooks/useStatus";
+import useStatus from "@frontend/hooks/rooms/useStatus";
 
 const useBuildingStatus = (buildingId?: string) => {
   const { status, error } = useStatus();

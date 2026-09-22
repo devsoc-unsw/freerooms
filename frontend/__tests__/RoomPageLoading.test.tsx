@@ -10,11 +10,11 @@ const mockUseBuilding = jest.fn();
 jest.mock("next/navigation", () => ({
   useParams: () => ({ room: "K-J17-101" }),
 }));
-jest.mock("@frontend/hooks/useRoom", () => ({
+jest.mock("@frontend/hooks/rooms/useRoom", () => ({
   __esModule: true,
   default: () => mockUseRoom(),
 }));
-jest.mock("@frontend/hooks/useBuilding", () => ({
+jest.mock("@frontend/hooks/buildings/useBuilding", () => ({
   __esModule: true,
   default: () => mockUseBuilding(),
 }));

@@ -1,8 +1,8 @@
 import RecurringWeeksSlider from "@frontend/components/booking/RecurringWeeksSlider";
 import DropdownSelections from "@frontend/components/filters/DropdownSelections";
 import { AppButton, AppSurface } from "@frontend/components/ui";
-import useDateTimeQuery from "@frontend/hooks/useDateTimeQuery";
-import useQueryFilter from "@frontend/hooks/useQueryFilter";
+import useDateTimeQuery from "@frontend/hooks/query/useDateTimeQuery";
+import useQueryFilter from "@frontend/hooks/query/useQueryFilter";
 import {
   clearFilters,
   selectFilters,

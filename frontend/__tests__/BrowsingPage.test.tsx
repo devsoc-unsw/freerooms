@@ -2,7 +2,7 @@ import "@testing-library/jest-dom";
 
 import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithRedux";
 import Page from "@frontend/app/browse/page";
-import useUserLocation from "@frontend/hooks/useUserLocation";
+import useUserLocation from "@frontend/hooks/map/useUserLocation";
 import store from "@frontend/redux/store";
 import { screen } from "@testing-library/react";
 import { Provider } from "react-redux";
@@ -33,7 +33,7 @@ jest.mock("nuqs", () => ({
 }));
 
 // The browsing page tests do not use geolocation itself.
-jest.mock("@frontend/hooks/useUserLocation");
+jest.mock("@frontend/hooks/map/useUserLocation");
 
 const mockUseUserLocation = useUserLocation as jest.MockedFunction<
   typeof useUserLocation

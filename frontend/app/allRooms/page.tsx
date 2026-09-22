@@ -6,7 +6,7 @@ import Room from "@frontend/components/rooms/AllRoomsRoom";
 import RoomList from "@frontend/components/rooms/AllRoomsRoomList";
 import AllRoomsSearchBar from "@frontend/components/rooms/AllRoomsSearchBar";
 import { AppButton } from "@frontend/components/ui";
-import useAllRooms from "@frontend/hooks/useAllRooms";
+import useAllRooms from "@frontend/hooks/rooms/useAllRooms";
 import { selectAllRoomsFilters } from "@frontend/redux/allRoomsFilterSlice";
 import { Alert, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";

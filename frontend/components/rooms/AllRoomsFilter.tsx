@@ -1,6 +1,6 @@
 import FilterSideBar from "@frontend/components/filters/FilterSideBar";
-import useAllRoomsQuery from "@frontend/hooks/useAllRoomsQuery";
-import useDateTimeQuery from "@frontend/hooks/useDateTimeQuery";
+import useAllRoomsQuery from "@frontend/hooks/query/useAllRoomsQuery";
+import useDateTimeQuery from "@frontend/hooks/query/useDateTimeQuery";
 import { clearAllRoomsFilters } from "@frontend/redux/allRoomsFilterSlice";
 import { useDispatch } from "@frontend/redux/hooks";
 import { AllRoomsFilters } from "@frontend/types";

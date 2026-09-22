@@ -48,7 +48,7 @@ jest.mock("@mui/material", () => ({
   useMediaQuery: jest.fn().mockReturnValue(false),
 }));
 
-jest.mock("@frontend/hooks/useBuilding", () => ({
+jest.mock("@frontend/hooks/buildings/useBuilding", () => ({
   __esModule: true,
   default: (buildingId: string) => {
     return {
@@ -58,7 +58,7 @@ jest.mock("@frontend/hooks/useBuilding", () => ({
   },
 }));
 
-jest.mock("@frontend/hooks/useRoom", () => ({
+jest.mock("@frontend/hooks/rooms/useRoom", () => ({
   __esModule: true,
   default: (roomId: string) => {
     return {

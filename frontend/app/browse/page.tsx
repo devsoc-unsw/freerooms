@@ -6,7 +6,7 @@ import FeedbackButton from "@frontend/components/feedback/FeedbackButton";
 import FilterBar from "@frontend/components/filters/FilterBar";
 import SortBar from "@frontend/components/filters/SortBar";
 import SearchBar from "@frontend/components/search/SearchBar";
-import useQuerySort from "@frontend/hooks/useQuerySort";
+import useQuerySort from "@frontend/hooks/query/useQuerySort";
 import BuildingDrawer from "@frontend/views/BuildingDrawer";
 import CardList from "@frontend/views/CardList";
 import Container from "@mui/material/Container";

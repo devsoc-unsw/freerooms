@@ -1,7 +1,7 @@
 import type { Building } from "@common/types";
 import ViewOnMapButton from "@frontend/components/navigation/ViewOnMapButton";
 import Button from "@frontend/components/ui/Button";
-import useBuildingStatus from "@frontend/hooks/useBuildingStatus";
+import useBuildingStatus from "@frontend/hooks/buildings/useBuildingStatus";
 import {
   selectCurrentBuilding,
   setCurrentBuilding,

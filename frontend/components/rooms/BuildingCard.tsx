@@ -1,8 +1,8 @@
 import BuildingRating from "@frontend/components/ratings/BuildingRating";
 import StatusDot from "@frontend/components/ui/StatusDot";
-import useAllBuildingRatings from "@frontend/hooks/useAllBuildingRatings";
-import useBuilding from "@frontend/hooks/useBuilding";
-import useBuildingStatus from "@frontend/hooks/useBuildingStatus";
+import useAllBuildingRatings from "@frontend/hooks/ratings/useAllBuildingRatings";
+import useBuilding from "@frontend/hooks/buildings/useBuilding";
+import useBuildingStatus from "@frontend/hooks/buildings/useBuildingStatus";
 import { setCurrentBuilding } from "@frontend/redux/currentBuildingSlice";
 import { useDispatch } from "@frontend/redux/hooks";
 import { getNumFreerooms } from "@frontend/utils/utils";

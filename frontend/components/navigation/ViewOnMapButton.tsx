@@ -1,5 +1,5 @@
 import Button from "@frontend/components/ui/Button";
-import useBuilding from "@frontend/hooks/useBuilding";
+import useBuilding from "@frontend/hooks/buildings/useBuilding";
 import { setCurrentBuilding } from "@frontend/redux/currentBuildingSlice";
 import { useDispatch } from "@frontend/redux/hooks";
 import { useTheme } from "@mui/material";

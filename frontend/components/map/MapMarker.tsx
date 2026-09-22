@@ -1,6 +1,6 @@
 import { Building, BuildingStatus } from "@common/types";
-import useBuilding from "@frontend/hooks/useBuilding";
-import useBuildingStatus from "@frontend/hooks/useBuildingStatus";
+import useBuilding from "@frontend/hooks/buildings/useBuilding";
+import useBuildingStatus from "@frontend/hooks/buildings/useBuildingStatus";
 import {
   selectCurrentBuilding,
   setCurrentBuilding,

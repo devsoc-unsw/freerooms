@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 
-import useBuildings from "@frontend/hooks/useBuildings";
+import useBuildings from "@frontend/hooks/buildings/useBuildings";
 import CardList from "@frontend/views/CardList";
 import { render } from "@testing-library/react";
 import React from "react";
@@ -21,15 +21,15 @@ jest.mock("framer-motion", () => ({
     }
   ),
 }));
-jest.mock("@frontend/hooks/useBuildings", () => ({
+jest.mock("@frontend/hooks/buildings/useBuildings", () => ({
   __esModule: true,
   default: jest.fn(),
 }));
-jest.mock("@frontend/hooks/useStatus", () => ({
+jest.mock("@frontend/hooks/rooms/useStatus", () => ({
   __esModule: true,
   default: () => ({ status: undefined }),
 }));
-jest.mock("@frontend/hooks/useUserLocation", () => ({
+jest.mock("@frontend/hooks/map/useUserLocation", () => ({
   __esModule: true,
   default: () => ({ userLat: null, userLng: null }),
 }));

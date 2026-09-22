@@ -2,7 +2,7 @@ import "@testing-library/jest-dom";
 
 import useUserLocation, {
   type UserLocation,
-} from "@frontend/hooks/useUserLocation";
+} from "@frontend/hooks/map/useUserLocation";
 import { act, renderHook, waitFor } from "@testing-library/react";
 
 const createPosition = (

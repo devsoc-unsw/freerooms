@@ -1,7 +1,7 @@
 import { RoomStatus } from "@common/types";
 import RoomAvailability from "@frontend/components/rooms/RoomAvailability";
-import useRoom from "@frontend/hooks/useRoom";
-import useAllRoomRatingsInBuilding from "@frontend/hooks/useRoomRatingsInBuilding";
+import useRoom from "@frontend/hooks/rooms/useRoom";
+import useAllRoomRatingsInBuilding from "@frontend/hooks/ratings/useRoomRatingsInBuilding";
 import roomPhotos from "@frontend/public/room-photos.json";
 import getRoomHref from "@frontend/utils/getRoomHref";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
