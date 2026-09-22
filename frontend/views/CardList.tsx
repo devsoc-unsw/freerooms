@@ -8,7 +8,7 @@ import calculateDistance from "@frontend/utils/calculateDistance";
 import { getNumFreerooms } from "@frontend/utils/utils";
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import React from "react";
 
 const CardGrid = styled("div")(() => ({

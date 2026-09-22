@@ -7,7 +7,7 @@ import React from "react";
 
 // CardList animates the grid with framer-motion; stub it so exiting children
 // unmount immediately (jsdom never completes the exit animation otherwise).
-jest.mock("framer-motion", () => ({
+jest.mock("motion/react", () => ({
   __esModule: true,
   AnimatePresence: ({ children }: { children: React.ReactNode }) => (
     <>{children}</>

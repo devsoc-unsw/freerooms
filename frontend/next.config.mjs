@@ -1,8 +1,11 @@
+import path from "node:path";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: "standalone",
-  experimental: {
-    externalDir: true,
+  outputFileTracingRoot: path.join(import.meta.dirname, ".."),
+  turbopack: {
+    root: path.join(import.meta.dirname, ".."),
   },
   transpilePackages: ["swiper", "ssr-window", "dom7"],
   images: {
@@ -15,4 +18,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;

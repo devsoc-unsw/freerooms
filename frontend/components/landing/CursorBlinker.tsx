@@ -1,5 +1,5 @@
 import { styled } from "@mui/material/styles";
-import { motion, Variants } from "framer-motion";
+import { motion, type Variants } from "motion/react";
 
 const cursorVariants = {
   blinking: {

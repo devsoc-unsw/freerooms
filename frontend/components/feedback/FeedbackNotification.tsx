@@ -1,4 +1,4 @@
-import { NotificationOutlined } from "@ant-design/icons";
+import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import { styled, useTheme } from "@mui/material/styles";
 import { notification } from "antd";
 import { useEffect } from "react";
@@ -41,7 +41,7 @@ const FeedbackNotification = () => {
           !
         </>
       ),
-      icon: <NotificationOutlined style={{ color: accent }} />,
+      icon: <NotificationsOutlinedIcon style={{ color: accent }} />,
       duration: 15,
       placement: "bottomRight",
     });

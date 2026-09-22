@@ -1,6 +1,6 @@
 import CursorBlinker from "@frontend/components/landing/CursorBlinker";
 import { styled } from "@mui/material/styles";
-import { animate, motion, useMotionValue, useTransform } from "framer-motion";
+import { animate, motion, useMotionValue, useTransform } from "motion/react";
 import { useEffect } from "react";
 
 export default function TextAnimation() {
