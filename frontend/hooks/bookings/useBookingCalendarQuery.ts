@@ -9,7 +9,7 @@ const validViewQueries: View[] = [Views.WEEK, Views.DAY];
 const isValidView = (view: string): view is View =>
   validViewQueries.includes(view as View);
 
-const useBookingCalenderQuery = (
+const useBookingCalendarQuery = (
   defaultDate: Date
 ): [View, Date, (view: View) => void, (date: Date) => void] => {
   const [calendarParams, setCalendarParams] = useQueryStates(
@@ -61,4 +61,4 @@ const useBookingCalenderQuery = (
   return [view, date, setView, setDate];
 };
 
-export default useBookingCalenderQuery;
+export default useBookingCalendarQuery;

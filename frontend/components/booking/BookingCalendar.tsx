@@ -3,7 +3,7 @@
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
 import { Booking } from "@common/types";
-import useBookingCalenderQuery from "@frontend/hooks/useBookingCalenderQuery";
+import useBookingCalendarQuery from "@frontend/hooks/bookings/useBookingCalendarQuery";
 import { selectDatetime } from "@frontend/redux/datetimeSlice";
 import { useSelector } from "@frontend/redux/hooks";
 import toSydneyTime from "@frontend/utils/toSydneyTime";
@@ -236,7 +236,7 @@ const BookingCalendar: React.FC<{
   const defaultDate = React.useMemo(() => toSydneyTime(dateTime), [dateTime]);
 
   const [desktopView, date, setDesktopView, setDate] =
-    useBookingCalenderQuery(defaultDate);
+    useBookingCalendarQuery(defaultDate);
 
   const currView = isMobile ? Views.DAY : desktopView;
 
