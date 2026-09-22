@@ -5,7 +5,7 @@ import {
   RoomStatus,
   RoomUtilitiesResponse,
 } from "@common/types";
-import { toZonedTime, fromZonedTime } from "date-fns-tz";
+import { fromZonedTime, toZonedTime } from "date-fns-tz";
 
 import {
   queryBookingsInRange,
