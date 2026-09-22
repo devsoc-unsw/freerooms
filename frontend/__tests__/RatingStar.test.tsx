@@ -5,7 +5,6 @@ import renderWithRedux from "@frontend/__tests__/utils/renderWithRedux";
 import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithRedux";
 import Page from "@frontend/app/room/[room]/page";
 import BuildingCard from "@frontend/components/rooms/BuildingCard";
-import { useDispatch, useSelector } from "@frontend/redux/hooks";
 import store from "@frontend/redux/store";
 import RoomAvailabilityBox from "@frontend/views/RoomAvailabilityBox";
 import { useMediaQuery } from "@mui/material";
@@ -62,7 +61,7 @@ jest.mock("@frontend/hooks/buildings/useBuilding", () => ({
 
 jest.mock("@frontend/hooks/rooms/useRoom", () => ({
   __esModule: true,
-  default: (roomId: string) => {
+  default: () => {
     return {
       room: {
         name: "Ainsworth 101",

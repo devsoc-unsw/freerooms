@@ -225,9 +225,8 @@ const BookingCalendarSkeleton = () => (
 
 const BookingCalendar: React.FC<{
   events: Array<Booking>;
-  roomID: string;
   loading?: boolean;
-}> = ({ events, roomID, loading }) => {
+}> = ({ events, loading }) => {
   const theme = useTheme();
   // Enforce day view on mobile
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));

@@ -102,7 +102,6 @@ export default function Page() {
         <RoomPhotoCarousel photos={photos} loading={!room} />
         <BookingCalendar
           events={adjustedBookings ?? []}
-          roomID={room?.id ?? ""}
           loading={!room}
         />
         <RoomUtilityTags roomId={room?.id} />

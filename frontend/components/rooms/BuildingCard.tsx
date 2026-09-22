@@ -6,7 +6,6 @@ import useAllBuildingRatings from "@frontend/hooks/ratings/useAllBuildingRatings
 import { setCurrentBuilding } from "@frontend/redux/currentBuildingSlice";
 import { useDispatch } from "@frontend/redux/hooks";
 import { getNumFreerooms } from "@frontend/utils/utils";
-import StarIcon from "@mui/icons-material/Star";
 import { Typography, TypographyProps } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";

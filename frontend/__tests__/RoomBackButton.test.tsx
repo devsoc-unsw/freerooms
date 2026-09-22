@@ -4,7 +4,7 @@ import RoomBackButton from "@frontend/components/navigation/RoomBackButton";
 import currentBuildingSlice from "@frontend/redux/currentBuildingSlice";
 import { useDispatch, useSelector } from "@frontend/redux/hooks";
 import { configureStore } from "@reduxjs/toolkit";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { useRouter } from "next/navigation";
 import { Provider } from "react-redux";
 
@@ -42,10 +42,4 @@ describe("RoomBackButton", () => {
     const backButton = screen.getByRole("button", { name: "back" });
     expect(backButton).toBeInTheDocument();
   });
-
-  // test("back button works", () => {
-  //   const backButton = screen.getByRole("button", { name: "back" });
-  //   fireEvent.click(backButton);
-  //   expect(router.back).toHaveBeenCalled();
-  // });
 });

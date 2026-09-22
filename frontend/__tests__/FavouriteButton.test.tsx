@@ -51,7 +51,7 @@ jest.mock("@frontend/hooks/buildings/useBuilding", () => ({
 
 jest.mock("@frontend/hooks/rooms/useRoom", () => ({
   __esModule: true,
-  default: (roomId: string) => {
+  default: () => {
     return {
       room: {
         name: "Ainsworth 101",

@@ -1,7 +1,7 @@
 import { BuildingStatus } from "@common/types";
 
 const INITIALISING = -2;
-const FAILED = -1;
+// const FAILED = -1;
 
 export const getNumFreerooms = (
   buildingStatus: BuildingStatus | undefined

@@ -8,7 +8,6 @@ import Room from "@frontend/components/rooms/AllRoomsRoom";
 import AllRoomsSearchBar from "@frontend/components/rooms/AllRoomsSearchBar";
 import store from "@frontend/redux/store";
 import toSydneyTime from "@frontend/utils/toSydneyTime";
-import { createTheme, ThemeProvider } from "@mui/material";
 import { fireEvent, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 

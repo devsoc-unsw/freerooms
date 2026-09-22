@@ -4,7 +4,6 @@ import FeedbackButton from "@frontend/components/feedback/FeedbackButton";
 import AllRoomsFilter from "@frontend/components/rooms/AllRoomsFilter";
 import Room from "@frontend/components/rooms/AllRoomsRoom";
 import RoomList from "@frontend/components/rooms/AllRoomsRoomList";
-import AllRoomsSearchBar from "@frontend/components/rooms/AllRoomsSearchBar";
 import { AppButton } from "@frontend/components/ui";
 import useAllRooms from "@frontend/hooks/rooms/useAllRooms";
 import { selectAllRoomsFilters } from "@frontend/redux/allRoomsFilterSlice";

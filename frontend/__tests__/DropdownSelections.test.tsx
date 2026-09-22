@@ -2,8 +2,7 @@ import "@testing-library/jest-dom";
 
 import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithRedux";
 import DropdownSelections from "@frontend/components/filters/DropdownSelections";
-import { createTheme, ThemeProvider } from "@mui/material";
-import { screen, within } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 
 describe("DropdownSelections", () => {
   it("Displays the correct filter type given", () => {
@@ -40,9 +39,7 @@ describe("DropdownSelections", () => {
           recurring: "",
           id: "",
         }}
-        handleSelect={(key, item) => {
-          return;
-        }}
+        handleSelect={() => {}}
       />
     );
     const filterTitle = screen.getByText("Room Capacity");
