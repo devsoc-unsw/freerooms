@@ -25,9 +25,8 @@ import React from "react";
 import { useLocalStorage } from "usehooks-ts";
 
 const RECENT_SEARCH_LIMIT = 3;
-interface SearchProps {}
 
-const SearchModal: React.FC<SearchProps> = () => {
+const SearchModal = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const path = usePathname();

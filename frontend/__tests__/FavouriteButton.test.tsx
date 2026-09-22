@@ -9,10 +9,12 @@ import { Provider } from "react-redux";
 
 // Mock DarkModeContext to avoid test failing due to importing NuqsAdapter
 jest.mock("@frontend/app/clientLayout", () => ({
-  DarkModeContext: require("react").createContext({
-    isDarkMode: false,
-    toggleDarkMode: () => {},
-  }),
+  DarkModeContext: jest
+    .requireActual<typeof import("react")>("react")
+    .createContext({
+      isDarkMode: false,
+      toggleDarkMode: () => {},
+    }),
 }));
 
 jest.mock("nuqs", () => ({

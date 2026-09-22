@@ -24,7 +24,7 @@ export function renderWithTheme(
 ) {
   const theme = createAppTheme("light");
 
-  function Wrapper({ children }: PropsWithChildren<{}>): React.JSX.Element {
+  function Wrapper({ children }: PropsWithChildren): React.JSX.Element {
     return (
       <ThemeProvider theme={theme}>
         <CssBaseline />
@@ -53,7 +53,7 @@ export default function renderWithRedux(
     ...renderOptions
   }: ExtendedRenderOptions = {}
 ) {
-  function Wrapper({ children }: PropsWithChildren<{}>): React.JSX.Element {
+  function Wrapper({ children }: PropsWithChildren): React.JSX.Element {
     return (
       <Provider store={store}>
         {CustomWrapper ? <CustomWrapper>{children}</CustomWrapper> : children}
