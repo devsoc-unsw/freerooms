@@ -205,6 +205,9 @@ const InputBox = (params: AutocompleteRenderInputParams) => {
     ...textFieldProps
   } = compatParams;
 
+  void _legacyInputProps;
+  void _legacyHtmlInputProps;
+
   return (
     <AppTextField
       {...textFieldProps}

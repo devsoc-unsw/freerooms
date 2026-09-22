@@ -4,7 +4,7 @@ import { styled } from "@mui/material/styles";
 import { Button as AntdButton, Tooltip } from "antd";
 import React from "react";
 
-const StyledWrapper = styled("div")(({ theme }) => ({
+const StyledWrapper = styled("div")(() => ({
   position: "fixed",
   bottom: "2rem",
   right: "3rem",

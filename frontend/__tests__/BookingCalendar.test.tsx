@@ -59,7 +59,7 @@ describe("Booking Calendar Desktop", () => {
   it("renders the calendar", () => {
     render(
       <Provider store={store}>
-        <BookingCalendar events={events} roomID="test-room" />
+        <BookingCalendar events={events} />
       </Provider>
     );
 
@@ -73,7 +73,7 @@ describe("Booking Calendar Desktop", () => {
   it("does not render previous and next day arrow icon buttons", () => {
     render(
       <Provider store={store}>
-        <BookingCalendar events={events} roomID="test-room" />
+        <BookingCalendar events={events} />
       </Provider>
     );
 
@@ -95,7 +95,7 @@ describe("Booking Calendar Desktop", () => {
 
     render(
       <Provider store={store}>
-        <BookingCalendar events={events} roomID="test-room" />
+        <BookingCalendar events={events} />
       </Provider>
     );
 
@@ -115,7 +115,7 @@ describe("Booking Calendar Desktop", () => {
 
     render(
       <Provider store={store}>
-        <BookingCalendar events={events} roomID="test-room" />
+        <BookingCalendar events={events} />
       </Provider>
     );
 
@@ -132,7 +132,7 @@ describe("Booking Calendar Mobile", () => {
 
     render(
       <Provider store={store}>
-        <BookingCalendar events={events} roomID="test-room" />
+        <BookingCalendar events={events} />
       </Provider>
     );
 

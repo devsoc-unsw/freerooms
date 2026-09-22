@@ -35,7 +35,7 @@ const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
   cursor: "pointer",
 }));
 
-const ImageBox = styled(Box)<BoxProps>(({ theme }) => ({
+const ImageBox = styled(Box)<BoxProps>(() => ({
   position: "relative",
   height: 249,
   borderTopLeftRadius: 12,
@@ -43,7 +43,7 @@ const ImageBox = styled(Box)<BoxProps>(({ theme }) => ({
   cursor: "pointer",
 }));
 
-const StyledImage = styled(Image)<ImageProps>(({ theme }) => ({
+const StyledImage = styled(Image)<ImageProps>(() => ({
   transition: "all 0.1s ease-in-out",
   "&:hover": {
     opacity: 0.7,
@@ -67,7 +67,7 @@ const StatusBox = styled(Box)<BoxProps>(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
 }));
 
-const InfoBox = styled(Box)<BoxProps>(({ theme }) => ({
+const InfoBox = styled(Box)<BoxProps>(() => ({
   display: "flex",
   flexDirection: "column",
   borderBottomLeftRadius: 12,
@@ -76,7 +76,7 @@ const InfoBox = styled(Box)<BoxProps>(({ theme }) => ({
   gap: 4,
 }));
 
-const InfoFooterBox = styled(Box)<BoxProps>(({ theme }) => ({
+const InfoFooterBox = styled(Box)<BoxProps>(() => ({
   display: "flex",
   justifyContent: "space-between",
   paddingTop: 8,
@@ -100,7 +100,7 @@ const DetailPillText = styled(Typography)<TypographyProps>(({ theme }) => ({
 }));
 
 // Show only building name and rating for smaller screens
-const NameRatingBox = styled(Box)<BoxProps>(({ theme }) => ({
+const NameRatingBox = styled(Box)<BoxProps>(() => ({
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-between",

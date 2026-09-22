@@ -1,8 +1,4 @@
-import type {
-  ThemeOptions,
-  TypographyVariant,
-  TypographyVariantsOptions,
-} from "@mui/material/styles";
+import type { TypographyVariantsOptions } from "@mui/material/styles";
 import type { CSSProperties } from "react";
 
 type CustomTypographyVariant =

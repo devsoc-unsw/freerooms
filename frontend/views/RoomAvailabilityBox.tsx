@@ -5,7 +5,6 @@ import useRoom from "@frontend/hooks/rooms/useRoom";
 import roomPhotos from "@frontend/public/room-photos.json";
 import getRoomHref from "@frontend/utils/getRoomHref";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import StarBorderIcon from "@mui/icons-material/StarBorder";
 import { Typography, TypographyProps } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
@@ -45,13 +44,13 @@ const IndiviRoomBox = styled(Box, {
   },
 }));
 
-const RoomBoxHeading = styled(Typography)<TypographyProps>(({ theme }) => ({
+const RoomBoxHeading = styled(Typography)<TypographyProps>(() => ({
   fontSize: 16,
   fontWeight: 500,
   whiteSpace: "nowrap",
 }));
 
-const RoomBoxSubheading = styled(Typography)<TypographyProps>(({ theme }) => ({
+const RoomBoxSubheading = styled(Typography)<TypographyProps>(() => ({
   fontSize: 12,
   fontWeight: 400,
 }));

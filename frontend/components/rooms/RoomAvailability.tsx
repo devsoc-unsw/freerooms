@@ -9,7 +9,7 @@ const RoomBoxHeading = styled(Typography)<TypographyProps>(() => ({
   whiteSpace: "nowrap",
 }));
 
-const RoomBoxSubheading = styled(Typography)<TypographyProps>(({ theme }) => ({
+const RoomBoxSubheading = styled(Typography)<TypographyProps>(() => ({
   fontSize: 12,
   fontWeight: 400,
 }));

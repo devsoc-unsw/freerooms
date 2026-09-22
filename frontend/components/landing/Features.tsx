@@ -68,13 +68,13 @@ const Features = () => {
 
 export default Features;
 
-const StyledHeading = styled("h2")(({ theme }) => ({
+const StyledHeading = styled("h2")(() => ({
   textAlign: "center",
   fontSize: "3rem",
   paddingBottom: "50%",
 }));
 
-const StyledFeatureVector = styled(Image)(({ theme }) => ({
+const StyledFeatureVector = styled(Image)(() => ({
   marginBottom: "-4rem",
   marginRight: "20rem",
   maxWidth: "100%",

@@ -62,7 +62,7 @@ const Landing = () => {
   );
 };
 
-const LandingScreenContainer = styled(Stack)(({ theme }) => ({
+const LandingScreenContainer = styled(Stack)(() => ({
   height: "100%",
   width: "80%",
   margin: "auto",
@@ -84,7 +84,7 @@ const StyledImage = styled(
   },
 }));
 
-const HeroPanelContainer = styled(Stack)(({ theme }) => ({
+const HeroPanelContainer = styled(Stack)(() => ({
   height: "100%",
   width: "100%",
   marginTop: "2rem",
@@ -98,7 +98,7 @@ const DoorContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
-const AnimationContainer = styled(Stack)(({ theme }) => ({
+const AnimationContainer = styled(Stack)(() => ({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",

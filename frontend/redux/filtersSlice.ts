@@ -26,9 +26,7 @@ const filtersSlice = createSlice({
     },
     unsetFilter: (state, action: PayloadAction<keyof Filters>) => {
       if (Object.keys(state.value).includes(action.payload)) {
-        // otherFilters contains all keys besides action.payload
-        const { [action.payload]: unset, ...otherFilters } = state.value;
-        state.value = otherFilters;
+        delete state.value[action.payload];
       }
     },
     clearFilters: (state) => {
