@@ -2,7 +2,7 @@
  * Data fetching hook for ratings of a specified room
  */
 
-import { Rating, RatingsResponse } from "@common//types";
+import { RatingsResponse } from "@common//types";
 import { API_URL } from "@frontend/config";
 import axios from "axios";
 import useSWRImmutable from "swr/immutable";
