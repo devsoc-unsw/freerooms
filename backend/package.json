@@ -2,25 +2,30 @@
   "name": "freerooms-backend",
   "version": "1.0.0",
   "description": "Freerooms backend",
-  "main": "dist/index.js",
+  "main": "dist/backend/src/index.js",
   "scripts": {
     "start": "nodemon src/index.ts",
-    "dev": "NODE_ENV=development npm start",
-    "build": "tsc -p tsconfig.json && tsc-alias -p tsconfig.json",
-    "lint": "prettier --check \"**/*.ts\" && cross-env ESLINT_USE_FLAT_CONFIG=false eslint .",
-    "lint:fix": "prettier --write \"**/*.ts\" && cross-env ESLINT_USE_FLAT_CONFIG=false eslint . --fix",
+    "dev": "cross-env NODE_ENV=development npm start",
+    "clean": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
+    "build": "npm run clean && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
+    "lint": "prettier --check \"**/*.ts\" && eslint .",
+    "lint:fix": "prettier --write \"**/*.ts\" && eslint . --fix",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "jest"
+  },
+  "engines": {
+    "node": ">=24.11.0"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/devsoc-unsw/Freerooms.git"
+    "url": "git+https://github.com/devsoc-unsw/freerooms.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/devsoc-unsw/Freerooms/issues"
+    "url": "https://github.com/devsoc-unsw/freerooms/issues"
   },
-  "homepage": "https://github.com/devsoc-unsw/Freerooms#readme",
+  "homepage": "https://github.com/devsoc-unsw/freerooms#readme",
   "dependencies": {
     "@graphql-typed-document-node/core": "^3.2.0",
     "cors": "^2.8.5",
