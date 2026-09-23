@@ -33,24 +33,24 @@ const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
 }));
 
-const StyledImage = styled(Image)<ImageProps>({
-  borderRadius: 10,
+const StyledImage = styled(Image)<ImageProps>(({ theme }) => ({
+  borderRadius: theme.radius.card,
   width: "100%",
   height: "auto",
-});
+}));
 
 const StatusBox = styled(Box)<BoxProps>(({ theme }) => ({
   display: "flex",
   justifyContent: "right",
   alignItems: "center",
-  borderRadius: 15,
+  borderRadius: theme.radius.pill,
   padding: theme.spacing(0, 2, 0, 2),
 }));
 
 const RoomBox = styled(Box)<BoxProps>(({ theme }) => ({
-  borderRadius: 10,
+  borderRadius: theme.radius.card,
   backgroundColor: theme.colours.surface.muted,
-  margin: 10,
+  margin: theme.spacing(1.25),
   padding: theme.spacing(0.5),
 }));
 
@@ -203,7 +203,7 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
             </CloseButton>
           </AppBox>
 
-          <div style={{ margin: 10 }}>
+          <div style={{ margin: theme.spacing(1.25) }}>
             <StyledImage
               alt={`Image of building ${building.id}`}
               src={`/assets/building_photos/${building.id}.webp`}
@@ -253,7 +253,7 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
                   fontSize: 16,
                   fontWeight: 500,
                   textAlign: "center",
-                  padding: 10,
+                  padding: theme.spacing(1.25),
                 }}
               >
                 Loading...

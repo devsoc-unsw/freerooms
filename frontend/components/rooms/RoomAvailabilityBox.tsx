@@ -24,7 +24,7 @@ const IndiviRoomBox = styled(Box, {
   flexDirection: "row",
   justifyContent: "space-between",
   alignItems: "center",
-  borderRadius: 10,
+  borderRadius: theme.radius.card,
   height: 90,
   fontSize: 20,
   fontWeight: 500,
