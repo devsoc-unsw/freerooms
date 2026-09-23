@@ -51,6 +51,10 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
+afterEach(() => {
+  jest.restoreAllMocks();
+});
+
 describe("getRatings", () => {
   it("averages every rating in the room's document", async () => {
     mockCollection.findOne.mockResolvedValueOnce({
@@ -85,6 +89,9 @@ describe("getRatings", () => {
   });
 
   it("still closes the client and returns a zeroed response if the query throws", async () => {
+    const consoleError = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => undefined);
     mockCollection.findOne.mockRejectedValueOnce(new Error("boom"));
 
     const result = await getRatings("K-K17-G11");
@@ -94,6 +101,10 @@ describe("getRatings", () => {
       overallRating: 0,
       averageRating: { cleanliness: 0, location: 0, quietness: 0 },
     });
+    expect(consoleError).toHaveBeenCalledWith(
+      "Error finding item:",
+      expect.any(Error)
+    );
     expect(mockClient.close).toHaveBeenCalled();
   });
 });
@@ -137,6 +148,9 @@ describe("getAllBuildingRatings", () => {
   });
 
   it("returns an empty array if the query throws", async () => {
+    const consoleError = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => undefined);
     mockCollection.find.mockReturnValueOnce({
       toArray: jest.fn().mockRejectedValueOnce(new Error("boom")),
     });
@@ -144,6 +158,10 @@ describe("getAllBuildingRatings", () => {
     const result = await getAllBuildingRatings();
 
     expect(result).toEqual([]);
+    expect(consoleError).toHaveBeenCalledWith(
+      "Error finding items:",
+      expect.any(Error)
+    );
     expect(mockClient.close).toHaveBeenCalled();
   });
 });
@@ -211,12 +229,19 @@ describe("insertRating", () => {
   });
 
   it("still closes the client if the update throws", async () => {
+    const consoleError = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => undefined);
     mockCollection.updateOne.mockRejectedValueOnce(new Error("boom"));
 
     await expect(
       insertRating("K-K17-G11", [4, 5, 3, 4])
     ).resolves.toBeUndefined();
 
+    expect(consoleError).toHaveBeenCalledWith(
+      "Error inserting document:",
+      expect.any(Error)
+    );
     expect(mockClient.close).toHaveBeenCalled();
   });
 });

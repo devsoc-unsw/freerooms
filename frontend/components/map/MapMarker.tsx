@@ -233,6 +233,7 @@ const MarkerHover: React.FC<{
         alt={`Image of ${building.id}`}
         src={`/assets/building_photos/${building.id}.webp`}
         fill={true}
+        sizes="300px"
         priority={true}
       />
       <MarkerHoverTitleBox>

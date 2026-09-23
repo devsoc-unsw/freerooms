@@ -12,7 +12,7 @@
     "lint:colours": "node scripts/check-colours.mjs",
     "lint:tokens": "node scripts/check-design-tokens.mjs",
     "lint:design": "npm run lint:colours && npm run lint:tokens",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "next typegen && tsc --noEmit",
     "check": "npm run lint && npm run lint:design && npm run typecheck && npm test -- --runInBand",
     "test": "jest",
     "test:watch": "jest --watch"

@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 
-dotenv.config({ path: "src/.env.local" });
+dotenv.config({ path: "src/.env.local", quiet: true });
 
 export const GRAPHQL_API = "https://graphql.devsoc.app/v1/graphql";
 export const PORT = 3000;

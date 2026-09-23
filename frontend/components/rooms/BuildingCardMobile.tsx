@@ -102,6 +102,7 @@ const BuildingCardMobile: React.FC<{
         alt={`Image of ${buildingId}`}
         src={`/assets/building_photos/${buildingId}.webp`}
         fill={true}
+        sizes="100vw"
         style={{ objectFit: "cover" }}
         priority={true}
       />

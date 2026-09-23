@@ -3,6 +3,7 @@ name: freerooms-local-development
 services:
   mongo:
     image: mongo:8.0
+    user: "mongodb"
     command:
       - mongod
       - --replSet

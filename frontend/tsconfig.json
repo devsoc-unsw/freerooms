@@ -39,9 +39,6 @@
       "redux/*": [
         "./redux/*"
       ],
-      "views/*": [
-        "./views/*"
-      ],
       "app/*": [
         "./app/*"
       ],

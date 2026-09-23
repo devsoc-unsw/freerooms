@@ -145,6 +145,7 @@ const BuildingCard: React.FC<{
               alt={`Image of ${buildingId}`}
               src={`/assets/building_photos/${buildingId}.webp`}
               fill={true}
+              sizes="(max-width: 900px) 100vw, (max-width: 1200px) 50vw, 33vw"
               style={{ objectFit: "cover" }}
               priority={true}
             />

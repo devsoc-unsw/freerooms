@@ -361,7 +361,11 @@ const RoomPageHeader: React.FC<{
           {room.school !== " " && (
             <Typography variant="body1" sx={{ fontWeight: "bold" }}>
               School:{" "}
-              <Typography variant="body1" sx={{ display: "inline" }}>
+              <Typography
+                component="span"
+                variant="body1"
+                sx={{ display: "inline" }}
+              >
                 {schoolDetails ? schoolDetails.name : room.school}
               </Typography>
             </Typography>

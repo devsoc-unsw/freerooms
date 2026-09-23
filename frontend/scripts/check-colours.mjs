@@ -5,7 +5,6 @@ const root = resolve(import.meta.dirname, "..");
 const sourceDirectories = [
   "app",
   "components",
-  "views",
   "hooks",
   "utils",
   "redux",
