@@ -2,6 +2,7 @@
 
 import { Building } from "@common/types";
 import { DarkModeContext } from "@frontend/app/clientLayout";
+import BuildingDrawer from "@frontend/components/map/BuildingDrawer";
 import DirectionsSummary from "@frontend/components/map/DirectionSummary";
 import MapMarker from "@frontend/components/map/MapMarker";
 import { navHeight } from "@frontend/components/navigation/NavBar";
@@ -17,7 +18,6 @@ import useUserLocation from "@frontend/hooks/map/useUserLocation";
 import { useDispatch } from "@frontend/redux/hooks";
 import { setCurrentBuilding } from "@frontend/redux/slices/currentBuildingSlice";
 import calculateDistance from "@frontend/utils/calculateDistance";
-import BuildingDrawer from "@frontend/views/BuildingDrawer";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Snackbar from "@mui/material/Snackbar";

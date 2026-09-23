@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 
+import CardList from "@frontend/components/rooms/CardList";
 import useBuildings from "@frontend/hooks/buildings/useBuildings";
-import CardList from "@frontend/views/CardList";
 import { render } from "@testing-library/react";
 import React from "react";
 

@@ -39,7 +39,7 @@ const mockUseUserLocation = useUserLocation as jest.MockedFunction<
   typeof useUserLocation
 >;
 
-jest.mock("@frontend/views/BuildingDrawer", () => ({
+jest.mock("@frontend/components/map/BuildingDrawer", () => ({
   __esModule: true,
   default: ({ date }: { date?: string }) => (
     <div data-testid="building-drawer" data-date={date} />

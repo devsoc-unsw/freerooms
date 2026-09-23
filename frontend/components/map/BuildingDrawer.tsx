@@ -1,5 +1,6 @@
 import type { Building } from "@common/types";
 import ViewOnMapButton from "@frontend/components/navigation/ViewOnMapButton";
+import RoomAvailabilityBox from "@frontend/components/rooms/RoomAvailabilityBox";
 import Button from "@frontend/components/ui/Button";
 import useBuildingStatus from "@frontend/hooks/buildings/useBuildingStatus";
 import { useDispatch, useSelector } from "@frontend/redux/hooks";
@@ -7,7 +8,6 @@ import {
   selectCurrentBuilding,
   setCurrentBuilding,
 } from "@frontend/redux/slices/currentBuildingSlice";
-import RoomAvailabilityBox from "@frontend/views/RoomAvailabilityBox";
 import CloseIcon from "@mui/icons-material/Close";
 import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
 import { Slide, Typography, useMediaQuery } from "@mui/material";
