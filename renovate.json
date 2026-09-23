@@ -1,6 +1,11 @@
 {
-  "extends": ["config:base"],
-  "lockFileMaintenance": { "enabled": true, "automerge": true },
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "timezone": "Australia/Sydney",
+  "lockFileMaintenance": {
+    "enabled": true,
+    "automerge": true
+  },
   "prHourlyLimit": 5,
   "labels": ["dependencies"],
   "packageRules": [
@@ -22,15 +27,15 @@
     },
     {
       "groupName": "ci-actions",
-      "managers": ["github-actions", "dockerfile"],
+      "matchManagers": ["github-actions", "dockerfile"],
       "automerge": true,
       "automergeType": "branch",
       "addLabels": ["deps: ci-actions"]
     },
     {
       "matchUpdateTypes": ["minor", "patch"],
-      "groupName": "weekly minor & patch updates",
-      "schedule": ["before 5am every monday"]
+      "groupName": "weekly minor and patch updates",
+      "schedule": ["* 0-4 * * 1"]
     },
     {
       "matchUpdateTypes": ["minor"],
@@ -41,9 +46,35 @@
       "addLabels": ["deps: patches"]
     },
     {
-      "managers": ["npm"],
+      "matchManagers": ["npm"],
       "addLabels": ["deps: javascript"]
+    },
+    {
+      "description": "Keep Node.js types aligned with the Node.js 24 runtime",
+      "matchPackageNames": ["@types/node"],
+      "allowedVersions": "<25"
+    },
+    {
+      "description": "Wait for the current toolchain to support TypeScript 7",
+      "matchPackageNames": ["typescript"],
+      "allowedVersions": "<7"
+    },
+    {
+      "description": "Next.js currently uses ESLint 9 in the frontend",
+      "matchFileNames": ["frontend/package.json"],
+      "matchPackageNames": ["eslint"],
+      "allowedVersions": "<10"
+    },
+    {
+      "description": "Keep the backend GraphQL packages on their tested major versions",
+      "matchPackageNames": ["graphql"],
+      "allowedVersions": "<17"
+    },
+    {
+      "description": "Keep the CommonJS backend on graphql-request 6",
+      "matchPackageNames": ["graphql-request"],
+      "allowedVersions": "<7"
     }
   ],
-  "baseBranches": ["dev"]
+  "baseBranchPatterns": ["dev"]
 }
