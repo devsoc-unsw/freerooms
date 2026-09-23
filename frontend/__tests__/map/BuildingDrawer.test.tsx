@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 
-import renderWithRedux from "@frontend/__tests__/utils/renderWithRedux";
+import renderWithRedux from "@frontend/__tests__/utils/renderWithProviders";
 import BuildingDrawer from "@frontend/views/BuildingDrawer";
 import { useMediaQuery } from "@mui/material";
 import { fireEvent, screen } from "@testing-library/react";

@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 
-import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithRedux";
+import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithProviders";
 import Page from "@frontend/app/room/[room]/page";
 import store from "@frontend/redux/store";
 import { fireEvent, screen } from "@testing-library/react";

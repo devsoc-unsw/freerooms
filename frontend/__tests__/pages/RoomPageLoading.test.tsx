@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 
-import { renderWithTheme } from "@frontend/__tests__/utils/renderWithRedux";
+import { renderWithTheme } from "@frontend/__tests__/utils/renderWithProviders";
 import Page from "@frontend/app/room/[room]/page";
 import React from "react";
 

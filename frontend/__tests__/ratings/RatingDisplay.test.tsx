@@ -1,8 +1,8 @@
 import "@testing-library/jest-dom";
 
 import { RoomStatus } from "@common/types";
-import renderWithRedux from "@frontend/__tests__/utils/renderWithRedux";
-import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithRedux";
+import renderWithRedux from "@frontend/__tests__/utils/renderWithProviders";
+import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithProviders";
 import Page from "@frontend/app/room/[room]/page";
 import BuildingCard from "@frontend/components/rooms/BuildingCard";
 import store from "@frontend/redux/store";
