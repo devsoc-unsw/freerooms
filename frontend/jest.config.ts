@@ -17,6 +17,7 @@ const config: Config = {
       "<rootDir>/node_modules/next/dist/build/jest/__mocks__/styleMock.js",
   },
   modulePathIgnorePatterns: ["<rootDir>/.next/"],
+  setupFilesAfterEnv: ["<rootDir>/__tests__/setup.ts"],
   testEnvironment: "jsdom",
   testMatch: ["**/__tests__/**/*.test.tsx"],
 };

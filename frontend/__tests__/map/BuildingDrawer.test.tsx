@@ -1,5 +1,3 @@
-import "@testing-library/jest-dom";
-
 import renderWithRedux from "@frontend/__tests__/utils/renderWithProviders";
 import BuildingDrawer from "@frontend/components/map/BuildingDrawer";
 import { useMediaQuery } from "@mui/material";

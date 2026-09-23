@@ -1,5 +1,3 @@
-import "@testing-library/jest-dom";
-
 import useUserLocation, {
   type UserLocation,
 } from "@frontend/hooks/map/useUserLocation";

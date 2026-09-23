@@ -1,5 +1,3 @@
-import "@testing-library/jest-dom";
-
 import type { Building } from "@common/types";
 import useMapboxRoute, {
   type RouteGeometry,

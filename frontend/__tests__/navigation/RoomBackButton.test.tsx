@@ -1,5 +1,3 @@
-import "@testing-library/jest-dom";
-
 import RoomBackButton from "@frontend/components/navigation/RoomBackButton";
 import { useDispatch, useSelector } from "@frontend/redux/hooks";
 import currentBuildingSlice from "@frontend/redux/slices/currentBuildingSlice";

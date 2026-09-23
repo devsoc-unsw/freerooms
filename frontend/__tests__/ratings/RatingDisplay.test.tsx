@@ -1,5 +1,3 @@
-import "@testing-library/jest-dom";
-
 import { RoomStatus } from "@common/types";
 import renderWithRedux from "@frontend/__tests__/utils/renderWithProviders";
 import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithProviders";

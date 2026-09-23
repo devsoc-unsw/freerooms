@@ -1,5 +1,3 @@
-import "@testing-library/jest-dom";
-
 import { Booking } from "@common/types";
 import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithProviders";
 import BookingCalendar from "@frontend/components/booking/BookingCalendar";

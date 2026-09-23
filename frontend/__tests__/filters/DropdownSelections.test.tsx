@@ -1,5 +1,3 @@
-import "@testing-library/jest-dom";
-
 import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithProviders";
 import DropdownSelections from "@frontend/components/filters/DropdownSelections";
 import { screen } from "@testing-library/react";

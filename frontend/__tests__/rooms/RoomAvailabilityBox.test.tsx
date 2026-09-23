@@ -1,5 +1,3 @@
-import "@testing-library/jest-dom";
-
 import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithProviders";
 import RoomAvailabilityBox from "@frontend/components/rooms/RoomAvailabilityBox";
 import toSydneyTime from "@frontend/utils/toSydneyTime";
