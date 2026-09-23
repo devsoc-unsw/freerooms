@@ -1,6 +1,6 @@
 import FeatureCard from "@frontend/components/landing/FeatureCard";
 import { useDispatch } from "@frontend/redux/hooks";
-import { openSearch } from "@frontend/redux/searchOpenSlice";
+import { openSearch } from "@frontend/redux/slices/searchOpenSlice";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import GridIcon from "@mui/icons-material/GridViewRounded";
 import MapIcon from "@mui/icons-material/Map";

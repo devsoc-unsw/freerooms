@@ -4,8 +4,8 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 
 import { Booking } from "@common/types";
 import useBookingCalendarQuery from "@frontend/hooks/bookings/useBookingCalendarQuery";
-import { selectDatetime } from "@frontend/redux/datetimeSlice";
 import { useSelector } from "@frontend/redux/hooks";
+import { selectDatetime } from "@frontend/redux/slices/datetimeSlice";
 import toSydneyTime from "@frontend/utils/toSydneyTime";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";

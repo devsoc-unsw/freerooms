@@ -1,9 +1,12 @@
 import { AppSurface, AppTextField } from "@frontend/components/ui";
 import useBuildings from "@frontend/hooks/buildings/useBuildings";
 import useRooms from "@frontend/hooks/rooms/useRooms";
-import { setCurrentBuilding } from "@frontend/redux/currentBuildingSlice";
 import { useDispatch, useSelector } from "@frontend/redux/hooks";
-import { closeSearch, selectSearchOpen } from "@frontend/redux/searchOpenSlice";
+import { setCurrentBuilding } from "@frontend/redux/slices/currentBuildingSlice";
+import {
+  closeSearch,
+  selectSearchOpen,
+} from "@frontend/redux/slices/searchOpenSlice";
 import { SearchOption } from "@frontend/types";
 import BuildingIcon from "@mui/icons-material/Apartment";
 import RoomIcon from "@mui/icons-material/MeetingRoom";

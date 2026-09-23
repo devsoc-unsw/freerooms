@@ -3,13 +3,13 @@ import DropdownSelections from "@frontend/components/filters/DropdownSelections"
 import { AppButton, AppSurface } from "@frontend/components/ui";
 import useDateTimeQuery from "@frontend/hooks/query/useDateTimeQuery";
 import useQueryFilter from "@frontend/hooks/query/useQueryFilter";
+import { useDispatch, useSelector } from "@frontend/redux/hooks";
 import {
   clearFilters,
   selectFilters,
   setFilter,
   unsetFilter,
-} from "@frontend/redux/filtersSlice";
-import { useDispatch, useSelector } from "@frontend/redux/hooks";
+} from "@frontend/redux/slices/filtersSlice";
 import { DropDownItem, Filters } from "@frontend/types";
 import { filterBarDropdown } from "@frontend/utils/constants";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";

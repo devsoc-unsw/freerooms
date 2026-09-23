@@ -1,5 +1,5 @@
-import { selectFilters, setFilter } from "@frontend/redux/filtersSlice";
 import { useDispatch, useSelector } from "@frontend/redux/hooks";
+import { selectFilters, setFilter } from "@frontend/redux/slices/filtersSlice";
 import { Filters } from "@frontend/types";
 import { filterBarDropdown } from "@frontend/utils/constants";
 import { parseAsString, useQueryStates } from "nuqs";

@@ -1,8 +1,8 @@
-import allRoomsFilterSlice from "@frontend/redux/allRoomsFilterSlice";
-import currentBuildingReducer from "@frontend/redux/currentBuildingSlice";
-import datetimeReducer from "@frontend/redux/datetimeSlice";
-import filtersReducer from "@frontend/redux/filtersSlice";
-import searchOpenSlice from "@frontend/redux/searchOpenSlice";
+import allRoomsFilterSlice from "@frontend/redux/slices/allRoomsFilterSlice";
+import currentBuildingReducer from "@frontend/redux/slices/currentBuildingSlice";
+import datetimeReducer from "@frontend/redux/slices/datetimeSlice";
+import filtersReducer from "@frontend/redux/slices/filtersSlice";
+import searchOpenSlice from "@frontend/redux/slices/searchOpenSlice";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
 // Create the root reducer separately, so we can extract the RootState type

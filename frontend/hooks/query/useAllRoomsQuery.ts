@@ -1,8 +1,8 @@
+import { useDispatch, useSelector } from "@frontend/redux/hooks";
 import {
   selectAllRoomsFilters,
   setAllRoomsFilter,
-} from "@frontend/redux/allRoomsFilterSlice";
-import { useDispatch, useSelector } from "@frontend/redux/hooks";
+} from "@frontend/redux/slices/allRoomsFilterSlice";
 import { AllRoomsFilters } from "@frontend/types";
 import { allRoomsFilterDropdown } from "@frontend/utils/constants";
 import { parseAsString, useQueryStates } from "nuqs";

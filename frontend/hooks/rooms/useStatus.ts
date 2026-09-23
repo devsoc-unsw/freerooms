@@ -4,9 +4,9 @@
  */
 import { StatusResponse } from "@common/types";
 import { API_URL } from "@frontend/config";
-import { selectDatetime } from "@frontend/redux/datetimeSlice";
-import { selectFilters } from "@frontend/redux/filtersSlice";
 import { useSelector } from "@frontend/redux/hooks";
+import { selectDatetime } from "@frontend/redux/slices/datetimeSlice";
+import { selectFilters } from "@frontend/redux/slices/filtersSlice";
 import { Filters } from "@frontend/types";
 import axios from "axios";
 import useSWRImmutable from "swr/immutable";
