@@ -1,0 +1,78 @@
+import { useDispatch, useSelector } from "@frontend/redux/hooks";
+import {
+  selectDatetime,
+  setDatetime,
+} from "@frontend/redux/slices/datetimeSlice";
+import { isValidDate, isValidTime } from "@frontend/utils/queryValidation";
+import { SYDNEY_TIMEZONE } from "@frontend/utils/toSydneyTime";
+import { formatInTimeZone, fromZonedTime } from "date-fns-tz";
+import { parseAsString, useQueryStates } from "nuqs";
+import { useEffect, useRef } from "react";
+
+const useQueryDatetime = () => {
+  const dispatch = useDispatch();
+  const datetime = useSelector(selectDatetime);
+  const isFirstRender = useRef(true);
+
+  const [datetimeParams, setDatetimeParams] = useQueryStates(
+    {
+      date: parseAsString.withDefault(""),
+      time: parseAsString.withDefault(""),
+    },
+    { shallow: true }
+  );
+
+  // Apply filters from URL query parameters to Redux datetime on load
+  useEffect(() => {
+    const { date, time } = datetimeParams;
+    const invalidKeys: { date?: null; time?: null } = {};
+    let hasInvalidParam = false;
+
+    // Check if date and time params are valid, set to null if invalid
+    if (date && !isValidDate(date)) {
+      invalidKeys.date = null;
+      hasInvalidParam = true;
+    }
+
+    if (time && !isValidTime(time)) {
+      invalidKeys.time = null;
+      hasInvalidParam = true;
+    }
+
+    if (hasInvalidParam) {
+      setDatetimeParams(invalidKeys);
+    }
+
+    // Construct datetime string in Sydney time to store in Redux
+    if ((date && isValidDate(date)) || (time && isValidTime(time))) {
+      const sydneyDate = `${date || formatInTimeZone(datetime, SYDNEY_TIMEZONE, "yyyy-MM-dd")}T${time || formatInTimeZone(datetime, SYDNEY_TIMEZONE, "HH:mm")}:00`;
+      dispatch(setDatetime(fromZonedTime(sydneyDate, SYDNEY_TIMEZONE)));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
+
+  // Apply filters from Redux datetime to URL query parameters when datetime changes
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
+    // Set date to YYYY-MM-DD format
+    const date =
+      datetime instanceof Date
+        ? formatInTimeZone(datetime, SYDNEY_TIMEZONE, "yyyy-MM-dd")
+        : null;
+
+    // Set time to HH:MM format
+    const time =
+      datetime instanceof Date
+        ? formatInTimeZone(datetime, SYDNEY_TIMEZONE, "HH:mm")
+        : null;
+
+    setDatetimeParams({ date, time });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [datetime]);
+};
+
+export default useQueryDatetime;

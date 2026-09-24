@@ -1,12 +1,11 @@
 import BuildingRating from "@frontend/components/ratings/BuildingRating";
 import StatusDot from "@frontend/components/ui/StatusDot";
-import useAllBuildingRatings from "@frontend/hooks/useAllBuildingRatings";
-import useBuilding from "@frontend/hooks/useBuilding";
-import useBuildingStatus from "@frontend/hooks/useBuildingStatus";
-import { setCurrentBuilding } from "@frontend/redux/currentBuildingSlice";
+import useBuilding from "@frontend/hooks/buildings/useBuilding";
+import useBuildingStatus from "@frontend/hooks/buildings/useBuildingStatus";
+import useAllBuildingRatings from "@frontend/hooks/ratings/useAllBuildingRatings";
 import { useDispatch } from "@frontend/redux/hooks";
+import { setCurrentBuilding } from "@frontend/redux/slices/currentBuildingSlice";
 import { getNumFreerooms } from "@frontend/utils/utils";
-import StarIcon from "@mui/icons-material/Star";
 import { Typography, TypographyProps } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
@@ -36,7 +35,7 @@ const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
   cursor: "pointer",
 }));
 
-const ImageBox = styled(Box)<BoxProps>(({ theme }) => ({
+const ImageBox = styled(Box)<BoxProps>(() => ({
   position: "relative",
   height: 249,
   borderTopLeftRadius: 12,
@@ -44,7 +43,7 @@ const ImageBox = styled(Box)<BoxProps>(({ theme }) => ({
   cursor: "pointer",
 }));
 
-const StyledImage = styled(Image)<ImageProps>(({ theme }) => ({
+const StyledImage = styled(Image)<ImageProps>(() => ({
   transition: "all 0.1s ease-in-out",
   "&:hover": {
     opacity: 0.7,
@@ -68,7 +67,7 @@ const StatusBox = styled(Box)<BoxProps>(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
 }));
 
-const InfoBox = styled(Box)<BoxProps>(({ theme }) => ({
+const InfoBox = styled(Box)<BoxProps>(() => ({
   display: "flex",
   flexDirection: "column",
   borderBottomLeftRadius: 12,
@@ -77,7 +76,7 @@ const InfoBox = styled(Box)<BoxProps>(({ theme }) => ({
   gap: 4,
 }));
 
-const InfoFooterBox = styled(Box)<BoxProps>(({ theme }) => ({
+const InfoFooterBox = styled(Box)<BoxProps>(() => ({
   display: "flex",
   justifyContent: "space-between",
   paddingTop: 8,
@@ -101,7 +100,7 @@ const DetailPillText = styled(Typography)<TypographyProps>(({ theme }) => ({
 }));
 
 // Show only building name and rating for smaller screens
-const NameRatingBox = styled(Box)<BoxProps>(({ theme }) => ({
+const NameRatingBox = styled(Box)<BoxProps>(() => ({
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-between",
@@ -146,6 +145,7 @@ const BuildingCard: React.FC<{
               alt={`Image of ${buildingId}`}
               src={`/assets/building_photos/${buildingId}.webp`}
               fill={true}
+              sizes="(max-width: 900px) 100vw, (max-width: 1200px) 50vw, 33vw"
               style={{ objectFit: "cover" }}
               priority={true}
             />

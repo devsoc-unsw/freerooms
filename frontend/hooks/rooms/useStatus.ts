@@ -1,0 +1,35 @@
+/**
+ * Data fetching hook for status of all rooms
+ * Uses datetime and filters from Redux store
+ */
+import { StatusResponse } from "@common/types";
+import { API_URL } from "@frontend/config";
+import { useSelector } from "@frontend/redux/hooks";
+import { selectDatetime } from "@frontend/redux/slices/datetimeSlice";
+import { selectFilters } from "@frontend/redux/slices/filtersSlice";
+import { Filters } from "@frontend/types";
+import axios from "axios";
+import useSWRImmutable from "swr/immutable";
+
+const fetcher = ([url, datetime, filters]: [string, Date, Filters]) =>
+  axios.get(url, { params: { datetime, ...filters } }).then((res) => res.data);
+
+const useStatus = () => {
+  const datetime = useSelector(selectDatetime);
+  const filters = useSelector(selectFilters);
+
+  const { data, error } = useSWRImmutable<StatusResponse>(
+    [API_URL + "/rooms/status", datetime, filters],
+    fetcher,
+    {
+      keepPreviousData: true,
+    }
+  );
+
+  return {
+    status: data,
+    error,
+  };
+};
+
+export default useStatus;

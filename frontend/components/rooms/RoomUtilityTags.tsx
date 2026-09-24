@@ -1,7 +1,7 @@
 "use client";
 
-import UtilityAccordion from "@frontend/components/rooms/UtilityAccordian";
-import useRoomUtilities from "@frontend/hooks/useRoomUtilities";
+import UtilityAccordion from "@frontend/components/rooms/UtilityAccordion";
+import useRoomUtilities from "@frontend/hooks/rooms/useRoomUtilities";
 import {
   Accessible,
   AcUnit,

@@ -5,12 +5,10 @@ import {
   RatingsResponse,
   RawRatingDocument,
 } from "@common/types";
-import dotenv from "dotenv";
 import { Collection, MongoClient } from "mongodb";
 
 import { MONGO_URI } from "./config";
 import { getRoomsByBuilding } from "./helpers";
-dotenv.config({ path: "src/.env.local" });
 export async function insertRating(
   roomId: string,
   ratings: number[]

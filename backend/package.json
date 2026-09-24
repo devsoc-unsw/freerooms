@@ -2,56 +2,61 @@
   "name": "freerooms-backend",
   "version": "1.0.0",
   "description": "Freerooms backend",
-  "main": "dist/index.js",
+  "main": "dist/backend/src/index.js",
   "scripts": {
     "start": "nodemon src/index.ts",
-    "dev": "NODE_ENV=development npm start",
-    "build": "tsc -p tsconfig.json && tsc-alias -p tsconfig.json",
-    "lint": "prettier --check \"**/*.ts\" && cross-env ESLINT_USE_FLAT_CONFIG=false eslint .",
-    "lint:fix": "prettier --write \"**/*.ts\" && cross-env ESLINT_USE_FLAT_CONFIG=false eslint . --fix",
+    "dev": "cross-env NODE_ENV=development npm start",
+    "clean": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
+    "build": "npm run clean && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
+    "lint": "prettier --check \"**/*.ts\" && eslint .",
+    "lint:fix": "prettier --write \"**/*.ts\" && eslint . --fix",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "jest"
+  },
+  "engines": {
+    "node": ">=24.11.0"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/devsoc-unsw/Freerooms.git"
+    "url": "git+https://github.com/devsoc-unsw/freerooms.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/devsoc-unsw/Freerooms/issues"
+    "url": "https://github.com/devsoc-unsw/freerooms/issues"
   },
-  "homepage": "https://github.com/devsoc-unsw/Freerooms#readme",
+  "homepage": "https://github.com/devsoc-unsw/freerooms#readme",
   "dependencies": {
     "@graphql-typed-document-node/core": "^3.2.0",
-    "axios": "^1.19.0",
-    "cheerio": "^1.2.0",
     "cors": "^2.8.5",
-    "date-fns": "^2.30.0",
-    "date-fns-tz": "^2.0.0",
-    "dotenv": "^17.4.1",
+    "date-fns": "^4.4.0",
+    "date-fns-tz": "^3.2.0",
+    "dotenv": "^18.0.2",
     "express": "^5.2.1",
-    "graphql": "^16.6.0",
+    "graphql": "^16.14.2",
     "graphql-request": "^6.1.0",
-    "mongodb": "^7.1.1"
+    "mongodb": "^7.6.0"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/cors": "2.8.19",
     "@types/express": "5.0.6",
     "@types/jest": "^30.0.0",
-    "@types/node": "^24.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.59.0",
-    "@typescript-eslint/parser": "^8.59.0",
+    "@types/node": "^24.13.6",
+    "@typescript-eslint/eslint-plugin": "^8.70.1",
+    "@typescript-eslint/parser": "^8.70.1",
     "cross-env": "^10.1.0",
-    "eslint": "^9.39.4",
-    "eslint-config-prettier": "^10.0.0",
-    "eslint-plugin-simple-import-sort": "^13.0.0",
-    "jest": "^30.0.0",
+    "eslint": "^10.11.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-simple-import-sort": "^14.0.0",
+    "globals": "^17.12.0",
+    "jest": "^30.5.2",
     "nodemon": "^3.0.0",
-    "prettier": "^3.2.5",
-    "ts-jest": "^29.1.2",
+    "prettier": "^3.9.8",
+    "ts-jest": "^29.4.12",
     "ts-node": "10.9.2",
-    "tsc-alias": "^1.8.7",
+    "tsc-alias": "^1.9.5",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.4.3"
+    "typescript": "^6.0.3"
   }
 }

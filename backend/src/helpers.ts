@@ -5,7 +5,7 @@ import {
   RoomStatus,
   RoomUtilitiesResponse,
 } from "@common/types";
-import { utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
+import { fromZonedTime, toZonedTime } from "date-fns-tz";
 
 import {
   queryBookingsInRange,
@@ -21,11 +21,11 @@ export const getBookingsForDate = async (
   date: Date
 ): Promise<{ [roomId: string]: BookingsResponse }> => {
   // The date is in UTC time, convert to AEST first to manipulate hours
-  const base = utcToZonedTime(date, "Australia/Sydney");
+  const base = toZonedTime(date, "Australia/Sydney");
   base.setHours(0, 0);
-  const start = zonedTimeToUtc(base, "Australia/Sydney");
+  const start = fromZonedTime(base, "Australia/Sydney");
   base.setHours(23, 59);
-  const end = zonedTimeToUtc(base, "Australia/Sydney");
+  const end = fromZonedTime(base, "Australia/Sydney");
 
   const res = await queryBookingsInRange(start, end);
   return Object.fromEntries(res.rooms.map((room) => [room.id, room]));
@@ -33,9 +33,9 @@ export const getBookingsForDate = async (
 
 export const getBookingsFromStartTime = async (startTime: Date) => {
   // The date is in UTC time, convert to AEST first to manipulate hours
-  const base = utcToZonedTime(startTime, "Australia/Sydney");
+  const base = toZonedTime(startTime, "Australia/Sydney");
   base.setHours(23, 59);
-  const endTime = zonedTimeToUtc(base, "Australia/Sydney");
+  const endTime = fromZonedTime(base, "Australia/Sydney");
   const res = await queryBookingsInRange(startTime, endTime);
   return Object.fromEntries(res.rooms.map((room) => [room.id, room]));
 };
@@ -45,17 +45,17 @@ export const getSearchRangeEnd = (
   filters: StatusFilters
 ): Date => {
   if (filters.recurring) {
-    const zoned = utcToZonedTime(start, "Australia/Sydney");
+    const zoned = toZonedTime(start, "Australia/Sydney");
     zoned.setDate(zoned.getDate() + (filters.recurring - 1) * 7);
-    const lastOccurrence = zonedTimeToUtc(zoned, "Australia/Sydney");
+    const lastOccurrence = fromZonedTime(zoned, "Australia/Sydney");
     return new Date(
       lastOccurrence.getTime() + (filters.duration || 0) * 60 * 1000
     );
   }
 
-  const base = utcToZonedTime(start, "Australia/Sydney");
+  const base = toZonedTime(start, "Australia/Sydney");
   base.setHours(23, 59);
-  return zonedTimeToUtc(base, "Australia/Sydney");
+  return fromZonedTime(base, "Australia/Sydney");
 };
 
 export const getBuildingRoomData = async (): Promise<BuildingDatabase> => {
@@ -96,11 +96,11 @@ export const calculateStatus = (
 
   // Recurring searches fetch booking across multiple weeks (see getSearchRangeEnd).
   // We must restrict to datetime's own day so a future week booking can't be mistaken as todays.
-  const dayBase = utcToZonedTime(datetime, "Australia/Sydney");
+  const dayBase = toZonedTime(datetime, "Australia/Sydney");
   dayBase.setHours(0, 0, 0, 0);
-  const dayStart = zonedTimeToUtc(dayBase, "Australia/Sydney");
+  const dayStart = fromZonedTime(dayBase, "Australia/Sydney");
   dayBase.setHours(23, 59, 59, 999);
-  const dayEnd = zonedTimeToUtc(dayBase, "Australia/Sydney");
+  const dayEnd = fromZonedTime(dayBase, "Australia/Sydney");
   classes = classes.filter((cls) => cls.start <= dayEnd && cls.end >= dayStart);
 
   // Sort classes by start time, then end time.
@@ -190,9 +190,9 @@ export const isRecurringFree = (
   weeks: number
 ): boolean => {
   for (let i = 0; i < weeks; i++) {
-    const zoned = utcToZonedTime(start, "Australia/Sydney");
+    const zoned = toZonedTime(start, "Australia/Sydney");
     zoned.setDate(zoned.getDate() + i * 7);
-    const occurrence = zonedTimeToUtc(zoned, "Australia/Sydney");
+    const occurrence = fromZonedTime(zoned, "Australia/Sydney");
 
     if (!isSlotFree(occurrence, duration, bookings)) {
       return false;

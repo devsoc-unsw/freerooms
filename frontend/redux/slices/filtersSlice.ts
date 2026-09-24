@@ -1,0 +1,42 @@
+/**
+ * Redux slice to manage the selected filters
+ */
+import { RootState } from "@frontend/redux/store";
+import { Filters } from "@frontend/types";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+interface FiltersState {
+  value: Filters;
+}
+
+const initialState: FiltersState = {
+  value: {},
+};
+
+const filtersSlice = createSlice({
+  name: "filters",
+  initialState,
+  reducers: {
+    setFilter: (
+      state,
+      action: PayloadAction<{ key: keyof Filters; value: string }>
+    ) => {
+      const { key, value } = action.payload;
+      state.value[key] = value;
+    },
+    unsetFilter: (state, action: PayloadAction<keyof Filters>) => {
+      if (Object.keys(state.value).includes(action.payload)) {
+        delete state.value[action.payload];
+      }
+    },
+    clearFilters: (state) => {
+      state.value = {};
+    },
+  },
+});
+
+export const { setFilter, unsetFilter, clearFilters } = filtersSlice.actions;
+
+export const selectFilters = (state: RootState) => state.filters.value;
+
+export default filtersSlice.reducer;

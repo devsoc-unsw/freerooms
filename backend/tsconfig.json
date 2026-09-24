@@ -3,23 +3,16 @@
     "target": "ES2018",
     "module": "node18",
     "moduleResolution": "node16",
-    "outDir": "dist",
     "strict": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
     "paths": {
-      "@common/*": [
-        "../common/*"
-      ]
+      "@common/*": ["../common/*"]
     },
-    "types": [
-      "jest"
-    ]
+    "types": ["jest"]
   },
-  "include": [
-    "./src/*.ts",
-    "./__tests__/*.ts"
-  ]
+  "include": ["./src/**/*.ts", "./__tests__/**/*.ts", "../common/*.ts"]
 }

@@ -1,9 +1,9 @@
 import StatusDot from "@frontend/components/ui/StatusDot";
-import useAllBuildingRatings from "@frontend/hooks/useAllBuildingRatings";
-import useBuilding from "@frontend/hooks/useBuilding";
-import useBuildingStatus from "@frontend/hooks/useBuildingStatus";
-import { setCurrentBuilding } from "@frontend/redux/currentBuildingSlice";
+import useBuilding from "@frontend/hooks/buildings/useBuilding";
+import useBuildingStatus from "@frontend/hooks/buildings/useBuildingStatus";
+import useAllBuildingRatings from "@frontend/hooks/ratings/useAllBuildingRatings";
 import { useDispatch } from "@frontend/redux/hooks";
+import { setCurrentBuilding } from "@frontend/redux/slices/currentBuildingSlice";
 import { getNumFreerooms, getTotalRooms } from "@frontend/utils/utils";
 import StarIcon from "@mui/icons-material/Star";
 import { Typography } from "@mui/material";
@@ -102,6 +102,7 @@ const BuildingCardMobile: React.FC<{
         alt={`Image of ${buildingId}`}
         src={`/assets/building_photos/${buildingId}.webp`}
         fill={true}
+        sizes="100vw"
         style={{ objectFit: "cover" }}
         priority={true}
       />

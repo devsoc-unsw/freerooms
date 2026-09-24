@@ -1,10 +1,10 @@
-import { BugOutlined } from "@ant-design/icons";
+import BugReportOutlinedIcon from "@mui/icons-material/BugReportOutlined";
 import { useMediaQuery } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Button as AntdButton, Tooltip } from "antd";
 import React from "react";
 
-const StyledWrapper = styled("div")(({ theme }) => ({
+const StyledWrapper = styled("div")(() => ({
   position: "fixed",
   bottom: "2rem",
   right: "3rem",
@@ -25,7 +25,7 @@ const StyledButton = styled(AntdButton)(({ theme }) => {
   };
 });
 
-const ThemedBugIcon = styled(BugOutlined)(({ theme }) => ({
+const ThemedBugIcon = styled(BugReportOutlinedIcon)(({ theme }) => ({
   color: theme.colours.text.primary,
 }));
 

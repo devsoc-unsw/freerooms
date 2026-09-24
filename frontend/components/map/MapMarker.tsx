@@ -1,11 +1,11 @@
 import { Building, BuildingStatus } from "@common/types";
-import useBuilding from "@frontend/hooks/useBuilding";
-import useBuildingStatus from "@frontend/hooks/useBuildingStatus";
+import useBuilding from "@frontend/hooks/buildings/useBuilding";
+import useBuildingStatus from "@frontend/hooks/buildings/useBuildingStatus";
+import { useDispatch, useSelector } from "@frontend/redux/hooks";
 import {
   selectCurrentBuilding,
   setCurrentBuilding,
-} from "@frontend/redux/currentBuildingSlice";
-import { useDispatch, useSelector } from "@frontend/redux/hooks";
+} from "@frontend/redux/slices/currentBuildingSlice";
 import { getNumFreerooms, getTotalRooms } from "@frontend/utils/utils";
 import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 import RoomIcon from "@mui/icons-material/Room";
@@ -233,6 +233,7 @@ const MarkerHover: React.FC<{
         alt={`Image of ${building.id}`}
         src={`/assets/building_photos/${building.id}.webp`}
         fill={true}
+        sizes="300px"
         priority={true}
       />
       <MarkerHoverTitleBox>
