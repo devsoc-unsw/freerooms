@@ -1,6 +1,6 @@
 // Interface to the Hasura GraphQL API
 import parseDates from "@common/parseDates";
-import { Booking } from "@common/types";
+import { Booking, BookingModule } from "@common/types";
 import type { TypedDocumentNode } from "@graphql-typed-document-node/core";
 import { parse } from "graphql";
 import { gql, GraphQLClient } from "graphql-request";
@@ -151,6 +151,78 @@ export const queryBookingsForRoom = async (
   const variables = { roomId };
 
   return await doRequest<BookingsForRoomRes>(query, variables);
+};
+
+type BookingsModuleRes = {
+  bookings: {
+    occurrenceId: string;
+    roomId: string;
+    bookingModule: BookingModule;
+  };
+};
+
+/**
+ * Query bookings module from the occurrence ID
+ */
+export const queryBookingsModule = async (
+  occurrenceId: string
+): Promise<BookingsModuleRes> => {
+  const query = `
+    query BookingsModule($occurrenceId: String!) {
+      bookings(where: {occurrenceId: {_like: $occurrenceId}}) {
+        occurrenceId
+        roomId
+        bookingmodules {
+          term
+          career
+          code
+          name
+        }
+      }
+    }
+  `;
+
+  const variables = { occurrenceId };
+
+  return await doRequest<BookingsModuleRes>(query, variables);
+};
+
+type BookingsForEventRes = {
+  bookings: Array<{
+    eventId: string;
+    occurrenceId: string;
+    roomId: string;
+    name: string;
+    bookingType: string;
+    plannedSize: string;
+    start: Date;
+    end: Date;
+  }>;
+};
+
+/**
+ * Query all bookings by the eventID
+ */
+export const queryBookingsForEvent = async (
+  eventId: string
+): Promise<BookingsForEventRes> => {
+  const query = `
+    query BookingsForEvent($eventId: String!) {
+      bookings(where: {eventId: {_like: $eventId}}, limit: 25, order_by: {start: asc}) {
+        eventId
+        occurrenceId
+        roomId
+        name
+        start
+        end
+        bookingType
+      }
+    }
+  `;
+
+  const variables = { eventId };
+
+  return await doRequest<BookingsForEventRes>(query, variables);
 };
 
 ///////////////////////////////////////////////////////////////

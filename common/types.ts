@@ -26,6 +26,13 @@ export type Booking = {
   end: Date;
 };
 
+export type BookingModule = {
+  term: string;
+  career: string;
+  code: string;
+  name: string;
+};
+
 export type RoomStatuses = {
   [roomNumber: string]: RoomStatus;
 };
@@ -86,6 +93,24 @@ export type BookingsResponse = {
   bookings: Booking[];
 };
 
+// Bookings for a specific event occurrence
+export type BookingsEventResponse = {
+  eventId: string;
+  occurrenceId: string;
+  roomId: string;
+  name: string;
+  bookingType: string;
+  plannedSize: string;
+  start: Date;
+  end: Date;
+};
+
+// Bookings module for a specific occurrence
+export type BookingsModuleResponse = {
+  occurrenceId: string;
+  roomId: string;
+  bookingModule: BookingModule;
+};
 
 // how ratings are stored in Mongo
 export type RawRatingDocument = { 

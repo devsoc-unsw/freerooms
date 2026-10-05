@@ -1,4 +1,6 @@
 import {
+  BookingsEventResponse,
+  BookingsModuleResponse,
   BookingsResponse,
   BuildingsResponse,
   RoomsResponse,
@@ -6,7 +8,11 @@ import {
   StatusResponse,
 } from "@common/types";
 
-import { queryBookingsForRoom } from "./dbInterface";
+import {
+  queryBookingsForEvent,
+  queryBookingsForRoom,
+  queryBookingsModule,
+} from "./dbInterface";
 import {
   calculateStatus,
   getBookingsForRange,
@@ -173,4 +179,28 @@ export const getRoomBookings = async (
   }
 
   return res.rooms_by_pk;
+};
+
+export const getRoomByEvent = async (
+  eventId: string
+): Promise<BookingsEventResponse[]> => {
+  const res = await queryBookingsForEvent(eventId);
+  if (res.bookings === null || res.bookings.length === 0) {
+    throw new Error(`Booking for event ${eventId} does not exist`);
+  }
+
+  return res.bookings;
+};
+
+export const getBookingsModule = async (
+  occurrenceId: string
+): Promise<BookingsModuleResponse> => {
+  const res = await queryBookingsModule(occurrenceId);
+  if (res.bookings == null) {
+    throw new Error(
+      `Booking module for occurrence ${occurrenceId} does not exist`
+    );
+  }
+
+  return res.bookings;
 };

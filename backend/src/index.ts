@@ -9,6 +9,7 @@ import express, {
 } from "express";
 
 import { PORT } from "./config";
+import { queryBookingsModule } from "./dbInterface";
 import { getRoomUtilities } from "./helpers";
 import {
   getAllBuildingRatings,
@@ -28,6 +29,7 @@ import {
   getAllRooms,
   getAllRoomStatus,
   getRoomBookings,
+  getRoomByEvent,
   searchAllRoom,
 } from "./service";
 
@@ -91,6 +93,28 @@ app.get(
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const { roomID } = req.params as { roomID: string };
     const data = await getRoomBookings(roomID);
+    res.send(data);
+    next();
+  })
+);
+
+// Route to get related bookings from an event ID
+app.get(
+  "/api/rooms/bookings/:eventID",
+  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const { eventID } = req.params as { eventID: string };
+    const data = await getRoomByEvent(eventID);
+    res.send(data);
+    next();
+  })
+);
+
+// Route to get the bookings module from an occurrence ID
+app.get(
+  "/api/rooms/bookings/module/:occurrenceID",
+  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const { occurrenceID } = req.params as { occurrenceID: string };
+    const data = await queryBookingsModule(occurrenceID);
     res.send(data);
     next();
   })
