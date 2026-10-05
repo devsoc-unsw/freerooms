@@ -100,7 +100,7 @@ app.get(
 
 // Route to get related bookings from an event ID
 app.get(
-  "/api/rooms/bookings/:eventID",
+  "/api/rooms/bookings/event/:eventID",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const { eventID } = req.params as { eventID: string };
     const data = await getRoomByEvent(eventID);
