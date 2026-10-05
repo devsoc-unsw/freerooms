@@ -109,12 +109,15 @@ app.get(
   })
 );
 
-// Route to get the bookings module from an occurrence ID
+// Route to get the bookings module of a specific booking from an occurrence ID and room ID
 app.get(
-  "/api/rooms/bookings/module/:occurrenceID",
+  "/api/rooms/bookings/:roomID/:occurrenceID",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const { occurrenceID } = req.params as { occurrenceID: string };
-    const data = await queryBookingsModule(occurrenceID);
+    const { roomID, occurrenceID } = req.params as {
+      roomID: string;
+      occurrenceID: string;
+    };
+    const data = await queryBookingsModule(roomID, occurrenceID);
     res.send(data);
     next();
   })

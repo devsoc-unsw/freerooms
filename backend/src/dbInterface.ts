@@ -162,14 +162,15 @@ type BookingsModuleRes = {
 };
 
 /**
- * Query bookings module from the occurrence ID
+ * Query bookings module from the occurrence ID and room ID
  */
 export const queryBookingsModule = async (
+  roomId: string,
   occurrenceId: string
 ): Promise<BookingsModuleRes> => {
   const query = `
-    query BookingsModule($occurrenceId: String!) {
-      bookings(where: {occurrenceId: {_like: $occurrenceId}}) {
+    query BookingsModule($roomId: String!, $occurrenceId: String!) {
+      bookings(where: {roomId: {_like: $roomId}, occurrenceId: {_like: $occurrenceId}, }) {
         occurrenceId
         roomId
         bookingmodules {
@@ -182,7 +183,7 @@ export const queryBookingsModule = async (
     }
   `;
 
-  const variables = { occurrenceId };
+  const variables = { occurrenceId, roomId };
 
   return await doRequest<BookingsModuleRes>(query, variables);
 };
@@ -208,7 +209,7 @@ export const queryBookingsForEvent = async (
 ): Promise<BookingsForEventRes> => {
   const query = `
     query BookingsForEvent($eventId: String!) {
-      bookings(where: {eventId: {_like: $eventId}}, limit: 25, order_by: {start: asc}) {
+      bookings(where: {eventId: {_like: $eventId}}, order_by: {start: asc}) {
         eventId
         occurrenceId
         roomId
