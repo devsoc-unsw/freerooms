@@ -193,12 +193,13 @@ export const getRoomByEvent = async (
 };
 
 export const getBookingsModule = async (
+  roomId: string,
   occurrenceId: string
 ): Promise<BookingsModuleResponse> => {
-  const res = await queryBookingsModule(occurrenceId);
+  const res = await queryBookingsModule(roomId, occurrenceId);
   if (res.bookings == null) {
     throw new Error(
-      `Booking module for occurrence ${occurrenceId} does not exist`
+      `Booking module for room ${roomId} and occurrence ${occurrenceId} does not exist`
     );
   }
 
