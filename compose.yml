@@ -2,7 +2,7 @@ name: freerooms-local-development
 
 services:
   mongo:
-    image: mongo:8.0
+    image: mongo:8.3
     user: "mongodb"
     command:
       - mongod
@@ -16,7 +16,7 @@ services:
       - mongo_data:/data/db
 
   mongo-init:
-    image: mongo:8.0
+    image: mongo:8.3
 
     depends_on:
       mongo:
@@ -57,7 +57,7 @@ services:
         echo "MongoDB is ready."
 
   backend:
-    image: node:24.18-alpine
+    image: node:24.21-alpine
     working_dir: /workspace/backend
     init: true
 
@@ -94,7 +94,7 @@ services:
         exec npm run dev
 
   frontend:
-    image: node:24.18-alpine
+    image: node:24.21-alpine
     working_dir: /workspace/frontend
     init: true
 
