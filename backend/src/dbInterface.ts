@@ -1,6 +1,6 @@
 // Interface to the Hasura GraphQL API
 import parseDates from "@common/parseDates";
-import { Booking, BookingModule } from "@common/types";
+import { Booking, BookingModule, BookingPaginationParams } from "@common/types";
 import type { TypedDocumentNode } from "@graphql-typed-document-node/core";
 import { parse } from "graphql";
 import { gql, GraphQLClient } from "graphql-request";
@@ -17,7 +17,7 @@ const client = new GraphQLClient(GRAPHQL_API);
  */
 const doRequest = async <T>(
   queryStr: string,
-  variables: Record<string, string> = {}
+  variables: Record<string, string | number> = {}
 ): Promise<T> => {
   // Make the request
   const query: TypedDocumentNode<T> = parse(gql`
@@ -118,6 +118,79 @@ export const queryBuildingsAndRooms =
   };
 
 ///////////////////////////////////////////////////////////////
+
+export type AllBookingsRes = {
+  bookings: Booking[];
+};
+
+/**
+ * Query all bookings with pagination
+ */
+export const queryAllBookings = async (
+  params: BookingPaginationParams
+): Promise<AllBookingsRes> => {
+  const { limit, cursor } = params;
+
+  // Filter bookings if cursor exists
+  const where = cursor
+    ? `where: {
+        _or: [
+          { start: { _gt: $start } },
+          { start: { _eq: $start }, bookingType: { _gt: $bookingType } },
+          { start: { _eq: $start }, bookingType: { _eq: $bookingType }, roomId: { _gt: $roomId } },
+          { start: { _eq: $start }, bookingType: { _eq: $bookingType }, roomId: { _eq: $roomId }, occurrenceId: { _gt: $occurrenceId } }
+        ]
+      }`
+    : "";
+
+  const query = `
+    query AllBookings(
+      $limit: Int!
+      ${
+        cursor
+          ? `
+      $start: timestamptz!
+      $bookingType: String!
+      $roomId: String!
+      $occurrenceId: String!
+      `
+          : ""
+      }
+    ) {
+      bookings(
+        order_by: [
+          { start: asc }
+          { bookingType: asc }
+          { roomId: asc }
+          { occurrenceId: asc }
+        ]
+        limit: $limit
+        ${where}
+      ) {
+        roomId
+        occurrenceId
+        eventId
+        name
+        bookingType
+        start
+        end
+        plannedSize
+      }
+    }
+  `;
+
+  const variables = {
+    limit: limit,
+    ...(cursor && {
+      start: cursor.start.toISOString(),
+      bookingType: cursor.bookingType,
+      roomId: cursor.roomId,
+      occurrenceId: cursor.occurrenceId,
+    }),
+  };
+
+  return await doRequest<AllBookingsRes>(query, variables);
+};
 
 type BookingsForRoomRes = {
   rooms_by_pk: {
