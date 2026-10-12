@@ -1,6 +1,8 @@
 import {
+  BookingPaginationParams,
   BookingsEventResponse,
   BookingsModuleResponse,
+  BookingsPaginationResponse,
   BookingsResponse,
   BuildingsResponse,
   RoomsResponse,
@@ -9,12 +11,14 @@ import {
 } from "@common/types";
 
 import {
+  queryAllBookings,
   queryBookingsForEvent,
   queryBookingsForRoom,
   queryBookingsModule,
 } from "./dbInterface";
 import {
   calculateStatus,
+  createBookingCursor,
   getBookingsForRange,
   getBuildingRoomData,
   getSearchRangeEnd,
@@ -179,6 +183,21 @@ export const getRoomBookings = async (
   }
 
   return res.rooms_by_pk;
+};
+
+export const getAllBookings = async (
+  params: BookingPaginationParams
+): Promise<BookingsPaginationResponse> => {
+  const result = await queryAllBookings(params);
+  const bookings = result.bookings;
+
+  // Create next cursor from the last booking in the page
+  const nextCursor =
+    bookings.length === params.limit
+      ? createBookingCursor(bookings[bookings.length - 1])
+      : null;
+
+  return { bookings, nextCursor };
 };
 
 export const getRoomByEvent = async (

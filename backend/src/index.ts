@@ -9,7 +9,6 @@ import express, {
 } from "express";
 
 import { PORT } from "./config";
-import { queryBookingsModule } from "./dbInterface";
 import { getRoomUtilities } from "./helpers";
 import {
   getAllBuildingRatings,
@@ -20,14 +19,17 @@ import {
   insertRating,
 } from "./ratingDbInterface";
 import {
+  parseBookingCursor,
   parseSearchFilters,
   parseStatusDatetime,
   parseStatusFilters,
 } from "./requestParsers";
 import {
+  getAllBookings,
   getAllBuildings,
   getAllRooms,
   getAllRoomStatus,
+  getBookingsModule,
   getRoomBookings,
   getRoomByEvent,
   searchAllRoom,
@@ -98,6 +100,17 @@ app.get(
   })
 );
 
+// Route to get all bookings with pagination
+app.get(
+  "/api/bookings",
+  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const params = parseBookingCursor(req);
+    const data = await getAllBookings(params);
+    res.send(data);
+    next();
+  })
+);
+
 // Route to get related bookings from an event ID
 app.get(
   "/api/bookings/event/:eventID",
@@ -117,7 +130,7 @@ app.get(
       roomID: string;
       occurrenceID: string;
     };
-    const data = await queryBookingsModule(roomID, occurrenceID);
+    const data = await getBookingsModule(roomID, occurrenceID);
     res.send(data);
     next();
   })

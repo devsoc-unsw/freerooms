@@ -224,3 +224,13 @@ export const getRoomsByBuilding = async (
 
   return res;
 };
+
+// Obtain cursor for the last booking in a page for the next request
+export const createBookingCursor = (booking: Booking): string => {
+  return JSON.stringify({
+    start: booking.start.toISOString(),
+    bookingType: booking.bookingType,
+    roomId: booking.roomId,
+    occurrenceId: booking.occurrenceId,
+  });
+};
