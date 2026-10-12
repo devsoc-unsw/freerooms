@@ -100,7 +100,7 @@ app.get(
 
 // Route to get related bookings from an event ID
 app.get(
-  "/api/rooms/bookings/event/:eventID",
+  "/api/bookings/event/:eventID",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const { eventID } = req.params as { eventID: string };
     const data = await getRoomByEvent(eventID);
@@ -111,7 +111,7 @@ app.get(
 
 // Route to get the bookings module of a specific booking from an occurrence ID and room ID
 app.get(
-  "/api/rooms/bookings/:roomID/:occurrenceID",
+  "/api/bookings/:roomID/:occurrenceID",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const { roomID, occurrenceID } = req.params as {
       roomID: string;
