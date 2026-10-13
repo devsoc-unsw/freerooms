@@ -9,7 +9,6 @@ const ISO_REGEX =
 
 const ONE_WEEK_IN_MILLISECONDS = 7 * 24 * 60 * 60 * 1000;
 const DEFAULT_LIMIT = 25;
-const MAX_LIMIT = 50;
 
 const parseDatetime = (datetimeString: string | undefined | null): Date => {
   if (!datetimeString) {
@@ -133,13 +132,8 @@ export const parseBookingCursor = (req: Request): BookingPaginationParams => {
   let limit = DEFAULT_LIMIT;
   if (req.query.limit) {
     limit = parseInt(req.query.limit as string);
-    if (isNaN(limit) || limit < 1) {
+    if (isNaN(limit) || limit < 1 || limit > DEFAULT_LIMIT) {
       throw new Error("Invalid limit for bookings pagination");
-    }
-    if (limit > MAX_LIMIT) {
-      throw new Error(
-        `Limit for bookings pagination cannot exceed ${MAX_LIMIT}`
-      );
     }
   }
 
