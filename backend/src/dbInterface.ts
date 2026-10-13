@@ -150,7 +150,7 @@ export const queryAllBookings = async (
         cursor
           ? `
       $start: timestamptz!
-      $bookingType: String!
+      $bookingType: bookingtypeenum!
       $roomId: String!
       $occurrenceId: String!
       `

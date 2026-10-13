@@ -39,9 +39,9 @@ export type BookingModule = {
 // Booking Pagination
 export type BookingCursor = {
   start: Date;
-  bookingType?: string;
-  roomId?: string;
-  occurrenceId?: string;
+  bookingType: string;
+  roomId: string;
+  occurrenceId: string;
 }
 
 export type BookingPaginationParams = {
