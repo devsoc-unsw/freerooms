@@ -19,15 +19,19 @@ import {
   insertRating,
 } from "./ratingDbInterface";
 import {
+  parseBookingCursor,
   parseSearchFilters,
   parseStatusDatetime,
   parseStatusFilters,
 } from "./requestParsers";
 import {
+  getAllBookings,
   getAllBuildings,
   getAllRooms,
   getAllRoomStatus,
+  getBookingsModule,
   getRoomBookings,
+  getRoomByEvent,
   searchAllRoom,
 } from "./service";
 
@@ -91,6 +95,42 @@ app.get(
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const { roomID } = req.params as { roomID: string };
     const data = await getRoomBookings(roomID);
+    res.send(data);
+    next();
+  })
+);
+
+// Route to get all bookings with pagination
+app.get(
+  "/api/bookings",
+  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const params = parseBookingCursor(req);
+    const data = await getAllBookings(params);
+    res.send(data);
+    next();
+  })
+);
+
+// Route to get related bookings from an event ID
+app.get(
+  "/api/bookings/event/:eventID",
+  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const { eventID } = req.params as { eventID: string };
+    const data = await getRoomByEvent(eventID);
+    res.send(data);
+    next();
+  })
+);
+
+// Route to get the bookings module of a specific booking from an occurrence ID and room ID
+app.get(
+  "/api/bookings/:roomID/:occurrenceID",
+  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const { roomID, occurrenceID } = req.params as {
+      roomID: string;
+      occurrenceID: string;
+    };
+    const data = await getBookingsModule(roomID, occurrenceID);
     res.send(data);
     next();
   })

@@ -20,11 +20,34 @@ export type Room = {
 };
 
 export type Booking = {
+  roomId?: string;
+  occurrenceId?: string;
   name: string;
   bookingType: string;
   start: Date;
   end: Date;
+  plannedSize?: number;
 };
+
+export type BookingModule = {
+  term: string;
+  career: string;
+  code: string;
+  name: string;
+};
+
+// Booking Pagination
+export type BookingCursor = {
+  start: Date;
+  bookingType: string;
+  roomId: string;
+  occurrenceId: string;
+}
+
+export type BookingPaginationParams = {
+  limit: number;
+  cursor: BookingCursor | null;
+}
 
 export type RoomStatuses = {
   [roomNumber: string]: RoomStatus;
@@ -86,6 +109,30 @@ export type BookingsResponse = {
   bookings: Booking[];
 };
 
+// Bookings for a specific event occurrence
+export type BookingsEventResponse = {
+  eventId: string;
+  occurrenceId: string;
+  roomId: string;
+  name: string;
+  bookingType: string;
+  plannedSize: string;
+  start: Date;
+  end: Date;
+};
+
+// Bookings module for a specific occurrence
+export type BookingsModuleResponse = {
+  occurrenceId: string;
+  roomId: string;
+  bookingModule: BookingModule;
+};
+
+// Bookings Pagination Response
+export type BookingsPaginationResponse = {
+  bookings: Booking[];
+  nextCursor: string | null;
+};
 
 // how ratings are stored in Mongo
 export type RawRatingDocument = { 

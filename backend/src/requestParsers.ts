@@ -1,4 +1,5 @@
 import { roomUsages } from "@common/roomUsages";
+import { BookingCursor, BookingPaginationParams } from "@common/types";
 import { Request } from "express";
 
 import { SearchFilters, StatusFilters } from "./types";
@@ -7,6 +8,7 @@ const ISO_REGEX =
   /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/;
 
 const ONE_WEEK_IN_MILLISECONDS = 7 * 24 * 60 * 60 * 1000;
+const DEFAULT_LIMIT = 25;
 
 const parseDatetime = (datetimeString: string | undefined | null): Date => {
   if (!datetimeString) {
@@ -123,4 +125,43 @@ export const parseSearchFilters = (req: Request): SearchFilters => {
   }
 
   return filters;
+};
+
+export const parseBookingCursor = (req: Request): BookingPaginationParams => {
+  // Limit <= 50, default 25
+  let limit = DEFAULT_LIMIT;
+  if (req.query.limit) {
+    limit = parseInt(req.query.limit as string);
+    if (isNaN(limit) || limit < 1 || limit > DEFAULT_LIMIT) {
+      throw new Error("Invalid limit for bookings pagination");
+    }
+  }
+
+  // Parse Cursor
+  let cursor: BookingCursor | null = null;
+  if (req.query.cursor) {
+    try {
+      const cursorObj = JSON.parse(req.query.cursor as string);
+
+      cursor = {
+        start: new Date(cursorObj.start),
+        bookingType: cursorObj.bookingType,
+        roomId: cursorObj.roomId,
+        occurrenceId: cursorObj.occurrenceId,
+      };
+
+      if (
+        isNaN(cursor.start.getTime()) ||
+        !cursor.bookingType ||
+        !cursor.roomId ||
+        !cursor.occurrenceId
+      ) {
+        throw new Error("Invalid cursor fields");
+      }
+    } catch {
+      throw new Error("Invalid cursor");
+    }
+  }
+
+  return { limit, cursor };
 };

@@ -1,4 +1,8 @@
 import {
+  BookingPaginationParams,
+  BookingsEventResponse,
+  BookingsModuleResponse,
+  BookingsPaginationResponse,
   BookingsResponse,
   BuildingsResponse,
   RoomsResponse,
@@ -6,9 +10,15 @@ import {
   StatusResponse,
 } from "@common/types";
 
-import { queryBookingsForRoom } from "./dbInterface";
+import {
+  queryAllBookings,
+  queryBookingsForEvent,
+  queryBookingsForRoom,
+  queryBookingsModule,
+} from "./dbInterface";
 import {
   calculateStatus,
+  createBookingCursor,
   getBookingsForRange,
   getBuildingRoomData,
   getSearchRangeEnd,
@@ -173,4 +183,44 @@ export const getRoomBookings = async (
   }
 
   return res.rooms_by_pk;
+};
+
+export const getAllBookings = async (
+  params: BookingPaginationParams
+): Promise<BookingsPaginationResponse> => {
+  const result = await queryAllBookings(params);
+  const bookings = result.bookings;
+
+  // Create next cursor from the last booking in the page
+  const nextCursor =
+    bookings.length === params.limit
+      ? createBookingCursor(bookings[bookings.length - 1])
+      : null;
+
+  return { bookings, nextCursor };
+};
+
+export const getRoomByEvent = async (
+  eventId: string
+): Promise<BookingsEventResponse[]> => {
+  const res = await queryBookingsForEvent(eventId);
+  if (res.bookings === null || res.bookings.length === 0) {
+    throw new Error(`Booking for event ${eventId} does not exist`);
+  }
+
+  return res.bookings;
+};
+
+export const getBookingsModule = async (
+  roomId: string,
+  occurrenceId: string
+): Promise<BookingsModuleResponse> => {
+  const res = await queryBookingsModule(roomId, occurrenceId);
+  if (res.bookings == null) {
+    throw new Error(
+      `Booking module for room ${roomId} and occurrence ${occurrenceId} does not exist`
+    );
+  }
+
+  return res.bookings;
 };
