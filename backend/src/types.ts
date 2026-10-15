@@ -1,4 +1,5 @@
-import { Building, Room } from "@common/types";
+import { Building, Room } from "../../common/types.js";
+
 
 export type BuildingDatabase = {
   [buildingId: string]: Building & {
@@ -33,3 +34,6 @@ type SearchFiltersWithTime = BaseSearchFilters & {
 
 // Search filters must either not have both start and end time, or have both (cannot provide startTime without endTime)
 export type SearchFilters = SearchFiltersWithoutTime | SearchFiltersWithTime;
+
+
+//////////////////////// zod response types

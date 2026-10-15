@@ -7,6 +7,7 @@ const nextConfig = {
   turbopack: {
     root: path.join(import.meta.dirname, ".."),
   },
+  allowedDevOrigins: ['127.0.0.1'],
   transpilePackages: ["swiper", "ssr-window", "dom7"],
   images: {
     remotePatterns: [

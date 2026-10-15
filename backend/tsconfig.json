@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "target": "ES2018",
-    "module": "node18",
-    "moduleResolution": "node16",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "strict": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,

@@ -1,7 +1,7 @@
-import { roomUsages } from "@common/roomUsages";
+import { roomUsages } from "../../common/roomUsages.js";
 import { Request } from "express";
 
-import { SearchFilters, StatusFilters } from "./types";
+import { SearchFilters, StatusFilters } from "./types.js";
 
 const ISO_REGEX =
   /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/;

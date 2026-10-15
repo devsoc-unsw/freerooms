@@ -1,11 +1,11 @@
 // Interface to the Hasura GraphQL API
-import parseDates from "@common/parseDates";
-import { Booking } from "@common/types";
+import parseDates from "../../common/parseDates.js";
+import { Booking } from "../../common/types.js";
 import type { TypedDocumentNode } from "@graphql-typed-document-node/core";
 import { parse } from "graphql";
 import { gql, GraphQLClient } from "graphql-request";
 
-import { GRAPHQL_API } from "./config";
+import { GRAPHQL_API } from "./config.js";
 
 ///////////////////////////////////////////////////////////////
 // Helper functions for making and processing GQL requests

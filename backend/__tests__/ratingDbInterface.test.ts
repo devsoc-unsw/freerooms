@@ -1,6 +1,6 @@
-import { BuildingRatingsResponse } from "@common/types";
+import { BuildingRatingsResponse } from "../../common/types.js";
 
-import { getRoomsByBuilding } from "../src/helpers";
+import { getRoomsByBuilding } from "../src/helpers.js";
 import {
   getAllBuildingRatings,
   getAllRoomRatingsInBuilding,
@@ -8,9 +8,9 @@ import {
   getRatings,
   insertBuldingRating,
   insertRating,
-} from "../src/ratingDbInterface";
+} from "../src/ratingDbInterface.js";
 
-jest.mock("../src/config", () => ({
+jest.mock("../src/config.js", () => ({
   MONGO_URI: "mongodb://mock-uri",
 }));
 
