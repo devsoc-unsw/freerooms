@@ -1,5 +1,5 @@
 import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithProviders";
-import Sponsors from "@frontend/components/landing/Sponsors";
+import Sponsors from "@frontend/components/sponsors/Sponsors";
 import { screen } from "@testing-library/react";
 
 describe("Sponsors", () => {
