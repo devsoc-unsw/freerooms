@@ -1,4 +1,4 @@
-import SponsorItem from "@frontend/components/landing/SponsorItem";
+import SponsorItem from "@frontend/components/sponsors/SponsorItem";
 import { Sponsor } from "@frontend/types";
 import { Divider, Stack, Typography, useTheme } from "@mui/material";
 import Grid from "@mui/material/Grid";
