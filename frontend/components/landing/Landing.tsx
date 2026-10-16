@@ -1,6 +1,5 @@
 import Faq from "@frontend/components/landing/Faq";
 import Features from "@frontend/components/landing/Features";
-import Sponsors from "@frontend/components/sponsors/Sponsors";
 import TextAnimation from "@frontend/components/landing/TextAnimation";
 import transientOptions from "@frontend/utils/transientOptions";
 import Stack from "@mui/material/Stack";
@@ -57,7 +56,6 @@ const Landing = () => {
         <Features />
       </LandingScreenContainer>
       <Faq />
-      <Sponsors />
     </Stack>
   );
 };
