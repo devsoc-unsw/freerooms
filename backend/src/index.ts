@@ -1,13 +1,20 @@
 import {
   buildingsResponseSchema,
   BuildingRatingsResponse,
+  buildingIdParamsSchema,
   buildingRatingsResponseSchema,
   bookingsResponseSchema,
+  ratingCreatedResponseSchema,
+  ratingParamsSchema,
   ratingsResponseSchema,
   ratingSchema,
+  roomIdParamsSchema,
   roomUtilitiesResponseSchema,
+  roomUtilitiesParamsSchema,
   roomsResponseSchema,
+  searchQuerySchema,
   searchResponseSchema,
+  statusQuerySchema,
   statusResponseSchema,
 } from "common/types";
 import cors from "cors";
@@ -46,23 +53,6 @@ import {
 const app = express();
 app.use(cors());
 app.use(json());
-
-const roomIdParamsSchema = z.object({
-  roomID: z.string().min(1),
-});
-
-const buildingIdParamsSchema = z.object({
-  buildingID: z.string().min(1),
-});
-
-const ratingParamsSchema = z.object({
-  buildingID: z.string().min(1),
-  roomID: z.string().min(1),
-});
-
-const roomUtilitiesParamsSchema = z.object({
-  roomId: z.string().min(1),
-});
 
 const sendValidated = <T>(
   res: Response,
@@ -103,6 +93,7 @@ app.get(
   "/api/rooms/status",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const datetime = parseStatusDatetime(req);
+    statusQuerySchema.parse(req.query);
     const filters = parseStatusFilters(req);
     const data = await getAllRoomStatus(datetime, filters);
     sendValidated(res, statusResponseSchema, data);
@@ -115,6 +106,7 @@ app.get(
   "/api/rooms/search",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const datetime = parseStatusDatetime(req);
+    searchQuerySchema.parse(req.query);
     const filters = parseSearchFilters(req);
     const data = await searchAllRoom(datetime, filters);
     sendValidated(res, searchResponseSchema, data);
@@ -171,7 +163,9 @@ app.post(
       ]);
       // Update the overall rating of the building
       await insertBuldingRating(buildingID, rating.overall);
-      res.status(200).json({ message: "rating inserted successfully" });
+      sendValidated(res, ratingCreatedResponseSchema, {
+        message: "rating inserted successfully",
+      });
     } catch (error) {
       res.status(500).json({ error: error });
     }

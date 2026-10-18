@@ -157,3 +157,43 @@ export const roomUtilitiesResponseSchema = z.object({
 });
 
 export type RoomUtilitiesResponse = z.infer<typeof roomUtilitiesResponseSchema>;
+
+///////////////////////////////////////////////////////////////
+// API Request Types
+
+export const roomIdParamsSchema = z.object({
+  roomID: z.string().min(1),
+});
+
+export const buildingIdParamsSchema = z.object({
+  buildingID: z.string().min(1),
+});
+
+export const ratingParamsSchema = z.object({
+  buildingID: z.string().min(1),
+  roomID: z.string().min(1),
+});
+
+export const roomUtilitiesParamsSchema = z.object({
+  roomId: z.string().min(1),
+});
+
+export const statusQuerySchema = z.object({
+  datetime: z.string().optional(),
+  capacity: z.string().optional(),
+  usage: z.string().optional(),
+  location: z.enum(["upper", "lower"]).optional(),
+  duration: z.string().optional(),
+  recurring: z.string().optional(),
+  id: z.enum(["true", "false"]).optional(),
+});
+
+export const searchQuerySchema = statusQuerySchema.extend({
+  buildingId: z.string().optional(),
+  startTime: z.string().optional(),
+  endTime: z.string().optional(),
+});
+
+export const ratingCreatedResponseSchema = z.object({
+  message: z.string(),
+});

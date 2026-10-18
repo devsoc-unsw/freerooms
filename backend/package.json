@@ -8,6 +8,7 @@
     "dev": "cross-env NODE_ENV=development npm start",
     "clean": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
     "build": "npm run clean && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
+    "openapi": "node openapi_generator.js",
     "lint": "prettier --check \"**/*.ts\" && eslint .",
     "lint:fix": "prettier --write \"**/*.ts\" && eslint . --fix",
     "typecheck": "tsc --noEmit -p tsconfig.json",
@@ -28,6 +29,7 @@
   "homepage": "https://github.com/devsoc-unsw/freerooms#readme",
   "dependencies": {
     "@graphql-typed-document-node/core": "^3.2.0",
+    "common": "file:../common",
     "cors": "^2.8.5",
     "date-fns": "^4.4.0",
     "date-fns-tz": "^3.2.0",
@@ -36,7 +38,6 @@
     "graphql": "^16.14.2",
     "graphql-request": "^6.1.0",
     "mongodb": "^7.6.0",
-    "common": "file:../common",
     "zod": "^4.6.7"
   },
   "devDependencies": {
@@ -59,6 +60,7 @@
     "ts-node": "10.9.2",
     "tsc-alias": "^1.9.5",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "yaml": "^2.9.1"
   }
 }
