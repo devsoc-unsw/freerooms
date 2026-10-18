@@ -3,10 +3,6 @@
   "version": "1.0.0",
   "description": "Freerooms backend",
   "main": "dist/backend/src/index.js",
-  "type": "module",
-  "ts-node": {
-    "experimentalResolver": true
-  },
   "scripts": {
     "start": "nodemon src/index.ts",
     "dev": "cross-env NODE_ENV=development npm start",
@@ -31,7 +27,6 @@
   },
   "homepage": "https://github.com/devsoc-unsw/freerooms#readme",
   "dependencies": {
-    "@catalystic/json-to-yaml": "^1.0.0",
     "@graphql-typed-document-node/core": "^3.2.0",
     "cors": "^2.8.5",
     "date-fns": "^4.4.0",
@@ -40,8 +35,7 @@
     "express": "^5.2.1",
     "graphql": "^16.14.2",
     "graphql-request": "^6.1.0",
-    "mongodb": "^7.6.0",
-    "zod": "^4.6.7"
+    "mongodb": "^7.6.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -59,7 +53,6 @@
     "jest": "^30.5.2",
     "nodemon": "^3.0.0",
     "prettier": "^3.9.8",
-    "swagger-autogen": "^2.23.7",
     "ts-jest": "^29.4.12",
     "ts-node": "10.9.2",
     "tsc-alias": "^1.9.5",

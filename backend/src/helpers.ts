@@ -4,15 +4,15 @@ import {
   RoomsResponse,
   RoomStatus,
   RoomUtilitiesResponse,
-} from "../../common/types.js";
+} from "@common/types";
 import { fromZonedTime, toZonedTime } from "date-fns-tz";
 
 import {
   queryBookingsInRange,
   queryBuildingsAndRooms,
   queryRoomUtilities,
-} from "./dbInterface.js";
-import { BuildingDatabase, StatusFilters } from "./types.js";
+} from "./dbInterface";
+import { BuildingDatabase, StatusFilters } from "./types";
 
 const FIFTEEN_MIN = 15 * 1000 * 60;
 

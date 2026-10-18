@@ -4,11 +4,11 @@ import {
   Rating,
   RatingsResponse,
   RawRatingDocument,
-} from "../../common/types.js";
+} from "@common/types";
 import { Collection, MongoClient } from "mongodb";
 
-import { MONGO_URI } from "./config.js";
-import { getRoomsByBuilding } from "./helpers.js";
+import { MONGO_URI } from "./config";
+import { getRoomsByBuilding } from "./helpers";
 export async function insertRating(
   roomId: string,
   ratings: number[]

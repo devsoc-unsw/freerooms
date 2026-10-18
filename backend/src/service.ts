@@ -4,17 +4,17 @@ import {
   RoomsResponse,
   SearchResponse,
   StatusResponse,
-} from "../../common/types.js";
+} from "@common/types";
 
-import { queryBookingsForRoom } from "./dbInterface.js";
+import { queryBookingsForRoom } from "./dbInterface";
 import {
   calculateStatus,
   getBookingsForRange,
   getBuildingRoomData,
   getSearchRangeEnd,
   isRecurringFree,
-} from "./helpers.js";
-import { SearchFilters, StatusFilters } from "./types.js";
+} from "./helpers";
+import { SearchFilters, StatusFilters } from "./types";
 
 const UPPER = 19; // Buildings with grid 19+ are upper campus
 

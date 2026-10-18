@@ -1,7 +1,7 @@
 {
   "ignore": ["database.json"],
   "execMap": {
-    "ts": "node --loader ts-node/esm",
-    "js": "node --loader ts-node/esm"
+    "ts": "ts-node -r tsconfig-paths/register",
+    "js": "node -r ts-node/register/transpile-only -r tsconfig-paths/register"
   }
 }

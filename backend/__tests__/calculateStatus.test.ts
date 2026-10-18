@@ -1,4 +1,4 @@
-import { calculateStatus } from "../src/helpers.js";
+import { calculateStatus } from "../src/helpers";
 
 const TEST_DATE = new Date(2024, 2, 24, 12);
 
