@@ -25,7 +25,9 @@ const useBuildingSearch = (
           (roomNumber) => {
             const roomId = `${building.id}-${roomNumber}`;
             const room = rooms?.[roomId];
-            return room ? [roomId, room.name, room.abbr, room.school] : [roomId];
+            return room
+              ? [roomId, room.name, room.abbr, room.school]
+              : [roomId];
           }
         ),
       ].filter((key) => key.trim() !== ""),
