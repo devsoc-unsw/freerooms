@@ -9,10 +9,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
-    "paths": {
-      "@common/*": ["../common/*"]
-    },
     "types": ["jest"]
   },
-  "include": ["./src/**/*.ts", "./__tests__/**/*.ts", "../common/*.ts"]
+  "include": ["./src/**/*.ts", "./__tests__/**/*.ts"]
 }

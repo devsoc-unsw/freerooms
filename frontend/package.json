@@ -27,6 +27,7 @@
     "@reduxjs/toolkit": "^2.12.0",
     "antd": "^6.6.5",
     "axios": "^1.20.0",
+    "common": "file:../common",
     "date-fns": "^4.4.0",
     "date-fns-tz": "^3.2.0",
     "mapbox-gl": "^3.31.0",
@@ -42,7 +43,8 @@
     "sharp": "^0.35.4",
     "swiper": "^14.2.0",
     "swr": "^2.5.1",
-    "usehooks-ts": "^3.1.1"
+    "usehooks-ts": "^3.1.1",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^7.0.1",

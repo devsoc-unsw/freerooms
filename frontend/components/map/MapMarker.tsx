@@ -1,4 +1,4 @@
-import { Building, BuildingStatus } from "@common/types";
+import { Building, BuildingStatus } from "common/types";
 import useBuilding from "@frontend/hooks/buildings/useBuilding";
 import useBuildingStatus from "@frontend/hooks/buildings/useBuildingStatus";
 import { useDispatch, useSelector } from "@frontend/redux/hooks";

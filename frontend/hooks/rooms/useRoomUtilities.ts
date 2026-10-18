@@ -2,7 +2,7 @@
  * Data fetching hook for utility tags of a specified room
  */
 
-import { RoomUtilitiesResponse } from "@common/types";
+import { RoomUtilitiesResponse } from "common/types";
 import { API_URL } from "@frontend/config";
 import axios from "axios";
 import useSWRImmutable from "swr/immutable";

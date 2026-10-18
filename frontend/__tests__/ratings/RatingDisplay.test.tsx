@@ -1,4 +1,4 @@
-import { RoomStatus } from "@common/types";
+import { RoomStatus } from "common/types";
 import renderWithRedux from "@frontend/__tests__/utils/renderWithProviders";
 import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithProviders";
 import Page from "@frontend/app/room/[room]/page";

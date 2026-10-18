@@ -1,4 +1,4 @@
-import { SearchResponseValue } from "@common/types";
+import { SearchResponseValue } from "common/types";
 import RoomAvailability from "@frontend/components/rooms/RoomAvailability";
 import { RoomAvailabilityBoxProps } from "@frontend/components/rooms/RoomAvailabilityBox";
 import getRoomHref from "@frontend/utils/getRoomHref";

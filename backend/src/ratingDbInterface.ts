@@ -4,7 +4,7 @@ import {
   Rating,
   RatingsResponse,
   RawRatingDocument,
-} from "@common/types";
+} from "common/types";
 import { Collection, MongoClient } from "mongodb";
 
 import { MONGO_URI } from "./config";

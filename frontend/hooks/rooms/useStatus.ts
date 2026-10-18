@@ -2,7 +2,7 @@
  * Data fetching hook for status of all rooms
  * Uses datetime and filters from Redux store
  */
-import { StatusResponse } from "@common/types";
+import { StatusResponse } from "common/types";
 import { API_URL } from "@frontend/config";
 import { useSelector } from "@frontend/redux/hooks";
 import { selectDatetime } from "@frontend/redux/slices/datetimeSlice";

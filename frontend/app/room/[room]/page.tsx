@@ -2,9 +2,9 @@
 import "swiper/css";
 import "swiper/css/navigation";
 
-import translateRoomUsage from "@common/roomUsages";
-import getSchoolDetails from "@common/schools";
-import type { Booking, Room } from "@common/types";
+import translateRoomUsage from "common/roomUsages";
+import getSchoolDetails from "common/schools";
+import type { Booking, Room } from "common/types";
 import BookingButton from "@frontend/components/booking/BookingButton";
 import BookingCalendar from "@frontend/components/booking/BookingCalendar";
 import FeedbackButton from "@frontend/components/feedback/FeedbackButton";

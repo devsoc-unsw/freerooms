@@ -12,7 +12,6 @@ const config: Config = {
   coverageProvider: "v8",
   moduleNameMapper: {
     "^@frontend/(.*)$": "<rootDir>/$1",
-    "^@common/(.*)$": "<rootDir>/../common/$1",
     "^swiper/css.*$":
       "<rootDir>/node_modules/next/dist/build/jest/__mocks__/styleMock.js",
   },

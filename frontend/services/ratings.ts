@@ -1,4 +1,4 @@
-import { Rating } from "@common/types";
+import { Rating } from "common/types";
 import { API_URL } from "@frontend/config";
 import axios from "axios";
 

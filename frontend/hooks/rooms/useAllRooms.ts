@@ -1,4 +1,4 @@
-import { SearchResponse } from "@common/types";
+import { SearchResponse } from "common/types";
 import { API_URL } from "@frontend/config";
 import { useSelector } from "@frontend/redux/hooks";
 import { selectDatetime } from "@frontend/redux/slices/datetimeSlice";

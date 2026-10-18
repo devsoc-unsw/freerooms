@@ -1,4 +1,4 @@
-import type { Building } from "@common/types";
+import type { Building } from "common/types";
 import useMapboxRoute, {
   type RouteGeometry,
 } from "@frontend/hooks/map/useMapboxRoute";

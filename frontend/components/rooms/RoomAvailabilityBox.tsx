@@ -1,4 +1,4 @@
-import { RoomStatus } from "@common/types";
+import { RoomStatus } from "common/types";
 import RoomAvailability from "@frontend/components/rooms/RoomAvailability";
 import useAllRoomRatingsInBuilding from "@frontend/hooks/ratings/useRoomRatingsInBuilding";
 import useRoom from "@frontend/hooks/rooms/useRoom";

@@ -1,4 +1,4 @@
-import { Building } from "@common/types";
+import { Building } from "common/types";
 import { MAPBOX_ACCESS_TOKEN } from "@frontend/config";
 import { UserLocation } from "@frontend/hooks/map/useUserLocation";
 import { useCallback, useEffect, useRef, useState } from "react";

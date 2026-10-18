@@ -1,4 +1,4 @@
-import { Building } from "@common/types";
+import { Building } from "common/types";
 import BuildingCard from "@frontend/components/rooms/BuildingCard";
 import BuildingCardMobile from "@frontend/components/rooms/BuildingCardMobile";
 import useBuildings from "@frontend/hooks/buildings/useBuildings";

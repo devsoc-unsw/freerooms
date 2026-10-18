@@ -1,4 +1,15 @@
-import { BuildingRatingsResponse } from "@common/types";
+import {
+  buildingsResponseSchema,
+  BuildingRatingsResponse,
+  buildingRatingsResponseSchema,
+  bookingsResponseSchema,
+  ratingsResponseSchema,
+  ratingSchema,
+  roomUtilitiesResponseSchema,
+  roomsResponseSchema,
+  searchResponseSchema,
+  statusResponseSchema,
+} from "common/types";
 import cors from "cors";
 import express, {
   json,
@@ -7,6 +18,7 @@ import express, {
   RequestHandler,
   Response,
 } from "express";
+import { z } from "zod";
 
 import { PORT } from "./config";
 import { getRoomUtilities } from "./helpers";
@@ -35,6 +47,31 @@ const app = express();
 app.use(cors());
 app.use(json());
 
+const roomIdParamsSchema = z.object({
+  roomID: z.string().min(1),
+});
+
+const buildingIdParamsSchema = z.object({
+  buildingID: z.string().min(1),
+});
+
+const ratingParamsSchema = z.object({
+  buildingID: z.string().min(1),
+  roomID: z.string().min(1),
+});
+
+const roomUtilitiesParamsSchema = z.object({
+  roomId: z.string().min(1),
+});
+
+const sendValidated = <T>(
+  res: Response,
+  schema: z.ZodType<T>,
+  data: unknown
+): void => {
+  res.send(schema.parse(data));
+};
+
 // Wrapper for request handler functions to catch async exceptions
 const asyncHandler =
   (fn: RequestHandler) => (req: Request, res: Response, next: NextFunction) => {
@@ -46,7 +83,7 @@ app.get(
   "/api/buildings",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const buildingData = await getAllBuildings();
-    res.send(buildingData);
+    sendValidated(res, buildingsResponseSchema, buildingData);
     next();
   })
 );
@@ -56,7 +93,7 @@ app.get(
   "/api/rooms",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const roomData = await getAllRooms();
-    res.send(roomData);
+    sendValidated(res, roomsResponseSchema, roomData);
     next();
   })
 );
@@ -68,7 +105,7 @@ app.get(
     const datetime = parseStatusDatetime(req);
     const filters = parseStatusFilters(req);
     const data = await getAllRoomStatus(datetime, filters);
-    res.send(data);
+    sendValidated(res, statusResponseSchema, data);
     next();
   })
 );
@@ -80,7 +117,7 @@ app.get(
     const datetime = parseStatusDatetime(req);
     const filters = parseSearchFilters(req);
     const data = await searchAllRoom(datetime, filters);
-    res.send(data);
+    sendValidated(res, searchResponseSchema, data);
     next();
   })
 );
@@ -89,9 +126,9 @@ app.get(
 app.get(
   "/api/rooms/bookings/:roomID",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const { roomID } = req.params as { roomID: string };
+    const { roomID } = roomIdParamsSchema.parse(req.params);
     const data = await getRoomBookings(roomID);
-    res.send(data);
+    sendValidated(res, bookingsResponseSchema, data);
     next();
   })
 );
@@ -100,9 +137,9 @@ app.get(
 app.get(
   "/api/rating/:roomID",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const { roomID } = req.params as { roomID: string };
+    const { roomID } = roomIdParamsSchema.parse(req.params);
     const roomRatings = await getRatings(roomID);
-    res.send(roomRatings);
+    sendValidated(res, ratingsResponseSchema, roomRatings);
     next();
   })
 );
@@ -111,9 +148,9 @@ app.get(
 app.get(
   "/api/rating/rooms/:buildingID",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const { buildingID } = req.params as { buildingID: string };
+    const { buildingID } = buildingIdParamsSchema.parse(req.params);
     const roomRatings = await getAllRoomRatingsInBuilding(buildingID);
-    res.send(roomRatings);
+    sendValidated(res, ratingsResponseSchema.array(), roomRatings);
     next();
   })
 );
@@ -121,30 +158,31 @@ app.get(
 // Insert one rating for a room
 app.post(
   "/api/rating/rate/:buildingID/:roomID",
-  async (req: Request, res: Response) => {
-    const { buildingID, roomID } = req.params as {
-      buildingID: string;
-      roomID: string;
-    };
-    const { cleanliness, location, quietness, overall } = req.body;
-    const ratings = [cleanliness, location, quietness, overall];
+  asyncHandler(async (req: Request, res: Response) => {
+    const { buildingID, roomID } = ratingParamsSchema.parse(req.params);
+    const rating = ratingSchema.parse(req.body);
     try {
       // Insert a new rating object to room document
-      await insertRating(roomID, ratings);
+      await insertRating(roomID, [
+        rating.cleanliness,
+        rating.location,
+        rating.quietness,
+        rating.overall,
+      ]);
       // Update the overall rating of the building
-      await insertBuldingRating(buildingID, overall);
+      await insertBuldingRating(buildingID, rating.overall);
       res.status(200).json({ message: "rating inserted successfully" });
     } catch (error) {
       res.status(500).json({ error: error });
     }
-  }
+  })
 );
 
 // Get overall rating for a building given a buildingID
 app.get(
   "/api/buildingRating/:buildingID",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const { buildingID } = req.params as { buildingID: string };
+    const { buildingID } = buildingIdParamsSchema.parse(req.params);
     let buildingRating: BuildingRatingsResponse | null =
       await getBuildingRatings(buildingID);
 
@@ -156,7 +194,7 @@ app.get(
       };
     }
 
-    res.send(buildingRating);
+    sendValidated(res, buildingRatingsResponseSchema, buildingRating);
     next();
   })
 );
@@ -181,7 +219,11 @@ app.get(
           }
       );
 
-    res.send(allBuildingRatings);
+    sendValidated(
+      res,
+      buildingRatingsResponseSchema.array(),
+      allBuildingRatings
+    );
     next();
   })
 );
@@ -190,9 +232,9 @@ app.get(
 app.get(
   "/api/rooms/utilities/:roomId",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const { roomId } = req.params as { roomId: string };
+    const { roomId } = roomUtilitiesParamsSchema.parse(req.params);
     const roomUtilities = await getRoomUtilities(roomId);
-    res.send(roomUtilities);
+    sendValidated(res, roomUtilitiesResponseSchema, roomUtilities);
     next();
   })
 );

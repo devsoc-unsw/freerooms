@@ -1,4 +1,4 @@
-import { Building, Room } from "@common/types";
+import { Building, Room } from "common/types";
 
 export type BuildingDatabase = {
   [buildingId: string]: Building & {

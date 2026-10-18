@@ -1,4 +1,4 @@
-import type { Building } from "@common/types";
+import type { Building } from "common/types";
 import ViewOnMapButton from "@frontend/components/navigation/ViewOnMapButton";
 import RoomAvailabilityBox from "@frontend/components/rooms/RoomAvailabilityBox";
 import Button from "@frontend/components/ui/Button";

@@ -2,7 +2,7 @@
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
-import { Booking } from "@common/types";
+import { Booking } from "common/types";
 import useBookingCalendarQuery from "@frontend/hooks/bookings/useBookingCalendarQuery";
 import { useSelector } from "@frontend/redux/hooks";
 import { selectDatetime } from "@frontend/redux/slices/datetimeSlice";

@@ -1,4 +1,4 @@
-import { Rating } from "@common/types";
+import { Rating } from "common/types";
 import ReviewRating from "@frontend/components/ratings/ReviewRating";
 import insertRating from "@frontend/services/ratings";
 import CloseIcon from "@mui/icons-material/Close";

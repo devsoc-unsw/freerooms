@@ -1,6 +1,6 @@
 "use client";
 
-import { Building } from "@common/types";
+import { Building } from "common/types";
 import { DarkModeContext } from "@frontend/app/clientLayout";
 import BuildingDrawer from "@frontend/components/map/BuildingDrawer";
 import DirectionsSummary from "@frontend/components/map/DirectionSummary";

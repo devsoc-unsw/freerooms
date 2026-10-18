@@ -1,4 +1,4 @@
-import { roomUsages } from "@common/roomUsages";
+import { roomUsages } from "common/roomUsages";
 import { DropDown, DropDownItem } from "@frontend/types";
 
 const MAX_RECURRING = 10;
