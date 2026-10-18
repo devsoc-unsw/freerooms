@@ -3,10 +3,24 @@ import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
 import InputAdornment from "@mui/material/InputAdornment";
 import { useTheme } from "@mui/material/styles";
-import React from "react";
+import React, { useEffect, useRef } from "react";
+
+const DEBOUNCE_MS = 0;
 
 const SearchBar = ({ setQuery }: { setQuery: (query: string) => void }) => {
   const theme = useTheme();
+
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const clearPending = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+  };
+
+  // clean up any pending timer on unmount
+  useEffect(() => clearPending, []);
 
   return (
     <Box
@@ -45,13 +59,24 @@ const SearchBar = ({ setQuery }: { setQuery: (query: string) => void }) => {
           },
         }}
         fullWidth
-        //entering the target
-        onKeyDown={(event) => {
+
+        // debounce: send the query 0ms after the last key up
+        onKeyUp={(event) => {
           const target = event.target as HTMLInputElement;
+          clearPending();
+
+          // pressing enter submits immediately
           if (event.key === "Enter") {
             setQuery(target.value);
+            return;
           }
+          const value = target.value;
+          timeoutRef.current = setTimeout(() => {
+            setQuery(value);
+            timeoutRef.current = null;
+          }, DEBOUNCE_MS);
         }}
+
         //clearing the search bar
         onChange={(event) => {
           if (event.target.value === "") {

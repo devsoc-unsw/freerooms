@@ -31,6 +31,10 @@ jest.mock("@frontend/hooks/map/useUserLocation", () => ({
   __esModule: true,
   default: () => ({ userLat: null, userLng: null }),
 }));
+jest.mock("@frontend/hooks/rooms/useRooms", () => ({
+  __esModule: true,
+  default: () => ({ rooms: undefined }),
+}));
 jest.mock("@frontend/components/rooms/BuildingCard", () => ({
   __esModule: true,
   default: ({ buildingId }: { buildingId?: string }) => (
