@@ -25,8 +25,36 @@ export default function SponsorItem({ name, image, url, tier }: Sponsor) {
         alignItems: "center",
       }}
     >
-      <Link href={url} target="_blank" sx={{ display: "block", width: "100%" }}>
+      <Link
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        sx={{
+          display: "block",
+          width: "100%",
+
+          // Float on mouse hover
+          "@media (hover: hover) and (pointer: fine)": {
+            "&:hover .sponsor-logo": {
+              transform: "translateY(-6px) scale(1.025)"
+            },
+          },
+
+          // float on keyboard hover
+          "&:focus-visible .sponsor-logo": {
+            transform: "translateY(-6px) scale(1.025)"
+          },
+
+          // Disable for reduced motion
+          "@media (prefers-reduced-motion: reduce)": {
+            "&:hover .sponsor-logo &:focus-visible .sponsor-logo": {
+              transform: "none"
+            },
+          },
+        }}
+      >
         <Box
+          className="sponsor-logo"
           sx={{
             width: "100%",
             height: box.height,
@@ -37,6 +65,14 @@ export default function SponsorItem({ name, image, url, tier }: Sponsor) {
             alignItems: "center",
             boxSizing: "border-box",
             px: 2,
+
+            // Smooth animation
+            transition: "transform 250ms ease-out",
+
+            // No motion for prefer reduce
+            "@media (prefers-reduced-motion: reduce)": {
+              transition: "none"
+            }
           }}
         >
           <Box
