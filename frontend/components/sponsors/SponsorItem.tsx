@@ -1,8 +1,10 @@
 "use client";
 
 import { Sponsor } from "@frontend/types";
-import { Box, Link } from "@mui/material";
+import { Box, Link, useTheme } from "@mui/material";
 import Grid from "@mui/material/Grid";
+
+const MAX_TILT = 7;
 
 const LOGO_BOX = {
   Platinum: { height: 145, maxWidth: 540 },
@@ -15,6 +17,7 @@ const GRID_SIZE = {
 } as const;
 
 export default function SponsorItem({ name, image, url, tier }: Sponsor) {
+  const theme = useTheme();
   const box = LOGO_BOX[tier as keyof typeof LOGO_BOX];
   const size = GRID_SIZE[tier as keyof typeof GRID_SIZE];
 
@@ -41,8 +44,14 @@ export default function SponsorItem({ name, image, url, tier }: Sponsor) {
           const x = (event.clientX - rect.left) / rect.width - 0.5;
           const y = (event.clientY - rect.top) / rect.height - 0.5;
 
-          event.currentTarget.style.setProperty("--tilt-x", `${-y * 14}deg`);
-          event.currentTarget.style.setProperty("--tilt-y", `${x * 14}deg`);
+          event.currentTarget.style.setProperty(
+            "--tilt-x",
+            `${-y * 2 * MAX_TILT}deg`
+          );
+          event.currentTarget.style.setProperty(
+            "--tilt-y",
+            `${x * 2 * MAX_TILT}deg`
+          );
         }}
 
         // Reset tilt on leave
@@ -75,6 +84,14 @@ export default function SponsorItem({ name, image, url, tier }: Sponsor) {
               transform: "none",
             },
           },
+
+          // Keyboard focus
+          "&:focus-visible": {
+            outline: "2px solid",
+            outlineColor: theme.colours.accent.primary,
+            outlineOffset: 4,
+            borderRadius: `${theme.radius.md}px`,
+          },
         }}
       >
         <Box
@@ -88,7 +105,7 @@ export default function SponsorItem({ name, image, url, tier }: Sponsor) {
             justifyContent: "center",
             alignItems: "center",
             boxSizing: "border-box",
-            px: 2,
+            px: `${theme.space.md}px`,
 
             // Smooth animation
             transition: "transform 250ms ease-out",

@@ -81,7 +81,7 @@ export default function Sponsors() {
   const goldSponsors = sponsors.filter((sponsor) => sponsor.tier === "Gold");
 
   return (
-    <Stack sx={{ marginTop: 4 }}>
+    <Stack sx={{ marginTop: `${theme.space.xl}px` }}>
       <Typography
         align="center"
         variant="h1"
@@ -96,20 +96,27 @@ export default function Sponsors() {
         width={200}
         style={{
           alignSelf: "center",
-          marginTop: 5,
+          marginTop: theme.space.xs,
         }}
       />
       <Grid
         container
-        rowSpacing={3}
-        columnSpacing={{ xs: 2, sm: 6 }}
+        rowSpacing={`${theme.space.lg}px`}
+        columnSpacing={{
+          xs: `${theme.space.md}px`,
+          sm: `${theme.space.xxl}px`,
+        }}
         columns={12}
         sx={{
-          mt: 5,
+          mt: `${theme.space.xl}px`,
           width: "100%",
           maxWidth: 1200,
           mx: "auto",
-          px: { xs: 2, sm: 3, md: 4 },
+          px: {
+            xs: `${theme.space.md}px`,
+            sm: `${theme.space.lg}px`,
+            md: `${theme.space.xl}px`,
+          },
           justifyContent: "center",
           alignItems: "center",
         }}
