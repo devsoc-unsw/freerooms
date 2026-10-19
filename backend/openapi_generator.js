@@ -2,7 +2,7 @@ const { writeFileSync } = require("node:fs");
 const { join } = require("node:path");
 const { stringify } = require("yaml");
 const { buildOpenAPIDocument } = require("express-zod-openapi-autogen");
-const { router } = require(join(__dirname, "src/index.ts"));
+const { router } = require("src/index.ts");
 
 const openapiDocument = buildOpenAPIDocument({
   routers: [router],
@@ -19,4 +19,4 @@ const openapiDocument = buildOpenAPIDocument({
   openApiVersion: "3.0.3",
 });
 
-writeFileSync(join(__dirname, "openapi.yaml"), stringify(openapiDocument));
+writeFileSync("./openapi.yaml", stringify(openapiDocument));
