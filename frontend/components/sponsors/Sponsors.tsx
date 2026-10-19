@@ -85,7 +85,7 @@ export default function Sponsors() {
       <Typography
         align="center"
         variant="h1"
-        sx={{ fontSize: "3rem", fontWeight: "bold" }}
+        sx={{ fontSize: { xs: "2.25rem", md: "3rem" }, fontWeight: "bold" }}
       >
         Our Sponsors
       </Typography>
@@ -109,13 +109,17 @@ export default function Sponsors() {
           width: "100%",
           maxWidth: 1200,
           mx: "auto",
-          px: { xs: 2, sm: 3, md: 4},
+          px: { xs: 2, sm: 3, md: 4 },
           justifyContent: "center",
           alignItems: "center",
         }}
       >
         <Grid size={12}>
-          <Typography component="h2" variant="h3" sx={{color: theme.colours.accent.primary}}>
+          <Typography
+            component="h2"
+            variant="h3"
+            sx={{ color: theme.colours.accent.primary }}
+          >
             Platinum Sponsors
           </Typography>
         </Grid>
@@ -135,7 +139,11 @@ export default function Sponsors() {
         </Grid>
 
         <Grid size={12}>
-          <Typography component="h2" variant="h3" sx={{color: theme.colours.accent.primary}}>
+          <Typography
+            component="h2"
+            variant="h3"
+            sx={{ color: theme.colours.accent.primary }}
+          >
             Gold Sponsors
           </Typography>
         </Grid>

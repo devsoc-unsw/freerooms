@@ -6,7 +6,7 @@ import Grid from "@mui/material/Grid";
 
 const LOGO_BOX = {
   Platinum: { height: 145, maxWidth: 540 },
-  Gold: { height: 90, maxWidth: 315},
+  Gold: { height: 90, maxWidth: 315 },
 } as const;
 
 const GRID_SIZE = {
@@ -38,17 +38,17 @@ export default function SponsorItem({ name, image, url, tier }: Sponsor) {
 
           const rect = event.currentTarget.getBoundingClientRect();
 
-          const x = (event.clientX - rect.left)/ rect.width - 0.5;
-          const y = (event.clientY - rect.top)/ rect.height - 0.5;
+          const x = (event.clientX - rect.left) / rect.width - 0.5;
+          const y = (event.clientY - rect.top) / rect.height - 0.5;
 
-          event.currentTarget.style.setProperty("--tilt-x", `${-y * 14}deg`)
-          event.currentTarget.style.setProperty("--tilt-y", `${x * 14}deg`)
+          event.currentTarget.style.setProperty("--tilt-x", `${-y * 14}deg`);
+          event.currentTarget.style.setProperty("--tilt-y", `${x * 14}deg`);
         }}
 
         // Reset tilt on leave
         onPointerLeave={(event) => {
-          event.currentTarget.style.setProperty("--tilt-x", "0deg")
-          event.currentTarget.style.setProperty("--tilt-y", "0deg")
+          event.currentTarget.style.setProperty("--tilt-x", "0deg");
+          event.currentTarget.style.setProperty("--tilt-y", "0deg");
         }}
 
         sx={{
@@ -59,19 +59,20 @@ export default function SponsorItem({ name, image, url, tier }: Sponsor) {
           // Float on mouse hover
           "@media (hover: hover) and (pointer: fine)": {
             "&:hover .sponsor-logo": {
-              transform: "translateY(-6px) scale(1.025) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg))"
+              transform:
+                "translateY(-6px) scale(1.025) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg))",
             },
           },
 
           // float on keyboard focus
           "&:focus-visible .sponsor-logo": {
-            transform: "translateY(-6px) scale(1.025)"
+            transform: "translateY(-6px) scale(1.025)",
           },
 
           // Disable for reduced motion
           "@media (prefers-reduced-motion: reduce)": {
             "&:hover .sponsor-logo, &:focus-visible .sponsor-logo": {
-              transform: "none"
+              transform: "none",
             },
           },
         }}
@@ -94,8 +95,8 @@ export default function SponsorItem({ name, image, url, tier }: Sponsor) {
 
             // No motion for prefer reduce
             "@media (prefers-reduced-motion: reduce)": {
-              transition: "none"
-            }
+              transition: "none",
+            },
           }}
         >
           <Box
