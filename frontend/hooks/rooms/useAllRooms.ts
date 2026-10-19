@@ -1,9 +1,9 @@
-import { SearchResponse } from "common/types";
 import { API_URL } from "@frontend/config";
 import { useSelector } from "@frontend/redux/hooks";
 import { selectDatetime } from "@frontend/redux/slices/datetimeSlice";
 import { AllRoomsFilters } from "@frontend/types";
 import axios from "axios";
+import { SearchResponse } from "common/types";
 import useSWR from "swr/immutable";
 
 const fetcher = ([url, datetime, filters]: [string, Date, AllRoomsFilters]) =>

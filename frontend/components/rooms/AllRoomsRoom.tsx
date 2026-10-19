@@ -1,4 +1,3 @@
-import { SearchResponseValue } from "common/types";
 import RoomAvailability from "@frontend/components/rooms/RoomAvailability";
 import { RoomAvailabilityBoxProps } from "@frontend/components/rooms/RoomAvailabilityBox";
 import getRoomHref from "@frontend/utils/getRoomHref";
@@ -11,6 +10,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
+import { SearchResponseValue } from "common/types";
 
 type LoadingProps = { loading: true };
 

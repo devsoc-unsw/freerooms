@@ -1,4 +1,3 @@
-import { Building, BuildingStatus } from "common/types";
 import useBuilding from "@frontend/hooks/buildings/useBuilding";
 import useBuildingStatus from "@frontend/hooks/buildings/useBuildingStatus";
 import { useDispatch, useSelector } from "@frontend/redux/hooks";
@@ -13,6 +12,7 @@ import { alpha, Fade } from "@mui/material";
 import { Typography } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import { styled, useTheme } from "@mui/material/styles";
+import { Building, BuildingStatus } from "common/types";
 import Image, { ImageProps } from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";

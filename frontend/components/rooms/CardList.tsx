@@ -1,4 +1,3 @@
-import { Building } from "common/types";
 import BuildingCard from "@frontend/components/rooms/BuildingCard";
 import BuildingCardMobile from "@frontend/components/rooms/BuildingCardMobile";
 import useBuildings from "@frontend/hooks/buildings/useBuildings";
@@ -8,6 +7,7 @@ import calculateDistance from "@frontend/utils/calculateDistance";
 import { getNumFreerooms } from "@frontend/utils/utils";
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { Building } from "common/types";
 import { AnimatePresence, motion } from "motion/react";
 import React from "react";
 

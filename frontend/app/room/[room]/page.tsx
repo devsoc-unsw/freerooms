@@ -2,9 +2,6 @@
 import "swiper/css";
 import "swiper/css/navigation";
 
-import translateRoomUsage from "common/roomUsages";
-import getSchoolDetails from "common/schools";
-import type { Booking, Room } from "common/types";
 import BookingButton from "@frontend/components/booking/BookingButton";
 import BookingCalendar from "@frontend/components/booking/BookingCalendar";
 import FeedbackButton from "@frontend/components/feedback/FeedbackButton";
@@ -36,6 +33,9 @@ import Link from "@mui/material/Link";
 import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import translateRoomUsage from "common/roomUsages";
+import getSchoolDetails from "common/schools";
+import type { Booking, Room } from "common/types";
 import { useParams } from "next/navigation";
 import React, { useState } from "react";
 

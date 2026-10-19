@@ -1,4 +1,3 @@
-import { RoomStatus } from "common/types";
 import RoomAvailability from "@frontend/components/rooms/RoomAvailability";
 import useAllRoomRatingsInBuilding from "@frontend/hooks/ratings/useRoomRatingsInBuilding";
 import useRoom from "@frontend/hooks/rooms/useRoom";
@@ -10,6 +9,7 @@ import Box, { BoxProps } from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import { alpha, styled } from "@mui/material/styles";
+import { RoomStatus } from "common/types";
 import Link from "next/link";
 import React from "react";
 

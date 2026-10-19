@@ -1,4 +1,3 @@
-import { RoomStatus } from "common/types";
 import renderWithRedux from "@frontend/__tests__/utils/renderWithProviders";
 import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithProviders";
 import Page from "@frontend/app/room/[room]/page";
@@ -7,6 +6,7 @@ import RoomAvailabilityBox from "@frontend/components/rooms/RoomAvailabilityBox"
 import store from "@frontend/redux/store";
 import { useMediaQuery } from "@mui/material";
 import { screen } from "@testing-library/react";
+import { RoomStatus } from "common/types";
 import { useParams, useRouter } from "next/navigation";
 import { Provider } from "react-redux";
 
