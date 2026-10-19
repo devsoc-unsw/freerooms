@@ -1,3 +1,5 @@
+"use client";
+
 import { Sponsor } from "@frontend/types";
 import { Box, Link } from "@mui/material";
 import Grid from "@mui/material/Grid";
@@ -29,25 +31,46 @@ export default function SponsorItem({ name, image, url, tier }: Sponsor) {
         href={url}
         target="_blank"
         rel="noopener noreferrer"
+
+        // Tilt logo based on mouse pos
+        onPointerMove={(event) => {
+          if (event.pointerType !== "mouse") return;
+
+          const rect = event.currentTarget.getBoundingClientRect();
+
+          const x = (event.clientX - rect.left)/ rect.width - 0.5;
+          const y = (event.clientY - rect.top)/ rect.height - 0.5;
+
+          event.currentTarget.style.setProperty("--tilt-x", `${-y * 14}deg`)
+          event.currentTarget.style.setProperty("--tilt-y", `${x * 14}deg`)
+        }}
+
+        // Reset tilt on leave
+        onPointerLeave={(event) => {
+          event.currentTarget.style.setProperty("--tilt-x", "0deg")
+          event.currentTarget.style.setProperty("--tilt-y", "0deg")
+        }}
+
         sx={{
           display: "block",
           width: "100%",
+          perspective: "800px",
 
           // Float on mouse hover
           "@media (hover: hover) and (pointer: fine)": {
             "&:hover .sponsor-logo": {
-              transform: "translateY(-6px) scale(1.025)"
+              transform: "translateY(-6px) scale(1.025) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg))"
             },
           },
 
-          // float on keyboard hover
+          // float on keyboard focus
           "&:focus-visible .sponsor-logo": {
             transform: "translateY(-6px) scale(1.025)"
           },
 
           // Disable for reduced motion
           "@media (prefers-reduced-motion: reduce)": {
-            "&:hover .sponsor-logo &:focus-visible .sponsor-logo": {
+            "&:hover .sponsor-logo, &:focus-visible .sponsor-logo": {
               transform: "none"
             },
           },
