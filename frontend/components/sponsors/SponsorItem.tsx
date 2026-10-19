@@ -3,13 +3,13 @@ import { Box, Link } from "@mui/material";
 import Grid from "@mui/material/Grid";
 
 const LOGO_BOX = {
-  Platinum: { height: 145, maxWidth: 540, pt: "28px", pb: "10px" },
-  Gold: { height: 90, maxWidth: 315, pt: "18px", pb: "8px" },
+  Platinum: { height: 145, maxWidth: 540 },
+  Gold: { height: 90, maxWidth: 315},
 } as const;
 
 const GRID_SIZE = {
-  Platinum: { xs: 12, sm: 6, md: 6 },
-  Gold: { xs: 6, sm: 6, md: 6 },
+  Platinum: { xs: 12, md: 6 },
+  Gold: { xs: 12, sm: 6, lg: 3 },
 } as const;
 
 export default function SponsorItem({ name, image, url, tier }: Sponsor) {
@@ -34,11 +34,9 @@ export default function SponsorItem({ name, image, url, tier }: Sponsor) {
             mx: "auto",
             display: "flex",
             justifyContent: "center",
-            alignItems: "flex-end",
+            alignItems: "center",
             boxSizing: "border-box",
             px: 2,
-            pt: box.pt,
-            pb: box.pb,
           }}
         >
           <Box
