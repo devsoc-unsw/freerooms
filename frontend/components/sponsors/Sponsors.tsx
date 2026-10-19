@@ -10,7 +10,7 @@ export default function Sponsors() {
 
   const sponsors: Sponsor[] = [
     {
-      name: "Hudon River Trading",
+      name: "Hudson River Trading",
       tier: "Platinum",
       image: isLightMode
         ? "/assets/sponsors/hrt.png"
@@ -106,14 +106,20 @@ export default function Sponsors() {
         columns={12}
         sx={{
           mt: 5,
+          width: "100%",
+          maxWidth: 1200,
+          mx: "auto",
+          px: { xs: 2, sm: 3, md: 4},
           justifyContent: "center",
           alignItems: "center",
-          backgroundColor: theme.colours.surface.paper,
-          p: "30px",
-          pt: 0,
-          borderRadius: "10px",
         }}
       >
+        <Grid size={12}>
+          <Typography component="h2" variant="h3" sx={{color: theme.colours.accent.primary}}>
+            Platinum Sponsors
+          </Typography>
+        </Grid>
+
         {platinumSponsors.map((s, idx) => (
           <SponsorItem
             key={`platinum-${idx}`}
@@ -126,6 +132,12 @@ export default function Sponsors() {
 
         <Grid size={12}>
           <Divider />
+        </Grid>
+
+        <Grid size={12}>
+          <Typography component="h2" variant="h3" sx={{color: theme.colours.accent.primary}}>
+            Gold Sponsors
+          </Typography>
         </Grid>
 
         {goldSponsors.map((s, idx) => (
