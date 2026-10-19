@@ -8,7 +8,7 @@
     "dev": "cross-env NODE_ENV=development npm start",
     "clean": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
     "build": "npm run clean && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
-    "openapi": "node openapi_generator.js",
+    "openapi": "node -r ts-node/register -r tsconfig-paths/register openapi_generator.js",
     "lint": "prettier --check \"**/*.ts\" && eslint .",
     "lint:fix": "prettier --write \"**/*.ts\" && eslint . --fix",
     "typecheck": "tsc --noEmit -p tsconfig.json",
@@ -35,12 +35,14 @@
     "date-fns-tz": "^3.2.0",
     "dotenv": "^18.0.2",
     "express": "^5.2.1",
+    "express-zod-openapi-autogen": "^7.0.0",
     "graphql": "^16.14.2",
     "graphql-request": "^6.1.0",
     "mongodb": "^7.6.0",
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@asteasolutions/zod-to-openapi": "^8.5.0",
     "@eslint/js": "^10.0.1",
     "@types/cors": "2.8.19",
     "@types/express": "5.0.6",
