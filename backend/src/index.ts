@@ -1,26 +1,22 @@
 import {
-  buildingsResponseSchema,
-  BuildingRatingsResponse,
-  buildingIdParamsSchema,
-  buildingRatingsResponseSchema,
   bookingsResponseSchema,
+  buildingIdParamsSchema,
+  BuildingRatingsResponse,
+  buildingRatingsResponseSchema,
+  buildingsResponseSchema,
   ratingCreatedResponseSchema,
   ratingParamsSchema,
-  ratingsResponseSchema,
   ratingSchema,
+  ratingsResponseSchema,
   roomIdParamsSchema,
-  roomUtilitiesResponseSchema,
-  roomUtilitiesParamsSchema,
   roomsResponseSchema,
+  roomUtilitiesParamsSchema,
+  roomUtilitiesResponseSchema,
   searchQuerySchema,
   searchResponseSchema,
   statusQuerySchema,
   statusResponseSchema,
 } from "common/types";
-import {
-  extendZodWithOpenApi,
-  openAPIRoute,
-} from "express-zod-openapi-autogen";
 import cors from "cors";
 import express, {
   json,
@@ -29,6 +25,10 @@ import express, {
   RequestHandler,
   Response,
 } from "express";
+import {
+  extendZodWithOpenApi,
+  openAPIRoute,
+} from "express-zod-openapi-autogen";
 import { z } from "zod";
 
 import { PORT } from "./config";
@@ -314,7 +314,6 @@ router.get(
 );
 
 app.use(router);
-
 
 // Error-handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {

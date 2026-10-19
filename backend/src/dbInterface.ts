@@ -1,7 +1,7 @@
 // Interface to the Hasura GraphQL API
+import type { TypedDocumentNode } from "@graphql-typed-document-node/core";
 import parseDates from "common/parseDates";
 import { Booking } from "common/types";
-import type { TypedDocumentNode } from "@graphql-typed-document-node/core";
 import { parse } from "graphql";
 import { gql, GraphQLClient } from "graphql-request";
 
