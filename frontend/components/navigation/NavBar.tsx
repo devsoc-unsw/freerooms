@@ -482,7 +482,9 @@ const LoginButton = () => {
 // Full desktop nav component
 const DesktopNav = () => (
   <DesktopTabletNavContainer>
-    <Branding />
+    <Link href="/">
+      <Branding />
+    </Link>
     <DesktopNavLinks>
       {TABLET_DESKTOP_ITEMS.map((item) => (
         <TopNavButton key={item.href} item={item} />

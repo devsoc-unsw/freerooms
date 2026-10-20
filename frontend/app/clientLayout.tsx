@@ -1,6 +1,7 @@
 "use client";
 
 import NavBar from "@frontend/components/navigation/NavBar";
+import Footer from "@frontend/components/footer/Footer";
 import SearchModal from "@frontend/components/search/SearchModal";
 import store from "@frontend/redux/store";
 import { createAppTheme, type ThemeMode } from "@frontend/theme";
@@ -114,7 +115,10 @@ const App: React.FC<{
     <>
       <NavBar />
       <SearchModal />
-      <Main>{children}</Main>
+      <Main>
+        {children}
+        <Footer />
+      </Main>
     </>
   );
 };
@@ -128,6 +132,9 @@ const Main = styled("main")(({ theme }) => ({
   width: "100%",
   marginRight: 0,
   height: "100%",
+  [theme.breakpoints.down("sm")]: {
+    paddingBottom: theme.space.sm
+  }
 }));
 
 export default ClientLayout;
