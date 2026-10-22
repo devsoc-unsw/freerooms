@@ -5,7 +5,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import { useTheme } from "@mui/material/styles";
 import React, { useEffect, useRef } from "react";
 
-const DEBOUNCE_MS = 0;
+const DEBOUNCE_MS = 100;
 
 const SearchBar = ({ setQuery }: { setQuery: (query: string) => void }) => {
   const theme = useTheme();
@@ -60,28 +60,14 @@ const SearchBar = ({ setQuery }: { setQuery: (query: string) => void }) => {
         }}
         fullWidth
 
-        // debounce: send the query 0ms after the last key up
-        onKeyUp={(event) => {
-          const target = event.target as HTMLInputElement;
+        // debounce: send the query 100ms after the last key up
+        onChange={(event) => {
+          const value = event.target.value;
           clearPending();
-
-          // pressing enter submits immediately
-          if (event.key === "Enter") {
-            setQuery(target.value);
-            return;
-          }
-          const value = target.value;
           timeoutRef.current = setTimeout(() => {
             setQuery(value);
             timeoutRef.current = null;
           }, DEBOUNCE_MS);
-        }}
-
-        //clearing the search bar
-        onChange={(event) => {
-          if (event.target.value === "") {
-            setQuery(event.target.value);
-          }
         }}
         variant="outlined"
         slotProps={{

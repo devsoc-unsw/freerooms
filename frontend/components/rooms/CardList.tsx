@@ -94,7 +94,7 @@ const CardList: React.FC<{
   const { status: roomStatusData } = useStatus();
   const { userLat, userLng } = useUserLocation();
   const { rooms } = useRooms();
-  const searchBuildings = useBuildingSearch(buildings, roomStatusData, rooms);
+  const searchBuildings = useBuildingSearch(buildings, rooms);
 
   let displayedBuildings: Building[] | undefined = buildings;
 
