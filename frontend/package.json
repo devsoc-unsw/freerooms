@@ -55,7 +55,7 @@
     "@types/react-big-calendar": "^1.6.3",
     "css-mediaquery": "^0.1.2",
     "eslint": "^9.39.5",
-    "eslint-config-next": "^16.3.5",
+    "eslint-config-next": "^16.4.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-simple-import-sort": "^14.0.0",
     "jest": "^30.5.2",
