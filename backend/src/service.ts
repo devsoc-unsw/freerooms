@@ -188,16 +188,22 @@ export const getRoomBookings = async (
 export const getAllBookings = async (
   params: BookingPaginationParams
 ): Promise<BookingsPaginationResponse> => {
-  const result = await queryAllBookings(params);
-  const bookings = result.bookings;
+  // Parse extra booking to see if there is another page
+  const result = await queryAllBookings({
+    ...params,
+    limit: params.limit + 1,
+  });
+  const hasMore = result.bookings.length > params.limit;
+  const bookings = hasMore
+    ? result.bookings.slice(0, params.limit)
+    : result.bookings;
 
   // Create next cursor from the last booking in the page
-  const nextCursor =
-    bookings.length === params.limit
-      ? createBookingCursor(bookings[bookings.length - 1])
-      : null;
+  const nextCursor = hasMore
+    ? createBookingCursor(bookings[bookings.length - 1], params)
+    : null;
 
-  return { bookings, nextCursor };
+  return { bookings, nextCursor, hasMore };
 };
 
 export const getRoomByEvent = async (
