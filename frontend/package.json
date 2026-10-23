@@ -29,6 +29,7 @@
     "axios": "^1.20.0",
     "date-fns": "^4.4.0",
     "date-fns-tz": "^3.2.0",
+    "fuse.js": "^7.5.0",
     "mapbox-gl": "^3.31.0",
     "match-sorter": "^8.3.0",
     "motion": "^14.0.0",
