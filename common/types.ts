@@ -19,11 +19,28 @@ export type Room = {
   school: string;
 };
 
+export enum BookingType {
+  "LECTURE" = "LECTURE", 
+  "TUTORIAL" = "TUTORIAL",
+  "LABORATORY" = "LABORATORY",
+  "TUTORIAL_LABORATORY" = "TUTORIAL_LABORATORY",
+  "WORKSHOP" = "WORKSHOP",
+  "SEMINAR" = "SEMINAR",
+  "STUDIO" = "STUDIO",
+  "CLASS" = "CLASS",
+  "EXAMS" = "EXAMS",
+  "SOCIETY" = "SOCIETY",
+  "INTERNAL" = "INTERNAL",
+  "BLOCK" = "BLOCK",
+  "MISC" = "MISC",
+  "OTHER" = "OTHER",
+}
+
 export type Booking = {
   roomId?: string;
   occurrenceId?: string;
   name: string;
-  bookingType: string;
+  bookingType: BookingType;
   start: Date;
   end: Date;
   plannedSize?: number;
@@ -39,15 +56,21 @@ export type BookingModule = {
 // Booking Pagination
 export type BookingCursor = {
   start: Date;
-  bookingType: string;
+  bookingType: BookingType;
   roomId: string;
   occurrenceId: string;
-}
+  filter: string | null;
+  sort: string[];
+  search: string | null;
+};
 
 export type BookingPaginationParams = {
   limit: number;
   cursor: BookingCursor | null;
-}
+  filter: string | null;
+  sort: string[];
+  search: string | null;
+};
 
 export type RoomStatuses = {
   [roomNumber: string]: RoomStatus;
@@ -80,7 +103,7 @@ export type AverageRating = {
   cleanliness: number;
   location: number;
   quietness: number;
-}
+};
 
 ///////////////////////////////////////////////////////////////
 // API Response Types
@@ -132,13 +155,14 @@ export type BookingsModuleResponse = {
 export type BookingsPaginationResponse = {
   bookings: Booking[];
   nextCursor: string | null;
+  hasMore: boolean;
 };
 
 // how ratings are stored in Mongo
-export type RawRatingDocument = { 
-  roomId: string, 
-  ratings: Rating[] 
-}
+export type RawRatingDocument = {
+  roomId: string;
+  ratings: Rating[];
+};
 
 export type RatingsResponse = {
   // roomId refers to room name

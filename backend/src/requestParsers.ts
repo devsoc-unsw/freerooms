@@ -1,5 +1,5 @@
 import { roomUsages } from "@common/roomUsages";
-import { BookingCursor, BookingPaginationParams } from "@common/types";
+import { BookingCursor, BookingType } from "@common/types";
 import { Request } from "express";
 
 import { SearchFilters, StatusFilters } from "./types";
@@ -9,6 +9,8 @@ const ISO_REGEX =
 
 const ONE_WEEK_IN_MILLISECONDS = 7 * 24 * 60 * 60 * 1000;
 const DEFAULT_LIMIT = 25;
+const MAX_LIMIT = 50;
+const DEFAULT_BOOKING_SORT = ["start", "bookingType", "roomId", "occurrenceId"];
 
 const parseDatetime = (datetimeString: string | undefined | null): Date => {
   if (!datetimeString) {
@@ -127,16 +129,20 @@ export const parseSearchFilters = (req: Request): SearchFilters => {
   return filters;
 };
 
-export const parseBookingCursor = (req: Request): BookingPaginationParams => {
-  // Limit <= 50, default 25
+export const parseBookingLimit = (req: Request): number => {
+  // Parse limit
   let limit = DEFAULT_LIMIT;
   if (req.query.limit) {
     limit = parseInt(req.query.limit as string);
-    if (isNaN(limit) || limit < 1 || limit > DEFAULT_LIMIT) {
+    if (isNaN(limit) || limit < 1 || limit > MAX_LIMIT) {
       throw new Error("Invalid limit for bookings pagination");
     }
   }
 
+  return limit;
+};
+
+export const parseBookingCursor = (req: Request): BookingCursor | null => {
   // Parse Cursor
   let cursor: BookingCursor | null = null;
   if (req.query.cursor) {
@@ -148,7 +154,15 @@ export const parseBookingCursor = (req: Request): BookingPaginationParams => {
         bookingType: cursorObj.bookingType,
         roomId: cursorObj.roomId,
         occurrenceId: cursorObj.occurrenceId,
+        filter: cursorObj.filter ?? null,
+        sort: Array.isArray(cursorObj.sort) ? cursorObj.sort : [],
+        search: cursorObj.search ?? null,
       };
+
+      // Check bookingType is valid
+      if (!Object.values(BookingType).includes(cursor.bookingType)) {
+        throw new Error("Invalid booking type in cursor");
+      }
 
       if (
         isNaN(cursor.start.getTime()) ||
@@ -163,5 +177,68 @@ export const parseBookingCursor = (req: Request): BookingPaginationParams => {
     }
   }
 
-  return { limit, cursor };
+  return cursor;
+};
+
+// Cursors are dependent on sort type
+export const parseBookingSort = (
+  req: Request,
+  cursor: BookingCursor | null
+): {
+  sort: string[];
+  cursor: BookingCursor | null;
+} => {
+  // Parse Sort
+  const sort = req.query.sort
+    ? (req.query.sort as string).split(",")
+    : DEFAULT_BOOKING_SORT;
+
+  if (cursor && cursor.sort) {
+    if (
+      sort.length !== cursor.sort.length ||
+      sort.some((field, index) => field !== cursor.sort[index])
+    ) {
+      // If sort order has changed, reset cursor to null
+      return {
+        sort,
+        cursor: null,
+      };
+    }
+  }
+
+  return { sort, cursor };
+};
+
+export const parseBookingSearch = (
+  req: Request,
+  cursor: BookingCursor | null
+): string | null => {
+  // Parse search
+  const search = req.query.search ? (req.query.search as string) : null;
+
+  if (cursor && cursor.search) {
+    if (search !== cursor.search) {
+      // If search has changed, reset cursor to null
+      return null;
+    }
+  }
+
+  return search;
+};
+
+export const parseBookingFilters = (
+  req: Request,
+  cursor: BookingCursor | null
+): string | null => {
+  // Parse filter
+  const filter = req.query.filter ? (req.query.filter as string) : null;
+
+  if (cursor && cursor.filter) {
+    if (filter !== cursor.filter) {
+      // If filter has changed, reset cursor to null
+      return null;
+    }
+  }
+
+  return filter;
 };

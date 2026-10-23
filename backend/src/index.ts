@@ -20,6 +20,10 @@ import {
 } from "./ratingDbInterface";
 import {
   parseBookingCursor,
+  parseBookingFilters,
+  parseBookingLimit,
+  parseBookingSearch,
+  parseBookingSort,
   parseSearchFilters,
   parseStatusDatetime,
   parseStatusFilters,
@@ -104,7 +108,20 @@ app.get(
 app.get(
   "/api/bookings",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const params = parseBookingCursor(req);
+    const limit = parseBookingLimit(req);
+    const cursor = parseBookingCursor(req);
+    const filter = parseBookingFilters(req, cursor);
+    const { sort, cursor: newCursor } = parseBookingSort(req, cursor);
+    const search = parseBookingSearch(req, cursor);
+
+    const params = {
+      limit,
+      cursor: newCursor,
+      filter,
+      sort,
+      search,
+    };
+
     const data = await getAllBookings(params);
     res.send(data);
     next();
