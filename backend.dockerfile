@@ -1,25 +1,31 @@
 FROM node:24.18-alpine as builder
 
 # Set the current working directory inside the container
-WORKDIR /app/backend
+WORKDIR /app
 
-# Install dependencies
-COPY backend/package.json backend/package-lock.json ./
-RUN npm ci
+# Install the shared package dependencies before installing its consumers.
+COPY common/package.json common/package-lock.json ./common/
+RUN npm --prefix common ci
 
-# Copy backend and common source code
-COPY /backend ./
-COPY /common ../common
+# Install backend dependencies and copy source code.
+COPY backend/package.json backend/package-lock.json ./backend/
+RUN npm --prefix backend ci
+COPY backend ./backend
+COPY common ./common
 
-RUN npm run build
+RUN npm --prefix common run build
+RUN npm --prefix backend run build
 
 FROM node:24.18-alpine as runner
 WORKDIR /app
 
-COPY backend/package.json backend/package-lock.json ./
-RUN npm ci --production
+COPY backend/package.json backend/package-lock.json ./backend/
+COPY common/package.json common/package-lock.json ./common/
+COPY --from=builder /app/common/dist ./common/dist
+RUN npm --prefix common ci --omit=dev
+RUN npm --prefix backend ci --omit=dev
 
-COPY --from=builder /app/backend/dist ./
+COPY --from=builder /app/backend/dist ./backend/dist
 
 EXPOSE 3000
 
