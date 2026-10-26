@@ -56,13 +56,33 @@ services:
 
         echo "MongoDB is ready."
 
+  common-build:
+    image: node:24.18-alpine
+    working_dir: /workspace/common
+    init: true
+    restart: "no"
+
+    volumes:
+      - ./common:/workspace/common:z
+      - common_node_modules:/workspace/common/node_modules
+      - npm_cache:/root/.npm
+
+    command:
+      - sh
+      - -c
+      - |
+        npm ci
+        npm run build
+
   backend:
     image: node:24.18-alpine
-    working_dir: /workspace
+    working_dir: /workspace/backend
     init: true
 
     depends_on:
       mongo-init:
+        condition: service_completed_successfully
+      common-build:
         condition: service_completed_successfully
 
     environment:
@@ -71,9 +91,8 @@ services:
 
     volumes:
       - ./backend:/workspace/backend:z
-      - ./common:/workspace/common:z
+      - ./common:/workspace/common:ro,z
       - backend_node_modules:/workspace/backend/node_modules
-      - common_node_modules:/workspace/common/node_modules
       - npm_cache:/root/.npm
 
     ports:
@@ -83,19 +102,16 @@ services:
       - sh
       - -c
       - |
-        npm --prefix common ci
-        npm --prefix common build
-
         LOCK_HASH="$$(sha256sum package-lock.json | cut -d ' ' -f 1)"
         INSTALLED_HASH="$$(cat node_modules/.freerooms-lock-hash 2>/dev/null || true)"
 
         if [ "$$LOCK_HASH" != "$$INSTALLED_HASH" ]; then
           echo "Installing backend dependencies..."
-          npm --prefix backend ci
+          npm ci
           echo "$$LOCK_HASH" > node_modules/.freerooms-lock-hash
         fi
 
-        exec npm --prefix backend run dev
+        exec npm run dev
 
   frontend:
     image: node:24.18-alpine
@@ -105,6 +121,8 @@ services:
     depends_on:
       backend:
         condition: service_started
+      common-build:
+        condition: service_completed_successfully
 
     environment:
       NODE_ENV: development
