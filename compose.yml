@@ -58,7 +58,7 @@ services:
 
   backend:
     image: node:24.18-alpine
-    working_dir: /workspace/backend
+    working_dir: /workspace
     init: true
 
     depends_on:
@@ -71,8 +71,9 @@ services:
 
     volumes:
       - ./backend:/workspace/backend:z
-      - ./common:/workspace/common:ro,z
+      - ./common:/workspace/common:z
       - backend_node_modules:/workspace/backend/node_modules
+      - common_node_modules:/workspace/common/node_modules
       - npm_cache:/root/.npm
 
     ports:
@@ -82,16 +83,19 @@ services:
       - sh
       - -c
       - |
+        npm --prefix common ci
+        npm --prefix common build
+
         LOCK_HASH="$$(sha256sum package-lock.json | cut -d ' ' -f 1)"
         INSTALLED_HASH="$$(cat node_modules/.freerooms-lock-hash 2>/dev/null || true)"
 
         if [ "$$LOCK_HASH" != "$$INSTALLED_HASH" ]; then
           echo "Installing backend dependencies..."
-          npm ci
+          npm --prefix backend ci
           echo "$$LOCK_HASH" > node_modules/.freerooms-lock-hash
         fi
 
-        exec npm run dev
+        exec npm --prefix backend run dev
 
   frontend:
     image: node:24.18-alpine
@@ -137,4 +141,5 @@ volumes:
   backend_node_modules:
   frontend_node_modules:
   frontend_next:
+  common_node_modules:
   npm_cache:
