@@ -93,6 +93,7 @@ services:
       - ./backend:/workspace/backend:z
       - ./common:/workspace/common:ro,z
       - backend_node_modules:/workspace/backend/node_modules
+      - common_node_modules:/workspace/common/node_modules
       - npm_cache:/root/.npm
 
     ports:
@@ -133,6 +134,7 @@ services:
       - ./frontend:/workspace/frontend:z
       - ./common:/workspace/common:ro,z
       - frontend_node_modules:/workspace/frontend/node_modules
+      - common_node_modules:/workspace/common/node_modules
       - frontend_next:/workspace/frontend/.next
       - npm_cache:/root/.npm
 
