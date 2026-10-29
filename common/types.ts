@@ -40,7 +40,7 @@ export type Booking = {
   roomId?: string;
   occurrenceId?: string;
   name: string;
-  bookingType: BookingType;
+  bookingType: string;
   start: Date;
   end: Date;
   plannedSize?: number;
