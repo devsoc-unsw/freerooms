@@ -1,4 +1,5 @@
 import { roomUsages } from "@common/roomUsages";
+import { BookingCursor, BookingFilter, BookingType } from "@common/types";
 import { Request } from "express";
 
 import { SearchFilters, StatusFilters } from "./types";
@@ -7,6 +8,9 @@ const ISO_REGEX =
   /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/;
 
 const ONE_WEEK_IN_MILLISECONDS = 7 * 24 * 60 * 60 * 1000;
+const DEFAULT_LIMIT = 25;
+const MAX_LIMIT = 50;
+const DEFAULT_BOOKING_SORT = ["start", "bookingType", "roomId", "occurrenceId"];
 
 const parseDatetime = (datetimeString: string | undefined | null): Date => {
   if (!datetimeString) {
@@ -123,4 +127,177 @@ export const parseSearchFilters = (req: Request): SearchFilters => {
   }
 
   return filters;
+};
+
+export const parseBookingLimit = (req: Request): number => {
+  let limit = DEFAULT_LIMIT;
+  if (req.query.limit) {
+    limit = parseInt(req.query.limit as string);
+    if (isNaN(limit) || limit < 1 || limit > MAX_LIMIT) {
+      throw new Error(
+        `Invalid limit: must be a positive integer no greater than ${MAX_LIMIT}`
+      );
+    }
+  }
+  return limit;
+};
+
+export const parseBookingCursor = (req: Request): BookingCursor | null => {
+  if (!req.query.cursor) return null;
+
+  try {
+    const cursorObj = JSON.parse(req.query.cursor as string);
+
+    // Check booking types enum
+    if (!Object.values(BookingType).includes(cursorObj.bookingType)) {
+      throw new Error("Invalid booking type in cursor");
+    }
+
+    const cursor: BookingCursor = {
+      start: new Date(cursorObj.start),
+      bookingType: cursorObj.bookingType,
+      roomId: cursorObj.roomId,
+      occurrenceId: cursorObj.occurrenceId,
+      filter: cursorObj.filter ?? null,
+      sort: Array.isArray(cursorObj.sort) ? cursorObj.sort : [],
+      search: cursorObj.search ?? null,
+    };
+
+    if (
+      isNaN(cursor.start.getTime()) ||
+      !cursor.bookingType ||
+      !cursor.roomId ||
+      !cursor.occurrenceId
+    ) {
+      throw new Error("Invalid cursor fields");
+    }
+
+    return cursor;
+  } catch {
+    throw new Error("Invalid cursor");
+  }
+};
+
+export const parseBookingFilters = (
+  req: Request,
+  cursor: BookingCursor | null
+): { filters: BookingFilter | null; cursor: BookingCursor | null } => {
+  const filters: BookingFilter = {};
+
+  // Parse bookingType if it exist
+  if (req.query.bookingType) {
+    const bookingType = req.query.bookingType as string;
+    if (!Object.values(BookingType).includes(bookingType as BookingType)) {
+      throw new Error("Invalid filter: booking type");
+    }
+    filters.bookingType = bookingType as BookingType;
+  }
+
+  // Parse plannedSize if it exist
+  if (req.query.plannedSize) {
+    const plannedSize = parseInt(req.query.plannedSize as string);
+    if (isNaN(plannedSize) || plannedSize < 0) {
+      throw new Error("Invalid filter: planned size");
+    }
+    filters.plannedSize = plannedSize;
+  }
+
+  // Parse startTime and endTime if they exist
+  if (req.query.startTime && req.query.endTime) {
+    if (!req.query.startTime || !req.query.endTime) {
+      throw new Error("Both startTime and endTime must be provided");
+    }
+    filters.startTime = parseDatetime(req.query.startTime as string);
+    filters.endTime = parseDatetime(req.query.endTime as string);
+
+    if (filters.endTime < filters.startTime) {
+      throw new Error("Invalid filter: endTime cannot be before startTime");
+    }
+
+    if (
+      filters.endTime.getTime() - filters.startTime.getTime() >
+      ONE_WEEK_IN_MILLISECONDS
+    ) {
+      throw new Error(
+        "Invalid filter: end time cannot be 1 week later than start time."
+      );
+    }
+  }
+
+  // Parse remainingTime if it exist
+  if (req.query.remainingTime) {
+    const remainingTime = parseInt(req.query.remainingTime as string);
+    if (isNaN(remainingTime) || remainingTime < 0) {
+      throw new Error("Invalid filter: remaining time");
+    }
+    filters.remainingTime = remainingTime;
+  }
+
+  // Reset cursor if filters and cursor filters do not match
+  if (cursor && cursor.filter) {
+    const cursorFilter = cursor.filter;
+    if (
+      (filters.bookingType &&
+        filters.bookingType !== cursorFilter.bookingType) ||
+      (filters.plannedSize &&
+        filters.plannedSize !== cursorFilter.plannedSize) ||
+      (filters.startTime &&
+        filters.startTime.getTime() !== cursorFilter.startTime?.getTime()) ||
+      (filters.endTime &&
+        filters.endTime.getTime() !== cursorFilter.endTime?.getTime()) ||
+      (filters.remainingTime &&
+        filters.remainingTime !== cursorFilter.remainingTime)
+    ) {
+      return { filters, cursor: null };
+    }
+  }
+
+  return { filters, cursor };
+};
+
+// Parse sorting for bookings
+export const parseBookingSort = (
+  req: Request,
+  cursor: BookingCursor | null
+): {
+  sort: string[];
+  cursor: BookingCursor | null;
+} => {
+  const sort = req.query.sort
+    ? (req.query.sort as string).split(",")
+    : DEFAULT_BOOKING_SORT;
+
+  // Reset cursor if sort and cursor sort do not match
+  if (cursor && cursor.sort) {
+    if (
+      sort.length !== cursor.sort.length ||
+      sort.some((field, index) => field !== cursor.sort[index])
+    ) {
+      return {
+        sort,
+        cursor: null,
+      };
+    }
+  }
+
+  return { sort, cursor };
+};
+
+// Parse a search for booking name
+export const parseBookingSearch = (
+  req: Request,
+  cursor: BookingCursor | null
+): { search: string | null; cursor: BookingCursor | null } => {
+  const search = req.query.search ? (req.query.search as string).trim() : null;
+
+  if (search !== null && search.length === 0) {
+    throw new Error("Invalid search: search term cannot be empty");
+  }
+
+  // Reset cursor if search and cursor search do not match
+  if (cursor && cursor.search !== search) {
+    return { search, cursor: null };
+  }
+
+  return { search, cursor };
 };
