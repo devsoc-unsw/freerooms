@@ -1,5 +1,5 @@
 import { roomUsages } from "@common/roomUsages";
-import { BookingCursor, BookingType } from "@common/types";
+import { BookingCursor, BookingFilter, BookingType } from "@common/types";
 import { Request } from "express";
 
 import { SearchFilters, StatusFilters } from "./types";
@@ -181,21 +181,62 @@ export const parseBookingCursor = (req: Request): BookingCursor | null => {
 export const parseBookingFilters = (
   req: Request,
   cursor: BookingCursor | null
-): { filters: string[]; cursor: BookingCursor | null } => {
-  const filters: string[] = req.query.filters
-    ? (req.query.filters as string).split(",")
-    : [];
+): { filters: BookingFilter | null; cursor: BookingCursor | null } => {
+  const filters: BookingFilter = {};
+
+  // Parse bookingType if it exist
+  if (req.query.bookingType) {
+    const bookingType = req.query.bookingType as string;
+    if (!Object.values(BookingType).includes(bookingType as BookingType)) {
+      throw new Error("Invalid booking type");
+    }
+    filters.bookingType = bookingType as BookingType;
+  }
+
+  // Parse plannedSize if it exist
+  if (req.query.plannedSize) {
+    const plannedSize = parseInt(req.query.plannedSize as string);
+    if (isNaN(plannedSize) || plannedSize < 0) {
+      throw new Error("Invalid planned size");
+    }
+    filters.plannedSize = plannedSize;
+  }
+
+  // Parse startTime and endTime if they exist
+  if (req.query.startTime && req.query.endTime) {
+    if (req.query.startTime) {
+      filters.startTime = parseDatetime(req.query.startTime as string);
+    }
+    if (req.query.endTime) {
+      filters.endTime = parseDatetime(req.query.endTime as string);
+    }
+  }
+
+  // Parse remainingTime if it exist
+  if (req.query.remainingTime) {
+    const remainingTime = parseInt(req.query.remainingTime as string);
+    if (isNaN(remainingTime) || remainingTime < 0) {
+      throw new Error("Invalid remaining time");
+    }
+    filters.remainingTime = remainingTime;
+  }
 
   // Reset cursor if filters and cursor filters do not match
   if (cursor && cursor.filter) {
+    const cursorFilter = cursor.filter;
     if (
-      filters.length !== cursor.filter.length ||
-      filters.some((field, index) => field !== cursor.filter[index])
+      (filters.bookingType &&
+        filters.bookingType !== cursorFilter.bookingType) ||
+      (filters.plannedSize &&
+        filters.plannedSize !== cursorFilter.plannedSize) ||
+      (filters.startTime &&
+        filters.startTime.getTime() !== cursorFilter.startTime?.getTime()) ||
+      (filters.endTime &&
+        filters.endTime.getTime() !== cursorFilter.endTime?.getTime()) ||
+      (filters.remainingTime &&
+        filters.remainingTime !== cursorFilter.remainingTime)
     ) {
-      return {
-        filters,
-        cursor: null,
-      };
+      return { filters, cursor: null };
     }
   }
 

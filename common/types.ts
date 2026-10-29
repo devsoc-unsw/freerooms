@@ -54,12 +54,20 @@ export type BookingModule = {
 };
 
 // Booking Pagination
+export type BookingFilter = {
+  bookingType?: BookingType;
+  plannedSize?: number;
+  startTime?: Date;
+  endTime?: Date;
+  remainingTime?: number;
+}
+
 export type BookingCursor = {
   start: Date;
   bookingType: BookingType;
   roomId: string;
   occurrenceId: string;
-  filter: string[];
+  filter: BookingFilter | null;
   sort: string[];
   search: string | null;
 };
@@ -67,7 +75,7 @@ export type BookingCursor = {
 export type BookingPaginationParams = {
   limit: number;
   cursor: BookingCursor | null;
-  filters: string[];
+  filters: BookingFilter | null;
   sort: string[];
   search: string | null;
 };
