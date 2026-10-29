@@ -188,7 +188,7 @@ export const parseBookingFilters = (
   if (req.query.bookingType) {
     const bookingType = req.query.bookingType as string;
     if (!Object.values(BookingType).includes(bookingType as BookingType)) {
-      throw new Error("Invalid booking type");
+      throw new Error("Invalid filter: booking type");
     }
     filters.bookingType = bookingType as BookingType;
   }
@@ -197,18 +197,30 @@ export const parseBookingFilters = (
   if (req.query.plannedSize) {
     const plannedSize = parseInt(req.query.plannedSize as string);
     if (isNaN(plannedSize) || plannedSize < 0) {
-      throw new Error("Invalid planned size");
+      throw new Error("Invalid filter: planned size");
     }
     filters.plannedSize = plannedSize;
   }
 
   // Parse startTime and endTime if they exist
   if (req.query.startTime && req.query.endTime) {
-    if (req.query.startTime) {
-      filters.startTime = parseDatetime(req.query.startTime as string);
+    if (!req.query.startTime || !req.query.endTime) {
+      throw new Error("Both startTime and endTime must be provided");
     }
-    if (req.query.endTime) {
-      filters.endTime = parseDatetime(req.query.endTime as string);
+    filters.startTime = parseDatetime(req.query.startTime as string);
+    filters.endTime = parseDatetime(req.query.endTime as string);
+
+    if (filters.endTime < filters.startTime) {
+      throw new Error("Invalid filter: endTime cannot be before startTime");
+    }
+
+    if (
+      filters.endTime.getTime() - filters.startTime.getTime() >
+      ONE_WEEK_IN_MILLISECONDS
+    ) {
+      throw new Error(
+        "Invalid filter: end time cannot be 1 week later than start time."
+      );
     }
   }
 
@@ -216,7 +228,7 @@ export const parseBookingFilters = (
   if (req.query.remainingTime) {
     const remainingTime = parseInt(req.query.remainingTime as string);
     if (isNaN(remainingTime) || remainingTime < 0) {
-      throw new Error("Invalid remaining time");
+      throw new Error("Invalid filter: remaining time");
     }
     filters.remainingTime = remainingTime;
   }
