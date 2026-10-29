@@ -236,7 +236,7 @@ export const createBookingCursor = (
     bookingType: booking.bookingType,
     roomId: booking.roomId,
     occurrenceId: booking.occurrenceId,
-    filter: params.filter,
+    filter: params.filters,
     sort: params.sort,
     search: params.search,
   });

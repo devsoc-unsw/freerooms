@@ -1,4 +1,7 @@
-import { BuildingRatingsResponse } from "@common/types";
+import {
+  BookingPaginationParams,
+  BuildingRatingsResponse,
+} from "@common/types";
 import cors from "cors";
 import express, {
   json,
@@ -109,15 +112,21 @@ app.get(
   "/api/bookings",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const limit = parseBookingLimit(req);
-    const cursor = parseBookingCursor(req);
-    const filter = parseBookingFilters(req, cursor);
-    const { sort, cursor: newCursor } = parseBookingSort(req, cursor);
-    const search = parseBookingSearch(req, cursor);
+    const rawCursor = parseBookingCursor(req);
+    const { filters, cursor: bookingCursor } = parseBookingFilters(
+      req,
+      rawCursor
+    );
+    const { sort, cursor: sortCursor } = parseBookingSort(req, bookingCursor);
+    const { search, cursor: searchCursor } = parseBookingSearch(
+      req,
+      sortCursor
+    );
 
-    const params = {
+    const params: BookingPaginationParams = {
       limit,
-      cursor: newCursor,
-      filter,
+      cursor: searchCursor,
+      filters,
       sort,
       search,
     };

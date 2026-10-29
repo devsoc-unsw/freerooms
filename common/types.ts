@@ -59,7 +59,7 @@ export type BookingCursor = {
   bookingType: BookingType;
   roomId: string;
   occurrenceId: string;
-  filter: string | null;
+  filter: string[];
   sort: string[];
   search: string | null;
 };
@@ -67,7 +67,7 @@ export type BookingCursor = {
 export type BookingPaginationParams = {
   limit: number;
   cursor: BookingCursor | null;
-  filter: string | null;
+  filters: string[];
   sort: string[];
   search: string | null;
 };

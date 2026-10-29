@@ -130,57 +130,79 @@ export const parseSearchFilters = (req: Request): SearchFilters => {
 };
 
 export const parseBookingLimit = (req: Request): number => {
-  // Parse limit
   let limit = DEFAULT_LIMIT;
   if (req.query.limit) {
     limit = parseInt(req.query.limit as string);
     if (isNaN(limit) || limit < 1 || limit > MAX_LIMIT) {
-      throw new Error("Invalid limit for bookings pagination");
+      throw new Error(
+        `Invalid limit: must be a positive integer no greater than ${MAX_LIMIT}`
+      );
     }
   }
-
   return limit;
 };
 
 export const parseBookingCursor = (req: Request): BookingCursor | null => {
-  // Parse Cursor
-  let cursor: BookingCursor | null = null;
-  if (req.query.cursor) {
-    try {
-      const cursorObj = JSON.parse(req.query.cursor as string);
+  if (!req.query.cursor) return null;
 
-      cursor = {
-        start: new Date(cursorObj.start),
-        bookingType: cursorObj.bookingType,
-        roomId: cursorObj.roomId,
-        occurrenceId: cursorObj.occurrenceId,
-        filter: cursorObj.filter ?? null,
-        sort: Array.isArray(cursorObj.sort) ? cursorObj.sort : [],
-        search: cursorObj.search ?? null,
+  try {
+    const cursorObj = JSON.parse(req.query.cursor as string);
+
+    // Check booking types enum
+    if (!Object.values(BookingType).includes(cursorObj.bookingType)) {
+      throw new Error("Invalid booking type in cursor");
+    }
+
+    const cursor: BookingCursor = {
+      start: new Date(cursorObj.start),
+      bookingType: cursorObj.bookingType,
+      roomId: cursorObj.roomId,
+      occurrenceId: cursorObj.occurrenceId,
+      filter: cursorObj.filter ?? null,
+      sort: Array.isArray(cursorObj.sort) ? cursorObj.sort : [],
+      search: cursorObj.search ?? null,
+    };
+
+    if (
+      isNaN(cursor.start.getTime()) ||
+      !cursor.bookingType ||
+      !cursor.roomId ||
+      !cursor.occurrenceId
+    ) {
+      throw new Error("Invalid cursor fields");
+    }
+
+    return cursor;
+  } catch {
+    throw new Error("Invalid cursor");
+  }
+};
+
+export const parseBookingFilters = (
+  req: Request,
+  cursor: BookingCursor | null
+): { filters: string[]; cursor: BookingCursor | null } => {
+  const filters: string[] = req.query.filters
+    ? (req.query.filters as string).split(",")
+    : [];
+
+  // Reset cursor if filters and cursor filters do not match
+  if (cursor && cursor.filter) {
+    if (
+      filters.length !== cursor.filter.length ||
+      filters.some((field, index) => field !== cursor.filter[index])
+    ) {
+      return {
+        filters,
+        cursor: null,
       };
-
-      // Check bookingType is valid
-      if (!Object.values(BookingType).includes(cursor.bookingType)) {
-        throw new Error("Invalid booking type in cursor");
-      }
-
-      if (
-        isNaN(cursor.start.getTime()) ||
-        !cursor.bookingType ||
-        !cursor.roomId ||
-        !cursor.occurrenceId
-      ) {
-        throw new Error("Invalid cursor fields");
-      }
-    } catch {
-      throw new Error("Invalid cursor");
     }
   }
 
-  return cursor;
+  return { filters, cursor };
 };
 
-// Cursors are dependent on sort type
+// Parse sorting for bookings
 export const parseBookingSort = (
   req: Request,
   cursor: BookingCursor | null
@@ -188,17 +210,16 @@ export const parseBookingSort = (
   sort: string[];
   cursor: BookingCursor | null;
 } => {
-  // Parse Sort
   const sort = req.query.sort
     ? (req.query.sort as string).split(",")
     : DEFAULT_BOOKING_SORT;
 
+  // Reset cursor if sort and cursor sort do not match
   if (cursor && cursor.sort) {
     if (
       sort.length !== cursor.sort.length ||
       sort.some((field, index) => field !== cursor.sort[index])
     ) {
-      // If sort order has changed, reset cursor to null
       return {
         sort,
         cursor: null,
@@ -209,36 +230,21 @@ export const parseBookingSort = (
   return { sort, cursor };
 };
 
+// Parse a search for booking name
 export const parseBookingSearch = (
   req: Request,
   cursor: BookingCursor | null
-): string | null => {
-  // Parse search
-  const search = req.query.search ? (req.query.search as string) : null;
+): { search: string | null; cursor: BookingCursor | null } => {
+  const search = req.query.search ? (req.query.search as string).trim() : null;
 
-  if (cursor && cursor.search) {
-    if (search !== cursor.search) {
-      // If search has changed, reset cursor to null
-      return null;
-    }
+  if (search !== null && search.length === 0) {
+    throw new Error("Invalid search: search term cannot be empty");
   }
 
-  return search;
-};
-
-export const parseBookingFilters = (
-  req: Request,
-  cursor: BookingCursor | null
-): string | null => {
-  // Parse filter
-  const filter = req.query.filter ? (req.query.filter as string) : null;
-
-  if (cursor && cursor.filter) {
-    if (filter !== cursor.filter) {
-      // If filter has changed, reset cursor to null
-      return null;
-    }
+  // Reset cursor if search and cursor search do not match
+  if (cursor && cursor.search !== search) {
+    return { search, cursor: null };
   }
 
-  return filter;
+  return { search, cursor };
 };
