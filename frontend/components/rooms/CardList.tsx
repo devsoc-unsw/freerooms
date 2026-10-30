@@ -2,7 +2,9 @@ import { Building } from "@common/types";
 import BuildingCard from "@frontend/components/rooms/BuildingCard";
 import BuildingCardMobile from "@frontend/components/rooms/BuildingCardMobile";
 import useBuildings from "@frontend/hooks/buildings/useBuildings";
+import useBuildingSearch from "@frontend/hooks/buildings/useBuildingSearch";
 import useUserLocation from "@frontend/hooks/map/useUserLocation";
+import useRooms from "@frontend/hooks/rooms/useRooms";
 import useStatus from "@frontend/hooks/rooms/useStatus";
 import calculateDistance from "@frontend/utils/calculateDistance";
 import { getNumFreerooms } from "@frontend/utils/utils";
@@ -91,17 +93,24 @@ const CardList: React.FC<{
   const { buildings } = useBuildings();
   const { status: roomStatusData } = useStatus();
   const { userLat, userLng } = useUserLocation();
+  const { rooms } = useRooms();
+  const searchBuildings = useBuildingSearch(buildings, rooms);
 
   let displayedBuildings: Building[] | undefined = buildings;
 
   // If we have all data, apply filters
   if (buildings && roomStatusData && Object.keys(roomStatusData).length !== 0) {
-    // Filter any out that don't start with query
     // If hideUnavailable is true, filter any that have no available rooms
+
+    // Hide buildings that don't match the query, or that have no rooms left
+    // after the active Filters (dropdown) are applied
+    // Ids of buildings matching the query (undefined = no query, show all)
+    const matchingIds = searchBuildings(query);
+
     displayedBuildings = buildings
       .filter(
         (building) =>
-          building.name.toLowerCase().includes(query.toLowerCase()) &&
+          (!matchingIds || matchingIds.has(building.id)) &&
           Object.keys(roomStatusData[building.id].roomStatuses).length > 0
       )
       .sort((a, b) => {
