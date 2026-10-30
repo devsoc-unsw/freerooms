@@ -57,7 +57,7 @@ services:
         echo "MongoDB is ready."
 
   backend:
-    image: node:24.18-alpine
+    image: node:26.13-alpine
     working_dir: /workspace/backend
     init: true
 
@@ -94,7 +94,7 @@ services:
         exec npm run dev
 
   frontend:
-    image: node:24.18-alpine
+    image: node:26.13-alpine
     working_dir: /workspace/frontend
     init: true
 
