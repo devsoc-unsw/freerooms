@@ -1,5 +1,6 @@
 "use client";
 
+import { typography } from "@frontend/theme/typography";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { styled } from "@mui/material/styles";
 import Image from "next/image";
@@ -16,9 +17,7 @@ export default function HeroBranding() {
 
     const search = query.trim();
 
-    router.push(
-      search ? `/browser?q=${encodeURIComponent(search)}` : "/browse"
-    );
+    router.push(search ? `/browse?q=${encodeURIComponent(search)}` : "/browse");
   };
 
   return (
@@ -104,7 +103,7 @@ const LogoButton = styled("button")(({ theme }) => ({
   cursor: "pointer",
   flexShrink: 0,
 
-  [theme.breakpoints.down("sm")]: {
+  "&:focus-visible": {
     outline: `3px solid ${theme.colours.accent.secondary}`,
     outlineOffset: 3,
   },
@@ -117,12 +116,12 @@ const LogoImage = styled(Image)(({ theme }) => ({
   flexShrink: 0,
 
   [theme.breakpoints.down("sm")]: {
-    with: 52,
+    width: 52,
   },
 }));
 
 const Wordmark = styled("h1")(({ theme }) => ({
-  ...theme.typography.heroWordmark,
+  ...typography.heroWordmark,
   margin: 0,
   color: theme.colours.accent.primary,
   fontSize: "clamp(48px, 12.5vw, 180px)",
@@ -135,7 +134,7 @@ const Wordmark = styled("h1")(({ theme }) => ({
 }));
 
 const Subtitle = styled("p")(({ theme }) => ({
-  ...theme.typography.heroSubtitle,
+  ...typography.heroSubtitle,
   maxWidth: "100%",
   marginTop: theme.space.xxl,
   color: theme.colours.text.onImage,
