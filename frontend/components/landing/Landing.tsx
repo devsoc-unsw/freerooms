@@ -9,7 +9,13 @@ import { styled } from "@mui/material/styles";
 import Image from "next/image";
 import React, { useState } from "react";
 
-const Landing = () => {
+import Hero from "./Hero";
+
+interface LandingProps {
+  heroImageSrc: string;
+}
+
+export default function Landing({ heroImageSrc }: LandingProps) {
   const [isClicked, setIsClicked] = useState(false);
   const [gifSource, setGifSource] = useState(
     "/assets/favicon/free_rooms_logo.png"
@@ -28,36 +34,38 @@ const Landing = () => {
     <LandingRoot>
       {/* Hero */}
       <LandingSection aria-label="Find a room">
-        <AnimationContainer>
-          <DoorContainer>
-            <Image
-              width={150}
-              height={150}
-              alt="Freerooms Logo"
-              src={gifSource}
-              onClick={handleClick}
-            />
-          </DoorContainer>
+        <Hero imageSrc={heroImageSrc}>
+          <AnimationContainer>
+            <DoorContainer>
+              <Image
+                width={150}
+                height={150}
+                alt="Freerooms Logo"
+                src={gifSource}
+                onClick={handleClick}
+              />
+            </DoorContainer>
 
-          <TextAnimation />
+            <TextAnimation />
 
-          <HeroPanelContainer>
-            <StyledImage
-              src="/assets/landing_page/hero_panel.svg"
-              alt="hero panel"
-              $isalternate
-              width="1249"
-              height="1067"
-            />
-            <StyledImage
-              src={"/assets/landing_page/hero_panel_mobile.svg"}
-              alt="hero panel"
-              $isalternate={false}
-              width="562"
-              height="547"
-            />
-          </HeroPanelContainer>
-        </AnimationContainer>
+            <HeroPanelContainer>
+              <StyledImage
+                src="/assets/landing_page/hero_panel.svg"
+                alt="hero panel"
+                $isalternate
+                width="1249"
+                height="1067"
+              />
+              <StyledImage
+                src={"/assets/landing_page/hero_panel_mobile.svg"}
+                alt="hero panel"
+                $isalternate={false}
+                width="562"
+                height="547"
+              />
+            </HeroPanelContainer>
+          </AnimationContainer>
+        </Hero>
       </LandingSection>
 
       {/* Features */}
@@ -73,7 +81,7 @@ const Landing = () => {
       </LandingSection>
     </LandingRoot>
   );
-};
+}
 
 const LandingRoot = styled(Stack)(({ theme }) => ({
   width: "100%",
@@ -137,5 +145,3 @@ const AnimationContainer = styled(Stack)(() => ({
   width: "80%",
   margin: "auto",
 }));
-
-export default Landing;
