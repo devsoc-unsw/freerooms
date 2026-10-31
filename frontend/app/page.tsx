@@ -3,10 +3,10 @@ import Landing from "@frontend/components/landing/Landing";
 
 const Home = () => {
   return (
-      <>
-        <FeedbackNotification />
-        <Landing />
-      </>
+    <>
+      <FeedbackNotification />
+      <Landing />
+    </>
   );
 };
 

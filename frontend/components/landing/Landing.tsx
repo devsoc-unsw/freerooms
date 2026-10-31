@@ -6,7 +6,6 @@ import TextAnimation from "@frontend/components/landing/TextAnimation";
 import transientOptions from "@frontend/utils/transientOptions";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
-import { padding } from "@mui/system";
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -76,8 +75,8 @@ const Landing = () => {
   );
 };
 
-const LandingRoot = styled(Stack)(({theme}) => ({
-  width:"100%",
+const LandingRoot = styled(Stack)(({ theme }) => ({
+  width: "100%",
   maxWidth: 1440,
   boxSizing: "border-box",
   marginInline: "auto",
@@ -85,14 +84,14 @@ const LandingRoot = styled(Stack)(({theme}) => ({
   alignItems: "center",
 
   [theme.breakpoints.down("sm")]: {
-    padding: theme.space.md
-  }
+    padding: theme.space.md,
+  },
 }));
 
 const LandingSection = styled("section")(() => ({
   width: "100%",
-  minWidth: 0
-}))
+  minWidth: 0,
+}));
 
 const LandingScreenContainer = styled(Stack)(() => ({
   height: "100%",
