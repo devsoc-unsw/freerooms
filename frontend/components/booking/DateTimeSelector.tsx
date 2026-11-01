@@ -3,17 +3,13 @@ import { SYDNEY_TIMEZONE } from "@frontend/utils/toSydneyTime";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import Box from "@mui/material/Box";
-import type { Theme } from "@mui/material/styles";
+import { useTheme, type Theme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { MultiSectionDigitalClock } from "@mui/x-date-pickers/MultiSectionDigitalClock";
 import { differenceInMinutes, format, isSameDay } from "date-fns";
 import { toZonedTime } from "date-fns-tz";
 import React, { useState } from "react";
-
-// MUI's DateCalendar has a fixed size. It is scaled down to fit under its field.
-const CALENDAR_WIDTH = 320;
-const CALENDAR_HEIGHT = 336;
 
 const getSelectedStyles = (theme: Theme) => ({
   backgroundColor: theme.colours.accent.secondary,
@@ -29,6 +25,9 @@ const DateTimeSelector = ({
   value: Date;
   onChange: (value: Date) => void;
 }) => {
+  const theme = useTheme();
+  // MUI's DateCalendar has a fixed size. It is scaled down to fit under its field.
+  const { calendarWidth, calendarHeight } = theme.sizes.picker;
   const [now] = useState(() => toZonedTime(new Date(), SYDNEY_TIMEZONE));
 
   const isToday = isSameDay(value, now);
@@ -50,19 +49,19 @@ const DateTimeSelector = ({
           label={dateLabel}
         >
           {(close, anchorWidth) => {
-            const scale = Math.min(1, anchorWidth / CALENDAR_WIDTH);
+            const scale = Math.min(1, anchorWidth / calendarWidth);
             return (
               <Box
                 sx={{
-                  width: CALENDAR_WIDTH * scale,
-                  height: CALENDAR_HEIGHT * scale,
+                  width: calendarWidth * scale,
+                  height: calendarHeight * scale,
                   overflow: "hidden",
                 }}
               >
                 <Box
                   sx={{
-                    width: CALENDAR_WIDTH,
-                    height: CALENDAR_HEIGHT,
+                    width: calendarWidth,
+                    height: calendarHeight,
                     transform: `scale(${scale})`,
                     transformOrigin: "top left",
                   }}

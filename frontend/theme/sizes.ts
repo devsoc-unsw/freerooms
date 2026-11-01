@@ -20,6 +20,8 @@ export const sizes = {
   },
   picker: {
     width: 133,
+    calendarWidth: 320, // size MUI's DateCalendar renders at
+    calendarHeight: 336, // size MUI
   },
   toolbar: {
     buttonWidth: 115, // Filters/Sort/Time buttons
@@ -29,6 +31,8 @@ export const sizes = {
   slider: {
     rail: 11,
     thumb: 16,
+    tickWidth: 1,
+    tickHeight: 5,
   },
 } as const;
 

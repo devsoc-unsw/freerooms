@@ -56,7 +56,7 @@ const FilterSlider = ({
               flex: 1,
               minWidth: 0,
               height: theme.sizes.slider.rail,
-              borderRadius: theme.radius.md,
+              borderRadius: `${theme.radius.md}px`,
               color: theme.palette.primary.main,
               "& .MuiSlider-rail": {
                 height: theme.sizes.slider.rail,
@@ -73,7 +73,7 @@ const FilterSlider = ({
               "& .MuiSlider-thumb": {
                 width: theme.sizes.slider.thumb,
                 height: theme.sizes.slider.thumb,
-                borderRadius: 0,
+                borderRadius: `${theme.radius.md}px`,
                 boxShadow: "none",
                 "&::before": { display: "none" },
                 "&::after": { borderRadius: 0 },
@@ -83,17 +83,13 @@ const FilterSlider = ({
                   outlineOffset: 2,
                 },
               },
-              "& .MuiSlider-mark": {
-                width: 2,
-                height: theme.sizes.slider.rail,
+              "& .MuiSlider-mark, & .MuiSlider-markActive": {
+                width: `${theme.sizes.slider.tickWidth}px`,
+                height: `${theme.sizes.slider.tickHeight}px`,
                 borderRadius: 0,
-                backgroundColor: railColour,
-                opacity: 0.7,
-                transform: "translate(-1px, -50%)",
-              },
-              "& .MuiSlider-markActive": { 
-                backgroundColor: theme.colours.accent.primary,
-                opacity: 0.5,
+                backgroundColor: theme.colours.accent.secondary,
+                opacity: 1,
+                transform: "translateY(-50%)",
               },
             };
           }}
