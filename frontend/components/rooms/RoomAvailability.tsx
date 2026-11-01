@@ -2,6 +2,8 @@ import { RoomAvailabilityBoxProps } from "@frontend/views/RoomAvailabilityBox";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 import { alpha, styled, Typography, TypographyProps, useTheme } from "@mui/material";
 import { Stack } from "@mui/system";
+import { getCardStatus, getStatusEnd } from "@frontend/utils/roomStatus";
+import { format } from "date-fns";
 import React from "react";
 
 const RoomBoxHeading = styled(Typography)<TypographyProps>(() => ({
@@ -44,11 +46,15 @@ const statusColourKey = {
 type RoomAvailabilityProps = Pick<RoomAvailabilityBoxProps, "roomStatus"> & {
   // stacked is two right-aligned lines for use in lists, pill is one line inside a coloured pill (for room cards)
   variant?: "stacked" | "pill";
+  reason?: string; // used only for 'pill'. What booking is using the room at the end time
+  until?: Date;
 };
 
 const RoomAvailability: React.FC<RoomAvailabilityProps> = ({
   roomStatus,
   variant = "stacked",
+  reason,
+  until,
 }) => {
   const theme = useTheme();
 
@@ -71,26 +77,39 @@ const RoomAvailability: React.FC<RoomAvailabilityProps> = ({
     soon: "at " + hoursMinutes,
   };
 
-  if (variant === "pill") {
-    const colour = theme.colours.status[statusColourKey[roomStatus.status]].text;
-    return (
-      <StatusPill
-        sx={{
-          color: colour,
-          backgroundColor: alpha(colour, 0.2),
-          borderColor: colour,
-        }}
-      >
-        <AccessTimeOutlinedIcon />
-        <Typography
-          variant="body2"
-          sx={{ fontWeight: theme.typography.fontWeightMedium, whiteSpace: "nowrap" }}
+    if (variant === "pill") {
+      const cardStatus = getCardStatus(roomStatus);
+      const colours = theme.colours.status[statusColourKey[cardStatus]];
+      const end = getStatusEnd(roomStatus) ?? (cardStatus === "free" ? (until ?? null) : null);
+      const time = end ? format(end, "h:mmaaa") : null;
+      const text = [
+        roomStatusMessage[cardStatus],
+        time && `until ${time}`,
+        reason && `- ${reason}`,
+      ]
+        .filter(Boolean)
+        .join(" ");
+
+      return (
+        <StatusPill
+          sx={{
+            color: colours.text,
+            backgroundColor: colours.background,
+            borderColor: colours.text,
+          }}
         >
-          {`${roomStatusMessage[roomStatus.status]} ${untilMessage[roomStatus.status]}`.trim()}
-        </Typography>
-      </StatusPill>
-    );
-  }
+          <AccessTimeOutlinedIcon />
+          <Typography
+            variant="body2"
+            noWrap
+            title={text}
+            sx={{ minWidth: 0, fontWeight: theme.typography.fontWeightMedium }}
+          >
+            {text}
+          </Typography>
+        </StatusPill>
+      );
+    }
 
   return (
     <Stack

@@ -3,12 +3,14 @@ import type { Room } from "@common/types";
 import RoomAvailability from "@frontend/components/rooms/RoomAvailability";
 import RoomUtilityTags from "@frontend/components/rooms/RoomUtilityTags";
 import useBuilding from "@frontend/hooks/useBuilding";
+import useNearbyBookings from "@frontend/hooks/useNearbyBookings";
 import useFavourites from "@frontend/hooks/useFavourites";
 import useRoomRatings from "@frontend/hooks/useRoomRatings";
 import useRoomStatus from "@frontend/hooks/useRoomStatus";
 import room_photos from "@frontend/public/room-photos.json";
 import getRoomHref from "@frontend/utils/getRoomHref";
 import { getCampus, getFloorLabel } from "@frontend/utils/roomLocation";
+import { getCardStatus, getStatusEnd } from "@frontend/utils/roomStatus";
 import { getBuildingIdFromRoomId } from "@frontend/utils/utils";
 import ArrowForwardOutlinedIcon from "@mui/icons-material/ArrowForwardOutlined";
 import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
@@ -132,7 +134,8 @@ const RoomCard: React.FC<RoomCardProps> = (props) => {
   const { building } = useBuilding(buildingId);
   const { data: ratings } = useRoomRatings(room?.id);
   const { status } = useRoomStatus(room?.id ?? "");
-
+  const needsBookings = status !== undefined && (getCardStatus(status) === "busy" || !getStatusEnd(status));
+  const { current, nextLaterThatDay } = useNearbyBookings(room?.id, needsBookings);
   if (props.loading || !room) {
     return (
       <Skeleton
@@ -186,7 +189,7 @@ const RoomCard: React.FC<RoomCardProps> = (props) => {
           sx={{ flex: 1, display: "flex", flexDirection: "column", width: "100%" }}
         >
           <TitleRow>
-            <Typography variant="cardTitle" noWrap sx={{ minWidth: 0 }}>
+            <Typography variant="roomCardTitle" noWrap sx={{ minWidth: 0 }}>
               {room.name}
             </Typography>
             <IconButton
@@ -220,7 +223,7 @@ const RoomCard: React.FC<RoomCardProps> = (props) => {
             </Typography>
           </LocationRow>
 
-          {status && <RoomAvailability roomStatus={status} variant="pill" />}
+          {status && <RoomAvailability roomStatus={status} variant="pill" reason={current?.name} until={nextLaterThatDay?.start} />}
 
           <Divider sx={{ marginBlock: (theme) => `${theme.space.sm}px` }} />
 
