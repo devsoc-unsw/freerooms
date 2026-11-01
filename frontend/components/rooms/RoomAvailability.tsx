@@ -1,5 +1,6 @@
 import { RoomAvailabilityBoxProps } from "@frontend/views/RoomAvailabilityBox";
-import { styled, Typography, TypographyProps, useTheme } from "@mui/material";
+import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
+import { alpha, styled, Typography, TypographyProps, useTheme } from "@mui/material";
 import { Stack } from "@mui/system";
 import React from "react";
 
@@ -14,15 +15,41 @@ const RoomBoxSubheading = styled(Typography)<TypographyProps>(({ theme }) => ({
   fontWeight: 400,
 }));
 
+const StatusPill = styled(Stack)(({ theme }) => ({
+  flexDirection: "row",
+  alignItems: "center",
+  alignSelf: "flex-start",
+  width: "fit-content",
+  maxWidth: "100%",
+  gap: theme.space.xs,
+  padding: `0 ${theme.space.sm}px`,
+  border: "1.5px solid",
+  borderRadius: theme.radius.pill,
+  fontSize: theme.typography.body2.fontSize,
+  "& svg": { fontSize: "inherit" },
+}));
+
 const roomStatusMessage = {
   free: "Available",
   busy: "Unavailable",
   soon: "Available Soon",
 };
 
-type RoomAvailabilityProps = Pick<RoomAvailabilityBoxProps, "roomStatus">;
+const statusColourKey = {
+  free: "available",
+  busy: "unavailable",
+  soon: "soon",
+} as const;
 
-const RoomAvailability: React.FC<RoomAvailabilityProps> = ({ roomStatus }) => {
+type RoomAvailabilityProps = Pick<RoomAvailabilityBoxProps, "roomStatus"> & {
+  // stacked is two right-aligned lines for use in lists, pill is one line inside a coloured pill (for room cards)
+  variant?: "stacked" | "pill";
+};
+
+const RoomAvailability: React.FC<RoomAvailabilityProps> = ({
+  roomStatus,
+  variant = "stacked",
+}) => {
   const theme = useTheme();
 
   const roomStatusColor = {
@@ -43,6 +70,27 @@ const RoomAvailability: React.FC<RoomAvailabilityProps> = ({ roomStatus }) => {
     busy: hoursMinutes == "Invalid Date" ? "" : "until " + hoursMinutes,
     soon: "at " + hoursMinutes,
   };
+
+  if (variant === "pill") {
+    const colour = theme.colours.status[statusColourKey[roomStatus.status]].text;
+    return (
+      <StatusPill
+        sx={{
+          color: colour,
+          backgroundColor: alpha(colour, 0.2),
+          borderColor: colour,
+        }}
+      >
+        <AccessTimeOutlinedIcon />
+        <Typography
+          variant="body2"
+          sx={{ fontWeight: theme.typography.fontWeightMedium, whiteSpace: "nowrap" }}
+        >
+          {`${roomStatusMessage[roomStatus.status]} ${untilMessage[roomStatus.status]}`.trim()}
+        </Typography>
+      </StatusPill>
+    );
+  }
 
   return (
     <Stack

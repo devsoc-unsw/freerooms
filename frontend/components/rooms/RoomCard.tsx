@@ -1,4 +1,5 @@
-import { Room } from "@common/types";
+import translateRoomUsage from "@common/roomUsages";
+import type { Room } from "@common/types";
 import RoomAvailability from "@frontend/components/rooms/RoomAvailability";
 import RoomUtilityTags from "@frontend/components/rooms/RoomUtilityTags";
 import useBuilding from "@frontend/hooks/useBuilding";
@@ -7,20 +8,17 @@ import useRoomRatings from "@frontend/hooks/useRoomRatings";
 import useRoomStatus from "@frontend/hooks/useRoomStatus";
 import room_photos from "@frontend/public/room-photos.json";
 import getRoomHref from "@frontend/utils/getRoomHref";
+import { getCampus, getFloorLabel } from "@frontend/utils/roomLocation";
 import { getBuildingIdFromRoomId } from "@frontend/utils/utils";
+import ArrowForwardOutlinedIcon from "@mui/icons-material/ArrowForwardOutlined";
 import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 import FavouriteIcon from "@mui/icons-material/Favorite";
 import FavouriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
-import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
-import PlaceIcon from "@mui/icons-material/Place";
+import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
+import KeyboardArrowRightOutlinedIcon from "@mui/icons-material/KeyboardArrowRightOutlined";
 import MeetingRoomOutlinedIcon from "@mui/icons-material/MeetingRoomOutlined";
+import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
-import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
-import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
-import translateRoomUsage from "@common/roomUsages";
 import {
   Box,
   Card,
@@ -32,13 +30,12 @@ import {
   Skeleton,
   Stack,
   Typography,
-  useTheme,
 } from "@mui/material";
-import { alpha, styled } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import Image from "next/image";
 import { useState } from "react";
 
-type LoadingProps = { 
+type LoadingProps = {
   loading: true;
   room?: never;
   date?: never;
@@ -52,26 +49,20 @@ type LoadedProps = {
 
 type RoomCardProps = LoadingProps | LoadedProps;
 
-export const ROOM_CARD_HEIGHT = 300;
-
 const StyledCard = styled(Card)(({ theme }) => ({
   position: "relative",
   display: "flex",
   flexDirection: "column",
-  height: ROOM_CARD_HEIGHT,
+  height: theme.sizes.roomCard.height,
   overflow: "hidden",
-  [theme.breakpoints.down("lg")]: { height: 300 },
 }));
 
-const ThumbnailBox = styled(Box)(({ theme }) => ({
+const Thumbnail = styled(Box)(({ theme }) => ({
   position: "relative",
-  margin: theme.spacing(0, 1.5, 0, 1.5),
-  height: 120,
-  // borderRadius: theme.spacing(1),
+  height: theme.sizes.roomCard.thumbnailHeight,
+  margin: `0 ${theme.space.md}px`,
   overflow: "hidden",
   flexShrink: 0,
-  // padding: 100,
-  // alignItems: "centre",
 }));
 
 const TitleRow = styled(Stack)(() => ({
@@ -84,56 +75,26 @@ const TitleRow = styled(Stack)(() => ({
 const LocationRow = styled(Stack)(({ theme }) => ({
   flexDirection: "row",
   alignItems: "center",
-  gap: 4,
-  marginBottom: theme.spacing(0.5),
+  gap: theme.space.xs,
+  marginBottom: theme.space.xs,
   minWidth: 0,
-}));
-
-const AvailabilityRow = styled(Box, {
-  shouldForwardProp: (prop) => prop !== "statusKey", 
-})<{ statusKey: "available" | "unavailable" | "soon" }>(({ theme, statusKey }) => {
-  const colour = theme.colours.status[statusKey].text;
-  // const main = available ? theme.palette.success.main : theme.palette.error.main;
-  // const dark = available ? theme.palette.success.dark : theme.palette.error.dark;
-  return {
-    alignSelf: "flex-start",
-    display: "inline-flex",
-    alignItems: "center",
-    gap: theme.spacing(0.5),
-    maxWidth: "100%",
-    width: "fit-content",
-    borderRadius: 100,
-    padding: theme.spacing(0, 1),
-    backgroundColor: alpha(colour, 0.20),
-    border: `1.5px solid ${colour}`,
-    "& .MuiSvgIcon-root": {
-      fontSize: 11,
-      color: colour,
-      flexShrink: 0,
-    },
-  };
-});
-
-const FavouriteButton = styled(IconButton)(({ theme }) => ({
-  
 }));
 
 const WidgetRow = styled(Stack)(({ theme }) => ({
   flexDirection: "row",
   alignItems: "center",
-  // justifyContent: "space-between",
-  justifyContent: "flex-start",
-  // padding: theme.spacing(1, 0),
-  gap: theme.spacing(0.5),
+  gap: theme.space.xs,
 }));
 
 const Widget = styled(Stack)(({ theme }) => ({
   flexDirection: "row",
   alignItems: "center",
-  gap: 3,
-  borderRadius: 100,
-  padding: theme.spacing(0.25, 0.75),
+  gap: theme.space.xs,
+  padding: `${theme.space.xs}px ${theme.space.sm}px`,
+  borderRadius: theme.radius.pill,
   backgroundColor: theme.colours.accent.quaternary,
+  fontSize: theme.typography.body2.fontSize,
+  "& svg": { fontSize: "1.1em" },
 }));
 
 const UtilitiesToggle = styled(Stack)(({ theme }) => ({
@@ -141,65 +102,35 @@ const UtilitiesToggle = styled(Stack)(({ theme }) => ({
   alignItems: "center",
   justifyContent: "space-between",
   cursor: "pointer",
-  padding: theme.spacing(1.25, 1.5),
-  // borderTop: `1px solid ${theme.colours.border.default}`,
+  padding: `${theme.space.sm}px ${theme.space.md}px`,
 }));
 
-const getCampus = (buildingId?: string): "Lower" | "Upper" | null =>
-  buildingId ? (+buildingId.substring(3) < 19 ? "Lower" : "Upper") : null;
+const campusLabel = { lower: "Lower campus", upper: "Upper campus" } as const;
 
-const FLOOR_LABELS: Record<string, string> = {
-  B: "Basement Floor",
-  LG: "Lower Ground Floor",
-  G: "Ground Floor",
-  M: "Mezzanine Floor",
-}; // Todo: add additional floors like Level 1 etc.
-
-const getFloorLabel = (roomId: string): string | null => {
-  const roomNumber = roomId.split("-")[2];
-  const prefix = roomNumber?.match(/^([A-Za-z]+)/)?.[1]?.toUpperCase();
-  return prefix ? (FLOOR_LABELS[prefix] ?? null) : null;
-};
-
-type RoomStatusValue = "free" | "busy" | "soon";
-const STATUS_COLOUR_KEY: Record<RoomStatusValue, "available" | "unavailable" | "soon"> = {
-  free: "available",
-  busy: "unavailable",
-  soon: "soon",
-};
-
-const STATUS_LABEL: Record<RoomStatusValue, string> = {
-  free: "Available",
-  busy: "Unavailable",
-  soon: "Available Soon",
-}
-
-const getAvailabilityText = (roomStatus: { status: RoomStatusValue; endtime: string }): string => {
-  const hoursMinutes = new Date(roomStatus.endtime).toLocaleTimeString("en-AU", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-  });
-  if (hoursMinutes === "Invalid Date") return STATUS_LABEL[roomStatus.status];
-  const preposition = roomStatus.status === "soon" ? "at" : "until";
-  return `${STATUS_LABEL[roomStatus.status]} ${preposition} ${hoursMinutes}`;
+// Round to the nearest half star only when the rating is close to .5
+// (the same rule the room page header uses)
+const roundRating = (rating: number): number => {
+  const fraction = rating % 1;
+  const isNearHalf = fraction >= 0.3 && fraction <= 0.7;
+  return isNearHalf ? Math.floor(rating) + 0.5 : Math.round(rating);
 };
 
 const RoomCard: React.FC<RoomCardProps> = (props) => {
-  const theme = useTheme();
-
   const [utilitiesOpen, setUtilitiesOpen] = useState(false);
+
   const room = props.loading ? undefined : props.room;
   const buildingId = room ? getBuildingIdFromRoomId(room.id) : undefined;
-  const roomPhotoUrls = room ? room_photos[room.id as keyof typeof room_photos] : undefined;
-  const thumbnailSrc =
-    roomPhotoUrls && roomPhotoUrls.length > 0
-      ? roomPhotoUrls[0]
-      : `/assets/building_photos/${buildingId}.webp`;
-  const [imgSrc, setImgSrc] = useState(thumbnailSrc); // allows for fallback
+
+  // The room's own photo if it has one, otherwise a photo of its building
+  const buildingPhoto = `/assets/building_photos/${buildingId}.webp`;
+  const roomPhotos = room
+    ? room_photos[room.id as keyof typeof room_photos]
+    : undefined;
+  const [imageSrc, setImageSrc] = useState(roomPhotos?.[0] ?? buildingPhoto);
+
   const { isFavourite, toggleFavourite } = useFavourites();
   const { building } = useBuilding(buildingId);
-  const { data: ratingsData } = useRoomRatings(room?.id);
+  const { data: ratings } = useRoomRatings(room?.id);
   const { status } = useRoomStatus(room?.id ?? "");
 
   if (props.loading || !room) {
@@ -208,124 +139,130 @@ const RoomCard: React.FC<RoomCardProps> = (props) => {
         animation="wave"
         variant="rounded"
         width="100%"
-        height={ROOM_CARD_HEIGHT}
-        sx={{ marginTop: 1, flexShrink: 0 }}
+        sx={(theme) => ({ height: theme.sizes.roomCard.height, flexShrink: 0 })}
       />
     );
   }
 
-  // const { room, date } = props;
-
-  // const { name, roomNumber, date, status, endtime } = props;
-  // const roomStatus = { status, endtime };
   const { date } = props;
-  const roomHref = getRoomHref(room.id, date);
   const favourite = isFavourite(room.id);
-
-  const ratingValue = (() => {
-    if (!ratingsData || !ratingsData.overallRating) return 0;
-    const rating = ratingsData.overallRating;
-    const frac = rating % 1;
-    return frac >= 0.3 && frac <= 0.7 ? Math.floor(rating) + 0.5 : Math.round(rating);
-  })(); // again unsure if this is the correct way to do this stuff. 
-
-  const isAvailable = status?.status === "free";
+  const rating = roundRating(ratings?.overallRating ?? 0);
+  const location = [
+    buildingId ? campusLabel[getCampus(buildingId)] : null,
+    building?.name,
+    getFloorLabel(room.id),
+  ]
+    .filter(Boolean)
+    .join(", ");
 
   return (
     <StyledCard variant="outlined">
       <CardActionArea
-        href={roomHref}
+        href={getRoomHref(room.id, date)}
         target="_blank"
-        sx={{ display: "flex", flexDirection: "column", alignItems: "stretch", flex: 1, minHeight: 0, pt: 2.5 }}
+        sx={(theme) => ({
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "stretch",
+          flex: 1,
+          minHeight: 0,
+          paddingTop: `${theme.space.lg}px`,
+          // no grey overlay on hover
+          "&:hover .MuiCardActionArea-focusHighlight": { opacity: 0 },
+        })}
       >
-        <ThumbnailBox>
+        <Thumbnail>
           <Image
-            src={imgSrc}
+            src={imageSrc}
             alt={`Image of ${room.name}`}
             fill
-            sizes="(max-width: 600px) 100vw, 300px" // was defaulting to 100vw → 1920w for every card
+            sizes="(max-width: 600px) 100vw, 300px" // without this every card asks for a 1920px image
             style={{ objectFit: "cover", objectPosition: "center" }}
+            onError={() => setImageSrc(buildingPhoto)}
           />
-        </ThumbnailBox>
+        </Thumbnail>
 
-        <CardContent sx={{ flex: 1, display: "flex", flexDirection: "column", width: "100%" }}>
+        <CardContent
+          sx={{ flex: 1, display: "flex", flexDirection: "column", width: "100%" }}
+        >
           <TitleRow>
-            <Typography sx={{ fontWeight: 900, fontSize: 18, minWidth: 0, flexShrink: 1 }} noWrap>{room.name}</Typography>
-            <FavouriteButton
+            <Typography variant="cardTitle" noWrap sx={{ minWidth: 0 }}>
+              {room.name}
+            </Typography>
+            <IconButton
+              size="small"
               sx={{ flexShrink: 0 }}
               aria-label={favourite ? "Remove as favourite" : "Add as favourite"}
-              size="small"
               onClick={(event) => {
+                // the button sits inside the link, so don't follow the link
                 event.preventDefault();
                 event.stopPropagation();
                 toggleFavourite(room.id);
               }}
             >
-              {favourite ? <FavouriteIcon color="primary" fontSize="small" /> : <FavouriteBorderIcon fontSize="small" />}
-            </FavouriteButton>
+              {favourite ? (
+                <FavouriteIcon color="primary" fontSize="small" />
+              ) : (
+                <FavouriteBorderIcon fontSize="small" />
+              )}
+            </IconButton>
           </TitleRow>
+
           <LocationRow>
-            <PlaceOutlinedIcon sx={{ fontSize: 14, color: theme.colours.text.secondary }} />
-            <Typography sx={{ fontSize: 11, color: theme.colours.text.secondary, minWidth: 0 }} noWrap>
-              {[
-                getCampus(buildingId) ? `${getCampus(buildingId)} campus` : null,
-                building?.name,
-                getFloorLabel(room.id),
-              ]
-                .filter(Boolean)
-                .join(", ")}
+            <PlaceOutlinedIcon
+              sx={(theme) => ({
+                fontSize: theme.sizes.icon.sm,
+                color: theme.colours.text.secondary,
+              })}
+            />
+            <Typography variant="metadata" color="text.secondary" noWrap sx={{ minWidth: 0 }}>
+              {location}
             </Typography>
           </LocationRow>
 
-          {status && (
-            <AvailabilityRow statusKey={STATUS_COLOUR_KEY[status.status]}>
-              <AccessTimeOutlinedIcon />
-              {/* <RoomAvailability roomStatus={status} /> */}
-              <Typography
-                sx={{
-                  fontSize: 11,
-                  fontWeight: 600,
-                  whiteSpace: "nowrap",
-                  color: theme.colours.status[STATUS_COLOUR_KEY[status.status]].text,
-                }}
-              >
-                {getAvailabilityText(status)}
-              </Typography>
-            </AvailabilityRow>
-          )}
+          {status && <RoomAvailability roomStatus={status} variant="pill" />}
 
-          <Divider sx={{ marginY: 1 }} />
+          <Divider sx={{ marginBlock: (theme) => `${theme.space.sm}px` }} />
 
           <WidgetRow>
             <Widget>
-              <StarBorderIcon sx={{ fontSize: 13, color: theme.colours.rating.display }} />
-              <Typography sx={{ fontSize: 11 }}>{ratingValue === 0 ? "—" : ratingValue}</Typography>
+              <StarBorderIcon sx={(theme) => ({ color: theme.colours.rating.display })} />
+              <Typography variant="metadata">{rating === 0 ? "—" : rating}</Typography>
             </Widget>
             <Widget>
-              <GroupOutlinedIcon sx={{ fontSize: 13 }} />
-              <Typography sx={{ fontSize: 11 }}>{room.capacity}</Typography>
+              <GroupOutlinedIcon />
+              <Typography variant="metadata">{room.capacity}</Typography>
             </Widget>
             <Widget>
-              <MeetingRoomOutlinedIcon sx={{ fontSize: 13 }} />
-              <Typography sx={{ fontSize: 11 }}>{translateRoomUsage(room.usage)}</Typography>
+              <MeetingRoomOutlinedIcon />
+              <Typography variant="metadata">{translateRoomUsage(room.usage)}</Typography>
             </Widget>
             <Widget>
-              <BadgeOutlinedIcon sx={{ fontSize: 13 }} />
-              <Typography sx={{ fontSize: 11 }}>{room.school !== " " ? "ID Required" : "ID Not Required"}</Typography>
+              <BadgeOutlinedIcon />
+              <Typography variant="metadata">
+                {room.school !== " " ? "ID Required" : "ID Not Required"}
+              </Typography>
             </Widget>
           </WidgetRow>
         </CardContent>
       </CardActionArea>
 
       <UtilitiesToggle onClick={() => setUtilitiesOpen((open) => !open)}>
-        <Stack direction="row" sx={{ alignItems: "center" }} spacing={0.5}>
-          <KeyboardArrowRightOutlinedIcon sx={{ fontSize: 14, color: theme.colours.text.secondary }} />
-          <Typography sx={{ fontSize: 13, color: theme.colours.text.secondary }}>View all utilities</Typography>
+        <Stack direction="row" sx={{ alignItems: "center" }}>
+          <KeyboardArrowRightOutlinedIcon
+            sx={(theme) => ({
+              fontSize: theme.sizes.icon.sm,
+              color: theme.colours.text.secondary,
+            })}
+          />
+          <Typography variant="metadata" color="text.secondary">
+            View all utilities
+          </Typography>
         </Stack>
-        <ArrowForwardOutlinedIcon sx={{ fontSize: 20 }} />
+        <ArrowForwardOutlinedIcon sx={(theme) => ({ fontSize: theme.sizes.icon.md })} />
       </UtilitiesToggle>
       <Collapse in={utilitiesOpen}>
-        <Box sx={{ padding: theme.spacing(0, 1.5, 1.5) }}>
+        <Box sx={(theme) => ({ padding: `0 ${theme.space.md}px ${theme.space.md}px` })}>
           {utilitiesOpen && <RoomUtilityTags roomId={room.id} />}
         </Box>
       </Collapse>
