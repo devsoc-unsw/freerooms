@@ -35,7 +35,11 @@ const Favourites = () => {
           <AlignedWithSearchBar>
             <Typography
               variant="h3"
-              sx={{ fontWeight: 800, color: "primary.main", mt: 3 }}
+              sx={(theme) => ({
+                fontWeight: 800,
+                color: "primary.main",
+                marginTop: theme.space.lg,
+              })}
             >
               Favourite Rooms
             </Typography>
@@ -45,8 +49,8 @@ const Favourites = () => {
             sx={{
               justifyContent: { xs: "center", sm: "space-between" },
               alignItems: "center",
-              marginTop: 1,
-              marginBottom: 1,
+              marginTop: (theme) => theme.space.sm,
+              marginBottom: (theme) => theme.space.sm,
               flexWrap: { sm: "wrap", md: "nowrap" },
               width: "100%",
             }}
