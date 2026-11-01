@@ -106,7 +106,10 @@ const TopBarMenu = ({
           popperOptions={{ strategy: "fixed" }}
           modifiers={[
             { name: "offset", options: { offset: [skidding, 0] } },
-            { name: "preventOverflow", options: { altAxis: true, padding: theme.space.sm } },
+            {
+              name: "preventOverflow",
+              options: { altAxis: true, padding: theme.space.sm },
+            },
           ]}
           sx={{ zIndex: theme.zIndex.modal }}
         >

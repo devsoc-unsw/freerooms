@@ -1,8 +1,14 @@
+import { getCardStatus, getStatusEnd } from "@frontend/utils/roomStatus";
 import { RoomAvailabilityBoxProps } from "@frontend/views/RoomAvailabilityBox";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
-import { alpha, styled, Typography, TypographyProps, useTheme } from "@mui/material";
+import {
+  alpha,
+  styled,
+  Typography,
+  TypographyProps,
+  useTheme,
+} from "@mui/material";
 import { Stack } from "@mui/system";
-import { getCardStatus, getStatusEnd } from "@frontend/utils/roomStatus";
 import { format } from "date-fns";
 import React from "react";
 
@@ -77,39 +83,41 @@ const RoomAvailability: React.FC<RoomAvailabilityProps> = ({
     soon: "at " + hoursMinutes,
   };
 
-    if (variant === "pill") {
-      const cardStatus = getCardStatus(roomStatus);
-      const colours = theme.colours.status[statusColourKey[cardStatus]];
-      const end = getStatusEnd(roomStatus) ?? (cardStatus === "free" ? (until ?? null) : null);
-      const time = end ? format(end, "h:mmaaa") : null;
-      const text = [
-        roomStatusMessage[cardStatus],
-        time && `until ${time}`,
-        reason && `- ${reason}`,
-      ]
-        .filter(Boolean)
-        .join(" ");
+  if (variant === "pill") {
+    const cardStatus = getCardStatus(roomStatus);
+    const colours = theme.colours.status[statusColourKey[cardStatus]];
+    const end =
+      getStatusEnd(roomStatus) ??
+      (cardStatus === "free" ? (until ?? null) : null);
+    const time = end ? format(end, "h:mmaaa") : null;
+    const text = [
+      roomStatusMessage[cardStatus],
+      time && `until ${time}`,
+      reason && `- ${reason}`,
+    ]
+      .filter(Boolean)
+      .join(" ");
 
-      return (
-        <StatusPill
-          sx={{
-            color: colours.text,
-            backgroundColor: colours.background,
-            borderColor: colours.text,
-          }}
+    return (
+      <StatusPill
+        sx={{
+          color: colours.text,
+          backgroundColor: colours.background,
+          borderColor: colours.text,
+        }}
+      >
+        <AccessTimeOutlinedIcon />
+        <Typography
+          variant="body2"
+          noWrap
+          title={text}
+          sx={{ minWidth: 0, fontWeight: theme.typography.fontWeightMedium }}
         >
-          <AccessTimeOutlinedIcon />
-          <Typography
-            variant="body2"
-            noWrap
-            title={text}
-            sx={{ minWidth: 0, fontWeight: theme.typography.fontWeightMedium }}
-          >
-            {text}
-          </Typography>
-        </StatusPill>
-      );
-    }
+          {text}
+        </Typography>
+      </StatusPill>
+    );
+  }
 
   return (
     <Stack

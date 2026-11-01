@@ -77,14 +77,19 @@ const SortBar: React.FC<{
           label={
             <Stack
               direction="row"
-              sx={{ alignItems: "center", gap: (theme) => `${theme.space.sm}px` }}
+              sx={{
+                alignItems: "center",
+                gap: (theme) => `${theme.space.sm}px`,
+              }}
             >
               {Icon && (
                 <Icon
                   fontSize="small"
                   sx={{
                     transform:
-                      option.value === "reverseAlphabetical" ? "scaleY(-1)" : undefined,
+                      option.value === "reverseAlphabetical"
+                        ? "scaleY(-1)"
+                        : undefined,
                   }}
                 />
               )}

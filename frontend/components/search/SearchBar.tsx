@@ -1,12 +1,18 @@
 import { AppTextField } from "@frontend/components/ui";
+import { getOutlinedFieldStyles } from "@frontend/theme/fieldStyles";
 import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
 import InputAdornment from "@mui/material/InputAdornment";
-import { getOutlinedFieldStyles } from "@frontend/theme/fieldStyles";
 import { useTheme } from "@mui/material/styles";
 import React from "react";
 
-const SearchBar = ({ setQuery, placeholder="Search for a building..." }: { setQuery: (query: string) => void; placeholder?: string; }) => {
+const SearchBar = ({
+  setQuery,
+  placeholder = "Search for a building...",
+}: {
+  setQuery: (query: string) => void;
+  placeholder?: string;
+}) => {
   const theme = useTheme();
 
   return (
@@ -32,7 +38,8 @@ const SearchBar = ({ setQuery, placeholder="Search for a building..." }: { setQu
               borderRadius: theme.radius.md,
               padding: `${theme.space.md}px`,
             },
-            "& .MuiOutlinedInput-input::placeholder": theme.typography.subtitle1,
+            "& .MuiOutlinedInput-input::placeholder":
+              theme.typography.subtitle1,
           },
         ]}
         fullWidth

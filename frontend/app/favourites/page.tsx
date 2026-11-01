@@ -6,6 +6,7 @@ import FilterBar from "@frontend/components/filters/FilterBar";
 import SortBar from "@frontend/components/filters/SortBar";
 import RoomCardList from "@frontend/components/rooms/RoomCardList";
 import SearchBar from "@frontend/components/search/SearchBar";
+import TopBarGroup from "@frontend/components/ui/TopBarGroup";
 import useFavouriteRooms from "@frontend/hooks/useFavouriteRooms";
 import useQuerySort from "@frontend/hooks/useQuerySort";
 import { roomSortBarDropdown } from "@frontend/utils/constants";
@@ -19,7 +20,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { enAU } from "date-fns/locale";
 import { parseAsString, useQueryState } from "nuqs";
 import React, { Suspense } from "react";
-import TopBarGroup from "@frontend/components/ui/TopBarGroup";
 
 const Favourites = () => {
   const [sort, setSort] = useQuerySort(roomSortBarDropdown);
@@ -33,7 +33,10 @@ const Favourites = () => {
       <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enAU}>
         <Tiles>
           <AlignedWithSearchBar>
-            <Typography variant="h3" sx={{ fontWeight: 800, color: "primary.main", mt: 3 }}>
+            <Typography
+              variant="h3"
+              sx={{ fontWeight: 800, color: "primary.main", mt: 3 }}
+            >
               Favourite Rooms
             </Typography>
           </AlignedWithSearchBar>
@@ -48,11 +51,18 @@ const Favourites = () => {
               width: "100%",
             }}
           >
-            <SearchBar setQuery={setQuery} placeholder="Search for favourite rooms" />
+            <SearchBar
+              setQuery={setQuery}
+              placeholder="Search for favourite rooms"
+            />
 
             <TopBarGroup>
               <FilterBar />
-              <SortBar setSort={setSort} sort={sort} options={roomSortBarDropdown} />
+              <SortBar
+                setSort={setSort}
+                sort={sort}
+                options={roomSortBarDropdown}
+              />
               <TimeBar />
             </TopBarGroup>
           </Stack>

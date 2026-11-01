@@ -45,4 +45,3 @@ export const getRoomComparator =
     // Rooms that tie are ordered by name/alphabetical
     return primary || compareNames(a, b);
   };
-  

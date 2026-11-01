@@ -3,8 +3,8 @@ import type { Room } from "@common/types";
 import RoomAvailability from "@frontend/components/rooms/RoomAvailability";
 import RoomUtilityTags from "@frontend/components/rooms/RoomUtilityTags";
 import useBuilding from "@frontend/hooks/useBuilding";
-import useNearbyBookings from "@frontend/hooks/useNearbyBookings";
 import useFavourites from "@frontend/hooks/useFavourites";
+import useNearbyBookings from "@frontend/hooks/useNearbyBookings";
 import useRoomRatings from "@frontend/hooks/useRoomRatings";
 import useRoomStatus from "@frontend/hooks/useRoomStatus";
 import room_photos from "@frontend/public/room-photos.json";
@@ -134,8 +134,13 @@ const RoomCard: React.FC<RoomCardProps> = (props) => {
   const { building } = useBuilding(buildingId);
   const { data: ratings } = useRoomRatings(room?.id);
   const { status } = useRoomStatus(room?.id ?? "");
-  const needsBookings = status !== undefined && (getCardStatus(status) === "busy" || !getStatusEnd(status));
-  const { current, nextLaterThatDay } = useNearbyBookings(room?.id, needsBookings);
+  const needsBookings =
+    status !== undefined &&
+    (getCardStatus(status) === "busy" || !getStatusEnd(status));
+  const { current, nextLaterThatDay } = useNearbyBookings(
+    room?.id,
+    needsBookings
+  );
   if (props.loading || !room) {
     return (
       <Skeleton
@@ -186,7 +191,12 @@ const RoomCard: React.FC<RoomCardProps> = (props) => {
         </Thumbnail>
 
         <CardContent
-          sx={{ flex: 1, display: "flex", flexDirection: "column", width: "100%" }}
+          sx={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            width: "100%",
+          }}
         >
           <TitleRow>
             <Typography variant="roomCardTitle" noWrap sx={{ minWidth: 0 }}>
@@ -195,7 +205,9 @@ const RoomCard: React.FC<RoomCardProps> = (props) => {
             <IconButton
               size="small"
               sx={{ flexShrink: 0 }}
-              aria-label={favourite ? "Remove as favourite" : "Add as favourite"}
+              aria-label={
+                favourite ? "Remove as favourite" : "Add as favourite"
+              }
               onClick={(event) => {
                 // the button sits inside the link, so don't follow the link
                 event.preventDefault();
@@ -218,19 +230,35 @@ const RoomCard: React.FC<RoomCardProps> = (props) => {
                 color: theme.colours.text.secondary,
               })}
             />
-            <Typography variant="metadata" color="text.secondary" noWrap sx={{ minWidth: 0 }}>
+            <Typography
+              variant="metadata"
+              color="text.secondary"
+              noWrap
+              sx={{ minWidth: 0 }}
+            >
               {location}
             </Typography>
           </LocationRow>
 
-          {status && <RoomAvailability roomStatus={status} variant="pill" reason={current?.name} until={nextLaterThatDay?.start} />}
+          {status && (
+            <RoomAvailability
+              roomStatus={status}
+              variant="pill"
+              reason={current?.name}
+              until={nextLaterThatDay?.start}
+            />
+          )}
 
           <Divider sx={{ marginBlock: (theme) => `${theme.space.sm}px` }} />
 
           <WidgetRow>
             <Widget>
-              <StarBorderIcon sx={(theme) => ({ color: theme.colours.rating.display })} />
-              <Typography variant="metadata">{rating === 0 ? "—" : rating}</Typography>
+              <StarBorderIcon
+                sx={(theme) => ({ color: theme.colours.rating.display })}
+              />
+              <Typography variant="metadata">
+                {rating === 0 ? "—" : rating}
+              </Typography>
             </Widget>
             <Widget>
               <GroupOutlinedIcon />
@@ -238,7 +266,9 @@ const RoomCard: React.FC<RoomCardProps> = (props) => {
             </Widget>
             <Widget>
               <MeetingRoomOutlinedIcon />
-              <Typography variant="metadata">{translateRoomUsage(room.usage)}</Typography>
+              <Typography variant="metadata">
+                {translateRoomUsage(room.usage)}
+              </Typography>
             </Widget>
             <Widget>
               <BadgeOutlinedIcon />
@@ -262,10 +292,16 @@ const RoomCard: React.FC<RoomCardProps> = (props) => {
             View all utilities
           </Typography>
         </Stack>
-        <ArrowForwardOutlinedIcon sx={(theme) => ({ fontSize: theme.sizes.icon.md })} />
+        <ArrowForwardOutlinedIcon
+          sx={(theme) => ({ fontSize: theme.sizes.icon.md })}
+        />
       </UtilitiesToggle>
       <Collapse in={utilitiesOpen}>
-        <Box sx={(theme) => ({ padding: `0 ${theme.space.md}px ${theme.space.md}px` })}>
+        <Box
+          sx={(theme) => ({
+            padding: `0 ${theme.space.md}px ${theme.space.md}px`,
+          })}
+        >
           {utilitiesOpen && <RoomUtilityTags roomId={room.id} />}
         </Box>
       </Collapse>

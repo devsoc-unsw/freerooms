@@ -16,7 +16,7 @@ const useQuerySort = (
       // Null resets the sort to the default value, which is "alphabetical"
       setSort(null);
     }
-  }, []);
+  }, [sort, options, setSort]);
 
   return [sort, setSort];
 };

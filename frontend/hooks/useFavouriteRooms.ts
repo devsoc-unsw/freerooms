@@ -52,8 +52,19 @@ const useFavouriteRooms = (query: string, sort: string): Room[] | undefined => {
       (room) => statusOf(room) !== undefined
     );
 
-    return passingFilters.sort(getRoomComparator(sort, { freeUntil, distance }));
-  }, [favourites, rooms, roomStatusData, buildings, userLat, userLng, query, sort]);
+    return passingFilters.sort(
+      getRoomComparator(sort, { freeUntil, distance })
+    );
+  }, [
+    favourites,
+    rooms,
+    roomStatusData,
+    buildings,
+    userLat,
+    userLng,
+    query,
+    sort,
+  ]);
 };
 
 export default useFavouriteRooms;

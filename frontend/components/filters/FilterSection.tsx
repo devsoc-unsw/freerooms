@@ -1,7 +1,12 @@
 import { StyledAccordion } from "@frontend/components/filters/DropdownSelections";
 import { DropDown } from "@frontend/types";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { AccordionDetails, AccordionSummary, Stack, Typography } from "@mui/material";
+import {
+  AccordionDetails,
+  AccordionSummary,
+  Stack,
+  Typography,
+} from "@mui/material";
 import type { ReactNode } from "react";
 
 const FilterSection = ({
@@ -39,7 +44,9 @@ const FilterSection = ({
           <Typography variant="filterTitle">{dropdown.text}</Typography>
         </Stack>
       </AccordionSummary>
-      <AccordionDetails sx={(theme) => ({ padding: `0 0 ${theme.space.sm}px` })}>
+      <AccordionDetails
+        sx={(theme) => ({ padding: `0 0 ${theme.space.sm}px` })}
+      >
         {children}
       </AccordionDetails>
     </StyledAccordion>

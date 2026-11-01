@@ -77,7 +77,9 @@ const FilterSlider = ({
                 boxShadow: "none",
                 "&::before": { display: "none" },
                 "&::after": { borderRadius: 0 },
-                "&:hover, &.Mui-focusVisible, &.Mui-active": { boxShadow: "none" },
+                "&:hover, &.Mui-focusVisible, &.Mui-active": {
+                  boxShadow: "none",
+                },
                 "&.Mui-focusVisible": {
                   outline: `2px solid ${theme.colours.accent.primary}`,
                   outlineOffset: 2,

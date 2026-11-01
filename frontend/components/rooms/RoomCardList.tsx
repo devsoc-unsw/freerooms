@@ -42,11 +42,7 @@ const RoomCardList: React.FC<RoomCardListProps> = ({ rooms, date }) => {
   }
 
   if (rooms.length === 0) {
-    return (
-      <EmptyState>
-        No rooms to show.
-      </EmptyState>
-    );
+    return <EmptyState>No rooms to show.</EmptyState>;
   }
 
   return (

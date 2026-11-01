@@ -1,11 +1,11 @@
 import { roomUsages } from "@common/roomUsages";
 import { DropDown, DropDownItem } from "@frontend/types";
-import DoorBackOutlinedIcon from '@mui/icons-material/DoorBackOutlined';
-import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
-import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
-import EventRepeatOutlinedIcon from '@mui/icons-material/EventRepeatOutlined';
-import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
-import ContactEmergencyOutlinedIcon from '@mui/icons-material/ContactEmergencyOutlined';
+import ContactEmergencyOutlinedIcon from "@mui/icons-material/ContactEmergencyOutlined";
+import DoorBackOutlinedIcon from "@mui/icons-material/DoorBackOutlined";
+import EventRepeatOutlinedIcon from "@mui/icons-material/EventRepeatOutlined";
+import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
+import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
+import TimerOutlinedIcon from "@mui/icons-material/TimerOutlined";
 
 const MAX_RECURRING = 10;
 const recurringWeekItems: DropDownItem[] = Array.from(
@@ -110,7 +110,7 @@ export const filterBarDropdown: DropDown[] = [
     key: "recurring",
     icon: EventRepeatOutlinedIcon,
     items: recurringWeekItems,
-  }
+  },
 ];
 
 // Dropdowns and items for FilterSideBar in all-rooms-page
@@ -196,32 +196,32 @@ export const sortBarDropdown: DropDownItem[] = [
 
 // Sorts for individual rooms
 export const roomSortBarDropdown: DropDownItem[] = [
-  { 
-    text: "Availability duration", 
-    value: "longestAvailable" 
+  {
+    text: "Availability duration",
+    value: "longestAvailable",
   },
-  { 
-    text: "Room Capacity", 
-    value: "capacity" 
+  {
+    text: "Room Capacity",
+    value: "capacity",
   },
-  { 
-    text: "Nearest", 
-    value: "nearest" 
+  {
+    text: "Nearest",
+    value: "nearest",
   },
-  { 
-    text: "Alphabetical", 
-    value: "alphabetical" 
+  {
+    text: "Alphabetical",
+    value: "alphabetical",
   },
-  { 
-    text: "Reverse Alphabetical", 
-    value: "reverseAlphabetical" 
+  {
+    text: "Reverse Alphabetical",
+    value: "reverseAlphabetical",
   },
-  { 
-    text: "Upper Campus to Lower Campus", 
-    value: "upperToLower" 
+  {
+    text: "Upper Campus to Lower Campus",
+    value: "upperToLower",
   },
-  { 
-    text: "Lower Campus to Upper Campus", 
-    value: "lowerToUpper" 
+  {
+    text: "Lower Campus to Upper Campus",
+    value: "lowerToUpper",
   },
 ];

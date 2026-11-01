@@ -3,7 +3,7 @@ import { SYDNEY_TIMEZONE } from "@frontend/utils/toSydneyTime";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import Box from "@mui/material/Box";
-import { useTheme, type Theme } from "@mui/material/styles";
+import { type Theme, useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { MultiSectionDigitalClock } from "@mui/x-date-pickers/MultiSectionDigitalClock";
@@ -88,11 +88,19 @@ const DateTimeSelector = ({
                         justifyContent: "center",
                         margin: 0,
                       },
-                      "& .MuiPickersCalendarHeader-switchViewButton": { marginRight: 0 },
-                      "& .MuiPickersArrowSwitcher-root": { display: "contents" },
+                      "& .MuiPickersCalendarHeader-switchViewButton": {
+                        marginRight: 0,
+                      },
+                      "& .MuiPickersArrowSwitcher-root": {
+                        display: "contents",
+                      },
                       "& .MuiPickersArrowSwitcher-spacer": { display: "none" },
-                      "& .MuiPickersArrowSwitcher-button:first-of-type": { order: 1 },
-                      "& .MuiPickersArrowSwitcher-button:last-of-type": { order: 3 },
+                      "& .MuiPickersArrowSwitcher-button:first-of-type": {
+                        order: 1,
+                      },
+                      "& .MuiPickersArrowSwitcher-button:last-of-type": {
+                        order: 3,
+                      },
                       "& .MuiPickersDay-root": {
                         borderRadius: theme.radius.md,
                         "&.Mui-selected, &.Mui-selected:hover, &.Mui-selected:focus":
@@ -118,10 +126,13 @@ const DateTimeSelector = ({
               timeSteps={{ hours: 1, minutes: 5 }}
               sx={(theme) => ({
                 // no divider lines between the H/M/AM:PM columns
-                "& .MuiMultiSectionDigitalClockSection-root": { borderLeft: "none" },
-                "& .MuiMultiSectionDigitalClockSection-root:not(:first-of-type)": {
+                "& .MuiMultiSectionDigitalClockSection-root": {
                   borderLeft: "none",
                 },
+                "& .MuiMultiSectionDigitalClockSection-root:not(:first-of-type)":
+                  {
+                    borderLeft: "none",
+                  },
                 "& .MuiMultiSectionDigitalClockSection-item": {
                   "&.Mui-selected, &.Mui-selected:hover, &.Mui-selected:focus":
                     getSelectedStyles(theme),
