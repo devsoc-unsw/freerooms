@@ -1,4 +1,5 @@
 import { Building, Room } from "@common/types";
+import { SvgIconComponent } from "@mui/icons-material";
 
 ///////////////////////////////////////////////////////////////
 // Dropdown types
@@ -6,6 +7,7 @@ import { Building, Room } from "@common/types";
 export type DropDown = {
   text: string;
   key: keyof Filters;
+  icon?: SvgIconComponent;
   items: DropDownItem[];
 };
 

@@ -2,10 +2,11 @@ import { AppTextField } from "@frontend/components/ui";
 import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
 import InputAdornment from "@mui/material/InputAdornment";
+import { getOutlinedFieldStyles } from "@frontend/theme/fieldStyles";
 import { useTheme } from "@mui/material/styles";
 import React from "react";
 
-const SearchBar = ({ setQuery }: { setQuery: (query: string) => void }) => {
+const SearchBar = ({ setQuery, placeholder="Search for a building..." }: { setQuery: (query: string) => void; placeholder?: string; }) => {
   const theme = useTheme();
 
   return (
@@ -22,28 +23,18 @@ const SearchBar = ({ setQuery }: { setQuery: (query: string) => void }) => {
     >
       <AppTextField
         id="input-with-sx"
-        placeholder="Search for a building..."
-        sx={{
-          "& .MuiOutlinedInput-root": {
-            height: theme.sizes.control.xl,
-            borderRadius: theme.radius.lg,
-            padding: `${theme.space.md}px`,
-
-            "&:hover .MuiOutlinedInput-notchedOutline": {
-              borderColor: theme.palette.primary.main,
+        placeholder={placeholder}
+        sx={[
+          getOutlinedFieldStyles(theme),
+          {
+            "& .MuiOutlinedInput-root": {
+              height: theme.sizes.control.xl,
+              borderRadius: theme.radius.md,
+              padding: `${theme.space.md}px`,
             },
+            "& .MuiOutlinedInput-input::placeholder": theme.typography.subtitle1,
           },
-          "& .MuiOutlinedInput-notchedOutline": {
-            borderColor: theme.palette.primary.main,
-            borderWidth: 1,
-          },
-          "& .MuiOutlinedInput-input::placeholder": {
-            fontSize: 16,
-            fontWeight: 500,
-            color: theme.palette.primary.main,
-            opacity: 1,
-          },
-        }}
+        ]}
         fullWidth
         //entering the target
         onKeyDown={(event) => {
@@ -67,7 +58,7 @@ const SearchBar = ({ setQuery }: { setQuery: (query: string) => void }) => {
                 sx={{ marginRight: `${theme.space.md}px` }}
               >
                 <SearchIcon
-                  sx={{ color: (theme) => theme.palette.primary.main }}
+                  sx={{ color: (theme) => theme.colours.text.primary }}
                 />
               </InputAdornment>
             ),
