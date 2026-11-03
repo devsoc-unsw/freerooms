@@ -1,4 +1,4 @@
-import { Building, Room } from "@common/types";
+import { Building, Room } from "common/types";
 import useBuildingSearch from "@frontend/hooks/buildings/useBuildingSearch";
 import { renderHook } from "@testing-library/react";
 
