@@ -1,4 +1,4 @@
-import SponsorItem from "@frontend/components/landing/SponsorItem";
+import SponsorItem from "@frontend/components/sponsors/SponsorItem";
 import { Sponsor } from "@frontend/types";
 import { Divider, Stack, Typography, useTheme } from "@mui/material";
 import Grid from "@mui/material/Grid";
@@ -10,7 +10,7 @@ export default function Sponsors() {
 
   const sponsors: Sponsor[] = [
     {
-      name: "Hudon River Trading",
+      name: "Hudson River Trading",
       tier: "Platinum",
       image: isLightMode
         ? "/assets/sponsors/hrt.png"
@@ -81,11 +81,11 @@ export default function Sponsors() {
   const goldSponsors = sponsors.filter((sponsor) => sponsor.tier === "Gold");
 
   return (
-    <Stack sx={{ marginTop: 4 }}>
+    <Stack sx={{ marginTop: `${theme.space.xl}px` }}>
       <Typography
         align="center"
         variant="h1"
-        sx={{ fontSize: "3rem", fontWeight: "bold" }}
+        sx={{ fontSize: { xs: "2.25rem", md: "3rem" }, fontWeight: "bold" }}
       >
         Our Sponsors
       </Typography>
@@ -96,24 +96,41 @@ export default function Sponsors() {
         width={200}
         style={{
           alignSelf: "center",
-          marginTop: 5,
+          marginTop: theme.space.xs,
         }}
       />
       <Grid
         container
-        rowSpacing={3}
-        columnSpacing={{ xs: 2, sm: 6 }}
+        rowSpacing={`${theme.space.lg}px`}
+        columnSpacing={{
+          xs: `${theme.space.md}px`,
+          sm: `${theme.space.xxl}px`,
+        }}
         columns={12}
         sx={{
-          mt: 5,
+          mt: `${theme.space.xl}px`,
+          width: "100%",
+          maxWidth: 1200,
+          mx: "auto",
+          px: {
+            xs: `${theme.space.md}px`,
+            sm: `${theme.space.lg}px`,
+            md: `${theme.space.xl}px`,
+          },
           justifyContent: "center",
           alignItems: "center",
-          backgroundColor: theme.colours.surface.paper,
-          p: "30px",
-          pt: 0,
-          borderRadius: "10px",
         }}
       >
+        <Grid size={12}>
+          <Typography
+            component="h2"
+            variant="h3"
+            sx={{ color: theme.colours.accent.primary }}
+          >
+            Platinum Sponsors
+          </Typography>
+        </Grid>
+
         {platinumSponsors.map((s, idx) => (
           <SponsorItem
             key={`platinum-${idx}`}
@@ -126,6 +143,16 @@ export default function Sponsors() {
 
         <Grid size={12}>
           <Divider />
+        </Grid>
+
+        <Grid size={12}>
+          <Typography
+            component="h2"
+            variant="h3"
+            sx={{ color: theme.colours.accent.primary }}
+          >
+            Gold Sponsors
+          </Typography>
         </Grid>
 
         {goldSponsors.map((s, idx) => (
