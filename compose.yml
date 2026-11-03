@@ -56,6 +56,24 @@ services:
 
         echo "MongoDB is ready."
 
+  common-build:
+    image: node:24.18-alpine
+    working_dir: /workspace/common
+    init: true
+    restart: "no"
+
+    volumes:
+      - ./common:/workspace/common:z
+      - common_node_modules:/workspace/common/node_modules
+      - npm_cache:/root/.npm
+
+    command:
+      - sh
+      - -c
+      - |
+        npm ci
+        npm run build
+
   backend:
     image: node:24.18-alpine
     working_dir: /workspace/backend
@@ -63,6 +81,8 @@ services:
 
     depends_on:
       mongo-init:
+        condition: service_completed_successfully
+      common-build:
         condition: service_completed_successfully
 
     environment:
@@ -73,6 +93,7 @@ services:
       - ./backend:/workspace/backend:z
       - ./common:/workspace/common:ro,z
       - backend_node_modules:/workspace/backend/node_modules
+      - common_node_modules:/workspace/common/node_modules
       - npm_cache:/root/.npm
 
     ports:
@@ -101,6 +122,8 @@ services:
     depends_on:
       backend:
         condition: service_started
+      common-build:
+        condition: service_completed_successfully
 
     environment:
       NODE_ENV: development
@@ -111,6 +134,7 @@ services:
       - ./frontend:/workspace/frontend:z
       - ./common:/workspace/common:ro,z
       - frontend_node_modules:/workspace/frontend/node_modules
+      - common_node_modules:/workspace/common/node_modules
       - frontend_next:/workspace/frontend/.next
       - npm_cache:/root/.npm
 
@@ -137,4 +161,5 @@ volumes:
   backend_node_modules:
   frontend_node_modules:
   frontend_next:
+  common_node_modules:
   npm_cache:

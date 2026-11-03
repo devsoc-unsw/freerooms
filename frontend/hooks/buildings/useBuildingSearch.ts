@@ -1,7 +1,7 @@
 /**
  * Typo-tolerant search over buildings and the rooms listed in them
  */
-import { Building, Room } from "@common/types";
+import { Building, Room } from "common/types";
 import Fuse from "fuse.js";
 import React from "react";
 

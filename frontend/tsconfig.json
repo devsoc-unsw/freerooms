@@ -24,9 +24,6 @@
       }
     ],
     "paths": {
-      "@common/*": [
-        "../common/*"
-      ],
       "@frontend/*": [
         "./*"
       ],

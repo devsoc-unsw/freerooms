@@ -1,4 +1,4 @@
-import { roomUsages } from "@common/roomUsages";
+import { roomUsages } from "common/roomUsages";
 import { Request } from "express";
 
 import { SearchFilters, StatusFilters } from "./types";
