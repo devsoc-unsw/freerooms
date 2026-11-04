@@ -1,15 +1,15 @@
 import FilterChecklist from "@frontend/components/filters/FilterChecklist";
 import FilterSlider from "@frontend/components/filters/FilterSlider";
 import TopBarMenu from "@frontend/components/ui/TopBarMenu";
-import useDateTimeQuery from "@frontend/hooks/useDateTimeQuery";
-import useQueryFilter from "@frontend/hooks/useQueryFilter";
+import useDateTimeQuery from "@frontend/hooks/query/useDateTimeQuery";
+import useQueryFilter from "@frontend/hooks/query/useQueryFilter";
+import { useDispatch, useSelector } from "@frontend/redux/hooks";
 import {
   clearFilters,
   selectFilters,
   setFilter,
   unsetFilter,
-} from "@frontend/redux/filtersSlice";
-import { useDispatch, useSelector } from "@frontend/redux/hooks";
+} from "@frontend/redux/slices/filtersSlice";
 import { Filters } from "@frontend/types";
 import { filterBarDropdown } from "@frontend/utils/constants";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";

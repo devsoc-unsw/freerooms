@@ -121,11 +121,6 @@
     "components/search/SearchModal.tsx|borderRadius|10px 10px 0 0": 1,
     "components/search/SearchModal.tsx|padding|0.5": 1,
     "components/search/SearchModal.tsx|padding|10": 1,
-    "components/ui/Button.tsx|borderRadius|10px": 1,
-    "views/BuildingDrawer.tsx|borderRadius|10": 2,
-    "views/BuildingDrawer.tsx|borderRadius|15": 1,
-    "views/BuildingDrawer.tsx|margin|10": 2,
-    "views/BuildingDrawer.tsx|padding|10": 1,
-    "views/RoomAvailabilityBox.tsx|borderRadius|10": 1
+    "components/ui/Button.tsx|borderRadius|10px": 1
   }
 }

@@ -1,0 +1,43 @@
+import RoomBackButton from "@frontend/components/navigation/RoomBackButton";
+import { useDispatch, useSelector } from "@frontend/redux/hooks";
+import currentBuildingSlice from "@frontend/redux/slices/currentBuildingSlice";
+import { configureStore } from "@reduxjs/toolkit";
+import { render, screen } from "@testing-library/react";
+import { useRouter } from "next/navigation";
+import { Provider } from "react-redux";
+
+jest.mock("next/navigation", () => ({
+  ...jest.requireActual("next/navigation"),
+  useRouter: jest.fn(),
+}));
+
+jest.mock("react-redux", () => ({
+  ...jest.requireActual("react-redux"),
+  useDispatch: jest.fn(),
+  useSelector: jest.fn(),
+}));
+
+describe("RoomBackButton", () => {
+  const router = { back: jest.fn() };
+
+  beforeEach(() => {
+    (useSelector as unknown as jest.Mock).mockReturnValue({});
+    (useDispatch as unknown as jest.Mock).mockReturnValue(jest.fn());
+    (useRouter as unknown as jest.Mock).mockReturnValue(router);
+
+    render(
+      <Provider
+        store={configureStore({
+          reducer: { currentBuilding: currentBuildingSlice },
+        })}
+      >
+        <RoomBackButton />
+      </Provider>
+    );
+  });
+
+  test("back button appears on screen", () => {
+    const backButton = screen.getByRole("button", { name: "back" });
+    expect(backButton).toBeInTheDocument();
+  });
+});

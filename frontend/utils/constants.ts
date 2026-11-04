@@ -1,4 +1,3 @@
-import { roomUsages } from "@common/roomUsages";
 import { DropDown, DropDownItem } from "@frontend/types";
 import ContactEmergencyOutlinedIcon from "@mui/icons-material/ContactEmergencyOutlined";
 import DoorBackOutlinedIcon from "@mui/icons-material/DoorBackOutlined";
@@ -6,6 +5,7 @@ import EventRepeatOutlinedIcon from "@mui/icons-material/EventRepeatOutlined";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 import TimerOutlinedIcon from "@mui/icons-material/TimerOutlined";
+import { roomUsages } from "common/roomUsages";
 
 const MAX_RECURRING = 10;
 const recurringWeekItems: DropDownItem[] = Array.from(

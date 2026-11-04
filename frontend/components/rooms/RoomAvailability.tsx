@@ -1,8 +1,7 @@
+import { RoomAvailabilityBoxProps } from "@frontend/components/rooms/RoomAvailabilityBox";
 import { getCardStatus, getStatusEnd } from "@frontend/utils/roomStatus";
-import { RoomAvailabilityBoxProps } from "@frontend/views/RoomAvailabilityBox";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 import {
-  alpha,
   styled,
   Typography,
   TypographyProps,
@@ -18,7 +17,7 @@ const RoomBoxHeading = styled(Typography)<TypographyProps>(() => ({
   whiteSpace: "nowrap",
 }));
 
-const RoomBoxSubheading = styled(Typography)<TypographyProps>(({ theme }) => ({
+const RoomBoxSubheading = styled(Typography)<TypographyProps>(() => ({
   fontSize: 12,
   fontWeight: 400,
 }));

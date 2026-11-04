@@ -5,10 +5,10 @@ import TimePicker from "@frontend/components/booking/TimePicker";
 import FeedbackButton from "@frontend/components/feedback/FeedbackButton";
 import FilterBar from "@frontend/components/filters/FilterBar";
 import SortBar from "@frontend/components/filters/SortBar";
+import BuildingDrawer from "@frontend/components/map/BuildingDrawer";
+import CardList from "@frontend/components/rooms/CardList";
 import SearchBar from "@frontend/components/search/SearchBar";
-import useQuerySort from "@frontend/hooks/useQuerySort";
-import BuildingDrawer from "@frontend/views/BuildingDrawer";
-import CardList from "@frontend/views/CardList";
+import useQuerySort from "@frontend/hooks/query/useQuerySort";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
@@ -20,7 +20,7 @@ import React, { Suspense } from "react";
 
 const BrowseContent = () => {
   const [sort, setSort] = useQuerySort();
-  const [query, setQuery] = React.useState<string>("");
+  const [query, setQuery] = useQueryState("q", parseAsString.withDefault(""));
   const [date] = useQueryState("date", parseAsString.withDefault(""));
 
   return (

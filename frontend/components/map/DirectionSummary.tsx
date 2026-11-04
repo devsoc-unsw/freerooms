@@ -1,4 +1,4 @@
-import type { RouteSummary } from "@frontend/hooks/useMapboxRoute";
+import type { RouteSummary } from "@frontend/hooks/map/useMapboxRoute";
 import CloseIcon from "@mui/icons-material/Close";
 import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
 import IconButton from "@mui/material/IconButton";

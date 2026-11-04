@@ -1,9 +1,9 @@
+import { useDispatch } from "@frontend/redux/hooks";
+import { useSelector } from "@frontend/redux/hooks";
 import {
   selectCurrentBuilding,
   setCurrentBuilding,
-} from "@frontend/redux/currentBuildingSlice";
-import { useDispatch } from "@frontend/redux/hooks";
-import { useSelector } from "@frontend/redux/hooks";
+} from "@frontend/redux/slices/currentBuildingSlice";
 import { ArrowBack } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import Typography from "@mui/material/Typography";

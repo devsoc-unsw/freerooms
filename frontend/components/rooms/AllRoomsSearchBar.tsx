@@ -1,5 +1,8 @@
-import { selectDatetime, setDatetime } from "@frontend/redux/datetimeSlice";
 import { useDispatch, useSelector } from "@frontend/redux/hooks";
+import {
+  selectDatetime,
+  setDatetime,
+} from "@frontend/redux/slices/datetimeSlice";
 import { SYDNEY_TIMEZONE } from "@frontend/utils/toSydneyTime";
 import { useTheme } from "@mui/material";
 import Stack from "@mui/material/Stack";

@@ -1,16 +1,28 @@
 #!/bin/sh
-FILES=$(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g')
-[ -z "$FILES" ] && exit 0
+set -eu
 
-# Prettify all frontend files
-FE_FILES=$(echo "$FILES" | grep "^frontend/.*\.[tj]sx\?$")
-echo "$FE_FILES" | xargs frontend/node_modules/.bin/prettier --config frontend/.prettierrc --ignore-unknown --write
+if [ -x frontend/node_modules/.bin/prettier ]; then
+  prettier=frontend/node_modules/.bin/prettier
+elif [ -x backend/node_modules/.bin/prettier ]; then
+  prettier=backend/node_modules/.bin/prettier
+else
+  echo "Prettier is not installed. Run npm install in frontend or backend."
+  exit 1
+fi
 
-# Prettify all backend files
-BE_FILES=$(echo "$FILES" | grep "^backend/.*\.[tj]sx\?$")
-echo "$BE_FILES" | xargs backend/node_modules/.bin/prettier --config backend/.prettierrc --ignore-unknown --write
+staged_files=$(mktemp)
+trap 'rm -f "$staged_files"' EXIT
 
-# Add back the modified/prettified files to staging
-echo "$FILES" | xargs git add
+git diff --cached --name-only --diff-filter=ACMR -z -- \
+  ':(glob)frontend/**/*.ts' \
+  ':(glob)frontend/**/*.tsx' \
+  ':(glob)backend/**/*.ts' \
+  ':(glob)backend/**/*.tsx' \
+  ':(glob)common/**/*.ts' \
+  ':(glob)common/**/*.tsx' \
+  > "$staged_files"
 
-exit 0
+if [ -s "$staged_files" ]; then
+  xargs -0 "$prettier" --write < "$staged_files"
+  xargs -0 git add -- < "$staged_files"
+fi

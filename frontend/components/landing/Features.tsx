@@ -1,6 +1,6 @@
 import FeatureCard from "@frontend/components/landing/FeatureCard";
 import { useDispatch } from "@frontend/redux/hooks";
-import { openSearch } from "@frontend/redux/searchOpenSlice";
+import { openSearch } from "@frontend/redux/slices/searchOpenSlice";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import GridIcon from "@mui/icons-material/GridViewRounded";
 import MapIcon from "@mui/icons-material/Map";
@@ -68,13 +68,13 @@ const Features = () => {
 
 export default Features;
 
-const StyledHeading = styled("h2")(({ theme }) => ({
+const StyledHeading = styled("h2")(() => ({
   textAlign: "center",
   fontSize: "3rem",
   paddingBottom: "50%",
 }));
 
-const StyledFeatureVector = styled(Image)(({ theme }) => ({
+const StyledFeatureVector = styled(Image)(() => ({
   marginBottom: "-4rem",
   marginRight: "20rem",
   maxWidth: "100%",

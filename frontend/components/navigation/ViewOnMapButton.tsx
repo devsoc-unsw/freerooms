@@ -1,7 +1,7 @@
 import Button from "@frontend/components/ui/Button";
-import useBuilding from "@frontend/hooks/useBuilding";
-import { setCurrentBuilding } from "@frontend/redux/currentBuildingSlice";
+import useBuilding from "@frontend/hooks/buildings/useBuilding";
 import { useDispatch } from "@frontend/redux/hooks";
+import { setCurrentBuilding } from "@frontend/redux/slices/currentBuildingSlice";
 import { useTheme } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { useRouter } from "next/navigation";

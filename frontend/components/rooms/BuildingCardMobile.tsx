@@ -1,9 +1,9 @@
 import StatusDot from "@frontend/components/ui/StatusDot";
-import useBuilding from "@frontend/hooks/useBuilding";
-import useBuildingRatings from "@frontend/hooks/useBuildingRatings";
-import useBuildingStatus from "@frontend/hooks/useBuildingStatus";
-import { setCurrentBuilding } from "@frontend/redux/currentBuildingSlice";
+import useBuilding from "@frontend/hooks/buildings/useBuilding";
+import useBuildingStatus from "@frontend/hooks/buildings/useBuildingStatus";
+import useAllBuildingRatings from "@frontend/hooks/ratings/useAllBuildingRatings";
 import { useDispatch } from "@frontend/redux/hooks";
+import { setCurrentBuilding } from "@frontend/redux/slices/currentBuildingSlice";
 import { getNumFreerooms, getTotalRooms } from "@frontend/utils/utils";
 import StarIcon from "@mui/icons-material/Star";
 import { Typography } from "@mui/material";
@@ -75,7 +75,10 @@ const BuildingCardMobile: React.FC<{
   const theme = useTheme();
   const { building } = useBuilding(buildingId);
   const { status } = useBuildingStatus(buildingId);
-  const { ratings } = useBuildingRatings(buildingId);
+  const { ratings } = useAllBuildingRatings();
+  const buildingRating = ratings?.find(
+    (rating) => rating.buildingId === buildingId
+  );
 
   // No id (placeholder) or the building list hasn't resolved yet so load skeleton
   if (!buildingId || !building) {
@@ -99,6 +102,7 @@ const BuildingCardMobile: React.FC<{
         alt={`Image of ${buildingId}`}
         src={`/assets/building_photos/${buildingId}.webp`}
         fill={true}
+        sizes="100vw"
         style={{ objectFit: "cover" }}
         priority={true}
       />
@@ -161,7 +165,7 @@ const BuildingCardMobile: React.FC<{
                   color: theme.colours.neutral.black,
                 }}
               >
-                {ratings?.overallRating}
+                {buildingRating?.overallRating}
               </Typography>
               <StarIcon
                 sx={{ fontSize: "1rem", color: theme.colours.rating.display }}

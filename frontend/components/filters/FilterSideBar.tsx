@@ -1,10 +1,10 @@
 import RecurringWeeksSlider from "@frontend/components/booking/RecurringWeeksSlider";
 import DropdownSelections from "@frontend/components/filters/DropdownSelections";
+import { useDispatch } from "@frontend/redux/hooks";
 import {
   setAllRoomsFilter,
   unsetAllRoomsFilter,
-} from "@frontend/redux/allRoomsFilterSlice";
-import { useDispatch } from "@frontend/redux/hooks";
+} from "@frontend/redux/slices/allRoomsFilterSlice";
 import { AllRoomsFilters, DropDownItem } from "@frontend/types";
 import { allRoomsFilterDropdown } from "@frontend/utils/constants";
 import { Box } from "@mui/material";

@@ -2,10 +2,9 @@
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
-import { Booking } from "@common/types";
-import useBookingCalenderQuery from "@frontend/hooks/useBookingCalenderQuery";
-import { selectDatetime } from "@frontend/redux/datetimeSlice";
+import useBookingCalendarQuery from "@frontend/hooks/bookings/useBookingCalendarQuery";
 import { useSelector } from "@frontend/redux/hooks";
+import { selectDatetime } from "@frontend/redux/slices/datetimeSlice";
 import toSydneyTime from "@frontend/utils/toSydneyTime";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
@@ -22,6 +21,7 @@ import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { Booking } from "common/types";
 import { format, getDay, isSameDay, parse, startOfWeek } from "date-fns";
 import { enAU } from "date-fns/locale";
 import React from "react";
@@ -225,9 +225,8 @@ const BookingCalendarSkeleton = () => (
 
 const BookingCalendar: React.FC<{
   events: Array<Booking>;
-  roomID: string;
   loading?: boolean;
-}> = ({ events, roomID, loading }) => {
+}> = ({ events, loading }) => {
   const theme = useTheme();
   // Enforce day view on mobile
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -236,7 +235,7 @@ const BookingCalendar: React.FC<{
   const defaultDate = React.useMemo(() => toSydneyTime(dateTime), [dateTime]);
 
   const [desktopView, date, setDesktopView, setDate] =
-    useBookingCalenderQuery(defaultDate);
+    useBookingCalendarQuery(defaultDate);
 
   const currView = isMobile ? Views.DAY : desktopView;
 

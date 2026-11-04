@@ -4,7 +4,7 @@ import { DarkModeContext } from "@frontend/app/clientLayout";
 import Branding from "@frontend/components/landing/Branding";
 import IconButton from "@frontend/components/ui/IconButton";
 import { useDispatch } from "@frontend/redux/hooks";
-import { openSearch } from "@frontend/redux/searchOpenSlice";
+import { openSearch } from "@frontend/redux/slices/searchOpenSlice";
 import { DarkMode } from "@mui/icons-material";
 import GridIcon from "@mui/icons-material/GridViewRounded";
 import MapIcon from "@mui/icons-material/Map";

@@ -20,6 +20,7 @@ const RoomImage: React.FC<{ src: string }> = ({ src }) => {
         src={src}
         alt="Room Image"
         fill
+        sizes="100vw"
         style={{ objectFit: "cover", borderRadius: 10 }}
       />
     </Box>
@@ -93,6 +94,7 @@ const RoomPhotoCarousel: React.FC<{ photos: string[]; loading?: boolean }> = ({
               src={p}
               alt="Room Image"
               fill
+              sizes="100vw"
               style={{ objectFit: "cover", borderRadius: 10 }}
             />
           </SwiperSlide>

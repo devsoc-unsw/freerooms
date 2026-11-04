@@ -1,7 +1,7 @@
 "use client";
 
-import { Building } from "@common/types";
 import { DarkModeContext } from "@frontend/app/clientLayout";
+import BuildingDrawer from "@frontend/components/map/BuildingDrawer";
 import DirectionsSummary from "@frontend/components/map/DirectionSummary";
 import MapMarker from "@frontend/components/map/MapMarker";
 import { navHeight } from "@frontend/components/navigation/NavBar";
@@ -10,18 +10,18 @@ import {
   MAPBOX_STYLE_DARK,
   MAPBOX_STYLE_LIGHT,
 } from "@frontend/config";
-import useBuilding from "@frontend/hooks/useBuilding";
-import useBuildings from "@frontend/hooks/useBuildings";
-import useMapboxRoute from "@frontend/hooks/useMapboxRoute";
-import useUserLocation from "@frontend/hooks/useUserLocation";
-import { setCurrentBuilding } from "@frontend/redux/currentBuildingSlice";
+import useBuilding from "@frontend/hooks/buildings/useBuilding";
+import useBuildings from "@frontend/hooks/buildings/useBuildings";
+import useMapboxRoute from "@frontend/hooks/map/useMapboxRoute";
+import useUserLocation from "@frontend/hooks/map/useUserLocation";
 import { useDispatch } from "@frontend/redux/hooks";
+import { setCurrentBuilding } from "@frontend/redux/slices/currentBuildingSlice";
 import calculateDistance from "@frontend/utils/calculateDistance";
-import BuildingDrawer from "@frontend/views/BuildingDrawer";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Snackbar from "@mui/material/Snackbar";
 import { useTheme } from "@mui/material/styles";
+import { Building } from "common/types";
 import type { LngLatBoundsLike } from "mapbox-gl";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";

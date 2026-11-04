@@ -15,7 +15,7 @@ const StyledText = styled(Typography)<TypographyProps>(({ theme }) => ({
   },
 }));
 
-const StyledBox = styled(Box)<BoxProps>(({ theme }) => ({
+const StyledBox = styled(Box)<BoxProps>(() => ({
   display: "flex",
   alignItems: "center",
   flex: 1,
