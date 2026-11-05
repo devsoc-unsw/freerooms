@@ -4,6 +4,7 @@ import type { CSSProperties } from "react";
 type CustomTypographyVariant =
   | "brand"
   | "cardTitle"
+  | "roomCardTitle"
   | "sectionHeading"
   | "heroSubtitle"
   | "heroWordmark"
@@ -53,6 +54,7 @@ export const typography = {
   },
   brand: { fontSize: 24, lineHeight: "normal", fontWeight: 700 },
   cardTitle: { fontSize: 20, lineHeight: "normal", fontWeight: 700 },
+  roomCardTitle: { fontSize: 18, lineHeight: "normal", fontWeight: 900 },
   sectionHeading: { fontSize: 64, lineHeight: "normal", fontWeight: 700 },
   heroSubtitle: {
     fontSize: 48,

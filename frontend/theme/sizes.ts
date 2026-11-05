@@ -15,10 +15,24 @@ export const sizes = {
     halfWidth: 720,
   },
   roomCard: {
-    height: 178,
+    height: 340,
+    thumbnailHeight: 150,
   },
   picker: {
     width: 133,
+    calendarWidth: 320, // size MUI's DateCalendar renders at
+    calendarHeight: 336, // size MUI
+  },
+  toolbar: {
+    buttonWidth: 115, // Filters/Sort/Time buttons
+    menuWidth: 400,
+    wideMenuWidth: 600,
+  },
+  slider: {
+    rail: 11,
+    thumb: 16,
+    tickWidth: 1,
+    tickHeight: 5,
   },
 } as const;
 
