@@ -1,5 +1,5 @@
 import { RoomAvailabilityBoxProps } from "@frontend/components/rooms/RoomAvailabilityBox";
-import { getCardStatus, getStatusEnd } from "@frontend/utils/roomStatus";
+import { getCardStatus, getStatusEnd } from "@frontend/utils/availability";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 import { styled, Typography, TypographyProps, useTheme } from "@mui/material";
 import { Stack } from "@mui/system";
@@ -37,10 +37,10 @@ const roomStatusMessage = {
   soon: "Available Soon",
 };
 
-const statusColourKey = {
+// Cards only show free or busy (see getCardStatus). 'Soon' is omitted.
+const cardStatusColourKey = {
   free: "available",
   busy: "unavailable",
-  soon: "soon",
 } as const;
 
 type RoomAvailabilityProps = Pick<RoomAvailabilityBoxProps, "roomStatus"> & {
@@ -79,7 +79,7 @@ const RoomAvailability: React.FC<RoomAvailabilityProps> = ({
 
   if (variant === "pill") {
     const cardStatus = getCardStatus(roomStatus);
-    const colours = theme.colours.status[statusColourKey[cardStatus]];
+    const colours = theme.colours.status[cardStatusColourKey[cardStatus]];
     const end =
       getStatusEnd(roomStatus) ??
       (cardStatus === "free" ? (until ?? null) : null);

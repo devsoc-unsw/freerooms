@@ -9,7 +9,7 @@ import RoomCardList from "@frontend/components/rooms/RoomCardList";
 import SearchBar from "@frontend/components/search/SearchBar";
 import TopBarGroup from "@frontend/components/ui/TopBarGroup";
 import useQuerySort from "@frontend/hooks/query/useQuerySort";
-import useFavouriteRooms from "@frontend/hooks/rooms/useFavouriteRooms";
+import useFavouriteRooms from "@frontend/hooks/rooms/useDisplayedFavouriteRooms";
 import { roomSortBarDropdown } from "@frontend/utils/constants";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
@@ -38,7 +38,7 @@ const Favourites = () => {
               sx={(theme) => ({
                 fontWeight: 800,
                 color: "primary.main",
-                marginTop: theme.space.lg,
+                marginTop: `${theme.space.lg}px`,
               })}
             >
               Favourite Rooms
@@ -49,8 +49,8 @@ const Favourites = () => {
             sx={{
               justifyContent: { xs: "center", sm: "space-between" },
               alignItems: "center",
-              marginTop: (theme) => theme.space.sm,
-              marginBottom: (theme) => theme.space.sm,
+              marginTop: (theme) => `${theme.space.sm}px`,
+              marginBottom: (theme) => `${theme.space.sm}px`,
               flexWrap: { sm: "wrap", md: "nowrap" },
               width: "100%",
             }}
@@ -66,6 +66,7 @@ const Favourites = () => {
                 setSort={setSort}
                 sort={sort}
                 options={roomSortBarDropdown}
+                title="Room Sort"
               />
               <TimeBar />
             </TopBarGroup>

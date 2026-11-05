@@ -102,7 +102,7 @@ const DateTimeSelector = ({
                         order: 3,
                       },
                       "& .MuiPickersDay-root": {
-                        borderRadius: theme.radius.md,
+                        borderRadius: `${theme.radius.md}px`,
                         "&.Mui-selected, &.Mui-selected:hover, &.Mui-selected:focus":
                           getSelectedStyles(theme),
                       },

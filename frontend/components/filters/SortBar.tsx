@@ -50,12 +50,13 @@ const SortBar: React.FC<{
   sort: string;
   setSort: (sort: string) => void;
   options?: DropDownItem[]; // defaults to the building sorts that Browse uses
-}> = ({ sort, setSort, options = sortBarDropdown }) => (
+  title?: string;
+}> = ({ sort, setSort, options = sortBarDropdown, title = "Sort" }) => (
   <TopBarMenu
     id="browse-sort-menu"
     icon={FilterListIcon}
     label="Sort"
-    title="Room Sort"
+    title={title}
     onReset={() => setSort("alphabetical")}
   >
     {options.map((option) => {
