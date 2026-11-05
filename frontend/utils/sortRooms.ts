@@ -1,6 +1,6 @@
-import type { Room } from "@common/types";
 import { getBuildingGridNumber } from "@frontend/utils/roomLocation";
 import { getBuildingIdFromRoomId } from "@frontend/utils/utils";
+import type { Room } from "common/types";
 
 export type RoomSortInputs = {
   freeUntil: (room: Room) => number; // later means free for longer

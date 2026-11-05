@@ -1,7 +1,7 @@
-import type { Room } from "@common/types";
 import RoomCard from "@frontend/components/rooms/RoomCard";
 import { Skeleton, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import type { Room } from "common/types";
 
 type RoomCardListProps = {
   rooms?: Room[];

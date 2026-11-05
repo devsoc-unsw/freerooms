@@ -1,12 +1,15 @@
 import DateTimeSelector from "@frontend/components/booking/DateTimeSelector";
 import TopBarMenu from "@frontend/components/ui/TopBarMenu";
-import { selectDatetime, setDatetime } from "@frontend/redux/datetimeSlice";
+import { useDispatch, useSelector } from "@frontend/redux/hooks";
+import {
+  selectDatetime,
+  setDatetime,
+} from "@frontend/redux/slices/datetimeSlice";
 import {
   selectFilters,
   setFilter,
   unsetFilter,
-} from "@frontend/redux/filtersSlice";
-import { useDispatch, useSelector } from "@frontend/redux/hooks";
+} from "@frontend/redux/slices/filtersSlice";
 import { SYDNEY_TIMEZONE } from "@frontend/utils/toSydneyTime";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 import Stack from "@mui/material/Stack";

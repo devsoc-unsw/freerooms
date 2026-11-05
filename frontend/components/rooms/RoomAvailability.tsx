@@ -1,12 +1,7 @@
 import { RoomAvailabilityBoxProps } from "@frontend/components/rooms/RoomAvailabilityBox";
 import { getCardStatus, getStatusEnd } from "@frontend/utils/roomStatus";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
-import {
-  styled,
-  Typography,
-  TypographyProps,
-  useTheme,
-} from "@mui/material";
+import { styled, Typography, TypographyProps, useTheme } from "@mui/material";
 import { Stack } from "@mui/system";
 import { format } from "date-fns";
 import React from "react";

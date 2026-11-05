@@ -1,12 +1,10 @@
-import translateRoomUsage from "@common/roomUsages";
-import type { Room } from "@common/types";
 import RoomAvailability from "@frontend/components/rooms/RoomAvailability";
 import RoomUtilityTags from "@frontend/components/rooms/RoomUtilityTags";
-import useBuilding from "@frontend/hooks/useBuilding";
-import useFavourites from "@frontend/hooks/useFavourites";
-import useNearbyBookings from "@frontend/hooks/useNearbyBookings";
-import useRoomRatings from "@frontend/hooks/useRoomRatings";
-import useRoomStatus from "@frontend/hooks/useRoomStatus";
+import useNearbyBookings from "@frontend/hooks/bookings/useNearbyBookings";
+import useBuilding from "@frontend/hooks/buildings/useBuilding";
+import useRoomRatings from "@frontend/hooks/ratings/useRoomRatings";
+import useFavourites from "@frontend/hooks/rooms/useFavourites";
+import useRoomStatus from "@frontend/hooks/rooms/useRoomStatus";
 import room_photos from "@frontend/public/room-photos.json";
 import getRoomHref from "@frontend/utils/getRoomHref";
 import { getCampus, getFloorLabel } from "@frontend/utils/roomLocation";
@@ -34,6 +32,8 @@ import {
   Typography,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import translateRoomUsage from "common/roomUsages";
+import type { Room } from "common/types";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -57,6 +57,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
   flexDirection: "column",
   height: theme.sizes.roomCard.height,
   overflow: "hidden",
+  borderRadius: theme.radius.card,
 }));
 
 const Thumbnail = styled(Box)(({ theme }) => ({
@@ -133,7 +134,7 @@ const RoomCard: React.FC<RoomCardProps> = (props) => {
   const { isFavourite, toggleFavourite } = useFavourites();
   const { building } = useBuilding(buildingId);
   const { data: ratings } = useRoomRatings(room?.id);
-  const { status } = useRoomStatus(room?.id ?? "");
+  const { status } = useRoomStatus(room?.id);
   const needsBookings =
     status !== undefined &&
     (getCardStatus(status) === "busy" || !getStatusEnd(status));

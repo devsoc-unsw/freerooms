@@ -1,6 +1,6 @@
-import useBookings from "@frontend/hooks/useBookings";
-import { selectDatetime } from "@frontend/redux/datetimeSlice";
+import useBookings from "@frontend/hooks/bookings/useBookings";
 import { useSelector } from "@frontend/redux/hooks";
+import { selectDatetime } from "@frontend/redux/slices/datetimeSlice";
 import { SYDNEY_TIMEZONE } from "@frontend/utils/toSydneyTime";
 import { isSameDay } from "date-fns";
 import { toZonedTime } from "date-fns-tz";

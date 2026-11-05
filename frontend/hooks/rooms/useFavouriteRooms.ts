@@ -1,12 +1,12 @@
-import type { Room } from "@common/types";
-import useBuildings from "@frontend/hooks/useBuildings";
-import useFavourites from "@frontend/hooks/useFavourites";
-import useRooms from "@frontend/hooks/useRooms";
-import useStatus from "@frontend/hooks/useStatus";
-import useUserLocation from "@frontend/hooks/useUserLocation";
+import useBuildings from "@frontend/hooks/buildings/useBuildings";
+import useUserLocation from "@frontend/hooks/map/useUserLocation";
+import useFavourites from "@frontend/hooks/rooms/useFavourites";
+import useRooms from "@frontend/hooks/rooms/useRooms";
+import useStatus from "@frontend/hooks/rooms/useStatus";
 import calculateDistance from "@frontend/utils/calculateDistance";
 import { getRoomComparator } from "@frontend/utils/sortRooms";
 import { getBuildingIdFromRoomId } from "@frontend/utils/utils";
+import type { Room } from "common/types";
 import { useMemo } from "react";
 
 const useFavouriteRooms = (query: string, sort: string): Room[] | undefined => {
