@@ -1,6 +1,6 @@
-import { Building, Room } from "@common/types";
 import useBuildingSearch from "@frontend/hooks/buildings/useBuildingSearch";
 import { renderHook } from "@testing-library/react";
+import { Building, Room } from "common/types";
 
 const building = (
   id: string,

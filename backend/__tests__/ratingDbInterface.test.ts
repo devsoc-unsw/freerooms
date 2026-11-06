@@ -1,4 +1,4 @@
-import { BuildingRatingsResponse } from "@common/types";
+import { BuildingRatingsResponse } from "common/types";
 
 import { getRoomsByBuilding } from "../src/helpers";
 import {
