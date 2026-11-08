@@ -1,6 +1,7 @@
 import useBuildings from "@frontend/hooks/buildings/useBuildings";
 import useUserLocation from "@frontend/hooks/map/useUserLocation";
 import useFavourites from "@frontend/hooks/rooms/useFavourites";
+import useRoomSearch from "@frontend/hooks/rooms/useRoomSearch";
 import useRooms from "@frontend/hooks/rooms/useRooms";
 import useStatus from "@frontend/hooks/rooms/useStatus";
 import calculateDistance from "@frontend/utils/calculateDistance";
@@ -9,15 +10,29 @@ import { getBuildingIdFromRoomId } from "@frontend/utils/utils";
 import type { Room } from "common/types";
 import { useMemo } from "react";
 
-const useFavouriteRooms = (query: string, sort: string): Room[] | undefined => {
+const NO_ROOMS: Room[] = [];
+
+const useDisplayedFavouriteRooms = (
+  query: string,
+  sort: string
+): Room[] | undefined => {
   const { favourites } = useFavourites();
   const { rooms } = useRooms();
   const { status: roomStatusData } = useStatus();
   const { buildings } = useBuildings();
   const { userLat, userLng } = useUserLocation();
 
+  const savedRooms = useMemo(() => {
+    if (!rooms) return undefined;
+    return Array.from(new Set(favourites))
+      .map((id) => rooms[id])
+      .filter((room): room is Room => room !== undefined);
+  }, [favourites, rooms]);
+
+  const searchRooms = useRoomSearch(savedRooms ?? NO_ROOMS, buildings);
+
   return useMemo(() => {
-    if (!rooms || !roomStatusData) return undefined;
+    if (!savedRooms || !roomStatusData) return undefined;
 
     const statusOf = (room: Room) => {
       const [campus, grid, roomNumber] = room.id.split("-");
@@ -39,13 +54,10 @@ const useFavouriteRooms = (query: string, sort: string): Room[] | undefined => {
       return calculateDistance(userLat, userLng, building.lat, building.long);
     };
 
-    const savedRooms = favourites
-      .map((id) => rooms[id])
-      .filter((room): room is Room => room !== undefined);
-
-    const matchingSearch = savedRooms.filter((room) =>
-      room.name.toLowerCase().includes(query.toLowerCase())
-    );
+    const matchingIds = searchRooms(query);
+    const matchingSearch = matchingIds
+      ? savedRooms.filter((room) => matchingIds.has(room.id))
+      : savedRooms;
 
     // Browse hides buildings that have no rooms left after filtering. Same check is made here.
     const passingFilters = matchingSearch.filter(
@@ -56,15 +68,15 @@ const useFavouriteRooms = (query: string, sort: string): Room[] | undefined => {
       getRoomComparator(sort, { freeUntil, distance })
     );
   }, [
-    favourites,
-    rooms,
+    savedRooms,
     roomStatusData,
     buildings,
     userLat,
     userLng,
+    searchRooms,
     query,
     sort,
   ]);
 };
 
-export default useFavouriteRooms;
+export default useDisplayedFavouriteRooms;
