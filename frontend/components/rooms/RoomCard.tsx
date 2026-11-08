@@ -154,7 +154,8 @@ const RoomCard: React.FC<RoomCardProps> = (props) => {
   const { status } = useRoomStatus(room?.id);
   const needsBookings =
     status !== undefined &&
-    (getCardStatus(status) === "busy" || !getStatusEnd(status));
+    (status.status === "busy" ||
+      (status.status === "free" && !getStatusEnd(status)));
   const { current, nextLaterThatDay } = useNearbyBookings(
     room?.id,
     needsBookings

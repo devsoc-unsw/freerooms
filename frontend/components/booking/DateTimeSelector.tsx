@@ -3,6 +3,7 @@ import { SYDNEY_TIMEZONE } from "@frontend/utils/toSydneyTime";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
 import { type Theme, useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
@@ -20,10 +21,16 @@ const DateTimeSelector = ({
   label,
   value,
   onChange,
+  isSet = true,
+  emptyLabel = "",
+  onClear,
 }: {
   label: string;
   value: Date;
   onChange: (value: Date) => void;
+  isSet?: boolean;
+  emptyLabel?: string;
+  onClear?: () => void;
 }) => {
   const theme = useTheme();
   // MUI's DateCalendar has a fixed size. It is scaled down to fit under its field.
@@ -32,17 +39,36 @@ const DateTimeSelector = ({
 
   const isToday = isSameDay(value, now);
   const isNow = Math.abs(differenceInMinutes(value, now)) < 1;
-  const dateLabel = `${format(value, "do MMMM")}${isToday ? " (today)" : ""}`;
-  const timeLabel = `${format(value, "h:mm aaa")}${isNow ? " (now)" : ""}`;
+  const dateLabel = isSet
+    ? `${format(value, "do MMMM")}${isToday ? " (today)" : ""}`
+    : emptyLabel;
+  const timeLabel = isSet
+    ? `${format(value, "h:mm aaa")}${isNow ? " (now)" : ""}`
+    : emptyLabel;
 
   return (
     <Box>
-      <Typography
-        variant="filterOption"
-        sx={{ marginBottom: (theme) => `${theme.space.xs}px` }}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginBottom: (theme) => `${theme.space.xs}px`,
+        }}
       >
-        {label}
-      </Typography>
+        <Typography variant="filterOption">{label}</Typography>
+        {isSet && onClear && (
+          <Link
+            component="button"
+            type="button"
+            variant="filterOption"
+            underline="hover"
+            aria-label={`Clear ${label.toLowerCase()}`}
+            onClick={onClear}
+          >
+            Clear
+          </Link>
+        )}
+      </Box>
       <Box sx={{ display: "flex", gap: (theme) => `${theme.space.md}px` }}>
         <DropdownField
           icon={<CalendarMonthOutlinedIcon fontSize="small" />}

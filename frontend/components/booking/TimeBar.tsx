@@ -20,20 +20,37 @@ import { enAU } from "date-fns/locale";
 import { fromZonedTime, toZonedTime } from "date-fns-tz";
 import React from "react";
 
-const TimeBar = () => {
+type TimeBarProps = {
+  // False once the start time has been cleared. Pages that don't pass these always have a start time.
+  startIsSet?: boolean;
+  onStartIsSetChange?: (isSet: boolean) => void;
+};
+
+const TimeBar = ({ startIsSet = true, onStartIsSetChange }: TimeBarProps) => {
   const dispatch = useDispatch();
   const datetime = useSelector(selectDatetime);
   const filters = useSelector(selectFilters);
 
   const startZoned = toZonedTime(datetime, SYDNEY_TIMEZONE);
-  const handleStartChange = (value: Date) =>
+  const handleStartChange = (value: Date) => {
     dispatch(setDatetime(fromZonedTime(value, SYDNEY_TIMEZONE)));
+    onStartIsSetChange?.(true);
+  };
 
+  const handleClearStart = () => {
+    dispatch(setDatetime(new Date()));
+    dispatch(unsetFilter("duration"));
+    onStartIsSetChange?.(false);
+  };
+
+  const hasEnd = Boolean(filters.duration);
+  const hasStart = startIsSet || hasEnd;
   const endZoned = addMinutes(startZoned, Number(filters.duration) || 0);
   const handleEndChange = (value: Date) => {
     const minutes = differenceInMinutes(value, startZoned);
     if (minutes > 0) {
       dispatch(setFilter({ key: "duration", value: String(minutes) }));
+      onStartIsSetChange?.(true);
     } else {
       dispatch(unsetFilter("duration"));
     }
@@ -53,11 +70,17 @@ const TimeBar = () => {
           <DateTimeSelector
             label="Start time"
             value={startZoned}
+            isSet={hasStart}
+            emptyLabel="No start time"
+            onClear={handleClearStart}
             onChange={handleStartChange}
           />
           <DateTimeSelector
             label="End time"
             value={endZoned}
+            isSet={hasEnd}
+            emptyLabel="No end time"
+            onClear={() => dispatch(unsetFilter("duration"))}
             onChange={handleEndChange}
           />
         </Stack>

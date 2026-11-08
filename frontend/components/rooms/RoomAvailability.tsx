@@ -37,10 +37,10 @@ const roomStatusMessage = {
   soon: "Available Soon",
 };
 
-// Cards only show free or busy (see getCardStatus). 'Soon' is omitted.
-const cardStatusColourKey = {
+const roomStatusColour = {
   free: "available",
   busy: "unavailable",
+  soon: "soon",
 } as const;
 
 type RoomAvailabilityProps = Pick<RoomAvailabilityBoxProps, "roomStatus"> & {
@@ -78,15 +78,15 @@ const RoomAvailability: React.FC<RoomAvailabilityProps> = ({
   };
 
   if (variant === "pill") {
-    const cardStatus = getCardStatus(roomStatus);
-    const colours = theme.colours.status[cardStatusColourKey[cardStatus]];
+    const colours = theme.colours.status[roomStatusColour[roomStatus.status]];
     const end =
       getStatusEnd(roomStatus) ??
-      (cardStatus === "free" ? (until ?? null) : null);
+      (roomStatus.status === "free" ? (until ?? null) : null);
     const time = end ? format(end, "h:mmaaa") : null;
+    const preposition = roomStatus.status === "soon" ? "at" : "until";
     const text = [
-      roomStatusMessage[cardStatus],
-      time && `until ${time}`,
+      roomStatusMessage[roomStatus.status],
+      time && `${preposition} ${time}`,
       reason && `- ${reason}`,
     ]
       .filter(Boolean)

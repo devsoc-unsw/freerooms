@@ -14,7 +14,8 @@ const NO_ROOMS: Room[] = [];
 
 const useDisplayedFavouriteRooms = (
   query: string,
-  sort: string
+  sort: string,
+  availableOnly: boolean
 ): Room[] | undefined => {
   const { favourites } = useFavourites();
   const { rooms } = useRooms();
@@ -60,9 +61,11 @@ const useDisplayedFavouriteRooms = (
       : savedRooms;
 
     // Browse hides buildings that have no rooms left after filtering. Same check is made here.
-    const passingFilters = matchingSearch.filter(
-      (room) => statusOf(room) !== undefined
-    );
+    const passingFilters = matchingSearch.filter((room) => {
+      const status = statusOf(room);
+      if (!status) return false;
+      return !availableOnly || status.status === "free";
+    });
 
     return passingFilters.sort(
       getRoomComparator(sort, { freeUntil, distance })
@@ -76,6 +79,7 @@ const useDisplayedFavouriteRooms = (
     searchRooms,
     query,
     sort,
+    availableOnly,
   ]);
 };
 
