@@ -68,7 +68,6 @@ const useQueryDatetime = () => {
       return;
     }
 
-
     // Set date to YYYY-MM-DD format
     const date =
       datetime instanceof Date

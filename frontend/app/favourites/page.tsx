@@ -24,12 +24,13 @@ import React, { Suspense } from "react";
 const Favourites = () => {
   const [sort, setSort] = useQuerySort(roomSortBarDropdown);
   const [query, setQuery] = React.useState<string>("");
-  const [start, setStart] = useQueryState( // start time set by default. clearing start time shows all favourites, and updates in the URL
+  const [start, setStart] = useQueryState(
+    // start time set by default. clearing start time shows all favourites, and updates in the URL
     "start",
     parseAsString.withDefault("")
   );
   const startIsSet = start !== NO_START_TIME;
-  
+
   const [date] = useQueryState("date", parseAsString.withDefault(""));
   const favouriteRooms = useDisplayedFavouriteRooms(query, sort, startIsSet);
 
