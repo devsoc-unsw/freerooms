@@ -225,3 +225,6 @@ export const roomSortBarDropdown: DropDownItem[] = [
     value: "lowerToUpper",
   },
 ];
+
+// URL value of the `start` param for the start time. While the user has cleared the start time
+export const NO_START_TIME = "none";

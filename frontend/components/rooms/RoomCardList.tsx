@@ -6,6 +6,7 @@ import type { Room } from "common/types";
 type RoomCardListProps = {
   rooms?: Room[];
   date?: string;
+  emptyMessage?: string;
 };
 
 const CardGrid = styled("div")(({ theme }) => ({
@@ -24,7 +25,11 @@ const EmptyState = styled(Typography)(({ theme }) => ({
   padding: `${theme.space.xxl}px 0`,
 }));
 
-const RoomCardList: React.FC<RoomCardListProps> = ({ rooms, date }) => {
+const RoomCardList: React.FC<RoomCardListProps> = ({
+  rooms,
+  date,
+  emptyMessage = "No rooms to show.",
+}) => {
   if (!rooms) {
     return (
       <CardGrid>
@@ -47,7 +52,7 @@ const RoomCardList: React.FC<RoomCardListProps> = ({ rooms, date }) => {
   }
 
   if (rooms.length === 0) {
-    return <EmptyState>No rooms to show.</EmptyState>;
+    return <EmptyState>{emptyMessage}</EmptyState>;
   }
 
   return (

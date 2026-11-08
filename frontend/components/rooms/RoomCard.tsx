@@ -6,7 +6,7 @@ import useRoomRatings from "@frontend/hooks/ratings/useRoomRatings";
 import useFavourites from "@frontend/hooks/rooms/useFavourites";
 import useRoomStatus from "@frontend/hooks/rooms/useRoomStatus";
 import room_photos from "@frontend/public/room-photos.json";
-import { getCardStatus, getStatusEnd } from "@frontend/utils/availability";
+import { getStatusEnd } from "@frontend/utils/availability";
 import getRoomHref from "@frontend/utils/getRoomHref";
 import { getCampus, getFloorLabel } from "@frontend/utils/roomLocation";
 import { getBuildingIdFromRoomId } from "@frontend/utils/utils";

@@ -9,8 +9,8 @@ import RoomCardList from "@frontend/components/rooms/RoomCardList";
 import SearchBar from "@frontend/components/search/SearchBar";
 import TopBarGroup from "@frontend/components/ui/TopBarGroup";
 import useQuerySort from "@frontend/hooks/query/useQuerySort";
-import useFavouriteRooms from "@frontend/hooks/rooms/useDisplayedFavouriteRooms";
-import { roomSortBarDropdown } from "@frontend/utils/constants";
+import useDisplayedFavouriteRooms from "@frontend/hooks/rooms/useDisplayedFavouriteRooms";
+import { NO_START_TIME, roomSortBarDropdown } from "@frontend/utils/constants";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
@@ -24,8 +24,14 @@ import React, { Suspense } from "react";
 const Favourites = () => {
   const [sort, setSort] = useQuerySort(roomSortBarDropdown);
   const [query, setQuery] = React.useState<string>("");
+  const [start, setStart] = useQueryState( // start time set by default. clearing start time shows all favourites, and updates in the URL
+    "start",
+    parseAsString.withDefault("")
+  );
+  const startIsSet = start !== NO_START_TIME;
+  
   const [date] = useQueryState("date", parseAsString.withDefault(""));
-  const favouriteRooms = useFavouriteRooms(query, sort);
+  const favouriteRooms = useDisplayedFavouriteRooms(query, sort, startIsSet);
 
   return (
     <Container maxWidth={false}>
@@ -68,11 +74,24 @@ const Favourites = () => {
                 options={roomSortBarDropdown}
                 title="Room Sort"
               />
-              <TimeBar />
+              <TimeBar
+                startIsSet={startIsSet}
+                onStartIsSetChange={(isSet) =>
+                  setStart(isSet ? null : NO_START_TIME)
+                }
+              />
             </TopBarGroup>
           </Stack>
           <AlignedWithSearchBar>
-            <RoomCardList rooms={favouriteRooms} date={date} />
+            <RoomCardList
+              rooms={favouriteRooms}
+              date={date}
+              emptyMessage={
+                startIsSet
+                  ? "No rooms to show. Rooms in use at the start time are hidden, so clear it to see all your favourites."
+                  : undefined
+              }
+            />
           </AlignedWithSearchBar>
         </Tiles>
       </LocalizationProvider>

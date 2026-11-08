@@ -1,5 +1,5 @@
 import { RoomAvailabilityBoxProps } from "@frontend/components/rooms/RoomAvailabilityBox";
-import { getCardStatus, getStatusEnd } from "@frontend/utils/availability";
+import { getStatusEnd } from "@frontend/utils/availability";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 import { styled, Typography, TypographyProps, useTheme } from "@mui/material";
 import { Stack } from "@mui/system";

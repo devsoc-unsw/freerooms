@@ -16,7 +16,9 @@ const useRoomSearch = (rooms: Room[], buildings: Building[] | undefined) => {
           room.id,
           room.abbr,
           translateRoomUsage(room.usage) ?? "",
-          ...(building ? [building.name, building.id, ...building.aliases] : []),
+          ...(building
+            ? [building.name, building.id, ...building.aliases]
+            : []),
         ].filter((key) => key.trim() !== ""),
       };
     });
