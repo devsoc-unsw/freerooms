@@ -34,7 +34,12 @@ const RoomCardList: React.FC<RoomCardListProps> = ({ rooms, date }) => {
             animation="wave"
             variant="rounded"
             width="100%"
-            sx={(theme) => ({ height: theme.sizes.roomCard.height })}
+            sx={(theme) => ({
+              height: theme.sizes.roomCard.height,
+              [theme.breakpoints.down("sm")]: {
+                height: theme.sizes.roomCard.compactHeight,
+              },
+            })}
           />
         ))}
       </CardGrid>

@@ -35,6 +35,7 @@ import { styled } from "@mui/material/styles";
 import translateRoomUsage from "common/roomUsages";
 import type { Room } from "common/types";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 
 type LoadingProps = {
@@ -55,9 +56,12 @@ const StyledCard = styled(Card)(({ theme }) => ({
   position: "relative",
   display: "flex",
   flexDirection: "column",
-  height: theme.sizes.roomCard.height,
+  minHeight: theme.sizes.roomCard.height,
   overflow: "hidden",
   borderRadius: theme.radius.card,
+  [theme.breakpoints.down("sm")]: {
+    minHeight: theme.sizes.roomCard.compactHeight,
+  },
 }));
 
 const Thumbnail = styled(Box)(({ theme }) => ({
@@ -66,6 +70,19 @@ const Thumbnail = styled(Box)(({ theme }) => ({
   margin: `0 ${theme.space.md}px`,
   overflow: "hidden",
   flexShrink: 0,
+  [theme.breakpoints.down("sm")]: {
+    height: theme.sizes.roomCard.compactThumbnailHeight,
+  },
+  "& img": {
+    transition: theme.transitions.create("transform", {
+      duration: theme.transitions.duration.standard,
+    }),
+    "@media (prefers-reduced-motion: reduce)": { transition: "none" },
+  },
+}));
+
+const DesktopOnly = styled("div")(({ theme }) => ({
+  [theme.breakpoints.down("sm")]: { display: "none" },
 }));
 
 const TitleRow = styled(Stack)(() => ({
@@ -167,8 +184,9 @@ const RoomCard: React.FC<RoomCardProps> = (props) => {
   return (
     <StyledCard variant="outlined">
       <CardActionArea
+        component={Link}
         href={getRoomHref(room.id, date)}
-        target="_blank"
+        // target="_blank"
         sx={(theme) => ({
           display: "flex",
           flexDirection: "column",
@@ -176,8 +194,8 @@ const RoomCard: React.FC<RoomCardProps> = (props) => {
           flex: 1,
           minHeight: 0,
           paddingTop: `${theme.space.lg}px`,
-          // no grey overlay on hover
           "&:hover .MuiCardActionArea-focusHighlight": { opacity: 0 },
+          "&:hover img": { transform: `scale(1.05)` },
         })}
       >
         <Thumbnail>
@@ -250,62 +268,66 @@ const RoomCard: React.FC<RoomCardProps> = (props) => {
             />
           )}
 
-          <Divider sx={{ marginBlock: (theme) => `${theme.space.sm}px` }} />
+          <DesktopOnly>
+            <Divider sx={{ marginBlock: (theme) => `${theme.space.sm}px` }} />
 
-          <WidgetRow>
-            <Widget>
-              <StarBorderIcon
-                sx={(theme) => ({ color: theme.colours.rating.display })}
-              />
-              <Typography variant="metadata">
-                {rating === 0 ? "—" : rating}
-              </Typography>
-            </Widget>
-            <Widget>
-              <GroupOutlinedIcon />
-              <Typography variant="metadata">{room.capacity}</Typography>
-            </Widget>
-            <Widget>
-              <MeetingRoomOutlinedIcon />
-              <Typography variant="metadata">
-                {translateRoomUsage(room.usage)}
-              </Typography>
-            </Widget>
-            <Widget>
-              <BadgeOutlinedIcon />
-              <Typography variant="metadata">
-                {room.school !== " " ? "ID Required" : "ID Not Required"}
-              </Typography>
-            </Widget>
-          </WidgetRow>
+            <WidgetRow>
+              <Widget>
+                <StarBorderIcon
+                  sx={(theme) => ({ color: theme.colours.rating.display })}
+                />
+                <Typography variant="metadata">
+                  {rating === 0 ? "—" : rating}
+                </Typography>
+              </Widget>
+              <Widget>
+                <GroupOutlinedIcon />
+                <Typography variant="metadata">{room.capacity}</Typography>
+              </Widget>
+              <Widget>
+                <MeetingRoomOutlinedIcon />
+                <Typography variant="metadata">
+                  {translateRoomUsage(room.usage)}
+                </Typography>
+              </Widget>
+              <Widget>
+                <BadgeOutlinedIcon />
+                <Typography variant="metadata">
+                  {room.school !== " " ? "ID Required" : "ID Not Required"}
+                </Typography>
+              </Widget>
+            </WidgetRow>
+          </DesktopOnly>
         </CardContent>
       </CardActionArea>
 
-      <UtilitiesToggle onClick={() => setUtilitiesOpen((open) => !open)}>
-        <Stack direction="row" sx={{ alignItems: "center" }}>
-          <KeyboardArrowRightOutlinedIcon
-            sx={(theme) => ({
-              fontSize: theme.sizes.icon.sm,
-              color: theme.colours.text.secondary,
-            })}
+      <DesktopOnly>
+        <UtilitiesToggle onClick={() => setUtilitiesOpen((open) => !open)}>
+          <Stack direction="row" sx={{ alignItems: "center" }}>
+            <KeyboardArrowRightOutlinedIcon
+              sx={(theme) => ({
+                fontSize: theme.sizes.icon.sm,
+                color: theme.colours.text.secondary,
+              })}
+            />
+            <Typography variant="metadata" color="text.secondary">
+              View all utilities
+            </Typography>
+          </Stack>
+          <ArrowForwardOutlinedIcon
+            sx={(theme) => ({ fontSize: theme.sizes.icon.md })}
           />
-          <Typography variant="metadata" color="text.secondary">
-            View all utilities
-          </Typography>
-        </Stack>
-        <ArrowForwardOutlinedIcon
-          sx={(theme) => ({ fontSize: theme.sizes.icon.md })}
-        />
-      </UtilitiesToggle>
-      <Collapse in={utilitiesOpen}>
-        <Box
-          sx={(theme) => ({
-            padding: `0 ${theme.space.md}px ${theme.space.md}px`,
-          })}
-        >
-          {utilitiesOpen && <RoomUtilityTags roomId={room.id} />}
-        </Box>
-      </Collapse>
+        </UtilitiesToggle>
+        <Collapse in={utilitiesOpen}>
+          <Box
+            sx={(theme) => ({
+              padding: `0 ${theme.space.md}px ${theme.space.md}px`,
+            })}
+          >
+            {utilitiesOpen && <RoomUtilityTags roomId={room.id} />}
+          </Box>
+        </Collapse>
+      </DesktopOnly>
     </StyledCard>
   );
 };

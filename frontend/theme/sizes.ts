@@ -17,6 +17,8 @@ export const sizes = {
   roomCard: {
     height: 340,
     thumbnailHeight: 150,
+    compactHeight: 240,
+    compactThumbnailHeight: 96,
   },
   picker: {
     width: 133,
