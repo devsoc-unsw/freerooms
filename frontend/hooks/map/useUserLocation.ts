@@ -39,8 +39,10 @@ const getCurrentUserLocation = (): Promise<UserLocation> => {
     navigator.geolocation.getCurrentPosition(
       (position: GeolocationPosition) => {
         resolve({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
+          lat: -33.9179,
+          lng: 151.2298,
+          // lat: position.coords.latitude,
+          // lng: position.coords.longitude,
         });
       },
       (error: GeolocationPositionError) => {
@@ -123,8 +125,10 @@ const useUserLocation = () => {
 
   return {
     location,
-    userLat: location?.lat,
-    userLng: location?.lng,
+    // userLat: location?.lat,
+    // userLng: location?.lng,
+    userLat: -33.9179,
+    userLng: 151.2298,
     isLocating,
     locationError,
     refreshLocation,

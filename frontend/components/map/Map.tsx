@@ -15,19 +15,25 @@ import useBuilding from "@frontend/hooks/buildings/useBuilding";
 import useBuildings from "@frontend/hooks/buildings/useBuildings";
 import useMapboxRoute from "@frontend/hooks/map/useMapboxRoute";
 import useUserLocation from "@frontend/hooks/map/useUserLocation";
-import { useDispatch } from "@frontend/redux/hooks";
-import { setCurrentBuilding } from "@frontend/redux/slices/currentBuildingSlice";
+import { useDispatch, useSelector } from "@frontend/redux/hooks";
+import {
+  selectCurrentBuilding,
+  setCurrentBuilding,
+} from "@frontend/redux/slices/currentBuildingSlice";
 import calculateDistance from "@frontend/utils/calculateDistance";
+import { calculateDistance2 } from "@frontend/utils/calculateDistance";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Snackbar from "@mui/material/Snackbar";
 import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import type { LngLatBoundsLike } from "mapbox-gl";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import type { MapRef } from "react-map-gl/mapbox";
 import MapboxMap, { Layer, Marker, Source } from "react-map-gl/mapbox";
 import { useDebounceValue } from "usehooks-ts";
+import useWalkingMatrix from "@frontend/hooks/map/useWalkingMatrix";
 
 const center = {
   lat: -33.91767,
@@ -83,6 +89,11 @@ export const Map = () => {
 
   const styleArray = isDarkMode ? MAPBOX_STYLE_DARK : MAPBOX_STYLE_LIGHT;
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  // Mobile only centres on a building once, for a link that opened the map
+  const hasFlownOnLoadRef = useRef(false);
+  // Set when collapsing the mobile sheet requests a route, so the map stays put
+  const skipNextRouteZoomRef = useRef(false);
 
   // Get current location of user
   const {
@@ -93,7 +104,7 @@ export const Map = () => {
     refreshLocation,
     clearLocationError,
   } = useUserLocation();
-
+  
   const {
     route,
     routeSummary,
@@ -104,20 +115,39 @@ export const Map = () => {
     clearRouteError,
   } = useMapboxRoute();
 
-  const distances = useMemo(() => {
-    if (
-      buildings &&
-      userLat !== undefined &&
-      userLng !== undefined &&
-      isInBounds(userLat, userLng)
-    ) {
-      return buildings.map((building) =>
-        calculateDistance(userLat, userLng, building.lat, building.long)
-      );
-    }
-    return [];
-  }, [buildings, userLat, userLng]);
+  { /* Old Method */ }
+  // const distances = useMemo(() => {
+  //   if (
+  //     buildings &&
+  //     userLat !== undefined &&
+  //     userLng !== undefined &&
+  //     isInBounds(userLat, userLng)
+  //   ) {
+  //     return buildings.map((building) =>
+  //       calculateDistance(userLat, userLng, building.lat, building.long)
+  //     );
+  //   }
+  //   return [];
+  // }, [buildings, userLat, userLng]);
+  
+  { /* New Method */ }
+  const { distances, durations } = useWalkingMatrix(userLat, userLng, buildings, true)
 
+  // Walking info for the building open in the drawer; prefer the loaded route's numbers
+  const selectedBuilding = useSelector(selectCurrentBuilding);
+  const selectedIndex =
+    buildings?.findIndex((building) => building.id === selectedBuilding?.id) ??
+    -1;
+  const selectedRoute =
+    routeSummary?.destinationBuildingId === selectedBuilding?.id
+      ? routeSummary
+      : null;
+  const selectedDistance = selectedRoute
+    ? Math.round(selectedRoute.distanceMeters)
+    : distances[selectedIndex];
+  const selectedDuration = selectedRoute
+    ? Math.floor(selectedRoute.durationSeconds / 60)
+    : durations[selectedIndex];
   //set current building to search param query - THIS IS WHERE OTHER QUERIES CAN GO
   const searchParams = useSearchParams();
   const buildingId = searchParams.get("building");
@@ -128,16 +158,25 @@ export const Map = () => {
       dispatch(setCurrentBuilding(building));
 
       if (isMapLoaded) {
-        mapRef.current?.flyTo({
-          center: [building.long, building.lat],
-          duration: 800,
-        });
+        // On mobile, tapping a marker shouldn't move the map
+        if (!isMobile || !hasFlownOnLoadRef.current) {
+          mapRef.current?.flyTo({
+            center: [building.long, building.lat],
+            duration: 800,
+          });
+        }
+        hasFlownOnLoadRef.current = true;
       }
     }
-  }, [building, dispatch, isMapLoaded]);
+  }, [building, dispatch, isMapLoaded, isMobile]);
 
   useEffect(() => {
     if (!route || route.geometry.coordinates.length === 0) {
+      return;
+    }
+
+    if (skipNextRouteZoomRef.current) {
+      skipNextRouteZoomRef.current = false;
       return;
     }
 
@@ -166,7 +205,8 @@ export const Map = () => {
   }, [route]);
 
   const handleGetDirections = async (
-    destinationBuilding: Building
+    destinationBuilding: Building,
+    { keepDrawerOpen = false } = {}
   ): Promise<void> => {
     let origin;
 
@@ -181,12 +221,32 @@ export const Map = () => {
       destinationBuilding,
     });
 
-    if (!routeWasCreated) {
+    if (!routeWasCreated || keepDrawerOpen) {
       return;
     }
 
     dispatch(setCurrentBuilding(null));
     router.replace("/map");
+  };
+
+  // Collapsing the mobile sheet shows the route, unless it's already shown or loading
+  const handleDrawerCollapse = (destinationBuilding: Building) => {
+    if (
+      routeSummary?.destinationBuildingId === destinationBuilding.id ||
+      isRouteLoading
+    ) {
+      return;
+    }
+
+    skipNextRouteZoomRef.current = isMobile;
+    void handleGetDirections(destinationBuilding, { keepDrawerOpen: true });
+  };
+
+  // Closing the drawer removes the route to that building
+  const handleDrawerClose = (closedBuilding: Building) => {
+    if (routeSummary?.destinationBuildingId === closedBuilding.id) {
+      clearRoute();
+    }
   };
 
   const displayedError = locationError ?? routeError;
@@ -238,6 +298,7 @@ export const Map = () => {
                 <MapMarker
                   buildingId={building.id}
                   distance={distances[index]}
+                  duration={durations[index]}
                   currentHover={debouncedCurrentHover}
                   setCurrentHover={setCurrentHover}
                   isRouteDestination={
@@ -274,13 +335,19 @@ export const Map = () => {
           )}
         </MapboxMap>
 
-        {routeSummary && (
-          <DirectionsSummary summary={routeSummary} onClose={clearRoute} />
-        )}
+        {/* Hidden while the drawer shows the same building, its peek row has the numbers */}
+        {routeSummary &&
+          routeSummary.destinationBuildingId !== selectedBuilding?.id && (
+            <DirectionsSummary summary={routeSummary} onClose={clearRoute} />
+          )}
 
         <BuildingDrawer
           onGetDirections={handleGetDirections}
           isDirectionsLoading={isLocating || isRouteLoading}
+          distance={selectedDistance}
+          duration={selectedDuration}
+          onCollapse={handleDrawerCollapse}
+          onClose={handleDrawerClose}
         />
 
         <Snackbar
