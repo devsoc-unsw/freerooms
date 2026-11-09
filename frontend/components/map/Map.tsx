@@ -20,6 +20,7 @@ import {
   selectCurrentBuilding,
   setCurrentBuilding,
 } from "@frontend/redux/slices/currentBuildingSlice";
+import { shouldCancelRoute } from "@frontend/utils/routeSelection";
 import calculateDistance from "@frontend/utils/calculateDistance";
 import { calculateDistance2 } from "@frontend/utils/calculateDistance";
 import Alert from "@mui/material/Alert";
@@ -143,10 +144,10 @@ export const Map = () => {
       ? routeSummary
       : null;
   const selectedDistance = selectedRoute
-    ? Math.round(selectedRoute.distanceMeters)
+    ? selectedRoute.distanceMeters
     : distances[selectedIndex];
   const selectedDuration = selectedRoute
-    ? Math.floor(selectedRoute.durationSeconds / 60)
+    ? selectedRoute.durationSeconds
     : durations[selectedIndex];
   //set current building to search param query - THIS IS WHERE OTHER QUERIES CAN GO
   const searchParams = useSearchParams();
@@ -242,6 +243,19 @@ export const Map = () => {
     void handleGetDirections(destinationBuilding, { keepDrawerOpen: true });
   };
 
+  // Picking a different building cancels the current (or still loading) route
+  const handleMarkerSelect = (selected: Building) => {
+    if (
+      shouldCancelRoute({
+        routeDestinationId: routeSummary?.destinationBuildingId,
+        isRouteLoading,
+        selectedBuildingId: selected.id,
+      })
+    ) {
+      clearRoute();
+    }
+  };
+
   // Closing the drawer removes the route to that building
   const handleDrawerClose = (closedBuilding: Building) => {
     if (routeSummary?.destinationBuildingId === closedBuilding.id) {
@@ -297,13 +311,26 @@ export const Map = () => {
               >
                 <MapMarker
                   buildingId={building.id}
-                  distance={distances[index]}
-                  duration={durations[index]}
+                  // The route's own numbers once it has loaded for this building
+                  distance={
+                    routeSummary?.destinationBuildingId === building.id
+                      ? routeSummary.distanceMeters
+                      : distances[index]
+                  }
+                  duration={
+                    routeSummary?.destinationBuildingId === building.id
+                      ? routeSummary.durationSeconds
+                      : durations[index]
+                  }
+                  isWalkingExact={
+                    routeSummary?.destinationBuildingId === building.id
+                  }
                   currentHover={debouncedCurrentHover}
                   setCurrentHover={setCurrentHover}
                   isRouteDestination={
                     routeSummary?.destinationBuildingId === building.id
                   }
+                  onSelect={handleMarkerSelect}
                 />
               </Marker>
             ))}
@@ -346,6 +373,7 @@ export const Map = () => {
           isDirectionsLoading={isLocating || isRouteLoading}
           distance={selectedDistance}
           duration={selectedDuration}
+          isWalkingExact={selectedRoute !== null}
           onCollapse={handleDrawerCollapse}
           onClose={handleDrawerClose}
         />

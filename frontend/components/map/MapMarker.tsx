@@ -7,6 +7,10 @@ import {
   setCurrentBuilding,
 } from "@frontend/redux/slices/currentBuildingSlice";
 import { getNumFreerooms, getTotalRooms } from "@frontend/utils/utils";
+import {
+  formatWalkingDistance,
+  formatWalkingDuration,
+} from "@frontend/utils/walkingRange";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { alpha, Fade, useMediaQuery } from "@mui/material";
 import { Typography, TypographyProps } from "@mui/material";
@@ -100,18 +104,25 @@ const DirectionsButton = styled(Button)(({ theme }) => ({
 
 const MapMarker: React.FC<{
   buildingId: string;
+  // Walking distance (m) and duration (s)
   distance: number | undefined;
   duration: number | undefined;
+  // True once these come from a loaded route rather than a Matrix estimate
+  isWalkingExact?: boolean;
   currentHover: Building | null;
   setCurrentHover: (building: Building | null) => void;
   isRouteDestination?: boolean;
+  // Called when this marker is tapped or clicked
+  onSelect?: (building: Building) => void;
 }> = ({
   buildingId,
   distance,
   duration,
+  isWalkingExact = false,
   currentHover,
   setCurrentHover,
   isRouteDestination = false,
+  onSelect,
 }) => {
   // Get building data
   const { building } = useBuilding(buildingId);
@@ -140,6 +151,9 @@ const MapMarker: React.FC<{
   const [appearLeft, setAppearLeft] = React.useState(false);
 
   const handleSelectBuilding = () => {
+    if (building) {
+      onSelect?.(building);
+    }
     dispatch(setCurrentBuilding(building || null));
     params.set("building", buildingId); // Add or update the 'query' param
     router.push(`/map?${params.toString()}`);
@@ -220,6 +234,7 @@ const MapMarker: React.FC<{
           },
         }}
         onClick={handleSelectBuilding}
+        data-testid="map-marker-dot"
       />
 
       <Fade in={showPopup} timeout={200}>
@@ -235,6 +250,7 @@ const MapMarker: React.FC<{
             totalRooms={totalRooms}
             distance={distance}
             duration={duration}
+            isWalkingExact={isWalkingExact}
             appearLeft={appearLeft}
             appearAbove={appearAbove}
             onClick={handleSelectBuilding}
@@ -251,6 +267,7 @@ const MarkerHover: React.FC<{
   totalRooms: number;
   distance: number | undefined;
   duration: number | undefined;
+  isWalkingExact: boolean;
   appearLeft?: boolean;
   appearAbove?: boolean;
   onClick: () => void;
@@ -260,6 +277,7 @@ const MarkerHover: React.FC<{
   totalRooms,
   distance,
   duration,
+  isWalkingExact,
   appearLeft = false,
   appearAbove = false,
   onClick,
@@ -294,11 +312,7 @@ const MarkerHover: React.FC<{
             <MarkerHoverPill>
               <AccessTimeIcon sx={{ fontSize: 18 }} />
               <MarkerHoverPillText>
-                {duration < 1
-                  ? "< 1 min"
-                  : duration === 1
-                    ? "1 min"
-                    : `${duration} mins`}
+                {formatWalkingDuration(duration, isWalkingExact)}
               </MarkerHoverPillText>
             </MarkerHoverPill>
           )}
@@ -306,7 +320,9 @@ const MarkerHover: React.FC<{
           {distance != null && (
             <MarkerHoverPill>
               <Footprints size={18} />
-              <MarkerHoverPillText>{`${distance} m`}</MarkerHoverPillText>
+              <MarkerHoverPillText>
+                {formatWalkingDistance(distance, isWalkingExact)}
+              </MarkerHoverPillText>
             </MarkerHoverPill>
           )}
 

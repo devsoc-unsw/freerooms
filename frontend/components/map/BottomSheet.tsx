@@ -1,30 +1,16 @@
+import {
+  getReleaseStage,
+  getStageHeight,
+  getVisibleHeight,
+  PEEK_HEIGHT,
+  SheetStage,
+} from "@frontend/utils/bottomSheet";
 import Box, { BoxProps } from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 import React, { useRef, useState } from "react";
 import { useWindowSize } from "usehooks-ts";
 
-export type SheetStage = "peek" | "half" | "full";
-
-const STAGES: SheetStage[] = ["peek", "half", "full"];
-
-// Height of the handle area (puller + peek row) shown when collapsed
-const PEEK_HEIGHT = 88;
-const HALF_RATIO = 0.6;
-const FULL_RATIO = 0.9;
-
-// Movement under this many pixels counts as a tap rather than a drag
-const TAP_THRESHOLD = 5;
-
-const stageHeight = (stage: SheetStage, viewportHeight: number) => {
-  switch (stage) {
-    case "peek":
-      return PEEK_HEIGHT;
-    case "half":
-      return viewportHeight * HALF_RATIO;
-    case "full":
-      return viewportHeight * FULL_RATIO;
-  }
-};
+export type { SheetStage } from "@frontend/utils/bottomSheet";
 
 const SheetContainer = styled(Box)<BoxProps>(({ theme }) => ({
   position: "fixed",
@@ -58,10 +44,17 @@ const Puller = styled(Box)<BoxProps>(({ theme }) => ({
 type BottomSheetProps = {
   stage: SheetStage;
   onStageChange: (stage: SheetStage) => void;
-  // Always visible, even when collapsed
+  // Draggable area under the puller, always visible
   handleContent: React.ReactNode;
   // Revealed as the sheet is pulled up
   children: React.ReactNode;
+};
+
+type DragState = {
+  offset: number;
+  // Screen height when the drag started, so mobile toolbars showing/hiding
+  // mid-drag don't move the snap points
+  viewportHeight: number;
 };
 
 // Mobile bottom sheet that snaps between peek, half and full heights
@@ -71,74 +64,88 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
   handleContent,
   children,
 }) => {
-  const { height: viewportHeight } = useWindowSize();
+  const { height: windowHeight } = useWindowSize();
 
-  // How far the sheet has been dragged (px, positive = down), null when idle
-  const [dragOffset, setDragOffset] = useState<number | null>(null);
-  const startY = useRef(0);
+  // Rendering state for the current drag, null when idle
+  const [drag, setDrag] = useState<DragState | null>(null);
 
-  const fullHeight = stageHeight("full", viewportHeight);
-  const visibleHeight = Math.min(
-    fullHeight,
-    Math.max(
-      PEEK_HEIGHT,
-      stageHeight(stage, viewportHeight) - (dragOffset ?? 0)
-    )
+  // Read by the pointer handlers, which can fire before React re-renders
+  const dragRef = useRef<
+    (DragState & { startY: number; startTime: number }) | null
+  >(null);
+
+  const viewportHeight = drag ? drag.viewportHeight : windowHeight;
+  const fullHeight = getStageHeight("full", viewportHeight);
+  const visibleHeight = getVisibleHeight(
+    stage,
+    drag?.offset ?? 0,
+    viewportHeight
   );
 
+  const endDrag = () => {
+    dragRef.current = null;
+    setDrag(null);
+  };
+
   const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-    startY.current = event.clientY;
-    setDragOffset(0);
+    dragRef.current = {
+      offset: 0,
+      viewportHeight: windowHeight,
+      startY: event.clientY,
+      startTime: Date.now(),
+    };
+    setDrag({ offset: 0, viewportHeight: windowHeight });
     // Keep receiving move events even if the pointer leaves the handle
-    event.currentTarget.setPointerCapture(event.pointerId);
+    event.currentTarget.setPointerCapture?.(event.pointerId);
   };
 
   const onPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (dragOffset === null) {
+    const current = dragRef.current;
+    if (!current) {
       return;
     }
 
-    setDragOffset(event.clientY - startY.current);
+    current.offset = event.clientY - current.startY;
+    setDrag({ offset: current.offset, viewportHeight: current.viewportHeight });
   };
 
   const onPointerUp = () => {
-    if (dragOffset === null) {
+    const current = dragRef.current;
+    if (!current) {
       return;
     }
 
-    if (Math.abs(dragOffset) < TAP_THRESHOLD) {
-      // Tap steps up a stage, wrapping from full back to peek
-      onStageChange(STAGES[(STAGES.indexOf(stage) + 1) % STAGES.length]);
-    } else {
-      // Drag snaps to whichever stage is closest to where it was released
-      const nearest = STAGES.reduce((best, current) =>
-        Math.abs(stageHeight(current, viewportHeight) - visibleHeight) <
-        Math.abs(stageHeight(best, viewportHeight) - visibleHeight)
-          ? current
-          : best
-      );
-      onStageChange(nearest);
-    }
-
-    setDragOffset(null);
+    const elapsed = Math.max(1, Date.now() - current.startTime);
+    onStageChange(
+      getReleaseStage({
+        stage,
+        dragOffset: current.offset,
+        velocity: current.offset / elapsed,
+        viewportHeight: current.viewportHeight,
+      })
+    );
+    endDrag();
   };
 
   return (
     <SheetContainer
+      data-testid="bottom-sheet"
       sx={{
         height: fullHeight,
         // Always full height, moved down so only visibleHeight is on screen
         transform: `translateY(${fullHeight - visibleHeight}px)`,
-        transition: dragOffset === null ? "transform 250ms ease-out" : "none",
+        transition: drag ? "none" : "transform 250ms ease-out",
       }}
     >
       <Handle
-        // Full peek height only when collapsed, otherwise just fit the puller
+        data-testid="bottom-sheet-handle"
+        // Full peek height only when collapsed, otherwise fit the content
         sx={{ height: stage === "peek" ? PEEK_HEIGHT : "auto" }}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
-        onPointerCancel={onPointerUp}
+        // The browser took over the gesture, so stay on the current stage
+        onPointerCancel={endDrag}
       >
         <Puller />
         {handleContent}

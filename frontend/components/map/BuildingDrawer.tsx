@@ -9,6 +9,10 @@ import {
   selectCurrentBuilding,
   setCurrentBuilding,
 } from "@frontend/redux/slices/currentBuildingSlice";
+import {
+  formatWalkingDistance,
+  formatWalkingDuration,
+} from "@frontend/utils/walkingRange";
 import CloseIcon from "@mui/icons-material/Close";
 import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
 import { Slide, Typography, useMediaQuery } from "@mui/material";
@@ -90,9 +94,11 @@ type BuildingDrawerProps = {
   onGetDirections?: (building: Building) => void | Promise<void>;
   isDirectionsLoading?: boolean;
   date?: string;
-  // Walking distance (m) and duration (min) to the building, if known
+  // Walking distance (m) and duration (s) to the building, if known
   distance?: number;
   duration?: number;
+  // True once these come from a loaded route rather than a Matrix estimate
+  isWalkingExact?: boolean;
   // Called when the mobile sheet is collapsed to its lowest stage
   onCollapse?: (building: Building) => void;
   // Called when the drawer is closed with the close button
@@ -154,6 +160,7 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
   date,
   distance,
   duration,
+  isWalkingExact = false,
   onCollapse,
   onClose: onCloseProp,
 }) => {
@@ -215,7 +222,12 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
         </StatusBox>
       </div>
 
-      <CloseButton aria-label="Close" onClick={onClose}>
+      <CloseButton
+        aria-label="Close"
+        onClick={onClose}
+        // The mobile sheet's drag handle includes this header, so don't start a drag
+        onPointerDown={(event) => event.stopPropagation()}
+      >
         <CloseIcon />
       </CloseButton>
     </AppBox>
@@ -282,9 +294,11 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
   );
 
   if (isMobile) {
+    // Ranges for Matrix estimates, exact numbers once a route has loaded
     const durationText =
-      duration != null ? (duration < 1 ? "< 1 min" : `${duration} min`) : null;
-    const distanceText = distance != null ? `${distance} m` : null;
+      duration != null ? formatWalkingDuration(duration, isWalkingExact) : null;
+    const distanceText =
+      distance != null ? formatWalkingDistance(distance, isWalkingExact) : null;
 
     return (
       <BottomSheet
@@ -297,8 +311,8 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
           setSheet({ buildingId: building.id, stage });
         }}
         handleContent={
-          // Walking info only shows when collapsed
-          sheetStage === "peek" && (
+          // Collapsed shows walking info; otherwise the header is the drag area
+          sheetStage === "peek" ? (
             <PeekRow>
               <PeekText>
                 {/* Falls back to the name until walking info is known */}
@@ -325,10 +339,12 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
                 <CloseIcon />
               </CloseButton>
             </PeekRow>
+          ) : (
+            header
           )
         }
       >
-        {header}
+        {sheetStage === "peek" && header}
         {body}
       </BottomSheet>
     );

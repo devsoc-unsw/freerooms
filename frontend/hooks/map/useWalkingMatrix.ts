@@ -124,7 +124,8 @@ const useWalkingMatrix = (
               distances[buildingIndex] = Math.round(distance);
             }
             if (duration != null) {
-              durations[buildingIndex] = Math.floor(duration / 60);
+              // Seconds; the UI turns these into minute ranges
+              durations[buildingIndex] = duration;
             }
           })
         }) 
