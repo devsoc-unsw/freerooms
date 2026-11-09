@@ -1,0 +1,643 @@
+info:
+  title: Freerooms API
+  version: 1.0.0
+  description: API for finding available rooms and managing room ratings.
+servers:
+  - url: http://localhost:3000
+openapi: 3.0.3
+components:
+  schemas: {}
+  parameters: {}
+paths:
+  /api/buildings:
+    get:
+      tags:
+        - Buildings
+      summary: Get all buildings
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  buildings:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        id:
+                          type: string
+                        lat:
+                          type: number
+                        long:
+                          type: number
+                        aliases:
+                          type: array
+                          items:
+                            type: string
+                      required:
+                        - name
+                        - id
+                        - lat
+                        - long
+                        - aliases
+                required:
+                  - buildings
+  /api/rooms:
+    get:
+      tags:
+        - Rooms
+      summary: Get all rooms
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rooms:
+                    type: object
+                    additionalProperties:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        id:
+                          type: string
+                        abbr:
+                          type: string
+                        capacity:
+                          type: number
+                        usage:
+                          type: string
+                        school:
+                          type: string
+                      required:
+                        - name
+                        - id
+                        - abbr
+                        - capacity
+                        - usage
+                        - school
+                required:
+                  - rooms
+  /api/rooms/status:
+    get:
+      tags:
+        - Rooms
+      summary: Get room availability status
+      parameters:
+        - schema:
+            type: string
+          required: false
+          name: datetime
+          in: query
+        - schema:
+            type: string
+          required: false
+          name: capacity
+          in: query
+        - schema:
+            type: string
+          required: false
+          name: usage
+          in: query
+        - schema:
+            type: string
+            enum:
+              - upper
+              - lower
+          required: false
+          name: location
+          in: query
+        - schema:
+            type: string
+          required: false
+          name: duration
+          in: query
+        - schema:
+            type: string
+          required: false
+          name: recurring
+          in: query
+        - schema:
+            type: string
+            enum:
+              - "true"
+              - "false"
+          required: false
+          name: id
+          in: query
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+                  properties:
+                    numAvailable:
+                      type: number
+                    roomStatuses:
+                      type: object
+                      additionalProperties:
+                        type: object
+                        properties:
+                          status:
+                            type: string
+                            enum:
+                              - free
+                              - soon
+                              - busy
+                          endtime:
+                            type: string
+                        required:
+                          - status
+                          - endtime
+                  required:
+                    - numAvailable
+                    - roomStatuses
+        "400":
+          description: The request payload or query string parameter you passed was not
+            valid
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+  /api/rooms/search:
+    get:
+      tags:
+        - Rooms
+      summary: Search available rooms
+      parameters:
+        - schema:
+            type: string
+          required: false
+          name: datetime
+          in: query
+        - schema:
+            type: string
+          required: false
+          name: capacity
+          in: query
+        - schema:
+            type: string
+          required: false
+          name: usage
+          in: query
+        - schema:
+            type: string
+            enum:
+              - upper
+              - lower
+          required: false
+          name: location
+          in: query
+        - schema:
+            type: string
+          required: false
+          name: duration
+          in: query
+        - schema:
+            type: string
+          required: false
+          name: recurring
+          in: query
+        - schema:
+            type: string
+            enum:
+              - "true"
+              - "false"
+          required: false
+          name: id
+          in: query
+        - schema:
+            type: string
+          required: false
+          name: buildingId
+          in: query
+        - schema:
+            type: string
+          required: false
+          name: startTime
+          in: query
+        - schema:
+            type: string
+          required: false
+          name: endTime
+          in: query
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      enum:
+                        - free
+                        - soon
+                        - busy
+                    endtime:
+                      type: string
+                    name:
+                      type: string
+                  required:
+                    - status
+                    - endtime
+                    - name
+        "400":
+          description: The request payload or query string parameter you passed was not
+            valid
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+  /api/rooms/bookings/{roomID}:
+    get:
+      tags:
+        - Bookings
+      summary: Get bookings for a room
+      parameters:
+        - schema:
+            type: string
+            minLength: 1
+          required: true
+          name: roomID
+          in: path
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  bookings:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        bookingType:
+                          type: string
+                        start:
+                          type: string
+                          format: date-time
+                        end:
+                          type: string
+                          format: date-time
+                      required:
+                        - name
+                        - bookingType
+                        - start
+                        - end
+                required:
+                  - bookings
+        "404":
+          description: The item you requested could not be found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+  /api/rating/{roomID}:
+    get:
+      tags:
+        - Ratings
+      summary: Get ratings for a room
+      parameters:
+        - schema:
+            type: string
+            minLength: 1
+          required: true
+          name: roomID
+          in: path
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  roomId:
+                    type: string
+                  overallRating:
+                    type: number
+                  averageRating:
+                    type: object
+                    properties:
+                      cleanliness:
+                        type: number
+                      location:
+                        type: number
+                      quietness:
+                        type: number
+                    required:
+                      - cleanliness
+                      - location
+                      - quietness
+                required:
+                  - roomId
+                  - overallRating
+                  - averageRating
+        "404":
+          description: The item you requested could not be found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+  /api/rating/rooms/{buildingID}:
+    get:
+      tags:
+        - Ratings
+      summary: Get ratings for rooms in a building
+      parameters:
+        - schema:
+            type: string
+            minLength: 1
+          required: true
+          name: buildingID
+          in: path
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    roomId:
+                      type: string
+                    overallRating:
+                      type: number
+                    averageRating:
+                      type: object
+                      properties:
+                        cleanliness:
+                          type: number
+                        location:
+                          type: number
+                        quietness:
+                          type: number
+                      required:
+                        - cleanliness
+                        - location
+                        - quietness
+                  required:
+                    - roomId
+                    - overallRating
+                    - averageRating
+        "404":
+          description: The item you requested could not be found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+  /api/rating/rate/{buildingID}/{roomID}:
+    post:
+      tags:
+        - Ratings
+      summary: Submit a room rating
+      parameters:
+        - schema:
+            type: string
+            minLength: 1
+          required: true
+          name: buildingID
+          in: path
+        - schema:
+            type: string
+            minLength: 1
+          required: true
+          name: roomID
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cleanliness:
+                  type: number
+                location:
+                  type: number
+                quietness:
+                  type: number
+                overall:
+                  type: number
+              required:
+                - cleanliness
+                - location
+                - quietness
+                - overall
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+        "400":
+          description: The request payload or query string parameter you passed was not
+            valid
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+        "404":
+          description: The item you requested could not be found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+  /api/buildingRating/{buildingID}:
+    get:
+      tags:
+        - Ratings
+      summary: Get a building rating
+      parameters:
+        - schema:
+            type: string
+            minLength: 1
+          required: true
+          name: buildingID
+          in: path
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  buildingId:
+                    type: string
+                  overallRating:
+                    type: number
+                required:
+                  - buildingId
+                  - overallRating
+        "404":
+          description: The item you requested could not be found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+  /api/buildingRating:
+    get:
+      tags:
+        - Ratings
+      summary: Get all building ratings
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    buildingId:
+                      type: string
+                    overallRating:
+                      type: number
+                  required:
+                    - buildingId
+                    - overallRating
+  /api/rooms/utilities/{roomId}:
+    get:
+      tags:
+        - Rooms
+      summary: Get room utilities
+      parameters:
+        - schema:
+            type: string
+            minLength: 1
+          required: true
+          name: roomId
+          in: path
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  floor:
+                    type: string
+                    nullable: true
+                  seating:
+                    type: string
+                    nullable: true
+                  microphone:
+                    type: array
+                    items:
+                      type: string
+                  accessibility:
+                    type: array
+                    items:
+                      type: string
+                  audiovisual:
+                    type: array
+                    items:
+                      type: string
+                  infotechnology:
+                    type: array
+                    items:
+                      type: string
+                  writingMedia:
+                    type: array
+                    items:
+                      type: string
+                  service:
+                    type: array
+                    items:
+                      type: string
+                required:
+                  - id
+                  - name
+                  - floor
+                  - seating
+                  - microphone
+                  - accessibility
+                  - audiovisual
+                  - infotechnology
+                  - writingMedia
+                  - service
+        "404":
+          description: The item you requested could not be found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error

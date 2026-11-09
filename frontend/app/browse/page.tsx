@@ -20,7 +20,7 @@ import React, { Suspense } from "react";
 
 const BrowseContent = () => {
   const [sort, setSort] = useQuerySort();
-  const [query, setQuery] = React.useState<string>("");
+  const [query, setQuery] = useQueryState("q", parseAsString.withDefault(""));
   const [date] = useQueryState("date", parseAsString.withDefault(""));
 
   return (
