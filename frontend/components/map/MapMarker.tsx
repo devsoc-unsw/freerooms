@@ -15,11 +15,8 @@ import { alpha, Fade, useMediaQuery } from "@mui/material";
 import { Typography, TypographyProps } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import { styled, useTheme } from "@mui/material/styles";
-<<<<<<< HEAD
 import { Footprints } from "lucide-react";
-=======
 import { Building, BuildingStatus } from "common/types";
->>>>>>> dev
 import Image, { ImageProps } from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";

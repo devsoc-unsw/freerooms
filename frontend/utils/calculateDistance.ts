@@ -49,14 +49,15 @@ export async function calculateDistance2(
   buildingLat: number,
   buildingLng: number
 ) {
-
   const coordinates = [
     `${userLng},${userLat}`,
-    `${buildingLng},${buildingLat}`
-  ].join(';');
+    `${buildingLng},${buildingLat}`,
+  ].join(";");
 
-  const url = new URL(`https://api.mapbox.com/directions/v5/mapbox/walking/${coordinates}`);
-  const controller = new AbortController()
+  const url = new URL(
+    `https://api.mapbox.com/directions/v5/mapbox/walking/${coordinates}`
+  );
+  const controller = new AbortController();
 
   url.searchParams.set("access_token", MAPBOX_ACCESS_TOKEN);
   url.searchParams.set("geometries", "geojson");
@@ -66,35 +67,32 @@ export async function calculateDistance2(
   try {
     const response = await fetch(url.toString(), {
       method: "GET",
-      signal: controller.signal
-    })
+      signal: controller.signal,
+    });
 
-    const responseBody =
-      (await response.json()) as MapboxDirectionsResponse;
+    const responseBody = (await response.json()) as MapboxDirectionsResponse;
 
     const firstRoute = responseBody.routes?.[0];
 
     if (!isValidMapboxRoute(firstRoute)) {
-      console.log(`failed building ${building.name}`)
-      console.log(buildingLat)
-      console.log(buildingLng)
+      console.log(`failed building ${building.name}`);
+      console.log(buildingLat);
+      console.log(buildingLng);
       throw new Error("Mapbox did not return a usable walking route.");
     }
 
-    console.log("API request HIT")
-    console.log(firstRoute)
+    console.log("API request HIT");
+    console.log(firstRoute);
 
     return {
       distance: Math.round(firstRoute.distance),
-      duration: Math.floor(firstRoute.duration / 60)
-    }
-
+      duration: Math.floor(firstRoute.duration / 60),
+    };
   } catch (err) {
-    console.error(err)
+    console.error(err);
     if (err instanceof DOMException && err.name === "AbortError") {
       return null;
     }
-
   }
 
   return null;

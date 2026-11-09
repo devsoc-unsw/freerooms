@@ -72,7 +72,7 @@ describe("walking ranges", () => {
     });
   });
 
-  // The Matrix API and the Directions API disagree for the same trip   
+  // The Matrix API and the Directions API disagree for the same trip
   // The card shows an estimated range for time and distance
   describe("Matrix vs Directions discrepancy (real campus data)", () => {
     const { trips } = walkingRoutes;

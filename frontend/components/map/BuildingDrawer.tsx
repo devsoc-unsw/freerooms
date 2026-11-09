@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 import type { Building } from "@common/types";
 import BottomSheet, { SheetStage } from "@frontend/components/map/BottomSheet";
-=======
->>>>>>> dev
 import ViewOnMapButton from "@frontend/components/navigation/ViewOnMapButton";
 import RoomAvailabilityBox from "@frontend/components/rooms/RoomAvailabilityBox";
 import Button from "@frontend/components/ui/Button";

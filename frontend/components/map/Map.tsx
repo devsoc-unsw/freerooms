@@ -20,17 +20,12 @@ import {
   setCurrentBuilding,
 } from "@frontend/redux/slices/currentBuildingSlice";
 import { shouldCancelRoute } from "@frontend/utils/routeSelection";
-import calculateDistance from "@frontend/utils/calculateDistance";
-import { calculateDistance2 } from "@frontend/utils/calculateDistance";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Snackbar from "@mui/material/Snackbar";
 import { useTheme } from "@mui/material/styles";
-<<<<<<< HEAD
 import useMediaQuery from "@mui/material/useMediaQuery";
-=======
 import { Building } from "common/types";
->>>>>>> dev
 import type { LngLatBoundsLike } from "mapbox-gl";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";

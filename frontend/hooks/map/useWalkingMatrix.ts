@@ -20,82 +20,102 @@ type WalkingMatrix = {
 };
 
 const fetchMatrixChunk = async (
-  userLat:string,
-  userLng:string,
-  buildings:Building[],
+  userLat: string,
+  userLng: string,
+  buildings: Building[],
   signal: AbortSignal
 ) => {
-  
   const coordinates = [
     `${userLng},${userLat}`,
     ...buildings.map((building) => `${building.long},${building.lat}`),
   ].join(";");
 
   const url = new URL(
-    `https://api.mapbox.com/directions-matrix/v1/mapbox/walking/${coordinates}`);
+    `https://api.mapbox.com/directions-matrix/v1/mapbox/walking/${coordinates}`
+  );
   url.searchParams.set("access_token", MAPBOX_ACCESS_TOKEN);
   url.searchParams.set("sources", "0");
-  url.searchParams.set("destinations", buildings.map((_, index) => index + 1).join(";"))
-  url.searchParams.set("annotations", "distance,duration")
+  url.searchParams.set(
+    "destinations",
+    buildings.map((_, index) => index + 1).join(";")
+  );
+  url.searchParams.set("annotations", "distance,duration");
 
   try {
-
-    const response = await fetch(url.toString(), { signal })
+    const response = await fetch(url.toString(), { signal });
     const responseBody = (await response.json()) as MapboxMatrixResponse;
     return {
       distances: responseBody.distances?.[0] ?? [],
       durations: responseBody.durations?.[0] ?? [],
     };
-    
   } catch (err) {
-    console.error(err)
+    console.error(err);
     if (err instanceof DOMException && err.name === "AbortError") {
       return null;
     }
   }
-  
+
   return null;
-}
+};
 
 const useWalkingMatrix = (
-  userLat:number | undefined, 
-  userLng:number | undefined, 
-  buildings: Building[] | undefined, 
+  userLat: number | undefined,
+  userLng: number | undefined,
+  buildings: Building[] | undefined,
   enabled: boolean
 ) => {
-   
-  const [matrix, setMatrix] = useState<WalkingMatrix | null>({ distances: [], durations: []});
+  const [matrix, setMatrix] = useState<WalkingMatrix | null>({
+    distances: [],
+    durations: [],
+  });
   const lastFetchedRef = useRef<{
-    lat:number,
-    lng:number,
-    fetchedAt:number,
-    buildings: Building[]
+    lat: number;
+    lng: number;
+    fetchedAt: number;
+    buildings: Building[];
   } | null>(null);
 
   useEffect(() => {
-
-    if (!enabled || !buildings || userLat === undefined || userLng === undefined) {
-      setMatrix({ distances: [], durations: []});
+    if (
+      !enabled ||
+      !buildings ||
+      userLat === undefined ||
+      userLng === undefined
+    ) {
+      setMatrix({ distances: [], durations: [] });
       return;
     }
-    
+
     const last = lastFetchedRef.current;
     // Checks if the user's new location is at least 100 metres away from old location
-    if (last && calculateDistance(userLat, userLng, 
-      lastFetchedRef.current?.lat, lastFetchedRef.current?.lng) < MIN_DISTANCE_FOR_API_REQ) {
+    if (
+      last &&
+      calculateDistance(
+        userLat,
+        userLng,
+        lastFetchedRef.current?.lat,
+        lastFetchedRef.current?.lng
+      ) < MIN_DISTANCE_FOR_API_REQ
+    ) {
       return;
     }
 
     // Cooldown timer as user's can still spoof their location
-    if (last && Date.now() - lastFetchedRef.current?.fetchedAt < MIN_TIME_INTERVAL_FOR_API_REQ_MS) {
-      return
+    if (
+      last &&
+      Date.now() - lastFetchedRef.current?.fetchedAt <
+        MIN_TIME_INTERVAL_FOR_API_REQ_MS
+    ) {
+      return;
     }
 
-    const controller = new AbortController;
-   
-    const indexes = buildings 
-      .map((building, i) => (building.lat === 0 && building.long === 0 ? -1 : i))
-      .filter((i) => i !== -1)
+    const controller = new AbortController();
+
+    const indexes = buildings
+      .map((building, i) =>
+        building.lat === 0 && building.long === 0 ? -1 : i
+      )
+      .filter((i) => i !== -1);
 
     const chunks: number[][] = [];
     for (let i = 0; i < buildings.length; i += MAX_DESTINATIONS_PER_REQUEST) {
@@ -113,9 +133,13 @@ const useWalkingMatrix = (
       )
     )
       .then((results) => {
-        const distances: (number | undefined)[] = buildings.map(() => undefined);
-        const durations: (number | undefined)[] = buildings.map(() => undefined);
-        
+        const distances: (number | undefined)[] = buildings.map(
+          () => undefined
+        );
+        const durations: (number | undefined)[] = buildings.map(
+          () => undefined
+        );
+
         results.forEach((result, chunkIndex) => {
           chunks[chunkIndex].forEach((buildingIndex, i) => {
             const distance = result.distances[i];
@@ -127,30 +151,30 @@ const useWalkingMatrix = (
               // Seconds; the UI turns these into minute ranges
               durations[buildingIndex] = duration;
             }
-          })
-        }) 
-        
-        lastFetchedRef.current = { 
-          lat: userLat, 
-          lng: userLng, 
+          });
+        });
+
+        lastFetchedRef.current = {
+          lat: userLat,
+          lng: userLng,
           fetchedAt: Date.now(),
           buildings,
         };
-        setMatrix({ distances, durations })
+        setMatrix({ distances, durations });
       })
       .catch((err) => {
         if (err instanceof DOMException && err.name === "AbortError") {
           return;
         }
         console.error("Walking distances could not be loaded:", err);
-      })
-    
+      });
+
     return () => {
       controller.abort();
     };
-  }, [buildings, userLat, userLng])
+  }, [buildings, userLat, userLng]);
 
   return matrix;
-}
+};
 
 export default useWalkingMatrix;
