@@ -1,0 +1,1061 @@
+{
+ "description": "Mapbox walking Matrix estimates vs Directions routes for 44 UNSW buildings from 3 campus start points, collected 2026-11-09. Origins: mock=151.2298,-33.9179 west=151.2262,-33.9170 east=151.2350,-33.9195. Distances in metres, durations in seconds.",
+ "trips": [
+  {
+   "origin": "mock",
+   "buildingId": "K-G27",
+   "matrixDistance": 668.6,
+   "matrixDuration": 480.9,
+   "routeDistance": 711.4,
+   "routeDuration": 578.5
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-J17",
+   "matrixDistance": 181.7,
+   "matrixDuration": 130.9,
+   "routeDistance": 185.0,
+   "routeDuration": 143.3
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-H13",
+   "matrixDistance": 37.9,
+   "matrixDuration": 27.3,
+   "routeDistance": 40.7,
+   "routeDuration": 26.4
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-E26",
+   "matrixDistance": 643.7,
+   "matrixDuration": 462.8,
+   "routeDistance": 685.7,
+   "routeDuration": 567.4
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-D26",
+   "matrixDistance": 652.9,
+   "matrixDuration": 469.6,
+   "routeDistance": 695.2,
+   "routeDuration": 580.7
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-G6",
+   "matrixDistance": 346.1,
+   "matrixDuration": 249,
+   "routeDistance": 412.2,
+   "routeDuration": 270.9
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-E12",
+   "matrixDistance": 142.8,
+   "matrixDuration": 102.9,
+   "routeDistance": 142.9,
+   "routeDuration": 95.6
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-H20",
+   "matrixDistance": 310.6,
+   "matrixDuration": 223.3,
+   "routeDistance": 321.8,
+   "routeDuration": 276.5
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-B16",
+   "matrixDistance": 301.1,
+   "matrixDuration": 216.7,
+   "routeDistance": 311.0,
+   "routeDuration": 222.8
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-K17",
+   "matrixDistance": 256.8,
+   "matrixDuration": 185.1,
+   "routeDistance": 258.6,
+   "routeDuration": 202.3
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-F12",
+   "matrixDistance": 78.1,
+   "matrixDuration": 56.2,
+   "routeDistance": 77.9,
+   "routeDuration": 47.5
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-G17",
+   "matrixDistance": 243.1,
+   "matrixDuration": 174.6,
+   "routeDistance": 207.2,
+   "routeDuration": 148.9
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-D8",
+   "matrixDistance": 406.9,
+   "matrixDuration": 293,
+   "routeDistance": 418.7,
+   "routeDuration": 271.6
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-D16",
+   "matrixDistance": 254.8,
+   "matrixDuration": 183.2,
+   "routeDistance": 308.2,
+   "routeDuration": 234.4
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-F25",
+   "matrixDistance": 568,
+   "matrixDuration": 408.4,
+   "routeDistance": 610.0,
+   "routeDuration": 517.1
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-C29",
+   "matrixDistance": 788.2,
+   "matrixDuration": 567.1,
+   "routeDistance": 850.0,
+   "routeDuration": 660.8
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-F31",
+   "matrixDistance": 870.4,
+   "matrixDuration": 626.1,
+   "routeDistance": 1222.8,
+   "routeDuration": 924.8
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-F20",
+   "matrixDistance": 357.7,
+   "matrixDuration": 257.3,
+   "routeDistance": 394.0,
+   "routeDuration": 324.7
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-G19",
+   "matrixDistance": 258.9,
+   "matrixDuration": 186.1,
+   "routeDistance": 270.2,
+   "routeDuration": 231.2
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-F10",
+   "matrixDistance": 247.7,
+   "matrixDuration": 178.4,
+   "routeDistance": 249.3,
+   "routeDuration": 172.2
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-J14",
+   "matrixDistance": 45.8,
+   "matrixDuration": 33,
+   "routeDistance": 46.1,
+   "routeDuration": 30.2
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-F8",
+   "matrixDistance": 222.7,
+   "matrixDuration": 160.3,
+   "routeDistance": 256.5,
+   "routeDuration": 195.5
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-F21",
+   "matrixDistance": 431.5,
+   "matrixDuration": 310.3,
+   "routeDistance": 447.6,
+   "routeDuration": 378.1
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-E10",
+   "matrixDistance": 291.1,
+   "matrixDuration": 209.7,
+   "routeDistance": 292.6,
+   "routeDuration": 195.5
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-F23",
+   "matrixDistance": 560.9,
+   "matrixDuration": 403.3,
+   "routeDistance": 602.9,
+   "routeDuration": 511.6
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-D23",
+   "matrixDistance": 482.6,
+   "matrixDuration": 347.1,
+   "routeDistance": 543.9,
+   "routeDuration": 438.2
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-C20",
+   "matrixDistance": 353.1,
+   "matrixDuration": 253.9,
+   "routeDistance": 458.8,
+   "routeDuration": 365.6
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-J12",
+   "matrixDistance": 97.5,
+   "matrixDuration": 70.3,
+   "routeDistance": 97.8,
+   "routeDuration": 62.6
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-K15",
+   "matrixDistance": 72.1,
+   "matrixDuration": 52,
+   "routeDistance": 72.4,
+   "routeDuration": 42.0
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-E19",
+   "matrixDistance": 358.8,
+   "matrixDuration": 258.1,
+   "routeDistance": 389.0,
+   "routeDuration": 317.4
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-K14",
+   "matrixDistance": 79.3,
+   "matrixDuration": 57.2,
+   "routeDistance": 79.7,
+   "routeDuration": 47.9
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-E15",
+   "matrixDistance": 159.8,
+   "matrixDuration": 115,
+   "routeDistance": 193.9,
+   "routeDuration": 138.9
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-F17",
+   "matrixDistance": 360.4,
+   "matrixDuration": 259.2,
+   "routeDistance": 405.3,
+   "routeDuration": 300.2
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-M15",
+   "matrixDistance": 285.4,
+   "matrixDuration": 205.7,
+   "routeDistance": 287.4,
+   "routeDuration": 199.5
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-E8",
+   "matrixDistance": 325.2,
+   "matrixDuration": 234,
+   "routeDistance": 326.7,
+   "routeDuration": 209.1
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-F13",
+   "matrixDistance": 164.4,
+   "matrixDuration": 118.3,
+   "routeDistance": 164.5,
+   "routeDuration": 108.6
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-C24",
+   "matrixDistance": 513.8,
+   "matrixDuration": 369.6,
+   "routeDistance": 575.5,
+   "routeDuration": 459.2
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-E4",
+   "matrixDistance": 442,
+   "matrixDuration": 318.2,
+   "routeDistance": 508.4,
+   "routeDuration": 337.6
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-H6",
+   "matrixDistance": 356.1,
+   "matrixDuration": 256.3,
+   "routeDistance": 549.0,
+   "routeDuration": 346.8
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-H22",
+   "matrixDistance": 332.9,
+   "matrixDuration": 239.4,
+   "routeDistance": 344.0,
+   "routeDuration": 292.2
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-C27",
+   "matrixDistance": 671.1,
+   "matrixDuration": 482.7,
+   "routeDistance": 781.8,
+   "routeDuration": 618.7
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-G14",
+   "matrixDistance": 111.7,
+   "matrixDuration": 80.3,
+   "routeDistance": 111.7,
+   "routeDuration": 75.1
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-G15",
+   "matrixDistance": 123.4,
+   "matrixDuration": 88.8,
+   "routeDistance": 123.6,
+   "routeDuration": 79.3
+  },
+  {
+   "origin": "mock",
+   "buildingId": "K-J18",
+   "matrixDistance": 235,
+   "matrixDuration": 169.4,
+   "routeDistance": 256.9,
+   "routeDuration": 195.8
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-G27",
+   "matrixDistance": 1015.1,
+   "matrixDuration": 729.9,
+   "routeDistance": 1231.4,
+   "routeDuration": 956.7
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-J17",
+   "matrixDistance": 564,
+   "matrixDuration": 406,
+   "routeDistance": 723.9,
+   "routeDuration": 560.6
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-H13",
+   "matrixDistance": 401.7,
+   "matrixDuration": 288.9,
+   "routeDistance": 543.1,
+   "routeDuration": 414.7
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-E26",
+   "matrixDistance": 990.2,
+   "matrixDuration": 711.8,
+   "routeDistance": 1205.8,
+   "routeDuration": 945.6
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-D26",
+   "matrixDistance": 999.4,
+   "matrixDuration": 718.6,
+   "routeDistance": 1215.2,
+   "routeDuration": 958.9
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-G6",
+   "matrixDistance": 115.1,
+   "matrixDuration": 82.9,
+   "routeDistance": 121.6,
+   "routeDuration": 95.3
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-E12",
+   "matrixDistance": 383,
+   "matrixDuration": 275.6,
+   "routeDistance": 397.2,
+   "routeDuration": 309.0
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-H20",
+   "matrixDistance": 657.2,
+   "matrixDuration": 472.3,
+   "routeDistance": 848.1,
+   "routeDuration": 682.9
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-B16",
+   "matrixDistance": 626.3,
+   "matrixDuration": 450.4,
+   "routeDistance": 687.4,
+   "routeDuration": 505.6
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-K17",
+   "matrixDistance": 632.3,
+   "matrixDuration": 455.1,
+   "routeDistance": 723.1,
+   "routeDuration": 555.0
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-F12",
+   "matrixDistance": 335.6,
+   "matrixDuration": 241.4,
+   "routeDistance": 462.2,
+   "routeDuration": 352.9
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-G17",
+   "matrixDistance": 589.6,
+   "matrixDuration": 423.6,
+   "routeDistance": 733.5,
+   "routeDuration": 555.2
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-D8",
+   "matrixDistance": 236.3,
+   "matrixDuration": 170.3,
+   "routeDistance": 241.4,
+   "routeDuration": 170.3
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-D16",
+   "matrixDistance": 580.1,
+   "matrixDuration": 416.9,
+   "routeDistance": 666.4,
+   "routeDuration": 502.1
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-F25",
+   "matrixDistance": 914.6,
+   "matrixDuration": 657.4,
+   "routeDistance": 1130.0,
+   "routeDuration": 895.3
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-C29",
+   "matrixDistance": 1113.5,
+   "matrixDuration": 800.8,
+   "routeDistance": 1234.0,
+   "routeDuration": 946.3
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-F31",
+   "matrixDistance": 1252.7,
+   "matrixDuration": 900.6,
+   "routeDistance": 1594.3,
+   "routeDuration": 1213.9
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-F20",
+   "matrixDistance": 704.2,
+   "matrixDuration": 506.3,
+   "routeDistance": 810.5,
+   "routeDuration": 630.9
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-G19",
+   "matrixDistance": 605.4,
+   "matrixDuration": 435.1,
+   "routeDistance": 796.5,
+   "routeDuration": 637.6
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-F10",
+   "matrixDistance": 326.3,
+   "matrixDuration": 234.9,
+   "routeDistance": 340.3,
+   "routeDuration": 274.6
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-J14",
+   "matrixDistance": 428,
+   "matrixDuration": 308.1,
+   "routeDistance": 588.9,
+   "routeDuration": 446.5
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-F8",
+   "matrixDistance": 193.1,
+   "matrixDuration": 139,
+   "routeDistance": 218.7,
+   "routeDuration": 181.5
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-F21",
+   "matrixDistance": 778,
+   "matrixDuration": 559.3,
+   "routeDistance": 967.7,
+   "routeDuration": 756.3
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-E10",
+   "matrixDistance": 310.5,
+   "matrixDuration": 223.6,
+   "routeDistance": 325.1,
+   "routeDuration": 229.8
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-F23",
+   "matrixDistance": 899.5,
+   "matrixDuration": 646.9,
+   "routeDistance": 1123.0,
+   "routeDuration": 889.8
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-D23",
+   "matrixDistance": 807.8,
+   "matrixDuration": 580.8,
+   "routeDistance": 928.0,
+   "routeDuration": 723.7
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-C20",
+   "matrixDistance": 678.3,
+   "matrixDuration": 487.6,
+   "routeDistance": 798.1,
+   "routeDuration": 618.5
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-J12",
+   "matrixDistance": 344.6,
+   "matrixDuration": 248,
+   "routeDistance": 513.4,
+   "routeDuration": 395.8
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-K15",
+   "matrixDistance": 436.1,
+   "matrixDuration": 313.9,
+   "routeDistance": 615.2,
+   "routeDuration": 458.3
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-E19",
+   "matrixDistance": 705.3,
+   "matrixDuration": 507.1,
+   "routeDistance": 839.7,
+   "routeDuration": 650.9
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-K14",
+   "matrixDistance": 461.6,
+   "matrixDuration": 332.3,
+   "routeDistance": 622.5,
+   "routeDuration": 464.2
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-E15",
+   "matrixDistance": 485,
+   "matrixDuration": 348.7,
+   "routeDistance": 649.3,
+   "routeDuration": 498.1
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-F17",
+   "matrixDistance": 685.7,
+   "matrixDuration": 492.9,
+   "routeDistance": 763.5,
+   "routeDuration": 567.8
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-M15",
+   "matrixDistance": 623.9,
+   "matrixDuration": 449.3,
+   "routeDistance": 624.2,
+   "routeDuration": 468.3
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-E8",
+   "matrixDistance": 200.6,
+   "matrixDuration": 144.5,
+   "routeDistance": 215.0,
+   "routeDuration": 164.0
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-F13",
+   "matrixDistance": 415,
+   "matrixDuration": 298.6,
+   "routeDistance": 429.2,
+   "routeDuration": 333.0
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-C24",
+   "matrixDistance": 839.1,
+   "matrixDuration": 603.3,
+   "routeDistance": 959.6,
+   "routeDuration": 744.6
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-E4",
+   "matrixDistance": 137,
+   "matrixDuration": 98.9,
+   "routeDistance": 137.3,
+   "routeDuration": 109.3
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-H6",
+   "matrixDistance": 143.5,
+   "matrixDuration": 103.4,
+   "routeDistance": 143.8,
+   "routeDuration": 88.9
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-H22",
+   "matrixDistance": 679.5,
+   "matrixDuration": 488.4,
+   "routeDistance": 870.3,
+   "routeDuration": 698.6
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-C27",
+   "matrixDistance": 996.3,
+   "matrixDuration": 716.4,
+   "routeDistance": 1165.9,
+   "routeDuration": 904.2
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-G14",
+   "matrixDistance": 458.2,
+   "matrixDuration": 329.3,
+   "routeDistance": 577.6,
+   "routeDuration": 432.8
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-G15",
+   "matrixDistance": 448.7,
+   "matrixDuration": 322.5,
+   "routeDistance": 558.3,
+   "routeDuration": 419.0
+  },
+  {
+   "origin": "west",
+   "buildingId": "K-J18",
+   "matrixDistance": 617.3,
+   "matrixDuration": 444.5,
+   "routeDistance": 783.2,
+   "routeDuration": 602.2
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-G27",
+   "matrixDistance": 326.1,
+   "matrixDuration": 235,
+   "routeDistance": 347.2,
+   "routeDuration": 280.1
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-J17",
+   "matrixDistance": 522.2,
+   "matrixDuration": 375.7,
+   "routeDistance": 549.4,
+   "routeDuration": 398.8
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-H13",
+   "matrixDistance": 593.6,
+   "matrixDuration": 427.1,
+   "routeDistance": 610.0,
+   "routeDuration": 423.8
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-E26",
+   "matrixDistance": 293.7,
+   "matrixDuration": 211.4,
+   "routeDistance": 299.5,
+   "routeDuration": 252.9
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-D26",
+   "matrixDistance": 506.3,
+   "matrixDuration": 364.5,
+   "routeDistance": 651.7,
+   "routeDuration": 499.3
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-G6",
+   "matrixDistance": 943.5,
+   "matrixDuration": 678.3,
+   "routeDistance": 1022.6,
+   "routeDuration": 698.0
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-E12",
+   "matrixDistance": 737.7,
+   "matrixDuration": 530.6,
+   "routeDistance": 753.2,
+   "routeDuration": 523.4
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-H20",
+   "matrixDistance": 378.1,
+   "matrixDuration": 272,
+   "routeDistance": 394.7,
+   "routeDuration": 312.5
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-B16",
+   "matrixDistance": 740.6,
+   "matrixDuration": 532.9,
+   "routeDistance": 757.8,
+   "routeDuration": 516.5
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-K17",
+   "matrixDistance": 604.4,
+   "matrixDuration": 435.1,
+   "routeDistance": 630.6,
+   "routeDuration": 434.2
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-F12",
+   "matrixDistance": 673.1,
+   "matrixDuration": 483.9,
+   "routeDistance": 688.3,
+   "routeDuration": 474.6
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-G17",
+   "matrixDistance": 472.4,
+   "matrixDuration": 339.7,
+   "routeDistance": 479.2,
+   "routeDuration": 340.1
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-D8",
+   "matrixDistance": 1001.8,
+   "matrixDuration": 720.7,
+   "routeDistance": 1029.0,
+   "routeDuration": 698.7
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-D16",
+   "matrixDistance": 636.4,
+   "matrixDuration": 457.8,
+   "routeDistance": 687.1,
+   "routeDuration": 481.7
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-F25",
+   "matrixDistance": 330.1,
+   "matrixDuration": 237.7,
+   "routeDistance": 341.1,
+   "routeDuration": 287.4
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-C29",
+   "matrixDistance": 403,
+   "matrixDuration": 290.5,
+   "routeDistance": 404.3,
+   "routeDuration": 311.7
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-F31",
+   "matrixDistance": 410.1,
+   "matrixDuration": 295.2,
+   "routeDistance": 410.4,
+   "routeDuration": 307.2
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-F20",
+   "matrixDistance": 449.9,
+   "matrixDuration": 323.6,
+   "routeDistance": 460.8,
+   "routeDuration": 342.4
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-G19",
+   "matrixDistance": 416.9,
+   "matrixDuration": 299.7,
+   "routeDistance": 426.3,
+   "routeDuration": 320.4
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-F10",
+   "matrixDistance": 842.7,
+   "matrixDuration": 606.1,
+   "routeDistance": 859.7,
+   "routeDuration": 599.4
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-J14",
+   "matrixDistance": 586.7,
+   "matrixDuration": 422,
+   "routeDistance": 613.9,
+   "routeDuration": 428.2
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-F8",
+   "matrixDistance": 820.1,
+   "matrixDuration": 589.6,
+   "routeDistance": 857.8,
+   "routeDuration": 616.6
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-F21",
+   "matrixDistance": 380.1,
+   "matrixDuration": 273.4,
+   "routeDistance": 396.9,
+   "routeDuration": 328.3
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-E10",
+   "matrixDistance": 886,
+   "matrixDuration": 637.4,
+   "routeDistance": 903.0,
+   "routeDuration": 622.6
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-F23",
+   "matrixDistance": 414.3,
+   "matrixDuration": 298.2,
+   "routeDistance": 425.4,
+   "routeDuration": 345.8
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-D23",
+   "matrixDistance": 432.4,
+   "matrixDuration": 311.1,
+   "routeDistance": 449.8,
+   "routeDuration": 349.6
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-C20",
+   "matrixDistance": 498.2,
+   "matrixDuration": 358.5,
+   "routeDistance": 515.0,
+   "routeDuration": 378.7
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-J12",
+   "matrixDistance": 671.9,
+   "matrixDuration": 483.5,
+   "routeDistance": 699.1,
+   "routeDuration": 483.7
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-K15",
+   "matrixDistance": 646.5,
+   "matrixDuration": 465.2,
+   "routeDistance": 673.7,
+   "routeDuration": 463.2
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-E19",
+   "matrixDistance": 468.1,
+   "matrixDuration": 336.8,
+   "routeDistance": 484.8,
+   "routeDuration": 356.3
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-K14",
+   "matrixDistance": 620.2,
+   "matrixDuration": 446.2,
+   "routeDistance": 647.5,
+   "routeDuration": 445.9
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-E15",
+   "matrixDistance": 649.5,
+   "matrixDuration": 467.1,
+   "routeDistance": 665.0,
+   "routeDuration": 471.2
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-F17",
+   "matrixDistance": 752.6,
+   "matrixDuration": 541.4,
+   "routeDistance": 803.3,
+   "routeDuration": 560.6
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-M15",
+   "matrixDistance": 559.4,
+   "matrixDuration": 402.7,
+   "routeDistance": 559.7,
+   "routeDuration": 369.1
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-E8",
+   "matrixDistance": 920.1,
+   "matrixDuration": 661.7,
+   "routeDistance": 937.0,
+   "routeDuration": 636.2
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-F13",
+   "matrixDistance": 707.5,
+   "matrixDuration": 508.6,
+   "routeDistance": 774.9,
+   "routeDuration": 533.8
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-C24",
+   "matrixDistance": 464.2,
+   "matrixDuration": 334.1,
+   "routeDistance": 481.4,
+   "routeDuration": 370.5
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-E4",
+   "matrixDistance": 1039.4,
+   "matrixDuration": 747.5,
+   "routeDistance": 1118.7,
+   "routeDuration": 764.7
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-H6",
+   "matrixDistance": 955.7,
+   "matrixDuration": 687.7,
+   "routeDistance": 1037.3,
+   "routeDuration": 683.1
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-H22",
+   "matrixDistance": 355.8,
+   "matrixDuration": 255.9,
+   "routeDistance": 372.5,
+   "routeDuration": 296.0
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-C27",
+   "matrixDistance": 519.5,
+   "matrixDuration": 374.6,
+   "routeDistance": 485.9,
+   "routeDuration": 375.3
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-G14",
+   "matrixDistance": 564.9,
+   "matrixDuration": 406.2,
+   "routeDistance": 580.3,
+   "routeDuration": 401.4
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-G15",
+   "matrixDistance": 584.4,
+   "matrixDuration": 420.2,
+   "routeDistance": 599.6,
+   "routeDuration": 415.2
+  },
+  {
+   "origin": "east",
+   "buildingId": "K-J18",
+   "matrixDistance": 461.9,
+   "matrixDuration": 332.4,
+   "routeDistance": 507.1,
+   "routeDuration": 368.2
+  }
+ ]
+}
