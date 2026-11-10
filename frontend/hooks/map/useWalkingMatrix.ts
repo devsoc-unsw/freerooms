@@ -1,6 +1,6 @@
-import { Building } from "@common/types";
 import { MAPBOX_ACCESS_TOKEN } from "@frontend/config";
 import calculateDistance from "@frontend/utils/calculateDistance";
+import { Building } from "common/types";
 import { useEffect, useRef, useState } from "react";
 
 const MAX_DESTINATIONS_PER_REQUEST = 24;
@@ -22,8 +22,8 @@ type WalkingMatrix = {
 const EMPTY_MATRIX: WalkingMatrix = { distances: [], durations: [] };
 
 const fetchMatrixChunk = async (
-  userLat: string,
-  userLng: string,
+  userLat: number,
+  userLng: number,
   buildings: Building[],
   signal: AbortSignal
 ) => {
@@ -90,12 +90,8 @@ const useWalkingMatrix = (
     // Checks if the user's new location is at least 100 metres away from old location
     if (
       last &&
-      calculateDistance(
-        userLat,
-        userLng,
-        lastFetchedRef.current?.lat,
-        lastFetchedRef.current?.lng
-      ) < MIN_DISTANCE_FOR_API_REQ
+      calculateDistance(userLat, userLng, last.lat, last.lng) <
+        MIN_DISTANCE_FOR_API_REQ
     ) {
       return;
     }
@@ -103,8 +99,7 @@ const useWalkingMatrix = (
     // Cooldown timer as user's can still spoof their location
     if (
       last &&
-      Date.now() - lastFetchedRef.current?.fetchedAt <
-        MIN_TIME_INTERVAL_FOR_API_REQ_MS
+      Date.now() - last.fetchedAt < MIN_TIME_INTERVAL_FOR_API_REQ_MS
     ) {
       return;
     }
@@ -141,6 +136,11 @@ const useWalkingMatrix = (
         );
 
         results.forEach((result, chunkIndex) => {
+          // A failed or cancelled chunk leaves its buildings without values
+          if (!result) {
+            return;
+          }
+
           chunks[chunkIndex].forEach((buildingIndex, i) => {
             const distance = result.distances[i];
             const duration = result.durations[i];

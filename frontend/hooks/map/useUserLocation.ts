@@ -125,10 +125,8 @@ const useUserLocation = () => {
 
   return {
     location,
-    // userLat: location?.lat,
-    // userLng: location?.lng,
-    userLat: -33.9179,
-    userLng: 151.2298,
+    userLat: location?.lat,
+    userLng: location?.lng,
     isLocating,
     locationError,
     refreshLocation,
