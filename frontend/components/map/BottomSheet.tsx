@@ -130,6 +130,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
   return (
     <SheetContainer
       data-testid="bottom-sheet"
+      aria-label="building-drawer"
       sx={{
         height: fullHeight,
         // Always full height, moved down so only visibleHeight is on screen

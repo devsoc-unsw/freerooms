@@ -51,12 +51,12 @@ describe("BuildingDrawer", () => {
     expect(getComputedStyle(drawer).getPropertyValue("width")).toBe("400px");
   });
 
-  it("Building Drawer has correct width for mobile view", () => {
+  it("Building Drawer uses the bottom sheet for mobile view", () => {
     (useMediaQuery as unknown as jest.Mock).mockReturnValue(true);
     renderWithRedux(<BuildingDrawer />, { preloadedState });
     const drawer = screen.getByLabelText(/building-drawer/i);
-    expect(drawer).toBeInTheDocument();
-    expect(getComputedStyle(drawer).getPropertyValue("width")).toBe("100%");
+    expect(drawer).toBe(screen.getByTestId("bottom-sheet"));
+    expect(screen.getAllByText(/Ainsworth/i).length).toBeGreaterThan(0);
   });
 
   it("Correct building name is displayed", () => {
