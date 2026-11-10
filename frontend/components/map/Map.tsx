@@ -14,6 +14,7 @@ import useBuilding from "@frontend/hooks/buildings/useBuilding";
 import useBuildings from "@frontend/hooks/buildings/useBuildings";
 import useMapboxRoute from "@frontend/hooks/map/useMapboxRoute";
 import useUserLocation from "@frontend/hooks/map/useUserLocation";
+import useWalkingMatrix from "@frontend/hooks/map/useWalkingMatrix";
 import { useDispatch, useSelector } from "@frontend/redux/hooks";
 import {
   selectCurrentBuilding,
@@ -28,11 +29,10 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { Building } from "common/types";
 import type { LngLatBoundsLike } from "mapbox-gl";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import type { MapRef } from "react-map-gl/mapbox";
 import MapboxMap, { Layer, Marker, Source } from "react-map-gl/mapbox";
 import { useDebounceValue } from "usehooks-ts";
-import useWalkingMatrix from "@frontend/hooks/map/useWalkingMatrix";
 
 const center = {
   lat: -33.91767,
@@ -103,7 +103,7 @@ export const Map = () => {
     refreshLocation,
     clearLocationError,
   } = useUserLocation();
-  
+
   const {
     route,
     routeSummary,
@@ -114,23 +114,15 @@ export const Map = () => {
     clearRouteError,
   } = useMapboxRoute();
 
-  { /* Old Method */ }
-  // const distances = useMemo(() => {
-  //   if (
-  //     buildings &&
-  //     userLat !== undefined &&
-  //     userLng !== undefined &&
-  //     isInBounds(userLat, userLng)
-  //   ) {
-  //     return buildings.map((building) =>
-  //       calculateDistance(userLat, userLng, building.lat, building.long)
-  //     );
-  //   }
-  //   return [];
-  // }, [buildings, userLat, userLng]);
-  
-  { /* New Method */ }
-  const { distances, durations } = useWalkingMatrix(userLat, userLng, buildings, true)
+  {
+    /* New Method */
+  }
+  const { distances, durations } = useWalkingMatrix(
+    userLat,
+    userLng,
+    buildings,
+    true
+  );
 
   // Walking info for the building open in the drawer; prefer the loaded route's numbers
   const selectedBuilding = useSelector(selectCurrentBuilding);

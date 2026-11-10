@@ -19,6 +19,8 @@ type WalkingMatrix = {
   durations: (number | undefined)[];
 };
 
+const EMPTY_MATRIX: WalkingMatrix = { distances: [], durations: [] };
+
 const fetchMatrixChunk = async (
   userLat: string,
   userLng: string,
@@ -64,10 +66,7 @@ const useWalkingMatrix = (
   buildings: Building[] | undefined,
   enabled: boolean
 ) => {
-  const [matrix, setMatrix] = useState<WalkingMatrix | null>({
-    distances: [],
-    durations: [],
-  });
+  const [matrix, setMatrix] = useState<WalkingMatrix>(EMPTY_MATRIX);
   const lastFetchedRef = useRef<{
     lat: number;
     lng: number;
@@ -82,7 +81,8 @@ const useWalkingMatrix = (
       userLat === undefined ||
       userLng === undefined
     ) {
-      setMatrix({ distances: [], durations: [] });
+      // Forget the last fetch so it refetches when re-enabled
+      lastFetchedRef.current = null;
       return;
     }
 
@@ -172,9 +172,16 @@ const useWalkingMatrix = (
     return () => {
       controller.abort();
     };
-  }, [buildings, userLat, userLng]);
+  }, [buildings, userLat, userLng, enabled]);
 
-  return matrix;
+  const isActive =
+    enabled &&
+    buildings !== undefined &&
+    userLat !== undefined &&
+    userLng !== undefined;
+
+  // Disabled or no location: show nothing, without storing it in state
+  return isActive ? matrix : EMPTY_MATRIX;
 };
 
 export default useWalkingMatrix;

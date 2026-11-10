@@ -9,9 +9,9 @@ import useSWR from "swr/immutable";
 const fetcher = ([url, datetime, filters]: [string, Date, AllRoomsFilters]) =>
   axios
     .get(url, {
-      params: { 
-        datetime, 
-        ...Object.fromEntries(Object.entries(filters).filter(([, f]) => f)),    
+      params: {
+        datetime,
+        ...Object.fromEntries(Object.entries(filters).filter(([, f]) => f)),
       },
     })
     .then((res) => res.data);
@@ -23,7 +23,7 @@ const useAllRooms = (filters: AllRoomsFilters) => {
     [API_URL + "/rooms/search", datetime, filters],
     fetcher
   );
-  console.log(filters)
+  console.log(filters);
   return {
     rooms: data,
     isValidating,

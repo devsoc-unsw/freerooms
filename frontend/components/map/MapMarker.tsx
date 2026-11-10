@@ -15,12 +15,11 @@ import { alpha, Fade, useMediaQuery } from "@mui/material";
 import { Typography, TypographyProps } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import { styled, useTheme } from "@mui/material/styles";
-import { Footprints } from "lucide-react";
 import { Building, BuildingStatus } from "common/types";
+import { Footprints } from "lucide-react";
 import Image, { ImageProps } from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
-import Button from "@frontend/components/ui/Button";
 
 const MarkerHoverMainBox = styled(Box)<BoxProps>(({ theme }) => ({
   position: "absolute",
@@ -84,23 +83,6 @@ const MarkerHoverTitleBox = styled(Box)<BoxProps>(({ theme }) => ({
   margin: 10,
   pointerEvents: "none",
 }));
-
-{ /* Create own component file if needed */ }
-const DirectionsButton = styled(Button)(({ theme }) => ({
-  width: "100%",
-  marginTop: theme.spacing(1.5),
-  padding: `${theme.space.sm}px ${theme.space.xs}px`,
-  backgroundColor: theme.palette.primary.main,
-  color: theme.palette.primary.contrastText,
-  fontSize: "14px",
-  fontWeight: theme.typography.fontWeightBold,
-
-  "&:hover": {
-    backgroundColor: theme.palette.primary.dark,
-  },
-}));
-
-
 
 const MapMarker: React.FC<{
   buildingId: string;
@@ -325,7 +307,6 @@ const MarkerHover: React.FC<{
               </MarkerHoverPillText>
             </MarkerHoverPill>
           )}
-
         </MarkerHoverInfoBox>
       </MarkerHoverTitleBox>
     </MarkerHoverMainBox>
