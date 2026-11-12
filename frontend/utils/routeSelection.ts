@@ -1,5 +1,4 @@
 type RouteSelectionArguments = {
-  // Building the current route goes to, if one has loaded
   routeDestinationId: string | undefined;
   isRouteLoading: boolean;
   selectedBuildingId: string;

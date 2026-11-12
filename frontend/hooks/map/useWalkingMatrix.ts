@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 
 const MAX_DESTINATIONS_PER_REQUEST = 24;
 const MIN_DISTANCE_FOR_API_REQ = 100;
-const MIN_TIME_INTERVAL_FOR_API_REQ_MS = 120000; 
+const MIN_TIME_INTERVAL_FOR_API_REQ_MS = 120000;
 
 type MapboxMatrixResponse = {
   code?: string;

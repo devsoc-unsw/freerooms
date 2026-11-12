@@ -1,7 +1,3 @@
-/**
- * Snapping logic for the mobile building bottom sheet
- */
-
 export type SheetStage = "peek" | "half" | "full";
 
 export const SHEET_STAGES: SheetStage[] = ["peek", "half", "full"];
@@ -31,7 +27,7 @@ export const getStageHeight = (
   }
 };
 
-// Visible height while dragging (positive offset = dragged down), kept between peek and full
+// Visible height while dragging, kept between peek and full
 export const getVisibleHeight = (
   stage: SheetStage,
   dragOffset: number,
@@ -42,7 +38,7 @@ export const getVisibleHeight = (
     Math.max(PEEK_HEIGHT, getStageHeight(stage, viewportHeight) - dragOffset)
   );
 
-// Tapping opens the sheet further; at full it drops back to half, never all the way to peek
+// Tapping opens the sheet further
 export const getTapStage = (stage: SheetStage): SheetStage =>
   stage === "peek" ? "half" : stage === "half" ? "full" : "half";
 
@@ -64,9 +60,7 @@ const getNearestStage = (
 
 type ReleaseArguments = {
   stage: SheetStage;
-  // Total distance dragged (px, positive = down)
   dragOffset: number;
-  // Average speed of the drag (px per ms, positive = down)
   velocity: number;
   viewportHeight: number;
 };
