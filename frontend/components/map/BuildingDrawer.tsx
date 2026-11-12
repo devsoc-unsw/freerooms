@@ -80,13 +80,11 @@ const PeekRow = styled(Box)<BoxProps>(({ theme }) => ({
   justifyContent: "space-between",
   alignItems: "center",
   gap: theme.space.sm,
-  // Lines up with the header below (building name and close button)
   paddingLeft: theme.spacing(3),
   paddingRight: theme.space.md,
 }));
 
 const PeekText = styled(Box)<BoxProps>(() => ({
-  // Lets long building names truncate instead of pushing the button off
   minWidth: 0,
 }));
 
@@ -94,14 +92,10 @@ type BuildingDrawerProps = {
   onGetDirections?: (building: Building) => void | Promise<void>;
   isDirectionsLoading?: boolean;
   date?: string;
-  // Walking distance (m) and duration (s) to the building, if known
   distance?: number;
   duration?: number;
-  // True once these come from a loaded route rather than a Matrix estimate
   isWalkingExact?: boolean;
-  // Called when the mobile sheet is collapsed to its lowest stage
   onCollapse?: (building: Building) => void;
-  // Called when the drawer is closed with the close button
   onClose?: (building: Building) => void;
 };
 
@@ -216,7 +210,6 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
         </Box>
         <StatusBox>
           {!rooms ? (
-            // loading
             <CircularProgress size={20} thickness={5} disableShrink />
           ) : null}
         </StatusBox>
@@ -225,7 +218,6 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
       <CloseButton
         aria-label="Close"
         onClick={onClose}
-        // The mobile sheet's drag handle includes this header, so don't start a drag
         onPointerDown={(event) => event.stopPropagation()}
       >
         <CloseIcon />
@@ -242,7 +234,6 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
           width={946}
           height={648}
           style={{ objectFit: "cover" }}
-          // Shorter on mobile so Get Directions fits in the half-height sheet
           sx={isMobile ? { height: 160 } : undefined}
           priority={true}
         />
@@ -304,18 +295,15 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
       <BottomSheet
         stage={sheetStage}
         onStageChange={(stage) => {
-          // Only when moving into peek, not on every render
           if (stage === "peek" && sheetStage !== "peek") {
             onCollapse?.(building);
           }
           setSheet({ buildingId: building.id, stage });
         }}
         handleContent={
-          // Collapsed shows walking info; otherwise the header is the drag area
           sheetStage === "peek" ? (
             <PeekRow>
               <PeekText>
-                {/* Falls back to the name until walking info is known */}
                 <Typography variant="h3" noWrap>
                   {durationText ?? distanceText ?? building.name}
                 </Typography>
@@ -333,7 +321,6 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
               <CloseButton
                 aria-label="Close"
                 onClick={onClose}
-                // Don't let the sheet's drag handle treat this press as a drag or tap
                 onPointerDown={(event) => event.stopPropagation()}
               >
                 <CloseIcon />

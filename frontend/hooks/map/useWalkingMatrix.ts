@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 
 const MAX_DESTINATIONS_PER_REQUEST = 24;
 const MIN_DISTANCE_FOR_API_REQ = 100;
-const MIN_TIME_INTERVAL_FOR_API_REQ_MS = 60000; // could double it to 2 minutes
+const MIN_TIME_INTERVAL_FOR_API_REQ_MS = 120000; 
 
 type MapboxMatrixResponse = {
   code?: string;
@@ -96,7 +96,7 @@ const useWalkingMatrix = (
       return;
     }
 
-    // Cooldown timer as user's can still spoof their location
+    // Cooldown timer (2 minutes) as user's can still spoof their location
     if (
       last &&
       Date.now() - last.fetchedAt < MIN_TIME_INTERVAL_FOR_API_REQ_MS
@@ -148,7 +148,6 @@ const useWalkingMatrix = (
               distances[buildingIndex] = Math.round(distance);
             }
             if (duration != null) {
-              // Seconds; the UI turns these into minute ranges
               durations[buildingIndex] = duration;
             }
           });
@@ -180,7 +179,6 @@ const useWalkingMatrix = (
     userLat !== undefined &&
     userLng !== undefined;
 
-  // Disabled or no location: show nothing, without storing it in state
   return isActive ? matrix : EMPTY_MATRIX;
 };
 

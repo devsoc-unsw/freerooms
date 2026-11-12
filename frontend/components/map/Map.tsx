@@ -74,7 +74,6 @@ const LocationMarker = () => {
 };
 
 export const Map = () => {
-  // Fetch data
   const { buildings } = useBuildings();
   const { isDarkMode } = useContext(DarkModeContext);
   const dispatch = useDispatch();
@@ -82,16 +81,13 @@ export const Map = () => {
   const mapRef = useRef<MapRef>(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
 
-  // Use debounce to allow moving from marker to popup without popup hiding
   const [currentHover, setCurrentHover] = useState<Building | null>(null);
   const [debouncedCurrentHover] = useDebounceValue(currentHover, 50);
 
   const styleArray = isDarkMode ? MAPBOX_STYLE_DARK : MAPBOX_STYLE_LIGHT;
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  // Mobile only centres on a building once, for a link that opened the map
   const hasFlownOnLoadRef = useRef(false);
-  // Set when collapsing the mobile sheet requests a route, so the map stays put
   const skipNextRouteZoomRef = useRef(false);
 
   // Get current location of user
@@ -114,9 +110,6 @@ export const Map = () => {
     clearRouteError,
   } = useMapboxRoute();
 
-  {
-    /* New Method */
-  }
   const { distances, durations } = useWalkingMatrix(
     userLat,
     userLng,
@@ -139,7 +132,6 @@ export const Map = () => {
   const selectedDuration = selectedRoute
     ? selectedRoute.durationSeconds
     : durations[selectedIndex];
-  //set current building to search param query - THIS IS WHERE OTHER QUERIES CAN GO
   const searchParams = useSearchParams();
   const buildingId = searchParams.get("building");
   const { building } = useBuilding(buildingId || "");
@@ -233,7 +225,7 @@ export const Map = () => {
     void handleGetDirections(destinationBuilding, { keepDrawerOpen: true });
   };
 
-  // Picking a different building cancels the current (or still loading) route
+  // Picking a different building cancels the current route
   const handleMarkerSelect = (selected: Building) => {
     if (
       shouldCancelRoute({
@@ -301,7 +293,6 @@ export const Map = () => {
               >
                 <MapMarker
                   buildingId={building.id}
-                  // The route's own numbers once it has loaded for this building
                   distance={
                     routeSummary?.destinationBuildingId === building.id
                       ? routeSummary.distanceMeters
@@ -352,7 +343,6 @@ export const Map = () => {
           )}
         </MapboxMap>
 
-        {/* Hidden while the drawer shows the same building, its peek row has the numbers */}
         {routeSummary &&
           routeSummary.destinationBuildingId !== selectedBuilding?.id && (
             <DirectionsSummary summary={routeSummary} onClose={clearRoute} />

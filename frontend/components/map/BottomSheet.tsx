@@ -28,7 +28,6 @@ const SheetContainer = styled(Box)<BoxProps>(({ theme }) => ({
 
 const Handle = styled(Box)<BoxProps>(() => ({
   flexShrink: 0,
-  // Stop the browser scrolling the page while the sheet is dragged
   touchAction: "none",
   cursor: "grab",
 }));
@@ -44,16 +43,12 @@ const Puller = styled(Box)<BoxProps>(({ theme }) => ({
 type BottomSheetProps = {
   stage: SheetStage;
   onStageChange: (stage: SheetStage) => void;
-  // Draggable area under the puller, always visible
   handleContent: React.ReactNode;
-  // Revealed as the sheet is pulled up
   children: React.ReactNode;
 };
 
 type DragState = {
   offset: number;
-  // Screen height when the drag started, so mobile toolbars showing/hiding
-  // mid-drag don't move the snap points
   viewportHeight: number;
 };
 
@@ -66,10 +61,8 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
 }) => {
   const { height: windowHeight } = useWindowSize();
 
-  // Rendering state for the current drag, null when idle
   const [drag, setDrag] = useState<DragState | null>(null);
 
-  // Read by the pointer handlers, which can fire before React re-renders
   const dragRef = useRef<
     (DragState & { startY: number; startTime: number }) | null
   >(null);
@@ -95,7 +88,6 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
       startTime: Date.now(),
     };
     setDrag({ offset: 0, viewportHeight: windowHeight });
-    // Keep receiving move events even if the pointer leaves the handle
     event.currentTarget.setPointerCapture?.(event.pointerId);
   };
 
@@ -133,26 +125,22 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
       aria-label="building-drawer"
       sx={{
         height: fullHeight,
-        // Always full height, moved down so only visibleHeight is on screen
         transform: `translateY(${fullHeight - visibleHeight}px)`,
         transition: drag ? "none" : "transform 250ms ease-out",
       }}
     >
       <Handle
         data-testid="bottom-sheet-handle"
-        // Full peek height only when collapsed, otherwise fit the content
         sx={{ height: stage === "peek" ? PEEK_HEIGHT : "auto" }}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
-        // The browser took over the gesture, so stay on the current stage
         onPointerCancel={endDrag}
       >
         <Puller />
         {handleContent}
       </Handle>
 
-      {/* Only scroll once fully open, so dragging and scrolling don't fight */}
       <Box sx={{ flex: 1, overflowY: stage === "full" ? "auto" : "hidden" }}>
         {children}
       </Box>

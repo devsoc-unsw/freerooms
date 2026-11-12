@@ -94,7 +94,6 @@ const MapMarker: React.FC<{
   currentHover: Building | null;
   setCurrentHover: (building: Building | null) => void;
   isRouteDestination?: boolean;
-  // Called when this marker is tapped or clicked
   onSelect?: (building: Building) => void;
 }> = ({
   buildingId,
@@ -106,13 +105,11 @@ const MapMarker: React.FC<{
   isRouteDestination = false,
   onSelect,
 }) => {
-  // Get building data
   const { building } = useBuilding(buildingId);
   const { status: liveStatus } = useBuildingStatus(buildingId);
   const theme = useTheme();
   const router = useRouter();
 
-  // This one uses stale data so markers don't disappear
   const status: BuildingStatus | undefined = liveStatus;
   const freerooms = getNumFreerooms(status);
   const totalRooms = getTotalRooms(status);
@@ -123,10 +120,8 @@ const MapMarker: React.FC<{
   const currentBuilding = useSelector(selectCurrentBuilding);
   const isCurrentBuilding = currentBuilding?.id === building?.id;
 
-  // Visible if selected or current destination
   const isSelected = isCurrentBuilding || isRouteDestination;
 
-  // Mobile shows the building in the bottom sheet instead of the hover card
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const showPopup = !isMobile && currentHover?.id === building?.id;
   const [appearAbove, setAppearAbove] = React.useState(false);
@@ -137,7 +132,7 @@ const MapMarker: React.FC<{
       onSelect?.(building);
     }
     dispatch(setCurrentBuilding(building || null));
-    params.set("building", buildingId); // Add or update the 'query' param
+    params.set("building", buildingId);
     router.push(`/map?${params.toString()}`);
   };
 
