@@ -1,7 +1,7 @@
 import CircularRating from "@frontend/components/ratings/CircularRating";
 import DecimalStarRating from "@frontend/components/ratings/DecimalStarRating";
 import LinearRating from "@frontend/components/ratings/LinearRating";
-import useRoomRatings from "@frontend/hooks/useRoomRatings";
+import useRoomRatings from "@frontend/hooks/ratings/useRoomRatings";
 import Box from "@mui/material/Box";
 import { Stack, useMediaQuery } from "@mui/system";
 import React from "react";

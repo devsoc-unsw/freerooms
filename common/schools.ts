@@ -1,4 +1,4 @@
-import { School } from "./types";
+import { School } from "./types.js";
 
 const schools: Record<string, School> = {
     "ARTSC": {

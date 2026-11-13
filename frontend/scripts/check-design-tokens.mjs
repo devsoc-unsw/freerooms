@@ -6,7 +6,6 @@ const baselinePath = join(import.meta.dirname, "design-token-baseline.json");
 const sourceDirectories = [
   "app",
   "components",
-  "views",
   "hooks",
   "utils",
   "redux",

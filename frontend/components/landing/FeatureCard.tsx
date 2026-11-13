@@ -25,11 +25,11 @@ const StyledParentDiv = styled("div")(({ theme }) => ({
   },
 }));
 
-const StyledIconDiv = styled("div")(({ theme }) => ({
+const StyledIconDiv = styled("div")(() => ({
   marginTop: "2rem",
 }));
 
-const StyledHeading = styled("h2")(({ theme }) => ({
+const StyledHeading = styled("h2")(() => ({
   marginTop: "0rem",
   fontSize: "2rem",
 }));

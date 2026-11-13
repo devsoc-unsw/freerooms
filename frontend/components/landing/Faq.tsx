@@ -125,7 +125,7 @@ const StyledAccordionParent = styled("div")(({ theme }) => ({
   },
 }));
 
-const StyledAccordionContainer = styled("div")(({ theme }) => ({
+const StyledAccordionContainer = styled("div")(() => ({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -146,7 +146,7 @@ const StyledHeading = styled("h2")(({ theme }) => ({
   },
 }));
 
-const StyledHeaderDiv = styled("div")(({ theme }) => ({
+const StyledHeaderDiv = styled("div")(() => ({
   display: "flex",
   flexDirection: "column",
   marginBottom: "3rem",

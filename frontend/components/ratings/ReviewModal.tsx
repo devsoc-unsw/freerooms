@@ -1,6 +1,5 @@
-import { Rating } from "@common/types";
 import ReviewRating from "@frontend/components/ratings/ReviewRating";
-import setInsertRating from "@frontend/hooks/setInsertRating";
+import insertRating from "@frontend/services/ratings";
 import CloseIcon from "@mui/icons-material/Close";
 import {
   Alert,
@@ -13,6 +12,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
+import { Rating } from "common/types";
 import React, { useState } from "react";
 
 interface ReviewModalProps {
@@ -50,7 +50,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
       overall: overallRating,
     };
 
-    setInsertRating(roomID, buildingID, newRating);
+    insertRating(roomID, buildingID, newRating);
     setShowSnackbar(true);
     handleClose();
   };

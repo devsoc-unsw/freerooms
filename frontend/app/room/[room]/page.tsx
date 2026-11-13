@@ -2,9 +2,6 @@
 import "swiper/css";
 import "swiper/css/navigation";
 
-import translateRoomUsage from "@common/roomUsages";
-import getSchoolDetails from "@common/schools";
-import type { Booking, Room } from "@common/types";
 import BookingButton from "@frontend/components/booking/BookingButton";
 import BookingCalendar from "@frontend/components/booking/BookingCalendar";
 import FeedbackButton from "@frontend/components/feedback/FeedbackButton";
@@ -13,11 +10,11 @@ import ViewOnMapButton from "@frontend/components/navigation/ViewOnMapButton";
 import RoomRating from "@frontend/components/ratings/RoomRating";
 import RoomPhotoCarousel from "@frontend/components/rooms/RoomPhotoCarousel";
 import RoomUtilityTags from "@frontend/components/rooms/RoomUtilityTags";
-import useBookings from "@frontend/hooks/useBookings";
-import useBuilding from "@frontend/hooks/useBuilding";
-import useFavourites from "@frontend/hooks/useFavourites";
-import useRoom from "@frontend/hooks/useRoom";
-import useRoomRatings from "@frontend/hooks/useRoomRatings";
+import useBookings from "@frontend/hooks/bookings/useBookings";
+import useBuilding from "@frontend/hooks/buildings/useBuilding";
+import useRoomRatings from "@frontend/hooks/ratings/useRoomRatings";
+import useFavourites from "@frontend/hooks/rooms/useFavourites";
+import useRoom from "@frontend/hooks/rooms/useRoom";
 import room_photos from "@frontend/public/room-photos.json";
 import { getBuildingIdFromRoomId } from "@frontend/utils/utils";
 import CloseIcon from "@mui/icons-material/Close";
@@ -36,6 +33,9 @@ import Link from "@mui/material/Link";
 import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import translateRoomUsage from "common/roomUsages";
+import getSchoolDetails from "common/schools";
+import type { Booking, Room } from "common/types";
 import { useParams } from "next/navigation";
 import React, { useState } from "react";
 
@@ -100,11 +100,7 @@ export default function Page() {
           }}
         />
         <RoomPhotoCarousel photos={photos} loading={!room} />
-        <BookingCalendar
-          events={adjustedBookings ?? []}
-          roomID={room?.id ?? ""}
-          loading={!room}
-        />
+        <BookingCalendar events={adjustedBookings ?? []} loading={!room} />
         <RoomUtilityTags roomId={room?.id} />
         <RoomRating
           buildingID={building?.id ?? ""}
@@ -365,7 +361,11 @@ const RoomPageHeader: React.FC<{
           {room.school !== " " && (
             <Typography variant="body1" sx={{ fontWeight: "bold" }}>
               School:{" "}
-              <Typography variant="body1" sx={{ display: "inline" }}>
+              <Typography
+                component="span"
+                variant="body1"
+                sx={{ display: "inline" }}
+              >
                 {schoolDetails ? schoolDetails.name : room.school}
               </Typography>
             </Typography>

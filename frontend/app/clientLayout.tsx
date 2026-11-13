@@ -41,8 +41,6 @@ const getClientModeSnapshot = (): ThemeMode => {
   return storedMode === "dark" ? "dark" : "light";
 };
 
-const getServerModeSnapshot = (): ThemeMode => "light";
-
 /**
  * Any global components like providers or configs should go here
  */

@@ -33,7 +33,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({ title, content }) => {
   const theme = useTheme();
 
   const handleChangePanel = (
-    event: React.ChangeEvent<{}>,
+    _event: React.SyntheticEvent,
     isExpanded: boolean
   ) => {
     setExpandedPanel(isExpanded);

@@ -95,6 +95,7 @@ typings/
 
 # Frontend
 frontend/node_modules
+common/dist
 
 # IDE configs
 **/.idea/

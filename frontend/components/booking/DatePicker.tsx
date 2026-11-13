@@ -1,7 +1,10 @@
 "use client";
 
-import { selectDatetime, setDatetime } from "@frontend/redux/datetimeSlice";
 import { useDispatch, useSelector } from "@frontend/redux/hooks";
+import {
+  selectDatetime,
+  setDatetime,
+} from "@frontend/redux/slices/datetimeSlice";
 import { getPickerFieldStyles } from "@frontend/theme/fieldStyles";
 import { SYDNEY_TIMEZONE } from "@frontend/utils/toSydneyTime";
 import { useTheme } from "@mui/material/styles";

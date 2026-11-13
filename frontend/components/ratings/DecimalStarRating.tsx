@@ -1,4 +1,4 @@
-import useRoomRatings from "@frontend/hooks/useRoomRatings";
+import useRoomRatings from "@frontend/hooks/ratings/useRoomRatings";
 import { Rating, Stack, Typography } from "@mui/material";
 import React from "react";
 

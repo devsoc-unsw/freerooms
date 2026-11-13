@@ -1,9 +1,12 @@
 import { AppSurface, AppTextField } from "@frontend/components/ui";
-import useBuildings from "@frontend/hooks/useBuildings";
-import useRooms from "@frontend/hooks/useRooms";
-import { setCurrentBuilding } from "@frontend/redux/currentBuildingSlice";
+import useBuildings from "@frontend/hooks/buildings/useBuildings";
+import useRooms from "@frontend/hooks/rooms/useRooms";
 import { useDispatch, useSelector } from "@frontend/redux/hooks";
-import { closeSearch, selectSearchOpen } from "@frontend/redux/searchOpenSlice";
+import { setCurrentBuilding } from "@frontend/redux/slices/currentBuildingSlice";
+import {
+  closeSearch,
+  selectSearchOpen,
+} from "@frontend/redux/slices/searchOpenSlice";
 import { SearchOption } from "@frontend/types";
 import BuildingIcon from "@mui/icons-material/Apartment";
 import RoomIcon from "@mui/icons-material/MeetingRoom";
@@ -25,9 +28,8 @@ import React from "react";
 import { useLocalStorage } from "usehooks-ts";
 
 const RECENT_SEARCH_LIMIT = 3;
-interface SearchProps {}
 
-const SearchModal: React.FC<SearchProps> = () => {
+const SearchModal = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const path = usePathname();
@@ -205,6 +207,9 @@ const InputBox = (params: AutocompleteRenderInputParams) => {
     inputProps: _legacyHtmlInputProps,
     ...textFieldProps
   } = compatParams;
+
+  void _legacyInputProps;
+  void _legacyHtmlInputProps;
 
   return (
     <AppTextField

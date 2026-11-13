@@ -1,4 +1,4 @@
-import { RoomAvailabilityBoxProps } from "@frontend/views/RoomAvailabilityBox";
+import { RoomAvailabilityBoxProps } from "@frontend/components/rooms/RoomAvailabilityBox";
 import { styled, Typography, TypographyProps, useTheme } from "@mui/material";
 import { Stack } from "@mui/system";
 import React from "react";
@@ -9,7 +9,7 @@ const RoomBoxHeading = styled(Typography)<TypographyProps>(() => ({
   whiteSpace: "nowrap",
 }));
 
-const RoomBoxSubheading = styled(Typography)<TypographyProps>(({ theme }) => ({
+const RoomBoxSubheading = styled(Typography)<TypographyProps>(() => ({
   fontSize: 12,
   fontWeight: 400,
 }));

@@ -1,6 +1,5 @@
 import Faq from "@frontend/components/landing/Faq";
 import Features from "@frontend/components/landing/Features";
-import Sponsors from "@frontend/components/landing/Sponsors";
 import TextAnimation from "@frontend/components/landing/TextAnimation";
 import transientOptions from "@frontend/utils/transientOptions";
 import Stack from "@mui/material/Stack";
@@ -57,12 +56,11 @@ const Landing = () => {
         <Features />
       </LandingScreenContainer>
       <Faq />
-      <Sponsors />
     </Stack>
   );
 };
 
-const LandingScreenContainer = styled(Stack)(({ theme }) => ({
+const LandingScreenContainer = styled(Stack)(() => ({
   height: "100%",
   width: "80%",
   margin: "auto",
@@ -84,7 +82,7 @@ const StyledImage = styled(
   },
 }));
 
-const HeroPanelContainer = styled(Stack)(({ theme }) => ({
+const HeroPanelContainer = styled(Stack)(() => ({
   height: "100%",
   width: "100%",
   marginTop: "2rem",
@@ -98,7 +96,7 @@ const DoorContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
-const AnimationContainer = styled(Stack)(({ theme }) => ({
+const AnimationContainer = styled(Stack)(() => ({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
