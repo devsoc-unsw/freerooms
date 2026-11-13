@@ -1,4 +1,10 @@
 import { DropDown, DropDownItem } from "@frontend/types";
+import ContactEmergencyOutlinedIcon from "@mui/icons-material/ContactEmergencyOutlined";
+import DoorBackOutlinedIcon from "@mui/icons-material/DoorBackOutlined";
+import EventRepeatOutlinedIcon from "@mui/icons-material/EventRepeatOutlined";
+import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
+import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
+import TimerOutlinedIcon from "@mui/icons-material/TimerOutlined";
 import { roomUsages } from "common/roomUsages";
 
 const MAX_RECURRING = 10;
@@ -16,16 +22,24 @@ const recurringWeekItems: DropDownItem[] = Array.from(
 // Dropdown & items for FilterBar in building browse page
 export const filterBarDropdown: DropDown[] = [
   {
-    text: "Room Type",
-    key: "usage",
-    items: Object.entries(roomUsages).map(([abbr, usage]) => ({
-      text: usage,
-      value: abbr,
-    })),
+    text: "Campus Location",
+    key: "location",
+    icon: PlaceOutlinedIcon,
+    items: [
+      {
+        text: "Lower",
+        value: "lower",
+      },
+      {
+        text: "Upper",
+        value: "upper",
+      },
+    ],
   },
   {
     text: "Room Capacity",
     key: "capacity",
+    icon: PeopleAltOutlinedIcon,
     items: [
       {
         text: "25+",
@@ -46,8 +60,32 @@ export const filterBarDropdown: DropDown[] = [
     ],
   },
   {
+    text: "Room Type",
+    key: "usage",
+    icon: DoorBackOutlinedIcon,
+    items: Object.entries(roomUsages)
+      .map(([abbr, usage]) => ({ text: usage, value: abbr }))
+      .sort((a, b) => a.text.localeCompare(b.text)),
+  },
+  {
+    text: "ID Required",
+    key: "id",
+    icon: ContactEmergencyOutlinedIcon,
+    items: [
+      {
+        text: "Yes",
+        value: "true",
+      },
+      {
+        text: "No",
+        value: "false",
+      },
+    ],
+  },
+  {
     text: "Duration Free",
     key: "duration",
+    icon: TimerOutlinedIcon,
     items: [
       {
         text: "30+ minutes",
@@ -70,35 +108,8 @@ export const filterBarDropdown: DropDown[] = [
   {
     text: "Recurring",
     key: "recurring",
+    icon: EventRepeatOutlinedIcon,
     items: recurringWeekItems,
-  },
-  {
-    text: "Location",
-    key: "location",
-    items: [
-      {
-        text: "Upper Campus",
-        value: "upper",
-      },
-      {
-        text: "Lower Campus",
-        value: "lower",
-      },
-    ],
-  },
-  {
-    text: "ID Required",
-    key: "id",
-    items: [
-      {
-        text: "Not Required",
-        value: "false",
-      },
-      {
-        text: "Required",
-        value: "true",
-      },
-    ],
   },
 ];
 
@@ -182,3 +193,38 @@ export const sortBarDropdown: DropDownItem[] = [
     value: "upperToLower",
   },
 ];
+
+// Sorts for individual rooms
+export const roomSortBarDropdown: DropDownItem[] = [
+  {
+    text: "Availability duration",
+    value: "longestAvailable",
+  },
+  {
+    text: "Room Capacity",
+    value: "capacity",
+  },
+  {
+    text: "Nearest",
+    value: "nearest",
+  },
+  {
+    text: "Alphabetical",
+    value: "alphabetical",
+  },
+  {
+    text: "Reverse Alphabetical",
+    value: "reverseAlphabetical",
+  },
+  {
+    text: "Upper Campus to Lower Campus",
+    value: "upperToLower",
+  },
+  {
+    text: "Lower Campus to Upper Campus",
+    value: "lowerToUpper",
+  },
+];
+
+// URL value of the `start` param for the start time. While the user has cleared the start time
+export const NO_START_TIME = "none";

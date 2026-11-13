@@ -18,14 +18,25 @@ import type React from "react";
 
 const ICON_SIZE = 18;
 
-const RoomUtilityTagsSkeleton = () => (
-  <Stack sx={{ width: "100%", pt: 6, pb: 3, gap: 1 }}>
+const RoomUtilityTagsSkeleton = ({
+  compact = false,
+}: {
+  compact?: boolean;
+}) => (
+  <Stack
+    sx={{
+      width: "100%",
+      pt: compact ? 1 : 6,
+      pb: compact ? 1 : 3,
+      gap: 1,
+    }}
+  >
     {/* Heading */}
     <Skeleton
       animation="wave"
       variant="text"
       width={180}
-      sx={{ fontSize: 24, mb: 2 }}
+      sx={{ fontSize: 24, mb: compact ? 0 : 2 }}
     />
     {/* UtilityAccordion */}
     {Array.from({ length: 4 }, (_, i) => (
@@ -34,7 +45,13 @@ const RoomUtilityTagsSkeleton = () => (
   </Stack>
 );
 
-export default function RoomUtilities({ roomId }: { roomId?: string }) {
+export default function RoomUtilities({
+  roomId,
+  compact = false,
+}: {
+  roomId?: string;
+  compact?: boolean;
+}) {
   const theme = useTheme();
   const primary = theme.palette.primary.main;
 
@@ -78,7 +95,7 @@ export default function RoomUtilities({ roomId }: { roomId?: string }) {
 
   const { utilities: roomData } = useRoomUtilities(roomId);
   if (!roomData) {
-    return <RoomUtilityTagsSkeleton />;
+    return <RoomUtilityTagsSkeleton compact={compact} />;
   }
 
   const categories = Object.entries(roomData)
@@ -104,8 +121,8 @@ export default function RoomUtilities({ roomId }: { roomId?: string }) {
       sx={{
         height: "100%",
         width: "100%",
-        paddingTop: 6,
-        paddingBottom: 3,
+        paddingTop: compact ? 1 : 6,
+        paddingBottom: compact ? 1 : 3,
       }}
     >
       <Typography
@@ -113,7 +130,7 @@ export default function RoomUtilities({ roomId }: { roomId?: string }) {
         component="h2"
         gutterBottom
         sx={{
-          marginBottom: 3,
+          marginBottom: compact ? 1 : 3,
           fontWeight: "bold",
         }}
       >

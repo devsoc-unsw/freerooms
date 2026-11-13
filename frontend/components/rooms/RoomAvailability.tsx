@@ -1,6 +1,9 @@
 import { RoomAvailabilityBoxProps } from "@frontend/components/rooms/RoomAvailabilityBox";
+import { getStatusEnd } from "@frontend/utils/availability";
+import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 import { styled, Typography, TypographyProps, useTheme } from "@mui/material";
 import { Stack } from "@mui/system";
+import { format } from "date-fns";
 import React from "react";
 
 const RoomBoxHeading = styled(Typography)<TypographyProps>(() => ({
@@ -14,15 +17,45 @@ const RoomBoxSubheading = styled(Typography)<TypographyProps>(() => ({
   fontWeight: 400,
 }));
 
+const StatusPill = styled(Stack)(({ theme }) => ({
+  flexDirection: "row",
+  alignItems: "center",
+  alignSelf: "flex-start",
+  width: "fit-content",
+  maxWidth: "100%",
+  gap: theme.space.xs,
+  padding: `0 ${theme.space.sm}px`,
+  border: "1.5px solid",
+  borderRadius: theme.radius.pill,
+  fontSize: theme.typography.body2.fontSize,
+  "& svg": { fontSize: "inherit" },
+}));
+
 const roomStatusMessage = {
   free: "Available",
   busy: "Unavailable",
   soon: "Available Soon",
 };
 
-type RoomAvailabilityProps = Pick<RoomAvailabilityBoxProps, "roomStatus">;
+const roomStatusColour = {
+  free: "available",
+  busy: "unavailable",
+  soon: "soon",
+} as const;
 
-const RoomAvailability: React.FC<RoomAvailabilityProps> = ({ roomStatus }) => {
+type RoomAvailabilityProps = Pick<RoomAvailabilityBoxProps, "roomStatus"> & {
+  // stacked is two right-aligned lines for use in lists, pill is one line inside a coloured pill (for room cards)
+  variant?: "stacked" | "pill";
+  reason?: string; // used only for 'pill'. What booking is using the room at the end time
+  until?: Date;
+};
+
+const RoomAvailability: React.FC<RoomAvailabilityProps> = ({
+  roomStatus,
+  variant = "stacked",
+  reason,
+  until,
+}) => {
   const theme = useTheme();
 
   const roomStatusColor = {
@@ -43,6 +76,42 @@ const RoomAvailability: React.FC<RoomAvailabilityProps> = ({ roomStatus }) => {
     busy: hoursMinutes == "Invalid Date" ? "" : "until " + hoursMinutes,
     soon: "at " + hoursMinutes,
   };
+
+  if (variant === "pill") {
+    const colours = theme.colours.status[roomStatusColour[roomStatus.status]];
+    const end =
+      getStatusEnd(roomStatus) ??
+      (roomStatus.status === "free" ? (until ?? null) : null);
+    const time = end ? format(end, "h:mmaaa") : null;
+    const preposition = roomStatus.status === "soon" ? "at" : "until";
+    const text = [
+      roomStatusMessage[roomStatus.status],
+      time && `${preposition} ${time}`,
+      reason && `- ${reason}`,
+    ]
+      .filter(Boolean)
+      .join(" ");
+
+    return (
+      <StatusPill
+        sx={{
+          color: colours.text,
+          backgroundColor: colours.background,
+          borderColor: colours.text,
+        }}
+      >
+        <AccessTimeOutlinedIcon />
+        <Typography
+          variant="body2"
+          noWrap
+          title={text}
+          sx={{ minWidth: 0, fontWeight: theme.typography.fontWeightMedium }}
+        >
+          {text}
+        </Typography>
+      </StatusPill>
+    );
+  }
 
   return (
     <Stack
