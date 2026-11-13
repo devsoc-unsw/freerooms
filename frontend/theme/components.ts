@@ -29,6 +29,7 @@ export const components: Components<Theme> = {
         body2: "p",
         brand: "span",
         cardTitle: "h3",
+        roomCardTitle: "h3",
         sectionHeading: "h2",
         heroSubtitle: "p",
         heroWordmark: "h1",
