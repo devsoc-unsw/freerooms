@@ -14,9 +14,15 @@ Use semantic colours in MUI components:
   color: (theme) => theme.colours.status.available.text,
 }} />
 ```
-
 For ordinary CSS, use variables such as `var(--colour-text-primary)` and
 `var(--colour-status-available-background)`.
+
+## MUI Standards
+MUI has two ways of styling. With `sx` and with styled() components. Use `sx`
+for one off styles and things with <3 properties you need to change. Otherwise use styled() components. 
+
+Use MUI components over regular html, e.g. Box over div, Stack over div flex, 
+Container for horizontally centered divs.
 
 ## Layout tokens
 

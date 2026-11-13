@@ -10,6 +10,9 @@ export const sizes = {
     md: 24,
     lg: 32,
   },
+  navBar: {
+    height: 74,
+  },
   searchBar: {
     width: 1440,
     halfWidth: 720,
@@ -35,6 +38,12 @@ export const sizes = {
     thumb: 16,
     tickWidth: 1,
     tickHeight: 5,
+  },
+  navbarPopover: {
+    width: 200,
+  },
+  border: {
+    weight: 1,
   },
 } as const;
 

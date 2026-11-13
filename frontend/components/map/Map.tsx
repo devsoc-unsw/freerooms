@@ -4,7 +4,6 @@ import { DarkModeContext } from "@frontend/app/clientLayout";
 import BuildingDrawer from "@frontend/components/map/BuildingDrawer";
 import DirectionsSummary from "@frontend/components/map/DirectionSummary";
 import MapMarker from "@frontend/components/map/MapMarker";
-import { navHeight } from "@frontend/components/navigation/NavBar";
 import {
   MAPBOX_ACCESS_TOKEN,
   MAPBOX_STYLE_DARK,
@@ -16,6 +15,7 @@ import useMapboxRoute from "@frontend/hooks/map/useMapboxRoute";
 import useUserLocation from "@frontend/hooks/map/useUserLocation";
 import { useDispatch } from "@frontend/redux/hooks";
 import { setCurrentBuilding } from "@frontend/redux/slices/currentBuildingSlice";
+import { sizes } from "@frontend/theme";
 import calculateDistance from "@frontend/utils/calculateDistance";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
@@ -201,7 +201,7 @@ export const Map = () => {
       <div
         style={{
           position: "relative",
-          height: `calc(100svh - ${navHeight}px)`,
+          height: `calc(100svh - ${sizes.navBar.height}px)`,
         }}
       >
         <MapboxMap
