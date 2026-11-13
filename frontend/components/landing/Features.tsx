@@ -5,13 +5,19 @@ import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import GridIcon from "@mui/icons-material/GridViewRounded";
 import MapIcon from "@mui/icons-material/Map";
 import { Box } from "@mui/material";
-import { styled } from "@mui/system";
+import { styled, width } from "@mui/system/styles";
 import Image from "next/image";
+import { typography } from "@frontend/theme";
 import React from "react";
 
-const Features = () => {
+export default function Features{
   const dispatch = useDispatch();
   return (
+    <FeatureRoot>
+      <SectionHeading id="features-heading">Features</SectionHeading>
+
+    </FeatureRoot>
+
     <StyledFeatureDiv>
       <div>
         <StyledFeatureVector
@@ -66,7 +72,6 @@ const Features = () => {
   );
 };
 
-export default Features;
 
 const StyledHeading = styled("h2")(() => ({
   textAlign: "center",
@@ -125,4 +130,10 @@ const StyledCardParent = styled("div")(({ theme }) => ({
     marginTop: "20%",
     paddingBottom: "15%",
   },
+}));
+
+
+const FeatureRoot = styled("section")(({theme}) => ({
+  width: "100%",
+  paddingBlock: theme.space.xxl,
 }));
