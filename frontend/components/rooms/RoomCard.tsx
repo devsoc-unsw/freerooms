@@ -285,7 +285,7 @@ const RoomCard: React.FC<RoomCardProps> = (props) => {
                   sx={(theme) => ({ color: theme.colours.rating.display })}
                 />
                 <Typography variant="metadata">
-                  {rating === 0 ? "N/A" : rating}
+                  {rating === 0 ? "-" : rating}
                 </Typography>
               </Widget>
               <Widget>
