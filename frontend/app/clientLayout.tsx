@@ -1,7 +1,7 @@
 "use client";
 
-import NavBar from "@frontend/components/navigation/NavBar";
 import Footer from "@frontend/components/footer/Footer";
+import NavBar from "@frontend/components/navigation/NavBar";
 import SearchModal from "@frontend/components/search/SearchModal";
 import store from "@frontend/redux/store";
 import { createAppTheme, type ThemeMode } from "@frontend/theme";
@@ -131,8 +131,8 @@ const Main = styled("main")(({ theme }) => ({
   marginRight: 0,
   height: "100%",
   [theme.breakpoints.down("sm")]: {
-    paddingBottom: theme.space.sm
-  }
+    paddingBottom: theme.space.sm,
+  },
 }));
 
 export default ClientLayout;

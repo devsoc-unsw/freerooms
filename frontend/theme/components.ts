@@ -86,7 +86,7 @@ export const components: Components<Theme> = {
   },
   MuiListItemIcon: {
     styleOverrides: {
-      root: ({ theme }) => ({
+      root: ({}) => ({
         color: "inherit",
       }),
     },
