@@ -23,6 +23,7 @@ declare module "@mui/material/styles/createTypography" {
   interface TypographyVariants {
     brand: CSSProperties;
     cardTitle: CSSProperties;
+    roomCardTitle: CSSProperties;
     sectionHeading: CSSProperties;
     heroSubtitle: CSSProperties;
     heroWordmark: CSSProperties;
@@ -34,6 +35,7 @@ declare module "@mui/material/styles/createTypography" {
   interface TypographyVariantsOptions {
     brand?: CSSProperties;
     cardTitle?: CSSProperties;
+    roomCardTitle?: CSSProperties;
     sectionHeading?: CSSProperties;
     heroSubtitle?: CSSProperties;
     heroWordmark?: CSSProperties;
@@ -47,6 +49,7 @@ declare module "@mui/material/Typography" {
   interface TypographyPropsVariantOverrides {
     brand: true;
     cardTitle: true;
+    roomCardTitle: true;
     sectionHeading: true;
     heroSubtitle: true;
     heroWordmark: true;

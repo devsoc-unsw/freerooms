@@ -1,129 +1,108 @@
-import { AppButton, AppSurface } from "@frontend/components/ui";
+import TopBarMenu from "@frontend/components/ui/TopBarMenu";
+import { DropDownItem } from "@frontend/types";
 import { sortBarDropdown } from "@frontend/utils/constants";
+import type { SvgIconComponent } from "@mui/icons-material";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import CheckIcon from "@mui/icons-material/Check";
+import EventAvailableOutlinedIcon from "@mui/icons-material/EventAvailableOutlined";
 import FilterListIcon from "@mui/icons-material/FilterList";
-import { ClickAwayListener } from "@mui/material";
-import Box, { BoxProps } from "@mui/material/Box";
+import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
+import RoomOutlinedIcon from "@mui/icons-material/RoomOutlined";
+import SortByAlphaIcon from "@mui/icons-material/SortByAlpha";
+import WatchLaterOutlinedIcon from "@mui/icons-material/WatchLaterOutlined";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import React, { useState } from "react";
+import React from "react";
 
-const StyledMenuAnchor = styled(Box)<BoxProps>(() => ({
-  position: "relative",
-  alignSelf: "center",
-  zIndex: 10,
-}));
-
-const StyledDropDownMenu = styled(AppSurface)(({ theme }) => ({
-  width: 250,
-  top: theme.sizes.control.xl,
-  left: 0,
-  borderRadius: 10,
-  display: "flex",
-  flexDirection: "column",
-  position: "absolute",
-  paddingLeft: 10,
-  paddingRight: 10,
-  ":hover": {
-    cursor: "auto",
-  },
-}));
-
-const StyledHeader = styled(Box)<BoxProps>(() => ({
-  height: 60,
+const RadioMark = styled("span", {
+  shouldForwardProp: (prop) => prop !== "checked",
+})<{ checked: boolean }>(({ theme, checked }) => ({
   display: "inline-flex",
   alignItems: "center",
-  gap: 135,
+  justifyContent: "center",
+  boxSizing: "border-box",
+  width: theme.sizes.icon.sm,
+  height: theme.sizes.icon.sm,
+  fontSize: theme.sizes.icon.sm,
+  border: `2px solid ${theme.colours.accent.primary}`,
+  borderRadius: theme.radius.pill,
+  backgroundColor: checked ? theme.colours.accent.primary : "transparent",
+  color: theme.colours.text.onAccent,
+  "& svg": { fontSize: "0.7em" },
 }));
 
-const StyledBox = styled(Box)(({ theme }) => ({
-  transition: "all 0.1s ease-in-out",
-  backgroundColor: theme.palette.background.default,
-  borderTop: `1px solid ${theme.colours.border.subtle}`,
-}));
+const SORT_ICONS: Record<string, SvgIconComponent> = {
+  mostRooms: EventAvailableOutlinedIcon,
+  longestAvailable: WatchLaterOutlinedIcon,
+  capacity: PeopleAltOutlinedIcon,
+  nearest: RoomOutlinedIcon,
+  alphabetical: SortByAlphaIcon,
+  reverseAlphabetical: SortByAlphaIcon,
+  lowerToUpper: ArrowUpwardIcon,
+  upperToLower: ArrowDownwardIcon,
+};
 
 const SortBar: React.FC<{
   sort: string;
   setSort: (sort: string) => void;
-}> = ({ sort, setSort }) => {
-  // Hide and close Dropdown
-  const [open, setOpen] = useState(false);
-
-  return (
-    <ClickAwayListener onClickAway={() => setOpen(false)}>
-      <StyledMenuAnchor>
-        <AppButton
-          variant="outlined"
-          aria-expanded={open}
-          aria-controls={open ? "browse-sort-menu" : undefined}
-          onClick={() => setOpen(!open)}
-          sx={{
-            height: (theme) => theme.sizes.control.xl,
-            width: 115,
-            padding: (theme) => `${theme.space.md}px`,
-            justifyContent: "flex-start",
-            borderColor: "primary.main",
-            color: "primary.main",
-          }}
-        >
-          <Stack
-            direction="row"
-            sx={{
-              alignItems: "center",
-              gap: (theme) => `${theme.space.md}px`,
-            }}
-          >
-            <FilterListIcon
-              sx={{ color: (theme) => theme.palette.primary.main }}
+  options?: DropDownItem[]; // defaults to the building sorts that Browse uses
+  title?: string;
+}> = ({ sort, setSort, options = sortBarDropdown, title = "Sort" }) => (
+  <TopBarMenu
+    id="browse-sort-menu"
+    icon={FilterListIcon}
+    label="Sort"
+    title={title}
+    onReset={() => setSort("alphabetical")}
+  >
+    {options.map((option) => {
+      const Icon = SORT_ICONS[option.value];
+      return (
+        <FormControlLabel
+          key={option.value}
+          control={
+            <Radio
+              checked={sort === option.value}
+              icon={<RadioMark checked={false} />}
+              checkedIcon={
+                <RadioMark checked>
+                  <CheckIcon />
+                </RadioMark>
+              }
             />
-            <Typography
+          }
+          label={
+            <Stack
+              direction="row"
               sx={{
-                color: (theme) => theme.palette.primary.main,
-                fontSize: 16,
-                fontWeight: 500,
+                alignItems: "center",
+                gap: (theme) => `${theme.space.sm}px`,
               }}
             >
-              Sort
-            </Typography>
-          </Stack>
-        </AppButton>
-        {open && (
-          <StyledDropDownMenu id="browse-sort-menu">
-            <StyledHeader>
-              <Typography
-                sx={{
-                  fontSize: 18,
-                  fontWeight: 700,
-                }}
-              >
-                Sort
-              </Typography>
-            </StyledHeader>
-            {sortBarDropdown.map((dropdown) => (
-              <StyledBox key={dropdown.value}>
-                <FormControlLabel
-                  control={<Radio checked={sort === dropdown.value} sx={{}} />}
-                  label={dropdown.text}
-                  onClick={() => setSort(dropdown.value)}
+              {Icon && (
+                <Icon
+                  fontSize="small"
                   sx={{
-                    width: "100%",
-                    py: 0.5,
-                    cursor: "pointer",
-                    "& .MuiFormControlLabel-label": {
-                      fontSize: 14,
-                      fontWeight: 500,
-                    },
+                    transform:
+                      option.value === "reverseAlphabetical"
+                        ? "scaleY(-1)"
+                        : undefined,
                   }}
                 />
-              </StyledBox>
-            ))}
-          </StyledDropDownMenu>
-        )}
-      </StyledMenuAnchor>
-    </ClickAwayListener>
-  );
-};
+              )}
+              <Typography variant="filterOption">{option.text}</Typography>
+            </Stack>
+          }
+          onClick={() => setSort(option.value)}
+          sx={{ width: "100%", margin: 0, cursor: "pointer" }}
+        />
+      );
+    })}
+  </TopBarMenu>
+);
 
 export default SortBar;
