@@ -54,6 +54,7 @@ type RoomCardProps = LoadingProps | LoadedProps;
 
 const StyledCard = styled(Card)(({ theme }) => ({
   position: "relative",
+  isolation: "isolate",
   display: "flex",
   flexDirection: "column",
   minHeight: theme.sizes.roomCard.height,
@@ -62,6 +63,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     minHeight: theme.sizes.roomCard.compactHeight,
   },
+  "&:hover img": { transform: `scale(1.05)` },
 }));
 
 const Thumbnail = styled(Box)(({ theme }) => ({
@@ -117,12 +119,16 @@ const Widget = styled(Stack)(({ theme }) => ({
   "& svg": { fontSize: "1.1em" },
 }));
 
-const UtilitiesToggle = styled(Stack)(({ theme }) => ({
+const UtilitiesToggle = styled(Stack, {
+  shouldForwardProp: (prop) => prop !== "open",
+})<{ open: boolean }>(({ theme, open }) => ({
   flexDirection: "row",
   alignItems: "center",
   justifyContent: "space-between",
   cursor: "pointer",
-  padding: `${theme.space.sm}px ${theme.space.md}px`,
+  padding: `${theme.space.xs}px ${theme.space.md}px ${
+    open ? 0 : theme.space.sm
+  }px`,
 }));
 
 const campusLabel = { lower: "Lower campus", upper: "Upper campus" } as const;
@@ -187,7 +193,7 @@ const RoomCard: React.FC<RoomCardProps> = (props) => {
       <CardActionArea
         component={Link}
         href={getRoomHref(room.id, date)}
-        // target="_blank"
+        aria-label={room.name}
         sx={(theme) => ({
           display: "flex",
           flexDirection: "column",
@@ -211,12 +217,13 @@ const RoomCard: React.FC<RoomCardProps> = (props) => {
         </Thumbnail>
 
         <CardContent
-          sx={{
+          sx={(theme) => ({
             flex: 1,
             display: "flex",
             flexDirection: "column",
             width: "100%",
-          }}
+            "&:last-child": { paddingBottom: `${theme.space.sm}px` },
+          })}
         >
           <TitleRow>
             <Typography variant="roomCardTitle" noWrap sx={{ minWidth: 0 }}>
@@ -224,7 +231,7 @@ const RoomCard: React.FC<RoomCardProps> = (props) => {
             </Typography>
             <IconButton
               size="small"
-              sx={{ flexShrink: 0 }}
+              sx={{ flexShrink: 0, zIndex: 2 }}
               aria-label={
                 favourite ? "Remove as favourite" : "Add as favourite"
               }
@@ -278,7 +285,7 @@ const RoomCard: React.FC<RoomCardProps> = (props) => {
                   sx={(theme) => ({ color: theme.colours.rating.display })}
                 />
                 <Typography variant="metadata">
-                  {rating === 0 ? "—" : rating}
+                  {rating === 0 ? "N/A" : rating}
                 </Typography>
               </Widget>
               <Widget>
@@ -303,29 +310,47 @@ const RoomCard: React.FC<RoomCardProps> = (props) => {
       </CardActionArea>
 
       <DesktopOnly>
-        <UtilitiesToggle onClick={() => setUtilitiesOpen((open) => !open)}>
-          <Stack direction="row" sx={{ alignItems: "center" }}>
+        <UtilitiesToggle
+          open={utilitiesOpen}
+          onClick={() => setUtilitiesOpen((open) => !open)}
+        >
+          <Stack
+            direction="row"
+            sx={(theme) => ({
+              alignItems: "center",
+              gap: theme.spacing(0.5),
+            })}
+          >
             <KeyboardArrowRightOutlinedIcon
               sx={(theme) => ({
                 fontSize: theme.sizes.icon.sm,
                 color: theme.colours.text.secondary,
+                transform: utilitiesOpen ? "rotate(90deg)" : "rotate(0deg)",
+                transition: theme.transitions.create("transform", {
+                  duration: theme.transitions.duration.short,
+                }),
               })}
             />
+
             <Typography variant="metadata" color="text.secondary">
               View all utilities
             </Typography>
           </Stack>
+
           <ArrowForwardOutlinedIcon
-            sx={(theme) => ({ fontSize: theme.sizes.icon.md })}
+            sx={(theme) => ({
+              fontSize: theme.sizes.icon.md,
+            })}
           />
         </UtilitiesToggle>
-        <Collapse in={utilitiesOpen}>
+
+        <Collapse in={utilitiesOpen} timeout="auto" unmountOnExit>
           <Box
             sx={(theme) => ({
-              padding: `0 ${theme.space.md}px ${theme.space.md}px`,
+              padding: `0 ${theme.space.md}px ${theme.space.sm}px`,
             })}
           >
-            {utilitiesOpen && <RoomUtilityTags roomId={room.id} />}
+            <RoomUtilityTags roomId={room.id} compact />
           </Box>
         </Collapse>
       </DesktopOnly>

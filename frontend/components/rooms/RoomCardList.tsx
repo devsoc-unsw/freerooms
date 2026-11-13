@@ -14,6 +14,7 @@ const CardGrid = styled("div")(({ theme }) => ({
   display: "grid",
   gridTemplateColumns: "1fr",
   gap: theme.space.md,
+  alignItems: "start",
   [theme.breakpoints.up("sm")]: { gridTemplateColumns: "repeat(2, 1fr)" },
   [theme.breakpoints.up("md")]: { gridTemplateColumns: "repeat(3, 1fr)" },
 }));
