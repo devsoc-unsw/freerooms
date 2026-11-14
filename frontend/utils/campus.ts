@@ -1,6 +1,6 @@
 import calculateDistance from "@frontend/utils/calculateDistance";
 
-// Centre of campus 
+// Centre of campus
 export const CAMPUS_CENTRE = { lat: -33.91767, lng: 151.23129 };
 
 // 800m buffer for a user's location from the centre of campus
