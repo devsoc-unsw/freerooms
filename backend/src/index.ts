@@ -1,4 +1,5 @@
 import {
+  BookingPaginationParams,
   bookingsResponseSchema,
   buildingIdParamsSchema,
   BuildingRatingsResponse,
@@ -42,15 +43,23 @@ import {
   insertRating,
 } from "./ratingDbInterface";
 import {
+  parseBookingCursor,
+  parseBookingFilters,
+  parseBookingLimit,
+  parseBookingSearch,
+  parseBookingSort,
   parseSearchFilters,
   parseStatusDatetime,
   parseStatusFilters,
 } from "./requestParsers";
 import {
+  getAllBookings,
   getAllBuildings,
   getAllRooms,
   getAllRoomStatus,
+  getBookingsModule,
   getRoomBookings,
+  getRoomByEvent,
   searchAllRoom,
 } from "./service";
 
@@ -159,6 +168,61 @@ router.get(
       next();
     })
   )
+);
+
+// Route to get all bookings with pagination
+app.get(
+  "/api/bookings",
+  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const limit = parseBookingLimit(req);
+    const rawCursor = parseBookingCursor(req);
+    const { filters, cursor: bookingCursor } = parseBookingFilters(
+      req,
+      rawCursor
+    );
+    const { sort, cursor: sortCursor } = parseBookingSort(req, bookingCursor);
+    const { search, cursor: searchCursor } = parseBookingSearch(
+      req,
+      sortCursor
+    );
+
+    const params: BookingPaginationParams = {
+      limit,
+      cursor: searchCursor,
+      filters,
+      sort,
+      search,
+    };
+
+    const data = await getAllBookings(params);
+    res.send(data);
+    next();
+  })
+);
+
+// Route to get related bookings from an event ID
+app.get(
+  "/api/bookings/event/:eventID",
+  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const { eventID } = req.params as { eventID: string };
+    const data = await getRoomByEvent(eventID);
+    res.send(data);
+    next();
+  })
+);
+
+// Route to get the bookings module of a specific booking from an occurrence ID and room ID
+app.get(
+  "/api/bookings/:roomID/:occurrenceID",
+  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const { roomID, occurrenceID } = req.params as {
+      roomID: string;
+      occurrenceID: string;
+    };
+    const data = await getBookingsModule(roomID, occurrenceID);
+    res.send(data);
+    next();
+  })
 );
 
 // Get all ratings for a room given a roomId

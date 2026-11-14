@@ -13,6 +13,56 @@ export const buildingSchema = z.object({
 
 export type Building = z.infer<typeof buildingSchema>;
 
+export enum BookingType {
+  "LECTURE" = "LECTURE", 
+  "TUTORIAL" = "TUTORIAL",
+  "LABORATORY" = "LABORATORY",
+  "TUTORIAL_LABORATORY" = "TUTORIAL_LABORATORY",
+  "WORKSHOP" = "WORKSHOP",
+  "SEMINAR" = "SEMINAR",
+  "STUDIO" = "STUDIO",
+  "CLASS" = "CLASS",
+  "EXAMS" = "EXAMS",
+  "SOCIETY" = "SOCIETY",
+  "INTERNAL" = "INTERNAL",
+  "BLOCK" = "BLOCK",
+  "MISC" = "MISC",
+  "OTHER" = "OTHER",
+}
+
+export type BookingModule = {
+  term: string;
+  career: string;
+  code: string;
+  name: string;
+};
+
+// Booking Pagination
+export type BookingFilter = {
+  bookingType?: BookingType;
+  plannedSize?: number;
+  startTime?: Date;
+  endTime?: Date;
+  remainingTime?: number;
+}
+
+export type BookingCursor = {
+  start: Date;
+  bookingType: BookingType;
+  roomId: string;
+  occurrenceId: string;
+  filter: BookingFilter | null;
+  sort: string[];
+  search: string | null;
+};
+
+export type BookingPaginationParams = {
+  limit: number;
+  cursor: BookingCursor | null;
+  filters: BookingFilter | null;
+  sort: string[];
+  search: string | null;
+};
 export const roomSchema = z.object({
   name: z.string(),
   id: z.string(),
@@ -25,10 +75,14 @@ export const roomSchema = z.object({
 export type Room = z.infer<typeof roomSchema>;
 
 export const bookingSchema = z.object({
+  roomId: z.string().optional(),
+  occurrenceId: z.string().optional(),
+  eventId: z.string().optional(),
   name: z.string(),
   bookingType: z.string(),
   start: z.date(),
   end: z.date(),
+  plannedSize: z.number().optional(),
 });
 
 export type Booking = z.infer<typeof bookingSchema>;
@@ -97,6 +151,32 @@ export const statusResponseSchema = z.record(
 );
 
 export type StatusResponse = z.infer<typeof statusResponseSchema>;
+
+// Bookings for a specific event occurrence
+export type BookingsEventResponse = {
+  eventId: string;
+  occurrenceId: string;
+  roomId: string;
+  name: string;
+  bookingType: string;
+  plannedSize: string;
+  start: Date;
+  end: Date;
+};
+
+// Bookings module for a specific occurrence
+export type BookingsModuleResponse = {
+  occurrenceId: string;
+  roomId: string;
+  bookingModule: BookingModule;
+};
+
+// Bookings Pagination Response
+export type BookingsPaginationResponse = {
+  bookings: Booking[];
+  nextCursor: string | null;
+  hasMore: boolean;
+};
 
 export const searchResponseValueSchema = roomStatusSchema.extend({
   name: z.string(),
