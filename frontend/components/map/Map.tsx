@@ -20,6 +20,7 @@ import {
   selectCurrentBuilding,
   setCurrentBuilding,
 } from "@frontend/redux/slices/currentBuildingSlice";
+import { isOnCampus } from "@frontend/utils/campus";
 import { shouldCancelRoute } from "@frontend/utils/routeSelection";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
@@ -110,11 +111,12 @@ export const Map = () => {
     clearRouteError,
   } = useMapboxRoute();
 
+  // Only fetch walking estimates for people on campus
   const { distances, durations } = useWalkingMatrix(
     userLat,
     userLng,
     buildings,
-    true
+    isOnCampus(userLat, userLng)
   );
 
   // Walking info for the building open in the drawer; prefer the loaded route's numbers
