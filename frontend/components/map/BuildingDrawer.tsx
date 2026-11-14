@@ -14,7 +14,7 @@ import {
 } from "@frontend/utils/walkingRange";
 import CloseIcon from "@mui/icons-material/Close";
 import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
-import { Slide, Typography, useMediaQuery } from "@mui/material";
+import { Skeleton, Slide, Typography, useMediaQuery } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Drawer from "@mui/material/Drawer";
@@ -304,17 +304,37 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
           sheetStage === "peek" ? (
             <PeekRow>
               <PeekText>
-                <Typography variant="h3" noWrap>
-                  {durationText ?? distanceText ?? building.name}
-                </Typography>
-                {durationText && distanceText && (
-                  <Typography
-                    variant="h4"
-                    color="text.secondary"
-                    sx={{ fontWeight: "fontWeightRegular" }}
-                  >
-                    ({distanceText})
-                  </Typography>
+                {isDirectionsLoading ? (
+                  // Route time and distance are on their way
+                  <>
+                    <Skeleton
+                      data-testid="walking-skeleton"
+                      variant="text"
+                      width={110}
+                      sx={{ typography: "h3" }}
+                    />
+                    <Skeleton
+                      data-testid="walking-skeleton"
+                      variant="text"
+                      width={80}
+                      sx={{ typography: "h4" }}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <Typography variant="h3" noWrap>
+                      {durationText ?? distanceText ?? building.name}
+                    </Typography>
+                    {durationText && distanceText && (
+                      <Typography
+                        variant="h4"
+                        color="text.secondary"
+                        sx={{ fontWeight: "fontWeightRegular" }}
+                      >
+                        ({distanceText})
+                      </Typography>
+                    )}
+                  </>
                 )}
               </PeekText>
 
@@ -331,8 +351,8 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
           )
         }
       >
-        {sheetStage === "peek" && header}
-        {body}
+        {/* Building details only appear once the sheet has snapped up from peek */}
+        {sheetStage !== "peek" && body}
       </BottomSheet>
     );
   }
