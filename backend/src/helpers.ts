@@ -5,7 +5,7 @@ import {
   RoomsResponse,
   RoomStatus,
   RoomUtilitiesResponse,
-} from "@common/types";
+} from "common/types";
 import { fromZonedTime, toZonedTime } from "date-fns-tz";
 
 import {

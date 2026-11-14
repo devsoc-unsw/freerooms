@@ -92,6 +92,7 @@ const calendarColours = {
 } as const;
 
 const statusSoon = "#FFA600";
+const statusSoonBackground = "rgba(255, 166, 0, 0.2)";
 const ratingDisplay = "#D4613C";
 
 export function getColours(mode: ThemeMode) {
@@ -137,6 +138,7 @@ export function getColours(mode: ThemeMode) {
       },
       soon: {
         main: statusSoon,
+        background: statusSoonBackground,
         text: statusSoon,
       },
       unavailable: {

@@ -3,6 +3,7 @@ import {
   selectDatetime,
   setDatetime,
 } from "@frontend/redux/slices/datetimeSlice";
+import { NO_START_TIME } from "@frontend/utils/constants";
 import { isValidDate, isValidTime } from "@frontend/utils/queryValidation";
 import { SYDNEY_TIMEZONE } from "@frontend/utils/toSydneyTime";
 import { formatInTimeZone, fromZonedTime } from "date-fns-tz";
@@ -18,9 +19,11 @@ const useQueryDatetime = () => {
     {
       date: parseAsString.withDefault(""),
       time: parseAsString.withDefault(""),
+      start: parseAsString.withDefault(""), // no start time while start time is cleared
     },
     { shallow: true }
   );
+  const startCleared = datetimeParams.start === NO_START_TIME;
 
   // Apply filters from URL query parameters to Redux datetime on load
   useEffect(() => {
@@ -58,6 +61,13 @@ const useQueryDatetime = () => {
       return;
     }
 
+    // With no start time the URL carries no date or time
+    // A reload or shared link starts from the current time instead of a stale one
+    if (startCleared) {
+      setDatetimeParams({ date: null, time: null });
+      return;
+    }
+
     // Set date to YYYY-MM-DD format
     const date =
       datetime instanceof Date
@@ -72,7 +82,7 @@ const useQueryDatetime = () => {
 
     setDatetimeParams({ date, time });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [datetime]);
+  }, [datetime, startCleared]);
 };
 
 export default useQueryDatetime;

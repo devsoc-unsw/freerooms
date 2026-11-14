@@ -1,5 +1,5 @@
-import { roomUsages } from "@common/roomUsages";
-import { BookingCursor, BookingFilter, BookingType } from "@common/types";
+import { roomUsages } from "common/roomUsages";
+import { BookingCursor, BookingFilter, BookingType } from "common/types";
 import { Request } from "express";
 
 import { SearchFilters, StatusFilters } from "./types";

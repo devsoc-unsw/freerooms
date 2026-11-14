@@ -8,7 +8,7 @@ import {
   RoomsResponse,
   SearchResponse,
   StatusResponse,
-} from "@common/types";
+} from "common/types";
 
 import {
   queryAllBookings,
