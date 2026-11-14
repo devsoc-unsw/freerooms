@@ -47,10 +47,10 @@ const WalkingIconContainer = styled("div")(({ theme }) => ({
 
 // Converts route secionds to readable format
 const formatDuration = (durationSeconds: number): string => {
-  const minutes = Math.max(1, Math.ceil(durationSeconds / 60));
+  const minutes = Math.floor(durationSeconds / 60);
 
   if (minutes < 60) {
-    return `${minutes} min`;
+    return minutes < 1 ? `< 1 min` : `${minutes} min`;
   }
 
   const hours = Math.floor(minutes / 60);
