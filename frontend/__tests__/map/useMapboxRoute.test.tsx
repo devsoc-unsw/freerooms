@@ -127,6 +127,26 @@ describe("useMapboxRoute", () => {
     expect(result.current.routeError).toBeNull();
   });
 
+  it("doesn't request a route for someone who isn't on campus", async () => {
+    const { result } = renderHook(() => useMapboxRoute());
+    let routeWasCreated = true;
+
+    await act(async () => {
+      routeWasCreated = await result.current.calculateRoute({
+        // Sydney CBD, ~5 km from campus
+        origin: { lat: -33.8688, lng: 151.2093 },
+        destinationBuilding,
+      });
+    });
+
+    expect(routeWasCreated).toBe(false);
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(result.current.routeError).toBe(
+      "Walking directions are only available on campus."
+    );
+    expect(result.current.route).toBeNull();
+  });
+
   it("sets the loading state while the request is pending", async () => {
     const deferredResponse = createDeferred<Response>();
     fetchMock.mockReturnValue(deferredResponse.promise);
