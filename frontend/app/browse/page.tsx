@@ -1,26 +1,35 @@
 "use client";
-
-import DatePicker from "@frontend/components/booking/DatePicker";
-import TimePicker from "@frontend/components/booking/TimePicker";
+// Building or room view page
+import TimeBar from "@frontend/components/booking/TimeBar";
 import FeedbackButton from "@frontend/components/feedback/FeedbackButton";
 import FilterBar from "@frontend/components/filters/FilterBar";
 import SortBar from "@frontend/components/filters/SortBar";
 import BuildingDrawer from "@frontend/components/map/BuildingDrawer";
-import CardList from "@frontend/components/rooms/CardList";
+import RoomCardList from "@frontend/components/rooms/RoomCardList";
 import SearchBar from "@frontend/components/search/SearchBar";
+import TopBarGroup from "@frontend/components/ui/TopBarGroup";
 import useQuerySort from "@frontend/hooks/query/useQuerySort";
+import useDisplayedFavouriteRooms from "@frontend/hooks/rooms/useDisplayedFavouriteRooms";
+import { NO_START_TIME, roomSortBarDropdown } from "@frontend/utils/constants";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { enAU } from "date-fns/locale";
 import { parseAsString, useQueryState } from "nuqs";
 import React, { Suspense } from "react";
+import CardList from "@frontend/components/rooms/CardList";
 
 const BrowseContent = () => {
   const [sort, setSort] = useQuerySort();
   const [query, setQuery] = useQueryState("q", parseAsString.withDefault(""));
+  const [start, setStart] = useQueryState(
+    "start",
+    parseAsString.withDefault("")
+  );
+  const startIsSet = start !== NO_START_TIME;
   const [date] = useQueryState("date", parseAsString.withDefault(""));
 
   return (
@@ -42,34 +51,27 @@ const BrowseContent = () => {
               width: "100%",
             }}
           >
-            <Stack
-              direction="row"
-              spacing={2}
-              sx={{
-                justifyContent: "space-between",
-                alignItems: "center",
-                alignSelf: "center",
-              }}
-            >
+
+            <SearchBar
+              setQuery={setQuery}
+              placeholder="Search for free rooms"
+            />
+
+            <TopBarGroup>
               <FilterBar />
-              <SortBar setSort={setSort} sort={sort} />
-            </Stack>
-
-            <SearchBar setQuery={setQuery} />
-
-            <Stack
-              direction="row"
-              spacing={2}
-              sx={{
-                alignItems: "center",
-                alignSelf: "center",
-                justifyContent: "space-between",
-                marginTop: { xs: 1, sm: 0 },
-              }}
-            >
-              <DatePicker />
-              <TimePicker />
-            </Stack>
+              <SortBar
+                setSort={setSort}
+                sort={sort}
+                options={roomSortBarDropdown}
+                title="Room Sort"
+              />
+              <TimeBar
+                startIsSet={startIsSet}
+                onStartIsSetChange={(isSet) =>
+                  setStart(isSet ? null : NO_START_TIME)
+                }
+              />
+            </TopBarGroup>
           </Stack>
           <CardList sort={sort} query={query} />
         </Tiles>

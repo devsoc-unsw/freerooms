@@ -7,11 +7,14 @@ import { useDispatch } from "@frontend/redux/hooks";
 import { setCurrentBuilding } from "@frontend/redux/slices/currentBuildingSlice";
 import { getNumFreerooms } from "@frontend/utils/utils";
 import { Typography, TypographyProps } from "@mui/material";
+import TagOutlinedIcon from '@mui/icons-material/TagOutlined';
+import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 import { useMediaQuery } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
+import { flex } from "@mui/system";
 import Image, { ImageProps } from "next/image";
 import React from "react";
 
@@ -21,7 +24,7 @@ const FAILED = -1;
 const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  height: 379,
+  height: 365,
   borderRadius: 12,
   border: `1px solid ${theme.colours.border.default}`,
   backgroundColor: theme.colours.surface.paper,
@@ -83,20 +86,35 @@ const InfoFooterBox = styled(Box)<BoxProps>(() => ({
 }));
 
 const DetailPill = styled(Box)<BoxProps>(({ theme }) => ({
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
   borderRadius: 100,
   gap: 6,
-  padding: 6,
+  padding: 4,
   paddingLeft: 12,
   paddingRight: 12,
   backgroundColor: theme.colours.accent.quaternary,
 }));
 
+const DetailPillIcon = styled(Typography)<TypographyProps>(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  color: theme.colours.accent.primary,
+  "& svg": {
+    fontSize: 16,
+    display: "block",
+  },
+}));
+
 const DetailPillText = styled(Typography)<TypographyProps>(({ theme }) => ({
   fontSize: 12,
-  fontWeight: 500,
-  color: theme.colours.text.primary,
-  paddingBottom: "2px",
-  gap: 10,
+  fontWeight: 550,
+  lineHeight: 0.3,
+  color: theme.colours.accent.primary,
+  display: "flex",
+  alignItems: "center",
 }));
 
 // Show only building name and rating for smaller screens
@@ -297,10 +315,16 @@ const BuildingCard: React.FC<{
                 }}
               >
                 <DetailPill>
+                  <DetailPillIcon>
+                    <TagOutlinedIcon />
+                  </DetailPillIcon>
                   <DetailPillText>{buildingId}</DetailPillText>
                 </DetailPill>
 
                 <DetailPill>
+                  <DetailPillIcon>
+                    <PlaceOutlinedIcon />
+                  </DetailPillIcon>
                   <DetailPillText>{getLocation(buildingId!)}</DetailPillText>
                 </DetailPill>
               </Stack>
