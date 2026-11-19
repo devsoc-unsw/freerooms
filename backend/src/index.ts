@@ -174,26 +174,13 @@ router.get(
 app.get(
   "/api/bookings",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const limit = parseBookingLimit(req);
-    const rawCursor = parseBookingCursor(req);
-    const { filters, cursor: bookingCursor } = parseBookingFilters(
-      req,
-      rawCursor
-    );
-    const { sort, cursor: sortCursor } = parseBookingSort(req, bookingCursor);
-    const { search, cursor: searchCursor } = parseBookingSearch(
-      req,
-      sortCursor
-    );
-
     const params: BookingPaginationParams = {
-      limit,
-      cursor: searchCursor,
-      filters,
-      sort,
-      search,
+      limit: parseBookingLimit(req),
+      filters: parseBookingFilters(req),
+      sort: parseBookingSort(req),
+      search: parseBookingSearch(req),
+      cursor: parseBookingCursor(req),
     };
-
     const data = await getAllBookings(params);
     res.send(data);
     next();

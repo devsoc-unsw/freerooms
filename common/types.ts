@@ -38,31 +38,49 @@ export type BookingModule = {
 };
 
 // Booking Pagination
+
+// One query param per filter, each with a single value, like the browse page
 export type BookingFilter = {
+  datetime?: Date;            // bookings overlapping datetime until the end of that Sydney day
   bookingType?: BookingType;
-  plannedSize?: number;
-  startTime?: Date;
-  endTime?: Date;
-  remainingTime?: number;
-}
+  plannedSize?: number;       // minimum planned size, same as room capacity
+  duration?: number;          // minimum booking length in minutes (end - start)
+  location?: "upper" | "lower";
+};
+
+export const bookingSorts = [
+  "ascendingStart",           // start time earliest
+  "descendingStart",          // start time last
+  "alphabetical",             // booking name A-Z
+  "reverseAlphabetical",      // booking name Z-A
+  "plannedSize",              // largest planned size first
+  "longestDuration",          // longest booking first
+  "remainingTime",            // least time remaining (end - now) first
+] as const;
+
+export type BookingSort = typeof bookingSorts[number];
 
 export type BookingCursor = {
   start: Date;
+  end: Date;
+  name: string;
+  plannedSize: number | null;
   bookingType: BookingType;
   roomId: string;
   occurrenceId: string;
   filter: BookingFilter | null;
-  sort: string[];
+  sort: BookingSort | null;
   search: string | null;
 };
 
 export type BookingPaginationParams = {
   limit: number;
-  cursor: BookingCursor | null;
   filters: BookingFilter | null;
-  sort: string[];
+  sort: BookingSort;
   search: string | null;
+  cursor: BookingCursor | null;
 };
+
 export const roomSchema = z.object({
   name: z.string(),
   id: z.string(),

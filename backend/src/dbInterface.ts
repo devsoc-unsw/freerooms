@@ -192,6 +192,8 @@ export const queryAllBookings = async (
   return await doRequest<AllBookingsRes>(query, variables);
 };
 
+///////////////////////////////////////////////////////////////
+
 type BookingsForRoomRes = {
   rooms_by_pk: {
     id: string;
@@ -226,6 +228,8 @@ export const queryBookingsForRoom = async (
   return await doRequest<BookingsForRoomRes>(query, variables);
 };
 
+///////////////////////////////////////////////////////////////
+
 type BookingsModuleRes = {
   bookings: {
     occurrenceId: string;
@@ -235,7 +239,7 @@ type BookingsModuleRes = {
 };
 
 /**
- * Query bookings module from the occurrence ID and room ID
+ * Query bookings module from an occurrence ID and room ID
  */
 export const queryBookingsModule = async (
   roomId: string,
@@ -260,6 +264,8 @@ export const queryBookingsModule = async (
 
   return await doRequest<BookingsModuleRes>(query, variables);
 };
+
+///////////////////////////////////////////////////////////////
 
 type BookingsForEventRes = {
   bookings: Array<{

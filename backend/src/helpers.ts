@@ -2,6 +2,7 @@ import {
   Booking,
   BookingPaginationParams,
   BookingsResponse,
+  BookingType,
   RoomsResponse,
   RoomStatus,
   RoomUtilitiesResponse,
@@ -233,7 +234,10 @@ export const createBookingCursor = (
 ): string => {
   return JSON.stringify({
     start: booking.start.toISOString(),
-    bookingType: booking.bookingType,
+    end: booking.end.toISOString(),
+    name: booking.name,
+    plannedSize: booking.plannedSize,
+    bookingType: booking.bookingType as BookingType,
     roomId: booking.roomId,
     occurrenceId: booking.occurrenceId,
     filter: params.filters,
