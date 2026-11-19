@@ -1,5 +1,11 @@
 import {
   BookingPaginationParams,
+  bookingsEventParamsSchema,
+  bookingsEventResponseSchema,
+  bookingsModuleParamsSchema,
+  bookingsModuleResponseSchema,
+  bookingsPaginationQuerySchema,
+  bookingsPaginationResponseSchema,
   bookingsResponseSchema,
   buildingIdParamsSchema,
   BuildingRatingsResponse,
@@ -171,45 +177,68 @@ router.get(
 );
 
 // Route to get all bookings with pagination
-app.get(
+router.get(
   "/api/bookings",
-  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const params: BookingPaginationParams = {
-      limit: parseBookingLimit(req),
-      filters: parseBookingFilters(req),
-      sort: parseBookingSort(req),
-      search: parseBookingSearch(req),
-      cursor: parseBookingCursor(req),
-    };
-    const data = await getAllBookings(params);
-    res.send(data);
-    next();
-  })
+  openAPIRoute(
+    {
+      tag: "Bookings",
+      summary: "Get all bookings with pagination",
+      query: bookingsPaginationQuerySchema,
+      response: bookingsPaginationResponseSchema,
+    },
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      const params: BookingPaginationParams = {
+        limit: parseBookingLimit(req),
+        filters: parseBookingFilters(req),
+        sort: parseBookingSort(req),
+        search: parseBookingSearch(req),
+        cursor: parseBookingCursor(req),
+      };
+      const data = await getAllBookings(params);
+      res.json(data);
+      next();
+    })
+  )
 );
 
 // Route to get related bookings from an event ID
-app.get(
+router.get(
   "/api/bookings/event/:eventID",
-  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const { eventID } = req.params as { eventID: string };
-    const data = await getRoomByEvent(eventID);
-    res.send(data);
-    next();
-  })
+  openAPIRoute(
+    {
+      tag: "Bookings",
+      summary: "Get bookings for an event",
+      params: bookingsEventParamsSchema,
+      response: bookingsEventResponseSchema.array(),
+    },
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      const { eventID } = bookingsEventParamsSchema.parse(req.params);
+      const data = await getRoomByEvent(eventID);
+      res.json(data);
+      next();
+    })
+  )
 );
 
 // Route to get the bookings module of a specific booking from an occurrence ID and room ID
-app.get(
+router.get(
   "/api/bookings/:roomID/:occurrenceID",
-  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const { roomID, occurrenceID } = req.params as {
-      roomID: string;
-      occurrenceID: string;
-    };
-    const data = await getBookingsModule(roomID, occurrenceID);
-    res.send(data);
-    next();
-  })
+  openAPIRoute(
+    {
+      tag: "Bookings",
+      summary: "Get booking module",
+      params: bookingsModuleParamsSchema,
+      response: bookingsModuleResponseSchema,
+    },
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      const { roomID, occurrenceID } = bookingsModuleParamsSchema.parse(
+        req.params
+      );
+      const data = await getBookingsModule(roomID, occurrenceID);
+      res.json(data);
+      next();
+    })
+  )
 );
 
 // Get all ratings for a room given a roomId

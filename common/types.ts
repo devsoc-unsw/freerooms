@@ -40,13 +40,15 @@ export type BookingModule = {
 // Booking Pagination
 
 // One query param per filter, each with a single value, like the browse page
-export type BookingFilter = {
-  datetime?: Date;            // bookings overlapping datetime until the end of that Sydney day
-  bookingType?: BookingType;
-  plannedSize?: number;       // minimum planned size, same as room capacity
-  duration?: number;          // minimum booking length in minutes (end - start)
-  location?: "upper" | "lower";
-};
+export const bookingFilterSchema = z.object({
+  datetime: z.date().optional(), // bookings overlapping datetime until the end of that Sydney day
+  bookingType: z.enum(BookingType).optional(),
+  plannedSize: z.number().optional(), // minimum planned size, same as room capacity
+  duration: z.number().optional(), // minimum booking length in minutes (end - start)
+  location: z.enum(["upper", "lower"]).optional(),
+});
+
+export type BookingFilter = z.infer<typeof bookingFilterSchema>;
 
 export const bookingSorts = [
   "ascendingStart",           // start time earliest
@@ -58,28 +60,36 @@ export const bookingSorts = [
   "remainingTime",            // least time remaining (end - now) first
 ] as const;
 
-export type BookingSort = typeof bookingSorts[number];
+export const bookingSortSchema = z.enum(bookingSorts);
 
-export type BookingCursor = {
-  start: Date;
-  end: Date;
-  name: string;
-  plannedSize: number | null;
-  bookingType: BookingType;
-  roomId: string;
-  occurrenceId: string;
-  filter: BookingFilter | null;
-  sort: BookingSort | null;
-  search: string | null;
-};
+export type BookingSort = z.infer<typeof bookingSortSchema>;
 
-export type BookingPaginationParams = {
-  limit: number;
-  filters: BookingFilter | null;
-  sort: BookingSort;
-  search: string | null;
-  cursor: BookingCursor | null;
-};
+export const bookingCursorSchema = z.object({
+  start: z.date(),
+  end: z.date(),
+  name: z.string(),
+  plannedSize: z.number().nullable(),
+  bookingType: z.enum(BookingType),
+  roomId: z.string(),
+  occurrenceId: z.string(),
+  filter: bookingFilterSchema.nullable(),
+  sort: bookingSortSchema.nullable(),
+  search: z.string().nullable(),
+});
+
+export type BookingCursor = z.infer<typeof bookingCursorSchema>;
+
+export const bookingPaginationParamsSchema = z.object({
+  limit: z.number(),
+  filters: bookingFilterSchema.nullable(),
+  sort: bookingSortSchema,
+  search: z.string().nullable(),
+  cursor: bookingCursorSchema.nullable(),
+});
+
+export type BookingPaginationParams = z.infer<
+  typeof bookingPaginationParamsSchema
+>;
 
 export const roomSchema = z.object({
   name: z.string(),
@@ -171,30 +181,45 @@ export const statusResponseSchema = z.record(
 export type StatusResponse = z.infer<typeof statusResponseSchema>;
 
 // Bookings for a specific event occurrence
-export type BookingsEventResponse = {
-  eventId: string;
-  occurrenceId: string;
-  roomId: string;
-  name: string;
-  bookingType: string;
-  plannedSize: string;
-  start: Date;
-  end: Date;
-};
+export const bookingsEventResponseSchema = z.object({
+  eventId: z.string(),
+  occurrenceId: z.string(),
+  roomId: z.string(),
+  name: z.string(),
+  bookingType: z.string(),
+  plannedSize: z.string(),
+  start: z.date(),
+  end: z.date(),
+});
+
+export type BookingsEventResponse = z.infer<typeof bookingsEventResponseSchema>;
 
 // Bookings module for a specific occurrence
-export type BookingsModuleResponse = {
-  occurrenceId: string;
-  roomId: string;
-  bookingModule: BookingModule;
-};
+export const bookingsModuleResponseSchema = z.object({
+  occurrenceId: z.string(),
+  roomId: z.string(),
+  bookingModule: z.object({
+    term: z.string(),
+    career: z.string(),
+    code: z.string(),
+    name: z.string(),
+  }),
+});
+
+export type BookingsModuleResponse = z.infer<
+  typeof bookingsModuleResponseSchema
+>;
 
 // Bookings Pagination Response
-export type BookingsPaginationResponse = {
-  bookings: Booking[];
-  nextCursor: string | null;
-  hasMore: boolean;
-};
+export const bookingsPaginationResponseSchema = z.object({
+  bookings: z.array(bookingSchema),
+  nextCursor: z.string().nullable(),
+  hasMore: z.boolean(),
+});
+
+export type BookingsPaginationResponse = z.infer<
+  typeof bookingsPaginationResponseSchema
+>;
 
 export const searchResponseValueSchema = roomStatusSchema.extend({
   name: z.string(),
@@ -274,6 +299,27 @@ export const ratingParamsSchema = z.object({
 
 export const roomUtilitiesParamsSchema = z.object({
   roomId: z.string().min(1),
+});
+
+export const bookingsEventParamsSchema = z.object({
+  eventID: z.string().min(1),
+});
+
+export const bookingsModuleParamsSchema = z.object({
+  roomID: z.string().min(1),
+  occurrenceID: z.string().min(1),
+});
+
+export const bookingsPaginationQuerySchema = z.object({
+  limit: z.string().optional(),
+  bookingType: z.string().optional(),
+  datetime: z.string().optional(),
+  plannedSize: z.string().optional(),
+  duration: z.string().optional(),
+  location: z.enum(["upper", "lower"]).optional(),
+  sort: z.string().optional(),
+  search: z.string().optional(),
+  cursor: z.string().optional(),
 });
 
 export const statusQuerySchema = z.object({
