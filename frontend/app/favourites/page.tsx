@@ -7,10 +7,11 @@ import SortBar from "@frontend/components/filters/SortBar";
 import BuildingDrawer from "@frontend/components/map/BuildingDrawer";
 import RoomCardList from "@frontend/components/rooms/RoomCardList";
 import SearchBar from "@frontend/components/search/SearchBar";
+import TopBar from "@frontend/components/ui/TopBar";
 import TopBarGroup from "@frontend/components/ui/TopBarGroup";
 import useQuerySort from "@frontend/hooks/query/useQuerySort";
 import useDisplayedRooms from "@frontend/hooks/rooms/useDisplayedRooms";
-import { NO_START_TIME, roomSortBarDropdown } from "@frontend/utils/constants";
+import { BROWSE_VIEWS, NO_START_TIME, roomSortBarDropdown } from "@frontend/utils/constants";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
@@ -22,7 +23,8 @@ import { parseAsString, useQueryState } from "nuqs";
 import React, { Suspense } from "react";
 
 const Favourites = () => {
-  const [sort, setSort] = useQuerySort(roomSortBarDropdown);
+  const { sortOptions, sortTitle } = BROWSE_VIEWS.rooms;
+  const [sort, setSort] = useQuerySort(sortOptions);
   const [query, setQuery] = React.useState<string>("");
   const [start, setStart] = useQueryState(
     // start time set by default. clearing start time shows all favourites, and updates in the URL
@@ -51,17 +53,7 @@ const Favourites = () => {
               Favourite Rooms
             </Typography>
           </AlignedWithSearchBar>
-          <Stack
-            direction={{ xs: "column", sm: "row" }}
-            sx={{
-              justifyContent: { xs: "center", sm: "space-between" },
-              alignItems: "center",
-              marginTop: (theme) => `${theme.space.sm}px`,
-              marginBottom: (theme) => `${theme.space.sm}px`,
-              flexWrap: { sm: "wrap", md: "nowrap" },
-              width: "100%",
-            }}
-          >
+          <TopBar>
             <SearchBar
               setQuery={setQuery}
               placeholder="Search for favourite rooms"
@@ -72,8 +64,8 @@ const Favourites = () => {
               <SortBar
                 setSort={setSort}
                 sort={sort}
-                options={roomSortBarDropdown}
-                title="Room Sort"
+                options={sortOptions}
+                title={sortTitle}
               />
               <TimeBar
                 startIsSet={startIsSet}
@@ -82,7 +74,7 @@ const Favourites = () => {
                 }
               />
             </TopBarGroup>
-          </Stack>
+          </TopBar>
           <AlignedWithSearchBar>
             <RoomCardList
               rooms={favouriteRooms}

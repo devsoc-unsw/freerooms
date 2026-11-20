@@ -36,6 +36,9 @@ export type RoomSearchOption = {
   room: Room;
 };
 
+// Which list the browse page is showing
+export type BrowseView = "buildings" | "rooms";
+
 ///////////////////////////////////////////////////////////////
 // Other
 

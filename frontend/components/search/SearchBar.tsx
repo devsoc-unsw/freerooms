@@ -11,9 +11,11 @@ const DEBOUNCE_MS = 100;
 const SearchBar = ({
   setQuery,
   placeholder = "Search for a building...",
+  defaultValue,
 }: {
   setQuery: (query: string) => void;
   placeholder?: string;
+  defaultValue?: string;
 }) => {
   const theme = useTheme();
 
@@ -44,13 +46,17 @@ const SearchBar = ({
       <AppTextField
         id="input-with-sx"
         placeholder={placeholder}
+        defaultValue={defaultValue}
         sx={[
           getOutlinedFieldStyles(theme),
           {
             "& .MuiOutlinedInput-root": {
               height: theme.sizes.control.xl,
-              borderRadius: theme.radius.md,
+              borderRadius: `${theme.radius.lg}px`,
               padding: `${theme.space.md}px`,
+            },
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderWidth: `${theme.sizes.border.control}px`,
             },
             "& .MuiOutlinedInput-input::placeholder":
               theme.typography.subtitle1,
