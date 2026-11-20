@@ -103,7 +103,7 @@ const DetailPillIcon = styled(Typography)<TypographyProps>(({ theme }) => ({
   justifyContent: "center",
   color: theme.colours.accent.primary,
   "& svg": {
-    fontSize: 16,
+    fontSize: 17,
     display: "block",
   },
 }));
