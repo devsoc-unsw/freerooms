@@ -14,17 +14,23 @@ import useBuilding from "@frontend/hooks/buildings/useBuilding";
 import useBuildings from "@frontend/hooks/buildings/useBuildings";
 import useMapboxRoute from "@frontend/hooks/map/useMapboxRoute";
 import useUserLocation from "@frontend/hooks/map/useUserLocation";
-import { useDispatch } from "@frontend/redux/hooks";
-import { setCurrentBuilding } from "@frontend/redux/slices/currentBuildingSlice";
-import calculateDistance from "@frontend/utils/calculateDistance";
+import useWalkingMatrix from "@frontend/hooks/map/useWalkingMatrix";
+import { useDispatch, useSelector } from "@frontend/redux/hooks";
+import {
+  selectCurrentBuilding,
+  setCurrentBuilding,
+} from "@frontend/redux/slices/currentBuildingSlice";
+import { isOnCampus } from "@frontend/utils/campus";
+import { shouldCancelRoute } from "@frontend/utils/routeSelection";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Snackbar from "@mui/material/Snackbar";
 import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { Building } from "common/types";
 import type { LngLatBoundsLike } from "mapbox-gl";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import type { MapRef } from "react-map-gl/mapbox";
 import MapboxMap, { Layer, Marker, Source } from "react-map-gl/mapbox";
 import { useDebounceValue } from "usehooks-ts";
@@ -69,7 +75,6 @@ const LocationMarker = () => {
 };
 
 export const Map = () => {
-  // Fetch data
   const { buildings } = useBuildings();
   const { isDarkMode } = useContext(DarkModeContext);
   const dispatch = useDispatch();
@@ -77,12 +82,14 @@ export const Map = () => {
   const mapRef = useRef<MapRef>(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
 
-  // Use debounce to allow moving from marker to popup without popup hiding
   const [currentHover, setCurrentHover] = useState<Building | null>(null);
   const [debouncedCurrentHover] = useDebounceValue(currentHover, 50);
 
   const styleArray = isDarkMode ? MAPBOX_STYLE_DARK : MAPBOX_STYLE_LIGHT;
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const hasFlownOnLoadRef = useRef(false);
+  const skipNextRouteZoomRef = useRef(false);
 
   // Get current location of user
   const {
@@ -104,21 +111,29 @@ export const Map = () => {
     clearRouteError,
   } = useMapboxRoute();
 
-  const distances = useMemo(() => {
-    if (
-      buildings &&
-      userLat !== undefined &&
-      userLng !== undefined &&
-      isInBounds(userLat, userLng)
-    ) {
-      return buildings.map((building) =>
-        calculateDistance(userLat, userLng, building.lat, building.long)
-      );
-    }
-    return [];
-  }, [buildings, userLat, userLng]);
+  // Only fetch walking estimates for people on campus
+  const { distances, durations } = useWalkingMatrix(
+    userLat,
+    userLng,
+    buildings,
+    isOnCampus(userLat, userLng)
+  );
 
-  //set current building to search param query - THIS IS WHERE OTHER QUERIES CAN GO
+  // Walking info for the building open in the drawer; prefer the loaded route's numbers
+  const selectedBuilding = useSelector(selectCurrentBuilding);
+  const selectedIndex =
+    buildings?.findIndex((building) => building.id === selectedBuilding?.id) ??
+    -1;
+  const selectedRoute =
+    routeSummary?.destinationBuildingId === selectedBuilding?.id
+      ? routeSummary
+      : null;
+  const selectedDistance = selectedRoute
+    ? selectedRoute.distanceMeters
+    : distances[selectedIndex];
+  const selectedDuration = selectedRoute
+    ? selectedRoute.durationSeconds
+    : durations[selectedIndex];
   const searchParams = useSearchParams();
   const buildingId = searchParams.get("building");
   const { building } = useBuilding(buildingId || "");
@@ -128,16 +143,25 @@ export const Map = () => {
       dispatch(setCurrentBuilding(building));
 
       if (isMapLoaded) {
-        mapRef.current?.flyTo({
-          center: [building.long, building.lat],
-          duration: 800,
-        });
+        // On mobile, tapping a marker shouldn't move the map
+        if (!isMobile || !hasFlownOnLoadRef.current) {
+          mapRef.current?.flyTo({
+            center: [building.long, building.lat],
+            duration: 800,
+          });
+        }
+        hasFlownOnLoadRef.current = true;
       }
     }
-  }, [building, dispatch, isMapLoaded]);
+  }, [building, dispatch, isMapLoaded, isMobile]);
 
   useEffect(() => {
     if (!route || route.geometry.coordinates.length === 0) {
+      return;
+    }
+
+    if (skipNextRouteZoomRef.current) {
+      skipNextRouteZoomRef.current = false;
       return;
     }
 
@@ -166,7 +190,8 @@ export const Map = () => {
   }, [route]);
 
   const handleGetDirections = async (
-    destinationBuilding: Building
+    destinationBuilding: Building,
+    { keepDrawerOpen = false } = {}
   ): Promise<void> => {
     let origin;
 
@@ -181,12 +206,45 @@ export const Map = () => {
       destinationBuilding,
     });
 
-    if (!routeWasCreated) {
+    if (!routeWasCreated || keepDrawerOpen) {
       return;
     }
 
     dispatch(setCurrentBuilding(null));
     router.replace("/map");
+  };
+
+  // Collapsing the mobile sheet shows the route, unless it's already shown or loading
+  const handleDrawerCollapse = (destinationBuilding: Building) => {
+    if (
+      routeSummary?.destinationBuildingId === destinationBuilding.id ||
+      isRouteLoading
+    ) {
+      return;
+    }
+
+    skipNextRouteZoomRef.current = isMobile;
+    void handleGetDirections(destinationBuilding, { keepDrawerOpen: true });
+  };
+
+  // Picking a different building cancels the current route
+  const handleMarkerSelect = (selected: Building) => {
+    if (
+      shouldCancelRoute({
+        routeDestinationId: routeSummary?.destinationBuildingId,
+        isRouteLoading,
+        selectedBuildingId: selected.id,
+      })
+    ) {
+      clearRoute();
+    }
+  };
+
+  // Closing the drawer removes the route to that building
+  const handleDrawerClose = (closedBuilding: Building) => {
+    if (routeSummary?.destinationBuildingId === closedBuilding.id) {
+      clearRoute();
+    }
   };
 
   const displayedError = locationError ?? routeError;
@@ -237,12 +295,25 @@ export const Map = () => {
               >
                 <MapMarker
                   buildingId={building.id}
-                  distance={distances[index]}
+                  distance={
+                    routeSummary?.destinationBuildingId === building.id
+                      ? routeSummary.distanceMeters
+                      : distances[index]
+                  }
+                  duration={
+                    routeSummary?.destinationBuildingId === building.id
+                      ? routeSummary.durationSeconds
+                      : durations[index]
+                  }
+                  isWalkingExact={
+                    routeSummary?.destinationBuildingId === building.id
+                  }
                   currentHover={debouncedCurrentHover}
                   setCurrentHover={setCurrentHover}
                   isRouteDestination={
                     routeSummary?.destinationBuildingId === building.id
                   }
+                  onSelect={handleMarkerSelect}
                 />
               </Marker>
             ))}
@@ -274,13 +345,19 @@ export const Map = () => {
           )}
         </MapboxMap>
 
-        {routeSummary && (
-          <DirectionsSummary summary={routeSummary} onClose={clearRoute} />
-        )}
+        {routeSummary &&
+          routeSummary.destinationBuildingId !== selectedBuilding?.id && (
+            <DirectionsSummary summary={routeSummary} onClose={clearRoute} />
+          )}
 
         <BuildingDrawer
           onGetDirections={handleGetDirections}
           isDirectionsLoading={isLocating || isRouteLoading}
+          distance={selectedDistance}
+          duration={selectedDuration}
+          isWalkingExact={selectedRoute !== null}
+          onCollapse={handleDrawerCollapse}
+          onClose={handleDrawerClose}
         />
 
         <Snackbar
