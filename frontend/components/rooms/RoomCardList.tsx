@@ -1,12 +1,15 @@
 import RoomCard from "@frontend/components/rooms/RoomCard";
+import { AppButton } from "@frontend/components/ui";
 import { Skeleton, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import type { Room } from "common/types";
+import { useState } from "react";
 
 type RoomCardListProps = {
   rooms?: Room[];
   date?: string;
   emptyMessage?: string;
+  pageSize?: number;
 };
 
 const CardGrid = styled("div")(({ theme }) => ({
@@ -26,11 +29,24 @@ const EmptyState = styled(Typography)(({ theme }) => ({
   padding: `${theme.space.xxl}px 0`,
 }));
 
+const LoadMore = styled("div")(({ theme }) => ({
+  display: "flex",
+  justifyContent: "center",
+  padding: `${theme.space.md}px 0`,
+  "& button": {
+    color: theme.colours.text.secondary,
+    fontWeight: 500,
+    fontSize: theme.typography.body2,
+  },
+}));
+
 const RoomCardList: React.FC<RoomCardListProps> = ({
   rooms,
   date,
   emptyMessage = "No rooms to show.",
+  pageSize,
 }) => {
+  const [visibleCount, setVisibleCount] = useState(pageSize ?? Infinity);
   if (!rooms) {
     return (
       <CardGrid>
@@ -57,11 +73,23 @@ const RoomCardList: React.FC<RoomCardListProps> = ({
   }
 
   return (
-    <CardGrid>
-      {rooms.map((room) => (
-        <RoomCard key={room.id} room={room} date={date} />
-      ))}
-    </CardGrid>
+    <>
+      <CardGrid>
+        {rooms.slice(0, visibleCount).map((room) => (
+          <RoomCard key={room.id} room={room} date={date} />
+        ))}
+      </CardGrid>
+      {pageSize && visibleCount < rooms.length && (
+        <LoadMore>
+          <AppButton
+            variant="text"
+            onClick={() => setVisibleCount((count) => count + pageSize)}
+          >
+            See more rooms
+          </AppButton>
+        </LoadMore>
+      )}
+    </>
   );
 };
 
