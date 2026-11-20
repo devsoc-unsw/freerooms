@@ -1,6 +1,7 @@
 "use client";
 
-import NavBar, { navHeight } from "@frontend/components/navigation/NavBar";
+import Footer from "@frontend/components/footer/Footer";
+import NavBar from "@frontend/components/navigation/NavBar";
 import SearchModal from "@frontend/components/search/SearchModal";
 import store from "@frontend/redux/store";
 import { createAppTheme, type ThemeMode } from "@frontend/theme";
@@ -111,7 +112,10 @@ const App: React.FC<{
     <>
       <NavBar />
       <SearchModal />
-      <Main>{children}</Main>
+      <Main>
+        {children}
+        <Footer />
+      </Main>
     </>
   );
 };
@@ -121,7 +125,10 @@ const Main = styled("main")(({ theme }) => ({
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  paddingTop: navHeight,
+  paddingTop: theme.space.none,
+  [theme.breakpoints.up("sm")]: {
+    paddingTop: theme.sizes.navBar.height,
+  },
   width: "100%",
   marginRight: 0,
   height: "100%",

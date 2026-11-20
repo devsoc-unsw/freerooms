@@ -55,7 +55,17 @@ const LandingSection = styled("section")(() => ({
   minWidth: 0,
 }));
 
-const LandingScreenContainer = styled(Stack)(() => ({
+const DoorContainer = styled(Stack)(({ theme }) => ({
+  cursor: "pointer",
+  marginBottom: "1rem",
+  // Phone: no top navbar, so no padding above the page to pull into
+  marginTop: theme.space.md,
+}));
+
+const AnimationContainer = styled(Stack)(() => ({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
   height: "100%",
   width: "80%",
   margin: "auto",
