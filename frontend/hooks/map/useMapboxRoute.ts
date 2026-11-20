@@ -1,5 +1,6 @@
 import { MAPBOX_ACCESS_TOKEN } from "@frontend/config";
 import { UserLocation } from "@frontend/hooks/map/useUserLocation";
+import { isOnCampus } from "@frontend/utils/campus";
 import { Building } from "common/types";
 import { useCallback, useEffect, useRef, useState } from "react";
 
@@ -115,6 +116,13 @@ const useMapboxRoute = () => {
         setRouteError(
           "Directions could not be calculated because one or more coordinates are invalid."
         );
+
+        return false;
+      }
+
+      // Don't spend a Mapbox request on someone who isn't on campus
+      if (!isOnCampus(origin.lat, origin.lng)) {
+        setRouteError("Walking directions are only available on campus.");
 
         return false;
       }
