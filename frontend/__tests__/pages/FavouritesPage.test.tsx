@@ -30,11 +30,11 @@ jest.mock("nuqs", () => ({
   },
 }));
 
-const mockUseDisplayedFavouriteRooms = jest.fn();
-jest.mock("@frontend/hooks/rooms/useDisplayedFavouriteRooms", () => ({
+const mockUseDisplayedRooms = jest.fn();
+jest.mock("@frontend/hooks/rooms/useDisplayedRooms", () => ({
   __esModule: true,
   default: (query: string, sort: string, availableOnly: boolean) =>
-    mockUseDisplayedFavouriteRooms(query, sort, availableOnly),
+    mockUseDisplayedRooms(query, sort, availableOnly),
 }));
 
 jest.mock("@frontend/components/map/BuildingDrawer", () => ({
@@ -68,7 +68,7 @@ const clickButton = async (name: string) => {
 
 describe("Favourites page", () => {
   beforeEach(() => {
-    mockUseDisplayedFavouriteRooms.mockReturnValue([]);
+    mockUseDisplayedRooms.mockReturnValue([]);
     mockStart = "";
     mockSetStart.mockClear();
   });
@@ -90,7 +90,7 @@ describe("Favourites page", () => {
   it("starts with only the favourites free at the start time", () => {
     renderPage();
 
-    expect(mockUseDisplayedFavouriteRooms).toHaveBeenCalledWith(
+    expect(mockUseDisplayedRooms).toHaveBeenCalledWith(
       "",
       "alphabetical",
       true
@@ -111,7 +111,7 @@ describe("Favourites page", () => {
 
     renderPage();
 
-    expect(mockUseDisplayedFavouriteRooms).toHaveBeenLastCalledWith(
+    expect(mockUseDisplayedRooms).toHaveBeenLastCalledWith(
       "",
       "alphabetical",
       false
@@ -119,7 +119,7 @@ describe("Favourites page", () => {
   });
 
   it("hands the favourite rooms to the list", () => {
-    mockUseDisplayedFavouriteRooms.mockReturnValue([
+    mockUseDisplayedRooms.mockReturnValue([
       { id: "K-J17-101", name: "Ainsworth 101" },
     ]);
 
@@ -129,7 +129,7 @@ describe("Favourites page", () => {
   });
 
   it("passes undefined to the list while the rooms are loading", () => {
-    mockUseDisplayedFavouriteRooms.mockReturnValue(undefined);
+    mockUseDisplayedRooms.mockReturnValue(undefined);
 
     renderPage();
 

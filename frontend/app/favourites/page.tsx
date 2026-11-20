@@ -9,7 +9,7 @@ import RoomCardList from "@frontend/components/rooms/RoomCardList";
 import SearchBar from "@frontend/components/search/SearchBar";
 import TopBarGroup from "@frontend/components/ui/TopBarGroup";
 import useQuerySort from "@frontend/hooks/query/useQuerySort";
-import useDisplayedFavouriteRooms from "@frontend/hooks/rooms/useDisplayedFavouriteRooms";
+import useDisplayedRooms from "@frontend/hooks/rooms/useDisplayedRooms";
 import { NO_START_TIME, roomSortBarDropdown } from "@frontend/utils/constants";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
@@ -32,7 +32,7 @@ const Favourites = () => {
   const startIsSet = start !== NO_START_TIME;
 
   const [date] = useQueryState("date", parseAsString.withDefault(""));
-  const favouriteRooms = useDisplayedFavouriteRooms(query, sort, startIsSet);
+  const favouriteRooms = useDisplayedRooms({query, sort, availableOnly: startIsSet, favouritesOnly: true});
 
   return (
     <Container maxWidth={false}>
