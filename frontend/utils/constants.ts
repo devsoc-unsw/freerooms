@@ -232,6 +232,9 @@ export const NO_START_TIME = "none";
 // Number of rooms displayed at first
 export const ROOM_LIST_PAGE_SIZE = 24;
 
+// Overlay opacity for room tiles in the building drawer
+export const DRAWER_ROOM_TILE_OVERLAY_OPACITY = 0.7;
+
 type BrowseViewConfig = {
   sortOptions: DropDownItem[];
   sortTitle: string;

@@ -20,6 +20,9 @@ export const sizes = {
     compactHeight: 240,
     compactThumbnailHeight: 96,
   },
+  drawerRoomTile: {
+    minHeight: 115,
+  },
   picker: {
     width: 133,
     calendarWidth: 320, // size MUI's DateCalendar renders at
@@ -27,8 +30,12 @@ export const sizes = {
   },
   toolbar: {
     buttonWidth: 115, // Filters/Sort/Time buttons
+    viewToggleWidth: 300, // Building or Room View Toggle
     menuWidth: 400,
     wideMenuWidth: 600,
+  },
+  border: {
+    control: 2,
   },
   slider: {
     rail: 11,
