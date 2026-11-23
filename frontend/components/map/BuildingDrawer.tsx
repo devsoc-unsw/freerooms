@@ -1,4 +1,4 @@
-import ViewOnMapButton from "@frontend/components/navigation/ViewOnMapButton";
+import ViewOnMapButton from "@frontend/components/navigation/GetDirectionsButton";
 import RoomAvailabilityBox from "@frontend/components/rooms/RoomAvailabilityBox";
 import Button from "@frontend/components/ui/Button";
 import useBuildingStatus from "@frontend/hooks/buildings/useBuildingStatus";
@@ -7,6 +7,7 @@ import {
   selectCurrentBuilding,
   setCurrentBuilding,
 } from "@frontend/redux/slices/currentBuildingSlice";
+import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
 import { Slide, Typography, useMediaQuery } from "@mui/material";
@@ -24,7 +25,7 @@ const AppBox = styled(Box)(({ theme }) => ({
   flexDirection: "row",
   alignItems: "center",
   justifyContent: "space-between",
-  padding: theme.spacing(3, 2, 2, 3),
+  padding: theme.spacing(3, 2, 0, 3),
 }));
 
 const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
@@ -48,14 +49,10 @@ const StatusBox = styled(Box)<BoxProps>(({ theme }) => ({
 }));
 
 const RoomBox = styled(Box)<BoxProps>(({ theme }) => ({
-  borderRadius: theme.radius.card,
-  backgroundColor: theme.colours.surface.muted,
+  display: "flex",
+  flexDirection: "column",
+  gap: `${theme.space.md}px`,
   margin: theme.spacing(1.25),
-  padding: theme.spacing(0.5),
-}));
-
-const CloseButton = styled(Button)(({ theme }) => ({
-  backgroundColor: alpha(theme.colours.text.secondary, 0.5),
 }));
 
 const DirectionsButton = styled(Button)(({ theme }) => ({
@@ -187,7 +184,11 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
                 alignItems: "center",
               }}
             >
-              <Typography sx={{ fontSize: 19, fontWeight: 500 }}>
+              <Typography sx={(theme) => ({
+                fontSize: 19, 
+                fontWeight: 900,
+                color: theme.colours.text.primary,
+              })}>
                 {building.name}
               </Typography>
               <StatusBox>
@@ -198,9 +199,14 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
               </StatusBox>
             </div>
 
-            <CloseButton aria-label="Close" onClick={onClose}>
+            <IconButton
+              size="small"
+              aria-label="Close"
+              onClick={onClose}
+              sx={(theme) => ({ color: theme.colours.text.primary })}
+            >
               <CloseIcon />
-            </CloseButton>
+            </IconButton>
           </AppBox>
 
           <div style={{ margin: theme.spacing(1.25) }}>

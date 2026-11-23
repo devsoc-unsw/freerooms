@@ -2,6 +2,7 @@ import Button from "@frontend/components/ui/Button";
 import useBuilding from "@frontend/hooks/buildings/useBuilding";
 import { useDispatch } from "@frontend/redux/hooks";
 import { setCurrentBuilding } from "@frontend/redux/slices/currentBuildingSlice";
+import DirectionsWalkOutlinedIcon from '@mui/icons-material/DirectionsWalkOutlined';
 import { useTheme } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { useRouter } from "next/navigation";
@@ -24,24 +25,31 @@ const ViewOnMapButton: React.FC<{
 
   return (
     <Button
-      aria-label="View on Map"
-      name="View on Map"
+      aria-label="Get Directions"
+      name="Get Directions"
       sx={{
         height: 45,
+        gap: 1,
         ml: variant === "full-width" ? "0px" : { xs: 0, sm: 1 },
         my: { xs: 1, sm: 0 },
         width: variant === "full-width" ? "100%" : { xs: "100%", sm: "160px" },
         position: "relative",
         //right: variant === "full-width" ? "6px" : "0px", //this is because building drawer has weird margin idk
-        backgroundColor: theme.palette.background.default,
-        color: theme.palette.primary.main,
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.primary.contrastText,
+        "&:hover": {
+          opacity: 0.9,
+        },
       }}
       variant="outlined"
       color="primary"
       onClick={() => handleMapRedirect(buildingId)}
     >
-      <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-        View on Map
+      <DirectionsWalkOutlinedIcon fontSize="small" />
+      <Typography variant="body2">
+        <>
+          Get Directions
+        </>
       </Typography>
     </Button>
   );

@@ -14,7 +14,6 @@ import Box, { BoxProps } from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
-import { flex } from "@mui/system";
 import Image, { ImageProps } from "next/image";
 import React from "react";
 
@@ -36,6 +35,7 @@ const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
     height: 200,
   },
   cursor: "pointer",
+  "&:hover .building-card-image": { transform: "scale(1.05)" },
 }));
 
 const ImageBox = styled(Box)<BoxProps>(() => ({
@@ -43,14 +43,15 @@ const ImageBox = styled(Box)<BoxProps>(() => ({
   height: 249,
   borderTopLeftRadius: 12,
   borderTopRightRadius: 12,
+  overflow: "hidden",
   cursor: "pointer",
 }));
 
-const StyledImage = styled(Image)<ImageProps>(() => ({
-  transition: "all 0.1s ease-in-out",
-  "&:hover": {
-    opacity: 0.7,
-  },
+const StyledImage = styled(Image)<ImageProps>(({ theme }) => ({
+  transition: theme.transitions.create("transform", {
+    duration: theme.transitions.duration.standard,
+  }),
+  "@media (prefers-reduced-motion: reduce)": { transition: "none" },
 }));
 
 const StatusBox = styled(Box)<BoxProps>(({ theme }) => ({
@@ -160,6 +161,7 @@ const BuildingCard: React.FC<{
         ) : (
           <>
             <StyledImage
+              className="building-card-image"
               alt={`Image of ${buildingId}`}
               src={`/assets/building_photos/${buildingId}.webp`}
               fill={true}
