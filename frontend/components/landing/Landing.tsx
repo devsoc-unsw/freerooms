@@ -91,9 +91,8 @@ const HeroPanelContainer = styled(Stack)(() => ({
 const DoorContainer = styled(Stack)(({ theme }) => ({
   cursor: "pointer",
   marginBottom: "1rem",
-  [theme.breakpoints.down("md")]: {
-    marginTop: "-3rem",
-  },
+  // Phone: no top navbar, so no padding above the page to pull into
+  marginTop: theme.space.md,
 }));
 
 const AnimationContainer = styled(Stack)(() => ({

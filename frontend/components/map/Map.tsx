@@ -4,7 +4,6 @@ import { DarkModeContext } from "@frontend/app/clientLayout";
 import BuildingDrawer from "@frontend/components/map/BuildingDrawer";
 import DirectionsSummary from "@frontend/components/map/DirectionSummary";
 import MapMarker from "@frontend/components/map/MapMarker";
-import { navHeight } from "@frontend/components/navigation/NavBar";
 import {
   MAPBOX_ACCESS_TOKEN,
   MAPBOX_STYLE_DARK,
@@ -20,6 +19,7 @@ import {
   selectCurrentBuilding,
   setCurrentBuilding,
 } from "@frontend/redux/slices/currentBuildingSlice";
+import { sizes } from "@frontend/theme";
 import { isOnCampus } from "@frontend/utils/campus";
 import { shouldCancelRoute } from "@frontend/utils/routeSelection";
 import Alert from "@mui/material/Alert";
@@ -259,7 +259,7 @@ export const Map = () => {
       <div
         style={{
           position: "relative",
-          height: `calc(100svh - ${navHeight}px)`,
+          height: `calc(100svh - ${sizes.navBar.height}px)`,
         }}
       >
         <MapboxMap

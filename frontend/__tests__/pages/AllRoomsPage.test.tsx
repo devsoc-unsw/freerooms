@@ -51,9 +51,12 @@ describe("AllRooms page", () => {
       </Provider>
     );
 
-    const button = screen.getByRole("link", { name: /All rooms/i });
+    const links = screen.getAllByRole("link", {
+      name: /Browse buildings and rooms/i,
+    });
 
-    expect(button).toBeInTheDocument();
+    expect(links.length).toBeGreaterThan(0);
+    links.forEach((link) => expect(link).toHaveAttribute("href", "/browse"));
   });
 
   it("renders AllRoomsSearchBar", () => {
