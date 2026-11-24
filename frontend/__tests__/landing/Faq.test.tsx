@@ -5,7 +5,7 @@ import { screen } from "@testing-library/react";
 describe("Faq", () => {
   it("renders Faq heading", () => {
     render(<Faq />);
-    const heading = screen.getByText("Frequently Asked Questions");
+    const heading = screen.getByText("FAQ");
     expect(heading).toBeInTheDocument();
   });
   it("renders Faq text", () => {
