@@ -1,8 +1,10 @@
 import RoomCard from "@frontend/components/rooms/RoomCard";
 import { AppButton } from "@frontend/components/ui";
+import AnimatedListItem from "@frontend/components/ui/AnimatedListItem";
 import { Skeleton, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import type { Room } from "common/types";
+import { AnimatePresence } from "motion/react";
 import { useState } from "react";
 
 type RoomCardListProps = {
@@ -75,9 +77,13 @@ const RoomCardList: React.FC<RoomCardListProps> = ({
   return (
     <>
       <CardGrid>
-        {rooms.slice(0, visibleCount).map((room) => (
-          <RoomCard key={room.id} room={room} date={date} />
-        ))}
+        <AnimatePresence initial={false} mode="popLayout">
+          {rooms.slice(0, visibleCount).map((room) => (
+            <AnimatedListItem key={room.id}>
+              <RoomCard room={room} date={date} />
+            </AnimatedListItem>
+          ))}
+        </AnimatePresence>
       </CardGrid>
       {pageSize && visibleCount < rooms.length && (
         <LoadMore>

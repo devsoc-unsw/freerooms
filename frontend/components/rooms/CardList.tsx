@@ -7,10 +7,11 @@ import useRooms from "@frontend/hooks/rooms/useRooms";
 import useStatus from "@frontend/hooks/rooms/useStatus";
 import calculateDistance from "@frontend/utils/calculateDistance";
 import { getNumFreerooms } from "@frontend/utils/utils";
+import AnimatedListItem from "@frontend/components/ui/AnimatedListItem";
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Building } from "common/types";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence } from "motion/react";
 import React from "react";
 
 const CardGrid = styled("div")(() => ({
@@ -146,26 +147,9 @@ const CardList: React.FC<{
     <CardGrid>
       <AnimatePresence initial={false} mode="popLayout">
         {items.map(({ key, buildingId }) => (
-          <motion.div
-            key={key}
-            layout="position"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{
-              layout: {
-                type: "tween",
-                duration: 0.75,
-                ease: "easeInOut",
-              },
-              opacity: {
-                duration: 0.2,
-                ease: "easeInOut",
-              },
-            }}
-          >
+          <AnimatedListItem key={key}>
             <FlippableCard buildingId={buildingId} />
-          </motion.div>
+          </AnimatedListItem>
         ))}
       </AnimatePresence>
     </CardGrid>
