@@ -5,9 +5,11 @@ import parseDates from "common/parseDates";
 import {
   Booking,
   BookingCursor,
+  BookingListModule,
   BookingModule,
   BookingPaginationParams,
   BookingType,
+  PaginatedBooking,
 } from "common/types";
 import { parse } from "graphql";
 import { gql, GraphQLClient } from "graphql-request";
@@ -135,7 +137,16 @@ export const queryBuildingsAndRooms =
 ///////////////////////////////////////////////////////////////
 
 export type AllBookingsRes = {
-  bookings: Booking[];
+  bookings: PaginatedBooking[];
+};
+
+type BookingModulesQueryRes = {
+  bookingmodules: Array<
+    BookingListModule & {
+      roomId: string;
+      occurrenceId: string;
+    }
+  >;
 };
 
 type TextComparison = {
@@ -495,7 +506,72 @@ export const queryAllBookings = async (
     }
   `;
 
-  return await doRequest<AllBookingsRes>(query, { limit, where });
+  // Get the paginated bookings first
+  const result = await doRequest<{
+    bookings: Omit<PaginatedBooking, "bookingModules">[];
+  }>(query, { limit, where });
+
+  if (result.bookings.length === 0) {
+    return { bookings: [] };
+  }
+
+  // Match modules to these bookings
+  const moduleWhere: GraphQLValue = {
+    _or: result.bookings.map((booking) => ({
+      roomId: { _eq: booking.roomId },
+      occurrenceId: { _eq: booking.occurrenceId },
+    })),
+  };
+
+  const moduleQuery = `
+    query BookingModules($where: bookingmodules_bool_exp!) {
+      bookingmodules(
+        where: $where
+        order_by: [{ moduleIndex: asc }]
+      ) {
+        roomId
+        occurrenceId
+        code
+        name
+        term
+        career
+      }
+    }
+  `;
+
+  const moduleResult = await doRequest<BookingModulesQueryRes>(moduleQuery, {
+    where: moduleWhere,
+  });
+
+  // Group the modules
+  const modulesByBooking = new Map<string, BookingListModule[]>();
+
+  for (const module of moduleResult.bookingmodules) {
+    const key = JSON.stringify([module.roomId, module.occurrenceId]);
+
+    const modules = modulesByBooking.get(key) ?? [];
+
+    modules.push({
+      code: module.code,
+      name: module.name,
+      term: module.term,
+      career: module.career,
+    });
+
+    modulesByBooking.set(key, modules);
+  }
+
+  // Attach the module leaving the normal fields the same
+  return {
+    bookings: result.bookings.map((booking) => {
+      const key = JSON.stringify([booking.roomId, booking.occurrenceId]);
+
+      return {
+        ...booking,
+        bookingModules: modulesByBooking.get(key) ?? [],
+      };
+    }),
+  };
 };
 
 ///////////////////////////////////////////////////////////////
