@@ -1,6 +1,6 @@
 import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithProviders";
 import Faq from "@frontend/components/landing/Faq";
-import { screen } from "@testing-library/react";
+import { fireEvent, screen } from "@testing-library/react";
 
 describe("Faq", () => {
   it("renders Faq heading", () => {
@@ -41,6 +41,30 @@ describe("Faq", () => {
       )
     ).toBeInTheDocument();
   });
+  it("expands and collapses questions independently", () => {
+    render(<Faq />);
+
+    const booking = screen.getByRole("button", {
+      name: "Can I book a room using Freerooms?",
+    });
+    const occupied = screen.getByRole("button", {
+      name: "What happens if somebody is in a free room?",
+    });
+
+    expect(booking).toHaveAttribute("aria-expanded", "false");
+
+    fireEvent.click(booking);
+    expect(booking).toHaveAttribute("aria-expanded", "true");
+
+    fireEvent.click(occupied);
+    expect(booking).toHaveAttribute("aria-expanded", "true");
+    expect(occupied).toHaveAttribute("aria-expanded", "true");
+
+    fireEvent.click(booking);
+    expect(booking).toHaveAttribute("aria-expanded", "false");
+    expect(occupied).toHaveAttribute("aria-expanded", "true");
+  });
+
   it("check website link", () => {
     render(<Faq />);
     const linkElement = screen.getByText("our website");

@@ -2,41 +2,45 @@ import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithP
 import Features from "@frontend/components/landing/Features";
 import { screen } from "@testing-library/react";
 
-jest.mock("react-redux", () => ({
-  ...jest.requireActual("react-redux"),
-  useDispatch: jest.fn(),
-}));
-
 describe("Features", () => {
-  it("renders heading text", () => {
+  it("renders the section heading and all four cards", () => {
     render(<Features />);
 
-    const heading = screen.getByText("Our Features");
+    expect(
+      screen.getByRole("heading", { name: "Features" })
+    ).toBeInTheDocument();
 
-    expect(heading).toBeInTheDocument();
+    for (const heading of [
+      "Browse Locations",
+      "Map View",
+      "Favouriting",
+      "User Accounts",
+    ]) {
+      expect(
+        screen.getByRole("heading", { name: heading })
+      ).toBeInTheDocument();
+    }
+
+    expect(screen.getByText("Coming soon!")).toBeInTheDocument();
   });
 
-  it("shows BrowseBuildings icon", () => {
+  it("links to the existing browse, map and favourites pages", () => {
     render(<Features />);
 
-    const browseBuildings = screen.getByText("Browse Buildings");
-
-    expect(browseBuildings).toBeInTheDocument();
+    for (const [name, href] of [
+      ["Browse Locations", "/browse"],
+      ["Map View", "/map"],
+      ["Favouriting", "/favourites"],
+    ]) {
+      expect(
+        screen.getByRole("link", { name: new RegExp(name) })
+      ).toHaveAttribute("href", href);
+    }
   });
 
-  it("shows map icon", () => {
+  it("does not link the coming soon account card", () => {
     render(<Features />);
 
-    const map = screen.getByText("Map");
-
-    expect(map).toBeInTheDocument();
-  });
-
-  it("shows Timetable icon", () => {
-    render(<Features />);
-
-    const timetable = screen.getByText("Timetable");
-
-    expect(timetable).toBeInTheDocument();
+    expect(screen.getByText("User Accounts").closest("a")).toBeNull();
   });
 });
