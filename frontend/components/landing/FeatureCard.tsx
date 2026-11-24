@@ -9,6 +9,7 @@ interface FeatureCardProps {
   description: string;
   link?: string;
   status?: string;
+  previewPosition?: "side" | "below";
   children?: ReactNode;
 }
 
@@ -18,19 +19,22 @@ export default function FeatureCard({
   description,
   link,
   status,
+  previewPosition = "below",
   children,
 }: FeatureCardProps) {
   const content = (
-    <CardSurface>
-      <CardHeading>
-        <CardIcon aria-hidden="true">{icon}</CardIcon>
-        <CardTitle>{heading}</CardTitle>
-        {status && <CardStatus>{status}</CardStatus>}
-      </CardHeading>
+    <CardSurface $sidePreview={previewPosition === "side"}>
+      <CardText className="feature-card-text">
+        <CardHeading>
+          <CardIcon aria-hidden="true">{icon}</CardIcon>
+          <CardTitle>{heading}</CardTitle>
+          {status && <CardStatus>{status}</CardStatus>}
+        </CardHeading>
 
-      <CardDescription>{description}</CardDescription>
+        <CardDescription>{description}</CardDescription>
+      </CardText>
 
-      {children}
+      {children && <CardPreview>{children}</CardPreview>}
     </CardSurface>
   );
 
@@ -44,22 +48,24 @@ const CardLink = styled(Link)(({ theme }) => ({
   textDecoration: "none",
   borderRadius: theme.radius.lg,
 
-  "&hover article": {
+  "&:hover article": {
     borderColor: theme.colours.accent.primary,
   },
 
-  "&:focus-visibile": {
+  "&:focus-visible": {
     outline: `3px solid ${theme.colours.accent.primary}`,
     outlineOffset: 3,
   },
 }));
 
-const CardSurface = styled("article")(({ theme }) => ({
+const CardSurface = styled("article", {
+  shouldForwardProp: (prop) => prop !== "$sidePreview",
+})<{ $sidePreview: boolean }>(({ theme, $sidePreview }) => ({
   display: "flex",
-  flexDirection: "column",
-  wedth: "100%",
-  height: "100%",
+  flexDirection: $sidePreview ? "row" : "column",
   gap: theme.space.md,
+  width: "100%",
+  height: "100%",
   minWidth: 0,
   boxSizing: "border-box",
   padding: theme.space.lg,
@@ -68,9 +74,34 @@ const CardSurface = styled("article")(({ theme }) => ({
   backgroundColor: theme.colours.surface.paper,
   transition: theme.transitions.create("border-color"),
 
+  "& > .feature-card-text": {
+    width: $sidePreview ? "35%" : "100%",
+  },
+
+  [theme.breakpoints.down("md")]: {
+    flexDirection: "column",
+
+    "& > .feature-card-text": {
+      width: "100%",
+    },
+  },
+
   [theme.breakpoints.down("sm")]: {
     padding: theme.space.md,
   },
+}));
+
+const CardText = styled("div")(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  gap: theme.space.md,
+}));
+
+const CardPreview = styled("div")(() => ({
+  display: "flex",
+  flex: 1,
+  minWidth: 0,
+  minHeight: 0,
 }));
 
 const CardHeading = styled("div")(({ theme }) => ({

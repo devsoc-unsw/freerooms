@@ -24,7 +24,7 @@ export default function Landing({ heroImageSrc }: LandingProps) {
 
       {/* Features */}
       <LandingSection aria-label="Features">
-          <Features />
+        <Features />
       </LandingSection>
 
       {/* FAQ */}
@@ -51,20 +51,4 @@ const LandingRoot = styled(Stack)(({ theme }) => ({
 const LandingSection = styled("section")(() => ({
   width: "100%",
   minWidth: 0,
-}));
-
-const DoorContainer = styled(Stack)(({ theme }) => ({
-  cursor: "pointer",
-  marginBottom: "1rem",
-  // Phone: no top navbar, so no padding above the page to pull into
-  marginTop: theme.space.md,
-}));
-
-const AnimationContainer = styled(Stack)(() => ({
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  height: "100%",
-  width: "80%",
-  margin: "auto",
 }));

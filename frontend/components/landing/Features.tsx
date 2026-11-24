@@ -6,6 +6,8 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { styled } from "@mui/material/styles";
 
+import BuildingPreview from "./BuildingPreview";
+
 export default function Features() {
   return (
     <FeatureRoot aria-labelledby="features-heading">
@@ -18,7 +20,10 @@ export default function Features() {
             heading="Browse Locations"
             description="Search and filter for available buildings, rooms and bookings (including classes & society events)."
             link="/browse"
-          />
+            previewPosition="side"
+          >
+            <BuildingPreview />
+          </FeatureCard>
         </GridItem>
 
         <GridItem style={{ gridArea: "map" }}>

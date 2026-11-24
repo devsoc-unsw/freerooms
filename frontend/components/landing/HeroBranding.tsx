@@ -188,6 +188,11 @@ const SearchInput = styled("input")(({ theme }) => ({
   fontFamily: theme.typography.fontFamily,
   fontSize: 24,
 
+  "&::placeholder": {
+    color: theme.colours.accent.primary,
+    opacity: 1,
+  },
+
   [theme.breakpoints.down("sm")]: {
     paddingInline: theme.space.md,
     fontSize: 16,
