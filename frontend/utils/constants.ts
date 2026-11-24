@@ -1,4 +1,4 @@
-import { BrowseView, Filters, DropDown, DropDownItem } from "@frontend/types";
+import { BrowseView, DropDown, DropDownItem, Filters } from "@frontend/types";
 import ContactEmergencyOutlinedIcon from "@mui/icons-material/ContactEmergencyOutlined";
 import DoorBackOutlinedIcon from "@mui/icons-material/DoorBackOutlined";
 import EventRepeatOutlinedIcon from "@mui/icons-material/EventRepeatOutlined";

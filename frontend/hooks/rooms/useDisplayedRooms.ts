@@ -1,8 +1,8 @@
 import useBuildings from "@frontend/hooks/buildings/useBuildings";
 import useUserLocation from "@frontend/hooks/map/useUserLocation";
 import useFavourites from "@frontend/hooks/rooms/useFavourites";
-import useRoomSearch from "@frontend/hooks/rooms/useRoomSearch";
 import useRooms from "@frontend/hooks/rooms/useRooms";
+import useRoomSearch from "@frontend/hooks/rooms/useRoomSearch";
 import useStatus from "@frontend/hooks/rooms/useStatus";
 import calculateDistance from "@frontend/utils/calculateDistance";
 import { getRoomComparator } from "@frontend/utils/sortRooms";

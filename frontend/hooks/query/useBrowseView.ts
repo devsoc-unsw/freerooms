@@ -5,7 +5,10 @@ import { useCallback } from "react";
 const ROOMS = "rooms";
 
 const useBrowseView = (): [BrowseView, (view: BrowseView) => void] => {
-  const [param, setParam] = useQueryState("view", parseAsString.withDefault(""));
+  const [param, setParam] = useQueryState(
+    "view",
+    parseAsString.withDefault("")
+  );
 
   const view: BrowseView = param === ROOMS ? "rooms" : "buildings";
 

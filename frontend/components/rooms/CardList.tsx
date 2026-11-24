@@ -1,5 +1,6 @@
 import BuildingCard from "@frontend/components/rooms/BuildingCard";
 import BuildingCardMobile from "@frontend/components/rooms/BuildingCardMobile";
+import AnimatedListItem from "@frontend/components/ui/AnimatedListItem";
 import useBuildings from "@frontend/hooks/buildings/useBuildings";
 import useBuildingSearch from "@frontend/hooks/buildings/useBuildingSearch";
 import useUserLocation from "@frontend/hooks/map/useUserLocation";
@@ -7,7 +8,6 @@ import useRooms from "@frontend/hooks/rooms/useRooms";
 import useStatus from "@frontend/hooks/rooms/useStatus";
 import calculateDistance from "@frontend/utils/calculateDistance";
 import { getNumFreerooms } from "@frontend/utils/utils";
-import AnimatedListItem from "@frontend/components/ui/AnimatedListItem";
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Building } from "common/types";

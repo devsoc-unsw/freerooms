@@ -8,7 +8,6 @@ import {
   selectCurrentBuilding,
   setCurrentBuilding,
 } from "@frontend/redux/slices/currentBuildingSlice";
-import IconButton from "@mui/material/IconButton";
 import {
   formatWalkingDistance,
   formatWalkingDuration,
@@ -19,8 +18,8 @@ import { Skeleton, Slide, Typography, useMediaQuery } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Drawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
 import { styled, useTheme } from "@mui/material/styles";
-import { alpha } from "@mui/material/styles";
 import type { Building } from "common/types";
 import Image, { ImageProps } from "next/image";
 import { useState } from "react";
@@ -200,11 +199,13 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
         }}
       >
         <Box>
-          <Typography sx={(theme) => ({
+          <Typography
+            sx={(theme) => ({
               fontSize: 19,
               fontWeight: 500,
               color: theme.colours.text.primary,
-            })}>
+            })}
+          >
             {building.name}
           </Typography>
           {isMobile && rooms && (

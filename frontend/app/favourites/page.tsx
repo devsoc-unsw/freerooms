@@ -33,7 +33,12 @@ const Favourites = () => {
   const startIsSet = start !== NO_START_TIME;
 
   const [date] = useQueryState("date", parseAsString.withDefault(""));
-  const favouriteRooms = useDisplayedRooms({query, sort, availableOnly: startIsSet, favouritesOnly: true});
+  const favouriteRooms = useDisplayedRooms({
+    query,
+    sort,
+    availableOnly: startIsSet,
+    favouritesOnly: true,
+  });
 
   return (
     <Container maxWidth={false}>

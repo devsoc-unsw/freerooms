@@ -22,4 +22,15 @@ export const getFloorLabel = (roomId: string): string | null => {
   return prefix ? (FLOOR_LABELS[prefix] ?? null) : null;
 };
 
-export const getRoomLocationLabel = (roomId: string, buildingId?: string, buildingName?: string): string => [buildingId ? CAMPUS_LABELS[getCampus(buildingId)] : null, buildingName, getFloorLabel(roomId),].filter(Boolean).join(", ");
+export const getRoomLocationLabel = (
+  roomId: string,
+  buildingId?: string,
+  buildingName?: string
+): string =>
+  [
+    buildingId ? CAMPUS_LABELS[getCampus(buildingId)] : null,
+    buildingName,
+    getFloorLabel(roomId),
+  ]
+    .filter(Boolean)
+    .join(", ");

@@ -6,9 +6,9 @@ import useAllBuildingRatings from "@frontend/hooks/ratings/useAllBuildingRatings
 import { useDispatch } from "@frontend/redux/hooks";
 import { setCurrentBuilding } from "@frontend/redux/slices/currentBuildingSlice";
 import { getNumFreerooms } from "@frontend/utils/utils";
-import { Typography, TypographyProps } from "@mui/material";
-import TagOutlinedIcon from '@mui/icons-material/TagOutlined';
 import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
+import TagOutlinedIcon from "@mui/icons-material/TagOutlined";
+import { Typography, TypographyProps } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
@@ -92,7 +92,7 @@ const DetailPill = styled(Box)<BoxProps>(({ theme }) => ({
   justifyContent: "center",
   borderRadius: 100,
   gap: 6,
-  padding: 4,
+  padding: theme.space.xs,
   paddingLeft: 12,
   paddingRight: 12,
   backgroundColor: theme.colours.accent.quaternary,

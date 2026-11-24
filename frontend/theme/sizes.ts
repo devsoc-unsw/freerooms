@@ -38,6 +38,7 @@ export const sizes = {
     wideMenuWidth: 600,
   },
   border: {
+    weight: 1,
     control: 2,
   },
   slider: {
@@ -48,9 +49,6 @@ export const sizes = {
   },
   navbarPopover: {
     width: 200,
-  },
-  border: {
-    weight: 1,
   },
 } as const;
 

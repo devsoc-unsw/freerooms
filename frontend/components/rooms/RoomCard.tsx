@@ -1,6 +1,5 @@
 import RoomAvailability from "@frontend/components/rooms/RoomAvailability";
 import RoomUtilityTags from "@frontend/components/rooms/RoomUtilityTags";
-import useNearbyBookings from "@frontend/hooks/bookings/useNearbyBookings";
 import useBuilding from "@frontend/hooks/buildings/useBuilding";
 import useRoomRatings from "@frontend/hooks/ratings/useRoomRatings";
 import useFavourites from "@frontend/hooks/rooms/useFavourites";
