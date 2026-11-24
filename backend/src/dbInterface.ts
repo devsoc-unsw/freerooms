@@ -144,6 +144,7 @@ type BookingWhere = {
   start?: {
     _eq?: string;
     _gt?: string;
+    _lt?: string;
   };
 
   bookingType?: {
@@ -170,9 +171,20 @@ type BookingWhere = {
 export const queryAllBookings = async (
   params: BookingPaginationParams
 ): Promise<AllBookingsRes> => {
-  const { limit, cursor, filters, search } = params;
+  const { limit, cursor, filters, search, sort } = params;
 
   const conditions: BookingWhere[] = [];
+
+  if (sort !== "ascendingStart" && sort !== "descendingStart") {
+    throw new Error(`Unsupported sort ${sort}`);
+  }
+
+  if (cursor && cursor.sort !== sort) {
+    throw new Error("Cursor sorting does not match requested sorting");
+  }
+
+  const descending = sort === "descendingStart";
+  const startDirection = descending ? "desc" : "asc";
 
   if (filters?.bookingType) {
     conditions.push({
@@ -219,9 +231,11 @@ export const queryAllBookings = async (
   if (cursor) {
     const start = cursor.start.toISOString();
 
+    const startComparison = descending ? { _lt: start } : { _gt: start };
+
     conditions.push({
       _or: [
-        { start: { _gt: start }},
+        { start: startComparison},
         {
           start: { _eq: start },
           bookingType: { _gt: cursor.bookingType },
@@ -252,7 +266,7 @@ export const queryAllBookings = async (
       bookings(
       where: $where
         order_by: [
-          { start: asc }
+          { start: ${startDirection} }
           { bookingType: asc }
           { roomId: asc }
           { occurrenceId: asc }

@@ -227,12 +227,19 @@ export const parseBookingCursor = (req: Request): BookingCursor | null => {
       !cursorObj.start ||
       !cursorObj.end ||
       !cursorObj.name ||
-      !cursorObj.plannedSize ||
+      cursorObj.plannedSize === undefined ||
       !cursorObj.bookingType ||
       !cursorObj.roomId ||
       !cursorObj.occurrenceId
     ) {
       throw new Error("Cursor is missing required fields");
+    }
+
+    if (cursorObj.plannedSize !== null && (
+      typeof cursorObj.plannedSize !== "number" ||
+      !Number.isFinite(cursorObj.plannedSize)
+    )) {
+      throw new Error("Invalid planned size in cursor")
     }
 
     return {

@@ -109,7 +109,7 @@ export const bookingSchema = z.object({
   bookingType: z.string(),
   start: z.date(),
   end: z.date(),
-  plannedSize: z.number().optional(),
+  plannedSize: z.number().nullish(),
 });
 
 export type Booking = z.infer<typeof bookingSchema>;
