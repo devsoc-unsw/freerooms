@@ -1,4 +1,5 @@
 import { styled } from "@mui/material/styles";
+import { fontSize, justifyContent, lineHeight } from "@mui/system";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -131,10 +132,17 @@ const InfoPanel = styled("section")(({ theme }) => ({
   boxSizing: "border-box",
   padding: theme.space.lg,
   backgroundColor: theme.colours.accent.primary,
-  color: theme.colours.neutral.black,
+  color: theme.palette.mode === "light" ? theme.colours.neutral.white : theme.colours.neutral.black,
 
   [theme.breakpoints.down("md")]: {
     gridTemplateColumns: "1fr",
+  },
+
+  [theme.breakpoints.down("sm")]: {
+    gap: theme.space.md,
+    paddingTop: theme.space.lg,
+    paddingInline: theme.space.lg + theme.space.xs,
+    paddingBottom: theme.space.lg + theme.sizes.navBar.height,
   },
 }));
 
@@ -144,6 +152,11 @@ const InfoColumn = styled("div")(({ theme }) => ({
   gap: theme.space.lg,
   minWidth: 0,
   justifyContent: "space-between",
+
+  [theme.breakpoints.down("sm")]: {
+    gap: theme.space.md,
+    justifyContent: "flex-start",
+  }
 }));
 
 const InfoGroup = styled("div")(({ theme }) => ({
@@ -158,26 +171,45 @@ const Brand = styled("div")(({ theme }) => ({
   gap: theme.space.sm,
 }));
 
-const BrandName = styled("span")(() => ({
+const BrandName = styled("span")(({theme}) => ({
   fontSize: 16,
   fontWeight: 500,
+
+  [theme.breakpoints.down("sm")]: {
+    fontSize: 14,
+  },
 }));
 
-const InfoHeading = styled("h3")(() => ({
+const InfoHeading = styled("h3")(({theme}) => ({
   margin: 0,
   fontSize: 18,
   fontWeight: 500,
+
+  [theme.breakpoints.down("sm")]: {
+    fontSize: 13,
+    fontWeight: 400,
+    lineHeight: 1.3,
+  },
 }));
 
-const Description = styled("p")(() => ({
+const Description = styled("p")(({theme}) => ({
   margin: 0,
   fontSize: 14,
   lineHeight: 1.4,
+
+  [theme.breakpoints.down("sm")]: {
+    fontSize: 11,
+  },
 }));
 
-const Copyright = styled("p")(() => ({
+const Copyright = styled("p")(({theme}) => ({
   margin: 0,
   fontSize: 14,
+
+  [theme.breakpoints.down("sm")]: {
+    fontSize: 11,
+    lineHeight: 1.4,
+  }
 }));
 
 const InfoLink = styled(Link)(({ theme }) => ({
@@ -212,5 +244,12 @@ const SocialLink = styled("a")(({ theme }) => ({
   "&:focus-visible": {
     outline: `2px solid ${theme.colours.neutral.black}`,
     outlineOffset: 2,
+  },
+
+  [theme.breakpoints.down("sm")]: {
+    "& svg": {
+        width: theme.sizes.icon.md,
+        height: theme.sizes.icon.md,
+    },
   },
 }));
