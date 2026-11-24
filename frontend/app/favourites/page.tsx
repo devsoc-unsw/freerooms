@@ -7,12 +7,12 @@ import SortBar from "@frontend/components/filters/SortBar";
 import BuildingDrawer from "@frontend/components/map/BuildingDrawer";
 import RoomCardList from "@frontend/components/rooms/RoomCardList";
 import SearchBar from "@frontend/components/search/SearchBar";
+import PageContainer from "@frontend/components/ui/PageContainer";
 import TopBar from "@frontend/components/ui/TopBar";
 import TopBarGroup from "@frontend/components/ui/TopBarGroup";
 import useQuerySort from "@frontend/hooks/query/useQuerySort";
 import useDisplayedRooms from "@frontend/hooks/rooms/useDisplayedRooms";
 import { BROWSE_VIEWS, NO_START_TIME } from "@frontend/utils/constants";
-import Container from "@mui/material/Container";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -41,7 +41,7 @@ const Favourites = () => {
   });
 
   return (
-    <Container maxWidth={false}>
+    <PageContainer maxWidth={false}>
       <FeedbackButton />
       <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enAU}>
         <Tiles>
@@ -93,7 +93,7 @@ const Favourites = () => {
         </Tiles>
       </LocalizationProvider>
       <BuildingDrawer date={date} />
-    </Container>
+    </PageContainer>
   );
 };
 
@@ -110,7 +110,7 @@ const Tiles = styled("div")(({ theme }) => ({
   flexDirection: "column",
   flexGrow: 1,
   alignItems: "center",
-  padding: theme.spacing(0, 0, 1, 0),
+  paddingBottom: theme.space.sm,
 }));
 
 const AlignedWithSearchBar = styled("div")(({ theme }) => ({

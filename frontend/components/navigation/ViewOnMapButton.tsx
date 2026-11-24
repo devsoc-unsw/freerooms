@@ -27,8 +27,11 @@ const ViewOnMapButton: React.FC<{
       sx={(theme) => ({
         height: 45,
         gap: `${theme.space.sm}px`,
-        ml: variant === "full-width" ? "0px" : { xs: 0, sm: 1 },
-        my: { xs: 1, sm: 0 },
+        ml:
+          variant === "full-width"
+            ? "0px"
+            : { xs: 0, sm: `${theme.space.sm}px` },
+        my: { xs: `${theme.space.sm}px`, sm: 0 },
         width: variant === "full-width" ? "100%" : { xs: "100%", sm: "160px" },
         position: "relative",
         //right: variant === "full-width" ? "6px" : "0px", //this is because building drawer has weird margin idk

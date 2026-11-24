@@ -30,7 +30,9 @@ const AppBox = styled(Box)(({ theme }) => ({
   flexDirection: "row",
   alignItems: "center",
   justifyContent: "space-between",
-  padding: theme.spacing(3, 2, 0, 3),
+  paddingTop: theme.space.lg,
+  paddingRight: theme.space.md,
+  paddingLeft: theme.space.lg,
 }));
 
 const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
@@ -50,14 +52,15 @@ const StatusBox = styled(Box)<BoxProps>(({ theme }) => ({
   justifyContent: "right",
   alignItems: "center",
   borderRadius: theme.radius.pill,
-  padding: theme.spacing(0, 2, 0, 2),
+  paddingLeft: theme.space.md,
+  paddingRight: theme.space.md,
 }));
 
 const RoomBox = styled(Box)<BoxProps>(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   gap: `${theme.space.md}px`,
-  margin: theme.spacing(1.25),
+  margin: theme.space.sm,
 }));
 
 const CloseButton = styled(IconButton)(({ theme }) => ({
@@ -66,7 +69,7 @@ const CloseButton = styled(IconButton)(({ theme }) => ({
 
 const DirectionsButton = styled(Button)(({ theme }) => ({
   width: "100%",
-  marginTop: theme.spacing(1.5),
+  marginTop: theme.space.md,
   backgroundColor: theme.palette.primary.main,
   color: theme.palette.primary.contrastText,
 
@@ -80,7 +83,7 @@ const PeekRow = styled(Box)<BoxProps>(({ theme }) => ({
   justifyContent: "space-between",
   alignItems: "center",
   gap: theme.space.sm,
-  paddingLeft: theme.spacing(3),
+  paddingLeft: theme.space.sm,
   paddingRight: theme.space.md,
 }));
 
@@ -234,7 +237,7 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
 
   const body = (
     <>
-      <div style={{ margin: theme.spacing(1.25) }}>
+      <div style={{ margin: theme.space.sm }}>
         <StyledImage
           alt={`Image of building ${building.id}`}
           src={`/assets/building_photos/${building.id}.webp`}
@@ -281,7 +284,7 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
               fontSize: 16,
               fontWeight: 500,
               textAlign: "center",
-              padding: theme.spacing(1.25),
+              padding: `${theme.space.sm}px`,
             }}
           >
             Loading...

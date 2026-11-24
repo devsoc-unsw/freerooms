@@ -9,6 +9,7 @@ import CardList from "@frontend/components/rooms/CardList";
 import RoomCardList from "@frontend/components/rooms/RoomCardList";
 import BuildingRoomViewToggle from "@frontend/components/search/BuildingOrRoomViewToggle";
 import SearchBar from "@frontend/components/search/SearchBar";
+import PageContainer from "@frontend/components/ui/PageContainer";
 import TopBar from "@frontend/components/ui/TopBar";
 import TopBarGroup from "@frontend/components/ui/TopBarGroup";
 import useBrowseView from "@frontend/hooks/query/useBrowseView";
@@ -19,7 +20,6 @@ import {
   NO_START_TIME,
   ROOM_LIST_PAGE_SIZE,
 } from "@frontend/utils/constants";
-import Container from "@mui/material/Container";
 import { styled } from "@mui/material/styles";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -68,7 +68,7 @@ const BrowseContent = () => {
   const [date] = useQueryState("date", parseAsString.withDefault(""));
 
   return (
-    <Container maxWidth={false}>
+    <PageContainer maxWidth={false}>
       <FeedbackButton />
       <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enAU}>
         <Tiles>
@@ -109,7 +109,7 @@ const BrowseContent = () => {
         </Tiles>
       </LocalizationProvider>
       {view === "buildings" && <BuildingDrawer date={date} />}
-    </Container>
+    </PageContainer>
   );
 };
 
@@ -126,7 +126,7 @@ const Tiles = styled("div")(({ theme }) => ({
   flexDirection: "column",
   flexGrow: 1,
   alignItems: "center",
-  padding: theme.spacing(0, 0, 1, 0),
+  paddingBottom: theme.space.sm,
 }));
 
 export default Page;

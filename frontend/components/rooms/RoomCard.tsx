@@ -302,7 +302,7 @@ const RoomCard: React.FC<RoomCardProps> = (props) => {
             direction="row"
             sx={(theme) => ({
               alignItems: "center",
-              gap: theme.spacing(0.5),
+              gap: `${theme.space.xs}px`,
             })}
           >
             <KeyboardArrowRightOutlinedIcon
