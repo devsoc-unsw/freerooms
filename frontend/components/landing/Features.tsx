@@ -7,6 +7,7 @@ import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { styled } from "@mui/material/styles";
 
 import BuildingPreview from "./BuildingPreview";
+import MapPreview from "./MapPreview";
 
 export default function Features() {
   return (
@@ -32,7 +33,9 @@ export default function Features() {
             heading="Map View"
             description="Dynamic maps with building availability, proximity detection and navigation."
             link="/map"
-          />
+          >
+            <MapPreview />
+          </FeatureCard>
         </GridItem>
 
         <GridItem style={{ gridArea: "favourites" }}>
