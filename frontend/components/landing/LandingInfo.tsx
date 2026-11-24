@@ -1,6 +1,47 @@
 import { styled } from "@mui/material/styles";
 import Image from "next/image";
 import Link from "next/link";
+import {
+  FaDiscord,
+  FaEnvelope,
+  FaFacebook,
+  FaGithub,
+  FaInstagram,
+  FaLinkedin,
+} from "react-icons/fa6";
+
+const socialLinks = [
+  {
+    label: "Email",
+    href: "mailto:contact@devsoc.app",
+    icon: FaEnvelope,
+  },
+  {
+    label: "GitHub",
+    href: "https://github.com/devsoc-unsw/freerooms",
+    icon: FaGithub,
+  },
+  {
+    label: "Facebook",
+    href: "https://www.facebook.com/devsocUNSW/",
+    icon: FaFacebook,
+  },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/devsoc_unsw/",
+    icon: FaInstagram,
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/company/97436660/",
+    icon: FaLinkedin,
+  },
+  {
+    label: "Discord",
+    href: "https://discord.com/invite/u9p34WUTcs",
+    icon: FaDiscord,
+  },
+] as const;
 
 export default function LandingInfo() {
   return (
@@ -47,7 +88,25 @@ export default function LandingInfo() {
       <InfoColumn>
         <InfoGroup>
           <InfoHeading>Contact us</InfoHeading>
-          {/* Add social links */}
+
+          <SocialRow aria-label="Contact and Social media links">
+            {socialLinks.map(({ label, href, icon: Icon }) => {
+              const isExternal = href.startsWith("https://");
+
+              return (
+                <SocialLink
+                  key={label}
+                  href={href}
+                  aria-label={label}
+                  title={label}
+                  target={isExternal ? "_blank" : undefined}
+                  rel={isExternal ? "noopener noreferrer" : undefined}
+                >
+                  <Icon size={28} aria-hidden="true" />
+                </SocialLink>
+              );
+            })}
+          </SocialRow>
         </InfoGroup>
 
         <InfoGroup>
@@ -125,6 +184,30 @@ const InfoLink = styled(Link)(({ theme }) => ({
   color: "inherit",
   overflowWrap: "anywhere",
   textDecoration: "underline",
+
+  "&:focus-visible": {
+    outline: `2px solid ${theme.colours.neutral.black}`,
+    outlineOffset: 2,
+  },
+}));
+
+const SocialRow = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  flexWrap: "wrap",
+  gap: theme.space.sm,
+}));
+
+const SocialLink = styled("a")(({ theme }) => ({
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  color: "inherit",
+  lineHeight: 0,
+
+  "&:hover": {
+    opacity: 0.8,
+  },
 
   "&:focus-visible": {
     outline: `2px solid ${theme.colours.neutral.black}`,
