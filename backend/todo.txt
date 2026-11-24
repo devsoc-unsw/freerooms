@@ -1,0 +1,11 @@
+~Zoom image hover for the building cards, similar to the room cards.
+Searching rework same apply to the browse page (applied a seraching rework in favourites, apply that same rework to browse in both building and room)
+Rework BuildingDrawer to match figma, including cards in full, and the layout/colouring.
+
+
+
+
+
+Test Mobile View?
+Right now the building view has duration free and recurring, the room view has neither of those/
+Add tests

@@ -1,41 +1,29 @@
 import Logo from "@frontend/public/assets/favicon/free_rooms_logo.png";
-import Box, { BoxProps } from "@mui/material/Box";
+import { sizes, space, typography } from "@frontend/theme";
+import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
-import Typography, { TypographyProps } from "@mui/material/Typography";
+import Typography from "@mui/material/Typography";
 import Image from "next/image";
-import Link from "next/link";
 
-const StyledText = styled(Typography)<TypographyProps>(({ theme }) => ({
-  color: theme.colours.accent.primary,
-  fontWeight: 700,
+const Branding = ({ textColor }: { textColor?: string }) => (
+  <Box sx={{ display: "flex", alignItems: "center", gap: space.sm }}>
+    <Box sx={{ display: "flex", alignItems: "center" }}>
+      <Image width={sizes.icon.lg} src={Logo} alt="Freerooms Logo" priority />
+    </Box>
+    <BrandingText textColor={textColor}>Freerooms</BrandingText>
+  </Box>
+);
+
+const BrandingText = styled(Typography, {
+  shouldForwardProp: (prop) => prop !== "textColor",
+})<{ textColor?: string }>(({ theme, textColor }) => ({
+  color: textColor ?? theme.colours.accent.primary,
+  fontWeight: typography.brand.fontWeight,
   fontFamily: theme.typography.fontFamily,
-  fontSize: 24,
-  [theme.breakpoints.down("sm")]: {
+  fontSize: typography.brand.fontSize,
+  [theme.breakpoints.down("lg")]: {
     display: "none",
   },
 }));
-
-const StyledBox = styled(Box)<BoxProps>(() => ({
-  display: "flex",
-  alignItems: "center",
-  flex: 1,
-  opacity: 1,
-  transition: "all 0.1s ease-in-out",
-  "&:hover": {
-    cursor: "pointer",
-    opacity: 0.7,
-  },
-}));
-
-const Branding = (props: BoxProps) => (
-  <Link href="/">
-    <StyledBox {...props}>
-      <div>
-        <Image width={50} src={Logo} alt="Freerooms Logo" priority />
-      </div>
-      <StyledText sx={{ lineHeight: 1 }}>Freerooms</StyledText>
-    </StyledBox>
-  </Link>
-);
 
 export default Branding;
