@@ -1,34 +1,61 @@
 "use client";
-// Building or room view page
+
 import TimeBar from "@frontend/components/booking/TimeBar";
 import FeedbackButton from "@frontend/components/feedback/FeedbackButton";
 import FilterBar from "@frontend/components/filters/FilterBar";
 import SortBar from "@frontend/components/filters/SortBar";
 import BuildingDrawer from "@frontend/components/map/BuildingDrawer";
 import RoomCardList from "@frontend/components/rooms/RoomCardList";
+import BuildingRoomViewToggle from "@frontend/components/search/BuildingOrRoomViewToggle";
 import SearchBar from "@frontend/components/search/SearchBar";
 import TopBarGroup from "@frontend/components/ui/TopBarGroup";
 import useQuerySort from "@frontend/hooks/query/useQuerySort";
-import useDisplayedFavouriteRooms from "@frontend/hooks/rooms/useDisplayedFavouriteRooms";
-import { NO_START_TIME, roomSortBarDropdown } from "@frontend/utils/constants";
+import { BROWSE_VIEWS, NO_START_TIME, ROOM_LIST_PAGE_SIZE } from "@frontend/utils/constants";
 import Container from "@mui/material/Container";
-import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
-import Typography from "@mui/material/Typography";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { enAU } from "date-fns/locale";
 import { parseAsString, useQueryState } from "nuqs";
-import React, { Suspense } from "react";
+import { Suspense } from "react";
 import CardList from "@frontend/components/rooms/CardList";
+import useDisplayedRooms from "@frontend/hooks/rooms/useDisplayedRooms";
+import useBrowseView from "@frontend/hooks/query/useBrowseView";
+import TopBar from "@frontend/components/ui/TopBar";
+
+const RoomsView = ({
+  query,
+  sort,
+  startIsSet,
+  date,
+}: {
+  query: string;
+  sort: string;
+  startIsSet: boolean;
+  date: string;
+}) => {
+  const rooms = useDisplayedRooms({ query, sort, availableOnly: startIsSet });
+
+  return (
+    <RoomCardList
+      rooms={rooms}
+      date={date}
+      pageSize={ROOM_LIST_PAGE_SIZE}
+      emptyMessage={
+        startIsSet
+          ? "No rooms are free at the start time. Clear it to see every room."
+          : "No rooms match your filters."
+      }
+    />
+  );
+};
 
 const BrowseContent = () => {
-  const [sort, setSort] = useQuerySort();
+  const [view, setView] = useBrowseView();
+  const { sortOptions, sortTitle, filterKeys, searchPlaceholder } = BROWSE_VIEWS[view];
+  const [sort, setSort] = useQuerySort(sortOptions);
   const [query, setQuery] = useQueryState("q", parseAsString.withDefault(""));
-  const [start, setStart] = useQueryState(
-    "start",
-    parseAsString.withDefault("")
-  );
+  const [start, setStart] = useQueryState("start", parseAsString.withDefault(""));
   const startIsSet = start !== NO_START_TIME;
   const [date] = useQueryState("date", parseAsString.withDefault(""));
 
@@ -37,33 +64,21 @@ const BrowseContent = () => {
       <FeedbackButton />
       <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enAU}>
         <Tiles>
-          <Stack
-            direction={{ xs: "column", sm: "row" }}
-            sx={{
-              justifyContent: {
-                xs: "center",
-                sm: "space-between",
-              },
-              alignItems: "center",
-              marginTop: 1,
-              marginBottom: 1,
-              flexWrap: { sm: "wrap", md: "nowrap" },
-              width: "100%",
-            }}
-          >
-
+          <TopBar>
+            <BuildingRoomViewToggle view={view} onChange={setView} />
             <SearchBar
               setQuery={setQuery}
-              placeholder="Search for free rooms"
+              defaultValue={query}
+              placeholder={searchPlaceholder}
             />
 
             <TopBarGroup>
-              <FilterBar />
+              <FilterBar keys={filterKeys} />
               <SortBar
                 setSort={setSort}
                 sort={sort}
-                options={roomSortBarDropdown}
-                title="Room Sort"
+                options={sortOptions}
+                title={sortTitle}
               />
               <TimeBar
                 startIsSet={startIsSet}
@@ -72,11 +87,17 @@ const BrowseContent = () => {
                 }
               />
             </TopBarGroup>
-          </Stack>
-          <CardList sort={sort} query={query} />
+          </TopBar>
+          {view === "buildings" ? (
+            <CardList sort={sort} query={query} />
+          ) : (
+            <RoomsView query={query} sort={sort} startIsSet={startIsSet} date={date} />
+          )}
         </Tiles>
       </LocalizationProvider>
-      <BuildingDrawer date={date} />
+      {view === "buildings" && (
+        <BuildingDrawer date={date} />
+      )}
     </Container>
   );
 };
