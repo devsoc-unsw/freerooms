@@ -262,6 +262,32 @@ const cursorAfter = (
   })),
 });
 
+// Ordered json string for comparison
+const normaliseFilters = (
+  filters: BookingPaginationParams["filters"]
+): string => {
+  return JSON.stringify({
+    datetime: filters?.datetime instanceof Date
+      ? filters.datetime.toISOString()
+      : (filters?.datetime ?? null),
+    bookingType: filters?.bookingType ?? null,
+    plannedSize: filters?.plannedSize ?? null,
+    duration: filters?.duration ?? null,
+    location: filters?.location ?? null,
+  });
+};
+
+const cursorMatchesRequest = (
+  cursor: BookingCursor,
+  params: BookingPaginationParams,
+): boolean => {
+  return (
+    cursor.sort === params.sort &&
+    (cursor.search ?? null) === (params.search ?? null) &&
+    normaliseFilters(cursor.filter) === normaliseFilters(params.filters)
+  );
+};
+
 /**
  * Query all bookings with pagination
  */
@@ -274,9 +300,8 @@ export const queryAllBookings = async (
 
   const sortColumns = getSortColumns(sort);
 
-  if (cursor && cursor.sort !== sort) {
-    throw new Error("Cursor sorting does not match requested sorting");
-  }
+  // Ignore old cursor if the settings changed
+  const activeCursor = cursor && cursorMatchesRequest(cursor, params) ? cursor : null;
 
   if (filters?.bookingType) {
     conditions.push({
@@ -320,8 +345,8 @@ export const queryAllBookings = async (
   }
 
   // Existing acending keyset
-  if (cursor) {
-    conditions.push(cursorAfter(cursor, sortColumns));
+  if (activeCursor) {
+    conditions.push(cursorAfter(activeCursor, sortColumns));
   }
 
   // Filter bookings if cursor exists
