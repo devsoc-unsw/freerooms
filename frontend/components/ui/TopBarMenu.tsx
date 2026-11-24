@@ -44,6 +44,7 @@ type TopBarMenuProps = {
   children: ReactNode;
 };
 
+// Individual Menu/Dropdown
 const TopBarMenu = ({
   id,
   icon: Icon,
@@ -87,6 +88,7 @@ const TopBarMenu = ({
             height: theme.sizes.control.xl,
             width: theme.sizes.toolbar.buttonWidth,
             padding: `${theme.space.md}px`,
+            borderWidth: `${theme.sizes.border.control}px`,
             justifyContent: "flex-start",
           })}
         >
