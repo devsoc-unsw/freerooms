@@ -7,6 +7,7 @@ import { styled } from "@mui/material/styles";
 
 import Hero from "./Hero";
 import HeroBranding from "./HeroBranding";
+import LandingInfo from "./LandingInfo";
 
 interface LandingProps {
   heroImageSrc: string;
@@ -30,6 +31,11 @@ export default function Landing({ heroImageSrc }: LandingProps) {
       {/* FAQ */}
       <LandingSection aria-label="Frequently asked questions">
         <Faq />
+      </LandingSection>
+
+      {/* Landing information */}
+      <LandingSection aria-label="Freerooms information">
+        <LandingInfo />
       </LandingSection>
     </LandingRoot>
   );

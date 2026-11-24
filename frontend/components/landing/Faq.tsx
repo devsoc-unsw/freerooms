@@ -7,7 +7,7 @@ const Faq = () => {
   return (
     <StyledParentDiv>
       <StyledHeaderDiv>
-        <StyledHeading>FAQ</StyledHeading>
+        <StyledHeading id="landing-faq">FAQ</StyledHeading>
       </StyledHeaderDiv>
 
       <StyledAccordionParent>
