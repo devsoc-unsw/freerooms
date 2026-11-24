@@ -14,7 +14,9 @@ export const getBuildingGridNumber = (buildingId: string): number => {
 };
 
 export const getCampus = (buildingId: string): "lower" | "upper" =>
-  getBuildingGridNumber(buildingId) < UPPER_CAMPUS_GRID_START ? "lower" : "upper";
+  getBuildingGridNumber(buildingId) < UPPER_CAMPUS_GRID_START
+    ? "lower"
+    : "upper";
 
 export const getFloorLabel = (roomId: string): string | null => {
   const roomNumber = roomId.split("-")[2];

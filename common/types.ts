@@ -45,7 +45,6 @@ export const bookingFilterSchema = z.object({
   endTime: z.date().optional(),
   bookingType: z.enum(BookingType).optional(),
   plannedSize: z.number().optional(), // minimum planned size, same as room capacity
-  duration: z.number().optional(), // minimum booking length in minutes (end - start)
   location: z.enum(["upper", "lower"]).optional(),
 });
 

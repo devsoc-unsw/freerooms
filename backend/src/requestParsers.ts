@@ -174,14 +174,6 @@ export const parseBookingFilters = (req: Request): BookingFilter | null => {
     filters.plannedSize = plannedSize;
   }
 
-  if (req.query.duration) {
-    const duration = parseInt(req.query.duration as string);
-    if (isNaN(duration) || duration < 0) {
-      throw new Error("Invalid duration");
-    }
-    filters.duration = duration;
-  }
-
   if (req.query.location) {
     const location = req.query.location as string;
     if (location !== "upper" && location !== "lower") {
@@ -238,11 +230,12 @@ export const parseBookingCursor = (req: Request): BookingCursor | null => {
       throw new Error("Cursor is missing required fields");
     }
 
-    if (cursorObj.plannedSize !== null && (
-      typeof cursorObj.plannedSize !== "number" ||
-      !Number.isFinite(cursorObj.plannedSize)
-    )) {
-      throw new Error("Invalid planned size in cursor")
+    if (
+      cursorObj.plannedSize !== null &&
+      (typeof cursorObj.plannedSize !== "number" ||
+        !Number.isFinite(cursorObj.plannedSize))
+    ) {
+      throw new Error("Invalid planned size in cursor");
     }
 
     return {

@@ -1,11 +1,16 @@
 // Interface to the Hasura GraphQL API
 import type { TypedDocumentNode } from "@graphql-typed-document-node/core";
+import { UPPER_CAMPUS_GRID_START } from "common/constants";
 import parseDates from "common/parseDates";
-import { Booking, BookingCursor, BookingModule, BookingPaginationParams, BookingType } from "common/types";
+import {
+  Booking,
+  BookingCursor,
+  BookingModule,
+  BookingPaginationParams,
+  BookingType,
+} from "common/types";
 import { parse } from "graphql";
 import { gql, GraphQLClient } from "graphql-request";
-import { UPPER_CAMPUS_GRID_START } from "common/constants";
-
 
 import { GRAPHQL_API } from "./config";
 
@@ -20,7 +25,7 @@ type GraphQLValue =
   | boolean
   | null
   | GraphQLValue[]
-  | { [key: string]: GraphQLValue}
+  | { [key: string]: GraphQLValue };
 
 /**
  * Make a request to the GraphQL API
@@ -159,7 +164,7 @@ type BookingWhere = {
     _gt?: string;
     _lt?: string;
     _lte?: string;
-  }
+  };
 
   bookingType?: {
     _eq?: BookingType;
@@ -181,10 +186,17 @@ type BookingWhere = {
   occurrenceId?: TextComparison;
   eventId?: TextComparison;
   eventType?: TextComparison;
-}
+};
 
 type SortColumn = {
-  field: "start" | "end" | "bookingType" | "name" | "plannedSize" | "roomId" | "occurrenceId";
+  field:
+    | "start"
+    | "end"
+    | "bookingType"
+    | "name"
+    | "plannedSize"
+    | "roomId"
+    | "occurrenceId";
   direction: "asc" | "desc" | "desc_nulls_last";
 };
 
@@ -199,44 +211,35 @@ const getSortColumns = (
   switch (sort) {
     case "ascendingStart":
       return [
-        { field: "start", direction: "asc"},
-        { field: "bookingType", direction: "asc"},
-        ...tieBreakers
+        { field: "start", direction: "asc" },
+        { field: "bookingType", direction: "asc" },
+        ...tieBreakers,
       ];
 
     case "descendingStart":
       return [
-        { field: "start", direction: "desc"},
-        { field: "bookingType", direction: "asc"},
-        ...tieBreakers
+        { field: "start", direction: "desc" },
+        { field: "bookingType", direction: "asc" },
+        ...tieBreakers,
       ];
 
     case "alphabetical":
-      return [
-        { field: "name", direction: "asc"},
-        ...tieBreakers
-      ];
+      return [{ field: "name", direction: "asc" }, ...tieBreakers];
 
     case "reverseAlphabetical":
-      return [
-        { field: "name", direction: "desc"},
-        ...tieBreakers
-      ];
+      return [{ field: "name", direction: "desc" }, ...tieBreakers];
 
     case "plannedSize":
       return [
-        { field: "plannedSize", direction: "desc_nulls_last"},
-        ...tieBreakers
+        { field: "plannedSize", direction: "desc_nulls_last" },
+        ...tieBreakers,
       ];
 
     case "remainingTime":
-      return [
-        { field: "end", direction: "asc" },
-        ...tieBreakers
-      ]
+      return [{ field: "end", direction: "asc" }, ...tieBreakers];
 
     default:
-      throw new Error(`Unsupported sort: ${sort}`)
+      throw new Error(`Unsupported sort: ${sort}`);
   }
 };
 
@@ -249,8 +252,8 @@ const cursorComparison = (
     operator === "_eq"
       ? { _eq: value }
       : operator === "_gt"
-        ? {_gt: value}
-        : {_lt: value};
+        ? { _gt: value }
+        : { _lt: value };
 
   switch (field) {
     case "start":
@@ -277,12 +280,13 @@ const cursorComparison = (
       }
 
       return {
-        plannedSize: cursor.plannedSize === null
-          ? { _is_null: true}
-          : { _eq: cursor.plannedSize }
-      }
+        plannedSize:
+          cursor.plannedSize === null
+            ? { _is_null: true }
+            : { _eq: cursor.plannedSize },
+      };
   }
-}
+};
 
 const cursorAfter = (
   cursor: BookingCursor,
@@ -293,7 +297,7 @@ const cursorAfter = (
 
     if (column.field === "plannedSize") {
       if (column.direction !== "desc_nulls_last") {
-        throw new Error("Unsupported planned size ordering")
+        throw new Error("Unsupported planned size ordering");
       }
 
       // Nothing sorts after null
@@ -303,28 +307,28 @@ const cursorAfter = (
 
       after = {
         _or: [
-          { plannedSize: {_lt: cursor.plannedSize } },
-          {plannedSize: {_is_null: true}},
+          { plannedSize: { _lt: cursor.plannedSize } },
+          { plannedSize: { _is_null: true } },
         ],
       };
     } else {
       after = cursorComparison(
         cursor,
         column.field,
-        column.direction === 'asc' ? "_gt" : "_lt"
+        column.direction === "asc" ? "_gt" : "_lt"
       );
     }
 
-    return [{
-      _and: [
-        ...columns
-          .slice(0, index)
-          .map((previous) =>
-            cursorComparison(cursor, previous.field, "_eq")
-          ),
-        after
-      ],
-    }];
+    return [
+      {
+        _and: [
+          ...columns
+            .slice(0, index)
+            .map((previous) => cursorComparison(cursor, previous.field, "_eq")),
+          after,
+        ],
+      },
+    ];
   }),
 });
 
@@ -333,22 +337,23 @@ const normaliseFilters = (
   filters: BookingPaginationParams["filters"]
 ): string => {
   return JSON.stringify({
-    startTime: filters?.startTime instanceof Date
-      ? filters.startTime.toISOString()
-      : (filters?.startTime ?? null),
-    endTime: filters?.endTime instanceof Date
-      ? filters.endTime.toISOString()
-      : (filters?.endTime ?? null),
+    startTime:
+      filters?.startTime instanceof Date
+        ? filters.startTime.toISOString()
+        : (filters?.startTime ?? null),
+    endTime:
+      filters?.endTime instanceof Date
+        ? filters.endTime.toISOString()
+        : (filters?.endTime ?? null),
     bookingType: filters?.bookingType ?? null,
     plannedSize: filters?.plannedSize ?? null,
-    duration: filters?.duration ?? null,
     location: filters?.location ?? null,
   });
 };
 
 const cursorMatchesRequest = (
   cursor: BookingCursor,
-  params: BookingPaginationParams,
+  params: BookingPaginationParams
 ): boolean => {
   return (
     cursor.sort === params.sort &&
@@ -357,12 +362,10 @@ const cursorMatchesRequest = (
   );
 };
 
-const LOWER_CAMPUS_REGEX = `^[^-]+-[A-Za-z]+0*(?:${
-    Array.from(
-      {length: UPPER_CAMPUS_GRID_START },
-      (_, grid) => grid
-    ).join("|")
-  })-`
+const LOWER_CAMPUS_REGEX = `^[^-]+-[A-Za-z]+0*(?:${Array.from(
+  { length: UPPER_CAMPUS_GRID_START },
+  (_, grid) => grid
+).join("|")})-`;
 
 /**
  * Query all bookings with pagination
@@ -377,63 +380,68 @@ export const queryAllBookings = async (
   const sortColumns = getSortColumns(sort);
 
   // Ignore old cursor if the settings changed
-  const activeCursor = cursor && cursorMatchesRequest(cursor, params) ? cursor : null;
+  const activeCursor =
+    cursor && cursorMatchesRequest(cursor, params) ? cursor : null;
 
-  if (filters?.startTime && filters?.endTime && filters.endTime <= filters.startTime) {
-    throw new Error("End time must be after start time")
+  if (
+    filters?.startTime &&
+    filters?.endTime &&
+    filters.endTime <= filters.startTime
+  ) {
+    throw new Error("End time must be after start time");
   }
 
   // Bookings start at or after
   if (filters?.startTime) {
     conditions.push({
-      start: { _gte: filters.startTime.toISOString() }
-    })
+      start: { _gte: filters.startTime.toISOString() },
+    });
   }
 
   // Bookings end at or before
   if (filters?.endTime) {
     conditions.push({
-      end: { _lte: filters.endTime.toISOString() }
-    })
+      end: { _lte: filters.endTime.toISOString() },
+    });
   }
 
   // Filter by booking on campus location
   if (filters?.location === "lower") {
     conditions.push({
-      roomId: {_regex: LOWER_CAMPUS_REGEX}
+      roomId: { _regex: LOWER_CAMPUS_REGEX },
     });
   } else if (filters?.location === "upper") {
     conditions.push({
       _not: {
-        roomId: {_regex: LOWER_CAMPUS_REGEX},
-      }
-    })
+        roomId: { _regex: LOWER_CAMPUS_REGEX },
+      },
+    });
   }
 
   if (filters?.bookingType) {
     conditions.push({
-      bookingType: { _eq: filters.bookingType }
-    })
+      bookingType: { _eq: filters.bookingType },
+    });
   }
 
   if (filters?.plannedSize !== undefined) {
     conditions.push({
-      plannedSize: {_gte: filters.plannedSize}
-    })
+      plannedSize: { _gte: filters.plannedSize },
+    });
   }
 
   // Search across booking fields
   if (search) {
     const escaped = search.replace(/[%_\\]/g, "\\$&");
-    const pattern = `%${escaped}%`
+    const pattern = `%${escaped}%`;
 
     const searchConditions: BookingWhere[] = [
-      { name: { _ilike: pattern }},
-      { rawName: { _ilike: pattern }},
-      { roomId: { _ilike: pattern }},
-      { occurrenceId: { _ilike: pattern }},
-      { eventId: { _ilike: pattern }},
-      { eventType: { _ilike: pattern }},
+      { name: { _ilike: pattern } },
+      { rawName: { _ilike: pattern } },
+      { roomId: { _ilike: pattern } },
+      { occurrenceId: { _ilike: pattern } },
+      { eventId: { _ilike: pattern } },
+      { eventType: { _ilike: pattern } },
     ];
 
     // Booking type is an enum so do seperatly
@@ -444,8 +452,8 @@ export const queryAllBookings = async (
 
     if (matchingTypes.length > 0) {
       searchConditions.push({
-        bookingType: { _in: matchingTypes}
-      })
+        bookingType: { _in: matchingTypes },
+      });
     }
 
     conditions.push({ _or: searchConditions });
@@ -459,9 +467,9 @@ export const queryAllBookings = async (
   // Filter bookings if cursor exists
   const where: GraphQLValue = conditions.length > 0 ? { _and: conditions } : {};
 
-  const orderBy = sortColumns.map(({field, direction}) =>
-    `{ ${field}: ${direction} }`
-  ).join("\n");
+  const orderBy = sortColumns
+    .map(({ field, direction }) => `{ ${field}: ${direction} }`)
+    .join("\n");
 
   const query = `
     query AllBookings(
@@ -487,7 +495,7 @@ export const queryAllBookings = async (
     }
   `;
 
-  return await doRequest<AllBookingsRes>(query, {limit, where});
+  return await doRequest<AllBookingsRes>(query, { limit, where });
 };
 
 ///////////////////////////////////////////////////////////////

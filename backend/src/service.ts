@@ -1,3 +1,4 @@
+import { UPPER_CAMPUS_GRID_START } from "common/constants";
 import {
   BookingPaginationParams,
   BookingsEventResponse,
@@ -9,8 +10,6 @@ import {
   SearchResponse,
   StatusResponse,
 } from "common/types";
-
-import { UPPER_CAMPUS_GRID_START } from "common/constants";
 
 import {
   queryAllBookings,
@@ -67,7 +66,8 @@ export const getAllRoomStatus = async (
   const result: StatusResponse = {};
   for (const buildingId in buildingData) {
     // Skip building if it does not match filter
-    const roomLocation = +buildingId.substring(3) < UPPER_CAMPUS_GRID_START ? "lower" : "upper";
+    const roomLocation =
+      +buildingId.substring(3) < UPPER_CAMPUS_GRID_START ? "lower" : "upper";
     if (filters.location && filters.location != roomLocation) {
       result[buildingId] = { numAvailable: 0, roomStatuses: {} };
       continue;
@@ -122,7 +122,8 @@ export const searchAllRoom = async (
   const result: SearchResponse = {};
 
   for (const buildingId in buildingData) {
-    const roomLocation = +buildingId.substring(3) < UPPER_CAMPUS_GRID_START ? "lower" : "upper";
+    const roomLocation =
+      +buildingId.substring(3) < UPPER_CAMPUS_GRID_START ? "lower" : "upper";
     if (filters.location && filters.location != roomLocation) {
       continue;
     }

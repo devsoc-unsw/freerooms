@@ -14,6 +14,7 @@ import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import Image, { ImageProps } from "next/image";
 import React from "react";
+
 import { UPPER_CAMPUS_GRID_START } from "../../../common/constants";
 
 const INITIALISING = -2;
@@ -110,7 +111,6 @@ const NameRatingBox = styled(Box)<BoxProps>(() => ({
 
 // Location of building - upper or lower
 const getLocation = (buildingId: string) => {
-  
   return +buildingId.substring(3) < UPPER_CAMPUS_GRID_START ? "Lower" : "Upper";
 };
 
