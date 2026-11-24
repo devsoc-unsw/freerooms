@@ -4,11 +4,11 @@ import useNearbyBookings from "@frontend/hooks/bookings/useNearbyBookings";
 import useBuilding from "@frontend/hooks/buildings/useBuilding";
 import useRoomRatings from "@frontend/hooks/ratings/useRoomRatings";
 import useFavourites from "@frontend/hooks/rooms/useFavourites";
+import useRoomAvailabilityReason from "@frontend/hooks/rooms/useRoomAvailabilityReason";
 import useRoomStatus from "@frontend/hooks/rooms/useRoomStatus";
 import room_photos from "@frontend/public/room-photos.json";
-import { getStatusEnd } from "@frontend/utils/availability";
 import getRoomHref from "@frontend/utils/getRoomHref";
-import { getCampus, getFloorLabel } from "@frontend/utils/roomLocation";
+import { getRoomLocationLabel } from "@frontend/utils/roomLocation";
 import { getBuildingIdFromRoomId } from "@frontend/utils/utils";
 import ArrowForwardOutlinedIcon from "@mui/icons-material/ArrowForwardOutlined";
 import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
@@ -131,8 +131,6 @@ const UtilitiesToggle = styled(Stack, {
   }px`,
 }));
 
-const campusLabel = { lower: "Lower campus", upper: "Upper campus" } as const;
-
 // Round to the nearest half star only when the rating is close to .5
 // (the same rule the room page header uses)
 const roundRating = (rating: number): number => {
@@ -158,14 +156,7 @@ const RoomCard: React.FC<RoomCardProps> = (props) => {
   const { building } = useBuilding(buildingId);
   const { data: ratings } = useRoomRatings(room?.id);
   const { status } = useRoomStatus(room?.id);
-  const needsBookings =
-    status !== undefined &&
-    (status.status === "busy" ||
-      (status.status === "free" && !getStatusEnd(status)));
-  const { current, nextLaterThatDay } = useNearbyBookings(
-    room?.id,
-    needsBookings
-  );
+  const { reason, until } = useRoomAvailabilityReason(room?.id, status);
   if (props.loading || !room) {
     return (
       <Skeleton
@@ -180,13 +171,7 @@ const RoomCard: React.FC<RoomCardProps> = (props) => {
   const { date } = props;
   const favourite = isFavourite(room.id);
   const rating = roundRating(ratings?.overallRating ?? 0);
-  const location = [
-    buildingId ? campusLabel[getCampus(buildingId)] : null,
-    building?.name,
-    getFloorLabel(room.id),
-  ]
-    .filter(Boolean)
-    .join(", ");
+  const location = getRoomLocationLabel(room.id, buildingId, building?.name);
 
   return (
     <StyledCard variant="outlined">
@@ -271,8 +256,8 @@ const RoomCard: React.FC<RoomCardProps> = (props) => {
             <RoomAvailability
               roomStatus={status}
               variant="pill"
-              reason={current?.name}
-              until={nextLaterThatDay?.start}
+              reason={reason}
+              until={until}
             />
           )}
 

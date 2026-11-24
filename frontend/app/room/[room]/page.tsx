@@ -6,7 +6,7 @@ import BookingButton from "@frontend/components/booking/BookingButton";
 import BookingCalendar from "@frontend/components/booking/BookingCalendar";
 import FeedbackButton from "@frontend/components/feedback/FeedbackButton";
 import RoomBackButton from "@frontend/components/navigation/RoomBackButton";
-import ViewOnMapButton from "@frontend/components/navigation/ViewOnMapButton";
+import ViewOnMapButton from "@frontend/components/navigation/GetDirectionsButton";
 import RoomRating from "@frontend/components/ratings/RoomRating";
 import RoomPhotoCarousel from "@frontend/components/rooms/RoomPhotoCarousel";
 import RoomUtilityTags from "@frontend/components/rooms/RoomUtilityTags";

@@ -5,6 +5,8 @@ const FLOOR_LABELS: Record<string, string> = {
   M: "Mezzanine Floor",
 }; // Todo: add additional floors like Level 1 etc.
 
+const CAMPUS_LABELS = { lower: "Lower campus", upper: "Upper campus" } as const;
+
 // Trailing digits of a building id ("K-F17" -> 17): the number CardList sorts buildings by
 export const getBuildingGridNumber = (buildingId: string): number => {
   const digits = buildingId.match(/(\d+)$/)?.[1];
@@ -19,3 +21,5 @@ export const getFloorLabel = (roomId: string): string | null => {
   const prefix = roomNumber?.match(/^([A-Za-z]+)/)?.[1]?.toUpperCase();
   return prefix ? (FLOOR_LABELS[prefix] ?? null) : null;
 };
+
+export const getRoomLocationLabel = (roomId: string, buildingId?: string, buildingName?: string): string => [buildingId ? CAMPUS_LABELS[getCampus(buildingId)] : null, buildingName, getFloorLabel(roomId),].filter(Boolean).join(", ");
