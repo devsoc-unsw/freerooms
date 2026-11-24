@@ -1,8 +1,18 @@
+import { text } from "node:stream/consumers";
+
 import { typography } from "@frontend/theme";
 import { styled } from "@mui/material/styles";
-import { borderColor, display, flex, fontSize, height, outline, padding, width } from "@mui/system";
+import {
+  borderColor,
+  display,
+  flex,
+  fontSize,
+  height,
+  outline,
+  padding,
+  width,
+} from "@mui/system";
 import Link from "next/link";
-import { text } from "node:stream/consumers";
 import React, { ReactNode } from "react";
 
 interface FeatureCardProps {
@@ -10,10 +20,9 @@ interface FeatureCardProps {
   heading: string;
   description: string;
   link?: string;
-  status?: string,
+  status?: string;
   children?: ReactNode;
 }
-
 
 export default function FeatureCard({
   icon,
@@ -22,7 +31,7 @@ export default function FeatureCard({
   link,
   status,
   children,
-}: FeatureCardProps)  {
+}: FeatureCardProps) {
   const content = (
     <CardSurface>
       <CardHeading>
@@ -38,9 +47,9 @@ export default function FeatureCard({
   );
 
   return link ? <CardLink href={link}>{content}</CardLink> : content;
-};
+}
 
-const CardLink = styled(Link)(({theme}) => ({
+const CardLink = styled(Link)(({ theme }) => ({
   display: "block",
   height: "100%",
   color: "inherit",
@@ -54,11 +63,10 @@ const CardLink = styled(Link)(({theme}) => ({
   "&:focus-visibility": {
     outline: `3px solid ${theme.colours.accent.primary}`,
     outlineOffset: 3,
-  }
+  },
 }));
 
-
-const CardSurface = styled("article")(({theme}) => ({
+const CardSurface = styled("article")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   weight: "100%",
@@ -76,14 +84,14 @@ const CardSurface = styled("article")(({theme}) => ({
   },
 }));
 
-const CardHeading = styled("div")(({theme}) => ({
+const CardHeading = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   flexWrap: "wrap",
   gap: theme.space.sm,
 }));
 
-const CardIcon = styled("span")(({theme}) => ({
+const CardIcon = styled("span")(({ theme }) => ({
   display: "inline-flex",
   alignItems: "center",
   flexWrap: "wrap",
@@ -99,36 +107,34 @@ const CardIcon = styled("span")(({theme}) => ({
       width: theme.sizes.icon.lg,
       height: theme.sizes.icon.lg,
     },
-  },  
+  },
 }));
 
-
-const CardTitle = styled("h3")(({theme}) => ({
+const CardTitle = styled("h3")(({ theme }) => ({
   ...typography.cardTitle,
   margin: 0,
   color: theme.colours.text.primary,
-  lineHeight: 1.2
+  lineHeight: 1.2,
 }));
 
-const CardStatus = styled("span")(({theme}) => ({
+const CardStatus = styled("span")(({ theme }) => ({
   color: theme.colours.accent.primary,
   fontSize: 18,
   fontWeight: theme.typography.fontWeightRegular,
   whiteSpace: "nowrap",
 
   [theme.breakpoints.down("sm")]: {
-    fontSize: 12
-  }
+    fontSize: 12,
+  },
 }));
 
-
-const CardDescription = styled("p")(({theme}) => ({
+const CardDescription = styled("p")(({ theme }) => ({
   margin: 0,
   color: theme.colours.text.primary,
   fontSize: 16,
   lineHeight: 1.4,
 
   [theme.breakpoints.down("sm")]: {
-    fontSize: 14
-  }
+    fontSize: 14,
+  },
 }));

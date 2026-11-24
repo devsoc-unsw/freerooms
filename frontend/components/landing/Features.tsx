@@ -1,139 +1,96 @@
 import FeatureCard from "@frontend/components/landing/FeatureCard";
-import { useDispatch } from "@frontend/redux/hooks";
-import { openSearch } from "@frontend/redux/slices/searchOpenSlice";
-import EventAvailableIcon from "@mui/icons-material/EventAvailable";
-import GridIcon from "@mui/icons-material/GridViewRounded";
-import MapIcon from "@mui/icons-material/Map";
-import { Box } from "@mui/material";
-import { styled, width } from "@mui/system/styles";
-import Image from "next/image";
 import { typography } from "@frontend/theme";
-import React from "react";
+import FavouriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
+import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
+import { styled } from "@mui/material/styles";
 
-export default function Features{
-  const dispatch = useDispatch();
+export default function Features() {
   return (
-    <FeatureRoot>
+    <FeatureRoot aria-labelledby="features-heading">
       <SectionHeading id="features-heading">Features</SectionHeading>
 
-    </FeatureRoot>
-
-    <StyledFeatureDiv>
-      <div>
-        <StyledFeatureVector
-          alt={"Feature Vector"}
-          src="/assets/landing_page/feature_vector.png"
-          width={36}
-          height={34}
-        />
-        <StyledHeading>Our Features</StyledHeading>
-      </div>
-
-      <Box
-        sx={{
-          marginTop: 10,
-          width: "100%",
-          height: { xs: "50rem", md: "45rem", lg: "25rem" },
-        }}
-      >
-        <div>
-          <StyledBackgroudVector
-            src="/assets/landing_page/feature_background.png"
-            alt="background vector"
-            width={1125} // Set the actual width of the image
-            height={485} // Set the actual height of the image
-          />
-        </div>
-
-        <StyledCardParent>
+      <FeatureGrid>
+        <GridItem style={{ gridArea: "browse" }}>
           <FeatureCard
-            icon={<GridIcon style={{ height: "3rem", width: "3rem" }} />}
-            heading="Browse Buildings"
-            description="Efficiently browse a complete list of available rooms and buildings, with customizable filters for quick and easy scheduling."
+            icon={<SearchRoundedIcon />}
+            heading="Browse Locations"
+            description="Search and filter for available buildings, rooms and bookings (including classes & society events)."
             link="/browse"
           />
+        </GridItem>
+
+        <GridItem style={{ gridArea: "map" }}>
           <FeatureCard
-            icon={<MapIcon style={{ height: "3rem", width: "3rem" }} />}
-            heading="Map"
-            description="Explore a dynamic map showcasing building availability near your location, and quickly find the perfect spot for your next study session."
+            icon={<MapOutlinedIcon />}
+            heading="Map View"
+            description="Dynamic maps with building availability, proximity detection and navigation."
             link="/map"
           />
+        </GridItem>
+
+        <GridItem style={{ gridArea: "favourites" }}>
           <FeatureCard
-            icon={
-              <EventAvailableIcon style={{ height: "3rem", width: "3rem" }} />
-            }
-            heading="Timetable"
-            description="Get instant access to real-time room schedules across campus, ensuring you're always in the right place at the right time."
-            onClick={() => dispatch(openSearch())}
+            icon={<FavouriteBorderIcon />}
+            heading="Favouriting"
+            description="Favourite rooms and buildings and easily see when they’re available."
+            link="/favourites"
           />
-        </StyledCardParent>
-      </Box>
-    </StyledFeatureDiv>
+        </GridItem>
+
+        <GridItem style={{ gridArea: "accounts" }}>
+          <FeatureCard
+            icon={<PersonOutlinedIcon />}
+            heading="User Accounts"
+            description="Login and sync your data across our website and mobile app."
+            status="Coming soon!"
+          />
+        </GridItem>
+      </FeatureGrid>
+    </FeatureRoot>
   );
-};
+}
 
-
-const StyledHeading = styled("h2")(() => ({
-  textAlign: "center",
-  fontSize: "3rem",
-  paddingBottom: "50%",
-}));
-
-const StyledFeatureVector = styled(Image)(() => ({
-  marginBottom: "-4rem",
-  marginRight: "20rem",
-  maxWidth: "100%",
-  height: "auto",
-}));
-
-const StyledFeatureDiv = styled("div")(({ theme }) => ({
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "space-evenly",
-  alignItems: "center",
-  position: "relative",
-  padding: "5rem 0",
-  [theme.breakpoints.down("lg")]: {
-    gap: "0rem",
-  },
-}));
-
-const StyledBackgroudVector = styled(Image)(({ theme }) => ({
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  zIndex: "-1",
-  width: "100%", // Or specify a specific width
-  height: "auto", // This will maintain the aspect ratio
-  [theme.breakpoints.down("lg")]: {
-    display: "none",
-  },
-}));
-
-const StyledCardParent = styled("div")(({ theme }) => ({
-  position: "absolute",
-  display: "flex",
-  flexDirection: "row",
-  width: "90%",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  justifyContent: "space-evenly",
-  [theme.breakpoints.down("lg")]: {
-    flexDirection: "column",
-    alignItems: "center",
-    marginTop: "25%",
-    paddingBottom: "25%",
-  },
-  [theme.breakpoints.down("md")]: {
-    marginTop: "20%",
-    paddingBottom: "15%",
-  },
-}));
-
-
-const FeatureRoot = styled("section")(({theme}) => ({
+const FeatureRoot = styled("section")(({ theme }) => ({
   width: "100%",
   paddingBlock: theme.space.xxl,
+}));
+
+const SectionHeading = styled("h2")(({ theme }) => ({
+  ...typography.sectionHeading,
+  margin: 0,
+  marginBottom: theme.space.lg,
+  color: theme.colours.accent.primary,
+  textAlign: "center",
+  fontSize: "clamp(48px, 15vw, 64px)",
+  lineHeight: 1.15,
+}));
+
+const FeatureGrid = styled("div")(({ theme }) => ({
+  display: "grid",
+  width: "100%",
+  gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+  gridTemplateRows: "repeat(2, minmax(192px, auto))",
+  gridTemplateAreas: `
+    "browse browse map"
+    "favourites accounts map"
+  `,
+  gap: theme.space.lg,
+
+  [theme.breakpoints.down("md")]: {
+    gridTemplateColumns: "minmax(0, 1fr)",
+    gridTemplateRows: "none",
+    gridTemplateAreas: `
+      "browse"
+      "map"
+      "favourites"
+      "accounts"
+    `,
+  },
+}));
+
+const GridItem = styled("div")(() => ({
+  minWidth: 0,
+  minHeight: 0,
 }));
