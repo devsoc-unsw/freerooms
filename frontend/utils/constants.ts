@@ -252,7 +252,6 @@ export const BROWSE_VIEWS: Record<BrowseView, BrowseViewConfig> = {
   rooms: {
     sortOptions: roomSortBarDropdown,
     sortTitle: "Room Sort",
-    filterKeys: ["location", "capacity", "usage", "id"],
     searchPlaceholder: "Search for free rooms",
   },
 };
