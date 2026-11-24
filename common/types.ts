@@ -209,9 +209,26 @@ export type BookingsModuleResponse = z.infer<
   typeof bookingsModuleResponseSchema
 >;
 
+export const bookingListModuleSchema = z.object({
+  code: z.string(),
+  name: z.string(),
+  term: z.string().nullable(),
+  career: z.string().nullable(),
+})
+
+export type BookingListModule = z.infer<typeof bookingListModuleSchema>;
+
+export const paginatedBookingSchema = bookingSchema.extend({
+  roomId: z.string(),
+  occurrenceId: z.string(),
+  bookingModules: z.array(bookingListModuleSchema)
+});
+
+export type PaginatedBooking = z.infer<typeof paginatedBookingSchema>;
+
 // Bookings Pagination Response
 export const bookingsPaginationResponseSchema = z.object({
-  bookings: z.array(bookingSchema),
+  bookings: z.array(paginatedBookingSchema),
   nextCursor: z.string().nullable(),
   hasMore: z.boolean(),
 });
@@ -315,7 +332,6 @@ export const bookingsPaginationQuerySchema = z.object({
   startTime: z.string().optional(),
   endTime: z.string().optional(),
   plannedSize: z.string().optional(),
-  duration: z.string().optional(),
   location: z.enum(["upper", "lower"]).optional(),
   sort: z.string().optional(),
   search: z.string().optional(),
