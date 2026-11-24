@@ -1,17 +1,5 @@
-import { text } from "node:stream/consumers";
-
 import { typography } from "@frontend/theme";
 import { styled } from "@mui/material/styles";
-import {
-  borderColor,
-  display,
-  flex,
-  fontSize,
-  height,
-  outline,
-  padding,
-  width,
-} from "@mui/system";
 import Link from "next/link";
 import React, { ReactNode } from "react";
 
@@ -56,11 +44,11 @@ const CardLink = styled(Link)(({ theme }) => ({
   textDecoration: "none",
   borderRadius: theme.radius.lg,
 
-  "&hover: article": {
+  "&hover article": {
     borderColor: theme.colours.accent.primary,
   },
 
-  "&:focus-visibility": {
+  "&:focus-visibile": {
     outline: `3px solid ${theme.colours.accent.primary}`,
     outlineOffset: 3,
   },
@@ -69,8 +57,9 @@ const CardLink = styled(Link)(({ theme }) => ({
 const CardSurface = styled("article")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  weight: "100%",
+  wedth: "100%",
   height: "100%",
+  gap: theme.space.md,
   minWidth: 0,
   boxSizing: "border-box",
   padding: theme.space.lg,

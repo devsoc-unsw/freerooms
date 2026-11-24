@@ -24,9 +24,7 @@ export default function Landing({ heroImageSrc }: LandingProps) {
 
       {/* Features */}
       <LandingSection aria-label="Features">
-        <LandingScreenContainer>
           <Features />
-        </LandingScreenContainer>
       </LandingSection>
 
       {/* FAQ */}
