@@ -146,7 +146,14 @@ type BookingWhere = {
     _eq?: string;
     _gt?: string;
     _lt?: string;
+    _lte?: string;
   };
+
+  end?: {
+    _eq?: string;
+    _gt?: string;
+    _lt?: string;
+  }
 
   bookingType?: {
     _eq?: BookingType;
@@ -171,7 +178,7 @@ type BookingWhere = {
 }
 
 type SortColumn = {
-  field: "start" | "bookingType" | "name" | "plannedSize" | "roomId" | "occurrenceId";
+  field: "start" | "end" | "bookingType" | "name" | "plannedSize" | "roomId" | "occurrenceId";
   direction: "asc" | "desc" | "desc_nulls_last";
 };
 
@@ -216,6 +223,12 @@ const getSortColumns = (
         ...tieBreakers
       ];
 
+    case "remainingTime":
+      return [
+        { field: "end", direction: "asc" },
+        ...tieBreakers
+      ]
+
     default:
       throw new Error(`Unsupported sort: ${sort}`)
   }
@@ -236,6 +249,9 @@ const cursorComparison = (
   switch (field) {
     case "start":
       return { start: comparison(cursor.start.toISOString()) };
+
+    case "end":
+      return { end: comparison(cursor.end.toISOString()) };
 
     case "bookingType":
       return { bookingType: comparison(cursor.bookingType) };
@@ -346,6 +362,15 @@ export const queryAllBookings = async (
 
   // Ignore old cursor if the settings changed
   const activeCursor = cursor && cursorMatchesRequest(cursor, params) ? cursor : null;
+
+  if (filters?.datetime) {
+    const datetime = filters.datetime.toISOString();
+
+    conditions.push({
+      start: { _lte: datetime},
+      end: { _gt: datetime},
+    })
+  }
 
   if (filters?.bookingType) {
     conditions.push({
