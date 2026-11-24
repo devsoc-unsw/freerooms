@@ -150,9 +150,12 @@ export const parseBookingLimit = (req: Request): number => {
 export const parseBookingFilters = (req: Request): BookingFilter | null => {
   const filters: BookingFilter = {};
 
-  if (req.query.datetime) {
-    const datetime = parseDatetime(req.query.datetime as string);
-    filters.datetime = datetime;
+  if (req.query.startTime) {
+    filters.startTime = parseDatetime(req.query.startTime as string);
+  }
+
+  if (req.query.endTime) {
+    filters.endTime = parseDatetime(req.query.endTime as string);
   }
 
   if (req.query.bookingType) {

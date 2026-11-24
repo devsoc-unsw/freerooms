@@ -41,7 +41,8 @@ export type BookingModule = {
 
 // One query param per filter, each with a single value, like the browse page
 export const bookingFilterSchema = z.object({
-  datetime: z.date().optional(), // bookings overlapping datetime until the end of that Sydney day
+  startTime: z.date().optional(), // bookings starting at or after it
+  endTime: z.date().optional(),
   bookingType: z.enum(BookingType).optional(),
   plannedSize: z.number().optional(), // minimum planned size, same as room capacity
   duration: z.number().optional(), // minimum booking length in minutes (end - start)
@@ -312,7 +313,8 @@ export const bookingsModuleParamsSchema = z.object({
 export const bookingsPaginationQuerySchema = z.object({
   limit: z.string().optional(),
   bookingType: z.string().optional(),
-  datetime: z.string().optional(),
+  startTime: z.string().optional(),
+  endTime: z.string().optional(),
   plannedSize: z.string().optional(),
   duration: z.string().optional(),
   location: z.enum(["upper", "lower"]).optional(),

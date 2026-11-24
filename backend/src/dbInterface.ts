@@ -147,12 +147,14 @@ type BookingWhere = {
     _gt?: string;
     _lt?: string;
     _lte?: string;
+    _gte?: string;
   };
 
   end?: {
     _eq?: string;
     _gt?: string;
     _lt?: string;
+    _lte?: string;
   }
 
   bookingType?: {
@@ -327,9 +329,12 @@ const normaliseFilters = (
   filters: BookingPaginationParams["filters"]
 ): string => {
   return JSON.stringify({
-    datetime: filters?.datetime instanceof Date
-      ? filters.datetime.toISOString()
-      : (filters?.datetime ?? null),
+    startTime: filters?.startTime instanceof Date
+      ? filters.startTime.toISOString()
+      : (filters?.startTime ?? null),
+    endTime: filters?.endTime instanceof Date
+      ? filters.endTime.toISOString()
+      : (filters?.endTime ?? null),
     bookingType: filters?.bookingType ?? null,
     plannedSize: filters?.plannedSize ?? null,
     duration: filters?.duration ?? null,
@@ -363,12 +368,21 @@ export const queryAllBookings = async (
   // Ignore old cursor if the settings changed
   const activeCursor = cursor && cursorMatchesRequest(cursor, params) ? cursor : null;
 
-  if (filters?.datetime) {
-    const datetime = filters.datetime.toISOString();
+  if (filters?.startTime && filters?.endTime && filters.endTime <= filters.startTime) {
+    throw new Error("End time must be after start time")
+  }
 
+  // Bookings start at or after
+  if (filters?.startTime) {
     conditions.push({
-      start: { _lte: datetime},
-      end: { _gt: datetime},
+      start: { _gte: filters.startTime.toISOString() }
+    })
+  }
+
+  // Bookings end at or before
+  if (filters?.endTime) {
+    conditions.push({
+      end: { _lte: filters.endTime.toISOString() }
     })
   }
 
