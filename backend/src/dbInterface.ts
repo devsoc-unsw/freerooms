@@ -156,7 +156,10 @@ type BookingWhere = {
   };
 
   plannedSize?: {
+    _eq?: number;
+    _lt?: number;
     _gte?: number;
+    _is_null?: boolean;
   };
 
   name?: TextComparison;
@@ -168,8 +171,8 @@ type BookingWhere = {
 }
 
 type SortColumn = {
-  field: "start" | "bookingType" | "name" | "roomId" | "occurrenceId";
-  direction: "asc" | "desc";
+  field: "start" | "bookingType" | "name" | "plannedSize" | "roomId" | "occurrenceId";
+  direction: "asc" | "desc" | "desc_nulls_last";
 };
 
 const getSortColumns = (
@@ -207,6 +210,12 @@ const getSortColumns = (
         ...tieBreakers
       ];
 
+    case "plannedSize":
+      return [
+        { field: "plannedSize", direction: "desc_nulls_last"},
+        ...tieBreakers
+      ];
+
     default:
       throw new Error(`Unsupported sort: ${sort}`)
   }
@@ -239,6 +248,17 @@ const cursorComparison = (
 
     case "occurrenceId":
       return { occurrenceId: comparison(cursor.occurrenceId) };
+
+    case "plannedSize":
+      if (operator !== "_eq") {
+        throw new Error("Unexpected planned size comparison");
+      }
+
+      return {
+        plannedSize: cursor.plannedSize === null
+          ? { _is_null: true}
+          : { _eq: cursor.plannedSize }
+      }
   }
 }
 
@@ -246,20 +266,44 @@ const cursorAfter = (
   cursor: BookingCursor,
   columns: SortColumn[]
 ): BookingWhere => ({
-  _or: columns.map((column, index) => ({
-    _and: [
-      ...columns
-        .slice(0, index)
-        .map((previous) =>
-          cursorComparison(cursor, previous.field, "_eq")
-        ),
-      cursorComparison(
+  _or: columns.flatMap((column, index): BookingWhere[] => {
+    let after: BookingWhere;
+
+    if (column.field === "plannedSize") {
+      if (column.direction !== "desc_nulls_last") {
+        throw new Error("Unsupported planned size ordering")
+      }
+
+      // Nothing sorts after null
+      if (cursor.plannedSize === null) {
+        return [];
+      }
+
+      after = {
+        _or: [
+          { plannedSize: {_lt: cursor.plannedSize } },
+          {plannedSize: {_is_null: true}},
+        ],
+      };
+    } else {
+      after = cursorComparison(
         cursor,
         column.field,
-        column.direction === "asc" ? "_gt" : "_lt",
-      ),
-    ],
-  })),
+        column.direction === 'asc' ? "_gt" : "_lt"
+      );
+    }
+
+    return [{
+      _and: [
+        ...columns
+          .slice(0, index)
+          .map((previous) =>
+            cursorComparison(cursor, previous.field, "_eq")
+          ),
+        after
+      ],
+    }];
+  }),
 });
 
 // Ordered json string for comparison
