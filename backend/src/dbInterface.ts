@@ -1,7 +1,7 @@
 // Interface to the Hasura GraphQL API
 import type { TypedDocumentNode } from "@graphql-typed-document-node/core";
 import parseDates from "common/parseDates";
-import { Booking, BookingModule, BookingPaginationParams, BookingType } from "common/types";
+import { Booking, BookingCursor, BookingModule, BookingPaginationParams, BookingType } from "common/types";
 import { parse } from "graphql";
 import { gql, GraphQLClient } from "graphql-request";
 
@@ -134,6 +134,7 @@ export type AllBookingsRes = {
 type TextComparison = {
   _eq?: string;
   _gt?: string;
+  _lt?: string;
   _ilike?: string;
 };
 
@@ -150,6 +151,7 @@ type BookingWhere = {
   bookingType?: {
     _eq?: BookingType;
     _gt?: BookingType;
+    _lt?: BookingType;
     _in?: BookingType[];
   };
 
@@ -165,6 +167,101 @@ type BookingWhere = {
   eventType?: TextComparison;
 }
 
+type SortColumn = {
+  field: "start" | "bookingType" | "name" | "roomId" | "occurrenceId";
+  direction: "asc" | "desc";
+};
+
+const getSortColumns = (
+  sort: BookingPaginationParams["sort"]
+): SortColumn[] => {
+  const tieBreakers: SortColumn[] = [
+    { field: "roomId", direction: "asc" },
+    { field: "occurrenceId", direction: "asc" },
+  ];
+
+  switch (sort) {
+    case "ascendingStart":
+      return [
+        { field: "start", direction: "asc"},
+        { field: "bookingType", direction: "asc"},
+        ...tieBreakers
+      ];
+
+    case "descendingStart":
+      return [
+        { field: "start", direction: "desc"},
+        { field: "bookingType", direction: "asc"},
+        ...tieBreakers
+      ];
+
+    case "alphabetical":
+      return [
+        { field: "name", direction: "asc"},
+        ...tieBreakers
+      ];
+
+    case "reverseAlphabetical":
+      return [
+        { field: "name", direction: "desc"},
+        ...tieBreakers
+      ];
+
+    default:
+      throw new Error(`Unsupported sort: ${sort}`)
+  }
+};
+
+const cursorComparison = (
+  cursor: BookingCursor,
+  field: SortColumn["field"],
+  operator: "_eq" | "_gt" | "_lt"
+): BookingWhere => {
+  const comparison = <T extends string>(value: T) =>
+    operator === "_eq"
+      ? { _eq: value }
+      : operator === "_gt"
+        ? {_gt: value}
+        : {_lt: value};
+
+  switch (field) {
+    case "start":
+      return { start: comparison(cursor.start.toISOString()) };
+
+    case "bookingType":
+      return { bookingType: comparison(cursor.bookingType) };
+
+    case "name":
+      return { name: comparison(cursor.name) };
+
+    case "roomId":
+      return { roomId: comparison(cursor.roomId) };
+
+    case "occurrenceId":
+      return { occurrenceId: comparison(cursor.occurrenceId) };
+  }
+}
+
+const cursorAfter = (
+  cursor: BookingCursor,
+  columns: SortColumn[]
+): BookingWhere => ({
+  _or: columns.map((column, index) => ({
+    _and: [
+      ...columns
+        .slice(0, index)
+        .map((previous) =>
+          cursorComparison(cursor, previous.field, "_eq")
+        ),
+      cursorComparison(
+        cursor,
+        column.field,
+        column.direction === "asc" ? "_gt" : "_lt",
+      ),
+    ],
+  })),
+});
+
 /**
  * Query all bookings with pagination
  */
@@ -175,16 +272,11 @@ export const queryAllBookings = async (
 
   const conditions: BookingWhere[] = [];
 
-  if (sort !== "ascendingStart" && sort !== "descendingStart") {
-    throw new Error(`Unsupported sort ${sort}`);
-  }
+  const sortColumns = getSortColumns(sort);
 
   if (cursor && cursor.sort !== sort) {
     throw new Error("Cursor sorting does not match requested sorting");
   }
-
-  const descending = sort === "descendingStart";
-  const startDirection = descending ? "desc" : "asc";
 
   if (filters?.bookingType) {
     conditions.push({
@@ -229,34 +321,15 @@ export const queryAllBookings = async (
 
   // Existing acending keyset
   if (cursor) {
-    const start = cursor.start.toISOString();
-
-    const startComparison = descending ? { _lt: start } : { _gt: start };
-
-    conditions.push({
-      _or: [
-        { start: startComparison},
-        {
-          start: { _eq: start },
-          bookingType: { _gt: cursor.bookingType },
-        },
-        {
-          start: { _eq: start },
-          bookingType: { _eq: cursor.bookingType },
-          roomId: { _gt: cursor.roomId }
-        },
-        {
-          start: { _eq: start },
-          bookingType: { _eq: cursor.bookingType },
-          roomId: { _eq: cursor.roomId },
-          occurrenceId: { _gt: cursor.occurrenceId },
-        },
-      ]
-    })
+    conditions.push(cursorAfter(cursor, sortColumns));
   }
 
   // Filter bookings if cursor exists
   const where: GraphQLValue = conditions.length > 0 ? { _and: conditions } : {};
+
+  const orderBy = sortColumns.map(({field, direction}) =>
+    `{ ${field}: ${direction} }`
+  ).join("\n");
 
   const query = `
     query AllBookings(
@@ -266,10 +339,7 @@ export const queryAllBookings = async (
       bookings(
       where: $where
         order_by: [
-          { start: ${startDirection} }
-          { bookingType: asc }
-          { roomId: asc }
-          { occurrenceId: asc }
+          ${orderBy}
         ]
         limit: $limit
       ) {
