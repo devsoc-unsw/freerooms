@@ -1,7 +1,7 @@
 // Interface to the Hasura GraphQL API
 import type { TypedDocumentNode } from "@graphql-typed-document-node/core";
 import parseDates from "common/parseDates";
-import { Booking, BookingModule, BookingPaginationParams } from "common/types";
+import { Booking, BookingModule, BookingPaginationParams, BookingType } from "common/types";
 import { parse } from "graphql";
 import { gql, GraphQLClient } from "graphql-request";
 
@@ -12,12 +12,20 @@ import { GRAPHQL_API } from "./config";
 
 const client = new GraphQLClient(GRAPHQL_API);
 
+type GraphQLValue =
+  | string
+  | number
+  | boolean
+  | null
+  | GraphQLValue[]
+  | { [key: string]: GraphQLValue}
+
 /**
  * Make a request to the GraphQL API
  */
 const doRequest = async <T>(
   queryStr: string,
-  variables: Record<string, string | number> = {}
+  variables: Record<string, GraphQLValue> = {}
 ): Promise<T> => {
   // Make the request
   const query: TypedDocumentNode<T> = parse(gql`
@@ -123,41 +131,126 @@ export type AllBookingsRes = {
   bookings: Booking[];
 };
 
+type TextComparison = {
+  _eq?: string;
+  _gt?: string;
+  _ilike?: string;
+};
+
+type BookingWhere = {
+  _and?: BookingWhere[];
+  _or?: BookingWhere[];
+
+  start?: {
+    _eq?: string;
+    _gt?: string;
+  };
+
+  bookingType?: {
+    _eq?: BookingType;
+    _gt?: BookingType;
+    _in?: BookingType[];
+  };
+
+  plannedSize?: {
+    _gte?: number;
+  };
+
+  name?: TextComparison;
+  rawName?: TextComparison;
+  roomId?: TextComparison;
+  occurrenceId?: TextComparison;
+  eventId?: TextComparison;
+  eventType?: TextComparison;
+}
+
 /**
  * Query all bookings with pagination
  */
 export const queryAllBookings = async (
   params: BookingPaginationParams
 ): Promise<AllBookingsRes> => {
-  const { limit, cursor } = params;
+  const { limit, cursor, filters, search } = params;
+
+  const conditions: BookingWhere[] = [];
+
+  if (filters?.bookingType) {
+    conditions.push({
+      bookingType: { _eq: filters.bookingType }
+    })
+  }
+
+  if (filters?.plannedSize !== undefined) {
+    conditions.push({
+      plannedSize: {_gte: filters.plannedSize}
+    })
+  }
+
+  // Search across booking fields
+  if (search) {
+    const escaped = search.replace(/[%_\\]/g, "\\$&");
+    const pattern = `%${escaped}%`
+
+    const searchConditions: BookingWhere[] = [
+      { name: { _ilike: pattern }},
+      { rawName: { _ilike: pattern }},
+      { roomId: { _ilike: pattern }},
+      { occurrenceId: { _ilike: pattern }},
+      { eventId: { _ilike: pattern }},
+      { eventType: { _ilike: pattern }},
+    ];
+
+    // Booking type is an enum so do seperatly
+
+    const matchingTypes = Object.values(BookingType).filter((type) =>
+      type.toLowerCase().includes(search.toLowerCase())
+    );
+
+    if (matchingTypes.length > 0) {
+      searchConditions.push({
+        bookingType: { _in: matchingTypes}
+      })
+    }
+
+    conditions.push({ _or: searchConditions });
+  }
+
+  // Existing acending keyset
+  if (cursor) {
+    const start = cursor.start.toISOString();
+
+    conditions.push({
+      _or: [
+        { start: { _gt: start }},
+        {
+          start: { _eq: start },
+          bookingType: { _gt: cursor.bookingType },
+        },
+        {
+          start: { _eq: start },
+          bookingType: { _eq: cursor.bookingType },
+          roomId: { _gt: cursor.roomId }
+        },
+        {
+          start: { _eq: start },
+          bookingType: { _eq: cursor.bookingType },
+          roomId: { _eq: cursor.roomId },
+          occurrenceId: { _gt: cursor.occurrenceId },
+        },
+      ]
+    })
+  }
 
   // Filter bookings if cursor exists
-  const where = cursor
-    ? `where: {
-        _or: [
-          { start: { _gt: $start } },
-          { start: { _eq: $start }, bookingType: { _gt: $bookingType } },
-          { start: { _eq: $start }, bookingType: { _eq: $bookingType }, roomId: { _gt: $roomId } },
-          { start: { _eq: $start }, bookingType: { _eq: $bookingType }, roomId: { _eq: $roomId }, occurrenceId: { _gt: $occurrenceId } }
-        ]
-      }`
-    : "";
+  const where: GraphQLValue = conditions.length > 0 ? { _and: conditions } : {};
 
   const query = `
     query AllBookings(
       $limit: Int!
-      ${
-        cursor
-          ? `
-      $start: timestamptz!
-      $bookingType: bookingtypeenum!
-      $roomId: String!
-      $occurrenceId: String!
-      `
-          : ""
-      }
+      $where: bookings_bool_exp!
     ) {
       bookings(
+      where: $where
         order_by: [
           { start: asc }
           { bookingType: asc }
@@ -165,7 +258,6 @@ export const queryAllBookings = async (
           { occurrenceId: asc }
         ]
         limit: $limit
-        ${where}
       ) {
         roomId
         occurrenceId
@@ -179,17 +271,7 @@ export const queryAllBookings = async (
     }
   `;
 
-  const variables = {
-    limit: limit,
-    ...(cursor && {
-      start: cursor.start.toISOString(),
-      bookingType: cursor.bookingType,
-      roomId: cursor.roomId,
-      occurrenceId: cursor.occurrenceId,
-    }),
-  };
-
-  return await doRequest<AllBookingsRes>(query, variables);
+  return await doRequest<AllBookingsRes>(query, {limit, where});
 };
 
 ///////////////////////////////////////////////////////////////

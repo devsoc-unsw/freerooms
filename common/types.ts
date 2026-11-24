@@ -56,7 +56,6 @@ export const bookingSorts = [
   "alphabetical",             // booking name A-Z
   "reverseAlphabetical",      // booking name Z-A
   "plannedSize",              // largest planned size first
-  "longestDuration",          // longest booking first
   "remainingTime",            // least time remaining (end - now) first
 ] as const;
 
