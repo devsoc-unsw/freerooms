@@ -20,7 +20,10 @@ const StyledAccordion = styled(Accordion)(({ theme }) => ({
   borderRadius: theme.radius.lg,
   boxShadow: "none",
   backgroundImage: "none",
-  backgroundColor: theme.palette.mode === "dark" ? theme.colours.background.primary : theme.colours.surface.paper,
+  backgroundColor:
+    theme.palette.mode === "dark"
+      ? theme.colours.background.primary
+      : theme.colours.surface.paper,
 
   "&:before": {
     display: "none",
@@ -28,14 +31,14 @@ const StyledAccordion = styled(Accordion)(({ theme }) => ({
 
   "&.Mui-expanded": {
     margin: 0,
-  }
+  },
 }));
 
-const StyledSummary = styled(AccordionSummary)(({theme}) => ({
+const StyledSummary = styled(AccordionSummary)(({ theme }) => ({
   minHeight: theme.space.xxl,
   paddingInline: theme.space.md,
 
-  "& .Mui-expanded": {
+  "&.Mui-expanded": {
     minHeight: theme.space.xxl,
   },
 
@@ -56,12 +59,12 @@ const StyledSummary = styled(AccordionSummary)(({theme}) => ({
   },
 }));
 
-const StyledDetails = styled(AccordionDetails)(({theme}) => ({
+const StyledDetails = styled(AccordionDetails)(({ theme }) => ({
   padding: theme.space.md,
   paddingTop: theme.space.none,
 }));
 
-const StyledTitle = styled(Typography)(({theme}) => ({
+const StyledTitle = styled(Typography)(({ theme }) => ({
   color: theme.colours.text.primary,
   fontSize: 16,
   fontWeight: theme.typography.fontWeightRegular,
@@ -69,10 +72,10 @@ const StyledTitle = styled(Typography)(({theme}) => ({
 
   [theme.breakpoints.down("sm")]: {
     fontSize: 14,
-  }
+  },
 }));
 
-const StyledContent = styled(Typography)(({theme}) => ({
+const StyledContent = styled(Typography)(({ theme }) => ({
   color: theme.colours.text.secondary,
   fontSize: 14,
   lineHeight: 1.5,
@@ -90,7 +93,11 @@ const AccordionItem: React.FC<AccordionItemProps> = ({ title, content }) => {
   };
 
   return (
-    <StyledAccordion expanded={expandedPanel} onChange={handleChangePanel} elevation={0}>
+    <StyledAccordion
+      expanded={expandedPanel}
+      onChange={handleChangePanel}
+      elevation={0}
+    >
       <StyledSummary
         expandIcon={
           expandedPanel ? (

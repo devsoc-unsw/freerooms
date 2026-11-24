@@ -15,37 +15,35 @@ interface LandingProps {
 
 export default function Landing({ heroImageSrc }: LandingProps) {
   return (
-    <LandingRoot>
-      {/* Hero */}
-      <LandingSection aria-label="Find a room">
-        <Hero imageSrc={heroImageSrc}>
-          <HeroBranding />
-        </Hero>
-      </LandingSection>
+    <>
+      <LandingRoot>
+        {/* Hero */}
+        <LandingSection aria-label="Find a room">
+          <Hero imageSrc={heroImageSrc}>
+            <HeroBranding />
+          </Hero>
+        </LandingSection>
 
-      {/* Features */}
-      <LandingSection aria-label="Features">
-        <Features />
-      </LandingSection>
+        {/* Features */}
+        <LandingSection aria-label="Features">
+          <Features />
+        </LandingSection>
 
-      {/* FAQ */}
-      <LandingSection aria-label="Frequently asked questions">
-        <Faq />
-      </LandingSection>
+        {/* FAQ */}
+        <LandingSection aria-label="Frequently asked questions">
+          <Faq />
+        </LandingSection>
+      </LandingRoot>
 
       {/* Landing information */}
-      <LandingSection aria-label="Freerooms information">
-        <LandingInfo />
-      </LandingSection>
-    </LandingRoot>
+      <LandingInfo />
+    </>
   );
 }
 
 const LandingRoot = styled(Stack)(({ theme }) => ({
   width: "100%",
-  maxWidth: 1440,
   boxSizing: "border-box",
-  marginInline: "auto",
   padding: theme.space.xxl,
   alignItems: "center",
 
