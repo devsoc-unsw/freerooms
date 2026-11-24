@@ -4,6 +4,8 @@ import parseDates from "common/parseDates";
 import { Booking, BookingCursor, BookingModule, BookingPaginationParams, BookingType } from "common/types";
 import { parse } from "graphql";
 import { gql, GraphQLClient } from "graphql-request";
+import { UPPER_CAMPUS_GRID_START } from "common/constants";
+
 
 import { GRAPHQL_API } from "./config";
 
@@ -136,11 +138,13 @@ type TextComparison = {
   _gt?: string;
   _lt?: string;
   _ilike?: string;
+  _regex?: string;
 };
 
 type BookingWhere = {
   _and?: BookingWhere[];
   _or?: BookingWhere[];
+  _not?: BookingWhere;
 
   start?: {
     _eq?: string;
@@ -353,6 +357,13 @@ const cursorMatchesRequest = (
   );
 };
 
+const LOWER_CAMPUS_REGEX = `^[^-]+-[A-Za-z]+0*(?:${
+    Array.from(
+      {length: UPPER_CAMPUS_GRID_START },
+      (_, grid) => grid
+    ).join("|")
+  })-`
+
 /**
  * Query all bookings with pagination
  */
@@ -383,6 +394,19 @@ export const queryAllBookings = async (
   if (filters?.endTime) {
     conditions.push({
       end: { _lte: filters.endTime.toISOString() }
+    })
+  }
+
+  // Filter by booking on campus location
+  if (filters?.location === "lower") {
+    conditions.push({
+      roomId: {_regex: LOWER_CAMPUS_REGEX}
+    });
+  } else if (filters?.location === "upper") {
+    conditions.push({
+      _not: {
+        roomId: {_regex: LOWER_CAMPUS_REGEX},
+      }
     })
   }
 

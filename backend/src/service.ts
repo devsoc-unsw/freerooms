@@ -10,6 +10,8 @@ import {
   StatusResponse,
 } from "common/types";
 
+import { UPPER_CAMPUS_GRID_START } from "common/constants";
+
 import {
   queryAllBookings,
   queryBookingsForEvent,
@@ -25,8 +27,6 @@ import {
   isRecurringFree,
 } from "./helpers";
 import { SearchFilters, StatusFilters } from "./types";
-
-const UPPER = 19; // Buildings with grid 19+ are upper campus
 
 export const getAllBuildings = async (): Promise<BuildingsResponse> => {
   const data = Object.values(await getBuildingRoomData());
@@ -67,7 +67,7 @@ export const getAllRoomStatus = async (
   const result: StatusResponse = {};
   for (const buildingId in buildingData) {
     // Skip building if it does not match filter
-    const roomLocation = +buildingId.substring(3) < UPPER ? "lower" : "upper";
+    const roomLocation = +buildingId.substring(3) < UPPER_CAMPUS_GRID_START ? "lower" : "upper";
     if (filters.location && filters.location != roomLocation) {
       result[buildingId] = { numAvailable: 0, roomStatuses: {} };
       continue;
@@ -122,7 +122,7 @@ export const searchAllRoom = async (
   const result: SearchResponse = {};
 
   for (const buildingId in buildingData) {
-    const roomLocation = +buildingId.substring(3) < UPPER ? "lower" : "upper";
+    const roomLocation = +buildingId.substring(3) < UPPER_CAMPUS_GRID_START ? "lower" : "upper";
     if (filters.location && filters.location != roomLocation) {
       continue;
     }
