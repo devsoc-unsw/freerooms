@@ -180,7 +180,7 @@ export const NO_START_TIME = "none";
 export const ROOM_LIST_PAGE_SIZE = 24;
 
 // Overlay opacity for room tiles in the building drawer
-export const DRAWER_ROOM_TILE_OVERLAY_OPACITY = 0.7;
+export const DRAWER_ROOM_TILE_OVERLAY_OPACITY = 0.85;
 
 type BrowseViewConfig = {
   sortOptions: DropDownItem[];
