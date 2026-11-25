@@ -1,3 +1,5 @@
+"use client";
+
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import { styled, useTheme } from "@mui/material/styles";
 import { notification } from "antd";

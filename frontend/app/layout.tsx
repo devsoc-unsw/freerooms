@@ -2,6 +2,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import "@frontend/styles/globals.css";
 
 import ClientLayout from "@frontend/app/clientLayout";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v16-appRouter";
 import { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import { cookies } from "next/headers";
@@ -31,7 +32,9 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={dmSans.variable}>
-        <ClientLayout initialTheme={initialTheme}>{children}</ClientLayout>
+        <AppRouterCacheProvider>
+          <ClientLayout initialTheme={initialTheme}>{children}</ClientLayout>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );
