@@ -34,13 +34,14 @@ const SearchBar = ({
   return (
     <Box
       sx={(theme) => ({
-        width: { xs: "100%", sm: "100%", md: "100%" },
+        width: "100%",
+        minWidth: 0,
         marginTop: `${theme.space.sm}px`,
         marginBottom: `${theme.space.sm}px`,
         marginLeft: { sm: `${theme.space.md}px` },
         marginRight: { sm: `${theme.space.md}px` },
-        flexShrink: { sm: 3 },
-        order: { xs: -1, sm: -1, md: "unset" },
+        flex: { sm: `1 1 ${theme.sizes.toolbar.searchMinWidth}px` },
+        order: { xs: -1, sm: 0 },
       })}
     >
       <AppTextField

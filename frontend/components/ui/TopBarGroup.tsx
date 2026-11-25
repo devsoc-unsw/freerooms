@@ -14,13 +14,15 @@ const TopBarGroup = ({ children }: { children: ReactNode }) => {
     <TopBarGroupContext.Provider value={element}>
       <Box
         ref={setElement}
-        sx={{
+        sx={( theme ) => ({
           display: "flex",
           alignItems: "center",
           alignSelf: "center",
           justifyContent: "space-between",
-          gap: (theme) => `${theme.space.md}px`,
-        }}
+          gap: `${theme.space.md}px`,
+          width: "100%",
+          [theme.breakpoints.up("sm")]: { width: "auto", marginLeft: "auto" },
+        })}
       >
         {children}
       </Box>

@@ -13,7 +13,6 @@ const TopBar = styled("div")(({ theme }) => ({
     justifyContent: "space-between",
     flexWrap: "wrap",
   },
-  [theme.breakpoints.up("md")]: { flexWrap: "nowrap" },
 }));
 
 export default TopBar;

@@ -75,7 +75,13 @@ const TopBarMenu = ({
 
   return (
     <ClickAwayListener onClickAway={() => setOpen(false)}>
-      <Box ref={setButtonBox} sx={{ alignSelf: "center" }}>
+      <Box ref={setButtonBox} 
+        sx={( theme ) => ({ 
+          alignSelf: "center",
+          flex: 1,
+          minWidth: 0,
+          [theme.breakpoints.up("sm")]: { flex: "none" },
+        })}>
         <AppButton
           variant="outlined"
           aria-expanded={open}
@@ -86,15 +92,23 @@ const TopBarMenu = ({
           }}
           sx={(theme) => ({
             height: theme.sizes.control.xl,
-            width: theme.sizes.toolbar.buttonWidth,
-            padding: `${theme.space.md}px`,
+            width: "100%",
+            padding: `${theme.space.sm}px`,
             borderWidth: `${theme.sizes.border.control}px`,
             justifyContent: "flex-start",
+            [theme.breakpoints.up("sm")]: {
+              width: theme.sizes.toolbar.buttonWidth,
+              padding: `${theme.space.md}px`,
+            },
           })}
         >
           <Stack
             direction="row"
-            sx={{ alignItems: "center", gap: (theme) => `${theme.space.md}px` }}
+            sx={( theme ) => ({ 
+              alignItems: "center", 
+              gap: `${theme.space.md}px`,
+              [theme.breakpoints.up("sm")]: { gap: `${theme.space.md}px` }, 
+            })}
           >
             <Icon />
             <Typography variant="subtitle1">{label}</Typography>

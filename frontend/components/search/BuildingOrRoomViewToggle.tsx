@@ -16,6 +16,7 @@ const Track = styled("div")(({ theme }) => ({
   display: "flex",
   flexShrink: 0,
   width: theme.sizes.toolbar.viewToggleWidth,
+  maxWidth: "100%",
   height: theme.sizes.control.xl,
   margin: `${theme.space.sm}px 0`,
   border: `${theme.sizes.border.control}px solid ${theme.colours.border.default}`,
