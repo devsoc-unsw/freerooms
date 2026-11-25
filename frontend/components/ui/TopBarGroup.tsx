@@ -14,7 +14,7 @@ const TopBarGroup = ({ children }: { children: ReactNode }) => {
     <TopBarGroupContext.Provider value={element}>
       <Box
         ref={setElement}
-        sx={( theme ) => ({
+        sx={(theme) => ({
           display: "flex",
           alignItems: "center",
           alignSelf: "center",

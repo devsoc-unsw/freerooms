@@ -75,13 +75,15 @@ const TopBarMenu = ({
 
   return (
     <ClickAwayListener onClickAway={() => setOpen(false)}>
-      <Box ref={setButtonBox} 
-        sx={( theme ) => ({ 
+      <Box
+        ref={setButtonBox}
+        sx={(theme) => ({
           alignSelf: "center",
           flex: 1,
           minWidth: 0,
           [theme.breakpoints.up("sm")]: { flex: "none" },
-        })}>
+        })}
+      >
         <AppButton
           variant="outlined"
           aria-expanded={open}
@@ -104,10 +106,10 @@ const TopBarMenu = ({
         >
           <Stack
             direction="row"
-            sx={( theme ) => ({ 
-              alignItems: "center", 
+            sx={(theme) => ({
+              alignItems: "center",
               gap: `${theme.space.md}px`,
-              [theme.breakpoints.up("sm")]: { gap: `${theme.space.md}px` }, 
+              [theme.breakpoints.up("sm")]: { gap: `${theme.space.md}px` },
             })}
           >
             <Icon />
