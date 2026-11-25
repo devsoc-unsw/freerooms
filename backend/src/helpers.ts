@@ -1,6 +1,8 @@
 import {
   Booking,
+  BookingPaginationParams,
   BookingsResponse,
+  BookingType,
   RoomsResponse,
   RoomStatus,
   RoomUtilitiesResponse,
@@ -223,4 +225,23 @@ export const getRoomsByBuilding = async (
   });
 
   return res;
+};
+
+// Obtain cursor for the last booking in a page for the next request
+export const createBookingCursor = (
+  booking: Booking,
+  params: BookingPaginationParams
+): string => {
+  return JSON.stringify({
+    start: booking.start.toISOString(),
+    end: booking.end.toISOString(),
+    name: booking.name,
+    plannedSize: booking.plannedSize,
+    bookingType: booking.bookingType as BookingType,
+    roomId: booking.roomId,
+    occurrenceId: booking.occurrenceId,
+    filter: params.filters,
+    sort: params.sort,
+    search: params.search,
+  });
 };

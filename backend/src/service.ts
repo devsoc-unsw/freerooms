@@ -1,4 +1,9 @@
+import { UPPER_CAMPUS_GRID_START } from "common/constants";
 import {
+  BookingPaginationParams,
+  BookingsEventResponse,
+  BookingsModuleResponse,
+  BookingsPaginationResponse,
   BookingsResponse,
   BuildingsResponse,
   RoomsResponse,
@@ -6,17 +11,21 @@ import {
   StatusResponse,
 } from "common/types";
 
-import { queryBookingsForRoom } from "./dbInterface";
+import {
+  queryAllBookings,
+  queryBookingsForEvent,
+  queryBookingsForRoom,
+  queryBookingsModule,
+} from "./dbInterface";
 import {
   calculateStatus,
+  createBookingCursor,
   getBookingsForRange,
   getBuildingRoomData,
   getSearchRangeEnd,
   isRecurringFree,
 } from "./helpers";
 import { SearchFilters, StatusFilters } from "./types";
-
-const UPPER = 19; // Buildings with grid 19+ are upper campus
 
 export const getAllBuildings = async (): Promise<BuildingsResponse> => {
   const data = Object.values(await getBuildingRoomData());
@@ -57,7 +66,8 @@ export const getAllRoomStatus = async (
   const result: StatusResponse = {};
   for (const buildingId in buildingData) {
     // Skip building if it does not match filter
-    const roomLocation = +buildingId.substring(3) < UPPER ? "lower" : "upper";
+    const roomLocation =
+      +buildingId.substring(3) < UPPER_CAMPUS_GRID_START ? "lower" : "upper";
     if (filters.location && filters.location != roomLocation) {
       result[buildingId] = { numAvailable: 0, roomStatuses: {} };
       continue;
@@ -112,7 +122,8 @@ export const searchAllRoom = async (
   const result: SearchResponse = {};
 
   for (const buildingId in buildingData) {
-    const roomLocation = +buildingId.substring(3) < UPPER ? "lower" : "upper";
+    const roomLocation =
+      +buildingId.substring(3) < UPPER_CAMPUS_GRID_START ? "lower" : "upper";
     if (filters.location && filters.location != roomLocation) {
       continue;
     }
@@ -173,4 +184,50 @@ export const getRoomBookings = async (
   }
 
   return res.rooms_by_pk;
+};
+
+export const getAllBookings = async (
+  params: BookingPaginationParams
+): Promise<BookingsPaginationResponse> => {
+  // Parse extra booking to see if there is another page
+  const result = await queryAllBookings({
+    ...params,
+    limit: params.limit + 1,
+  });
+  const hasMore = result.bookings.length > params.limit;
+  const bookings = hasMore
+    ? result.bookings.slice(0, params.limit)
+    : result.bookings;
+
+  // Create next cursor from the last booking in the page
+  const nextCursor = hasMore
+    ? createBookingCursor(bookings[bookings.length - 1], params)
+    : null;
+
+  return { bookings, nextCursor, hasMore };
+};
+
+export const getRoomByEvent = async (
+  eventId: string
+): Promise<BookingsEventResponse[]> => {
+  const res = await queryBookingsForEvent(eventId);
+  if (res.bookings === null || res.bookings.length === 0) {
+    throw new Error(`Booking for event ${eventId} does not exist`);
+  }
+
+  return res.bookings;
+};
+
+export const getBookingsModule = async (
+  roomId: string,
+  occurrenceId: string
+): Promise<BookingsModuleResponse> => {
+  const res = await queryBookingsModule(roomId, occurrenceId);
+  if (res.bookings == null) {
+    throw new Error(
+      `Booking module for room ${roomId} and occurrence ${occurrenceId} does not exist`
+    );
+  }
+
+  return res.bookings;
 };

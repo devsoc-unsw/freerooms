@@ -1,4 +1,11 @@
 import {
+  BookingPaginationParams,
+  bookingsEventParamsSchema,
+  bookingsEventResponseSchema,
+  bookingsModuleParamsSchema,
+  bookingsModuleResponseSchema,
+  bookingsPaginationQuerySchema,
+  bookingsPaginationResponseSchema,
   bookingsResponseSchema,
   buildingIdParamsSchema,
   BuildingRatingsResponse,
@@ -42,15 +49,23 @@ import {
   insertRating,
 } from "./ratingDbInterface";
 import {
+  parseBookingCursor,
+  parseBookingFilters,
+  parseBookingLimit,
+  parseBookingSearch,
+  parseBookingSort,
   parseSearchFilters,
   parseStatusDatetime,
   parseStatusFilters,
 } from "./requestParsers";
 import {
+  getAllBookings,
   getAllBuildings,
   getAllRooms,
   getAllRoomStatus,
+  getBookingsModule,
   getRoomBookings,
+  getRoomByEvent,
   searchAllRoom,
 } from "./service";
 
@@ -155,6 +170,71 @@ router.get(
     asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
       const { roomID } = roomIdParamsSchema.parse(req.params);
       const data = await getRoomBookings(roomID);
+      res.json(data);
+      next();
+    })
+  )
+);
+
+// Route to get all bookings with pagination
+router.get(
+  "/api/bookings",
+  openAPIRoute(
+    {
+      tag: "Bookings",
+      summary: "Get all bookings with pagination",
+      query: bookingsPaginationQuerySchema,
+      response: bookingsPaginationResponseSchema,
+    },
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      const params: BookingPaginationParams = {
+        limit: parseBookingLimit(req),
+        filters: parseBookingFilters(req),
+        sort: parseBookingSort(req),
+        search: parseBookingSearch(req),
+        cursor: parseBookingCursor(req),
+      };
+      const data = await getAllBookings(params);
+      res.json(data);
+      next();
+    })
+  )
+);
+
+// Route to get related bookings from an event ID
+router.get(
+  "/api/bookings/event/:eventID",
+  openAPIRoute(
+    {
+      tag: "Bookings",
+      summary: "Get bookings for an event",
+      params: bookingsEventParamsSchema,
+      response: bookingsEventResponseSchema.array(),
+    },
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      const { eventID } = bookingsEventParamsSchema.parse(req.params);
+      const data = await getRoomByEvent(eventID);
+      res.json(data);
+      next();
+    })
+  )
+);
+
+// Route to get the bookings module of a specific booking from an occurrence ID and room ID
+router.get(
+  "/api/bookings/:roomID/:occurrenceID",
+  openAPIRoute(
+    {
+      tag: "Bookings",
+      summary: "Get booking module",
+      params: bookingsModuleParamsSchema,
+      response: bookingsModuleResponseSchema,
+    },
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      const { roomID, occurrenceID } = bookingsModuleParamsSchema.parse(
+        req.params
+      );
+      const data = await getBookingsModule(roomID, occurrenceID);
       res.json(data);
       next();
     })
