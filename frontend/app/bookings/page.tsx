@@ -1,6 +1,7 @@
 "use client";
 
 import { API_URL } from "@frontend/config";
+import { space } from "@frontend/theme";
 import axios from "axios";
 import parseDates from "common/parseDates";
 import type { BookingsPaginationResponse } from "common/types";
@@ -73,7 +74,7 @@ export default function BookingsPage() {
   }, [hasMore, isValidating, isLoading, setSize, size]);
 
   return (
-    <main style={{ padding: 24 }}>
+    <main style={{ padding: space.lg }}>
       <h1>Bookings</h1>
 
       {isLoading && <p>Loading bookings...</p>}
@@ -82,7 +83,7 @@ export default function BookingsPage() {
       {bookings.map((booking) => (
         <article
           key={`${booking.roomId}-${booking.occurrenceId}`}
-          style={{ marginBottom: 24 }}
+          style={{ marginBottom: space.lg }}
         >
           <h2>
             <Link
