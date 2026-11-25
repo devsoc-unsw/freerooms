@@ -83,14 +83,15 @@ const CloseButton = styled(IconButton)(({ theme }) => ({
 }));
 
 const DirectionsButton = styled(Button)(({ theme }) => ({
+  height: 45,
+  gap: `${theme.space.sm}px`,
   width: "100%",
-  marginTop: 0,
-  marginBottom: 0,
+  position: "relative",
   backgroundColor: theme.palette.primary.main,
   color: theme.palette.primary.contrastText,
 
   "&:hover": {
-    backgroundColor: theme.palette.primary.dark,
+    opacity: 0.9,
   },
 }));
 
@@ -267,16 +268,19 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
         {onGetDirections ? (
           <DirectionsButton
             disabled={isDirectionsLoading}
-            startIcon={
-              isDirectionsLoading ? (
-                <CircularProgress size={18} color="inherit" />
-              ) : (
-                <DirectionsWalkIcon />
-              )
-            }
             onClick={handleGetDirections}
+            variant="outlined"
+            color="primary"
           >
-            {isDirectionsLoading ? "Getting directions..." : "Get Directions"}
+            {isDirectionsLoading ? (
+              <CircularProgress size={18} color="inherit" />
+            ) : (
+              <DirectionsWalkIcon fontSize="small" />
+            )}
+
+            <Typography variant="body2">
+              {isDirectionsLoading ? "Getting directions..." : "Get Directions"}
+            </Typography>
           </DirectionsButton>
         ) : (
           <ViewOnMapButton buildingId={building.id} variant="full-width" />
