@@ -260,7 +260,7 @@ const RoomCard: React.FC<RoomCardProps> = (props) => {
             />
           )}
 
-          <DesktopOnly>
+          <>
             <Divider sx={{ marginBlock: (theme) => `${theme.space.sm}px` }} />
 
             <WidgetRow>
@@ -289,7 +289,7 @@ const RoomCard: React.FC<RoomCardProps> = (props) => {
                 </Typography>
               </Widget>
             </WidgetRow>
-          </DesktopOnly>
+          </>
         </CardContent>
       </CardActionArea>
 
