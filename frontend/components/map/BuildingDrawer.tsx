@@ -32,13 +32,25 @@ const AppBox = styled(Box)(({ theme }) => ({
   justifyContent: "space-between",
   paddingTop: theme.space.lg,
   paddingRight: theme.space.md,
-  paddingLeft: theme.space.lg,
+  paddingBottom: theme.space.md,
+  paddingLeft: theme.space.md,
+  width: "100%",
+  boxSizing: "border-box",
 }));
 
 const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
   position: "relative",
   flex: 1,
   backgroundColor: theme.palette.background.default,
+}));
+
+const BodyBox = styled(Box)(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  gap: theme.space.md,
+  paddingLeft: theme.space.md,
+  paddingRight: theme.space.md,
+  paddingBottom: theme.space.lg,
 }));
 
 const StyledImage = styled(Image)<ImageProps>(({ theme }) => ({
@@ -60,7 +72,10 @@ const RoomBox = styled(Box)<BoxProps>(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   gap: `${theme.space.md}px`,
-  margin: theme.space.sm,
+  paddingLeft: theme.space.md,
+  paddingRight: theme.space.md,
+  marginTop: 0,
+  marginBottom: 0,
 }));
 
 const CloseButton = styled(IconButton)(({ theme }) => ({
@@ -69,7 +84,8 @@ const CloseButton = styled(IconButton)(({ theme }) => ({
 
 const DirectionsButton = styled(Button)(({ theme }) => ({
   width: "100%",
-  marginTop: theme.space.md,
+  marginTop: 0,
+  marginBottom: 0,
   backgroundColor: theme.palette.primary.main,
   color: theme.palette.primary.contrastText,
 
@@ -83,7 +99,7 @@ const PeekRow = styled(Box)<BoxProps>(({ theme }) => ({
   justifyContent: "space-between",
   alignItems: "center",
   gap: theme.space.sm,
-  paddingLeft: theme.space.sm,
+  paddingLeft: theme.space.md,
   paddingRight: theme.space.md,
 }));
 
@@ -149,7 +165,7 @@ const sortRoomNumbers = (rooms: string[]): string[] => {
   });
 };
 
-const drawerWidth = 400;
+const drawerWidth = 440;
 
 const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
   onGetDirections,
@@ -237,7 +253,7 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
 
   const body = (
     <>
-      <div style={{ margin: theme.space.sm }}>
+      <BodyBox>
         <StyledImage
           alt={`Image of building ${building.id}`}
           src={`/assets/building_photos/${building.id}.webp`}
@@ -265,7 +281,7 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
         ) : (
           <ViewOnMapButton buildingId={building.id} variant="full-width" />
         )}
-      </div>
+      </BodyBox>
 
       <RoomBox>
         {rooms ? (
