@@ -1,7 +1,7 @@
 import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithProviders";
 import RoomAvailabilityBox from "@frontend/components/rooms/RoomAvailabilityBox";
 import toSydneyTime from "@frontend/utils/toSydneyTime";
-import { screen } from "@testing-library/react";
+import { fireEvent, screen } from "@testing-library/react";
 
 jest.mock("@frontend/public/room-photos.json", () => ({
   "K-G14-334": [
@@ -10,12 +10,21 @@ jest.mock("@frontend/public/room-photos.json", () => ({
   ],
 }));
 
+jest.mock("@frontend/hooks/rooms/useRoomAvailabilityReason", () => ({
+  __esModule: true,
+  default: () => ({ reason: undefined, until: undefined }),
+}));
+
 const roomStatus = {
   status: "soon" as const,
   endtime: toSydneyTime(new Date()).toISOString(),
 };
 
 describe("RoomAvailabilityBox", () => {
+  beforeEach(() => {
+    window.localStorage.clear();
+  });
+
   test('renders "Available Soon" without wrapping', () => {
     // Mock roomStatus representing "available soon" status
     const roomStatus = {
@@ -49,7 +58,7 @@ describe("RoomAvailabilityBox", () => {
       />
     );
 
-    const box = screen.getByRole("link").firstElementChild as HTMLElement;
+    const box = screen.getByRole("link");
     const backgroundImage =
       getComputedStyle(box).getPropertyValue("background-image");
 
@@ -65,7 +74,7 @@ describe("RoomAvailabilityBox", () => {
       />
     );
 
-    const box = screen.getByRole("link").firstElementChild as HTMLElement;
+    const box = screen.getByRole("link");
     const backgroundImage =
       getComputedStyle(box).getPropertyValue("background-image");
 
@@ -100,5 +109,46 @@ describe("RoomAvailabilityBox", () => {
     const link = screen.getByRole("link");
 
     expect(link).toHaveAttribute("href", "/room/K-G14-334");
+  });
+
+  test("adds and removes the room as a favourite", () => {
+    render(
+      <RoomAvailabilityBox
+        roomNumber="334"
+        buildingId="K-G14"
+        roomStatus={roomStatus}
+      />
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /Add as favourite/i }));
+
+    expect(
+      JSON.parse(window.localStorage.getItem("favourite") ?? "[]")
+    ).toContain("K-G14-334");
+
+    fireEvent.click(
+      screen.getByRole("button", { name: /Remove as favourite/i })
+    );
+
+    expect(
+      JSON.parse(window.localStorage.getItem("favourite") ?? "[]")
+    ).not.toContain("K-G14-334");
+  });
+
+  test("does not follow the room link when the favourite button is clicked", () => {
+    render(
+      <RoomAvailabilityBox
+        roomNumber="334"
+        buildingId="K-G14"
+        roomStatus={roomStatus}
+      />
+    );
+
+    // fireEvent returns false when the click's default action was prevented
+    const notPrevented = fireEvent.click(
+      screen.getByRole("button", { name: /Add as favourite/i })
+    );
+
+    expect(notPrevented).toBe(false);
   });
 });

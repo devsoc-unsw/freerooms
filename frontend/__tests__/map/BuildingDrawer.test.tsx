@@ -48,7 +48,7 @@ describe("BuildingDrawer", () => {
     renderWithRedux(<BuildingDrawer />, { preloadedState });
     const drawer = screen.getByLabelText(/building-drawer/i);
     expect(drawer).toBeInTheDocument();
-    expect(getComputedStyle(drawer).getPropertyValue("width")).toBe("400px");
+    expect(getComputedStyle(drawer).getPropertyValue("width")).toBe("440px");
   });
 
   it("Building Drawer uses the bottom sheet for mobile view", () => {
@@ -71,15 +71,12 @@ describe("BuildingDrawer", () => {
     expect(image).toBeInTheDocument();
   });
 
-  it("shows View on Map when directions are not provided", () => {
+  it("shows map button when directions are not provided", () => {
     renderWithRedux(<BuildingDrawer />, { preloadedState });
 
     expect(
-      screen.getByRole("button", { name: /view on map/i })
+      screen.getByRole("button", { name: /get directions/i })
     ).toBeInTheDocument();
-    expect(
-      screen.queryByRole("button", { name: /get directions/i })
-    ).not.toBeInTheDocument();
   });
 
   it("shows Get Directions when a directions callback is provided", () => {

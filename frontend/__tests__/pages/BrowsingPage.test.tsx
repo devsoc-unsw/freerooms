@@ -2,6 +2,7 @@ import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithP
 import Page from "@frontend/app/browse/page";
 import useUserLocation from "@frontend/hooks/map/useUserLocation";
 import store from "@frontend/redux/store";
+import { NO_START_TIME } from "@frontend/utils/constants";
 import { screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 
@@ -44,16 +45,52 @@ jest.mock("@frontend/components/map/BuildingDrawer", () => ({
   ),
 }));
 
+const mockUseDisplayedRooms = jest.fn();
+jest.mock("@frontend/hooks/rooms/useDisplayedRooms", () => ({
+  __esModule: true,
+  default: (options: unknown) => mockUseDisplayedRooms(options),
+}));
+
+jest.mock("@frontend/components/rooms/RoomCardList", () => ({
+  __esModule: true,
+  default: ({
+    rooms,
+    emptyMessage,
+  }: {
+    rooms?: { id: string; name: string }[];
+    emptyMessage?: string;
+  }) => (
+    <div>
+      {rooms?.length === 0 && emptyMessage}
+      {rooms?.map((room) => (
+        <span key={room.id}>{room.name}</span>
+      ))}
+    </div>
+  ),
+}));
+
+// Sets the URL params the page reads. Anything not listed keeps its default.
+const setUrlParams = (params: Record<string, string>) => {
+  mockUseQueryState.mockImplementation(
+    (key: string, options: { defaultValue: string }) => [
+      params[key] ?? options.defaultValue,
+      jest.fn(),
+    ]
+  );
+};
+
+const renderPage = () =>
+  render(
+    <Provider store={store}>
+      <Page />
+    </Provider>
+  );
+
 describe("Browsing Page", () => {
   beforeEach(() => {
     jest.clearAllMocks();
 
-    mockUseQueryState.mockImplementation(
-      (_key: string, options: { defaultValue: string }) => [
-        options.defaultValue,
-        jest.fn(),
-      ]
-    );
+    setUrlParams({});
 
     mockUseUserLocation.mockReturnValue({
       location: null,
@@ -69,41 +106,74 @@ describe("Browsing Page", () => {
     });
   });
 
-  it("renders DesktopTimePicker", () => {
-    render(
-      <Provider store={store}>
-        <Page />
-      </Provider>
-    );
+  it("renders the view toggle and the Filters, Sort and Time buttons", () => {
+    renderPage();
 
-    const datePicker = screen.getByRole("button", {
-      name: /Choose date, selected date i/i,
+    expect(
+      screen.getByRole("radio", { name: "Building View" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("radio", { name: "Room View" })
+    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Filters" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Sort" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Time" })).toBeInTheDocument();
+  });
+
+  it("shows the rooms instead of the buildings when the URL says view=rooms", () => {
+    setUrlParams({ view: "rooms" });
+    mockUseDisplayedRooms.mockReturnValue([
+      { id: "K-J17-101", name: "Ainsworth 101" },
+    ]);
+
+    renderPage();
+
+    expect(screen.getByText("Ainsworth 101")).toBeInTheDocument();
+    expect(screen.queryByTestId("building-drawer")).not.toBeInTheDocument();
+  });
+
+  it("asks for rooms free at the start time while a start time is set", () => {
+    setUrlParams({ view: "rooms" });
+    mockUseDisplayedRooms.mockReturnValue([]);
+
+    renderPage();
+
+    expect(mockUseDisplayedRooms).toHaveBeenCalledWith({
+      query: "",
+      sort: "alphabetical",
+      availableOnly: true,
     });
+    expect(
+      screen.getByText(
+        "No rooms are free at the start time. Clear it to see every room."
+      )
+    ).toBeInTheDocument();
+  });
 
-    const timePicker = screen.getByRole("button", {
-      name: /Choose time, selected time is/i,
+  it("shows every room and a filters message once the start time is cleared", () => {
+    setUrlParams({ view: "rooms", start: NO_START_TIME });
+    mockUseDisplayedRooms.mockReturnValue([]);
+
+    renderPage();
+
+    expect(mockUseDisplayedRooms).toHaveBeenCalledWith({
+      query: "",
+      sort: "alphabetical",
+      availableOnly: false,
     });
-
-    expect(timePicker).toBeInTheDocument();
-    expect(datePicker).toBeInTheDocument();
+    expect(
+      screen.getByText("No rooms match your filters.")
+    ).toBeInTheDocument();
   });
 
   it("passes selected date to BuildingDrawer", () => {
-    mockUseQueryState.mockImplementation(
-      (key: string, options: { defaultValue: string }) => [
-        key === "date" ? "2026-09-11" : options.defaultValue,
-        jest.fn(),
-      ]
+    setUrlParams({ date: "2026-09-11" });
+
+    renderPage();
+
+    expect(screen.getByTestId("building-drawer")).toHaveAttribute(
+      "data-date",
+      "2026-09-11"
     );
-
-    render(
-      <Provider store={store}>
-        <Page />
-      </Provider>
-    );
-
-    const buildingDrawer = screen.getByTestId("building-drawer");
-
-    expect(buildingDrawer).toHaveAttribute("data-date", "2026-09-11");
   });
 });

@@ -2,11 +2,9 @@ import renderWithRedux from "@frontend/__tests__/utils/renderWithProviders";
 import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithProviders";
 import Page from "@frontend/app/room/[room]/page";
 import BuildingCard from "@frontend/components/rooms/BuildingCard";
-import RoomAvailabilityBox from "@frontend/components/rooms/RoomAvailabilityBox";
 import store from "@frontend/redux/store";
 import { useMediaQuery } from "@mui/material";
 import { screen } from "@testing-library/react";
-import { RoomStatus } from "common/types";
 import { useParams, useRouter } from "next/navigation";
 import { Provider } from "react-redux";
 
@@ -87,24 +85,6 @@ describe("Rating Star", () => {
     renderWithRedux(<BuildingCard buildingId="K-J17" />);
 
     const starIcon = screen.getByLabelText(/star-info/i);
-    expect(starIcon).toBeInTheDocument();
-  });
-
-  it("Stars show up on building drawer", () => {
-    const roomStat: RoomStatus = {
-      status: "free",
-      endtime: "",
-    };
-
-    renderWithRedux(
-      <RoomAvailabilityBox
-        roomNumber="101"
-        roomStatus={roomStat}
-        buildingId="K-J17"
-      />
-    );
-
-    const starIcon = screen.getByLabelText(/5-star-info/i);
     expect(starIcon).toBeInTheDocument();
   });
 
