@@ -52,15 +52,6 @@ export type Filters = {
   id?: string;
 };
 
-export type AllRoomsFilters = {
-  capacity?: string;
-  usage?: string;
-  location?: string;
-  duration?: string;
-  recurring?: string;
-  id?: string;
-};
-
 export type Sponsor = {
   name: string;
   tier: string;

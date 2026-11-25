@@ -113,59 +113,6 @@ export const filterBarDropdown: DropDown[] = [
   },
 ];
 
-// Dropdowns and items for FilterSideBar in all-rooms-page
-export const allRoomsFilterDropdown: DropDown[] = [
-  {
-    text: "Room Type",
-    key: "usage",
-    items: Object.entries(roomUsages).map(([abbr, usage]) => ({
-      text: usage,
-      value: abbr,
-    })),
-  },
-  {
-    text: "Location",
-    key: "location",
-    items: [
-      {
-        text: "Upper Campus",
-        value: "upper",
-      },
-      {
-        text: "Lower Campus",
-        value: "lower",
-      },
-    ],
-  },
-  {
-    text: "Duration Free",
-    key: "duration",
-    items: [
-      {
-        text: "30+ minutes",
-        value: "30",
-      },
-      {
-        text: "1+ hours",
-        value: "60",
-      },
-      {
-        text: "2+ hours",
-        value: "120",
-      },
-      {
-        text: "3+ hours",
-        value: "180",
-      },
-    ],
-  },
-  {
-    text: "Recurring",
-    key: "recurring",
-    items: recurringWeekItems,
-  },
-];
-
 // Dropdowns and items for SortBar in building browse page
 export const sortBarDropdown: DropDownItem[] = [
   {

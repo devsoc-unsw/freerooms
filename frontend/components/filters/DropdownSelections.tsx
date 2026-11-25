@@ -1,9 +1,4 @@
-import {
-  AllRoomsFilters,
-  DropDown,
-  DropDownItem,
-  Filters,
-} from "@frontend/types";
+import { DropDown, DropDownItem, Filters } from "@frontend/types";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -23,11 +18,8 @@ export const StyledAccordion = styled(Accordion)(({ theme }) => ({
 const DropdownSelections: React.FC<{
   dropdown: DropDown;
   canSelectMultiple: boolean;
-  filters: Filters | AllRoomsFilters;
-  handleSelect: (
-    key: keyof Filters | keyof AllRoomsFilters,
-    item: DropDownItem
-  ) => void;
+  filters: Filters;
+  handleSelect: (key: keyof Filters, item: DropDownItem) => void;
 }> = ({ dropdown, canSelectMultiple, filters, handleSelect }) => {
   const id = useId();
 
