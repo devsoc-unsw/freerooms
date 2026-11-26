@@ -6,7 +6,7 @@ import { Building, Room } from "common/types";
 
 export type DropDown = {
   text: string;
-  key: keyof Filters;
+  key: keyof Filters | keyof BookingsFilters;
   icon?: SvgIconComponent;
   items: DropDownItem[];
 };
@@ -63,4 +63,11 @@ export type Sponsor = {
   tier: string;
   image: string;
   url: string;
+};
+
+// Filters for /bookings endpoint
+export type BookingsFilters = {
+  bookingType?: string;
+  plannedSize?: string;
+  location?: string;
 };

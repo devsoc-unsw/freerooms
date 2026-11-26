@@ -9,6 +9,7 @@ import TopBarGroup from "@frontend/components/ui/TopBarGroup";
 import { API_URL } from "@frontend/config";
 import useQuerySort from "@frontend/hooks/query/useQuerySort";
 import {
+  bookingsFilterDropdown,
   bookingsSortBarDropdown,
   NO_START_TIME,
 } from "@frontend/utils/constants";
@@ -21,7 +22,6 @@ import axios from "axios";
 import parseDates from "common/parseDates";
 import type { BookingsPaginationResponse } from "common/types";
 import { enAU } from "date-fns/locale/en-AU";
-import Link from "next/link";
 import { parseAsString, useQueryState } from "nuqs";
 import React, { Suspense, useEffect, useRef } from "react";
 import useSWRInfinite from "swr/infinite";
@@ -119,7 +119,7 @@ const Bookings = () => {
             <SearchBar setQuery={setQuery} placeholder="Search for bookings" />
 
             <TopBarGroup>
-              <FilterBar />
+              <FilterBar options={bookingsFilterDropdown} />
               <SortBar
                 setSort={setSort}
                 sort={sort}
