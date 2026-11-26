@@ -7,7 +7,10 @@ import SortBar from "@frontend/components/filters/SortBar";
 import SearchBar from "@frontend/components/search/SearchBar";
 import TopBarGroup from "@frontend/components/ui/TopBarGroup";
 import { API_URL } from "@frontend/config";
-import useQuerySort from "@frontend/hooks/query/useQuerySort";
+import { useSelector } from "@frontend/redux/hooks";
+import { selectDatetime } from "@frontend/redux/slices/datetimeSlice";
+import { selectFilters } from "@frontend/redux/slices/filtersSlice";
+import type { BookingsFilters, Filters } from "@frontend/types";
 import {
   bookingsFilterDropdown,
   bookingsSortBarDropdown,
@@ -21,7 +24,9 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import axios from "axios";
 import parseDates from "common/parseDates";
 import type { BookingsPaginationResponse } from "common/types";
+import { addMinutes } from "date-fns";
 import { enAU } from "date-fns/locale/en-AU";
+import Link from "next/link";
 import { parseAsString, useQueryState } from "nuqs";
 import React, { Suspense, useEffect, useRef } from "react";
 import useSWRInfinite from "swr/infinite";
@@ -34,41 +39,79 @@ const fetcher = async (url: string): Promise<BookingsPaginationResponse> => {
   return parseDates(response.data);
 };
 
-// Generating the url for the pages
-const getKey = (
-  pageIndex: number,
-  previousPage: BookingsPaginationResponse | null
-): string | null => {
-  if (previousPage && (!previousPage.hasMore || !previousPage.nextCursor)) {
-    return null;
-  }
-
-  const params = new URLSearchParams({
-    limit: String(PAGE_SIZE),
-    sort: "ascendingStart",
-  });
-
-  if (pageIndex > 0) {
-    if (!previousPage?.nextCursor) {
-      return null;
-    }
-
-    params.set("cursor", previousPage.nextCursor);
-  }
-
-  return `${API_URL}/bookings?${params.toString()}`;
-};
-
 const Bookings = () => {
-  const [sort, setSort] = useQuerySort(bookingsSortBarDropdown);
+  const [sort, setSort] = useQueryState(
+    "sort",
+    parseAsString.withDefault("ascendingStart")
+  );
   const [query, setQuery] = React.useState<string>("");
   const [start, setStart] = useQueryState(
     "start",
     parseAsString.withDefault("")
   );
+  const storedFilters = useSelector(selectFilters);
+  const filters = storedFilters as Filters & BookingsFilters;
+  const datetime = useSelector(selectDatetime);
   const startIsSet = start !== NO_START_TIME;
+
+  useEffect(() => {
+    if (!bookingsSortBarDropdown.some((option) => option.value === sort)) {
+      void setSort(null);
+    }
+  }, [sort, setSort]);
+
+  // Generating the url for the pages
+  const getKey = (
+    pageIndex: number,
+    previousPage: BookingsPaginationResponse | null
+  ): string | null => {
+    if (previousPage && (!previousPage.hasMore || !previousPage.nextCursor)) {
+      return null;
+    }
+
+    const params = new URLSearchParams({
+      limit: String(PAGE_SIZE),
+      sort,
+    });
+
+    // Add search query to params
+    const search = query.trim();
+    if (search) params.set("search", search);
+
+    // Add filter query to params
+    if (filters.bookingType) params.set("bookingType", filters.bookingType);
+    if (filters.plannedSize !== undefined) {
+      params.set("plannedSize", filters.plannedSize);
+    }
+    if (filters.location) params.set("location", filters.location);
+
+    if (startIsSet) {
+      params.set("startTime", datetime.toISOString());
+
+      const durationMinutes = Number(filters.duration);
+      if (Number.isFinite(durationMinutes) && durationMinutes > 0) {
+        params.set(
+          "endTime",
+          addMinutes(datetime, durationMinutes).toISOString()
+        );
+      }
+    }
+
+    if (pageIndex > 0) {
+      if (!previousPage?.nextCursor) {
+        return null;
+      }
+
+      params.set("cursor", previousPage.nextCursor);
+    }
+
+    return `${API_URL}/bookings?${params.toString()}`;
+  };
+
   const { data, error, isLoading, isValidating, size, setSize } =
-    useSWRInfinite<BookingsPaginationResponse>(getKey, fetcher);
+    useSWRInfinite<BookingsPaginationResponse>(getKey, fetcher, {
+      persistSize: false,
+    });
 
   const bookings = data?.flatMap((page) => page.bookings) ?? [];
   const hasMore = data?.[data.length - 1]?.hasMore ?? false;
@@ -134,63 +177,65 @@ const Bookings = () => {
               />
             </TopBarGroup>
           </Stack>
+          <Stack>
+            <main style={{ padding: 24 }}>
+              <h1>Bookings</h1>
+
+              {isLoading && <p>Loading bookings...</p>}
+              {error && <p>Failed to load bookings</p>}
+
+              {bookings.map((booking) => (
+                <article
+                  key={`${booking.roomId}-${booking.occurrenceId}`}
+                  style={{ marginBottom: 24 }}
+                >
+                  <h2>
+                    <Link
+                      href={`/booking/${encodeURIComponent(booking.roomId)}/${encodeURIComponent(booking.occurrenceId)}`}
+                    >
+                      {booking.name}
+                    </Link>
+                  </h2>
+
+                  <p>Room: {booking.roomId}</p>
+                  <p>Occurrence: {booking.occurrenceId}</p>
+                  <p>Event: {booking.eventId}</p>
+                  <p>Type: {booking.bookingType}</p>
+                  <p>
+                    Start:{" "}
+                    {booking.start.toLocaleString("en-AU", {
+                      timeZone: "Australia/Sydney",
+                    })}
+                  </p>
+                  <p>
+                    End:{" "}
+                    {booking.end.toLocaleString("en-AU", {
+                      timeZone: "Australia/Sydney",
+                    })}
+                  </p>
+                  <p>Planned size: {booking.plannedSize ?? "Unknown"}</p>
+
+                  <p>
+                    Modules:{" "}
+                    {booking.bookingModules.length > 0
+                      ? booking.bookingModules
+                          .map((module) => `${module.code} (${module.name})`)
+                          .join(", ")
+                      : "None"}
+                  </p>
+
+                  <hr />
+                </article>
+              ))}
+
+              {hasMore && <div ref={loadMoreRef} />}
+
+              {isValidating && <p>Loading more bookings...</p>}
+            </main>
+          </Stack>
         </Tiles>
       </LocalizationProvider>
     </Container>
-    // <main style={{ padding: space.lg }}>
-    //   <h1>Bookings</h1>
-
-    //   {isLoading && <p>Loading bookings...</p>}
-    //   {error && <p>Failed to load bookings</p>}
-
-    //   {bookings.map((booking) => (
-    //     <article
-    //       key={`${booking.roomId}-${booking.occurrenceId}`}
-    //       style={{ marginBottom: space.lg }}
-    //     >
-    //       <h2>
-    //         <Link
-    //           href={`/booking/${encodeURIComponent(booking.roomId)}/${encodeURIComponent(booking.occurrenceId)}`}
-    //         >
-    //           {booking.name}
-    //         </Link>
-    //       </h2>
-
-    //       <p>Room: {booking.roomId}</p>
-    //       <p>Occurrence: {booking.occurrenceId}</p>
-    //       <p>Event: {booking.eventId}</p>
-    //       <p>Type: {booking.bookingType}</p>
-    //       <p>
-    //         Start:{" "}
-    //         {booking.start.toLocaleString("en-AU", {
-    //           timeZone: "Australia/Sydney",
-    //         })}
-    //       </p>
-    //       <p>
-    //         End:{" "}
-    //         {booking.end.toLocaleString("en-AU", {
-    //           timeZone: "Australia/Sydney",
-    //         })}
-    //       </p>
-    //       <p>Planned size: {booking.plannedSize ?? "Unknown"}</p>
-
-    //       <p>
-    //         Modules:{" "}
-    //         {booking.bookingModules.length > 0
-    //           ? booking.bookingModules
-    //               .map((module) => `${module.code} (${module.name})`)
-    //               .join(", ")
-    //           : "None"}
-    //       </p>
-
-    //       <hr />
-    //     </article>
-    //   ))}
-
-    //   {hasMore && <div ref={loadMoreRef} />}
-
-    //   {isValidating && <p>Loading more bookings...</p>}
-    // </main>
   );
 };
 
