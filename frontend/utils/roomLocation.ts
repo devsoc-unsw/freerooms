@@ -1,3 +1,5 @@
+import { UPPER_CAMPUS_GRID_START } from "../../common/constants";
+
 const FLOOR_LABELS: Record<string, string> = {
   B: "Basement Floor",
   LG: "Lower Ground Floor",
@@ -14,7 +16,9 @@ export const getBuildingGridNumber = (buildingId: string): number => {
 };
 
 export const getCampus = (buildingId: string): "lower" | "upper" =>
-  getBuildingGridNumber(buildingId) < 19 ? "lower" : "upper";
+  getBuildingGridNumber(buildingId) < UPPER_CAMPUS_GRID_START
+    ? "lower"
+    : "upper";
 
 export const getFloorLabel = (roomId: string): string | null => {
   const roomNumber = roomId.split("-")[2];
