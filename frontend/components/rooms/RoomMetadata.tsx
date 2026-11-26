@@ -1,3 +1,4 @@
+import type { SvgIconComponent } from "@mui/icons-material";
 import ApartmentOutlinedIcon from "@mui/icons-material/ApartmentOutlined";
 import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
 import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
@@ -5,7 +6,6 @@ import MeetingRoomOutlinedIcon from "@mui/icons-material/MeetingRoomOutlined";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import TagOutlinedIcon from "@mui/icons-material/TagOutlined";
 import { Box, Typography } from "@mui/material";
-import type { SvgIconComponent } from "@mui/icons-material";
 import translateRoomUsage from "common/roomUsages";
 import getSchoolDetails from "common/schools";
 import type { Room } from "common/types";
@@ -21,11 +21,7 @@ type MetadataItemProps = {
   value: string | number;
 };
 
-const MetadataItem = ({
-  icon: Icon,
-  label,
-  value,
-}: MetadataItemProps) => (
+const MetadataItem = ({ icon: Icon, label, value }: MetadataItemProps) => (
   <Box
     sx={(theme) => ({
       display: "inline-flex",
@@ -47,10 +43,7 @@ const MetadataItem = ({
   </Box>
 );
 
-const RoomMetadata = ({
-  room,
-  rating,
-}: RoomMetadataProps) => {
+const RoomMetadata = ({ room, rating }: RoomMetadataProps) => {
   const school = room.school.trim();
   const schoolDetails = getSchoolDetails(school);
   const idRequired = school !== "";
@@ -64,11 +57,7 @@ const RoomMetadata = ({
         rowGap: theme.space.sm,
       })}
     >
-      <MetadataItem
-        icon={TagOutlinedIcon}
-        label="ID"
-        value={room.id}
-      />
+      <MetadataItem icon={TagOutlinedIcon} label="ID" value={room.id} />
 
       <MetadataItem
         icon={GroupOutlinedIcon}

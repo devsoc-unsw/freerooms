@@ -1,14 +1,17 @@
 import "swiper/css";
 import "swiper/css/navigation";
 
+import { sizes } from "@frontend/theme";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import Image from "next/image";
 import { Autoplay, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { sizes } from "@frontend/theme";
 
-const RoomImage: React.FC<{ src: string, height: number }> = ({ src, height }) => {
+const RoomImage: React.FC<{ src: string; height: number }> = ({
+  src,
+  height,
+}) => {
   return (
     <Box
       sx={{
@@ -28,11 +31,11 @@ const RoomImage: React.FC<{ src: string, height: number }> = ({ src, height }) =
   );
 };
 
-const RoomPhotoCarousel: React.FC<{ photos: string[]; loading?: boolean, height?: number }> = ({
-  photos,
-  loading,
-  height = sizes.roomPhoto.defaultHeight
-}) => {
+const RoomPhotoCarousel: React.FC<{
+  photos: string[];
+  loading?: boolean;
+  height?: number;
+}> = ({ photos, loading, height = sizes.roomPhoto.defaultHeight }) => {
   if (loading) {
     return (
       <Skeleton

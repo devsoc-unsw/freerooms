@@ -102,7 +102,6 @@ describe("Booking date and time formatting", () => {
   });
 });
 
-
 describe("getPlannedAttendance", () => {
   it("preserves positive planned attendance", () => {
     expect(getPlannedAttendance(250)).toBe(250);

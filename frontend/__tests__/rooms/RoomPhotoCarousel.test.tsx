@@ -20,7 +20,7 @@ describe("Carousel", () => {
     expect(screen.queryByTestId("swiper")).not.toBeInTheDocument();
     expect(screen.getByAltText(/room image/i)).toHaveAttribute(
       "src",
-      expect.stringContaining("room-1.jpg")
+      expect.stringContaining("room-1.jpg"),
     );
   });
 
@@ -38,11 +38,26 @@ describe("Carousel", () => {
     const images = screen.getAllByAltText(/room image/i);
     expect(images[0]).toHaveAttribute(
       "src",
-      expect.stringContaining("room-photo-1.jpg")
+      expect.stringContaining("room-photo-1.jpg"),
     );
     expect(images[1]).toHaveAttribute(
       "src",
-      expect.stringContaining("room-photo-2.jpg")
+      expect.stringContaining("room-photo-2.jpg"),
     );
+  });
+
+  test("supports a custom fixed carousel height", () => {
+    render(
+      <RoomPhotoCarousel
+        photos={["https://example.com/room-1.jpg"]}
+        height={300}
+      />,
+    );
+
+    const image = screen.getByAltText(/room image/i);
+
+    expect(image.parentElement).toHaveStyle({
+      height: "300px",
+    });
   });
 });
