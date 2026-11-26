@@ -29,3 +29,5 @@ const useRelatedBookings = (
         mutate,
     };
 };
+
+export default useRelatedBookings;

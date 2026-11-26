@@ -2,7 +2,6 @@ import { API_URL } from "@frontend/config";
 import axios from "axios";
 import parseDates from "common/parseDates";
 import { BookingDetails, bookingDetailsSchema } from "common/types";
-import { notFound } from "next/navigation";
 import useSWR from "swr";
 
 
