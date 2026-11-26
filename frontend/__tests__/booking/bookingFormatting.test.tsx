@@ -32,19 +32,19 @@ describe("getBookingTypeLabel", () => {
 describe("getBookingHref", () => {
   it("creates a deterministic booking URL", () => {
     expect(getBookingHref("K-F17-LG3", "occurrence-123")).toBe(
-      "/booking/K-F17-LG3/occurrence-123",
+      "/booking/K-F17-LG3/occurrence-123"
     );
   });
 
   it("encodes identifiers", () => {
     expect(getBookingHref("room/123", "occurrence 456")).toBe(
-      "/booking/room%2F123/occurrence%20456",
+      "/booking/room%2F123/occurrence%20456"
     );
   });
 
   it("distinguishes occurrences in different rooms", () => {
     expect(getBookingHref("K-D23-201", "occurrence-123")).not.toBe(
-      getBookingHref("K-D23-203", "occurrence-123"),
+      getBookingHref("K-D23-203", "occurrence-123")
     );
   });
 });
@@ -52,7 +52,7 @@ describe("getBookingHref", () => {
 describe("Booking date and time formatting", () => {
   it("formats a booking date in Sydney time", () => {
     expect(formatBookingDate(new Date("2026-01-04T22:00:00Z"))).toBe(
-      "Monday, 5 January 2026",
+      "Monday, 5 January 2026"
     );
   });
 
@@ -68,8 +68,8 @@ describe("Booking date and time formatting", () => {
     expect(
       formatBookingDateRange(
         new Date("2026-01-04T22:00:00Z"),
-        new Date("2026-01-05T00:00:00Z"),
-      ),
+        new Date("2026-01-05T00:00:00Z")
+      )
     ).toBe("Monday, 5 January 2026");
   });
 
@@ -77,8 +77,8 @@ describe("Booking date and time formatting", () => {
     expect(
       formatBookingDateRange(
         new Date("2026-01-05T12:00:00Z"),
-        new Date("2026-01-05T14:00:00Z"),
-      ),
+        new Date("2026-01-05T14:00:00Z")
+      )
     ).toBe("Monday, 5 January 2026 to Tuesday, 6 January 2026");
   });
 
@@ -86,8 +86,8 @@ describe("Booking date and time formatting", () => {
     expect(
       formatBookingTimeRange(
         new Date("2026-01-04T22:00:00Z"),
-        new Date("2026-01-05T00:00:00Z"),
-      ),
+        new Date("2026-01-05T00:00:00Z")
+      )
     ).toBe("9:00 am - 11:00 am");
   });
 
@@ -95,8 +95,8 @@ describe("Booking date and time formatting", () => {
     expect(
       formatBookingTimeRange(
         new Date("2026-04-04T15:30:00Z"),
-        new Date("2026-04-04T16:30:00Z"),
-      ),
+        new Date("2026-04-04T16:30:00Z")
+      )
     ).toBe("2:30 am (UTC+11:00) to 2:30 am (UTC+10:00)");
   });
 });

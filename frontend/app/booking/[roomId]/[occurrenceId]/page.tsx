@@ -1,17 +1,15 @@
 "use client";
 
-import BookingTypeBadge from "@frontend/components/booking/BookingTypeBadge";
+import BookingHeader from "@frontend/components/booking/BookingHeader";
+import BookingTimeSummary from "@frontend/components/booking/BookingTimeSummary";
 import RoomBackButton from "@frontend/components/navigation/RoomBackButton";
+import RoomMetadata from "@frontend/components/rooms/RoomMetadata";
 import useBookingDetails from "@frontend/hooks/bookings/useBookingDetails";
-import useBookingStatus from "@frontend/hooks/bookings/useBookingStatus";
 import useRelatedBookings from "@frontend/hooks/bookings/useRelatedBookings";
 import useBuilding from "@frontend/hooks/buildings/useBuilding";
+import useRoomRatings from "@frontend/hooks/ratings/useRoomRatings";
 import useRoom from "@frontend/hooks/rooms/useRoom";
 import { space } from "@frontend/theme";
-import {
-  formatBookingDateRange,
-  formatBookingTimeRange,
-} from "@frontend/utils/bookingFormatting";
 import { getBuildingIdFromRoomId } from "@frontend/utils/utils";
 import { Button, Container, Skeleton, Stack, Typography } from "@mui/material";
 import { useParams } from "next/navigation";
@@ -24,12 +22,12 @@ export default function BookingPage() {
 
   const { booking, error, isLoading, notFound, mutate } = useBookingDetails(
     roomId,
-    occurrenceId,
+    occurrenceId
   );
 
-  const bookingStatus = useBookingStatus(booking);
-
   const { room } = useRoom(roomId);
+
+  const {data: ratings} = useRoomRatings(room?.id);
 
   const buildingId = getBuildingIdFromRoomId(roomId);
   const { building } = useBuilding(buildingId);
@@ -43,7 +41,7 @@ export default function BookingPage() {
   const otherBookings = relatedBookings?.filter(
     (relatedBooking) =>
       relatedBooking.roomId !== roomId ||
-      relatedBooking.occurrenceId !== occurrenceId,
+      relatedBooking.occurrenceId !== occurrenceId
   );
 
   return (
@@ -73,30 +71,21 @@ export default function BookingPage() {
           <BookingPageSkeleton />
         ) : (
           <>
-            <Stack spacing={1}>
-              <BookingTypeBadge bookingType={booking.bookingType} />
-
-              <Typography variant="h4">{booking.name}</Typography>
-            </Stack>
-
-            <Typography>
-              {building?.name && building.name !== room?.name
-                ? `${building.name} / ${room?.name ?? roomId}`
-                : (room?.name ?? roomId)}
-            </Typography>
-
             <Stack spacing={space.sm}>
-              <Typography variant="body2">
-                {formatBookingDateRange(booking.start, booking.end)}
-              </Typography>
+                <BookingHeader
+                booking={booking}
+                roomName={room?.name}
+                buildingName={building?.name}
+                />
 
-              <Typography variant="h3">
-                {formatBookingTimeRange(booking.start, booking.end)}
-              </Typography>
+                {room && (
+                    <RoomMetadata
+                        room={room}
+                        rating={ratings?.overallRating}
+                    />
+                )}
 
-              {bookingStatus && (
-                <Typography variant="body1">{bookingStatus.label}</Typography>
-              )}
+                <BookingTimeSummary booking={booking} />
             </Stack>
 
             <Typography>
@@ -127,11 +116,19 @@ export default function BookingPage() {
 }
 
 const BookingPageSkeleton = () => (
-  <Stack spacing={2}>
-    <Skeleton variant="text" width="60%" />
-    <Skeleton variant="text" width="40%" />
-    <Skeleton variant="rounded" height={120} />
+  <Stack spacing={space.lg}>
+    <Stack spacing={space.sm}>
+      <Skeleton variant="rounded" width={90} height={24} />
+
+      <Skeleton variant="text" width="60%" sx={{ fontSize: "h3.fontSize" }} />
+
+      <Skeleton variant="text" width="40%" />
+    </Stack>
+
+    <Skeleton variant="rounded" height={140} />
+
     <Skeleton variant="rounded" height={200} />
+
     <Skeleton variant="text" width="50%" />
   </Stack>
 );
