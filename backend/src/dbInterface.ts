@@ -7,7 +7,6 @@ import {
   BookingCursor,
   BookingDetails,
   BookingListModule,
-  BookingModule,
   BookingPaginationParams,
   BookingsEventResponse,
   BookingSummary,
@@ -162,8 +161,8 @@ const attachBookingModules = async (
 
   const where: GraphQLValue = {
     _or: bookings.map((booking) => ({
-      roomId: {_eq: booking.roomId },
-      occurrenceId: { _eq: booking.occurrenceId}
+      roomId: { _eq: booking.roomId },
+      occurrenceId: { _eq: booking.occurrenceId },
     })),
   };
 
@@ -183,18 +182,12 @@ const attachBookingModules = async (
     }
   `;
 
-  const result = await doRequest<BookingModulesQueryRes>(
-    query,
-    { where }
-  );
+  const result = await doRequest<BookingModulesQueryRes>(query, { where });
 
   const modulesByBooking = new Map<string, BookingListModule[]>();
 
   for (const module of result.bookingmodules) {
-    const key = JSON.stringify([
-      module.roomId,
-      module.occurrenceId
-    ]);
+    const key = JSON.stringify([module.roomId, module.occurrenceId]);
 
     const modules = modulesByBooking.get(key) ?? [];
 
@@ -202,17 +195,14 @@ const attachBookingModules = async (
       code: module.code,
       name: module.name,
       term: module.term,
-      career: module.career
+      career: module.career,
     });
 
     modulesByBooking.set(key, modules);
   }
 
   return bookings.map((booking) => {
-    const key = JSON.stringify([
-      booking.roomId,
-      booking.occurrenceId
-    ]);
+    const key = JSON.stringify([booking.roomId, booking.occurrenceId]);
 
     return {
       ...booking,
@@ -581,7 +571,7 @@ export const queryAllBookings = async (
   // Get the paginated bookings first
   const result = await doRequest<{
     bookings: BookingSummary[];
-  }>(query, {limit, where});
+  }>(query, { limit, where });
 
   return {
     bookings: await attachBookingModules(result.bookings),
@@ -629,48 +619,12 @@ export const queryBookingsForRoom = async (
 
 ///////////////////////////////////////////////////////////////
 
-type BookingsModuleRes = {
-  bookings: {
-    occurrenceId: string;
-    roomId: string;
-    bookingModule: BookingModule;
-  };
-};
-
-/**
- * Query bookings module from an occurrence ID and room ID
- */
-export const queryBookingsModule = async (
-  roomId: string,
-  occurrenceId: string
-): Promise<BookingsModuleRes> => {
-  const query = `
-    query BookingsModule($roomId: String!, $occurrenceId: String!) {
-      bookings(where: {roomId: {_like: $roomId}, occurrenceId: {_like: $occurrenceId}, }) {
-        occurrenceId
-        roomId
-        bookingmodules {
-          term
-          career
-          code
-          name
-        }
-      }
-    }
-  `;
-
-  const variables = { occurrenceId, roomId };
-
-  return await doRequest<BookingsModuleRes>(query, variables);
-};
-
-
 /**
  * Query an individual booking and its modules
  */
 export const queryBookingDetails = async (
   roomId: string,
-  occurrenceId: string,
+  occurrenceId: string
 ): Promise<BookingDetails | null> => {
   const query = `
     query BookingDetails(
@@ -707,7 +661,7 @@ export const queryBookingDetails = async (
   const bookings = await attachBookingModules(result.bookings);
 
   return bookings[0];
-}
+};
 
 ///////////////////////////////////////////////////////////////
 
@@ -743,7 +697,7 @@ export const queryBookingsForEvent = async (
     }
   `;
 
-  return await doRequest<BookingsForEventRes>(query, { eventId} );
+  return await doRequest<BookingsForEventRes>(query, { eventId });
 };
 
 ///////////////////////////////////////////////////////////////
