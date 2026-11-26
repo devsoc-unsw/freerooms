@@ -1,5 +1,6 @@
 "use client";
 
+import BookingsCardList from "@frontend/components/booking/BookingsCardList";
 import TimeBar from "@frontend/components/booking/TimeBar";
 import FeedbackButton from "@frontend/components/feedback/FeedbackButton";
 import FilterBar from "@frontend/components/filters/FilterBar";
@@ -26,7 +27,6 @@ import parseDates from "common/parseDates";
 import type { BookingsPaginationResponse } from "common/types";
 import { addMinutes } from "date-fns";
 import { enAU } from "date-fns/locale/en-AU";
-import Link from "next/link";
 import { parseAsString, useQueryState } from "nuqs";
 import React, { Suspense, useEffect, useRef } from "react";
 import useSWRInfinite from "swr/infinite";
@@ -49,8 +49,8 @@ const Bookings = () => {
     "start",
     parseAsString.withDefault("")
   );
-  const storedFilters = useSelector(selectFilters);
-  const filters = storedFilters as Filters & BookingsFilters;
+  const getFilters = useSelector(selectFilters);
+  const filters = getFilters as Filters & BookingsFilters;
   const datetime = useSelector(selectDatetime);
   const startIsSet = start !== NO_START_TIME;
 
@@ -177,62 +177,18 @@ const Bookings = () => {
               />
             </TopBarGroup>
           </Stack>
-          <Stack>
-            <main style={{ padding: 24 }}>
-              <h1>Bookings</h1>
+          <AlignedWithSearchBar>
+            {error && <p>Failed to load bookings</p>}
 
-              {isLoading && <p>Loading bookings...</p>}
-              {error && <p>Failed to load bookings</p>}
+            <BookingsCardList
+              bookings={isLoading ? undefined : bookings}
+              emptyMessage="No bookings found"
+            />
 
-              {bookings.map((booking) => (
-                <article
-                  key={`${booking.roomId}-${booking.occurrenceId}`}
-                  style={{ marginBottom: 24 }}
-                >
-                  <h2>
-                    <Link
-                      href={`/booking/${encodeURIComponent(booking.roomId)}/${encodeURIComponent(booking.occurrenceId)}`}
-                    >
-                      {booking.name}
-                    </Link>
-                  </h2>
+            {hasMore && <div ref={loadMoreRef} />}
 
-                  <p>Room: {booking.roomId}</p>
-                  <p>Occurrence: {booking.occurrenceId}</p>
-                  <p>Event: {booking.eventId}</p>
-                  <p>Type: {booking.bookingType}</p>
-                  <p>
-                    Start:{" "}
-                    {booking.start.toLocaleString("en-AU", {
-                      timeZone: "Australia/Sydney",
-                    })}
-                  </p>
-                  <p>
-                    End:{" "}
-                    {booking.end.toLocaleString("en-AU", {
-                      timeZone: "Australia/Sydney",
-                    })}
-                  </p>
-                  <p>Planned size: {booking.plannedSize ?? "Unknown"}</p>
-
-                  <p>
-                    Modules:{" "}
-                    {booking.bookingModules.length > 0
-                      ? booking.bookingModules
-                          .map((module) => `${module.code} (${module.name})`)
-                          .join(", ")
-                      : "None"}
-                  </p>
-
-                  <hr />
-                </article>
-              ))}
-
-              {hasMore && <div ref={loadMoreRef} />}
-
-              {isValidating && <p>Loading more bookings...</p>}
-            </main>
-          </Stack>
+            {isValidating && <p>Loading more bookings...</p>}
+          </AlignedWithSearchBar>
         </Tiles>
       </LocalizationProvider>
     </Container>
@@ -253,6 +209,12 @@ const Tiles = styled("div")(({ theme }) => ({
   flexGrow: 1,
   alignItems: "center",
   padding: theme.spacing(0, 0, 1, 0),
+}));
+
+const AlignedWithSearchBar = styled("div")(({ theme }) => ({
+  width: "100%",
+  boxSizing: "border-box",
+  [theme.breakpoints.up("sm")]: { paddingLeft: theme.space.md },
 }));
 
 export default Page;
