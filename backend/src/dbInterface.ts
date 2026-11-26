@@ -8,6 +8,7 @@ import {
   BookingListModule,
   BookingModule,
   BookingPaginationParams,
+  BookingsEventResponse,
   BookingType,
   PaginatedBooking,
 } from "common/types";
@@ -650,16 +651,7 @@ export const queryBookingsModule = async (
 ///////////////////////////////////////////////////////////////
 
 type BookingsForEventRes = {
-  bookings: Array<{
-    eventId: string;
-    occurrenceId: string;
-    roomId: string;
-    name: string;
-    bookingType: string;
-    plannedSize: string;
-    start: Date;
-    end: Date;
-  }>;
+  bookings: BookingsEventResponse[];
 };
 
 /**
