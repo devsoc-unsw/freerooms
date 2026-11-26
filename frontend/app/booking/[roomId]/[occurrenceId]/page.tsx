@@ -2,6 +2,7 @@
 
 import BookingAttendance from "@frontend/components/booking/BookingAttendance";
 import BookingHeader from "@frontend/components/booking/BookingHeader";
+import BookingModuleDetails from "@frontend/components/booking/BookingModuleDetails";
 import BookingRoomActions from "@frontend/components/booking/BookingRoomActions";
 import BookingTimeSummary from "@frontend/components/booking/BookingTimeSummary";
 import RoomBackButton from "@frontend/components/navigation/RoomBackButton";
@@ -14,7 +15,6 @@ import useRoomRatings from "@frontend/hooks/ratings/useRoomRatings";
 import useRoom from "@frontend/hooks/rooms/useRoom";
 import roomPhotos from "@frontend/public/room-photos.json";
 import { sizes, space } from "@frontend/theme";
-import { getPlannedAttendance } from "@frontend/utils/bookingFormatting";
 import { getBuildingIdFromRoomId } from "@frontend/utils/utils";
 import { Button, Container, Skeleton, Stack, Typography } from "@mui/material";
 import { useParams } from "next/navigation";
@@ -27,7 +27,7 @@ export default function BookingPage() {
 
   const { booking, error, isLoading, notFound, mutate } = useBookingDetails(
     roomId,
-    occurrenceId,
+    occurrenceId
   );
 
   const { room } = useRoom(roomId);
@@ -53,7 +53,7 @@ export default function BookingPage() {
   const otherBookings = relatedBookings?.filter(
     (relatedBooking) =>
       relatedBooking.roomId !== roomId ||
-      relatedBooking.occurrenceId !== occurrenceId,
+      relatedBooking.occurrenceId !== occurrenceId
   );
 
   return (
@@ -116,11 +116,7 @@ export default function BookingPage() {
               capacity={room?.capacity}
             />
 
-            {booking.bookingModules.map((module, index) => (
-              <Typography key={index}>
-                {[module.code, module.name].filter(Boolean).join(" / ")}
-              </Typography>
-            ))}
+            <BookingModuleDetails modules={booking.bookingModules} />
 
             {relatedBookingsLoading ? (
               <Typography>Loading other sessions...</Typography>

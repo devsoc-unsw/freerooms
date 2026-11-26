@@ -56,10 +56,59 @@ export const formatBookingTimeRange = (start: Date, end: Date): string => {
 };
 
 export const getPlannedAttendance = (
-  plannedSize?: number | null,
+  plannedSize?: number | null
 ): number | undefined =>
   typeof plannedSize === "number" &&
   Number.isFinite(plannedSize) &&
   plannedSize > 0
     ? plannedSize
     : undefined;
+
+export const formatBookingTerm = (term?: string | null): string | undefined => {
+  const value = term?.trim();
+
+  if (!value) {
+    return undefined;
+  }
+
+  const code = value.toUpperCase();
+
+  if (code === "U1") {
+    return "Summer Term";
+  }
+
+  const termMatch = /^T([123][ABC]?)$/.exec(code);
+
+  if (termMatch) {
+    return `Term ${termMatch[1]}`;
+  }
+
+  const semesterMatch = /^S([12])$/.exec(code);
+
+  if (semesterMatch) {
+    return `Semester ${semesterMatch[1]}`;
+  }
+
+  return value;
+};
+
+export const formatBookingCareer = (
+  career?: string | null
+): string | undefined => {
+  const value = career?.trim();
+
+  if (!value) {
+    return undefined;
+  }
+
+  switch (value.toUpperCase()) {
+    case "UGRD":
+      return "Undergraduate";
+
+    case "PGRD":
+      return "Postgraduate";
+
+    default:
+      return value;
+  }
+};

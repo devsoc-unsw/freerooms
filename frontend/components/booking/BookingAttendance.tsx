@@ -29,11 +29,13 @@ const BookingAttendance = ({
   return (
     <AppSurface
       sx={(theme) => ({
-        padding: theme.space.md
+        padding: theme.space.md,
       })}
     >
       <Stack spacing={space.sm}>
-        <Typography variant="cardTitle" component="h2">Planned attendance</Typography>
+        <Typography variant="cardTitle" component="h2">
+          Planned attendance
+        </Typography>
 
         {attendance === undefined ? (
           <Typography color="text.secondary">Not specified</Typography>
