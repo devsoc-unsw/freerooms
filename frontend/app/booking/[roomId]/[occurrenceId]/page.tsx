@@ -5,6 +5,7 @@ import useBookingDetails from "@frontend/hooks/bookings/useBookingDetails";
 import useRelatedBookings from "@frontend/hooks/bookings/useRelatedBookings";
 import useBuilding from "@frontend/hooks/buildings/useBuilding";
 import useRoom from "@frontend/hooks/rooms/useRoom";
+import { getBookingTypeLabel } from "@frontend/utils/bookingFormatting";
 import { getBuildingIdFromRoomId } from "@frontend/utils/utils";
 import { Button, Container, Skeleton, Stack, Typography } from "@mui/material";
 import { useParams } from "next/navigation";
@@ -77,7 +78,7 @@ export default function BookingPage() {
                         </Typography>
 
                         <Typography>
-                            {booking.bookingType}
+                            {getBookingTypeLabel(booking.bookingType)}
                         </Typography>
 
                         <Typography>

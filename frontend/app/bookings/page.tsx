@@ -2,6 +2,7 @@
 
 import { API_URL } from "@frontend/config";
 import { space } from "@frontend/theme";
+import getBookingHref from "@frontend/utils/getBookingHref";
 import axios from "axios";
 import parseDates from "common/parseDates";
 import type { BookingsPaginationResponse } from "common/types";
@@ -87,7 +88,7 @@ export default function BookingsPage() {
         >
           <h2>
             <Link
-              href={`/booking/${encodeURIComponent(booking.roomId)}/${encodeURIComponent(booking.occurrenceId)}`}
+              href={getBookingHref(booking.roomId, booking.occurrenceId)}
             >
               {booking.name}
             </Link>
