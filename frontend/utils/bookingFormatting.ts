@@ -27,7 +27,7 @@ export const getBookingTypeLabel = (bookingType: string): string => {
 const BOOKING_TIMEZONE = "Australia/Sydney";
 
 export const formatBookingDate = (date: Date): string =>
-  formatInTimeZone(date, BOOKING_TIMEZONE, "EEEE, d MMMM, yyyy");
+  formatInTimeZone(date, BOOKING_TIMEZONE, "EEEE, d MMMM yyyy");
 
 export const formatBookingTime = (date: Date): string =>
   formatInTimeZone(date, BOOKING_TIMEZONE, "h:mm aaa");
