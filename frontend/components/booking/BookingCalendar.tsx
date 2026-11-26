@@ -33,6 +33,8 @@ import {
   DateLocalizer,
   Views,
 } from "react-big-calendar";
+import { useRouter } from "next/navigation";
+import getBookingHref from "@frontend/utils/getBookingHref";
 
 const ToolBarButton = styled(Button)(({ theme }) => ({
   borderColor: theme.palette.secondary.main,
@@ -94,7 +96,7 @@ const CustomToolBar: React.FC<ToolbarProps<Booking>> = ({
             <ToolBarButton key={index} onClick={() => onNavigate(navKey)}>
               {displayText}
             </ToolBarButton>
-          )
+          ),
         )}
       </ButtonGroup>
       <ToggleButtonGroup value={view} exclusive sx={{ height: 30 }}>
@@ -154,7 +156,7 @@ const StyledCalendarContainer = styled(Box)<BoxProps & { view: View }>(
         borderTopRightRadius: "12px",
       }),
     },
-  })
+  }),
 );
 
 const BookingCalendarSkeleton = () => (
@@ -228,6 +230,8 @@ const BookingCalendar: React.FC<{
   loading?: boolean;
 }> = ({ events, loading }) => {
   const theme = useTheme();
+  const router = useRouter();
+
   // Enforce day view on mobile
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -274,7 +278,7 @@ const BookingCalendar: React.FC<{
     }
 
     const earliestHour = Math.min(
-      ...visibleEvents.map((e) => e.start.getHours())
+      ...visibleEvents.map((e) => e.start.getHours()),
     );
 
     const startHour =
@@ -311,7 +315,7 @@ const BookingCalendar: React.FC<{
   const formatTime = (
     date: Date,
     culture: string | undefined,
-    localizer?: DateLocalizer
+    localizer?: DateLocalizer,
   ) => {
     if (!localizer) {
       throw new Error("No date localizer");
@@ -327,7 +331,7 @@ const BookingCalendar: React.FC<{
   const formatTimeRange = (
     { start, end }: DateRange,
     culture: string | undefined,
-    localizer?: DateLocalizer
+    localizer?: DateLocalizer,
   ) => {
     return (
       formatTime(start, culture, localizer) +
@@ -344,7 +348,7 @@ const BookingCalendar: React.FC<{
       }
       return booking.name;
     },
-    [currView]
+    [currView],
   );
 
   const timeInDay = 24 * 60 * 60 * 1000;
@@ -352,6 +356,14 @@ const BookingCalendar: React.FC<{
   // Render light / dark background based on whether today is in Sydney time.
   const isTodaySydney = (date: Date) =>
     isSameDay(date, toSydneyTime(new Date()));
+
+  const handleBookingSelect = (booking: Booking) => {
+    if (!booking.roomId || !booking.occurrenceId) {
+      return;
+    }
+
+    router.push(getBookingHref(booking.roomId, booking.occurrenceId));
+  };
 
   if (loading) {
     return <BookingCalendarSkeleton />;
@@ -467,11 +479,13 @@ const BookingCalendar: React.FC<{
               setDesktopView(nextView);
             }
           }}
-          eventPropGetter={() => ({
+          eventPropGetter={(booking) => ({
             style: {
               backgroundColor: theme.colours.accent.primary,
               borderColor: theme.colours.accent.primary,
               opacity: 0.8,
+              cursor:
+                booking.roomId && booking.occurenceId ? "pointer" : "default",
             },
           })}
           slotGroupPropGetter={() => ({ style: { minHeight: "50px" } })}
@@ -487,6 +501,16 @@ const BookingCalendar: React.FC<{
           formats={{
             timeGutterFormat: formatTime,
             eventTimeRangeFormat: formatTimeRange,
+          }}
+          onSelectEvent={handleBookingSelect}
+          onKeyPressEvent={(booking, event) => {
+            if (
+              "key" in event &&
+              (event.key === "Enter" || event.key === " ")
+            ) {
+              event.preventDefault();
+              handleBookingSelect(booking);
+            }
           }}
         />
       </StyledCalendarContainer>

@@ -29,7 +29,7 @@ const renderNavBar = ({
   return renderWithTheme(
     <DarkModeContext.Provider value={{ isDarkMode, toggleDarkMode }}>
       <NavBar />
-    </DarkModeContext.Provider>
+    </DarkModeContext.Provider>,
   );
 };
 
@@ -61,7 +61,7 @@ describe("NavBar", () => {
       renderNavBar();
 
       expect(
-        screen.getByRole("link", { name: "Go to sponsors page" })
+        screen.getByRole("link", { name: "Go to sponsors page" }),
       ).toHaveAttribute("href", "/sponsors");
     });
   });
@@ -82,8 +82,41 @@ describe("NavBar", () => {
       screen
         .getAllByRole("link")
         .forEach((link) =>
-          expect(link).not.toHaveAttribute("aria-current", "page")
+          expect(link).not.toHaveAttribute("aria-current", "page"),
         );
+    });
+
+    test("highlights Bookings on an individual booking page", () => {
+      renderNavBar({
+        path: "/booking/K-F17-LG3/occurrence-123",
+      });
+
+      const bookingLinks = screen.getAllByRole("link", {
+        name: "Go to bookings page",
+      });
+
+      expect(
+        bookingLinks.some(
+          (link) => link.getAttribute("aria-current") === "location",
+        ),
+      ).toBe(true);
+
+      expect(
+        bookingLinks.some((link) => link.classList.contains("Mui-selected")),
+      ).toBe(true);
+    });
+
+    test("does not highlight Bookings on unrelated pages", () => {
+      renderNavBar({ path: "/room/K-F17-LG3" });
+
+      const bookingLinks = screen.getAllByRole("link", {
+        name: "Go to bookings page",
+      });
+
+      bookingLinks.forEach((link) => {
+        expect(link).not.toHaveAttribute("aria-current");
+        expect(link).not.toHaveClass("Mui-selected");
+      });
     });
   });
 
@@ -101,7 +134,7 @@ describe("NavBar", () => {
       const button = screen.getByRole("button", { name: "Use light mode" });
       expect(button).toHaveAttribute("aria-pressed", "true");
       expect(
-        screen.queryByRole("button", { name: "Use dark mode" })
+        screen.queryByRole("button", { name: "Use dark mode" }),
       ).not.toBeInTheDocument();
     });
   });
@@ -112,7 +145,7 @@ describe("NavBar", () => {
 
       expect(screen.queryByRole("menu")).not.toBeInTheDocument();
       expect(
-        screen.getByRole("button", { name: "Open more options" })
+        screen.getByRole("button", { name: "Open more options" }),
       ).toHaveAttribute("aria-expanded", "false");
     });
 
@@ -120,22 +153,22 @@ describe("NavBar", () => {
       renderNavBar();
 
       fireEvent.click(
-        screen.getByRole("button", { name: "Open more options" })
+        screen.getByRole("button", { name: "Open more options" }),
       );
 
       const menu = screen.getByRole("menu");
       expect(menu).toBeInTheDocument();
       expect(
-        screen.getByRole("menuitem", { name: "Go to home page" })
+        screen.getByRole("menuitem", { name: "Go to home page" }),
       ).toHaveAttribute("href", "/");
       expect(
-        screen.getByRole("menuitem", { name: "Go to sponsors page" })
+        screen.getByRole("menuitem", { name: "Go to sponsors page" }),
       ).toBeInTheDocument();
       expect(
-        screen.getByRole("menuitem", { name: "Use dark mode" })
+        screen.getByRole("menuitem", { name: "Use dark mode" }),
       ).toBeInTheDocument();
       expect(
-        screen.getByRole("menuitem", { name: "Profile (coming soon)" })
+        screen.getByRole("menuitem", { name: "Profile (coming soon)" }),
       ).toHaveAttribute("aria-disabled", "true");
     });
 
@@ -143,7 +176,7 @@ describe("NavBar", () => {
       renderNavBar();
 
       fireEvent.click(
-        screen.getByRole("button", { name: "Open more options" })
+        screen.getByRole("button", { name: "Open more options" }),
       );
       fireEvent.click(screen.getByRole("menuitem", { name: "Use dark mode" }));
 
@@ -156,7 +189,7 @@ describe("NavBar", () => {
       renderNavBar();
 
       fireEvent.click(
-        screen.getByRole("button", { name: "Open navigation menu" })
+        screen.getByRole("button", { name: "Open navigation menu" }),
       );
 
       const items = screen.getAllByRole("menuitem");

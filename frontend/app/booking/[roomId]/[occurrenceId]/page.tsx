@@ -67,7 +67,7 @@ export default function BookingPage() {
           },
         })}
       >
-        <RoomBackButton />
+        <RoomBackButton fallbackHref="/bookings" />
 
         {notFound ? (
           <Typography variant="h5">Booking not found</Typography>

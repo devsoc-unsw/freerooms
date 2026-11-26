@@ -91,6 +91,10 @@ const HOME_ITEM: NavItem = {
   ariaLabel: "Go to home page",
 };
 
+// Booking and Bookings should both highlight
+const getNavPath = (path: string): string =>
+  path.startsWith("/booking/") ? "/bookings" : path;
+
 // ---------- Dark mode ----------
 const useDarkModeToggle = () => {
   const { isDarkMode, toggleDarkMode } = useContext(DarkModeContext);
@@ -143,7 +147,7 @@ const NavMenuItem = ({ item, ...props }: NavMenuItemProps) => {
     <MenuItem
       component={Link}
       href={href}
-      selected={path === href}
+      selected={getNavPath(path) === href}
       aria-label={ariaLabel}
       {...props}
     >
@@ -170,10 +174,18 @@ const MOBILE_TAB_HREFS = MOBILE_TAB_ITEMS.map((item) => item.href);
 const MOBILE_MORE_HREFS = MOBILE_MORE_ITEMS.map((item) => item.href);
 const getMobileNavValue = (
   path: string,
-  isMoreOpen: boolean
+  isMoreOpen: boolean,
 ): string | false => {
-  if (isMoreOpen || MOBILE_MORE_HREFS.includes(path)) return MOBILE_MORE_TAB;
-  if (MOBILE_TAB_HREFS.includes(path)) return path;
+  const navPath = getNavPath(path);
+
+  if (isMoreOpen || MOBILE_MORE_HREFS.includes(navPath)) {
+    return MOBILE_MORE_TAB;
+  }
+
+  if (MOBILE_TAB_HREFS.includes(navPath)) {
+    return navPath;
+  }
+
   return false;
 };
 
@@ -404,7 +416,7 @@ const StyledTopNavButton = styled(Button, {
 // ---------- React components ----------
 const TopNavButton = ({ item }: { item: NavItem }) => {
   const path = usePathname();
-  const isActive = path === item.href;
+  const isActive = getNavPath(path) === item.href;
   const { label, href, icon: Icon, ariaLabel } = item;
 
   return (
@@ -414,7 +426,9 @@ const TopNavButton = ({ item }: { item: NavItem }) => {
       variant="text"
       active={isActive}
       aria-label={ariaLabel}
-      aria-current={isActive ? "page" : undefined}
+      aria-current={
+        isActive ? (path === href ? "page" : "location") : undefined
+      }
     >
       <Icon />
       {label}

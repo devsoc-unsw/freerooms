@@ -27,20 +27,25 @@ describe("RoomBackButton", () => {
     (useDispatch as unknown as jest.Mock).mockReturnValue(jest.fn());
     (useRouter as unknown as jest.Mock).mockReturnValue(router);
 
-    render(
-      <Provider
-        store={configureStore({
-          reducer: { currentBuilding: currentBuildingSlice },
-        })}
-      >
-        <RoomBackButton />
-      </Provider>
-    );
+    renderBackButton();
   });
 
   afterEach(() => {
     jest.restoreAllMocks();
   });
+
+  const renderBackButton = (fallbackHref?: string) =>
+    render(
+      <Provider
+        store={configureStore({
+          reducer: {
+            currentBuilding: currentBuildingSlice,
+          },
+        })}
+      >
+        <RoomBackButton fallbackHref={fallbackHref} />
+      </Provider>,
+    );
 
   test("back button appears on screen", () => {
     const backButton = screen.getByRole("button", { name: "back" });
@@ -61,5 +66,27 @@ describe("RoomBackButton", () => {
 
     expect(router.push).toHaveBeenCalledWith("/browse");
     expect(router.back).not.toHaveBeenCalled();
+  });
+
+  test("uses the booking fallback when opened directly", () => {
+    jest.spyOn(window.history, "length", "get").mockReturnValue(1);
+
+    renderBackButton("/bookings");
+
+    fireEvent.click(screen.getByRole("button", { name: "back" }));
+
+    expect(router.push).toHaveBeenCalledWith("/bookings");
+    expect(router.back).not.toHaveBeenCalled();
+  });
+
+  test("prefers history over the booking fallback", () => {
+    jest.spyOn(window.history, "length", "get").mockReturnValue(2);
+
+    renderBackButton("/bookings");
+
+    fireEvent.click(screen.getByRole("button", { name: "back" }));
+
+    expect(router.back).toHaveBeenCalledTimes(1);
+    expect(router.push).not.toHaveBeenCalled();
   });
 });
