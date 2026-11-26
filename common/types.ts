@@ -30,13 +30,6 @@ export enum BookingType {
   "OTHER" = "OTHER",
 }
 
-export type BookingModule = {
-  term: string;
-  career: string;
-  code: string;
-  name: string;
-};
-
 // Booking Pagination
 
 // One query param per filter, each with a single value, like the browse page
@@ -180,20 +173,6 @@ export const statusResponseSchema = z.record(
 export type StatusResponse = z.infer<typeof statusResponseSchema>;
 
 
-// Bookings module for specific occurrence
-export const bookingsModuleResponseSchema = z.object({
-  occurrenceId: z.string(),
-  roomId: z.string(),
-  bookingModule: z.object({
-    term: z.string(),
-    career: z.string(),
-    code: z.string(),
-    name: z.string(),
-  }),
-});
-
-export type BookingsModuleResponse = z.infer<typeof bookingsModuleResponseSchema>;
-
 // Metadata associated with a booking
 export const bookingListModuleSchema = z.object({
   code: z.string().nullish(),
@@ -327,7 +306,7 @@ export const bookingsEventParamsSchema = z.object({
   eventID: z.string().min(1),
 });
 
-export const bookingsModuleParamsSchema = z.object({
+export const bookingDetailsParamsSchema = z.object({
   roomID: z.string().min(1),
   occurrenceID: z.string().min(1),
 });
