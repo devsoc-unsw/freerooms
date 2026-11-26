@@ -168,6 +168,7 @@ const Bookings = () => {
                 sort={sort}
                 options={bookingsSortBarDropdown}
                 title="Booking Sort"
+                resetSort="ascendingStart"
               />
               <TimeBar
                 startIsSet={startIsSet}
