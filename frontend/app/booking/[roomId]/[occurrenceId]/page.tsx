@@ -16,6 +16,7 @@ import { Button, Container, Skeleton, Stack, Typography } from "@mui/material";
 import { useParams } from "next/navigation";
 import RoomPhotoCarousel from "@frontend/components/rooms/RoomPhotoCarousel";
 import roomPhotos from "@frontend/public/room-photos.json";
+import BookingRoomActions from "@frontend/components/booking/BookingRoomActions";
 
 export default function BookingPage() {
   const { roomId, occurrenceId } = useParams<{
@@ -96,10 +97,19 @@ export default function BookingPage() {
 
                 <BookingTimeSummary booking={booking} />
 
-                <RoomPhotoCarousel
-                    photos={photos}
-                    height={sizes.roomPhoto.bookingHeight}
-                />
+                <Stack spacing={space.md}>
+                    <RoomPhotoCarousel
+                        photos={photos}
+                        height={sizes.roomPhoto.bookingHeight}
+                    />
+
+                    {room && (
+                        <BookingRoomActions
+                            roomId={room.id}
+                            buildingId={building?.id}
+                        />
+                    )}
+                </Stack>
             </Stack>
 
             <Typography>
