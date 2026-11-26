@@ -23,7 +23,7 @@ describe("BookingTimeSummary", () => {
 
     expect(screen.getByText("Monday, 5 January 2026")).toBeInTheDocument();
 
-    expect(screen.getByText("9:00 am – 11:00 am")).toBeInTheDocument();
+    expect(screen.getByText("9:00 am - 11:00 am")).toBeInTheDocument();
   });
 
   it("displays upcoming status without a progress bar", () => {

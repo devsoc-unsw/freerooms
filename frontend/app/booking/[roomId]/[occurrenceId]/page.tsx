@@ -10,6 +10,7 @@ import useBuilding from "@frontend/hooks/buildings/useBuilding";
 import useRoomRatings from "@frontend/hooks/ratings/useRoomRatings";
 import useRoom from "@frontend/hooks/rooms/useRoom";
 import { space } from "@frontend/theme";
+import { getPlannedAttendance } from "@frontend/utils/bookingFormatting";
 import { getBuildingIdFromRoomId } from "@frontend/utils/utils";
 import { Button, Container, Skeleton, Stack, Typography } from "@mui/material";
 import { useParams } from "next/navigation";
@@ -43,6 +44,8 @@ export default function BookingPage() {
       relatedBooking.roomId !== roomId ||
       relatedBooking.occurrenceId !== occurrenceId
   );
+
+  const plannedAttendance = getPlannedAttendance(booking?.plannedSize);
 
   return (
     <Container maxWidth="xl">
@@ -89,8 +92,9 @@ export default function BookingPage() {
             </Stack>
 
             <Typography>
-              Planned attendance: {booking.plannedSize ?? "Not specified"}
-              {room ? ` / ${room.capacity}` : ""}
+              Planned attendance:{" "}
+              {plannedAttendance ?? "Not specified"}
+              {plannedAttendance !== undefined && room && room.capacity > 0 ? ` / ${room.capacity}` : ""}
             </Typography>
 
             {booking.bookingModules.map((module, index) => (

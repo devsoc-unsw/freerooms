@@ -4,6 +4,7 @@ import {
   formatBookingTime,
   formatBookingTimeRange,
   getBookingTypeLabel,
+  getPlannedAttendance,
 } from "@frontend/utils/bookingFormatting";
 import getBookingHref from "@frontend/utils/getBookingHref";
 import { BookingType } from "common/types";
@@ -98,5 +99,24 @@ describe("Booking date and time formatting", () => {
         new Date("2026-04-04T16:30:00Z")
       )
     ).toBe("2:30 am (UTC+11:00) to 2:30 am (UTC+10:00)");
+  });
+});
+
+
+describe("getPlannedAttendance", () => {
+  it("preserves positive planned attendance", () => {
+    expect(getPlannedAttendance(250)).toBe(250);
+  });
+
+  it("treats zero as unspecified attendance", () => {
+    expect(getPlannedAttendance(0)).toBeUndefined();
+  });
+
+  it("handles null planned attendance", () => {
+    expect(getPlannedAttendance(null)).toBeUndefined();
+  });
+
+  it("handles missing planned attendance", () => {
+    expect(getPlannedAttendance(undefined)).toBeUndefined();
   });
 });

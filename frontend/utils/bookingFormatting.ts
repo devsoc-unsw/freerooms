@@ -54,3 +54,9 @@ export const formatBookingTimeRange = (start: Date, end: Date): string => {
 
   return `${startTime} - ${endTime}`;
 };
+
+
+export const getPlannedAttendance = (
+    plannedSize?: number | null
+): number | undefined =>
+    plannedSize === 0 ? undefined : plannedSize ?? undefined;
