@@ -69,7 +69,7 @@ describe("Booking Calendar Desktop", () => {
     render(
       <Provider store={store}>
         <BookingCalendar events={events} />
-      </Provider>,
+      </Provider>
     );
 
     const calendar = screen.getByRole("table", {
@@ -83,7 +83,7 @@ describe("Booking Calendar Desktop", () => {
     render(
       <Provider store={store}>
         <BookingCalendar events={events} />
-      </Provider>,
+      </Provider>
     );
 
     const beforeButton = screen.queryByRole("button", { name: "Previous day" });
@@ -105,7 +105,7 @@ describe("Booking Calendar Desktop", () => {
     render(
       <Provider store={store}>
         <BookingCalendar events={events} />
-      </Provider>,
+      </Provider>
     );
 
     const datePicker = screen.getByDisplayValue("Fri, 11 Sep 2026");
@@ -125,7 +125,7 @@ describe("Booking Calendar Desktop", () => {
     render(
       <Provider store={store}>
         <BookingCalendar events={events} />
-      </Provider>,
+      </Provider>
     );
 
     const dayButton = screen.getByRole("button", { name: "Day" });
@@ -142,7 +142,7 @@ describe("Booking Calendar Mobile", () => {
     render(
       <Provider store={store}>
         <BookingCalendar events={events} />
-      </Provider>,
+      </Provider>
     );
 
     const beforeButton = screen.getByRole("button", { name: "Previous day" });
@@ -177,7 +177,7 @@ describe("Booking calendar navigation", () => {
     render(
       <Provider store={store}>
         <BookingCalendar events={[booking]} />
-      </Provider>,
+      </Provider>
     );
 
     fireEvent.click(screen.getByText("COMP2521 LEC (LECTURE)"));
@@ -191,12 +191,12 @@ describe("Booking calendar navigation", () => {
       render(
         <Provider store={store}>
           <BookingCalendar events={[{ ...booking, ...missing }]} />
-        </Provider>,
+        </Provider>
       );
 
       fireEvent.click(screen.getByText("COMP2521 LEC (LECTURE)"));
 
       expect(mockPush).not.toHaveBeenCalled();
-    },
+    }
   );
 });

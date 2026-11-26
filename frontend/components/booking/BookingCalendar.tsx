@@ -5,6 +5,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import useBookingCalendarQuery from "@frontend/hooks/bookings/useBookingCalendarQuery";
 import { useSelector } from "@frontend/redux/hooks";
 import { selectDatetime } from "@frontend/redux/slices/datetimeSlice";
+import getBookingHref from "@frontend/utils/getBookingHref";
 import toSydneyTime from "@frontend/utils/toSydneyTime";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
@@ -24,6 +25,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { Booking } from "common/types";
 import { format, getDay, isSameDay, parse, startOfWeek } from "date-fns";
 import { enAU } from "date-fns/locale";
+import { useRouter } from "next/navigation";
 import React from "react";
 import type { DateRange, View } from "react-big-calendar";
 import type { NavigateAction, ToolbarProps } from "react-big-calendar";
@@ -33,8 +35,6 @@ import {
   DateLocalizer,
   Views,
 } from "react-big-calendar";
-import { useRouter } from "next/navigation";
-import getBookingHref from "@frontend/utils/getBookingHref";
 
 const ToolBarButton = styled(Button)(({ theme }) => ({
   borderColor: theme.palette.secondary.main,
@@ -96,7 +96,7 @@ const CustomToolBar: React.FC<ToolbarProps<Booking>> = ({
             <ToolBarButton key={index} onClick={() => onNavigate(navKey)}>
               {displayText}
             </ToolBarButton>
-          ),
+          )
         )}
       </ButtonGroup>
       <ToggleButtonGroup value={view} exclusive sx={{ height: 30 }}>
@@ -156,7 +156,7 @@ const StyledCalendarContainer = styled(Box)<BoxProps & { view: View }>(
         borderTopRightRadius: "12px",
       }),
     },
-  }),
+  })
 );
 
 const BookingCalendarSkeleton = () => (
@@ -278,7 +278,7 @@ const BookingCalendar: React.FC<{
     }
 
     const earliestHour = Math.min(
-      ...visibleEvents.map((e) => e.start.getHours()),
+      ...visibleEvents.map((e) => e.start.getHours())
     );
 
     const startHour =
@@ -315,7 +315,7 @@ const BookingCalendar: React.FC<{
   const formatTime = (
     date: Date,
     culture: string | undefined,
-    localizer?: DateLocalizer,
+    localizer?: DateLocalizer
   ) => {
     if (!localizer) {
       throw new Error("No date localizer");
@@ -331,7 +331,7 @@ const BookingCalendar: React.FC<{
   const formatTimeRange = (
     { start, end }: DateRange,
     culture: string | undefined,
-    localizer?: DateLocalizer,
+    localizer?: DateLocalizer
   ) => {
     return (
       formatTime(start, culture, localizer) +
@@ -348,7 +348,7 @@ const BookingCalendar: React.FC<{
       }
       return booking.name;
     },
-    [currView],
+    [currView]
   );
 
   const timeInDay = 24 * 60 * 60 * 1000;
