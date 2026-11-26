@@ -29,11 +29,11 @@ export default function BookingPage() {
 
   const { booking, error, isLoading, notFound, mutate } = useBookingDetails(
     roomId,
-    occurrenceId
+    occurrenceId,
   );
 
   const { rooms } = useRooms();
-    const room = rooms?.[roomId];
+  const room = rooms?.[roomId];
 
   const { data: ratings } = useRoomRatings(room?.id);
 
@@ -117,33 +117,28 @@ export default function BookingPage() {
             <BookingModuleDetails modules={booking.bookingModules} />
 
             {booking.eventId && (
-                <>
-                    {relatedBookingsLoading && !relatedBookings ? (
-                        <Skeleton variant="rounded" height={120} />
-                    ) : relatedBookingsError && !relatedBookings ? (
-                        <Stack
-                            spacing={space.sm}
-                            sx={{ alignItems: "flex-start" }}
-                        >
-                            <Typography color="text.secondary">
-                                Failed to load related sessions
-                            </Typography>
+              <>
+                {relatedBookingsLoading && !relatedBookings ? (
+                  <Skeleton variant="rounded" height={120} />
+                ) : relatedBookingsError && !relatedBookings ? (
+                  <Stack spacing={space.sm} sx={{ alignItems: "flex-start" }}>
+                    <Typography color="text.secondary">
+                      Failed to load related sessions
+                    </Typography>
 
-                            <Button
-                                onClick={() => void retryRelatedBookings()}
-                            >
-                                Retry
-                            </Button>
-                        </Stack>
-                    ) : relatedBookings ? (
-                        <RelatedBookings
-                            key={getBookingHref(roomId, occurrenceId)}
-                            booking={booking}
-                            bookings={relatedBookings}
-                            rooms={rooms}
-                        />
-                    ) : null}
-                </>
+                    <Button onClick={() => void retryRelatedBookings()}>
+                      Retry
+                    </Button>
+                  </Stack>
+                ) : relatedBookings ? (
+                  <RelatedBookings
+                    key={getBookingHref(roomId, occurrenceId)}
+                    booking={booking}
+                    bookings={relatedBookings}
+                    rooms={rooms}
+                  />
+                ) : null}
+              </>
             )}
           </>
         )}

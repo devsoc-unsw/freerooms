@@ -6,18 +6,18 @@ type BookingIdentity = Pick<BookingSummary, "roomId" | "occurrenceId">;
 
 export const excludeCurrentBooking = (
   bookings: BookingsEventResponse[],
-  currentBooking: BookingIdentity
+  currentBooking: BookingIdentity,
 ): BookingsEventResponse[] =>
   bookings.filter(
     (booking) =>
       booking.roomId !== currentBooking.roomId ||
-      booking.occurrenceId !== currentBooking.occurrenceId
+      booking.occurrenceId !== currentBooking.occurrenceId,
   );
 
 export const filterRelatedBookings = (
   bookings: BookingsEventResponse[],
   filter: RelatedBookingFilter,
-  now: number
+  now: number,
 ): BookingsEventResponse[] => {
   return bookings
     .filter((booking) => {
