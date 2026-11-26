@@ -1,6 +1,8 @@
 import {
+  formatBookingCareer,
   formatBookingDate,
   formatBookingDateRange,
+  formatBookingTerm,
   formatBookingTime,
   formatBookingTimeRange,
   getBookingTypeLabel,
@@ -118,4 +120,44 @@ describe("getPlannedAttendance", () => {
   it("handles missing planned attendance", () => {
     expect(getPlannedAttendance(undefined)).toBeUndefined();
   });
+});
+
+describe("formatBookingTerm", () => {
+  it.each([
+    ["U1", "Summer Term"],
+    ["T1", "Term 1"],
+    ["T2", "Term 2"],
+    ["T3", "Term 3"],
+    ["T1A", "Term 1A"],
+    ["T2B", "Term 2B"],
+    ["T3C", "Term 3C"],
+    ["S1", "Semester 1"],
+    ["S2", "Semester 2"],
+    [" t1 ", "Term 1"],
+    ["UNKNOWN", "UNKNOWN"],
+  ])("formats %s as %s", (term, expected) => {
+    expect(formatBookingTerm(term)).toBe(expected);
+  });
+
+  it.each([null, undefined, "", " "])("handles missing terms: %s", (term) => {
+    expect(formatBookingTerm(term)).toBeUndefined();
+  });
+});
+
+describe("formatBookingCareer", () => {
+  it.each([
+    ["UGRD", "Undergraduate"],
+    ["PGRD", "Postgraduate"],
+    [" ugrd ", "Undergraduate"],
+    ["UNKNOWN", "UNKNOWN"],
+  ])("formats %s as %s", (career, expected) => {
+    expect(formatBookingCareer(career)).toBe(expected);
+  });
+
+  it.each([null, undefined, "", " "])(
+    "handles missing careers: %s",
+    (career) => {
+      expect(formatBookingCareer(career)).toBeUndefined();
+    }
+  );
 });
