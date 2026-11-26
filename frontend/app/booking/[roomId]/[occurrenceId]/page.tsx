@@ -9,11 +9,13 @@ import useRelatedBookings from "@frontend/hooks/bookings/useRelatedBookings";
 import useBuilding from "@frontend/hooks/buildings/useBuilding";
 import useRoomRatings from "@frontend/hooks/ratings/useRoomRatings";
 import useRoom from "@frontend/hooks/rooms/useRoom";
-import { space } from "@frontend/theme";
+import { sizes, space } from "@frontend/theme";
 import { getPlannedAttendance } from "@frontend/utils/bookingFormatting";
 import { getBuildingIdFromRoomId } from "@frontend/utils/utils";
 import { Button, Container, Skeleton, Stack, Typography } from "@mui/material";
 import { useParams } from "next/navigation";
+import RoomPhotoCarousel from "@frontend/components/rooms/RoomPhotoCarousel";
+import roomPhotos from "@frontend/public/room-photos.json";
 
 export default function BookingPage() {
   const { roomId, occurrenceId } = useParams<{
@@ -32,6 +34,10 @@ export default function BookingPage() {
 
   const buildingId = getBuildingIdFromRoomId(roomId);
   const { building } = useBuilding(buildingId);
+
+  const roomPhotosUrls = roomPhotos[roomId as keyof typeof roomPhotos];
+
+  const photos = roomPhotosUrls && roomPhotosUrls.length > 0 ? roomPhotosUrls : [`/assets/building_photos/${buildingId}.webp`]
 
   const {
     relatedBookings,
@@ -89,6 +95,11 @@ export default function BookingPage() {
                 )}
 
                 <BookingTimeSummary booking={booking} />
+
+                <RoomPhotoCarousel
+                    photos={photos}
+                    height={sizes.roomPhoto.bookingHeight}
+                />
             </Stack>
 
             <Typography>

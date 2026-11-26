@@ -6,13 +6,14 @@ import Skeleton from "@mui/material/Skeleton";
 import Image from "next/image";
 import { Autoplay, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { sizes } from "@frontend/theme";
 
-const RoomImage: React.FC<{ src: string }> = ({ src }) => {
+const RoomImage: React.FC<{ src: string, height: number }> = ({ src, height }) => {
   return (
     <Box
       sx={{
         width: "100%",
-        height: 500,
+        height: height,
         position: "relative",
       }}
     >
@@ -27,9 +28,10 @@ const RoomImage: React.FC<{ src: string }> = ({ src }) => {
   );
 };
 
-const RoomPhotoCarousel: React.FC<{ photos: string[]; loading?: boolean }> = ({
+const RoomPhotoCarousel: React.FC<{ photos: string[]; loading?: boolean, height?: number }> = ({
   photos,
   loading,
+  height = sizes.roomPhoto.defaultHeight
 }) => {
   if (loading) {
     return (
@@ -37,21 +39,22 @@ const RoomPhotoCarousel: React.FC<{ photos: string[]; loading?: boolean }> = ({
         animation="wave"
         variant="rounded"
         width="100%"
-        height={500}
+        height={height}
         sx={{ borderRadius: "10px" }}
       />
     );
   }
 
   if (photos.length <= 1) {
-    return <RoomImage src={photos[0]} />;
+    return <RoomImage src={photos[0]} height={height} />;
   }
 
   return (
     <Box
       sx={(theme) => ({
         maxWidth: "100%",
-        height: 500,
+        width: "100%",
+        height,
         position: "relative",
         "& .swiper-button-prev, & .swiper-button-next": {
           backgroundColor: theme.palette.background.default,

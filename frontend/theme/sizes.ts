@@ -23,6 +23,13 @@ export const sizes = {
     compactHeight: 240,
     compactThumbnailHeight: 96,
   },
+  roomPhoto: {
+    defaultHeight: 500,
+    bookingHeight: 300,
+  },
+  roomNavigation: {
+    buttonHeight: 45,
+  },
   drawerRoomTile: {
     minHeight: 115,
   },
