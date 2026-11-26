@@ -24,58 +24,33 @@ export const getBookingTypeLabel = (bookingType: string): string => {
   return type ? bookingTypeLabels[type] : "Other";
 };
 
-
 const BOOKING_TIMEZONE = "Australia/Sydney";
 
 export const formatBookingDate = (date: Date): string =>
-    formatInTimeZone(
-        date,
-        BOOKING_TIMEZONE,
-        "EEEE, d MMMM, yyyy"
-    );
-
+  formatInTimeZone(date, BOOKING_TIMEZONE, "EEEE, d MMMM, yyyy");
 
 export const formatBookingTime = (date: Date): string =>
-    formatInTimeZone(
-        date,
-        BOOKING_TIMEZONE,
-        "h:mm aaa"
-    );
+  formatInTimeZone(date, BOOKING_TIMEZONE, "h:mm aaa");
 
-export const formatBookingDateRange = (
-    start: Date,
-    end: Date,
-): string => {
-    const startDate = formatBookingDate(start);
-    const endDate = formatBookingDate(end);
+export const formatBookingDateRange = (start: Date, end: Date): string => {
+  const startDate = formatBookingDate(start);
+  const endDate = formatBookingDate(end);
 
-    return startDate === endDate ? startDate : `${startDate} to ${endDate}`;
-}
+  return startDate === endDate ? startDate : `${startDate} to ${endDate}`;
+};
 
+export const formatBookingTimeRange = (start: Date, end: Date): string => {
+  const startTime = formatBookingTime(start);
+  const endTime = formatBookingTime(end);
 
-export const formatBookingTimeRange = (
-    start: Date,
-    end: Date,
-): string => {
-    const startTime = formatBookingTime(start);
-    const endTime = formatBookingTime(end);
+  const startOffset = formatInTimeZone(start, BOOKING_TIMEZONE, "xxx");
 
-    const startOffset = formatInTimeZone(
-        start,
-        BOOKING_TIMEZONE,
-        "xxx"
-    );
+  const endOffset = formatInTimeZone(end, BOOKING_TIMEZONE, "xxx");
 
-    const endOffset = formatInTimeZone(
-        end,
-        BOOKING_TIMEZONE,
-        "xxx"
-    );
+  // Daylight savings changing
+  if (startOffset !== endOffset) {
+    return `${startTime} (UTC${startOffset}) to ${endTime} (UTC${endOffset})`;
+  }
 
-    // Daylight savings changing
-    if (startOffset !== endOffset) {
-        return `${startTime} (UTC${startOffset}) to ${endTime} (UTC${endOffset})`;
-    }
-
-    return `${startTime} - ${endTime}`;
-}
+  return `${startTime} - ${endTime}`;
+};

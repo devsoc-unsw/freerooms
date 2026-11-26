@@ -3,10 +3,15 @@
 import BookingTypeBadge from "@frontend/components/booking/BookingTypeBadge";
 import RoomBackButton from "@frontend/components/navigation/RoomBackButton";
 import useBookingDetails from "@frontend/hooks/bookings/useBookingDetails";
+import useBookingStatus from "@frontend/hooks/bookings/useBookingStatus";
 import useRelatedBookings from "@frontend/hooks/bookings/useRelatedBookings";
 import useBuilding from "@frontend/hooks/buildings/useBuilding";
 import useRoom from "@frontend/hooks/rooms/useRoom";
 import { space } from "@frontend/theme";
+import {
+  formatBookingDateRange,
+  formatBookingTimeRange,
+} from "@frontend/utils/bookingFormatting";
 import { getBuildingIdFromRoomId } from "@frontend/utils/utils";
 import { Button, Container, Skeleton, Stack, Typography } from "@mui/material";
 import { useParams } from "next/navigation";
@@ -19,8 +24,10 @@ export default function BookingPage() {
 
   const { booking, error, isLoading, notFound, mutate } = useBookingDetails(
     roomId,
-    occurrenceId
+    occurrenceId,
   );
+
+  const bookingStatus = useBookingStatus(booking);
 
   const { room } = useRoom(roomId);
 
@@ -36,7 +43,7 @@ export default function BookingPage() {
   const otherBookings = relatedBookings?.filter(
     (relatedBooking) =>
       relatedBooking.roomId !== roomId ||
-      relatedBooking.occurrenceId !== occurrenceId
+      relatedBooking.occurrenceId !== occurrenceId,
   );
 
   return (
@@ -78,15 +85,19 @@ export default function BookingPage() {
                 : (room?.name ?? roomId)}
             </Typography>
 
-            <Typography>
-              {booking.start.toLocaleString("en-AU", {
-                timeZone: "Australia/Sydney",
-              })}
-              {" to "}
-              {booking.end.toLocaleString("en-AU", {
-                timeZone: "Australia/Sydney",
-              })}
-            </Typography>
+            <Stack spacing={space.sm}>
+              <Typography variant="body2">
+                {formatBookingDateRange(booking.start, booking.end)}
+              </Typography>
+
+              <Typography variant="h3">
+                {formatBookingTimeRange(booking.start, booking.end)}
+              </Typography>
+
+              {bookingStatus && (
+                <Typography variant="body1">{bookingStatus.label}</Typography>
+              )}
+            </Stack>
 
             <Typography>
               Planned attendance: {booking.plannedSize ?? "Not specified"}

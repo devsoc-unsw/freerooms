@@ -1,4 +1,10 @@
-import { getBookingTypeLabel } from "@frontend/utils/bookingFormatting";
+import {
+  formatBookingDate,
+  formatBookingDateRange,
+  formatBookingTime,
+  formatBookingTimeRange,
+  getBookingTypeLabel,
+} from "@frontend/utils/bookingFormatting";
 import getBookingHref from "@frontend/utils/getBookingHref";
 import { BookingType } from "common/types";
 
@@ -26,19 +32,71 @@ describe("getBookingTypeLabel", () => {
 describe("getBookingHref", () => {
   it("creates a deterministic booking URL", () => {
     expect(getBookingHref("K-F17-LG3", "occurrence-123")).toBe(
-      "/booking/K-F17-LG3/occurrence-123"
+      "/booking/K-F17-LG3/occurrence-123",
     );
   });
 
   it("encodes identifiers", () => {
     expect(getBookingHref("room/123", "occurrence 456")).toBe(
-      "/booking/room%2F123/occurrence%20456"
+      "/booking/room%2F123/occurrence%20456",
     );
   });
 
   it("distinguishes occurrences in different rooms", () => {
     expect(getBookingHref("K-D23-201", "occurrence-123")).not.toBe(
-      getBookingHref("K-D23-203", "occurrence-123")
+      getBookingHref("K-D23-203", "occurrence-123"),
     );
+  });
+});
+
+describe("Booking date and time formatting", () => {
+  it("formats a booking date in Sydney time", () => {
+    expect(formatBookingDate(new Date("2026-01-04T22:00:00Z"))).toBe(
+      "Monday, 5 January 2026",
+    );
+  });
+
+  it("handles Sydney summer daylight saving", () => {
+    expect(formatBookingTime(new Date("2026-01-04T22:00:00Z"))).toBe("9:00 am");
+  });
+
+  it("handles Sydney winter standard time", () => {
+    expect(formatBookingTime(new Date("2026-07-05T22:00:00Z"))).toBe("8:00 am");
+  });
+
+  it("does not duplicate the date for same-day bookings", () => {
+    expect(
+      formatBookingDateRange(
+        new Date("2026-01-04T22:00:00Z"),
+        new Date("2026-01-05T00:00:00Z"),
+      ),
+    ).toBe("Monday, 5 January 2026");
+  });
+
+  it("displays both dates for overnight bookings", () => {
+    expect(
+      formatBookingDateRange(
+        new Date("2026-01-05T12:00:00Z"),
+        new Date("2026-01-05T14:00:00Z"),
+      ),
+    ).toBe("Monday, 5 January 2026 to Tuesday, 6 January 2026");
+  });
+
+  it("formats the booking time range", () => {
+    expect(
+      formatBookingTimeRange(
+        new Date("2026-01-04T22:00:00Z"),
+        new Date("2026-01-05T00:00:00Z"),
+      ),
+    ).toBe("9:00 am - 11:00 am");
+  });
+
+  it("disambiguates times across daylight saving changes", () => {
+    expect(
+      formatBookingTimeRange(
+        new Date("2026-04-04T15:30:00Z"),
+        new Date("2026-04-04T16:30:00Z"),
+      ),
+    ).toBe("2:30 am (UTC+11:00) to 2:30 am (UTC+10:00)");
   });
 });
