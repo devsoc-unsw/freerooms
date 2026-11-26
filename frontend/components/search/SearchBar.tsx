@@ -11,9 +11,11 @@ const DEBOUNCE_MS = 100;
 const SearchBar = ({
   setQuery,
   placeholder = "Search for a building...",
+  defaultValue,
 }: {
   setQuery: (query: string) => void;
   placeholder?: string;
+  defaultValue?: string;
 }) => {
   const theme = useTheme();
 
@@ -32,25 +34,26 @@ const SearchBar = ({
   return (
     <Box
       sx={(theme) => ({
-        width: { xs: "100%", sm: "100%", md: "100%" },
-        marginTop: `${theme.space.sm}px`,
-        marginBottom: `${theme.space.sm}px`,
-        marginLeft: { sm: `${theme.space.md}px` },
-        marginRight: { sm: `${theme.space.md}px` },
-        flexShrink: { sm: 3 },
-        order: { xs: -1, sm: -1, md: "unset" },
+        width: "100%",
+        minWidth: 0,
+        flex: { sm: `1 1 ${theme.sizes.toolbar.searchMinWidth}px` },
+        order: { xs: -1, sm: 0 },
       })}
     >
       <AppTextField
         id="input-with-sx"
         placeholder={placeholder}
+        defaultValue={defaultValue}
         sx={[
           getOutlinedFieldStyles(theme),
           {
             "& .MuiOutlinedInput-root": {
               height: theme.sizes.control.xl,
-              borderRadius: theme.radius.md,
+              borderRadius: `${theme.radius.lg}px`,
               padding: `${theme.space.md}px`,
+            },
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderWidth: `${theme.sizes.border.control}px`,
             },
             "& .MuiOutlinedInput-input::placeholder":
               theme.typography.subtitle1,

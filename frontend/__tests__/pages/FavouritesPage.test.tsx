@@ -30,11 +30,10 @@ jest.mock("nuqs", () => ({
   },
 }));
 
-const mockUseDisplayedFavouriteRooms = jest.fn();
-jest.mock("@frontend/hooks/rooms/useDisplayedFavouriteRooms", () => ({
+const mockUseDisplayedRooms = jest.fn();
+jest.mock("@frontend/hooks/rooms/useDisplayedRooms", () => ({
   __esModule: true,
-  default: (query: string, sort: string, availableOnly: boolean) =>
-    mockUseDisplayedFavouriteRooms(query, sort, availableOnly),
+  default: (options: unknown) => mockUseDisplayedRooms(options),
 }));
 
 jest.mock("@frontend/components/map/BuildingDrawer", () => ({
@@ -44,8 +43,15 @@ jest.mock("@frontend/components/map/BuildingDrawer", () => ({
 
 jest.mock("@frontend/components/rooms/RoomCardList", () => ({
   __esModule: true,
-  default: ({ rooms }: { rooms?: { id: string; name: string }[] }) => (
+  default: ({
+    rooms,
+    emptyMessage,
+  }: {
+    rooms?: { id: string; name: string }[];
+    emptyMessage?: string;
+  }) => (
     <div data-testid="room-card-list">
+      {rooms?.length === 0 && emptyMessage}
       {rooms
         ? rooms.map((room) => <span key={room.id}>{room.name}</span>)
         : "loading"}
@@ -68,7 +74,7 @@ const clickButton = async (name: string) => {
 
 describe("Favourites page", () => {
   beforeEach(() => {
-    mockUseDisplayedFavouriteRooms.mockReturnValue([]);
+    mockUseDisplayedRooms.mockReturnValue([]);
     mockStart = "";
     mockSetStart.mockClear();
   });
@@ -90,11 +96,12 @@ describe("Favourites page", () => {
   it("starts with only the favourites free at the start time", () => {
     renderPage();
 
-    expect(mockUseDisplayedFavouriteRooms).toHaveBeenCalledWith(
-      "",
-      "alphabetical",
-      true
-    );
+    expect(mockUseDisplayedRooms).toHaveBeenCalledWith({
+      query: "",
+      sort: "alphabetical",
+      availableOnly: true,
+      favouritesOnly: true,
+    });
   });
 
   it("puts start=none in the URL when the start time is cleared", async () => {
@@ -111,15 +118,16 @@ describe("Favourites page", () => {
 
     renderPage();
 
-    expect(mockUseDisplayedFavouriteRooms).toHaveBeenLastCalledWith(
-      "",
-      "alphabetical",
-      false
-    );
+    expect(mockUseDisplayedRooms).toHaveBeenCalledWith({
+      query: "",
+      sort: "alphabetical",
+      availableOnly: false,
+      favouritesOnly: true,
+    });
   });
 
   it("hands the favourite rooms to the list", () => {
-    mockUseDisplayedFavouriteRooms.mockReturnValue([
+    mockUseDisplayedRooms.mockReturnValue([
       { id: "K-J17-101", name: "Ainsworth 101" },
     ]);
 
@@ -129,7 +137,7 @@ describe("Favourites page", () => {
   });
 
   it("passes undefined to the list while the rooms are loading", () => {
-    mockUseDisplayedFavouriteRooms.mockReturnValue(undefined);
+    mockUseDisplayedRooms.mockReturnValue(undefined);
 
     renderPage();
 

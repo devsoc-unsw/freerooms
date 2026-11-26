@@ -18,10 +18,13 @@ import React, { useCallback } from "react";
 // Filters shown as a slider. Rest are a checklist.
 const SLIDER_KEYS: (keyof Filters)[] = ["capacity", "duration", "recurring"];
 
-const FilterBar = () => {
+const FilterBar = ({ keys }: { keys?: (keyof Filters)[] }) => {
   // Get filters from Redux
   const dispatch = useDispatch();
   const filters = useSelector(selectFilters);
+  const dropdowns = keys
+    ? filterBarDropdown.filter((dropdown) => keys.includes(dropdown.key))
+    : filterBarDropdown;
 
   const handleValueChange = useCallback(
     (key: keyof Filters) => (value: string | null) => {
@@ -45,7 +48,7 @@ const FilterBar = () => {
       title="Filters"
       onReset={() => dispatch(clearFilters())}
     >
-      {filterBarDropdown.map((dropdown) =>
+      {dropdowns.map((dropdown) =>
         SLIDER_KEYS.includes(dropdown.key) ? (
           <FilterSlider
             key={dropdown.key}

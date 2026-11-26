@@ -7,12 +7,12 @@ import SortBar from "@frontend/components/filters/SortBar";
 import BuildingDrawer from "@frontend/components/map/BuildingDrawer";
 import RoomCardList from "@frontend/components/rooms/RoomCardList";
 import SearchBar from "@frontend/components/search/SearchBar";
+import PageContainer from "@frontend/components/ui/PageContainer";
+import TopBar from "@frontend/components/ui/TopBar";
 import TopBarGroup from "@frontend/components/ui/TopBarGroup";
 import useQuerySort from "@frontend/hooks/query/useQuerySort";
-import useDisplayedFavouriteRooms from "@frontend/hooks/rooms/useDisplayedFavouriteRooms";
-import { NO_START_TIME, roomSortBarDropdown } from "@frontend/utils/constants";
-import Container from "@mui/material/Container";
-import Stack from "@mui/material/Stack";
+import useDisplayedRooms from "@frontend/hooks/rooms/useDisplayedRooms";
+import { BROWSE_VIEWS, NO_START_TIME } from "@frontend/utils/constants";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -22,7 +22,8 @@ import { parseAsString, useQueryState } from "nuqs";
 import React, { Suspense } from "react";
 
 const Favourites = () => {
-  const [sort, setSort] = useQuerySort(roomSortBarDropdown);
+  const { sortOptions, sortTitle } = BROWSE_VIEWS.rooms;
+  const [sort, setSort] = useQuerySort(sortOptions);
   const [query, setQuery] = React.useState<string>("");
   const [start, setStart] = useQueryState(
     // start time set by default. clearing start time shows all favourites, and updates in the URL
@@ -32,10 +33,15 @@ const Favourites = () => {
   const startIsSet = start !== NO_START_TIME;
 
   const [date] = useQueryState("date", parseAsString.withDefault(""));
-  const favouriteRooms = useDisplayedFavouriteRooms(query, sort, startIsSet);
+  const favouriteRooms = useDisplayedRooms({
+    query,
+    sort,
+    availableOnly: startIsSet,
+    favouritesOnly: true,
+  });
 
   return (
-    <Container maxWidth={false}>
+    <PageContainer maxWidth={false}>
       <FeedbackButton />
       <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enAU}>
         <Tiles>
@@ -51,17 +57,7 @@ const Favourites = () => {
               Favourite Rooms
             </Typography>
           </AlignedWithSearchBar>
-          <Stack
-            direction={{ xs: "column", sm: "row" }}
-            sx={{
-              justifyContent: { xs: "center", sm: "space-between" },
-              alignItems: "center",
-              marginTop: (theme) => `${theme.space.sm}px`,
-              marginBottom: (theme) => `${theme.space.sm}px`,
-              flexWrap: { sm: "wrap", md: "nowrap" },
-              width: "100%",
-            }}
-          >
+          <TopBar>
             <SearchBar
               setQuery={setQuery}
               placeholder="Search for favourite rooms"
@@ -72,8 +68,8 @@ const Favourites = () => {
               <SortBar
                 setSort={setSort}
                 sort={sort}
-                options={roomSortBarDropdown}
-                title="Room Sort"
+                options={sortOptions}
+                title={sortTitle}
               />
               <TimeBar
                 startIsSet={startIsSet}
@@ -82,7 +78,7 @@ const Favourites = () => {
                 }
               />
             </TopBarGroup>
-          </Stack>
+          </TopBar>
           <AlignedWithSearchBar>
             <RoomCardList
               rooms={favouriteRooms}
@@ -97,7 +93,7 @@ const Favourites = () => {
         </Tiles>
       </LocalizationProvider>
       <BuildingDrawer date={date} />
-    </Container>
+    </PageContainer>
   );
 };
 
@@ -114,13 +110,12 @@ const Tiles = styled("div")(({ theme }) => ({
   flexDirection: "column",
   flexGrow: 1,
   alignItems: "center",
-  padding: theme.spacing(0, 0, 1, 0),
+  paddingBottom: theme.space.sm,
 }));
 
-const AlignedWithSearchBar = styled("div")(({ theme }) => ({
+const AlignedWithSearchBar = styled("div")({
   width: "100%",
   boxSizing: "border-box",
-  [theme.breakpoints.up("sm")]: { paddingLeft: theme.space.md },
-}));
+});
 
 export default Page;

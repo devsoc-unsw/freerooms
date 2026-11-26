@@ -15,12 +15,13 @@ const RoomBackButton = () => {
   const currentBuilding = useSelector(selectCurrentBuilding);
 
   const handleBackButton = () => {
-    if (router.back() === undefined) {
-      router.push("/allRooms");
-    } else {
-      router.back();
-      dispatch(setCurrentBuilding(currentBuilding));
+    // Opened directly (new tab, pasted link)
+    if (window.history.length <= 1) {
+      router.push("/browse");
+      return;
     }
+    router.back();
+    dispatch(setCurrentBuilding(currentBuilding));
   };
 
   return (

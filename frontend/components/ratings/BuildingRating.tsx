@@ -13,6 +13,8 @@ export default function BuildingRating({
         position: "relative",
         display: "inline-block",
         color: "var(--colour-rating-empty)",
+        fontSize: 22,
+        lineHeight: 1,
       }}
     >
       <span aria-label="rating">{content}</span>

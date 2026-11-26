@@ -1,59 +1,48 @@
 import RoomAvailability from "@frontend/components/rooms/RoomAvailability";
-import useAllRoomRatingsInBuilding from "@frontend/hooks/ratings/useRoomRatingsInBuilding";
+import useBuilding from "@frontend/hooks/buildings/useBuilding";
+import useFavourites from "@frontend/hooks/rooms/useFavourites";
 import useRoom from "@frontend/hooks/rooms/useRoom";
+import useRoomAvailabilityReason from "@frontend/hooks/rooms/useRoomAvailabilityReason";
 import roomPhotos from "@frontend/public/room-photos.json";
+import { DRAWER_ROOM_TILE_OVERLAY_OPACITY } from "@frontend/utils/constants";
 import getRoomHref from "@frontend/utils/getRoomHref";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { Typography, TypographyProps } from "@mui/material";
-import Box, { BoxProps } from "@mui/material/Box";
-import Rating from "@mui/material/Rating";
-import Stack from "@mui/material/Stack";
+import { getRoomLocationLabel } from "@frontend/utils/roomLocation";
+import ArrowForwardOutlinedIcon from "@mui/icons-material/ArrowForwardOutlined";
+import FavouriteIcon from "@mui/icons-material/Favorite";
+import FavouriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
+import { IconButton, Stack, Typography } from "@mui/material";
 import { alpha, styled } from "@mui/material/styles";
 import { RoomStatus } from "common/types";
 import Link from "next/link";
 import React from "react";
 
-interface IndiviRoomBoxProps extends BoxProps {
-  bgImage: string;
-}
-
-const IndiviRoomBox = styled(Box, {
+const RoomTile = styled(Link, {
   shouldForwardProp: (prop) => prop !== "bgImage",
-})<IndiviRoomBoxProps>(({ theme, bgImage }) => ({
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "space-between",
-  alignItems: "center",
-  borderRadius: theme.radius.card,
-  height: 90,
-  fontSize: 20,
-  fontWeight: 500,
-  backgroundColor: "transparent",
-  backgroundImage: `linear-gradient(${alpha(theme.colours.neutral.black, 0.6)}, ${alpha(theme.colours.neutral.black, 0.6)}), ${bgImage}`,
-  backgroundSize: "cover",
-  backgroundPosition: "center",
-  backgroundRepeat: "no-repeat",
-  backgroundBlendMode: "darken",
-  color: theme.colours.text.onImage,
-  padding: theme.spacing(2, 2, 2, 3),
-  margin: theme.spacing(1.5, 1),
-  "&:hover": {
-    border: "1px solid",
-    borderColor: theme.palette.primary.main,
-    cursor: "pointer",
-  },
-}));
-
-const RoomBoxHeading = styled(Typography)<TypographyProps>(() => ({
-  fontSize: 16,
-  fontWeight: 500,
-  whiteSpace: "nowrap",
-}));
-
-const RoomBoxSubheading = styled(Typography)<TypographyProps>(() => ({
-  fontSize: 12,
-  fontWeight: 400,
-}));
+})<{ bgImage: string }>(({ theme, bgImage }) => {
+  const overlay = alpha(
+    theme.colours.surface.paper,
+    DRAWER_ROOM_TILE_OVERLAY_OPACITY
+  );
+  return {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "stretch",
+    gap: theme.space.sm,
+    padding: theme.space.md,
+    minHeight: theme.sizes.drawerRoomTile.minHeight,
+    borderRadius: theme.radius.card,
+    border: `1px solid ${theme.colours.border.default}`,
+    backgroundImage: `linear-gradient(${overlay}, ${overlay}), ${bgImage}`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    color: theme.colours.text.primary,
+    textDecoration: "none",
+    "&:hover": { borderColor: theme.palette.primary.main },
+  };
+});
 
 export interface RoomAvailabilityBoxProps {
   roomNumber: string;
@@ -68,56 +57,89 @@ const RoomAvailabilityBox: React.FC<RoomAvailabilityBoxProps> = ({
   buildingId,
   date,
 }) => {
-  const { room } = useRoom(`${buildingId}-${roomNumber}`);
+  const roomId = `${buildingId}-${roomNumber}`;
+  const { room } = useRoom(roomId);
+  const { building } = useBuilding(buildingId);
+  const { isFavourite, toggleFavourite } = useFavourites();
 
-  const { data } = useAllRoomRatingsInBuilding(buildingId ? buildingId : "");
-  const roomRating = data?.find(
-    (rating) => rating.roomId === `${buildingId}-${roomNumber}`
-  );
-  const ratingValue = (() => {
-    // round rating to nearest .5 if a rating exists
-    if (!roomRating) return 0;
-    const rating = roomRating.overallRating;
-    const frac = rating % 1;
-    return frac >= 0.3 && frac <= 0.7
-      ? Math.floor(rating) + 0.5
-      : Math.round(rating);
-  })();
+  const { reason, until } = useRoomAvailabilityReason(roomId, roomStatus);
 
-  const key = `${buildingId}-${roomNumber}` as keyof typeof roomPhotos;
-  const photos = roomPhotos[key];
+  const photos = roomPhotos[roomId as keyof typeof roomPhotos];
   const photoURL =
     photos?.length > 0
       ? photos[0]
       : `/assets/building_photos/${buildingId}.webp`;
 
-  const roomHref = getRoomHref(`${buildingId}-${roomNumber}`, date);
+  const favourite = isFavourite(roomId);
+  const location = getRoomLocationLabel(roomId, buildingId, building?.name);
 
   return (
-    <Link href={roomHref}>
-      <IndiviRoomBox bgImage={`url(${photoURL})`}>
-        <Stack direction="column">
-          <RoomBoxHeading> {roomNumber} </RoomBoxHeading>
-          <Stack direction="row" spacing={0.3} aria-label="5-star-info">
-            <Typography sx={{ fontSize: 12, fontWeight: 400 }}>
-              {ratingValue}
-            </Typography>
-            <Rating readOnly value={ratingValue} size="small" precision={0.5} />
-          </Stack>
-          <RoomBoxSubheading>{!room ? "" : room.name}</RoomBoxSubheading>
-        </Stack>
+    <RoomTile href={getRoomHref(roomId, date)} bgImage={`url(${photoURL})`}>
+      <Stack
+        sx={(theme) => ({
+          minWidth: 0,
+          justifyContent: "center",
+          gap: `${theme.space.xs}px`,
+        })}
+      >
+        <Typography variant="roomCardTitle" noWrap>
+          {room?.name ?? roomNumber}
+        </Typography>
+
         <Stack
           direction="row"
-          sx={{
-            justifyContent: "space-around",
+          sx={(theme) => ({
             alignItems: "center",
+            gap: `${theme.space.xs}px`,
+            minWidth: 0,
+          })}
+        >
+          <PlaceOutlinedIcon
+            sx={(theme) => ({
+              fontSize: theme.sizes.icon.sm,
+              color: theme.colours.text.secondary,
+            })}
+          />
+          <Typography
+            variant="metadata"
+            color="text.secondary"
+            noWrap
+            sx={{ minWidth: 0 }}
+          >
+            {location}
+          </Typography>
+        </Stack>
+
+        <RoomAvailability
+          roomStatus={roomStatus}
+          variant="pill"
+          reason={reason}
+          until={until}
+        />
+      </Stack>
+
+      <Stack sx={{ justifyContent: "space-between", alignItems: "flex-end" }}>
+        <IconButton
+          size="small"
+          aria-label={favourite ? "Remove as favourite" : "Add as favourite"}
+          onClick={(event) => {
+            // the button sits inside the link, so don't follow the link
+            event.preventDefault();
+            event.stopPropagation();
+            toggleFavourite(roomId);
           }}
         >
-          <RoomAvailability roomStatus={roomStatus} />
-          <ChevronRightIcon sx={{ color: "inherit" }} />
-        </Stack>
-      </IndiviRoomBox>
-    </Link>
+          {favourite ? (
+            <FavouriteIcon color="primary" fontSize="small" />
+          ) : (
+            <FavouriteBorderIcon fontSize="small" />
+          )}
+        </IconButton>
+        <ArrowForwardOutlinedIcon
+          sx={(theme) => ({ fontSize: theme.sizes.icon.md })}
+        />
+      </Stack>
+    </RoomTile>
   );
 };
 

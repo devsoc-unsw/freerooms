@@ -6,6 +6,8 @@ import useAllBuildingRatings from "@frontend/hooks/ratings/useAllBuildingRatings
 import { useDispatch } from "@frontend/redux/hooks";
 import { setCurrentBuilding } from "@frontend/redux/slices/currentBuildingSlice";
 import { getNumFreerooms } from "@frontend/utils/utils";
+import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
+import TagOutlinedIcon from "@mui/icons-material/TagOutlined";
 import { Typography, TypographyProps } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
@@ -23,7 +25,7 @@ const FAILED = -1;
 const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  height: 379,
+  height: 365,
   borderRadius: 12,
   border: `1px solid ${theme.colours.border.default}`,
   backgroundColor: theme.colours.surface.paper,
@@ -35,6 +37,7 @@ const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
     height: 200,
   },
   cursor: "pointer",
+  "&:hover .building-card-image": { transform: "scale(1.05)" },
 }));
 
 const ImageBox = styled(Box)<BoxProps>(() => ({
@@ -42,14 +45,15 @@ const ImageBox = styled(Box)<BoxProps>(() => ({
   height: 249,
   borderTopLeftRadius: 12,
   borderTopRightRadius: 12,
+  overflow: "hidden",
   cursor: "pointer",
 }));
 
-const StyledImage = styled(Image)<ImageProps>(() => ({
-  transition: "all 0.1s ease-in-out",
-  "&:hover": {
-    opacity: 0.7,
-  },
+const StyledImage = styled(Image)<ImageProps>(({ theme }) => ({
+  transition: theme.transitions.create("transform", {
+    duration: theme.transitions.duration.standard,
+  }),
+  "@media (prefers-reduced-motion: reduce)": { transition: "none" },
 }));
 
 const StatusBox = styled(Box)<BoxProps>(({ theme }) => ({
@@ -85,20 +89,35 @@ const InfoFooterBox = styled(Box)<BoxProps>(() => ({
 }));
 
 const DetailPill = styled(Box)<BoxProps>(({ theme }) => ({
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
   borderRadius: 100,
   gap: 6,
-  padding: 6,
+  padding: theme.space.xs,
   paddingLeft: 12,
   paddingRight: 12,
   backgroundColor: theme.colours.accent.quaternary,
 }));
 
+const DetailPillIcon = styled(Typography)<TypographyProps>(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  color: theme.colours.accent.primary,
+  "& svg": {
+    fontSize: 17,
+    display: "block",
+  },
+}));
+
 const DetailPillText = styled(Typography)<TypographyProps>(({ theme }) => ({
   fontSize: 12,
-  fontWeight: 500,
-  color: theme.colours.text.primary,
-  paddingBottom: "2px",
-  gap: 10,
+  fontWeight: 550,
+  lineHeight: 0.3,
+  color: theme.colours.accent.primary,
+  display: "flex",
+  alignItems: "center",
 }));
 
 // Show only building name and rating for smaller screens
@@ -143,6 +162,7 @@ const BuildingCard: React.FC<{
         ) : (
           <>
             <StyledImage
+              className="building-card-image"
               alt={`Image of ${buildingId}`}
               src={`/assets/building_photos/${buildingId}.webp`}
               fill={true}
@@ -298,10 +318,16 @@ const BuildingCard: React.FC<{
                 }}
               >
                 <DetailPill>
+                  <DetailPillIcon>
+                    <TagOutlinedIcon />
+                  </DetailPillIcon>
                   <DetailPillText>{buildingId}</DetailPillText>
                 </DetailPill>
 
                 <DetailPill>
+                  <DetailPillIcon>
+                    <PlaceOutlinedIcon />
+                  </DetailPillIcon>
                   <DetailPillText>{getLocation(buildingId!)}</DetailPillText>
                 </DetailPill>
               </Stack>

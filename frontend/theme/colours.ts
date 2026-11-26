@@ -93,7 +93,7 @@ const calendarColours = {
   },
 } as const;
 
-const statusSoon = "#FFA600";
+const statusSoon = "#E99600";
 const statusSoonBackground = "rgba(255, 166, 0, 0.2)";
 const ratingDisplay = "#D4613C";
 

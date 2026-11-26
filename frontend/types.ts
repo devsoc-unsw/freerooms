@@ -36,20 +36,14 @@ export type RoomSearchOption = {
   room: Room;
 };
 
+// Which list the browse page is showing
+export type BrowseView = "buildings" | "rooms";
+
 ///////////////////////////////////////////////////////////////
 // Other
 
 // Filters for /rooms endpoint
 export type Filters = {
-  capacity?: string;
-  usage?: string;
-  location?: string;
-  duration?: string;
-  recurring?: string;
-  id?: string;
-};
-
-export type AllRoomsFilters = {
   capacity?: string;
   usage?: string;
   location?: string;

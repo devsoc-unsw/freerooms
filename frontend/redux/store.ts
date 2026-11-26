@@ -1,4 +1,3 @@
-import allRoomsFilterSlice from "@frontend/redux/slices/allRoomsFilterSlice";
 import currentBuildingReducer from "@frontend/redux/slices/currentBuildingSlice";
 import datetimeReducer from "@frontend/redux/slices/datetimeSlice";
 import filtersReducer from "@frontend/redux/slices/filtersSlice";
@@ -11,7 +10,6 @@ const rootReducer = combineReducers({
   datetime: datetimeReducer,
   filters: filtersReducer,
   searchOpen: searchOpenSlice,
-  allRoomsFilters: allRoomsFilterSlice,
 });
 
 export const setupStore = (preloadedState?: Partial<RootState>) => {

@@ -14,13 +14,18 @@ const TopBarGroup = ({ children }: { children: ReactNode }) => {
     <TopBarGroupContext.Provider value={element}>
       <Box
         ref={setElement}
-        sx={{
+        sx={(theme) => ({
           display: "flex",
           alignItems: "center",
           alignSelf: "center",
           justifyContent: "space-between",
-          gap: (theme) => `${theme.space.md}px`,
-        }}
+          gap: `${theme.space.md}px`,
+          width: "100%",
+          [theme.breakpoints.up("sm")]: { flex: "1 1 100%", width: "auto" },
+          [theme.breakpoints.up(theme.sizes.toolbar.singleRowMinWidth)]: {
+            flex: "0 0 auto",
+          },
+        })}
       >
         {children}
       </Box>
