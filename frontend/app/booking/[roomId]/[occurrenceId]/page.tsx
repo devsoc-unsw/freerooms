@@ -5,6 +5,7 @@ import BookingHeader from "@frontend/components/booking/BookingHeader";
 import BookingModuleDetails from "@frontend/components/booking/BookingModuleDetails";
 import BookingRoomActions from "@frontend/components/booking/BookingRoomActions";
 import BookingTimeSummary from "@frontend/components/booking/BookingTimeSummary";
+import RelatedBookings from "@frontend/components/booking/RelatedBookings";
 import RoomBackButton from "@frontend/components/navigation/RoomBackButton";
 import RoomMetadata from "@frontend/components/rooms/RoomMetadata";
 import RoomPhotoCarousel from "@frontend/components/rooms/RoomPhotoCarousel";
@@ -12,9 +13,10 @@ import useBookingDetails from "@frontend/hooks/bookings/useBookingDetails";
 import useRelatedBookings from "@frontend/hooks/bookings/useRelatedBookings";
 import useBuilding from "@frontend/hooks/buildings/useBuilding";
 import useRoomRatings from "@frontend/hooks/ratings/useRoomRatings";
-import useRoom from "@frontend/hooks/rooms/useRoom";
+import useRooms from "@frontend/hooks/rooms/useRooms";
 import roomPhotos from "@frontend/public/room-photos.json";
 import { sizes, space } from "@frontend/theme";
+import getBookingHref from "@frontend/utils/getBookingHref";
 import { getBuildingIdFromRoomId } from "@frontend/utils/utils";
 import { Button, Container, Skeleton, Stack, Typography } from "@mui/material";
 import { useParams } from "next/navigation";
@@ -30,7 +32,8 @@ export default function BookingPage() {
     occurrenceId
   );
 
-  const { room } = useRoom(roomId);
+  const { rooms } = useRooms();
+    const room = rooms?.[roomId];
 
   const { data: ratings } = useRoomRatings(room?.id);
 
@@ -48,13 +51,8 @@ export default function BookingPage() {
     relatedBookings,
     error: relatedBookingsError,
     isLoading: relatedBookingsLoading,
+    mutate: retryRelatedBookings,
   } = useRelatedBookings(booking?.eventId);
-
-  const otherBookings = relatedBookings?.filter(
-    (relatedBooking) =>
-      relatedBooking.roomId !== roomId ||
-      relatedBooking.occurrenceId !== occurrenceId
-  );
 
   return (
     <Container maxWidth="xl">
@@ -118,14 +116,34 @@ export default function BookingPage() {
 
             <BookingModuleDetails modules={booking.bookingModules} />
 
-            {relatedBookingsLoading ? (
-              <Typography>Loading other sessions...</Typography>
-            ) : relatedBookingsError ? (
-              <Typography>Failed to load other sessions</Typography>
-            ) : (
-              <Typography>
-                Other sessions: {otherBookings?.length ?? 0}{" "}
-              </Typography>
+            {booking.eventId && (
+                <>
+                    {relatedBookingsLoading && !relatedBookings ? (
+                        <Skeleton variant="rounded" height={120} />
+                    ) : relatedBookingsError && !relatedBookings ? (
+                        <Stack
+                            spacing={space.sm}
+                            sx={{ alignItems: "flex-start" }}
+                        >
+                            <Typography color="text.secondary">
+                                Failed to load related sessions
+                            </Typography>
+
+                            <Button
+                                onClick={() => void retryRelatedBookings()}
+                            >
+                                Retry
+                            </Button>
+                        </Stack>
+                    ) : relatedBookings ? (
+                        <RelatedBookings
+                            key={getBookingHref(roomId, occurrenceId)}
+                            booking={booking}
+                            bookings={relatedBookings}
+                            rooms={rooms}
+                        />
+                    ) : null}
+                </>
             )}
           </>
         )}
