@@ -35,6 +35,7 @@ export const sizes = {
     buttonWidth: 115, // Filters/Sort/Time buttons
     viewToggleWidth: 300, // Building or Room View Toggle
     searchMinWidth: 240,
+    singleRowMinWidth: 1024,
     menuWidth: 400,
     wideMenuWidth: 600,
   },

@@ -113,10 +113,9 @@ const Tiles = styled("div")(({ theme }) => ({
   paddingBottom: theme.space.sm,
 }));
 
-const AlignedWithSearchBar = styled("div")(({ theme }) => ({
+const AlignedWithSearchBar = styled("div")({
   width: "100%",
   boxSizing: "border-box",
-  [theme.breakpoints.up("sm")]: { paddingLeft: theme.space.md },
-}));
+});
 
 export default Page;

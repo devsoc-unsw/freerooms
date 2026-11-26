@@ -21,7 +21,10 @@ const TopBarGroup = ({ children }: { children: ReactNode }) => {
           justifyContent: "space-between",
           gap: `${theme.space.md}px`,
           width: "100%",
-          [theme.breakpoints.up("sm")]: { width: "auto", marginLeft: "auto" },
+          [theme.breakpoints.up("sm")]: { flex: "1 1 100%", width: "auto" },
+          [theme.breakpoints.up(theme.sizes.toolbar.singleRowMinWidth)]: {
+            flex: "0 0 auto",
+          },
         })}
       >
         {children}

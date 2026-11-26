@@ -15,13 +15,12 @@ const Track = styled("div")(({ theme }) => ({
   position: "relative",
   display: "flex",
   flexShrink: 0,
-  width: theme.sizes.toolbar.viewToggleWidth,
-  maxWidth: "100%",
+  width: "100%",
   height: theme.sizes.control.xl,
-  margin: `${theme.space.sm}px 0`,
   border: `${theme.sizes.border.control}px solid ${theme.colours.border.default}`,
   borderRadius: theme.radius.lg,
   overflow: "hidden",
+  [theme.breakpoints.up("sm")]: { width: theme.sizes.toolbar.viewToggleWidth },
 }));
 
 // Highlighted/Selected half

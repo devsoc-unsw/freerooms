@@ -36,10 +36,6 @@ const SearchBar = ({
       sx={(theme) => ({
         width: "100%",
         minWidth: 0,
-        marginTop: `${theme.space.sm}px`,
-        marginBottom: `${theme.space.sm}px`,
-        marginLeft: { sm: `${theme.space.md}px` },
-        marginRight: { sm: `${theme.space.md}px` },
         flex: { sm: `1 1 ${theme.sizes.toolbar.searchMinWidth}px` },
         order: { xs: -1, sm: 0 },
       })}
