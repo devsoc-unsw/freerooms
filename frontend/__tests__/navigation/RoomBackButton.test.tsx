@@ -26,8 +26,6 @@ describe("RoomBackButton", () => {
     (useSelector as unknown as jest.Mock).mockReturnValue({});
     (useDispatch as unknown as jest.Mock).mockReturnValue(jest.fn());
     (useRouter as unknown as jest.Mock).mockReturnValue(router);
-
-    renderBackButton();
   });
 
   afterEach(() => {
@@ -48,12 +46,16 @@ describe("RoomBackButton", () => {
     );
 
   test("back button appears on screen", () => {
+    renderBackButton();
+
     const backButton = screen.getByRole("button", { name: "back" });
     expect(backButton).toBeInTheDocument();
   });
 
   test("goes back when there is a page to go back to", () => {
     jest.spyOn(window.history, "length", "get").mockReturnValue(2);
+
+    renderBackButton();
 
     fireEvent.click(screen.getByRole("button", { name: "back" }));
 
@@ -62,6 +64,10 @@ describe("RoomBackButton", () => {
   });
 
   test("goes to Browse when the room was opened directly", () => {
+    jest.spyOn(window.history, "length", "get").mockReturnValue(1);
+
+    renderBackButton();
+
     fireEvent.click(screen.getByRole("button", { name: "back" }));
 
     expect(router.push).toHaveBeenCalledWith("/browse");

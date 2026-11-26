@@ -485,7 +485,7 @@ const BookingCalendar: React.FC<{
               borderColor: theme.colours.accent.primary,
               opacity: 0.8,
               cursor:
-                booking.roomId && booking.occurenceId ? "pointer" : "default",
+                booking.roomId && booking.occurrenceId ? "pointer" : "default",
             },
           })}
           slotGroupPropGetter={() => ({ style: { minHeight: "50px" } })}
