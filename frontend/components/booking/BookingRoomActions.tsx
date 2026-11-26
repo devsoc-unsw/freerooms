@@ -38,6 +38,7 @@ const BookingRoomActions = ({
         fullWidth
         sx={(theme) => ({
           height: theme.sizes.roomNavigation.buttonHeight,
+          borderRadius: `${theme.radius.card}px`
         })}
       >
         View Room
