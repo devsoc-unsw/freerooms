@@ -25,21 +25,19 @@ describe("getBookingTypeLabel", () => {
 
 describe("getBookingHref", () => {
   it("creates a deterministic booking URL", () => {
-    expect(
-      getBookingHref("K-F17-LG3", "occurrence-123")
-    ).toBe("/booking/K-F17-LG3/occurrence-123");
+    expect(getBookingHref("K-F17-LG3", "occurrence-123")).toBe(
+      "/booking/K-F17-LG3/occurrence-123"
+    );
   });
 
   it("encodes identifiers", () => {
-    expect(
-      getBookingHref("room/123", "occurrence 456")
-    ).toBe("/booking/room%2F123/occurrence%20456");
+    expect(getBookingHref("room/123", "occurrence 456")).toBe(
+      "/booking/room%2F123/occurrence%20456"
+    );
   });
 
   it("distinguishes occurrences in different rooms", () => {
-    expect(
-      getBookingHref("K-D23-201", "occurrence-123")
-    ).not.toBe(
+    expect(getBookingHref("K-D23-201", "occurrence-123")).not.toBe(
       getBookingHref("K-D23-203", "occurrence-123")
     );
   });

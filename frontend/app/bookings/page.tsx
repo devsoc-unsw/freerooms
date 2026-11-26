@@ -87,9 +87,7 @@ export default function BookingsPage() {
           style={{ marginBottom: space.lg }}
         >
           <h2>
-            <Link
-              href={getBookingHref(booking.roomId, booking.occurrenceId)}
-            >
+            <Link href={getBookingHref(booking.roomId, booking.occurrenceId)}>
               {booking.name}
             </Link>
           </h2>
