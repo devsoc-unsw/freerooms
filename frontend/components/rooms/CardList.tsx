@@ -19,6 +19,7 @@ const CardGrid = styled("div")(() => ({
   display: "grid",
   gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
   gridGap: "20px",
+  "& > *": { minWidth: 0 },
 }));
 
 const getBuildingPosition = (building: Building): number | null => {

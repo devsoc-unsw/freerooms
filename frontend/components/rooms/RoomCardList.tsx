@@ -17,11 +17,16 @@ type RoomCardListProps = {
 const CardGrid = styled("div")(({ theme }) => ({
   width: "100%",
   display: "grid",
-  gridTemplateColumns: "1fr",
+  gridTemplateColumns: "minmax(0, 1fr)",
   gap: theme.space.md,
   alignItems: "start",
-  [theme.breakpoints.up("sm")]: { gridTemplateColumns: "repeat(2, 1fr)" },
-  [theme.breakpoints.up("md")]: { gridTemplateColumns: "repeat(3, 1fr)" },
+  [theme.breakpoints.up("sm")]: {
+    gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+  },
+  [theme.breakpoints.up("md")]: {
+    gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+  },
+  "& > *": { minWidth: 0 },
 }));
 
 const EmptyState = styled(Typography)(({ theme }) => ({
