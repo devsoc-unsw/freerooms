@@ -1,7 +1,7 @@
 const { writeFileSync } = require("node:fs");
 const { stringify } = require("yaml");
 const { buildOpenAPIDocument } = require("express-zod-openapi-autogen");
-const { router } = require("src/index.ts");
+const { router } = require("./src/index.ts");
 
 const openapiDocument = buildOpenAPIDocument({
   routers: [router],
