@@ -11,6 +11,7 @@ import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import RoomOutlinedIcon from "@mui/icons-material/RoomOutlined";
 import SortByAlphaIcon from "@mui/icons-material/SortByAlpha";
+import StartIcon from "@mui/icons-material/Start";
 import TimelapseOutlinedIcon from "@mui/icons-material/TimelapseOutlined";
 import WatchLaterOutlinedIcon from "@mui/icons-material/WatchLaterOutlined";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -46,8 +47,8 @@ const SORT_ICONS: Record<string, SvgIconComponent> = {
   reverseAlphabetical: SortByAlphaIcon,
   lowerToUpper: ArrowUpwardIcon,
   upperToLower: ArrowDownwardIcon,
-  ascendingStart: WatchLaterOutlinedIcon,
-  descendingStart: WatchLaterOutlinedIcon,
+  ascendingStart: StartIcon,
+  descendingStart: StartIcon,
   plannedSize: GroupsOutlinedIcon,
   remainingTime: TimelapseOutlinedIcon,
 };
@@ -101,9 +102,11 @@ const SortBar: React.FC<{
                   fontSize="small"
                   sx={{
                     transform:
-                      option.value === "reverseAlphabetical"
-                        ? "scaleY(-1)"
-                        : undefined,
+                      option.value === "descendingStart"
+                        ? "scaleX(-1)"
+                        : option.value === "reverseAlphabetical"
+                          ? "scaleY(-1)"
+                          : undefined,
                   }}
                 />
               )}

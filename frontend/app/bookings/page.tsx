@@ -156,13 +156,13 @@ const Bookings = () => {
                 options={bookingsSortBarDropdown}
                 title="Booking Sort"
                 resetSort="ascendingStart"
-                />
+              />
               <TimeBar
                 startIsSet={startIsSet}
                 onStartIsSetChange={(isSet) =>
                   setStart(isSet ? null : NO_START_TIME)
                 }
-                />
+              />
             </TopBarGroup>
           </TopBar>
           <AlignedWithSearchBar>
