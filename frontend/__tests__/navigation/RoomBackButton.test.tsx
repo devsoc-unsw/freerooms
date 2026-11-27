@@ -42,7 +42,7 @@ describe("RoomBackButton", () => {
         })}
       >
         <RoomBackButton fallbackHref={fallbackHref} />
-      </Provider>,
+      </Provider>
     );
 
   test("back button appears on screen", () => {

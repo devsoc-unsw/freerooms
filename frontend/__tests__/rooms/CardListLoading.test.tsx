@@ -1,7 +1,7 @@
 import CardList from "@frontend/components/rooms/CardList";
 import useBuildings from "@frontend/hooks/buildings/useBuildings";
-import { render } from "@testing-library/react";
 import useStatus from "@frontend/hooks/rooms/useStatus";
+import { render } from "@testing-library/react";
 import React from "react";
 
 // CardList animates the grid with framer-motion; stub it so exiting children
@@ -17,7 +17,7 @@ jest.mock("motion/react", () => ({
       get:
         () =>
         ({ children }: { children?: React.ReactNode }) => <div>{children}</div>,
-    },
+    }
   ),
 }));
 jest.mock("@frontend/hooks/buildings/useBuildings", () => ({
@@ -69,7 +69,7 @@ describe("CardList loading state", () => {
     mockUseBuildings.mockReturnValue({ buildings: undefined });
 
     const { container, rerender } = render(
-      <CardList sort="alphabetical" query="" />,
+      <CardList sort="alphabetical" query="" />
     );
 
     const count = (testid: string) =>
@@ -79,7 +79,7 @@ describe("CardList loading state", () => {
     // so each renders its own skeleton (CSS decides which is visible).
     expect(count("building-card-placeholder")).toBeGreaterThan(0);
     expect(count("building-card-mobile-placeholder")).toBe(
-      count("building-card-placeholder"),
+      count("building-card-placeholder")
     );
     expect(count("building-card")).toBe(0);
     expect(count("building-card-mobile")).toBe(0);
@@ -120,12 +120,10 @@ describe("CardList loading state", () => {
       },
     });
 
-    const { container } = render(
-      <CardList sort="alphabetical" query="" />,
-    );
+    const { container } = render(<CardList sort="alphabetical" query="" />);
 
     expect(
-      container.querySelectorAll('[data-testid="building-card"]'),
+      container.querySelectorAll('[data-testid="building-card"]')
     ).toHaveLength(1);
   });
 
@@ -140,12 +138,10 @@ describe("CardList loading state", () => {
       status: {},
     });
 
-    const { container } = render(
-      <CardList sort="alphabetical" query="" />,
-    );
+    const { container } = render(<CardList sort="alphabetical" query="" />);
 
     expect(
-      container.querySelectorAll('[data-testid="building-card"]'),
+      container.querySelectorAll('[data-testid="building-card"]')
     ).toHaveLength(0);
   });
 });

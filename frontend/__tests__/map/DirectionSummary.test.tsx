@@ -4,7 +4,7 @@ import type { RouteSummary } from "@frontend/hooks/map/useMapboxRoute";
 import { fireEvent, screen } from "@testing-library/react";
 
 const createSummary = (
-  overrides: Partial<RouteSummary> = {},
+  overrides: Partial<RouteSummary> = {}
 ): RouteSummary => ({
   destinationBuildingId: "K-J17",
   destinationName: "Electrical Engineering Building",
@@ -19,7 +19,7 @@ describe("DirectionsSummary", () => {
 
     expect(screen.getByText("9 min (735 m)")).toBeInTheDocument();
     expect(
-      screen.getByText("Walking to Electrical Engineering Building"),
+      screen.getByText("Walking to Electrical Engineering Building")
     ).toBeInTheDocument();
   });
 
@@ -28,7 +28,7 @@ describe("DirectionsSummary", () => {
       <DirectionsSummary
         summary={createSummary({ distanceMeters: 1500 })}
         onClose={() => {}}
-      />,
+      />
     );
 
     expect(screen.getByText("9 min (1.5 km)")).toBeInTheDocument();

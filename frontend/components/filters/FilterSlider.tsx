@@ -19,7 +19,7 @@ const FilterSlider = ({
   const indexOf = (v?: string) =>
     Math.max(
       0,
-      options.findIndex((option) => option.value === v),
+      options.findIndex((option) => option.value === v)
     );
 
   const [prevValueProp, setPrevValueProp] = useState(value);

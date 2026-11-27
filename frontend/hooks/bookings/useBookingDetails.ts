@@ -19,7 +19,7 @@ const useBookingDetails = (roomId?: string, occurrenceId?: string) => {
       shouldRetryOnError: (error) =>
         !axios.isAxiosError(error) || error.response?.status !== 404,
       errorRetryCount: 2,
-    },
+    }
   );
 
   return {

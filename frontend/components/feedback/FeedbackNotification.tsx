@@ -21,7 +21,7 @@ const FeedbackNotification = () => {
 
     localStorage.setItem(
       "last-seen-feedback-notification",
-      Date.now().toString(),
+      Date.now().toString()
     );
 
     notification.info({

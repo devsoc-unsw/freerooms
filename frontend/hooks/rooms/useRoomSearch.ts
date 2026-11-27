@@ -36,7 +36,7 @@ const useRoomSearch = (rooms: Room[], buildings: Building[] | undefined) => {
       if (!q) return undefined;
       return new Set(fuse.search(q).map((result) => result.item.id));
     },
-    [fuse],
+    [fuse]
   );
 };
 

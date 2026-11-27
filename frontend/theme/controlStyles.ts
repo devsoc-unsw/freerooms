@@ -3,7 +3,7 @@ import type { CSSObject, Theme } from "@mui/material/styles";
 type ControlStyle = "base" | "primary" | "outlined" | "selected" | "text";
 
 export function getControlStyles(
-  theme: Theme,
+  theme: Theme
 ): Record<ControlStyle, CSSObject> {
   const colours = theme.colours;
 
@@ -15,7 +15,7 @@ export function getControlStyles(
         ["background-color", "border-color", "color"],
         {
           duration: theme.transitions.duration.shorter,
-        },
+        }
       ),
       "&.Mui-focusVisible": {
         outline: `2px solid ${colours.accent.primary}`,

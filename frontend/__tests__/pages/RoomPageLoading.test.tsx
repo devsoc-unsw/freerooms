@@ -47,12 +47,12 @@ describe("Room page loading state", () => {
     mockUseBuilding.mockReturnValue({ building: undefined });
 
     const { container, rerender, queryByText, getByText } = renderWithTheme(
-      <Page />,
+      <Page />
     );
 
     // loading = one placeholder per section, no room name yet
     expect(
-      container.querySelectorAll(".MuiSkeleton-root").length,
+      container.querySelectorAll(".MuiSkeleton-root").length
     ).toBeGreaterThan(0);
     expect(queryByText("Ainsworth 101")).not.toBeInTheDocument();
 

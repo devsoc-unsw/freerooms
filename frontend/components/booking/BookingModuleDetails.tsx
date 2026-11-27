@@ -22,7 +22,7 @@ const BookingModuleDetails = ({ modules }: BookingModuleDetailsProps) => {
       career: formatBookingCareer(module.career),
     }))
     .filter(
-      (module) => module.code || module.name || module.term || module.career,
+      (module) => module.code || module.name || module.term || module.career
     );
 
   if (validModules.length === 0) {

@@ -20,7 +20,7 @@ export function renderWithTheme(
   {
     wrapper: CustomWrapper,
     ...renderOptions
-  }: Omit<RenderOptions, "queries"> = {},
+  }: Omit<RenderOptions, "queries"> = {}
 ) {
   const theme = createAppTheme("light");
 
@@ -51,7 +51,7 @@ export default function renderWithRedux(
     store = setupStore(preloadedState),
     wrapper: CustomWrapper,
     ...renderOptions
-  }: ExtendedRenderOptions = {},
+  }: ExtendedRenderOptions = {}
 ) {
   function Wrapper({ children }: PropsWithChildren): React.JSX.Element {
     return (

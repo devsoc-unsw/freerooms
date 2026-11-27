@@ -15,7 +15,7 @@ describe("BookingHeader", () => {
       screen.getByRole("heading", {
         level: 1,
         name: booking.name,
-      }),
+      })
     ).toBeInTheDocument();
   });
 
@@ -31,11 +31,11 @@ describe("BookingHeader", () => {
         booking={booking}
         buildingName="June Griffith"
         roomName="Computer Lab 713"
-      />,
+      />
     );
 
     expect(
-      screen.getByText("June Griffith / Computer Lab 713"),
+      screen.getByText("June Griffith / Computer Lab 713")
     ).toBeInTheDocument();
   });
 
@@ -45,13 +45,13 @@ describe("BookingHeader", () => {
         booking={booking}
         buildingName="Rex Vowels Theatre"
         roomName="Rex Vowels Theatre"
-      />,
+      />
     );
 
     expect(screen.getByText("Rex Vowels Theatre")).toBeInTheDocument();
 
     expect(
-      screen.queryByText("Rex Vowels Theatre / Rex Vowels Theatre"),
+      screen.queryByText("Rex Vowels Theatre / Rex Vowels Theatre")
     ).not.toBeInTheDocument();
   });
 

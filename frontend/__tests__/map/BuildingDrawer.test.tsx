@@ -75,7 +75,7 @@ describe("BuildingDrawer", () => {
     renderWithRedux(<BuildingDrawer />, { preloadedState });
 
     expect(
-      screen.getByRole("button", { name: /get directions/i }),
+      screen.getByRole("button", { name: /get directions/i })
     ).toBeInTheDocument();
   });
 
@@ -85,10 +85,10 @@ describe("BuildingDrawer", () => {
     });
 
     expect(
-      screen.getByRole("button", { name: /get directions/i }),
+      screen.getByRole("button", { name: /get directions/i })
     ).toBeInTheDocument();
     expect(
-      screen.queryByRole("button", { name: /view on map/i }),
+      screen.queryByRole("button", { name: /view on map/i })
     ).not.toBeInTheDocument();
   });
 
@@ -113,7 +113,7 @@ describe("BuildingDrawer", () => {
         onGetDirections={onGetDirections}
         isDirectionsLoading={true}
       />,
-      { preloadedState },
+      { preloadedState }
     );
 
     const button = screen.getByRole("button", {

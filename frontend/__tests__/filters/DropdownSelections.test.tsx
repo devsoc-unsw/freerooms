@@ -31,7 +31,7 @@ describe("DropdownSelections", () => {
         canSelectMultiple={false}
         filters={{}}
         handleSelect={() => {}}
-      />,
+      />
     );
     const filterTitle = screen.getByText("Room Capacity");
     expect(filterTitle).toBeInTheDocument();

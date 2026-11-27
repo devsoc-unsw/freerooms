@@ -24,7 +24,7 @@ const recurringWeekItems: DropDownItem[] = Array.from(
       text: weeks === 1 ? "1 week" : `${weeks} weeks`,
       value: `${weeks}`,
     };
-  },
+  }
 );
 
 // Dropdown & items for FilterBar in building browse page

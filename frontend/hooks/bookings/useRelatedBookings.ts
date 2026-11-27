@@ -18,7 +18,7 @@ const useRelatedBookings = (eventId?: string | null) => {
     fetcher,
     {
       errorRetryCount: 2,
-    },
+    }
   );
 
   return {

@@ -7,14 +7,14 @@ const ROOMS = "rooms";
 const useBrowseView = (): [BrowseView, (view: BrowseView) => void] => {
   const [param, setParam] = useQueryState(
     "view",
-    parseAsString.withDefault(""),
+    parseAsString.withDefault("")
   );
 
   const view: BrowseView = param === ROOMS ? "rooms" : "buildings";
 
   const setView = useCallback(
     (next: BrowseView) => setParam(next === "rooms" ? ROOMS : null),
-    [setParam],
+    [setParam]
   );
 
   return [view, setView];

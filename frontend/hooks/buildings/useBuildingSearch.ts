@@ -7,7 +7,7 @@ import React from "react";
 
 const useBuildingSearch = (
   buildings: Building[] | undefined,
-  rooms: { [roomId: string]: Room } | undefined,
+  rooms: { [roomId: string]: Room } | undefined
 ) => {
   // One searchable entry per building: its name, code and aliases, plus the
   // code, name and abbreviation of each room currently listed for it
@@ -46,7 +46,7 @@ const useBuildingSearch = (
       if (!q || !fuse) return undefined;
       return new Set(fuse.search(q).map((result) => result.item.id));
     },
-    [fuse],
+    [fuse]
   );
 };
 

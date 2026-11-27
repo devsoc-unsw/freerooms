@@ -103,7 +103,7 @@ describe("useMapboxRoute", () => {
     const url = new URL(requestUrl.toString());
 
     expect(url.pathname).toBe(
-      `/directions/v5/mapbox/walking/${origin.lng},${origin.lat};${destinationBuilding.long},${destinationBuilding.lat}`,
+      `/directions/v5/mapbox/walking/${origin.lng},${origin.lat};${destinationBuilding.long},${destinationBuilding.lat}`
     );
     expect(url.searchParams.get("access_token")).toBe("pk.test-token");
     expect(url.searchParams.get("geometries")).toBe("geojson");
@@ -142,7 +142,7 @@ describe("useMapboxRoute", () => {
     expect(routeWasCreated).toBe(false);
     expect(fetchMock).not.toHaveBeenCalled();
     expect(result.current.routeError).toBe(
-      "Walking directions are only available on campus.",
+      "Walking directions are only available on campus."
     );
     expect(result.current.route).toBeNull();
   });
@@ -188,7 +188,7 @@ describe("useMapboxRoute", () => {
     expect(routeWasCreated).toBe(false);
     expect(fetchMock).not.toHaveBeenCalled();
     expect(result.current.routeError).toBe(
-      "Directions could not be calculated because one or more coordinates are invalid.",
+      "Directions could not be calculated because one or more coordinates are invalid."
     );
   });
 
@@ -199,8 +199,8 @@ describe("useMapboxRoute", () => {
           code: "InvalidInput",
           message: "No walking route was found.",
         },
-        false,
-      ),
+        false
+      )
     );
 
     const { result } = renderHook(() => useMapboxRoute());
@@ -225,7 +225,7 @@ describe("useMapboxRoute", () => {
       createResponse({
         code: "Ok",
         routes: [],
-      }),
+      })
     );
 
     const { result } = renderHook(() => useMapboxRoute());
@@ -240,7 +240,7 @@ describe("useMapboxRoute", () => {
 
     expect(routeWasCreated).toBe(false);
     expect(result.current.routeError).toBe(
-      "Mapbox did not return a usable walking route.",
+      "Mapbox did not return a usable walking route."
     );
   });
 
@@ -289,7 +289,7 @@ describe("useMapboxRoute", () => {
     expect(firstSignal.current?.aborted).toBe(true);
     expect(secondRouteWasCreated).toBe(true);
     expect(result.current.routeSummary?.destinationBuildingId).toBe(
-      secondBuilding.id,
+      secondBuilding.id
     );
   });
 
@@ -322,8 +322,8 @@ describe("useMapboxRoute", () => {
           code: "InvalidInput",
           message: "No walking route was found.",
         },
-        false,
-      ),
+        false
+      )
     );
 
     const { result } = renderHook(() => useMapboxRoute());

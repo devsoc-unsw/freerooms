@@ -36,7 +36,7 @@ export default function UtilityChips({ items }: Props) {
               {
                 duration: theme.transitions.duration.short,
                 easing: theme.transitions.easing.easeInOut,
-              },
+              }
             ),
             "& .MuiChip-label": {
               paddingLeft: theme.spacing(1.5),

@@ -4,11 +4,11 @@ import { parseAsString, useQueryState } from "nuqs";
 import { useEffect } from "react";
 
 const useQuerySort = (
-  options: DropDownItem[] = sortBarDropdown,
+  options: DropDownItem[] = sortBarDropdown
 ): [string, (sort: string) => void] => {
   const [sort, setSort] = useQueryState(
     "sort",
-    parseAsString.withDefault("alphabetical"),
+    parseAsString.withDefault("alphabetical")
   );
 
   useEffect(() => {

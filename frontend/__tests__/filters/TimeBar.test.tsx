@@ -16,7 +16,7 @@ const renderTimeBar = (props: ComponentProps<typeof TimeBar> = {}) =>
   render(
     <Provider store={store}>
       <TimeBar {...props} />
-    </Provider>,
+    </Provider>
   );
 
 const clickButton = async (name: string) => {
@@ -53,7 +53,7 @@ describe("TimeBar", () => {
     await clickButton("Time");
 
     expect(
-      screen.getByText("Input availability (from → to)"),
+      screen.getByText("Input availability (from → to)")
     ).toBeInTheDocument();
     expect(screen.getByText("Start time")).toBeInTheDocument();
     expect(screen.getByText("End time")).toBeInTheDocument();
@@ -67,10 +67,10 @@ describe("TimeBar", () => {
     expect(screen.getAllByText("No end time")).toHaveLength(2);
     expect(screen.queryByText("No start time")).not.toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: "Clear start time" }),
+      screen.getByRole("button", { name: "Clear start time" })
     ).toBeInTheDocument();
     expect(
-      screen.queryByRole("button", { name: "Clear end time" }),
+      screen.queryByRole("button", { name: "Clear end time" })
     ).not.toBeInTheDocument();
   });
 
@@ -81,7 +81,7 @@ describe("TimeBar", () => {
 
     expect(screen.getAllByText("No start time")).toHaveLength(2);
     expect(
-      screen.queryByRole("button", { name: "Clear start time" }),
+      screen.queryByRole("button", { name: "Clear start time" })
     ).not.toBeInTheDocument();
   });
 
@@ -117,7 +117,7 @@ describe("TimeBar", () => {
 
     expect(screen.queryByText("No start time")).not.toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: "Clear start time" }),
+      screen.getByRole("button", { name: "Clear start time" })
     ).toBeInTheDocument();
   });
 });

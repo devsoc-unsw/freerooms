@@ -17,12 +17,12 @@ describe("DropdownField", () => {
     render(
       <DropdownField icon={<span />} label="Pick a date">
         {() => <span>Calendar</span>}
-      </DropdownField>,
+      </DropdownField>
     );
 
     expect(screen.getByRole("button", { name: "Pick a date" })).toHaveAttribute(
       "aria-expanded",
-      "false",
+      "false"
     );
     expect(screen.queryByText("Calendar")).not.toBeInTheDocument();
   });
@@ -31,14 +31,14 @@ describe("DropdownField", () => {
     render(
       <DropdownField icon={<span />} label="Pick a date">
         {() => <span>Calendar</span>}
-      </DropdownField>,
+      </DropdownField>
     );
 
     await clickButton("Pick a date");
     expect(screen.getByText("Calendar")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Pick a date" })).toHaveAttribute(
       "aria-expanded",
-      "true",
+      "true"
     );
 
     await clickButton("Pick a date");
@@ -53,7 +53,7 @@ describe("DropdownField", () => {
             Done
           </button>
         )}
-      </DropdownField>,
+      </DropdownField>
     );
 
     await clickButton("Pick a date");
@@ -69,7 +69,7 @@ describe("DropdownField", () => {
     render(
       <DropdownField icon={<span />} label="Pick a date">
         {(_close, anchorWidth) => <span>{`width ${anchorWidth}`}</span>}
-      </DropdownField>,
+      </DropdownField>
     );
 
     await clickButton("Pick a date");

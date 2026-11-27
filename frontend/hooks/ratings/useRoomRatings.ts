@@ -12,7 +12,7 @@ const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 const useRoomRatings = (roomID?: string) => {
   const { data, error } = useSWRImmutable<RatingsResponse>(
     roomID ? API_URL + "/rating/" + roomID : null,
-    fetcher,
+    fetcher
   );
 
   return {

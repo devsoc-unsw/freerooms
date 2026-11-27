@@ -28,7 +28,7 @@ describe("BookingTypeBadge", () => {
 describe("getBookingTypeAppearance", () => {
   it("uses the laboratory colour for combined tutorial laboratories", () => {
     expect(
-      getBookingTypeAppearance(BookingType.TUTORIAL_LABORATORY).colour,
+      getBookingTypeAppearance(BookingType.TUTORIAL_LABORATORY).colour
     ).toBe("laboratory");
   });
 

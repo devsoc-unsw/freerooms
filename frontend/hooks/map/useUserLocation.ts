@@ -31,7 +31,7 @@ const getLocationErrorMessage = (error: GeolocationPositionError): string => {
 const getCurrentUserLocation = (): Promise<UserLocation> => {
   if (typeof navigator === "undefined" || !("geolocation" in navigator)) {
     return Promise.reject(
-      new Error("Geolocation is not supported by your browser."),
+      new Error("Geolocation is not supported by your browser.")
     );
   }
 
@@ -46,7 +46,7 @@ const getCurrentUserLocation = (): Promise<UserLocation> => {
       (error: GeolocationPositionError) => {
         reject(new Error(getLocationErrorMessage(error)));
       },
-      GEOLOCATION_OPTIONS,
+      GEOLOCATION_OPTIONS
     );
   });
 };

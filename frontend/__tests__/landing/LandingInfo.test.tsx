@@ -7,11 +7,11 @@ describe("LandingInfo", () => {
     render(<LandingInfo />);
 
     expect(
-      screen.getByRole("region", { name: "About Freerooms" }),
+      screen.getByRole("region", { name: "About Freerooms" })
     ).toBeInTheDocument();
     expect(screen.getByText(/not an official UNSW site/i)).toBeInTheDocument();
     expect(
-      screen.getByText("© UNSW Software Development Society 2026"),
+      screen.getByText("© UNSW Software Development Society 2026")
     ).toBeInTheDocument();
     expect(screen.getByText("Contact us")).toBeInTheDocument();
   });
@@ -21,14 +21,14 @@ describe("LandingInfo", () => {
 
     expect(screen.getByRole("link", { name: "here" })).toHaveAttribute(
       "href",
-      "https://forms.gle/jMzhQXXfyQiBGjQaA",
+      "https://forms.gle/jMzhQXXfyQiBGjQaA"
     );
     expect(screen.getByRole("link", { name: "FAQ" })).toHaveAttribute(
       "href",
-      "#landing-faq",
+      "#landing-faq"
     );
     expect(
-      screen.getByRole("link", { name: "https://devsoc.app/get-involved" }),
+      screen.getByRole("link", { name: "https://devsoc.app/get-involved" })
     ).toHaveAttribute("href", "https://devsoc.app/get-involved");
   });
 
@@ -44,7 +44,7 @@ describe("LandingInfo", () => {
 
     expect(screen.getByRole("link", { name: label })).toHaveAttribute(
       "href",
-      href,
+      href
     );
   });
 });

@@ -30,7 +30,7 @@ const formatDuration = (totalMinutes: number): string => {
 
 export const getBookingStatus = (
   booking: Pick<Booking, "start" | "end">,
-  now: Date,
+  now: Date
 ): BookingStatus => {
   const start = booking.start.getTime();
   const end = booking.end.getTime();

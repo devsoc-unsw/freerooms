@@ -38,15 +38,15 @@ describe("FilterChecklist", () => {
         dropdown={idDropdown}
         value={["true"]}
         onSelect={() => {}}
-      />,
+      />
     );
 
     expect(
-      screen.getByText("Yes").closest('[role="checkbox"]'),
+      screen.getByText("Yes").closest('[role="checkbox"]')
     ).toHaveAttribute("aria-checked", "true");
     expect(screen.getByText("No").closest('[role="checkbox"]')).toHaveAttribute(
       "aria-checked",
-      "false",
+      "false"
     );
   });
 
@@ -66,7 +66,7 @@ describe("FilterChecklist", () => {
         dropdown={idDropdown}
         value={["false"]}
         onSelect={onSelect}
-      />,
+      />
     );
 
     fireEvent.click(screen.getByText("No"));
@@ -82,7 +82,7 @@ describe("FilterChecklist", () => {
         dropdown={idDropdown}
         value={["true"]}
         onSelect={onSelect}
-      />,
+      />
     );
 
     fireEvent.click(screen.getByText("No"));
@@ -96,16 +96,16 @@ describe("FilterChecklist", () => {
         dropdown={idDropdown}
         value={["true", "false"]}
         onSelect={() => {}}
-      />,
+      />
     );
 
     expect(
-      screen.getByText("Yes").closest('[role="checkbox"]'),
+      screen.getByText("Yes").closest('[role="checkbox"]')
     ).toHaveAttribute("aria-checked", "true");
 
     expect(screen.getByText("No").closest('[role="checkbox"]')).toHaveAttribute(
       "aria-checked",
-      "true",
+      "true"
     );
   });
 
@@ -117,7 +117,7 @@ describe("FilterChecklist", () => {
         dropdown={idDropdown}
         value={["true", "false"]}
         onSelect={onSelect}
-      />,
+      />
     );
 
     fireEvent.click(screen.getByText("Yes"));
@@ -141,7 +141,7 @@ describe("FilterSlider", () => {
         dropdown={capacityDropdown}
         value="100"
         onCommit={() => {}}
-      />,
+      />
     );
 
     // positions: Any, 25+, 50+, 100+, 200+
