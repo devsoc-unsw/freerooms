@@ -72,7 +72,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
   const visibleHeight = getVisibleHeight(
     stage,
     drag?.offset ?? 0,
-    viewportHeight
+    viewportHeight,
   );
 
   const endDrag = () => {
@@ -114,7 +114,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
         dragOffset: current.offset,
         velocity: current.offset / elapsed,
         viewportHeight: current.viewportHeight,
-      })
+      }),
     );
     endDrag();
   };

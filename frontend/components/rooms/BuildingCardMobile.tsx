@@ -77,7 +77,7 @@ const BuildingCardMobile: React.FC<{
   const { status } = useBuildingStatus(buildingId);
   const { ratings } = useAllBuildingRatings();
   const buildingRating = ratings?.find(
-    (rating) => rating.buildingId === buildingId
+    (rating) => rating.buildingId === buildingId,
   );
 
   // No id (placeholder) or the building list hasn't resolved yet so load skeleton

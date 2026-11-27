@@ -18,7 +18,7 @@ describe("BookingAttendance", () => {
 
     expect(screen.getByRole("progressbar")).toHaveAttribute(
       "aria-valuenow",
-      "100"
+      "100",
     );
   });
 
@@ -29,7 +29,7 @@ describe("BookingAttendance", () => {
 
     expect(screen.getByRole("progressbar")).toHaveAttribute(
       "aria-valuenow",
-      "100"
+      "100",
     );
   });
 
@@ -41,7 +41,7 @@ describe("BookingAttendance", () => {
       expect(screen.getByText("Not specified")).toBeInTheDocument();
 
       expect(screen.queryByRole("progressbar")).not.toBeInTheDocument();
-    }
+    },
   );
 
   it.each([0, null, undefined])("handles unknown capacity: %s", (capacity) => {

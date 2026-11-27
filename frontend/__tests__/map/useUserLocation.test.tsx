@@ -5,7 +5,7 @@ import { act, renderHook, waitFor } from "@testing-library/react";
 
 const createPosition = (
   latitude: number,
-  longitude: number
+  longitude: number,
 ): GeolocationPosition =>
   ({
     coords: {
@@ -24,7 +24,7 @@ const createPositionError = (code: number): GeolocationPositionError =>
 
 const originalGeolocationDescriptor = Object.getOwnPropertyDescriptor(
   navigator,
-  "geolocation"
+  "geolocation",
 );
 
 const setGeolocationMock = (getCurrentPosition: jest.Mock) => {
@@ -45,7 +45,7 @@ const restoreGeolocation = () => {
     Object.defineProperty(
       navigator,
       "geolocation",
-      originalGeolocationDescriptor
+      originalGeolocationDescriptor,
     );
     return;
   }
@@ -84,7 +84,7 @@ describe("useUserLocation", () => {
         enableHighAccuracy: true,
         timeout: 10000,
         maximumAge: 30000,
-      }
+      },
     );
   });
 
@@ -92,7 +92,7 @@ describe("useUserLocation", () => {
     const getCurrentPosition = jest.fn(
       (_success: PositionCallback, error: PositionErrorCallback) => {
         error(createPositionError(1));
-      }
+      },
     );
     setGeolocationMock(getCurrentPosition);
 
@@ -100,7 +100,7 @@ describe("useUserLocation", () => {
 
     await waitFor(() => {
       expect(result.current.locationError).toBe(
-        "Location permission was denied. Enable location access in your browser settings."
+        "Location permission was denied. Enable location access in your browser settings.",
       );
     });
 
@@ -148,7 +148,7 @@ describe("useUserLocation", () => {
 
     await act(async () => {
       refreshSuccess?.(
-        createPosition(refreshedLocation.lat, refreshedLocation.lng)
+        createPosition(refreshedLocation.lat, refreshedLocation.lng),
       );
       returnedLocation = await refreshPromise;
     });
@@ -170,7 +170,7 @@ describe("useUserLocation", () => {
       .mockImplementationOnce(
         (_success: PositionCallback, error: PositionErrorCallback) => {
           error(createPositionError(3));
-        }
+        },
       );
     setGeolocationMock(getCurrentPosition);
 
@@ -192,10 +192,10 @@ describe("useUserLocation", () => {
 
     expect(refreshError).toBeInstanceOf(Error);
     expect((refreshError as Error).message).toBe(
-      "Getting your current location took too long. Please try again."
+      "Getting your current location took too long. Please try again.",
     );
     expect(result.current.locationError).toBe(
-      "Getting your current location took too long. Please try again."
+      "Getting your current location took too long. Please try again.",
     );
     expect(result.current.isLocating).toBe(false);
 
@@ -213,7 +213,7 @@ describe("useUserLocation", () => {
 
     await waitFor(() => {
       expect(result.current.locationError).toBe(
-        "Geolocation is not supported by your browser."
+        "Geolocation is not supported by your browser.",
       );
     });
 

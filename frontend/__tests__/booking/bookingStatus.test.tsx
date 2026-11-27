@@ -12,7 +12,7 @@ describe("getBookingStatus", () => {
         state: "upcoming",
         label: "Starts in 1 hour 24 minutes",
         progress: null,
-      }
+      },
     );
   });
 
@@ -22,7 +22,7 @@ describe("getBookingStatus", () => {
         state: "ongoing",
         label: "42 minutes remaining",
         progress: 65,
-      }
+      },
     );
   });
 
@@ -32,7 +32,7 @@ describe("getBookingStatus", () => {
         state: "completed",
         label: "Ended 2 hours ago",
         progress: null,
-      }
+      },
     );
   });
 
@@ -54,19 +54,19 @@ describe("getBookingStatus", () => {
 
   it("rounds remaining time upwards", () => {
     expect(
-      getBookingStatus(booking, new Date("2026-01-04T23:59:45Z")).label
+      getBookingStatus(booking, new Date("2026-01-04T23:59:45Z")).label,
     ).toBe("1 minute remaining");
   });
 
   it("handles bookings starting in several days", () => {
     expect(
-      getBookingStatus(booking, new Date("2026-01-02T18:45:00Z")).label
+      getBookingStatus(booking, new Date("2026-01-02T18:45:00Z")).label,
     ).toBe("Starts in 2 days 3 hours");
   });
 
   it("handles bookings that ended less than a minute ago", () => {
     expect(
-      getBookingStatus(booking, new Date("2026-01-05T00:00:30Z")).label
+      getBookingStatus(booking, new Date("2026-01-05T00:00:30Z")).label,
     ).toBe("Ended just now");
   });
 });

@@ -16,7 +16,7 @@ describe("BookingModuleDetails", () => {
     expect(screen.getByText("COMP2521")).toBeInTheDocument();
 
     expect(
-      screen.getByText("Data Structures and Algorithms")
+      screen.getByText("Data Structures and Algorithms"),
     ).toBeInTheDocument();
 
     expect(screen.getByText("Summer Term")).toBeInTheDocument();
@@ -36,7 +36,7 @@ describe("BookingModuleDetails", () => {
             career: "UGRD",
           },
         ]}
-      />
+      />,
     );
 
     expect(screen.getByText("COMP2521")).toBeInTheDocument();
@@ -54,13 +54,13 @@ describe("BookingModuleDetails", () => {
             career: null,
           },
         ]}
-      />
+      />,
     );
 
     expect(screen.getByText("MISCUNSWVENUES")).toBeInTheDocument();
 
     expect(
-      screen.getByText("UNSW Venues and Event Services")
+      screen.getByText("UNSW Venues and Event Services"),
     ).toBeInTheDocument();
 
     expect(screen.queryByText("Undergraduate")).not.toBeInTheDocument();
@@ -84,7 +84,7 @@ describe("BookingModuleDetails", () => {
     expect(
       screen.queryByRole("heading", {
         name: "Course and module information",
-      })
+      }),
     ).not.toBeInTheDocument();
   });
 
@@ -99,13 +99,13 @@ describe("BookingModuleDetails", () => {
             career: undefined,
           },
         ]}
-      />
+      />,
     );
 
     expect(
       screen.queryByRole("heading", {
         name: "Course and module information",
-      })
+      }),
     ).not.toBeInTheDocument();
   });
 });

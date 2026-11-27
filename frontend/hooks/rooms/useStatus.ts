@@ -35,7 +35,7 @@ const useStatus = () => {
     fetcher,
     {
       keepPreviousData: true,
-    }
+    },
   );
 
   return {

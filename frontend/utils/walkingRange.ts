@@ -22,7 +22,8 @@ export const getDistanceRange = (distanceMeters: number): WalkingRange => {
     DISTANCE_STEP;
   const max = Math.max(
     min + DISTANCE_STEP,
-    Math.ceil((distanceMeters * DISTANCE_UPPER) / DISTANCE_STEP) * DISTANCE_STEP
+    Math.ceil((distanceMeters * DISTANCE_UPPER) / DISTANCE_STEP) *
+      DISTANCE_STEP,
   );
 
   return { min, max };
@@ -46,7 +47,7 @@ export const formatExactDistance = (distanceMeters: number): string =>
 // Range for a Matrix estimate
 export const formatWalkingDuration = (
   durationSeconds: number,
-  isExact: boolean
+  isExact: boolean,
 ): string =>
   isExact
     ? formatExactDuration(durationSeconds)
@@ -54,7 +55,7 @@ export const formatWalkingDuration = (
 
 export const formatWalkingDistance = (
   distanceMeters: number,
-  isExact: boolean
+  isExact: boolean,
 ): string =>
   isExact
     ? formatExactDistance(distanceMeters)

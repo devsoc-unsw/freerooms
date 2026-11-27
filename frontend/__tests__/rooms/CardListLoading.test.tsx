@@ -16,7 +16,7 @@ jest.mock("motion/react", () => ({
       get:
         () =>
         ({ children }: { children?: React.ReactNode }) => <div>{children}</div>,
-    }
+    },
   ),
 }));
 jest.mock("@frontend/hooks/buildings/useBuildings", () => ({
@@ -61,7 +61,7 @@ describe("CardList loading state", () => {
     mockUseBuildings.mockReturnValue({ buildings: undefined });
 
     const { container, rerender } = render(
-      <CardList sort="alphabetical" query="" />
+      <CardList sort="alphabetical" query="" />,
     );
 
     const count = (testid: string) =>
@@ -71,7 +71,7 @@ describe("CardList loading state", () => {
     // so each renders its own skeleton (CSS decides which is visible).
     expect(count("building-card-placeholder")).toBeGreaterThan(0);
     expect(count("building-card-mobile-placeholder")).toBe(
-      count("building-card-placeholder")
+      count("building-card-placeholder"),
     );
     expect(count("building-card")).toBe(0);
     expect(count("building-card-mobile")).toBe(0);

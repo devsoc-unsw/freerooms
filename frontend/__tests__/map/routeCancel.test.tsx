@@ -33,7 +33,7 @@ describe("cancelling a route when another building is picked", () => {
           routeDestinationId: "K-G27",
           isRouteLoading: false,
           selectedBuildingId: "K-J17",
-        })
+        }),
       ).toBe(true);
     });
 
@@ -43,7 +43,7 @@ describe("cancelling a route when another building is picked", () => {
           routeDestinationId: "K-J17",
           isRouteLoading: false,
           selectedBuildingId: "K-J17",
-        })
+        }),
       ).toBe(false);
     });
 
@@ -53,7 +53,7 @@ describe("cancelling a route when another building is picked", () => {
           routeDestinationId: undefined,
           isRouteLoading: false,
           selectedBuildingId: "K-J17",
-        })
+        }),
       ).toBe(false);
     });
 
@@ -63,7 +63,7 @@ describe("cancelling a route when another building is picked", () => {
           routeDestinationId: undefined,
           isRouteLoading: true,
           selectedBuildingId: "K-J17",
-        })
+        }),
       ).toBe(true);
     });
   });
@@ -80,7 +80,7 @@ describe("cancelling a route when another building is picked", () => {
           currentHover={null}
           setCurrentHover={jest.fn()}
           onSelect={onSelect}
-        />
+        />,
       );
 
       fireEvent.click(screen.getByTestId("map-marker-dot"));

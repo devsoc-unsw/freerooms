@@ -20,7 +20,7 @@ const FIFTEEN_MIN = 15 * 1000 * 60;
 
 // Get all bookings for a certain date
 export const getBookingsForDate = async (
-  date: Date
+  date: Date,
 ): Promise<{ [roomId: string]: BookingsResponse }> => {
   // The date is in UTC time, convert to AEST first to manipulate hours
   const base = toZonedTime(date, "Australia/Sydney");
@@ -44,14 +44,14 @@ export const getBookingsFromStartTime = async (startTime: Date) => {
 
 export const getSearchRangeEnd = (
   start: Date,
-  filters: StatusFilters
+  filters: StatusFilters,
 ): Date => {
   if (filters.recurring) {
     const zoned = toZonedTime(start, "Australia/Sydney");
     zoned.setDate(zoned.getDate() + (filters.recurring - 1) * 7);
     const lastOccurrence = fromZonedTime(zoned, "Australia/Sydney");
     return new Date(
-      lastOccurrence.getTime() + (filters.duration || 0) * 60 * 1000
+      lastOccurrence.getTime() + (filters.duration || 0) * 60 * 1000,
     );
   }
 
@@ -68,16 +68,16 @@ export const getBuildingRoomData = async (): Promise<BuildingDatabase> => {
       {
         ...building,
         rooms: Object.fromEntries(
-          building.rooms.map((room) => [room.id.split("-")[2], room])
+          building.rooms.map((room) => [room.id.split("-")[2], room]),
         ),
       },
-    ])
+    ]),
   );
 };
 
 // Gets the utilities data for a room
 export const getRoomUtilities = async (
-  roomId: string
+  roomId: string,
 ): Promise<RoomUtilitiesResponse> => {
   const res = await queryRoomUtilities(roomId);
   return res.rooms_by_pk;
@@ -89,7 +89,7 @@ export const getRoomUtilities = async (
 export const calculateStatus = (
   datetime: Date,
   classes: Booking[],
-  minDuration: number
+  minDuration: number,
 ): RoomStatus | null => {
   const roomStatus: RoomStatus = {
     status: "free",
@@ -170,7 +170,7 @@ export const calculateStatus = (
 export const isSlotFree = (
   start: Date,
   duration: number,
-  bookings: Booking[]
+  bookings: Booking[],
 ): boolean => {
   if (duration === 0) {
     return !bookings.some((b) => start >= b.start && start < b.end);
@@ -189,7 +189,7 @@ export const isRecurringFree = (
   start: Date,
   duration: number,
   bookings: Booking[],
-  weeks: number
+  weeks: number,
 ): boolean => {
   for (let i = 0; i < weeks; i++) {
     const zoned = toZonedTime(start, "Australia/Sydney");
@@ -211,7 +211,7 @@ export const getBookingsForRange = async (start: Date, end: Date) => {
 
 // Get all rooms in a specific building
 export const getRoomsByBuilding = async (
-  buildingId: string
+  buildingId: string,
 ): Promise<RoomsResponse> => {
   const buildingData = await getBuildingRoomData();
   const building = buildingData[buildingId];
@@ -230,7 +230,7 @@ export const getRoomsByBuilding = async (
 // Obtain cursor for the last booking in a page for the next request
 export const createBookingCursor = (
   booking: Booking,
-  params: BookingPaginationParams
+  params: BookingPaginationParams,
 ): string => {
   return JSON.stringify({
     start: booking.start.toISOString(),

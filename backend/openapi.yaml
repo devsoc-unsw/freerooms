@@ -104,7 +104,9 @@ paths:
           in: query
         - schema:
             type: string
+            description: Comma-Separated room usage codes
           required: false
+          description: Comma-Separated room usage codes
           name: usage
           in: query
         - schema:
@@ -117,7 +119,9 @@ paths:
           in: query
         - schema:
             type: string
+            description: "Comma-Separated campus locations: upper, lower"
           required: false
+          description: "Comma-Separated campus locations: upper, lower"
           name: duration
           in: query
         - schema:
@@ -130,7 +134,9 @@ paths:
             enum:
               - "true"
               - "false"
+            description: "Comma-Separated ID requirements: true, false"
           required: false
+          description: "Comma-Separated ID requirements: true, false"
           name: id
           in: query
       responses:
@@ -194,7 +200,9 @@ paths:
           in: query
         - schema:
             type: string
+            description: Comma-Separated room usage codes
           required: false
+          description: Comma-Separated room usage codes
           name: usage
           in: query
         - schema:
@@ -207,7 +215,9 @@ paths:
           in: query
         - schema:
             type: string
+            description: "Comma-Separated campus locations: upper, lower"
           required: false
+          description: "Comma-Separated campus locations: upper, lower"
           name: duration
           in: query
         - schema:
@@ -220,7 +230,9 @@ paths:
             enum:
               - "true"
               - "false"
+            description: "Comma-Separated ID requirements: true, false"
           required: false
+          description: "Comma-Separated ID requirements: true, false"
           name: id
           in: query
         - schema:
@@ -350,7 +362,9 @@ paths:
           in: query
         - schema:
             type: string
+            description: Comma-Separated booking types
           required: false
+          description: Comma-Separated booking types
           name: bookingType
           in: query
         - schema:
@@ -373,7 +387,9 @@ paths:
             enum:
               - upper
               - lower
+            description: "Comma-Separated campus locations: upper, lower"
           required: false
+          description: "Comma-Separated campus locations: upper, lower"
           name: location
           in: query
         - schema:

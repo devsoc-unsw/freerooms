@@ -43,7 +43,7 @@ export const parseStatusDatetime = (req: Request): Date => {
 const parseFilterValues = <T extends string>(
   value: unknown,
   allowed: readonly T[],
-  error: string
+  error: string,
 ): T[] => {
   if (typeof value !== "string") {
     throw new Error(error);
@@ -97,7 +97,7 @@ export const parseStatusFilters = (req: Request): StatusFilters => {
     filters.usage = parseFilterValues(
       req.query.usage,
       Object.keys(roomUsages),
-      "Invalid room usage"
+      "Invalid room usage",
     );
   }
 
@@ -105,7 +105,7 @@ export const parseStatusFilters = (req: Request): StatusFilters => {
     filters.location = parseFilterValues(
       req.query.location,
       ["upper", "lower"] as const,
-      "Invalid location"
+      "Invalid location",
     );
   }
 
@@ -113,7 +113,7 @@ export const parseStatusFilters = (req: Request): StatusFilters => {
     filters.id = parseFilterValues(
       req.query.id,
       ["true", "false"] as const,
-      "Invalid ID required"
+      "Invalid ID required",
     ).map((value) => value === "true");
   }
 
@@ -141,7 +141,7 @@ export const parseSearchFilters = (req: Request): SearchFilters => {
       ONE_WEEK_IN_MILLISECONDS
     ) {
       throw new Error(
-        "Invalid time range: end time cannot be 1 week later than start time."
+        "Invalid time range: end time cannot be 1 week later than start time.",
       );
     }
     filters = { ...filters, ...startAndEndTime };
@@ -150,7 +150,7 @@ export const parseSearchFilters = (req: Request): SearchFilters => {
       0
     ) {
       throw new Error(
-        "Invalid time range: end time cannot be before start time."
+        "Invalid time range: end time cannot be before start time.",
       );
     }
     filters = { ...filters, ...startAndEndTime };
@@ -165,7 +165,7 @@ export const parseBookingLimit = (req: Request): number => {
     limit = parseInt(req.query.limit as string);
     if (isNaN(limit) || limit < 1 || limit > MAX_LIMIT) {
       throw new Error(
-        `Invalid limit: must be a positive integer no greater than ${MAX_LIMIT}`
+        `Invalid limit: must be a positive integer no greater than ${MAX_LIMIT}`,
       );
     }
   }
@@ -187,7 +187,7 @@ export const parseBookingFilters = (req: Request): BookingFilter | null => {
     filters.bookingType = parseFilterValues(
       req.query.bookingType,
       Object.values(BookingType),
-      "Invalid booking type"
+      "Invalid booking type",
     );
   }
 
@@ -203,7 +203,7 @@ export const parseBookingFilters = (req: Request): BookingFilter | null => {
     filters.location = parseFilterValues(
       req.query.location,
       ["upper", "lower"] as const,
-      "Invalid location"
+      "Invalid location",
     );
   }
 

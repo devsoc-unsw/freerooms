@@ -94,8 +94,8 @@ router.get(
       const buildingData = await getAllBuildings();
       res.json(buildingData);
       next();
-    })
-  )
+    }),
+  ),
 );
 
 // Route to get info of all the rooms
@@ -111,8 +111,8 @@ router.get(
       const roomData = await getAllRooms();
       res.json(roomData);
       next();
-    })
-  )
+    }),
+  ),
 );
 
 // Route to get status of all rooms
@@ -132,8 +132,8 @@ router.get(
       const data = await getAllRoomStatus(datetime, filters);
       res.json(data);
       next();
-    })
-  )
+    }),
+  ),
 );
 
 // Route to search all rooms
@@ -153,8 +153,8 @@ router.get(
       const data = await searchAllRoom(datetime, filters);
       res.json(data);
       next();
-    })
-  )
+    }),
+  ),
 );
 
 // Route to get the bookings of a particular room
@@ -172,8 +172,8 @@ router.get(
       const data = await getRoomBookings(roomID);
       res.json(data);
       next();
-    })
-  )
+    }),
+  ),
 );
 
 // Route to get all bookings with pagination
@@ -197,8 +197,8 @@ router.get(
       const data = await getAllBookings(params);
       res.json(data);
       next();
-    })
-  )
+    }),
+  ),
 );
 
 // Route to get related bookings from an event ID
@@ -216,8 +216,8 @@ router.get(
       const data = await getRoomByEvent(eventID);
       res.json(data);
       next();
-    })
-  )
+    }),
+  ),
 );
 
 // Route to get the details of a specific booking from an occurrence ID and room ID
@@ -232,7 +232,7 @@ router.get(
     },
     asyncHandler(async (req: Request, res: Response) => {
       const { roomID, occurrenceID } = bookingDetailsParamsSchema.parse(
-        req.params
+        req.params,
       );
 
       try {
@@ -254,8 +254,8 @@ router.get(
           message: "Failed to retrieve booking details",
         });
       }
-    })
-  )
+    }),
+  ),
 );
 
 // Get all ratings for a room given a roomId
@@ -273,8 +273,8 @@ router.get(
       const roomRatings = await getRatings(roomID);
       res.json(roomRatings);
       next();
-    })
-  )
+    }),
+  ),
 );
 
 // Get ratings of all rooms in a building
@@ -292,8 +292,8 @@ router.get(
       const roomRatings = await getAllRoomRatingsInBuilding(buildingID);
       res.json(roomRatings);
       next();
-    })
-  )
+    }),
+  ),
 );
 
 // Insert one rating for a room
@@ -326,8 +326,8 @@ router.post(
       } catch (error) {
         res.status(500).json({ error: error });
       }
-    })
-  )
+    }),
+  ),
 );
 
 // Get overall rating for a building given a buildingID
@@ -355,8 +355,8 @@ router.get(
 
       res.json(buildingRating);
       next();
-    })
-  )
+    }),
+  ),
 );
 
 // Get overall ratings for all buildings
@@ -373,7 +373,7 @@ router.get(
       const buildingRatings = await getAllBuildingRatings();
 
       const ratingsByBuildingId = new Map(
-        buildingRatings.map((rating) => [rating.buildingId, rating])
+        buildingRatings.map((rating) => [rating.buildingId, rating]),
       );
 
       const allBuildingRatings: BuildingRatingsResponse[] =
@@ -382,13 +382,13 @@ router.get(
             ratingsByBuildingId.get(building.id) ?? {
               buildingId: building.id,
               overallRating: 0,
-            }
+            },
         );
 
       res.json(allBuildingRatings);
       next();
-    })
-  )
+    }),
+  ),
 );
 
 // Route to get utilities of a room
@@ -406,8 +406,8 @@ router.get(
       const roomUtilities = await getRoomUtilities(roomId);
       res.json(roomUtilities);
       next();
-    })
-  )
+    }),
+  ),
 );
 
 app.use(router);

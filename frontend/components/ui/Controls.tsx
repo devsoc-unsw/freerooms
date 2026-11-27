@@ -31,7 +31,7 @@ const StyledButton = styled(MuiButton, {
 export const AppButton = React.forwardRef<HTMLButtonElement, AppButtonProps>(
   (
     { selected = false, variant = "outlined", type = "button", ...props },
-    ref
+    ref,
   ) => (
     <StyledButton
       {...props}
@@ -42,7 +42,7 @@ export const AppButton = React.forwardRef<HTMLButtonElement, AppButtonProps>(
       selected={selected}
       disableElevation
     />
-  )
+  ),
 );
 AppButton.displayName = "AppButton";
 

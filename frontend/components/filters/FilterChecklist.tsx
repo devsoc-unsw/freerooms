@@ -57,7 +57,7 @@ const FilterChecklist = ({
               onSelect(
                 selected
                   ? value.filter((v) => v !== item.value)
-                  : [...value, item.value]
+                  : [...value, item.value],
               )
             }
           >

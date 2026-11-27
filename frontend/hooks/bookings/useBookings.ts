@@ -17,7 +17,7 @@ const fetcher = (url: string) =>
 const useBookings = (roomId?: string) => {
   const { data, error } = useSWRImmutable<BookingsResponse>(
     roomId ? API_URL + "/rooms/bookings/" + roomId : null,
-    fetcher
+    fetcher,
   );
 
   return {

@@ -78,7 +78,7 @@ const bookingTypeAppearances: Record<BookingType, BookingTypeAppearance> = {
 };
 
 export const getBookingTypeAppearance = (
-  bookingType: string
+  bookingType: string,
 ): BookingTypeAppearance => {
   const type = Object.values(BookingType).find((type) => type === bookingType);
 

@@ -34,7 +34,7 @@ const getBuildingPosition = (building: Building): number | null => {
 const compareBuildingPosition = (
   a: Building,
   b: Building,
-  direction: "lowerToUpper" | "upperToLower"
+  direction: "lowerToUpper" | "upperToLower",
 ): number => {
   const aPosition = getBuildingPosition(a);
   const bPosition = getBuildingPosition(b);
@@ -78,14 +78,14 @@ const FlippableCard = React.forwardRef<HTMLDivElement, { buildingId?: string }>(
         </Box>
       </div>
     );
-  }
+  },
 );
 FlippableCard.displayName = "FlippableCard";
 
 const NUM_PLACEHOLDER_CARDS = 12;
 const PLACEHOLDER_KEYS = Array.from(
   { length: NUM_PLACEHOLDER_CARDS },
-  (_, i) => `placeholder-${i}`
+  (_, i) => `placeholder-${i}`,
 );
 
 const CardList: React.FC<{
@@ -113,7 +113,7 @@ const CardList: React.FC<{
       .filter(
         (building) =>
           (!matchingIds || matchingIds.has(building.id)) &&
-          Object.keys(roomStatusData[building.id].roomStatuses).length > 0
+          Object.keys(roomStatusData[building.id].roomStatuses).length > 0,
       )
       .sort((a, b) => {
         switch (sort) {

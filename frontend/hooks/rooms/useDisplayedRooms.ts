@@ -58,7 +58,7 @@ const useDisplayedRooms = ({
 
     const distance = (room: Room): number => {
       const building = buildings?.find(
-        (b) => b.id === getBuildingIdFromRoomId(room.id)
+        (b) => b.id === getBuildingIdFromRoomId(room.id),
       );
       if (!building || !userLat || !userLng) return Infinity;
       return calculateDistance(userLat, userLng, building.lat, building.long);
@@ -77,7 +77,7 @@ const useDisplayedRooms = ({
     });
 
     return passingFilters.sort(
-      getRoomComparator(sort, { freeUntil, distance })
+      getRoomComparator(sort, { freeUntil, distance }),
     );
   }, [
     candidateRooms,

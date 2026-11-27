@@ -3,7 +3,6 @@ import Page from "@frontend/app/bookings/page";
 import { setDatetime } from "@frontend/redux/slices/datetimeSlice";
 import { clearFilters, setFilter } from "@frontend/redux/slices/filtersSlice";
 import store from "@frontend/redux/store";
-import type { Filters } from "@frontend/types";
 import { NO_START_TIME } from "@frontend/utils/constants";
 import { act, fireEvent, screen } from "@testing-library/react";
 import type {
@@ -14,7 +13,7 @@ import { Provider } from "react-redux";
 
 type GetKey = (
   pageIndex: number,
-  previousPage: BookingsPaginationResponse | null
+  previousPage: BookingsPaginationResponse | null,
 ) => string | null;
 
 const mockSetStart = jest.fn();
@@ -46,7 +45,7 @@ jest.mock("nuqs", () => ({
   ],
   useQueryStates: (keys: Record<string, { defaultValue: string }>) => [
     Object.fromEntries(
-      Object.entries(keys).map(([key, options]) => [key, options.defaultValue])
+      Object.entries(keys).map(([key, options]) => [key, options.defaultValue]),
     ),
     jest.fn(),
   ],
@@ -108,7 +107,7 @@ const renderPage = () =>
   render(
     <Provider store={store}>
       <Page />
-    </Provider>
+    </Provider>,
   );
 
 const clickButton = async (name: string) => {
@@ -119,7 +118,7 @@ const clickButton = async (name: string) => {
 
 const getRequestParams = (
   pageIndex = 0,
-  previousPage: BookingsPaginationResponse | null = null
+  previousPage: BookingsPaginationResponse | null = null,
 ) => {
   if (!mockGetKey) throw new Error("SWR page key was not captured");
   const key = mockGetKey(pageIndex, previousPage);
@@ -160,7 +159,7 @@ describe("Bookings page", () => {
     renderPage();
 
     expect(
-      screen.getByPlaceholderText("Search for bookings")
+      screen.getByPlaceholderText("Search for bookings"),
     ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Filters" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Sort" })).toBeInTheDocument();
@@ -209,13 +208,16 @@ describe("Bookings page", () => {
   it("includes search, filter, and time selections in the request", () => {
     mockStart = "2026-11-27T01:00:00.000Z";
     mockEnd = "2026-11-27T02:00:00.000Z";
-    store.dispatch(setFilter({ key: "location", value: "lower" }));
+    store.dispatch(setFilter({ key: "location", value: ["lower", "upper"] }));
+
     store.dispatch(
-      setFilter({ key: "bookingType" as keyof Filters, value: "TUTORIAL" })
+      setFilter({
+        key: "bookingType",
+        value: ["TUTORIAL", "LECTURE"],
+      }),
     );
-    store.dispatch(
-      setFilter({ key: "plannedSize" as keyof Filters, value: "50" })
-    );
+
+    store.dispatch(setFilter({ key: "plannedSize", value: "50" }));
 
     renderPage();
 
@@ -228,8 +230,8 @@ describe("Bookings page", () => {
 
     const params = getRequestParams();
     expect(params?.get("search")).toBe("comp1531");
-    expect(params?.get("location")).toBe("lower");
-    expect(params?.get("bookingType")).toBe("TUTORIAL");
+    expect(params?.get("location")).toBe("lower,upper");
+    expect(params?.get("bookingType")).toBe("TUTORIAL,LECTURE");
     expect(params?.get("plannedSize")).toBe("50");
     expect(params?.get("startTime")).toBe("2026-11-27T01:00:00.000Z");
     expect(params?.get("endTime")).toBe("2026-11-27T02:00:00.000Z");

@@ -20,6 +20,6 @@ export const AppSurface = React.forwardRef<HTMLDivElement, PaperProps>(
       variant={variant}
       elevation={elevation}
     />
-  )
+  ),
 );
 AppSurface.displayName = "AppSurface";

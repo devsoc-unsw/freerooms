@@ -55,7 +55,7 @@ const RelatedBookings = ({
   const otherBookings = excludeCurrentBooking(bookings, booking);
 
   const hasUpcoming = otherBookings.some(
-    (session) => session.end.getTime() > now
+    (session) => session.end.getTime() > now,
   );
 
   const activeFilter =
@@ -64,7 +64,7 @@ const RelatedBookings = ({
   const filteredBookings = filterRelatedBookings(
     otherBookings,
     activeFilter,
-    now
+    now,
   );
 
   const visibleBookings = filteredBookings.slice(0, visibleCount);

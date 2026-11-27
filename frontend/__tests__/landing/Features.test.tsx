@@ -7,7 +7,7 @@ describe("Features", () => {
     render(<Features />);
 
     expect(
-      screen.getByRole("heading", { name: "Features" })
+      screen.getByRole("heading", { name: "Features" }),
     ).toBeInTheDocument();
 
     for (const heading of [
@@ -17,7 +17,7 @@ describe("Features", () => {
       "User Accounts",
     ]) {
       expect(
-        screen.getByRole("heading", { name: heading })
+        screen.getByRole("heading", { name: heading }),
       ).toBeInTheDocument();
     }
 
@@ -33,7 +33,7 @@ describe("Features", () => {
       ["Favouriting", "/favourites"],
     ]) {
       expect(
-        screen.getByRole("link", { name: new RegExp(name) })
+        screen.getByRole("link", { name: new RegExp(name) }),
       ).toHaveAttribute("href", href);
     }
   });

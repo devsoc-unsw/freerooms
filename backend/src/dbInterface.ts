@@ -36,7 +36,7 @@ type GraphQLValue =
  */
 const doRequest = async <T>(
   queryStr: string,
-  variables: Record<string, GraphQLValue> = {}
+  variables: Record<string, GraphQLValue> = {},
 ): Promise<T> => {
   // Make the request
   const query: TypedDocumentNode<T> = parse(gql`
@@ -63,7 +63,7 @@ type BookingsInRangeRes = {
  */
 export const queryBookingsInRange = async (
   start: Date,
-  end: Date
+  end: Date,
 ): Promise<BookingsInRangeRes> => {
   const query = `
     query BookingsInRange($start: timestamptz, $end: timestamptz) {
@@ -153,7 +153,7 @@ type BookingModulesQueryRes = {
 
 // Get and attache the associated modules for each booking
 const attachBookingModules = async (
-  bookings: BookingSummary[]
+  bookings: BookingSummary[],
 ): Promise<BookingDetails[]> => {
   if (bookings.length === 0) {
     return [];
@@ -274,7 +274,7 @@ type SortColumn = {
 };
 
 const getSortColumns = (
-  sort: BookingPaginationParams["sort"]
+  sort: BookingPaginationParams["sort"],
 ): SortColumn[] => {
   const tieBreakers: SortColumn[] = [
     { field: "roomId", direction: "asc" },
@@ -319,7 +319,7 @@ const getSortColumns = (
 const cursorComparison = (
   cursor: BookingCursor,
   field: SortColumn["field"],
-  operator: "_eq" | "_gt" | "_lt"
+  operator: "_eq" | "_gt" | "_lt",
 ): BookingWhere => {
   const comparison = <T extends string>(value: T) =>
     operator === "_eq"
@@ -363,7 +363,7 @@ const cursorComparison = (
 
 const cursorAfter = (
   cursor: BookingCursor,
-  columns: SortColumn[]
+  columns: SortColumn[],
 ): BookingWhere => ({
   _or: columns.flatMap((column, index): BookingWhere[] => {
     let after: BookingWhere;
@@ -388,7 +388,7 @@ const cursorAfter = (
       after = cursorComparison(
         cursor,
         column.field,
-        column.direction === "asc" ? "_gt" : "_lt"
+        column.direction === "asc" ? "_gt" : "_lt",
       );
     }
 
@@ -406,20 +406,18 @@ const cursorAfter = (
 });
 
 const normaliseSelections = (
-  values: string[] | string | undefined
+  values: string[] | string | undefined,
 ): string[] => {
   if (typeof values === "string") {
     return [values];
   }
 
-  return Array.isArray(values)
-    ? [...new Set(values)].sort()
-    : [];
+  return Array.isArray(values) ? [...new Set(values)].sort() : [];
 };
 
 // Ordered json string for comparison
 const normaliseFilters = (
-  filters: BookingPaginationParams["filters"]
+  filters: BookingPaginationParams["filters"],
 ): string => {
   return JSON.stringify({
     startTime:
@@ -438,7 +436,7 @@ const normaliseFilters = (
 
 const cursorMatchesRequest = (
   cursor: BookingCursor,
-  params: BookingPaginationParams
+  params: BookingPaginationParams,
 ): boolean => {
   return (
     cursor.sort === params.sort &&
@@ -449,14 +447,14 @@ const cursorMatchesRequest = (
 
 const LOWER_CAMPUS_REGEX = `^[^-]+-[A-Za-z]+0*(?:${Array.from(
   { length: UPPER_CAMPUS_GRID_START },
-  (_, grid) => grid
+  (_, grid) => grid,
 ).join("|")})-`;
 
 /**
  * Query all bookings with pagination
  */
 export const queryAllBookings = async (
-  params: BookingPaginationParams
+  params: BookingPaginationParams,
 ): Promise<AllBookingsRes> => {
   const { limit, cursor, filters, search, sort } = params;
 
@@ -543,7 +541,7 @@ export const queryAllBookings = async (
     // Booking type is an enum so do seperatly
 
     const matchingTypes = Object.values(BookingType).filter((type) =>
-      type.toLowerCase().includes(search.toLowerCase())
+      type.toLowerCase().includes(search.toLowerCase()),
     );
 
     if (matchingTypes.length > 0) {
@@ -615,7 +613,7 @@ type BookingsForRoomRes = {
  * Query all bookings in the range start to end, grouped by room
  */
 export const queryBookingsForRoom = async (
-  roomId: string
+  roomId: string,
 ): Promise<BookingsForRoomRes> => {
   const query = `
     query BookingsForRoom($roomId: String!) {
@@ -647,7 +645,7 @@ export const queryBookingsForRoom = async (
  */
 export const queryBookingDetails = async (
   roomId: string,
-  occurrenceId: string
+  occurrenceId: string,
 ): Promise<BookingDetails | null> => {
   const query = `
     query BookingDetails(
@@ -696,7 +694,7 @@ type BookingsForEventRes = {
  * Query all bookings by the eventID
  */
 export const queryBookingsForEvent = async (
-  eventId: string
+  eventId: string,
 ): Promise<BookingsForEventRes> => {
   const query = `
     query BookingsForEvent($eventId: String!) {
@@ -742,7 +740,7 @@ type RoomUtilitiesRes = {
 
 // Requesting API to return information for the room utilities under a specific roomId
 export const queryRoomUtilities = async (
-  roomId: string
+  roomId: string,
 ): Promise<RoomUtilitiesRes> => {
   const query = `
     query RoomUtilities($roomId: String!) {

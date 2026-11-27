@@ -50,14 +50,14 @@ export const getAllRooms = async (): Promise<RoomsResponse> => {
   data.forEach((bldg) =>
     Object.values(bldg.rooms).forEach((room) => {
       res.rooms[room.id] = room;
-    })
+    }),
   );
   return res;
 };
 
 export const getAllRoomStatus = async (
   date: Date,
-  filters: StatusFilters
+  filters: StatusFilters,
 ): Promise<StatusResponse> => {
   const rangeEnd = getSearchRangeEnd(date, filters);
   const bookings = await getBookingsForRange(date, rangeEnd);
@@ -68,10 +68,7 @@ export const getAllRoomStatus = async (
     // Skip building if it does not match filter
     const roomLocation =
       +buildingId.substring(3) < UPPER_CAMPUS_GRID_START ? "lower" : "upper";
-    if (
-      filters.location?.length &&
-      !filters.location.includes(roomLocation)
-    ) {
+    if (filters.location?.length && !filters.location.includes(roomLocation)) {
       continue;
     }
 
@@ -83,10 +80,8 @@ export const getAllRoomStatus = async (
       // Skip room if it does not match filter
       if (
         (filters.capacity && roomData.capacity < filters.capacity) ||
-        (filters.usage?.length &&
-          !filters.usage.includes(roomData.usage)) ||
-        (filters.id?.length &&
-          !filters.id.includes(roomData.school !== " "))
+        (filters.usage?.length && !filters.usage.includes(roomData.usage)) ||
+        (filters.id?.length && !filters.id.includes(roomData.school !== " "))
       )
         continue;
 
@@ -101,7 +96,7 @@ export const getAllRoomStatus = async (
           date,
           filters.duration || 0,
           roomBookings,
-          filters.recurring
+          filters.recurring,
         )
       ) {
         continue;
@@ -117,7 +112,7 @@ export const getAllRoomStatus = async (
 
 export const searchAllRoom = async (
   date: Date,
-  filters: SearchFilters
+  filters: SearchFilters,
 ): Promise<SearchResponse> => {
   const rangeEnd = getSearchRangeEnd(date, filters);
   const bookings = await getBookingsForRange(date, rangeEnd);
@@ -128,10 +123,7 @@ export const searchAllRoom = async (
   for (const buildingId in buildingData) {
     const roomLocation =
       +buildingId.substring(3) < UPPER_CAMPUS_GRID_START ? "lower" : "upper";
-    if (
-      filters.location?.length &&
-      !filters.location.includes(roomLocation)
-    ) {
+    if (filters.location?.length && !filters.location.includes(roomLocation)) {
       continue;
     }
 
@@ -140,10 +132,8 @@ export const searchAllRoom = async (
       const roomData = buildingRooms[roomNumber];
       if (
         (filters.capacity && roomData.capacity < filters.capacity) ||
-        (filters.usage?.length &&
-          !filters.usage.includes(roomData.usage)) ||
-        (filters.id?.length &&
-          !filters.id.includes(roomData.school !== " "))
+        (filters.usage?.length && !filters.usage.includes(roomData.usage)) ||
+        (filters.id?.length && !filters.id.includes(roomData.school !== " "))
       )
         continue;
 
@@ -160,7 +150,7 @@ export const searchAllRoom = async (
           date,
           filters.duration || 0,
           roomBookings,
-          filters.recurring
+          filters.recurring,
         );
 
         if (!available) {
@@ -185,7 +175,7 @@ export const searchAllRoom = async (
 };
 
 export const getRoomBookings = async (
-  roomId: string
+  roomId: string,
 ): Promise<BookingsResponse> => {
   const res = await queryBookingsForRoom(roomId);
   if (res.rooms_by_pk === null) {
@@ -196,7 +186,7 @@ export const getRoomBookings = async (
 };
 
 export const getAllBookings = async (
-  params: BookingPaginationParams
+  params: BookingPaginationParams,
 ): Promise<BookingsPaginationResponse> => {
   // Parse extra booking to see if there is another page
   const result = await queryAllBookings({
@@ -217,7 +207,7 @@ export const getAllBookings = async (
 };
 
 export const getRoomByEvent = async (
-  eventId: string
+  eventId: string,
 ): Promise<BookingsEventResponse[]> => {
   const res = await queryBookingsForEvent(eventId);
   if (res.bookings === null || res.bookings.length === 0) {
@@ -229,7 +219,7 @@ export const getRoomByEvent = async (
 
 export const getBookingDetails = async (
   roomId: string,
-  occurrenceId: string
+  occurrenceId: string,
 ): Promise<BookingDetails | null> => {
   return await queryBookingDetails(roomId, occurrenceId);
 };

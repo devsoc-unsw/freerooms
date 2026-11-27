@@ -46,7 +46,7 @@ describe("RecurringWeeksSlider", () => {
         dropdown={dropdown}
         value="3"
         onCommit={jest.fn()}
-      />
+      />,
     );
 
     expect(screen.getByText("3 weeks")).toBeInTheDocument();
@@ -65,7 +65,11 @@ describe("RecurringWeeksSlider", () => {
   it("commits null when set back to the minimum", () => {
     const onCommit = jest.fn();
     render(
-      <RecurringWeeksSlider dropdown={dropdown} value="3" onCommit={onCommit} />
+      <RecurringWeeksSlider
+        dropdown={dropdown}
+        value="3"
+        onCommit={onCommit}
+      />,
     );
 
     fireEvent.change(getSlider(), { target: { value: 1 } });

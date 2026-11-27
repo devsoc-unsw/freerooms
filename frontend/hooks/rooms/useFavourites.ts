@@ -41,7 +41,7 @@ export default function useFavourites() {
   const favourites = useSyncExternalStore(
     subscribeToFavourites,
     getClientFavouriteSnapshot,
-    getServerFavouriteSnapshot
+    getServerFavouriteSnapshot,
   );
 
   const isFavourite = (roomId: string) => {
@@ -60,10 +60,10 @@ export default function useFavourites() {
         new StorageEvent("storage", {
           key: "favourite",
           newValue: nextValue,
-        })
+        }),
       );
     },
-    [favourites]
+    [favourites],
   );
 
   return {

@@ -10,14 +10,14 @@ const isValidView = (view: string): view is View =>
   validViewQueries.includes(view as View);
 
 const useBookingCalendarQuery = (
-  defaultDate: Date
+  defaultDate: Date,
 ): [View, Date, (view: View) => void, (date: Date) => void] => {
   const [calendarParams, setCalendarParams] = useQueryStates(
     {
       view: parseAsString.withDefault(Views.WEEK),
       date: parseAsString.withDefault(""),
     },
-    { shallow: true }
+    { shallow: true },
   );
 
   useEffect(() => {

@@ -10,7 +10,7 @@ const makeBooking = (
   occurrenceId: string,
   start: string,
   end: string,
-  roomId = "K-F17-LG3"
+  roomId = "K-F17-LG3",
 ): BookingsEventResponse => ({
   occurrenceId,
   roomId,
@@ -25,31 +25,31 @@ const makeBooking = (
 const previous1 = makeBooking(
   "previous-1",
   "2026-01-05T00:00:00Z",
-  "2026-01-05T02:00:00Z"
+  "2026-01-05T02:00:00Z",
 );
 
 const previous2 = makeBooking(
   "previous-2",
   "2026-01-12T00:00:00Z",
-  "2026-01-12T02:00:00Z"
+  "2026-01-12T02:00:00Z",
 );
 
 const ongoing = makeBooking(
   "ongoing",
   "2026-01-14T23:00:00Z",
-  "2026-01-15T01:00:00Z"
+  "2026-01-15T01:00:00Z",
 );
 
 const upcoming1 = makeBooking(
   "upcoming-1",
   "2026-01-19T00:00:00Z",
-  "2026-01-19T02:00:00Z"
+  "2026-01-19T02:00:00Z",
 );
 
 const upcoming2 = makeBooking(
   "upcoming-2",
   "2026-02-02T00:00:00Z",
-  "2026-02-02T02:00:00Z"
+  "2026-02-02T02:00:00Z",
 );
 
 const bookings = [upcoming2, previous1, upcoming1, previous2, ongoing];
@@ -66,7 +66,7 @@ describe("excludeCurrentBooking", () => {
     };
 
     expect(
-      excludeCurrentBooking([previous1, differentRoom], previous1)
+      excludeCurrentBooking([previous1, differentRoom], previous1),
     ).toEqual([differentRoom]);
   });
 });
@@ -99,7 +99,7 @@ describe("filterRelatedBookings", () => {
 
   it("treats the exact end time as previous", () => {
     expect(
-      filterRelatedBookings([previous1], "previous", previous1.end.getTime())
+      filterRelatedBookings([previous1], "previous", previous1.end.getTime()),
     ).toEqual([previous1]);
   });
 
