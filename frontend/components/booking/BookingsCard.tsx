@@ -18,7 +18,7 @@ type BookingsCardProps = {
 
 const StyledCard = styled(Card)(({ theme }) => ({
   display: "flex",
-  minHeight: "13rem",
+  minHeight: "11rem",
   flexDirection: "column",
   borderRadius: theme.radius.card,
   borderColor: theme.colours.accent.secondary,
