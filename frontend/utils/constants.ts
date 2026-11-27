@@ -1,11 +1,19 @@
-import { BrowseView, DropDown, DropDownItem, Filters } from "@frontend/types";
+import {
+  BookingsFilters,
+  BrowseView,
+  DropDown,
+  DropDownItem,
+  Filters,
+} from "@frontend/types";
 import ContactEmergencyOutlinedIcon from "@mui/icons-material/ContactEmergencyOutlined";
 import DoorBackOutlinedIcon from "@mui/icons-material/DoorBackOutlined";
 import EventRepeatOutlinedIcon from "@mui/icons-material/EventRepeatOutlined";
+import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 import TimerOutlinedIcon from "@mui/icons-material/TimerOutlined";
 import { roomUsages } from "common/roomUsages";
+import { BookingType } from "common/types";
 
 const MAX_RECURRING = 10;
 const recurringWeekItems: DropDownItem[] = Array.from(
@@ -20,7 +28,7 @@ const recurringWeekItems: DropDownItem[] = Array.from(
 );
 
 // Dropdown & items for FilterBar in building browse page
-export const filterBarDropdown: DropDown[] = [
+export const filterBarDropdown: DropDown<keyof Filters>[] = [
   {
     text: "Campus Location",
     key: "location",
@@ -113,6 +121,63 @@ export const filterBarDropdown: DropDown[] = [
   },
 ];
 
+export const bookingsFilterDropdown: DropDown<keyof BookingsFilters>[] = [
+  {
+    text: "Campus Location",
+    key: "location",
+    icon: PlaceOutlinedIcon,
+    items: [
+      {
+        text: "Lower",
+        value: "lower",
+      },
+      {
+        text: "Upper",
+        value: "upper",
+      },
+    ],
+  },
+  {
+    text: "Booking Type",
+    key: "bookingType",
+    icon: EventRepeatOutlinedIcon,
+    items: Object.values(BookingType).map((type) => {
+      return {
+        text: type
+          .toLowerCase()
+          .replace(/_/g, " ")
+          .split(" ")
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" "),
+        value: type,
+      };
+    }),
+  },
+  {
+    text: "Planned Size",
+    key: "plannedSize",
+    icon: GroupsOutlinedIcon,
+    items: [
+      {
+        text: "25+",
+        value: "25",
+      },
+      {
+        text: "50+",
+        value: "50",
+      },
+      {
+        text: "100+",
+        value: "100",
+      },
+      {
+        text: "200+",
+        value: "200",
+      },
+    ],
+  },
+];
+
 // Dropdowns and items for SortBar in building browse page
 export const sortBarDropdown: DropDownItem[] = [
   {
@@ -176,6 +241,33 @@ export const roomSortBarDropdown: DropDownItem[] = [
 // URL value of the `start` param for the start time. While the user has cleared the start time
 export const NO_START_TIME = "none";
 
+// Sorts for bookings page
+export const bookingsSortBarDropdown: DropDownItem[] = [
+  {
+    text: "Earliest Start Time",
+    value: "ascendingStart",
+  },
+  {
+    text: "Latest Start Time",
+    value: "descendingStart",
+  },
+  {
+    text: "Alphabetical",
+    value: "alphabetical",
+  },
+  {
+    text: "Reverse Alphabetical",
+    value: "reverseAlphabetical",
+  },
+  {
+    text: "Largest Planned Size",
+    value: "plannedSize",
+  },
+  {
+    text: "Least Time Remaining",
+    value: "remainingTime",
+  },
+];
 // Number of rooms displayed at first
 export const ROOM_LIST_PAGE_SIZE = 24;
 

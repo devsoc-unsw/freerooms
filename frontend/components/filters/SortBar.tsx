@@ -7,15 +7,18 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import CheckIcon from "@mui/icons-material/Check";
 import EventAvailableOutlinedIcon from "@mui/icons-material/EventAvailableOutlined";
 import FilterListIcon from "@mui/icons-material/FilterList";
+import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
+import HourglassBottomOutlinedIcon from "@mui/icons-material/HourglassBottomOutlined";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import RoomOutlinedIcon from "@mui/icons-material/RoomOutlined";
-import SortByAlphaIcon from "@mui/icons-material/SortByAlpha";
+import StartIcon from "@mui/icons-material/Start";
 import WatchLaterOutlinedIcon from "@mui/icons-material/WatchLaterOutlined";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
+import { ArrowDownZA, ArrowUpZA } from "lucide-react";
 import React from "react";
 
 const RadioMark = styled("span", {
@@ -40,10 +43,17 @@ const SORT_ICONS: Record<string, SvgIconComponent> = {
   longestAvailable: WatchLaterOutlinedIcon,
   capacity: PeopleAltOutlinedIcon,
   nearest: RoomOutlinedIcon,
-  alphabetical: SortByAlphaIcon,
-  reverseAlphabetical: SortByAlphaIcon,
   lowerToUpper: ArrowUpwardIcon,
   upperToLower: ArrowDownwardIcon,
+  ascendingStart: StartIcon,
+  descendingStart: StartIcon,
+  plannedSize: GroupsOutlinedIcon,
+  remainingTime: HourglassBottomOutlinedIcon,
+};
+
+const LUCIDE_SORT_ICONS: Record<string, React.JSX.Element> = {
+  alphabetical: <ArrowUpZA />,
+  reverseAlphabetical: <ArrowDownZA />,
 };
 
 const SortBar: React.FC<{
@@ -51,16 +61,24 @@ const SortBar: React.FC<{
   setSort: (sort: string) => void;
   options?: DropDownItem[]; // defaults to the building sorts that Browse uses
   title?: string;
-}> = ({ sort, setSort, options = sortBarDropdown, title = "Sort" }) => (
+  resetSort?: string;
+}> = ({
+  sort,
+  setSort,
+  options = sortBarDropdown,
+  title = "Sort",
+  resetSort = "alphabetical",
+}) => (
   <TopBarMenu
     id="browse-sort-menu"
     icon={FilterListIcon}
     label="Sort"
     title={title}
-    onReset={() => setSort("alphabetical")}
+    onReset={() => setSort(resetSort)}
   >
     {options.map((option) => {
       const Icon = SORT_ICONS[option.value];
+      const LucideIcon = LUCIDE_SORT_ICONS[option.value];
       return (
         <FormControlLabel
           key={option.value}
@@ -83,17 +101,19 @@ const SortBar: React.FC<{
                 gap: (theme) => `${theme.space.sm}px`,
               }}
             >
-              {Icon && (
-                <Icon
-                  fontSize="small"
-                  sx={{
-                    transform:
-                      option.value === "reverseAlphabetical"
-                        ? "scaleY(-1)"
-                        : undefined,
-                  }}
-                />
-              )}
+              {LucideIcon
+                ? LucideIcon
+                : Icon && (
+                    <Icon
+                      fontSize="small"
+                      sx={{
+                        transform:
+                          option.value === "descendingStart"
+                            ? "scaleX(-1)"
+                            : undefined,
+                      }}
+                    />
+                  )}
               <Typography variant="filterOption">{option.text}</Typography>
             </Stack>
           }

@@ -10,28 +10,41 @@ import {
   setFilter,
   unsetFilter,
 } from "@frontend/redux/slices/filtersSlice";
-import { Filters } from "@frontend/types";
+import { BookingsFilters, DropDown, Filters } from "@frontend/types";
 import { filterBarDropdown } from "@frontend/utils/constants";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import React, { useCallback } from "react";
 
 // Filters shown as a slider. Rest are a checklist.
-const SLIDER_KEYS: (keyof Filters)[] = ["capacity", "duration", "recurring"];
+const SLIDER_KEYS: (keyof Filters | keyof BookingsFilters)[] = [
+  "capacity",
+  "duration",
+  "recurring",
+  "plannedSize",
+];
 
-const FilterBar = ({ keys }: { keys?: (keyof Filters)[] }) => {
+const FilterBar = ({
+  keys,
+  options,
+}: {
+  keys?: (keyof Filters)[];
+  options?: DropDown[];
+}) => {
   // Get filters from Redux
   const dispatch = useDispatch();
   const filters = useSelector(selectFilters);
-  const dropdowns = keys
-    ? filterBarDropdown.filter((dropdown) => keys.includes(dropdown.key))
-    : filterBarDropdown;
+  const dropdowns =
+    options ??
+    (keys
+      ? filterBarDropdown.filter((dropdown) => keys.includes(dropdown.key))
+      : filterBarDropdown);
 
   const handleValueChange = useCallback(
-    (key: keyof Filters) => (value: string | null) => {
+    (key: keyof Filters | keyof BookingsFilters) => (value: string | null) => {
       if (value === null) {
-        dispatch(unsetFilter(key));
+        dispatch(unsetFilter(key as keyof Filters));
       } else {
-        dispatch(setFilter({ key, value }));
+        dispatch(setFilter({ key: key as keyof Filters, value }));
       }
     },
     [dispatch]
@@ -53,14 +66,14 @@ const FilterBar = ({ keys }: { keys?: (keyof Filters)[] }) => {
           <FilterSlider
             key={dropdown.key}
             dropdown={dropdown}
-            value={filters[dropdown.key]}
+            value={filters[dropdown.key as keyof Filters]}
             onCommit={handleValueChange(dropdown.key)}
           />
         ) : (
           <FilterChecklist
             key={dropdown.key}
             dropdown={dropdown}
-            value={filters[dropdown.key]}
+            value={filters[dropdown.key as keyof Filters]}
             onSelect={handleValueChange(dropdown.key)}
           />
         )

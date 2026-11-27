@@ -16,7 +16,7 @@ export const StyledAccordion = styled(Accordion)(({ theme }) => ({
 }));
 
 const DropdownSelections: React.FC<{
-  dropdown: DropDown;
+  dropdown: DropDown<keyof Filters>;
   canSelectMultiple: boolean;
   filters: Filters;
   handleSelect: (key: keyof Filters, item: DropDownItem) => void;
