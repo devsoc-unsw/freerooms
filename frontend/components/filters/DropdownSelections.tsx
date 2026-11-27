@@ -58,7 +58,10 @@ const DropdownSelections: React.FC<{
           >
             {canSelectMultiple ? (
               <Checkbox
-                checked={filters[dropdown.key]?.includes(item.value)}
+                checked={
+                  Array.isArray(filters[dropdown.key]) &&
+                  filters[dropdown.key].includes(item.value)
+                }
                 role="checkbox"
                 sx={{ paddingLeft: 0 }}
               />
