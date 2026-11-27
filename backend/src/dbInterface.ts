@@ -405,6 +405,18 @@ const cursorAfter = (
   }),
 });
 
+const normaliseSelections = (
+  values: string[] | string | undefined
+): string[] => {
+  if (typeof values === "string") {
+    return [values];
+  }
+
+  return Array.isArray(values)
+    ? [...new Set(values)].sort()
+    : [];
+};
+
 // Ordered json string for comparison
 const normaliseFilters = (
   filters: BookingPaginationParams["filters"]
@@ -418,9 +430,9 @@ const normaliseFilters = (
       filters?.endTime instanceof Date
         ? filters.endTime.toISOString()
         : (filters?.endTime ?? null),
-    bookingType: filters?.bookingType ?? null,
+    bookingType: normaliseSelections(filters?.bookingType),
     plannedSize: filters?.plannedSize ?? null,
-    location: filters?.location ?? null,
+    location: normaliseSelections(filters?.location),
   });
 };
 
@@ -486,11 +498,14 @@ export const queryAllBookings = async (
   }
 
   // Filter by booking on campus location
-  if (filters?.location === "lower") {
+  const lowerSelected = filters?.location?.includes("lower");
+  const upperSelected = filters?.location?.includes("upper");
+
+  if (lowerSelected && !upperSelected) {
     conditions.push({
       roomId: { _regex: LOWER_CAMPUS_REGEX },
     });
-  } else if (filters?.location === "upper") {
+  } else if (upperSelected && !lowerSelected) {
     conditions.push({
       _not: {
         roomId: { _regex: LOWER_CAMPUS_REGEX },
@@ -498,9 +513,10 @@ export const queryAllBookings = async (
     });
   }
 
-  if (filters?.bookingType) {
+  // Match any selected booking type
+  if (filters?.bookingType?.length) {
     conditions.push({
-      bookingType: { _eq: filters.bookingType },
+      bookingType: { _in: filters.bookingType },
     });
   }
 

@@ -68,8 +68,10 @@ export const getAllRoomStatus = async (
     // Skip building if it does not match filter
     const roomLocation =
       +buildingId.substring(3) < UPPER_CAMPUS_GRID_START ? "lower" : "upper";
-    if (filters.location && filters.location != roomLocation) {
-      result[buildingId] = { numAvailable: 0, roomStatuses: {} };
+    if (
+      filters.location?.length &&
+      !filters.location.includes(roomLocation)
+    ) {
       continue;
     }
 
@@ -81,8 +83,10 @@ export const getAllRoomStatus = async (
       // Skip room if it does not match filter
       if (
         (filters.capacity && roomData.capacity < filters.capacity) ||
-        (filters.usage && roomData.usage != filters.usage) ||
-        (filters.id != undefined && (roomData.school != " ") != filters.id) // id is required if managed by a school (non-CATS)
+        (filters.usage?.length &&
+          !filters.usage.includes(roomData.usage)) ||
+        (filters.id?.length &&
+          !filters.id.includes(roomData.school !== " "))
       )
         continue;
 
@@ -124,7 +128,10 @@ export const searchAllRoom = async (
   for (const buildingId in buildingData) {
     const roomLocation =
       +buildingId.substring(3) < UPPER_CAMPUS_GRID_START ? "lower" : "upper";
-    if (filters.location && filters.location != roomLocation) {
+    if (
+      filters.location?.length &&
+      !filters.location.includes(roomLocation)
+    ) {
       continue;
     }
 
@@ -133,8 +140,10 @@ export const searchAllRoom = async (
       const roomData = buildingRooms[roomNumber];
       if (
         (filters.capacity && roomData.capacity < filters.capacity) ||
-        (filters.usage && roomData.usage != filters.usage) ||
-        (filters.id != undefined && (roomData.school != " ") != filters.id) // id is required if managed by a school (non-CATS)
+        (filters.usage?.length &&
+          !filters.usage.includes(roomData.usage)) ||
+        (filters.id?.length &&
+          !filters.id.includes(roomData.school !== " "))
       )
         continue;
 
