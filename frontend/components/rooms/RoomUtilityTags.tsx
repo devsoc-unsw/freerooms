@@ -101,27 +101,25 @@ export default function RoomUtilities({
   }
 
   const categories = Object.entries(roomData)
-  .filter(([key]) => key !== "id" && key !== "name")
-  .map(([key, value]) => {
-    const items: string[] =
-      typeof value === "string"
-        ? [value].filter(Boolean)
-        : Array.isArray(value)
-          ? value.filter(
-              (item): item is string => typeof item === "string"
-            )
-          : [];
+    .filter(([key]) => key !== "id" && key !== "name")
+    .map(([key, value]) => {
+      const items: string[] =
+        typeof value === "string"
+          ? [value].filter(Boolean)
+          : Array.isArray(value)
+            ? value.filter((item): item is string => typeof item === "string")
+            : [];
 
-    return {
-      key,
-      title: categoryInfo[key]?.title || key,
-      icon: categoryInfo[key]?.icon || (
-        <AcUnit sx={{ fontSize: ICON_SIZE, color: primary }} />
-      ),
-      items,
-    };
-  })
-  .filter(({ items }) => items.length > 0);
+      return {
+        key,
+        title: categoryInfo[key]?.title || key,
+        icon: categoryInfo[key]?.icon || (
+          <AcUnit sx={{ fontSize: ICON_SIZE, color: primary }} />
+        ),
+        items,
+      };
+    })
+    .filter(({ items }) => items.length > 0);
 
   return (
     <Stack
@@ -138,12 +136,7 @@ export default function RoomUtilities({
 
       <Stack spacing={space.sm}>
         {categories.map(({ key, title, icon, items }) => (
-          <UtilityAccordion
-            key={key}
-            title={title}
-            icon={icon}
-            items={items}
-          />
+          <UtilityAccordion key={key} title={title} icon={icon} items={items} />
         ))}
       </Stack>
 
