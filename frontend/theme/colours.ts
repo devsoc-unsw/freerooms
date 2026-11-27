@@ -120,12 +120,12 @@ const bookingTypeColours = {
       text: "#AD5333",
     },
     internal: {
-      background: "#EDF0F4",
-      text: "#526071",
+      background: "#F9D8C5",
+      text: "#743313",
     },
     other: {
-      background: "#EFF1F3",
-      text: "#667085",
+      background: "#FFE8BA",
+      text: "#71480A",
     },
   },
   dark: {
@@ -154,12 +154,12 @@ const bookingTypeColours = {
       text: "#FEB99C",
     },
     internal: {
-      background: "#2D3540",
-      text: "#CAD3E0",
+      background: "#78401F",
+      text: "#FFF0DF",
     },
     other: {
-      background: "#292D33",
-      text: "#BEC5CF",
+      background: "#665022",
+      text: "#FFF2D2",
     },
   },
 } as const;

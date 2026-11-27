@@ -5,6 +5,8 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import useBookingCalendarQuery from "@frontend/hooks/bookings/useBookingCalendarQuery";
 import { useSelector } from "@frontend/redux/hooks";
 import { selectDatetime } from "@frontend/redux/slices/datetimeSlice";
+import { space } from "@frontend/theme";
+import { getBookingTypeAppearance } from "@frontend/utils/bookingAppearance";
 import getBookingHref from "@frontend/utils/getBookingHref";
 import toSydneyTime from "@frontend/utils/toSydneyTime";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
@@ -37,28 +39,32 @@ import {
 } from "react-big-calendar";
 
 const ToolBarButton = styled(Button)(({ theme }) => ({
-  borderColor: theme.palette.secondary.main,
+  borderColor: theme.palette.divider,
   color: theme.palette.text.primary,
-  fontSize: "12px",
+  fontSize: theme.typography.pxToRem(12),
   textTransform: "none",
+
   "&:hover": {
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.action.hover,
     borderColor: theme.palette.primary.main,
-    color: theme.colours.text.onAccent,
   },
 }));
 
 const ViewToggleButton = styled(ToggleButton)(({ theme }) => ({
+  borderColor: theme.palette.divider,
   color: theme.palette.text.primary,
-  fontSize: "12px",
+  fontSize: theme.typography.pxToRem(12),
   textTransform: "none",
-  transition: "all 0.1s ease-in-out",
+  transition: "all 120ms ease",
+
   "&.Mui-selected, &.Mui-selected:hover": {
     backgroundColor: theme.palette.primary.main,
     borderColor: theme.palette.primary.main,
     color: theme.colours.text.onAccent,
   },
+
   "&:hover": {
+    backgroundColor: theme.palette.action.hover,
     borderColor: theme.palette.primary.main,
   },
 }));
@@ -84,13 +90,13 @@ const CustomToolBar: React.FC<ToolbarProps<Booking>> = ({
       direction="row"
       sx={(theme) => ({
         justifyContent: "space-between",
-        marginBottom: 2,
+        marginBottom: theme.space.sm,
         [theme.breakpoints.down("md")]: {
           display: "none",
         },
       })}
     >
-      <ButtonGroup sx={{ height: 30 }}>
+      <ButtonGroup sx={(theme) => ({ height: theme.sizes.control.sm })}>
         {Object.entries(navigationControls).map(
           ([displayText, navKey], index) => (
             <ToolBarButton key={index} onClick={() => onNavigate(navKey)}>
@@ -99,7 +105,11 @@ const CustomToolBar: React.FC<ToolbarProps<Booking>> = ({
           )
         )}
       </ButtonGroup>
-      <ToggleButtonGroup value={view} exclusive sx={{ height: 30 }}>
+      <ToggleButtonGroup
+        value={view}
+        exclusive
+        sx={(theme) => ({ height: theme.sizes.control.sm })}
+      >
         {Object.entries(viewControls).map(([displayText, viewKey], index) => (
           <ViewToggleButton
             value={viewKey}
@@ -116,56 +126,122 @@ const CustomToolBar: React.FC<ToolbarProps<Booking>> = ({
 
 const StyledCalendarContainer = styled(Box)<BoxProps & { view: View }>(
   ({ view, theme }) => ({
+    "& .rbc-calendar": {
+      fontFamily: theme.typography.fontFamily,
+      color: theme.palette.text.primary,
+      fontSize: theme.typography.pxToRem(14),
+    },
+
     "& .rbc-time-slot, & .rbc-day-slot, & .rbc-timeslot-group": {
       borderColor: `${theme.colours.calendar.grid} !important`,
     },
+
+    "& .rbc-time-content > * + * > *, & .rbc-header + .rbc-header": {
+      borderColor: theme.colours.calendar.grid,
+    },
+
+    "& .rbc-time-header-content, & .rbc-time-content": {
+      borderColor: theme.colours.calendar.grid,
+    },
+
     "& .rbc-allday-cell": {
       display: "none",
     },
+
     "& .rbc-time-view .rbc-header": {
       borderColor: theme.colours.calendar.grid,
       borderBottom: "none",
     },
-    "& .rbc-events-container": {
-      borderColor: theme.colours.calendar.grid,
-      margin: "1px !important",
-    },
+
     "& .rbc-header": {
-      padding: "5px 0",
-      fontSize: 16,
+      paddingBlock: theme.space.sm,
+      paddingInline: theme.space.xs,
+      fontFamily: theme.typography.fontFamily,
+      fontSize: theme.typography.pxToRem(14),
+      fontWeight: theme.typography.fontWeightMedium,
     },
-    "& .rbc-event-content": {
-      fontWeight: 500,
+
+    "& .rbc-events-container": {
+      margin: theme.sizes.border.weight,
     },
+
     "& .rbc-time-view": {
-      borderColor: theme.colours.calendar.grid,
-      boxShadow: theme.shadows[1],
       border: "none",
-      borderRadius: "12px",
+      borderRadius: theme.radius.card,
+      boxShadow: theme.shadows[1],
     },
+
     "& .rbc-header:last-child, & .rbc-time-header": {
-      borderTopRightRadius: "12px",
+      borderTopRightRadius: theme.radius.card,
       borderRight: "none !important",
     },
+
     "& .rbc-time-content": {
-      borderColor: theme.colours.calendar.grid,
-      borderBottomLeftRadius: "12px",
-      borderBottomRightRadius: "12px",
+      borderBottomLeftRadius: theme.radius.card,
+      borderBottomRightRadius: theme.radius.card,
       ...(view === "day" && {
         borderTop: "none",
-        borderTopRightRadius: "12px",
+        borderTopRightRadius: theme.radius.card,
       }),
+    },
+
+    "& .rbc-time-gutter": {
+      fontSize: theme.typography.pxToRem(14),
+      color: theme.palette.text.primary,
+    },
+
+    "& .rbc-event": {
+      border: "none",
+      borderRadius: theme.radius.md,
+      padding: theme.space.xs,
+      transition: "filter 120ms ease",
+    },
+
+    "& .rbc-event-content": {
+      fontWeight: theme.typography.fontWeightMedium,
+      fontSize: theme.typography.pxToRem(14),
+      lineHeight: 1.2,
+    },
+
+    "& .rbc-event-label": {
+      fontSize: theme.typography.pxToRem(12),
+      fontWeight: theme.typography.fontWeightRegular,
+      lineHeight: 1.2,
+    },
+
+    "& .rbc-event-content .MuiSvgIcon-root": {
+      fontSize: theme.sizes.icon.sm,
+      marginRight: theme.space.xs,
+      verticalAlign: "text-bottom",
+    },
+
+    "& .rbc-event.booking-clickable:hover": {
+      filter:
+        theme.palette.mode === "dark" ? "brightness(1.15)" : "brightness(0.95)",
+    },
+
+    "& .rbc-event.booking-clickable:focus-visible": {
+      outline: `2px solid ${theme.palette.primary.main}`,
+      outlineOffset: -2,
+    },
+
+    "& .rbc-current-time-indicator": {
+      backgroundColor: theme.palette.primary.main,
     },
   })
 );
 
 const BookingCalendarSkeleton = () => (
-  <Stack sx={{ width: "100%", paddingTop: 3 }}>
+  <Stack spacing={space.md} sx={{ width: "100%", minWidth: 0 }}>
     {/* "Room Bookings" heading + date picker row */}
     <Stack
       direction={{ xs: "column", md: "row" }}
-      spacing={1}
-      sx={{ justifyContent: "space-between", width: "100%", paddingBottom: 2 }}
+      spacing={space.sm}
+      sx={{
+        justifyContent: "space-between",
+        alignItems: { xs: "stretch", md: "center" },
+        width: "100%",
+      }}
     >
       <Skeleton
         animation="wave"
@@ -220,7 +296,9 @@ const BookingCalendarSkeleton = () => (
       variant="rounded"
       width="100%"
       height={500}
-      sx={{ borderRadius: "12px" }}
+      sx={(theme) => ({
+        borderRadius: `${theme.radius.card}px`,
+      })}
     />
   </Stack>
 );
@@ -371,28 +449,33 @@ const BookingCalendar: React.FC<{
 
   return (
     <Stack
+      spacing={space.md}
       sx={{
-        justifyContent: "flex-start",
-        height: "100%",
         width: "100%",
-        paddingTop: 3,
+        minWidth: 0,
       }}
     >
       <Stack
         direction={{ xs: "column", md: "row" }}
-        spacing={1}
+        spacing={space.sm}
         sx={{
           justifyContent: "space-between",
+          alignItems: { xs: "stretch", md: "center" },
           width: "100%",
-          paddingBottom: 2,
         }}
       >
-        <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+        <Typography variant="h4" component="h2" sx={{ flexShrink: 0 }}>
           Room Bookings
         </Typography>
 
         <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enAU}>
-          <Stack direction="row" sx={{ alignItems: "center" }}>
+          <Stack
+            direction="row"
+            sx={{
+              alignItems: "center",
+              width: { xs: "100%", md: "auto" },
+            }}
+          >
             {isMobile && (
               <IconButton
                 aria-label="Previous day"
@@ -456,7 +539,7 @@ const BookingCalendar: React.FC<{
         view={currView}
         sx={{
           overflow: "auto",
-          padding: 0.5,
+          padding: space.xs,
         }}
       >
         <Calendar
@@ -479,15 +562,20 @@ const BookingCalendar: React.FC<{
               setDesktopView(nextView);
             }
           }}
-          eventPropGetter={(booking) => ({
-            style: {
-              backgroundColor: theme.colours.accent.primary,
-              borderColor: theme.colours.accent.primary,
-              opacity: 0.8,
-              cursor:
-                booking.roomId && booking.occurrenceId ? "pointer" : "default",
-            },
-          })}
+          eventPropGetter={(booking) => {
+            const { colour } = getBookingTypeAppearance(booking.bookingType);
+            const appearance = theme.colours.bookingType[colour];
+            const clickable = Boolean(booking.roomId && booking.occurrenceId);
+
+            return {
+              className: clickable ? "booking-clickable" : undefined,
+              style: {
+                backgroundColor: appearance.background,
+                color: appearance.text,
+                cursor: clickable ? "pointer" : "default",
+              },
+            };
+          }}
           slotGroupPropGetter={() => ({ style: { minHeight: "50px" } })}
           dayPropGetter={(date) => ({
             style: {
