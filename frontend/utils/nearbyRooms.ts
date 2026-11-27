@@ -1,11 +1,6 @@
 import calculateDistance from "@frontend/utils/calculateDistance";
 import { getBuildingIdFromRoomId } from "@frontend/utils/utils";
-import type {
-  Building,
-  Room,
-  RoomStatus,
-  StatusResponse,
-} from "common/types";
+import type { Building, Room, RoomStatus, StatusResponse } from "common/types";
 
 export type NearbyRoom = {
   room: Room;

@@ -1,13 +1,13 @@
 import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithProviders";
 import BookingCalendar from "@frontend/components/booking/BookingCalendar";
 import store from "@frontend/redux/store";
+import { getColours } from "@frontend/theme/colours";
 import toSydneyTime from "@frontend/utils/toSydneyTime";
+import { alpha } from "@mui/material/styles";
 import { fireEvent, screen } from "@testing-library/react";
 import { Booking, BookingType } from "common/types";
 import mediaQuery from "css-mediaquery";
 import { Provider } from "react-redux";
-import { getColours } from "@frontend/theme/colours";
-import { alpha } from "@mui/material/styles";
 
 const mockUseQueryStates = jest.fn();
 
@@ -71,7 +71,7 @@ describe("Booking Calendar Desktop", () => {
     render(
       <Provider store={store}>
         <BookingCalendar events={events} />
-      </Provider>,
+      </Provider>
     );
 
     const calendar = screen.getByRole("table", {
@@ -85,7 +85,7 @@ describe("Booking Calendar Desktop", () => {
     render(
       <Provider store={store}>
         <BookingCalendar events={events} />
-      </Provider>,
+      </Provider>
     );
 
     const beforeButton = screen.queryByRole("button", { name: "Previous day" });
@@ -107,7 +107,7 @@ describe("Booking Calendar Desktop", () => {
     render(
       <Provider store={store}>
         <BookingCalendar events={events} />
-      </Provider>,
+      </Provider>
     );
 
     const datePicker = screen.getByDisplayValue("Fri, 11 Sep 2026");
@@ -127,7 +127,7 @@ describe("Booking Calendar Desktop", () => {
     render(
       <Provider store={store}>
         <BookingCalendar events={events} />
-      </Provider>,
+      </Provider>
     );
 
     const dayButton = screen.getByRole("button", { name: "Day" });
@@ -144,7 +144,7 @@ describe("Booking Calendar Mobile", () => {
     render(
       <Provider store={store}>
         <BookingCalendar events={events} />
-      </Provider>,
+      </Provider>
     );
 
     const beforeButton = screen.getByRole("button", { name: "Previous day" });
@@ -179,7 +179,7 @@ describe("Booking calendar navigation", () => {
     render(
       <Provider store={store}>
         <BookingCalendar events={[booking]} />
-      </Provider>,
+      </Provider>
     );
 
     fireEvent.click(screen.getByText("COMP2521 LEC (LECTURE)"));
@@ -193,13 +193,13 @@ describe("Booking calendar navigation", () => {
       render(
         <Provider store={store}>
           <BookingCalendar events={[{ ...booking, ...missing }]} />
-        </Provider>,
+        </Provider>
       );
 
       fireEvent.click(screen.getByText("COMP2521 LEC (LECTURE)"));
 
       expect(mockPush).not.toHaveBeenCalled();
-    },
+    }
   );
 
   it.each([
@@ -213,7 +213,7 @@ describe("Booking calendar navigation", () => {
       render(
         <Provider store={store}>
           <BookingCalendar events={[{ ...booking, bookingType }]} />
-        </Provider>,
+        </Provider>
       );
 
       const event = screen
@@ -229,7 +229,7 @@ describe("Booking calendar navigation", () => {
       });
 
       expect(screen.getByRole("img", { name: label })).toBeInTheDocument();
-    },
+    }
   );
 
   it.each(["Enter", " "])(
@@ -238,7 +238,7 @@ describe("Booking calendar navigation", () => {
       render(
         <Provider store={store}>
           <BookingCalendar events={[booking]} />
-        </Provider>,
+        </Provider>
       );
 
       const event = screen
@@ -250,16 +250,16 @@ describe("Booking calendar navigation", () => {
       fireEvent.keyDown(event!, { key });
 
       expect(mockPush).toHaveBeenCalledWith(
-        "/booking/K-F17-LG3/occurrence-123",
+        "/booking/K-F17-LG3/occurrence-123"
       );
-    },
+    }
   );
 
   it("marks bookings with valid identifiers as clickable", () => {
     render(
       <Provider store={store}>
         <BookingCalendar events={[booking]} />
-      </Provider>,
+      </Provider>
     );
 
     const event = screen
@@ -274,7 +274,7 @@ describe("Booking calendar navigation", () => {
     render(
       <Provider store={store}>
         <BookingCalendar events={[{ ...booking, occurrenceId: undefined }]} />
-      </Provider>,
+      </Provider>
     );
 
     const event = screen
