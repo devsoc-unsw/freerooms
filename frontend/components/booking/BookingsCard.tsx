@@ -5,7 +5,14 @@ import ArrowForwardOutlinedIcon from "@mui/icons-material/ArrowForwardOutlined";
 import HourglassEmptyOutlinedIcon from "@mui/icons-material/HourglassEmptyOutlined";
 import LocalOfferOutlinedIcon from "@mui/icons-material/LocalOfferOutlined";
 import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
-import { Card, CardContent, Divider, Stack, Typography } from "@mui/material";
+import {
+  Card,
+  CardActionArea,
+  CardContent,
+  Divider,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { styled } from "@mui/material/styles";
 import type { PaginatedBooking } from "common/types";
 import { enAU } from "date-fns/locale/en-AU";
@@ -24,6 +31,12 @@ const StyledCard = styled(Card)(({ theme }) => ({
   borderRadius: theme.radius.card,
   borderColor: theme.colours.accent.secondary,
   backgroundColor: theme.colours.surface.paper,
+  transition: theme.transitions.create(["border-color", "box-shadow"]),
+
+  "&:hover, &:focus-within": {
+    borderColor: theme.colours.accent.primary,
+    boxShadow: theme.shadows[1],
+  },
 }));
 
 const LabelRow = styled(Stack)(({ theme }) => ({
@@ -74,15 +87,15 @@ const SoonRemainingTimeTag = styled(TimeTag)(({ theme }) => ({
   color: theme.colours.text.primary,
 }));
 
-const BookingLink = styled(Link)(({ theme }) => ({
+const BookingLink = styled("span")(({ theme }) => ({
   display: "inline-flex",
   alignItems: "center",
   gap: theme.space.xs,
   marginLeft: "auto",
   color: theme.colours.text.secondary,
-  textDecoration: "none",
-  "&:hover": { color: theme.colours.accent.primary },
-  "& svg": { fontSize: theme.sizes.icon.sm },
+  "& svg": {
+    fontSize: theme.sizes.icon.sm,
+  },
 }));
 
 // Capitalise booking type from enum value
@@ -131,74 +144,98 @@ const BookingsCard = ({ booking, now }: BookingsCardProps) => {
 
   return (
     <StyledCard variant="outlined">
-      <CardContent
+      <CardActionArea
+        component={Link}
+        href={bookingHref}
+        disableRipple
         sx={(theme) => ({
           flex: 1,
           display: "flex",
           flexDirection: "column",
-          padding: `${theme.space.lg}px`,
-          "&:last-child": { paddingBottom: `${theme.space.md}px` },
+          alignItems: "stretch",
+          minWidth: 0,
+          color: "inherit",
+          textDecoration: "none",
+
+          "&:hover .booking-link": {
+            color: theme.colours.accent.primary,
+          },
+
+          "&.Mui-focusVisible": {
+            outline: `2px solid ${theme.palette.primary.main}`,
+            outlineOffset: -2,
+          },
         })}
       >
-        <Typography
-          variant="cardTitle"
-          component="h2"
-          noWrap
+        <CardContent
           sx={(theme) => ({
-            color: theme.colours.text.primary,
-            marginBottom: theme.space.xs,
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            padding: `${theme.space.lg}px`,
+            "&:last-child": { paddingBottom: `${theme.space.md}px` },
           })}
         >
-          {booking.name}
-        </Typography>
+          <Typography
+            variant="cardTitle"
+            component="h2"
+            noWrap
+            sx={(theme) => ({
+              color: theme.colours.text.primary,
+              marginBottom: theme.space.xs,
+            })}
+          >
+            {booking.name}
+          </Typography>
 
-        <LabelRow>
-          <Label>
-            <PlaceOutlinedIcon aria-hidden="true" />
-            <Typography variant="body2" noWrap>
-              {booking.roomId}
-            </Typography>
-          </Label>
-          <Label>
-            <LocalOfferOutlinedIcon aria-hidden="true" />
-            <Typography variant="body2">
-              {formatBookingType(booking.bookingType)}
-            </Typography>
-          </Label>
-        </LabelRow>
+          <LabelRow>
+            <Label>
+              <PlaceOutlinedIcon aria-hidden="true" />
+              <Typography variant="body2" noWrap>
+                {booking.roomId}
+              </Typography>
+            </Label>
+            <Label>
+              <LocalOfferOutlinedIcon aria-hidden="true" />
+              <Typography variant="body2">
+                {formatBookingType(booking.bookingType)}
+              </Typography>
+            </Label>
+          </LabelRow>
 
-        <TagsRow>
-          <TimeTag>
-            <AccessTimeOutlinedIcon aria-hidden="true" />
-            <Typography variant="body2">
-              {formatBookingDateTime(booking.start, booking.end, now)}
-            </Typography>
-          </TimeTag>
+          <TagsRow>
+            <TimeTag>
+              <AccessTimeOutlinedIcon aria-hidden="true" />
+              <Typography variant="body2">
+                {formatBookingDateTime(booking.start, booking.end, now)}
+              </Typography>
+            </TimeTag>
 
-          {isUnder30Minutes ? (
-            <SoonRemainingTimeTag>
-              <HourglassEmptyOutlinedIcon aria-hidden="true" />
-              <Typography variant="body2">{"<"}30 mins left</Typography>
-            </SoonRemainingTimeTag>
-          ) : isUnder10Minutes ? (
-            <UnavailableRemainingTimeTag>
-              <HourglassEmptyOutlinedIcon aria-hidden="true" />
-              <Typography variant="body2">{"<"}10 mins left</Typography>
-            </UnavailableRemainingTimeTag>
-          ) : null}
-        </TagsRow>
+            {isUnder30Minutes ? (
+              <SoonRemainingTimeTag>
+                <HourglassEmptyOutlinedIcon aria-hidden="true" />
+                <Typography variant="body2">{"<"}30 mins left</Typography>
+              </SoonRemainingTimeTag>
+            ) : isUnder10Minutes ? (
+              <UnavailableRemainingTimeTag>
+                <HourglassEmptyOutlinedIcon aria-hidden="true" />
+                <Typography variant="body2">{"<"}10 mins left</Typography>
+              </UnavailableRemainingTimeTag>
+            ) : null}
+          </TagsRow>
 
-        <Divider
-          sx={(theme) => ({
-            marginTop: "auto",
-            marginBottom: theme.space.sm,
-          })}
-        />
-        <BookingLink href={bookingHref}>
-          Booking page
-          <ArrowForwardOutlinedIcon aria-hidden="true" />
-        </BookingLink>
-      </CardContent>
+          <Divider
+            sx={(theme) => ({
+              marginTop: "auto",
+              marginBottom: theme.space.sm,
+            })}
+          />
+          <BookingLink className="booking-link">
+            Booking page
+            <ArrowForwardOutlinedIcon aria-hidden="true" />
+          </BookingLink>
+        </CardContent>
+      </CardActionArea>
     </StyledCard>
   );
 };

@@ -40,6 +40,10 @@ jest.mock("@frontend/components/navigation/RoomBackButton", () => ({
   __esModule: true,
   default: () => <div />,
 }));
+jest.mock("@frontend/components/rooms/NearbyRoomsCarousel", () => ({
+  __esModule: true,
+  default: () => <div data-testid="nearby-rooms" />,
+}));
 
 describe("Room page loading state", () => {
   it("shows section skeletons until the room and building load, then the real content", () => {

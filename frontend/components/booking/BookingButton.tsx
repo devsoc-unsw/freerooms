@@ -1,7 +1,7 @@
 import Button from "@frontend/components/ui/Button";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { useTheme } from "@mui/material";
 import Link from "@mui/material/Link";
-import Typography from "@mui/material/Typography";
 import React from "react";
 
 const BookingButton: React.FC<{
@@ -10,32 +10,41 @@ const BookingButton: React.FC<{
   onClick: () => void;
 }> = ({ school, usage }) => {
   const theme = useTheme();
+
   let link = "";
-  if (school === " " && usage === "LIB")
+
+  if (school === " " && usage === "LIB") {
     link = "https://unswlibrary-bookings.libcal.com";
-  else if (school === " ")
+  } else if (school === " ") {
     link =
       "https://www.learningenvironments.unsw.edu.au/make-booking/book-room";
+  }
+
+  const buttonSx = {
+    height: theme.sizes.roomNavigation.buttonHeight,
+    "&.Mui-disabled": {
+      backgroundColor: theme.palette.action.disabledBackground,
+      color: theme.palette.action.disabled,
+    },
+  };
 
   if (link) {
     return (
-      <Link target="_blank" href={link}>
+      <Link
+        target="_blank"
+        rel="noopener noreferrer"
+        href={link}
+        sx={{ display: "block", width: "100%" }}
+      >
         <Button
           aria-label="Make a Booking"
           name="Make a Booking"
-          sx={{
-            backgroundColor: theme.colours.surface.control,
-            color: theme.palette.text.primary,
-            height: 45,
-            marginLeft: { xs: 0, sm: 1 },
-            marginTop: { xs: 1, sm: 0 },
-            marginBottom: { xs: 1, sm: 0 },
-            width: { xs: "100%", sm: "160px" },
-          }}
+          variant="outlined"
+          startIcon={<OpenInNewIcon />}
+          fullWidth
+          sx={buttonSx}
         >
-          <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-            Make a Booking
-          </Typography>
+          Make a Booking
         </Button>
       </Link>
     );
@@ -45,20 +54,13 @@ const BookingButton: React.FC<{
     <Button
       aria-label="Make a Booking"
       name="Make a Booking"
-      sx={{
-        backgroundColor: theme.colours.surface.control,
-        color: theme.palette.text.primary,
-        height: 45,
-        marginLeft: { xs: 0, sm: 1 },
-        marginTop: { xs: 1, sm: 0 },
-        marginBottom: { xs: 1, sm: 0 },
-        width: { xs: "100%", sm: "160px" },
-      }}
+      variant="outlined"
+      startIcon={<OpenInNewIcon />}
+      fullWidth
+      sx={buttonSx}
       disabled
     >
-      <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-        Booking Unavailable
-      </Typography>
+      Booking Unavailable
     </Button>
   );
 };

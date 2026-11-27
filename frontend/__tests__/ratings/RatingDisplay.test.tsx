@@ -72,6 +72,11 @@ jest.mock("@frontend/hooks/rooms/useRoom", () => ({
   },
 }));
 
+jest.mock("@frontend/components/rooms/NearbyRoomsCarousel", () => ({
+  __esModule: true,
+  default: () => <div data-testid="nearby-rooms" />,
+}));
+
 describe("Rating Star", () => {
   it("Star shows up on buildings card (non-mobile)", () => {
     renderWithRedux(<BuildingCard buildingId="K-J17" />);
@@ -100,7 +105,6 @@ describe("Rating Star", () => {
       </Provider>
     );
 
-    const starInfo = screen.getByLabelText(/5-star-info/i);
-    expect(starInfo).toBeInTheDocument();
+    expect(screen.getByText(/^Stars:/)).toBeInTheDocument();
   });
 });

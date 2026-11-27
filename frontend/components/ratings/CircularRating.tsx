@@ -1,3 +1,4 @@
+import { space } from "@frontend/theme";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
@@ -17,9 +18,11 @@ const CircularRating: React.FC<CircularRatingProps> = ({
   return (
     <Box
       sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
         textAlign: "center",
-        marginLeft: 1,
-        marginRight: 1,
+        gap: space.xs,
       }}
     >
       <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>
@@ -62,7 +65,13 @@ const CircularRating: React.FC<CircularRatingProps> = ({
             transform: "translate(-50%, -50%)",
           }}
         >
-          <Typography variant="h5">{rating.toFixed(1)}</Typography>
+          <Typography
+            variant="h3"
+            component="span"
+            sx={{ fontWeight: "fontWeightMedium" }}
+          >
+            {rating.toFixed(1)}
+          </Typography>
         </Box>
       </Box>
     </Box>

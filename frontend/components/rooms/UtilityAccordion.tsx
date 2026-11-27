@@ -25,10 +25,9 @@ export default function UtilityAccordion({ title, icon, items = [] }: Props) {
       disableGutters
       elevation={0}
       sx={{
-        border: `1px solid ${theme.palette.divider}`,
-        borderRadius: `${theme.shape.borderRadius}px !important`,
+        border: `${theme.sizes.border.weight}px solid ${theme.colours.border.subtle}`,
+        borderRadius: `${theme.radius.md}px !important`,
         overflow: "hidden",
-        mb: theme.spacing(1),
         "&:before": {
           display: "none",
         },
@@ -54,14 +53,14 @@ export default function UtilityAccordion({ title, icon, items = [] }: Props) {
       >
         <Stack
           direction="row"
-          spacing={1.5}
+          spacing={theme.space.sm}
           sx={{
             alignItems: "center",
           }}
         >
           {icon}
           <Typography
-            variant="subtitle2"
+            variant="filterTitle"
             color="text.primary"
             sx={{
               fontWeight: theme.typography.fontWeightMedium,
@@ -73,10 +72,10 @@ export default function UtilityAccordion({ title, icon, items = [] }: Props) {
             variant="caption"
             sx={{
               color: primary,
-              backgroundColor: `${primary}1A`, // ~10% opacity
-              px: theme.spacing(1),
-              py: theme.spacing(0.25),
-              borderRadius: theme.shape.borderRadius,
+              backgroundColor: alpha(primary, 0.1),
+              paddingInline: theme.space.sm,
+              paddingBlock: theme.space.xs,
+              borderRadius: `${theme.radius.pill}px`,
               fontWeight: theme.typography.fontWeightMedium,
             }}
           >
@@ -86,7 +85,7 @@ export default function UtilityAccordion({ title, icon, items = [] }: Props) {
       </AccordionSummary>
       <AccordionDetails
         sx={{
-          p: theme.spacing(2),
+          padding: theme.space.md,
           backgroundColor: theme.palette.background.default,
         }}
       >

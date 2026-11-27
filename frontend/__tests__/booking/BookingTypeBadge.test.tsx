@@ -32,7 +32,7 @@ describe("getBookingTypeAppearance", () => {
     ).toBe("laboratory");
   });
 
-  it("uses the neutral colour for unknown booking types", () => {
+  it("uses the fallback colour for unknown booking types", () => {
     expect(getBookingTypeAppearance("UNKNOWN").colour).toBe("other");
   });
 });

@@ -15,6 +15,7 @@ const DecimalStarRating: React.FC<{
         variant="h3"
         sx={{
           fontSize: "75px",
+          fontWeight: "fontWeightRegular",
           width: "100%",
           textAlign: "center",
         }}

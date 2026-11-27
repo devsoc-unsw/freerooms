@@ -64,6 +64,11 @@ jest.mock("@frontend/hooks/rooms/useRoom", () => ({
   },
 }));
 
+jest.mock("@frontend/components/rooms/NearbyRoomsCarousel", () => ({
+  __esModule: true,
+  default: () => <div data-testid="nearby-rooms" />,
+}));
+
 describe("Favourite button", () => {
   beforeEach(() => {
     window.localStorage.clear();

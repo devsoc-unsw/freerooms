@@ -2,6 +2,7 @@ import CircularRating from "@frontend/components/ratings/CircularRating";
 import DecimalStarRating from "@frontend/components/ratings/DecimalStarRating";
 import LinearRating from "@frontend/components/ratings/LinearRating";
 import useRoomRatings from "@frontend/hooks/ratings/useRoomRatings";
+import { space } from "@frontend/theme";
 import Box from "@mui/material/Box";
 import { Stack, useMediaQuery } from "@mui/system";
 import React from "react";
@@ -28,18 +29,17 @@ const RoomRatingList: React.FC<{
           sx={{
             display: "flex",
             justifyContent: "center",
-            marginTop: 2,
           }}
         >
           <Stack
             direction="row"
             sx={{
               alignItems: "center",
-              gap: 4,
+              gap: space.xl,
             }}
           >
             <DecimalStarRating roomID={roomID} />
-            <Stack direction="row">
+            <Stack direction="row" spacing={space.md}>
               <CircularRating
                 category="Cleanliness"
                 rating={cleanlinessRating}
@@ -52,8 +52,7 @@ const RoomRatingList: React.FC<{
       ) : (
         <Stack
           sx={{
-            gap: 2,
-            marginTop: 2,
+            gap: space.md,
             width: "100%",
           }}
         >

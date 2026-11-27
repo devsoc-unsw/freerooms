@@ -1,5 +1,6 @@
 import ReviewButton from "@frontend/components/ratings/ReviewButton";
 import RoomRatingList from "@frontend/components/ratings/RoomRatingList";
+import { space } from "@frontend/theme";
 import { Divider, Skeleton, Typography } from "@mui/material";
 import { Stack, useMediaQuery } from "@mui/system";
 
@@ -16,7 +17,7 @@ const RoomRatingSkeleton = () => (
       animation="wave"
       variant="text"
       width={160}
-      sx={{ fontSize: 24, mt: 3, mb: 1 }}
+      sx={{ fontSize: "h4.fontSize" }}
     />
 
     {/* column on mobile, row (with vertical divider) from 675px */}
@@ -153,47 +154,48 @@ export default function RoomRating({
 
   return (
     <Stack
+      spacing={space.md}
       sx={{
         alignSelf: "start",
         width: "100%",
+        minWidth: 0,
       }}
     >
-      <Typography
-        variant="h5"
-        sx={{
-          fontWeight: "bold",
-          marginTop: 3,
-        }}
-      >
+      <Typography variant="h4" component="h2">
         Room Ratings
       </Typography>
+
       {isDesktop ? (
         <Stack
           direction="row"
           sx={{
-            gap: 2,
+            gap: space.lg,
+            alignItems: "center",
           }}
         >
           <RoomRatingList roomID={roomID} />
+
           <Divider flexItem orientation="vertical" />
+
           <Stack
             sx={{
-              gap: 1,
+              gap: space.sm,
               justifyContent: "center",
             }}
           >
             <Typography>Share your thoughts on this room!</Typography>
+
             <ReviewButton buildingID={buildingID} roomID={roomID} />
           </Stack>
         </Stack>
       ) : (
         <Stack
           sx={{
-            gap: 2,
-            justifySelf: "center",
+            gap: space.md,
           }}
         >
           <RoomRatingList roomID={roomID} />
+
           <ReviewButton buildingID={buildingID} roomID={roomID} />
         </Stack>
       )}

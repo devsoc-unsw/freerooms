@@ -23,9 +23,18 @@ export const sizes = {
     compactHeight: 240,
     compactThumbnailHeight: 96,
   },
+  nearbyRoomCard: {
+    width: 300,
+    height: 120,
+  },
   roomPhoto: {
     defaultHeight: 500,
     bookingHeight: 300,
+    roomPageHeight: {
+      xs: 180,
+      sm: 220,
+      md: 260,
+    },
   },
   roomNavigation: {
     buttonHeight: 45,
