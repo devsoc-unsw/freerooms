@@ -128,7 +128,12 @@ const RoomPageHeaderSkeleton = () => (
       <Skeleton animation="wave" variant="circular" width={40} height={40} />
     </Stack>
 
-    <Stack direction="row" useFlexGap flexWrap="wrap" spacing={space.md}>
+    <Stack
+      direction="row"
+      useFlexGap
+      spacing={space.md}
+      sx={{ flexWrap: "wrap" }}
+    >
       {Array.from({ length: 6 }, (_, index) => (
         <Skeleton key={index} animation="wave" variant="text" width={100} />
       ))}
