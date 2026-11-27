@@ -25,7 +25,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import axios from "axios";
 import parseDates from "common/parseDates";
 import type { BookingsPaginationResponse } from "common/types";
-import { addMinutes } from "date-fns";
 import { enAU } from "date-fns/locale/en-AU";
 import { parseAsString, useQueryState } from "nuqs";
 import React, { Suspense, useEffect, useRef } from "react";
@@ -49,10 +48,12 @@ const Bookings = () => {
     "start",
     parseAsString.withDefault("")
   );
+  const [end, setEnd] = useQueryState("endTime", parseAsString.withDefault(""));
+  const endTime = end && !Number.isNaN(Date.parse(end)) ? new Date(end) : null;
   const getFilters = useSelector(selectFilters);
   const filters = getFilters as Filters & BookingsFilters;
   const datetime = useSelector(selectDatetime);
-  const startIsSet = start !== NO_START_TIME;
+  const startIsSet = start !== "" && start !== NO_START_TIME;
 
   useEffect(() => {
     if (!bookingsSortBarDropdown.some((option) => option.value === sort)) {
@@ -87,14 +88,10 @@ const Bookings = () => {
 
     if (startIsSet) {
       params.set("startTime", datetime.toISOString());
+    }
 
-      const durationMinutes = Number(filters.duration);
-      if (Number.isFinite(durationMinutes) && durationMinutes > 0) {
-        params.set(
-          "endTime",
-          addMinutes(datetime, durationMinutes).toISOString()
-        );
-      }
+    if (endTime) {
+      params.set("endTime", endTime.toISOString());
     }
 
     if (pageIndex > 0) {
@@ -159,9 +156,13 @@ const Bookings = () => {
               />
               <TimeBar
                 startIsSet={startIsSet}
-                onStartIsSetChange={(isSet) =>
-                  setStart(isSet ? null : NO_START_TIME)
-                }
+                onStartIsSetChange={(isSet) => {
+                  void setStart(isSet ? "set" : NO_START_TIME);
+                }}
+                endTime={endTime}
+                onEndTimeChange={(value) => {
+                  void setEnd(value?.toISOString() ?? null);
+                }}
               />
             </TopBarGroup>
           </TopBar>

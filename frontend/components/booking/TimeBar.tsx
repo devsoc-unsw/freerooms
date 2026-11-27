@@ -24,9 +24,16 @@ type TimeBarProps = {
   // False once the start time has been cleared. Pages that don't pass these always have a start time.
   startIsSet?: boolean;
   onStartIsSetChange?: (isSet: boolean) => void;
+  endTime?: Date | null;
+  onEndTimeChange?: (value: Date | null) => void;
 };
 
-const TimeBar = ({ startIsSet = true, onStartIsSetChange }: TimeBarProps) => {
+const TimeBar = ({
+  startIsSet = true,
+  onStartIsSetChange,
+  endTime,
+  onEndTimeChange,
+}: TimeBarProps) => {
   const dispatch = useDispatch();
   const datetime = useSelector(selectDatetime);
   const filters = useSelector(selectFilters);
@@ -39,15 +46,33 @@ const TimeBar = ({ startIsSet = true, onStartIsSetChange }: TimeBarProps) => {
 
   const handleClearStart = () => {
     dispatch(setDatetime(new Date()));
-    dispatch(unsetFilter("duration"));
+
+    if (!onEndTimeChange) {
+      dispatch(unsetFilter("duration"));
+    }
+
     onStartIsSetChange?.(false);
   };
 
-  const hasEnd = Boolean(filters.duration);
-  const hasStart = startIsSet || hasEnd;
-  const endZoned = addMinutes(startZoned, Number(filters.duration) || 0);
+  const hasEnd = onEndTimeChange ? endTime != null : Boolean(filters.duration);
+  const hasStart = startIsSet || (!onEndTimeChange && hasEnd);
+
+  const endZoned = onEndTimeChange
+    ? toZonedTime(endTime ?? datetime, SYDNEY_TIMEZONE)
+    : addMinutes(startZoned, Number(filters.duration) || 0);
+
   const handleEndChange = (value: Date) => {
+    // Independent end time, used for bookings page
+    if (onEndTimeChange) {
+      const selectedEnd = fromZonedTime(value, SYDNEY_TIMEZONE);
+      const earliestEnd = startIsSet ? datetime : new Date();
+
+      onEndTimeChange(selectedEnd > earliestEnd ? selectedEnd : null);
+      return;
+    }
+
     const minutes = differenceInMinutes(value, startZoned);
+
     if (minutes > 0) {
       dispatch(setFilter({ key: "duration", value: String(minutes) }));
       onStartIsSetChange?.(true);
@@ -80,7 +105,13 @@ const TimeBar = ({ startIsSet = true, onStartIsSetChange }: TimeBarProps) => {
             value={endZoned}
             isSet={hasEnd}
             emptyLabel="No end time"
-            onClear={() => dispatch(unsetFilter("duration"))}
+            onClear={() => {
+              if (onEndTimeChange) {
+                onEndTimeChange(null);
+              } else {
+                dispatch(unsetFilter("duration"));
+              }
+            }}
             onChange={handleEndChange}
           />
         </Stack>

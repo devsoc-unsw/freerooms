@@ -464,6 +464,13 @@ export const queryAllBookings = async (
     throw new Error("End time must be after start time");
   }
 
+  // Exclude finished when no start time is specified
+  if (!filters?.startTime) {
+    conditions.push({
+      end: { _gt: new Date().toISOString() },
+    });
+  }
+
   // Bookings start at or after
   if (filters?.startTime) {
     conditions.push({
