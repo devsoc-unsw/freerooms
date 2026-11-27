@@ -60,7 +60,7 @@ const DropdownSelections: React.FC<{
               <Checkbox
                 checked={
                   Array.isArray(filters[dropdown.key]) &&
-                  filters[dropdown.key].includes(item.value)
+                  filters[dropdown.key]?.includes(item.value)
                 }
                 role="checkbox"
                 sx={{ paddingLeft: 0 }}
