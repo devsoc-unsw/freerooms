@@ -16,12 +16,16 @@ jest.mock("@frontend/app/clientLayout", () => ({
 }));
 
 // Mock DarkModeContext to avoid test failing due to importing NuqsAdapter
-jest.mock("../app/clientLayout", () => ({
-  DarkModeContext: require("react").createContext({
-    isDarkMode: false,
-    toggleDarkMode: () => {},
-  }),
-}));
+jest.mock("@frontend/app/clientLayout", () => {
+  const { createContext } = jest.requireActual<typeof import("react")>("react");
+
+  return {
+    DarkModeContext: createContext({
+      isDarkMode: false,
+      toggleDarkMode: () => {},
+    }),
+  };
+});
 
 jest.mock("nuqs", () => ({
   useQueryStates: (keys: Record<string, { defaultValue: string }>) => [
