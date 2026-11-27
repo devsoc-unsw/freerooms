@@ -18,7 +18,7 @@ import useRoomRatings from "@frontend/hooks/ratings/useRoomRatings";
 import useFavourites from "@frontend/hooks/rooms/useFavourites";
 import useRoom from "@frontend/hooks/rooms/useRoom";
 import room_photos from "@frontend/public/room-photos.json";
-import { space } from "@frontend/theme";
+import { sizes, space } from "@frontend/theme";
 import { getBuildingIdFromRoomId } from "@frontend/utils/utils";
 import CloseIcon from "@mui/icons-material/Close";
 import FavouriteIcon from "@mui/icons-material/Favorite";
@@ -89,12 +89,12 @@ export default function Page() {
       >
         <RoomPageHeader
           room={room}
+          photos={photos}
           favourite={room ? isFavourite(room.id) : false}
           onToggleFavourite={() => {
             if (room) toggleFavourite(room.id);
           }}
         />
-        <RoomPhotoCarousel photos={photos} loading={!room} />
         <BookingCalendar events={adjustedBookings ?? []} loading={!room} />
         <RoomUtilityTags roomId={room?.id} />
         <RoomRating
@@ -143,9 +143,10 @@ const RoomPageHeaderSkeleton = () => (
 
 const RoomPageHeader: React.FC<{
   room?: Room;
+  photos: string[];
   favourite: boolean;
   onToggleFavourite: () => void;
-}> = ({ room, favourite, onToggleFavourite }) => {
+}> = ({ room, photos, favourite, onToggleFavourite }) => {
   const [openDialog, setDialog] = useState(false);
 
   const toggleDialog = () => {
@@ -155,7 +156,31 @@ const RoomPageHeader: React.FC<{
   const ratings = useRoomRatings(room?.id);
 
   if (!room) {
-    return <RoomPageHeaderSkeleton />;
+    return (
+      <Stack spacing={space.md} sx={{ width: "100%" }}>
+        <RoomPageHeaderSkeleton />
+
+        <RoomPhotoCarousel
+          photos={photos}
+          loading
+          height={sizes.roomPhoto.roomPageHeight}
+        />
+
+        <Stack direction="row" spacing={space.sm}>
+          <Skeleton
+            variant="rounded"
+            height={sizes.roomNavigation.buttonHeight}
+            sx={{ flex: 1 }}
+          />
+
+          <Skeleton
+            variant="rounded"
+            height={sizes.roomNavigation.buttonHeight}
+            sx={{ flex: 1 }}
+          />
+        </Stack>
+      </Stack>
+    );
   }
 
   const schoolDetails = getSchoolDetails(room.school);
@@ -200,14 +225,33 @@ const RoomPageHeader: React.FC<{
         <RoomMetadata room={room} rating={ratings.data?.overallRating} />
       </Stack>
 
-      <Stack direction={{ xs: "column", sm: "row" }} spacing={space.sm}>
-        <ViewOnMapButton buildingId={buildingId} />
+      <RoomPhotoCarousel
+        photos={photos}
+        height={sizes.roomPhoto.roomPageHeight}
+      />
 
+      <Stack
+        sx={(theme) => ({
+          display: "grid",
+          gridTemplateColumns: {
+            xs: "1fr",
+            sm: "repeat(2, minmax(0, 1fr))",
+          },
+          gap: theme.space.sm,
+
+          "& > *": {
+            minWidth: 0,
+            margin: 0,
+          },
+        })}
+      >
         <BookingButton
           school={room.school}
           usage={room.usage}
           onClick={toggleDialog}
         />
+
+        <ViewOnMapButton buildingId={buildingId} variant="full-width" />
       </Stack>
 
       <Dialog

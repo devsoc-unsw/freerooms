@@ -26,6 +26,11 @@ export const sizes = {
   roomPhoto: {
     defaultHeight: 500,
     bookingHeight: 300,
+    roomPageHeight: {
+      xs: 180,
+      sm: 220,
+      md: 260,
+    },
   },
   roomNavigation: {
     buttonHeight: 45,

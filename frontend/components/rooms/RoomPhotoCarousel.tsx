@@ -8,10 +8,18 @@ import Image from "next/image";
 import { Autoplay, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-const RoomImage: React.FC<{ src: string; height: number }> = ({
-  src,
-  height,
-}) => {
+type CarouselHeight =
+  | number
+  | {
+      xs: number;
+      sm: number;
+      md: number;
+    };
+
+const RoomImage: React.FC<{
+  src: string;
+  height: CarouselHeight;
+}> = ({ src, height }) => {
   return (
     <Box
       sx={{
@@ -34,7 +42,7 @@ const RoomImage: React.FC<{ src: string; height: number }> = ({
 const RoomPhotoCarousel: React.FC<{
   photos: string[];
   loading?: boolean;
-  height?: number;
+  height?: CarouselHeight;
 }> = ({ photos, loading, height = sizes.roomPhoto.defaultHeight }) => {
   if (loading) {
     return (
@@ -42,8 +50,10 @@ const RoomPhotoCarousel: React.FC<{
         animation="wave"
         variant="rounded"
         width="100%"
-        height={height}
-        sx={{ borderRadius: "10px" }}
+        sx={{
+          height,
+          borderRadius: "10px",
+        }}
       />
     );
   }
