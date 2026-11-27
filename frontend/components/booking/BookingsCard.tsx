@@ -62,10 +62,16 @@ const TimeTag = styled(Stack)(({ theme }) => ({
   "& svg": { fontSize: theme.sizes.icon.sm },
 }));
 
-const RemainingTimeTag = styled(TimeTag)(({ theme }) => ({
+const UnavailableRemainingTimeTag = styled(TimeTag)(({ theme }) => ({
   borderColor: theme.colours.status.unavailable.main,
   backgroundColor: theme.colours.status.unavailable.background,
   color: theme.colours.status.unavailable.text,
+}));
+
+const SoonRemainingTimeTag = styled(TimeTag)(({ theme }) => ({
+  borderColor: theme.colours.status.soon.main,
+  backgroundColor: theme.colours.status.soon.background,
+  color: theme.colours.text.primary,
 }));
 
 const BookingLink = styled(Link)(({ theme }) => ({
@@ -117,7 +123,9 @@ const formatBookingDateTime = (
 
 const BookingsCard = ({ booking, now }: BookingsCardProps) => {
   const timeLeft = now === null ? null : booking.end.getTime() - now;
-  const isRemainingTime =
+  const isUnder30Minutes =
+    timeLeft !== null && timeLeft > 0 && timeLeft < 30 * 60_000;
+  const isUnder10Minutes =
     timeLeft !== null && timeLeft > 0 && timeLeft < 10 * 60_000;
   const bookingHref = getBookingHref(booking.roomId, booking.occurrenceId);
 
@@ -167,11 +175,18 @@ const BookingsCard = ({ booking, now }: BookingsCardProps) => {
             </Typography>
           </TimeTag>
 
-          {isRemainingTime && (
-            <RemainingTimeTag>
+          {isUnder30Minutes && !isUnder10Minutes && (
+            <SoonRemainingTimeTag>
+              <HourglassEmptyOutlinedIcon aria-hidden="true" />
+              <Typography variant="body2">{"<"}30 mins left</Typography>
+            </SoonRemainingTimeTag>
+          )}
+
+          {isUnder10Minutes && (
+            <UnavailableRemainingTimeTag>
               <HourglassEmptyOutlinedIcon aria-hidden="true" />
               <Typography variant="body2">{"<"}10 mins left</Typography>
-            </RemainingTimeTag>
+            </UnavailableRemainingTimeTag>
           )}
         </TagsRow>
 

@@ -8,17 +8,17 @@ import CheckIcon from "@mui/icons-material/Check";
 import EventAvailableOutlinedIcon from "@mui/icons-material/EventAvailableOutlined";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
+import HourglassBottomOutlinedIcon from "@mui/icons-material/HourglassBottomOutlined";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import RoomOutlinedIcon from "@mui/icons-material/RoomOutlined";
-import SortByAlphaIcon from "@mui/icons-material/SortByAlpha";
 import StartIcon from "@mui/icons-material/Start";
-import TimelapseOutlinedIcon from "@mui/icons-material/TimelapseOutlined";
 import WatchLaterOutlinedIcon from "@mui/icons-material/WatchLaterOutlined";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
+import { ArrowDownZA, ArrowUpZA } from "lucide-react";
 import React from "react";
 
 const RadioMark = styled("span", {
@@ -43,14 +43,17 @@ const SORT_ICONS: Record<string, SvgIconComponent> = {
   longestAvailable: WatchLaterOutlinedIcon,
   capacity: PeopleAltOutlinedIcon,
   nearest: RoomOutlinedIcon,
-  alphabetical: SortByAlphaIcon,
-  reverseAlphabetical: SortByAlphaIcon,
   lowerToUpper: ArrowUpwardIcon,
   upperToLower: ArrowDownwardIcon,
   ascendingStart: StartIcon,
   descendingStart: StartIcon,
   plannedSize: GroupsOutlinedIcon,
-  remainingTime: TimelapseOutlinedIcon,
+  remainingTime: HourglassBottomOutlinedIcon,
+};
+
+const LUCIDE_SORT_ICONS: Record<string, React.JSX.Element> = {
+  alphabetical: <ArrowUpZA />,
+  reverseAlphabetical: <ArrowDownZA />,
 };
 
 const SortBar: React.FC<{
@@ -75,6 +78,7 @@ const SortBar: React.FC<{
   >
     {options.map((option) => {
       const Icon = SORT_ICONS[option.value];
+      const LucideIcon = LUCIDE_SORT_ICONS[option.value];
       return (
         <FormControlLabel
           key={option.value}
@@ -97,19 +101,19 @@ const SortBar: React.FC<{
                 gap: (theme) => `${theme.space.sm}px`,
               }}
             >
-              {Icon && (
-                <Icon
-                  fontSize="small"
-                  sx={{
-                    transform:
-                      option.value === "descendingStart"
-                        ? "scaleX(-1)"
-                        : option.value === "reverseAlphabetical"
-                          ? "scaleY(-1)"
-                          : undefined,
-                  }}
-                />
-              )}
+              {LucideIcon
+                ? LucideIcon
+                : Icon && (
+                    <Icon
+                      fontSize="small"
+                      sx={{
+                        transform:
+                          option.value === "descendingStart"
+                            ? "scaleX(-1)"
+                            : undefined,
+                      }}
+                    />
+                  )}
               <Typography variant="filterOption">{option.text}</Typography>
             </Stack>
           }
