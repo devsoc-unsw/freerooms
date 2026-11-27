@@ -8,14 +8,17 @@ import FeedbackButton from "@frontend/components/feedback/FeedbackButton";
 import RoomBackButton from "@frontend/components/navigation/RoomBackButton";
 import ViewOnMapButton from "@frontend/components/navigation/ViewOnMapButton";
 import RoomRating from "@frontend/components/ratings/RoomRating";
+import RoomMetadata from "@frontend/components/rooms/RoomMetadata";
 import RoomPhotoCarousel from "@frontend/components/rooms/RoomPhotoCarousel";
 import RoomUtilityTags from "@frontend/components/rooms/RoomUtilityTags";
+import PageContainer from "@frontend/components/ui/PageContainer";
 import useBookings from "@frontend/hooks/bookings/useBookings";
 import useBuilding from "@frontend/hooks/buildings/useBuilding";
 import useRoomRatings from "@frontend/hooks/ratings/useRoomRatings";
 import useFavourites from "@frontend/hooks/rooms/useFavourites";
 import useRoom from "@frontend/hooks/rooms/useRoom";
 import room_photos from "@frontend/public/room-photos.json";
+import { space } from "@frontend/theme";
 import { getBuildingIdFromRoomId } from "@frontend/utils/utils";
 import CloseIcon from "@mui/icons-material/Close";
 import FavouriteIcon from "@mui/icons-material/Favorite";
@@ -28,12 +31,9 @@ import {
   IconButton,
   Skeleton,
 } from "@mui/material";
-import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
-import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import translateRoomUsage from "common/roomUsages";
 import getSchoolDetails from "common/schools";
 import type { Booking, Room } from "common/types";
 import { useParams } from "next/navigation";
@@ -77,23 +77,18 @@ export default function Page() {
       : [`/assets/building_photos/${campus}-${grid}.webp`];
 
   return (
-    <Container maxWidth="xl">
+    <PageContainer maxWidth="xl">
       <FeedbackButton />
       <Stack
-        sx={{
-          justifyContent: "center",
-          alignItems: "center",
+        spacing={space.lg}
+        sx={(theme) => ({
           width: "100%",
-          paddingTop: 5,
-          paddingBottom: 5,
-          height: "100%",
-          paddingLeft: { xs: 3, md: 15 },
-          paddingRight: { xs: 3, md: 15 },
-        }}
+          minWidth: 0,
+          paddingBlock: theme.space.xl,
+        })}
       >
         <RoomPageHeader
           room={room}
-          buildingName={building?.name ?? ""}
           favourite={room ? isFavourite(room.id) : false}
           onToggleFavourite={() => {
             if (room) toggleFavourite(room.id);
@@ -108,130 +103,44 @@ export default function Page() {
           loading={!room || !building}
         />
       </Stack>
-    </Container>
+    </PageContainer>
   );
 }
 
 const RoomPageHeaderSkeleton = () => (
-  <Stack
-    direction="row"
-    sx={{
-      width: "100%",
-      alignItems: "center",
-      justifyContent: "space-between",
-    }}
-  >
+  <Stack spacing={space.md} sx={{ width: "100%" }}>
+    <Skeleton animation="wave" variant="rounded" width={80} height={36} />
+
     <Stack
-      direction="column"
-      spacing={1}
-      sx={{ width: "100%", marginBottom: 1 }}
+      direction="row"
+      sx={{
+        alignItems: "center",
+        justifyContent: "space-between",
+      }}
     >
-      {/* RoomBackButton */}
-      <Skeleton animation="wave" variant="rounded" width={80} height={36} />
+      <Skeleton
+        animation="wave"
+        variant="text"
+        width="60%"
+        sx={{ fontSize: "h3.fontSize" }}
+      />
 
-      {/* building / usage breadcrumb */}
-      <Stack direction="row" spacing={2}>
-        <Skeleton
-          animation="wave"
-          variant="text"
-          width={140}
-          sx={{ fontSize: 14 }}
-        />
-        <Skeleton
-          animation="wave"
-          variant="text"
-          width={90}
-          sx={{ fontSize: 14 }}
-        />
-        <Skeleton
-          animation="wave"
-          variant="text"
-          width={90}
-          sx={{ fontSize: 14 }}
-        />
-      </Stack>
+      <Skeleton animation="wave" variant="circular" width={40} height={40} />
+    </Stack>
 
-      {/* title, ViewOnMap, Booking buttons */}
-      <Stack
-        direction={{ xs: "column", sm: "row" }}
-        sx={{
-          justifyContent: "space-between",
-          alignItems: { xs: "stretch", sm: "start" },
-          width: "100%",
-        }}
-      >
-        <Skeleton animation="wave" variant="rounded" width="40%" height={45} />
-
-        <Stack
-          direction="row"
-          spacing={1}
-          sx={{ alignItems: "center", mt: { xs: 1, sm: 0 } }}
-        >
-          {/* favourite icon button */}
-          <Skeleton
-            animation="wave"
-            variant="circular"
-            width={40}
-            height={40}
-            sx={{ flexShrink: 0 }}
-          />
-          <Skeleton
-            animation="wave"
-            variant="rounded"
-            height={45}
-            sx={{ width: { xs: "100%", sm: "160px" } }}
-          />
-          <Skeleton
-            animation="wave"
-            variant="rounded"
-            height={45}
-            sx={{ width: { xs: "100%", sm: "160px" } }}
-          />
-        </Stack>
-      </Stack>
-
-      {/* ID, capacity, abbreviation row */}
-      <Stack direction="row" spacing={2}>
-        <Skeleton
-          animation="wave"
-          variant="text"
-          width={150}
-          sx={{ fontSize: 16 }}
-        />
-        <Skeleton
-          animation="wave"
-          variant="text"
-          width={150}
-          sx={{ fontSize: 16 }}
-        />
-        <Skeleton
-          animation="wave"
-          variant="text"
-          width={150}
-          sx={{ fontSize: 16 }}
-        />
-      </Stack>
-
-      {/* rating row */}
-      <Stack direction="row" spacing={0.5} sx={{ alignItems: "center" }}>
-        <Skeleton
-          animation="wave"
-          variant="text"
-          width={16}
-          sx={{ fontSize: 16 }}
-        />
-        <Skeleton animation="wave" variant="rounded" width={110} height={20} />
-      </Stack>
+    <Stack direction="row" useFlexGap flexWrap="wrap" spacing={space.md}>
+      {Array.from({ length: 6 }, (_, index) => (
+        <Skeleton key={index} animation="wave" variant="text" width={100} />
+      ))}
     </Stack>
   </Stack>
 );
 
 const RoomPageHeader: React.FC<{
   room?: Room;
-  buildingName: string;
   favourite: boolean;
   onToggleFavourite: () => void;
-}> = ({ room, buildingName, favourite, onToggleFavourite }) => {
+}> = ({ room, favourite, onToggleFavourite }) => {
   const [openDialog, setDialog] = useState(false);
 
   const toggleDialog = () => {
@@ -250,145 +159,50 @@ const RoomPageHeader: React.FC<{
     : "This room is managed externally by its associated school. Please contact the school to request a booking";
 
   const buildingId = getBuildingIdFromRoomId(room.id);
-  const ratingValue = (() => {
-    // round rating to nearest .5 if a rating exists
-    if (!ratings || !ratings.data) return 0;
-    const rating = ratings.data.overallRating;
-    const frac = rating % 1;
-    return frac >= 0.3 && frac <= 0.7
-      ? Math.floor(rating) + 0.5
-      : Math.round(rating);
-  })();
 
   return (
-    <Stack
-      direction="row"
-      sx={{
-        width: "100%",
-        alignItems: "center",
-        justifyContent: "space-between",
-      }}
-    >
-      <Stack
-        direction="column"
-        spacing={1}
-        sx={{
-          width: "100%",
-          marginBottom: 1,
-        }}
-      >
-        <RoomBackButton />
+    <Stack spacing={space.md} sx={{ width: "100%" }}>
+      <RoomBackButton />
 
-        {buildingName !== "" && (
-          <Stack
-            direction="row"
-            spacing={2}
-            divider={
-              <Typography variant="subtitle2" sx={{ display: "inline" }}>
-                /
-              </Typography>
-            }
-          >
-            <Typography variant="subtitle2">{buildingName}</Typography>
-            <Typography variant="subtitle2">
-              {translateRoomUsage(room.usage)}
-            </Typography>
-            {room.school !== " " && (
-              <Typography
-                variant="subtitle2"
-                color="primary"
-                sx={{ fontWeight: "bold" }}
-              >
-                ID Required
-              </Typography>
-            )}
-          </Stack>
-        )}
-
+      <Stack spacing={space.sm}>
         <Stack
-          direction={{ xs: "column", sm: "row" }}
+          direction="row"
+          spacing={space.md}
           sx={{
+            alignItems: "center",
             justifyContent: "space-between",
-            alignItems: { xs: "stretch", sm: "start" },
-            width: "100%",
           }}
         >
-          <Typography variant="h4" sx={{ fontWeight: 550 }}>
+          <Typography
+            variant="h3"
+            component="h1"
+            sx={{ overflowWrap: "anywhere" }}
+          >
             {room.name}
           </Typography>
 
-          <Stack
-            direction="row"
-            spacing={1}
-            sx={{
-              alignItems: "center",
-            }}
+          <IconButton
+            onClick={onToggleFavourite}
+            aria-label={favourite ? "Remove as favourite" : "Add as favourite"}
+            aria-pressed={favourite}
+            color="primary"
+            sx={{ flexShrink: 0 }}
           >
-            <IconButton
-              onClick={onToggleFavourite}
-              aria-label={
-                favourite ? "Remove as favourite" : "Add as favourite"
-              }
-            >
-              {favourite ? (
-                <FavouriteIcon color="primary" />
-              ) : (
-                <FavouriteBorderIcon />
-              )}
-            </IconButton>
-
-            <ViewOnMapButton buildingId={buildingId} />
-
-            <BookingButton
-              school={room.school}
-              usage={room.usage}
-              onClick={toggleDialog}
-            />
-          </Stack>
+            {favourite ? <FavouriteIcon /> : <FavouriteBorderIcon />}
+          </IconButton>
         </Stack>
 
-        <Stack direction="row" spacing={2}>
-          <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-            ID: {room.id}
-          </Typography>
-          <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-            Capacity: {room.capacity}
-          </Typography>
-          <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-            Abbreviation: {room.abbr}
-          </Typography>
+        <RoomMetadata room={room} rating={ratings.data?.overallRating} />
+      </Stack>
 
-          {room.school !== " " && (
-            <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-              School:{" "}
-              <Typography
-                component="span"
-                variant="body1"
-                sx={{ display: "inline" }}
-              >
-                {schoolDetails ? schoolDetails.name : room.school}
-              </Typography>
-            </Typography>
-          )}
-        </Stack>
+      <Stack direction={{ xs: "column", sm: "row" }} spacing={space.sm}>
+        <ViewOnMapButton buildingId={buildingId} />
 
-        <Stack
-          direction="row"
-          spacing={0.3}
-          aria-label="5-star-info"
-          sx={{ alignItems: "center" }}
-        >
-          <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-            {ratingValue === 0 ? 0 : ratingValue}
-          </Typography>
-          <Rating
-            readOnly
-            value={ratingValue}
-            size="small"
-            precision={0.5}
-            sx={{ color: (theme) => theme.colours.rating.active }}
-          />
-        </Stack>
+        <BookingButton
+          school={room.school}
+          usage={room.usage}
+          onClick={toggleDialog}
+        />
       </Stack>
 
       <Dialog
