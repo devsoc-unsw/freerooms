@@ -107,7 +107,7 @@ const CustomToolBar: React.FC<ToolbarProps<Booking>> = ({
             <ToolBarButton key={index} onClick={() => onNavigate(navKey)}>
               {displayText}
             </ToolBarButton>
-          )
+          ),
         )}
       </ButtonGroup>
       <ToggleButtonGroup
@@ -245,7 +245,7 @@ const StyledCalendarContainer = styled(Box)<BoxProps & { view: View }>(
     "& .rbc-current-time-indicator": {
       backgroundColor: theme.palette.primary.main,
     },
-  })
+  }),
 );
 
 const BookingCalendarSkeleton = () => (
@@ -373,7 +373,7 @@ const BookingCalendar: React.FC<{
     }
 
     const earliestHour = Math.min(
-      ...visibleEvents.map((e) => e.start.getHours())
+      ...visibleEvents.map((e) => e.start.getHours()),
     );
 
     const startHour =
@@ -411,7 +411,7 @@ const BookingCalendar: React.FC<{
   const formatTime = (
     date: Date,
     culture: string | undefined,
-    localizer?: DateLocalizer
+    localizer?: DateLocalizer,
   ) => {
     if (!localizer) {
       throw new Error("No date localizer");
@@ -427,7 +427,7 @@ const BookingCalendar: React.FC<{
   const formatTimeRange = (
     { start, end }: DateRange,
     culture: string | undefined,
-    localizer?: DateLocalizer
+    localizer?: DateLocalizer,
   ) => {
     return (
       formatTime(start, culture, localizer) +
@@ -444,7 +444,7 @@ const BookingCalendar: React.FC<{
       }
       return booking.name;
     },
-    [currView]
+    [currView],
   );
 
   const timeInDay = 24 * 60 * 60 * 1000;

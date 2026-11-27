@@ -28,11 +28,11 @@ describe("BookingTypeBadge", () => {
 describe("getBookingTypeAppearance", () => {
   it("uses the laboratory colour for combined tutorial laboratories", () => {
     expect(
-      getBookingTypeAppearance(BookingType.TUTORIAL_LABORATORY).colour
+      getBookingTypeAppearance(BookingType.TUTORIAL_LABORATORY).colour,
     ).toBe("laboratory");
   });
 
-  it("uses the neutral colour for unknown booking types", () => {
+  it("uses the fallback colour for unknown booking types", () => {
     expect(getBookingTypeAppearance("UNKNOWN").colour).toBe("other");
   });
 });

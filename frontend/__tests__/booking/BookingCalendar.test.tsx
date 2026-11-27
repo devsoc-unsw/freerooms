@@ -3,9 +3,11 @@ import BookingCalendar from "@frontend/components/booking/BookingCalendar";
 import store from "@frontend/redux/store";
 import toSydneyTime from "@frontend/utils/toSydneyTime";
 import { fireEvent, screen } from "@testing-library/react";
-import { Booking } from "common/types";
+import { Booking, BookingType } from "common/types";
 import mediaQuery from "css-mediaquery";
 import { Provider } from "react-redux";
+import { getColours } from "@frontend/theme/colours";
+import { alpha } from "@mui/material/styles";
 
 const mockUseQueryStates = jest.fn();
 
@@ -69,7 +71,7 @@ describe("Booking Calendar Desktop", () => {
     render(
       <Provider store={store}>
         <BookingCalendar events={events} />
-      </Provider>
+      </Provider>,
     );
 
     const calendar = screen.getByRole("table", {
@@ -83,7 +85,7 @@ describe("Booking Calendar Desktop", () => {
     render(
       <Provider store={store}>
         <BookingCalendar events={events} />
-      </Provider>
+      </Provider>,
     );
 
     const beforeButton = screen.queryByRole("button", { name: "Previous day" });
@@ -105,7 +107,7 @@ describe("Booking Calendar Desktop", () => {
     render(
       <Provider store={store}>
         <BookingCalendar events={events} />
-      </Provider>
+      </Provider>,
     );
 
     const datePicker = screen.getByDisplayValue("Fri, 11 Sep 2026");
@@ -125,7 +127,7 @@ describe("Booking Calendar Desktop", () => {
     render(
       <Provider store={store}>
         <BookingCalendar events={events} />
-      </Provider>
+      </Provider>,
     );
 
     const dayButton = screen.getByRole("button", { name: "Day" });
@@ -142,7 +144,7 @@ describe("Booking Calendar Mobile", () => {
     render(
       <Provider store={store}>
         <BookingCalendar events={events} />
-      </Provider>
+      </Provider>,
     );
 
     const beforeButton = screen.getByRole("button", { name: "Previous day" });
@@ -177,7 +179,7 @@ describe("Booking calendar navigation", () => {
     render(
       <Provider store={store}>
         <BookingCalendar events={[booking]} />
-      </Provider>
+      </Provider>,
     );
 
     fireEvent.click(screen.getByText("COMP2521 LEC (LECTURE)"));
@@ -191,12 +193,96 @@ describe("Booking calendar navigation", () => {
       render(
         <Provider store={store}>
           <BookingCalendar events={[{ ...booking, ...missing }]} />
-        </Provider>
+        </Provider>,
       );
 
       fireEvent.click(screen.getByText("COMP2521 LEC (LECTURE)"));
 
       expect(mockPush).not.toHaveBeenCalled();
-    }
+    },
   );
+
+  it.each([
+    [BookingType.LECTURE, "lecture", "Lecture"],
+    [BookingType.BLOCK, "internal", "Block Booking"],
+    [BookingType.EXAMS, "exam", "Exam"],
+    [BookingType.MISC, "other", "Miscellaneous"],
+  ] as const)(
+    "renders the correct colours and icon for %s",
+    (bookingType, colour, label) => {
+      render(
+        <Provider store={store}>
+          <BookingCalendar events={[{ ...booking, bookingType }]} />
+        </Provider>,
+      );
+
+      const event = screen
+        .getByText(`COMP2521 LEC (${bookingType})`)
+        .closest(".rbc-event");
+
+      const appearance = getColours("light").bookingType[colour];
+
+      expect(event).toHaveStyle({
+        backgroundColor: appearance.background,
+        color: appearance.text,
+        borderColor: alpha(appearance.text, 0.24),
+      });
+
+      expect(screen.getByRole("img", { name: label })).toBeInTheDocument();
+    },
+  );
+
+  it.each(["Enter", " "])(
+    "opens the selected booking using the %s key",
+    (key) => {
+      render(
+        <Provider store={store}>
+          <BookingCalendar events={[booking]} />
+        </Provider>,
+      );
+
+      const event = screen
+        .getByText("COMP2521 LEC (LECTURE)")
+        .closest(".rbc-event");
+
+      expect(event).not.toBeNull();
+
+      fireEvent.keyDown(event!, { key });
+
+      expect(mockPush).toHaveBeenCalledWith(
+        "/booking/K-F17-LG3/occurrence-123",
+      );
+    },
+  );
+
+  it("marks bookings with valid identifiers as clickable", () => {
+    render(
+      <Provider store={store}>
+        <BookingCalendar events={[booking]} />
+      </Provider>,
+    );
+
+    const event = screen
+      .getByText("COMP2521 LEC (LECTURE)")
+      .closest(".rbc-event");
+
+    expect(event).toHaveClass("booking-clickable");
+    expect(event).toHaveStyle({ cursor: "pointer" });
+  });
+
+  it("does not mark bookings without identifiers as clickable", () => {
+    render(
+      <Provider store={store}>
+        <BookingCalendar events={[{ ...booking, occurrenceId: undefined }]} />
+      </Provider>,
+    );
+
+    const event = screen
+      .getByText("COMP2521 LEC (LECTURE)")
+      .closest(".rbc-event");
+
+    expect(event).not.toBeNull();
+    expect(event).not.toHaveClass("booking-clickable");
+    expect(event).toHaveStyle({ cursor: "default" });
+  });
 });
