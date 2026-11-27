@@ -6,11 +6,13 @@
 - Ryan Yensch (@RyanYensch)
 
 ### Developers
-- Ray Miles (@disarrayx)
+- Ray Falkner (@disarrayx)
 - Christopher Khim (@CrispyKhim)
 - Cormac Flahive (@Cfla446)
 - Caelan Gray (@caelan-g)
 - Joshua Pozzolungo (@joshuapozzolungo)
+- Nguyen Khoi Nguyen (@alexnguyen104)
+- Christopher Liang (@Citzn)
 
 
 ## 2025
