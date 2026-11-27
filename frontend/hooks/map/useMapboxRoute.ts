@@ -44,7 +44,7 @@ const DEFAULT_ROUTE_ERROR =
 
 // Checks if mapbox returns a valid route
 const isValidMapboxRoute = (
-  route: MapboxRoute | undefined
+  route: MapboxRoute | undefined,
 ): route is MapboxRoute => {
   if (!route) {
     return false;
@@ -98,7 +98,7 @@ const useMapboxRoute = () => {
     }: CalculateRouteArguments): Promise<boolean> => {
       if (!MAPBOX_ACCESS_TOKEN) {
         setRouteError(
-          "Mapbox is not configured. Add NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN to frontend/.env.local."
+          "Mapbox is not configured. Add NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN to frontend/.env.local.",
         );
 
         return false;
@@ -114,7 +114,7 @@ const useMapboxRoute = () => {
         !Number.isFinite(destinationLongitude)
       ) {
         setRouteError(
-          "Directions could not be calculated because one or more coordinates are invalid."
+          "Directions could not be calculated because one or more coordinates are invalid.",
         );
 
         return false;
@@ -145,7 +145,7 @@ const useMapboxRoute = () => {
       ].join(";");
 
       const url = new URL(
-        `https://api.mapbox.com/directions/v5/mapbox/walking/${coordinates}`
+        `https://api.mapbox.com/directions/v5/mapbox/walking/${coordinates}`,
       );
 
       url.searchParams.set("access_token", MAPBOX_ACCESS_TOKEN);
@@ -222,7 +222,7 @@ const useMapboxRoute = () => {
         }
       }
     },
-    []
+    [],
   );
 
   // Cancels any outgoing request

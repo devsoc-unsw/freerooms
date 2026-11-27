@@ -34,7 +34,7 @@ describe("TopBarMenu", () => {
     await openSortMenu();
 
     expect(screen.getByRole("dialog")).toHaveTextContent(
-      "Reverse Alphabetical"
+      "Reverse Alphabetical",
     );
   });
 });

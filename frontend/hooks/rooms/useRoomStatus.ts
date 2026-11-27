@@ -7,7 +7,7 @@ import useBuildingStatus from "@frontend/hooks/buildings/useBuildingStatus";
 const useRoomStatus = (roomId?: string) => {
   const [campus, grid, roomNumber] = (roomId ?? "").split("-");
   const { status, error } = useBuildingStatus(
-    roomId ? `${campus}-${grid}` : undefined
+    roomId ? `${campus}-${grid}` : undefined,
   );
 
   // No id yet (e.g. a loading placeholder card), still loading, or failed

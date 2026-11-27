@@ -21,7 +21,7 @@ const useQueryDatetime = () => {
       time: parseAsString.withDefault(""),
       start: parseAsString.withDefault(""), // no start time while start time is cleared
     },
-    { shallow: true }
+    { shallow: true },
   );
   const startCleared = datetimeParams.start === NO_START_TIME;
 

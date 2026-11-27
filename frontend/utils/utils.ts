@@ -4,7 +4,7 @@ const INITIALISING = -2;
 // const FAILED = -1;
 
 export const getNumFreerooms = (
-  buildingStatus: BuildingStatus | undefined
+  buildingStatus: BuildingStatus | undefined,
 ): number => {
   if (buildingStatus === undefined) return INITIALISING;
 
@@ -12,7 +12,7 @@ export const getNumFreerooms = (
 };
 
 export const getTotalRooms = (
-  buildingStatus: BuildingStatus | undefined
+  buildingStatus: BuildingStatus | undefined,
 ): number => {
   if (buildingStatus === undefined) return INITIALISING;
 

@@ -18,7 +18,7 @@ jest.mock("@frontend/app/clientLayout", () => ({
 jest.mock("nuqs", () => ({
   useQueryStates: (keys: Record<string, { defaultValue: string }>) => [
     Object.fromEntries(
-      Object.entries(keys).map(([key, options]) => [key, options.defaultValue])
+      Object.entries(keys).map(([key, options]) => [key, options.defaultValue]),
     ),
     jest.fn(),
   ],
@@ -81,7 +81,7 @@ describe("Favourite button", () => {
     return render(
       <Provider store={store}>
         <Page />
-      </Provider>
+      </Provider>,
     );
   };
 
@@ -111,7 +111,7 @@ describe("Favourite button", () => {
     fireEvent.click(screen.getByRole("button", { name: /Add as favourite/i }));
 
     const storedFavourites = JSON.parse(
-      window.localStorage.getItem("favourite") ?? "[]"
+      window.localStorage.getItem("favourite") ?? "[]",
     );
     expect(storedFavourites).toContain("K-J17-101");
 
@@ -127,11 +127,11 @@ describe("Favourite button", () => {
     renderRoomPage();
 
     fireEvent.click(
-      screen.getByRole("button", { name: /Remove as favourite/i })
+      screen.getByRole("button", { name: /Remove as favourite/i }),
     );
 
     const storedFavourites = JSON.parse(
-      window.localStorage.getItem("favourite") ?? "[]"
+      window.localStorage.getItem("favourite") ?? "[]",
     );
     expect(storedFavourites).not.toContain("K-J17-101");
 

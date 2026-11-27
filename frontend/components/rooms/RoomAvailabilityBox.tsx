@@ -22,7 +22,7 @@ const RoomTile = styled(Link, {
 })<{ bgImage: string }>(({ theme, bgImage }) => {
   const overlay = alpha(
     theme.colours.surface.paper,
-    DRAWER_ROOM_TILE_OVERLAY_OPACITY
+    DRAWER_ROOM_TILE_OVERLAY_OPACITY,
   );
   return {
     display: "flex",

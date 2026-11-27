@@ -5,7 +5,7 @@ import { Building, Room } from "common/types";
 const building = (
   id: string,
   name: string,
-  aliases: string[] = []
+  aliases: string[] = [],
 ): Building => ({
   id,
   name,
@@ -23,7 +23,7 @@ const room = (
   id: string,
   name: string,
   abbr: string,
-  school: string
+  school: string,
 ): Room => ({
   id,
   name,
@@ -66,7 +66,7 @@ describe("useBuildingSearch", () => {
   });
   it("still matches buildings before rooms have loaded", () => {
     const { result } = renderHook(() =>
-      useBuildingSearch(buildings, undefined)
+      useBuildingSearch(buildings, undefined),
     );
     expect(result.current("mathews")).toEqual(new Set(["K-F8"]));
   });
@@ -79,7 +79,7 @@ describe("useBuildingSearch", () => {
   });
   it("keeps the same search function between renders", () => {
     const { result, rerender } = renderHook(() =>
-      useBuildingSearch(buildings, rooms)
+      useBuildingSearch(buildings, rooms),
     );
     const first = result.current;
     rerender();

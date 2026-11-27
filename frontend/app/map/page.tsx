@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 
 const Map = dynamic(
   () => import("@frontend/components/map/Map").then((module) => module.Map),
-  { ssr: false }
+  { ssr: false },
 );
 
 export default function Page() {

@@ -21,7 +21,7 @@ jest.mock("nuqs", () => ({
   ],
   useQueryStates: (keys: Record<string, { defaultValue: string }>) => [
     Object.fromEntries(
-      Object.entries(keys).map(([key, options]) => [key, options.defaultValue])
+      Object.entries(keys).map(([key, options]) => [key, options.defaultValue]),
     ),
     jest.fn(),
   ],
@@ -63,7 +63,7 @@ const renderPage = () =>
   render(
     <Provider store={store}>
       <Page />
-    </Provider>
+    </Provider>,
   );
 
 const clickButton = async (name: string) => {
@@ -83,10 +83,10 @@ describe("Favourites page", () => {
     renderPage();
 
     expect(
-      screen.getByRole("heading", { name: "Favourite Rooms" })
+      screen.getByRole("heading", { name: "Favourite Rooms" }),
     ).toBeInTheDocument();
     expect(
-      screen.getByPlaceholderText("Search for favourite rooms")
+      screen.getByPlaceholderText("Search for favourite rooms"),
     ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Filters" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Sort" })).toBeInTheDocument();

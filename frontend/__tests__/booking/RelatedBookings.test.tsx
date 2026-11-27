@@ -5,7 +5,7 @@ import type { BookingsEventResponse } from "common/types";
 
 const makeBooking = (
   occurrenceId: string,
-  day: number
+  day: number,
 ): BookingsEventResponse => ({
   roomId: "K-F17-LG3",
   occurrenceId,
@@ -36,19 +36,19 @@ describe("RelatedBookings", () => {
       <RelatedBookings
         booking={currentBooking}
         bookings={[currentBooking, previous, upcoming]}
-      />
+      />,
     );
 
     expect(screen.getByRole("button", { name: "Upcoming" })).toHaveAttribute(
       "aria-pressed",
-      "true"
+      "true",
     );
 
     expect(screen.getAllByRole("link")).toHaveLength(1);
 
     expect(screen.getByRole("link")).toHaveAttribute(
       "href",
-      "/booking/K-F17-LG3/upcoming"
+      "/booking/K-F17-LG3/upcoming",
     );
   });
 
@@ -57,12 +57,12 @@ describe("RelatedBookings", () => {
       <RelatedBookings
         booking={currentBooking}
         bookings={[currentBooking, previous]}
-      />
+      />,
     );
 
     expect(screen.getByRole("button", { name: "Previous" })).toHaveAttribute(
       "aria-pressed",
-      "true"
+      "true",
     );
   });
 
@@ -71,14 +71,14 @@ describe("RelatedBookings", () => {
       <RelatedBookings
         booking={currentBooking}
         bookings={[currentBooking, previous, upcoming]}
-      />
+      />,
     );
 
     fireEvent.click(screen.getByRole("button", { name: "Previous" }));
 
     expect(screen.getByRole("link")).toHaveAttribute(
       "href",
-      "/booking/K-F17-LG3/previous"
+      "/booking/K-F17-LG3/previous",
     );
 
     fireEvent.click(screen.getByRole("button", { name: "All" }));
@@ -88,13 +88,13 @@ describe("RelatedBookings", () => {
 
   it("hides the section when only the current booking exists", () => {
     render(
-      <RelatedBookings booking={currentBooking} bookings={[currentBooking]} />
+      <RelatedBookings booking={currentBooking} bookings={[currentBooking]} />,
     );
 
     expect(
       screen.queryByRole("heading", {
         name: "Related sessions",
-      })
+      }),
     ).not.toBeInTheDocument();
   });
 
@@ -103,7 +103,7 @@ describe("RelatedBookings", () => {
       <RelatedBookings
         booking={currentBooking}
         bookings={[currentBooking, previous]}
-      />
+      />,
     );
 
     fireEvent.click(screen.getByRole("button", { name: "Upcoming" }));
@@ -113,14 +113,14 @@ describe("RelatedBookings", () => {
 
   it("shows more sessions in groups of five", () => {
     const bookings = Array.from({ length: 12 }, (_, index) =>
-      makeBooking(`session-${index}`, index + 16)
+      makeBooking(`session-${index}`, index + 16),
     );
 
     render(
       <RelatedBookings
         booking={currentBooking}
         bookings={[currentBooking, ...bookings]}
-      />
+      />,
     );
 
     expect(screen.getAllByRole("link")).toHaveLength(5);
@@ -134,13 +134,13 @@ describe("RelatedBookings", () => {
     expect(screen.getAllByRole("link")).toHaveLength(12);
 
     expect(
-      screen.queryByRole("button", { name: /show more/i })
+      screen.queryByRole("button", { name: /show more/i }),
     ).not.toBeInTheDocument();
   });
 
   it("resets the visible count when changing filters", () => {
     const bookings = Array.from({ length: 12 }, (_, index) =>
-      makeBooking(`session-${index}`, index + 16)
+      makeBooking(`session-${index}`, index + 16),
     );
 
     render(<RelatedBookings booking={currentBooking} bookings={bookings} />);

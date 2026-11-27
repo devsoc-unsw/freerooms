@@ -247,7 +247,7 @@ export function getColours(mode: ThemeMode) {
 export type AppColours = ReturnType<typeof getColours>;
 
 export function getColourVariables(
-  colours: AppColours
+  colours: AppColours,
 ): Record<string, string> {
   const variables: Record<string, string> = {};
 

@@ -29,7 +29,7 @@ export const getFloorLabel = (roomId: string): string | null => {
 export const getRoomLocationLabel = (
   roomId: string,
   buildingId?: string,
-  buildingName?: string
+  buildingName?: string,
 ): string =>
   [
     buildingId ? CAMPUS_LABELS[getCampus(buildingId)] : null,

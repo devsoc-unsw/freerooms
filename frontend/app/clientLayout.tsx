@@ -49,13 +49,13 @@ const ClientLayout: React.FC<{
 }> = ({ children, initialTheme }) => {
   const getServerModeSnapshot = useCallback(
     (): ThemeMode => initialTheme,
-    [initialTheme]
+    [initialTheme],
   );
 
   const mode = useSyncExternalStore(
     subscribeToDarkMode,
     getClientModeSnapshot,
-    getServerModeSnapshot
+    getServerModeSnapshot,
   );
 
   useEffect(() => {
@@ -74,7 +74,7 @@ const ClientLayout: React.FC<{
       new StorageEvent("storage", {
         key: "darkMode",
         newValue: nextMode,
-      })
+      }),
     );
   }, [mode]);
 
@@ -83,7 +83,7 @@ const ClientLayout: React.FC<{
       isDarkMode: mode === "dark",
       toggleDarkMode,
     }),
-    [mode, toggleDarkMode]
+    [mode, toggleDarkMode],
   );
 
   const theme = useMemo(() => createAppTheme(mode), [mode]);

@@ -66,7 +66,7 @@ describe("RoomCard", () => {
 
       expect(screen.getByText("Ainsworth 101")).toBeInTheDocument();
       expect(
-        screen.getByText("Lower campus, Ainsworth Building")
+        screen.getByText("Lower campus, Ainsworth Building"),
       ).toBeInTheDocument();
       expect(screen.getByText("30")).toBeInTheDocument();
       expect(screen.getByText("Tutorial Room")).toBeInTheDocument();
@@ -97,11 +97,11 @@ describe("RoomCard", () => {
           <RoomAvailability
             roomStatus={{ status: "free", endtime }}
             variant="pill"
-          />
+          />,
         );
 
         expect(
-          screen.getByText(new RegExp(`^Available until ${time}$`))
+          screen.getByText(new RegExp(`^Available until ${time}$`)),
         ).toBeInTheDocument();
       });
 
@@ -111,13 +111,13 @@ describe("RoomCard", () => {
             roomStatus={{ status: "busy", endtime }}
             variant="pill"
             reason="COMP1511 Lab"
-          />
+          />,
         );
 
         expect(
           screen.getByText(
-            new RegExp(`^Unavailable until ${time} - COMP1511 Lab$`)
-          )
+            new RegExp(`^Unavailable until ${time} - COMP1511 Lab$`),
+          ),
         ).toBeInTheDocument();
       });
 
@@ -126,11 +126,11 @@ describe("RoomCard", () => {
           <RoomAvailability
             roomStatus={{ status: "soon", endtime }}
             variant="pill"
-          />
+          />,
         );
 
         expect(
-          screen.getByText(new RegExp(`^Available Soon at ${time}$`))
+          screen.getByText(new RegExp(`^Available Soon at ${time}$`)),
         ).toBeInTheDocument();
       });
 
@@ -140,11 +140,11 @@ describe("RoomCard", () => {
             roomStatus={{ status: "free", endtime: "" }}
             variant="pill"
             until={new Date("2026-11-06T15:30:00+11:00")}
-          />
+          />,
         );
 
         expect(
-          screen.getByText(new RegExp(`^Available until ${time}$`))
+          screen.getByText(new RegExp(`^Available until ${time}$`)),
         ).toBeInTheDocument();
       });
 
@@ -153,7 +153,7 @@ describe("RoomCard", () => {
           <RoomAvailability
             roomStatus={{ status: "free", endtime: "" }}
             variant="pill"
-          />
+          />,
         );
 
         expect(screen.getByText("Available")).toBeInTheDocument();
@@ -173,7 +173,7 @@ describe("RoomCard", () => {
       render(<RoomCard room={room} />);
 
       expect(
-        screen.getByText(/^Unavailable until .* - COMP1511 Lab$/)
+        screen.getByText(/^Unavailable until .* - COMP1511 Lab$/),
       ).toBeInTheDocument();
     });
   });
@@ -183,19 +183,19 @@ describe("RoomCard", () => {
       render(<RoomCard room={room} />);
 
       fireEvent.click(
-        screen.getByRole("button", { name: /Add as favourite/i })
+        screen.getByRole("button", { name: /Add as favourite/i }),
       );
 
       expect(
-        JSON.parse(window.localStorage.getItem("favourite") ?? "[]")
+        JSON.parse(window.localStorage.getItem("favourite") ?? "[]"),
       ).toContain("K-J17-101");
 
       fireEvent.click(
-        screen.getByRole("button", { name: /Remove as favourite/i })
+        screen.getByRole("button", { name: /Remove as favourite/i }),
       );
 
       expect(
-        JSON.parse(window.localStorage.getItem("favourite") ?? "[]")
+        JSON.parse(window.localStorage.getItem("favourite") ?? "[]"),
       ).not.toContain("K-J17-101");
     });
   });

@@ -34,7 +34,7 @@ const NearbyRoomCard = ({ room, building, status }: NearbyRoom) => {
   const photos = roomPhotos[room.id as keyof typeof roomPhotos];
 
   const [imageSrc, setImageSrc] = useState<string | null>(
-    photos?.[0] ?? buildingPhoto
+    photos?.[0] ?? buildingPhoto,
   );
 
   const location = getRoomLocationLabel(room.id, building.id, building.name);
@@ -70,7 +70,7 @@ const NearbyRoomCard = ({ room, building, status }: NearbyRoom) => {
             style={{ objectFit: "cover" }}
             onError={() => {
               setImageSrc((previous) =>
-                previous === buildingPhoto ? null : buildingPhoto
+                previous === buildingPhoto ? null : buildingPhoto,
               );
             }}
           />
@@ -81,7 +81,7 @@ const NearbyRoomCard = ({ room, building, status }: NearbyRoom) => {
               inset: 0,
               backgroundColor: alpha(
                 theme.palette.background.paper,
-                theme.palette.mode === "dark" ? 0.85 : 0.82
+                theme.palette.mode === "dark" ? 0.85 : 0.82,
               ),
             })}
           />

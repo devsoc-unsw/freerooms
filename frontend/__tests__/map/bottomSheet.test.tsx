@@ -26,14 +26,14 @@ describe("bottom sheet snapping", () => {
   describe("getVisibleHeight", () => {
     it("follows the drag", () => {
       expect(getVisibleHeight("half", 100, VIEWPORT)).toBe(
-        VIEWPORT * HALF_RATIO - 100
+        VIEWPORT * HALF_RATIO - 100,
       );
     });
 
     it("can't be dragged below peek or above full", () => {
       expect(getVisibleHeight("peek", 500, VIEWPORT)).toBe(PEEK_HEIGHT);
       expect(getVisibleHeight("full", -500, VIEWPORT)).toBe(
-        VIEWPORT * FULL_RATIO
+        VIEWPORT * FULL_RATIO,
       );
     });
   });
@@ -125,7 +125,7 @@ describe("BottomSheet", () => {
         }
       >
         <div>Rooms</div>
-      </BottomSheet>
+      </BottomSheet>,
     );
     return { onStageChange, handle: screen.getByTestId("bottom-sheet-handle") };
   };

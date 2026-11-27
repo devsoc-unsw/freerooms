@@ -13,7 +13,7 @@ import { Provider } from "react-redux";
 
 type GetKey = (
   pageIndex: number,
-  previousPage: BookingsPaginationResponse | null
+  previousPage: BookingsPaginationResponse | null,
 ) => string | null;
 
 const mockSetStart = jest.fn();
@@ -45,7 +45,7 @@ jest.mock("nuqs", () => ({
   ],
   useQueryStates: (keys: Record<string, { defaultValue: string }>) => [
     Object.fromEntries(
-      Object.entries(keys).map(([key, options]) => [key, options.defaultValue])
+      Object.entries(keys).map(([key, options]) => [key, options.defaultValue]),
     ),
     jest.fn(),
   ],
@@ -107,7 +107,7 @@ const renderPage = () =>
   render(
     <Provider store={store}>
       <Page />
-    </Provider>
+    </Provider>,
   );
 
 const clickButton = async (name: string) => {
@@ -118,7 +118,7 @@ const clickButton = async (name: string) => {
 
 const getRequestParams = (
   pageIndex = 0,
-  previousPage: BookingsPaginationResponse | null = null
+  previousPage: BookingsPaginationResponse | null = null,
 ) => {
   if (!mockGetKey) throw new Error("SWR page key was not captured");
   const key = mockGetKey(pageIndex, previousPage);
@@ -159,7 +159,7 @@ describe("Bookings page", () => {
     renderPage();
 
     expect(
-      screen.getByPlaceholderText("Search for bookings")
+      screen.getByPlaceholderText("Search for bookings"),
     ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Filters" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Sort" })).toBeInTheDocument();
@@ -214,7 +214,7 @@ describe("Bookings page", () => {
       setFilter({
         key: "bookingType",
         value: ["TUTORIAL", "LECTURE"],
-      })
+      }),
     );
 
     store.dispatch(setFilter({ key: "plannedSize", value: "50" }));

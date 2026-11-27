@@ -25,7 +25,7 @@ const fetchMatrixChunk = async (
   userLat: number,
   userLng: number,
   buildings: Building[],
-  signal: AbortSignal
+  signal: AbortSignal,
 ) => {
   const coordinates = [
     `${userLng},${userLat}`,
@@ -33,13 +33,13 @@ const fetchMatrixChunk = async (
   ].join(";");
 
   const url = new URL(
-    `https://api.mapbox.com/directions-matrix/v1/mapbox/walking/${coordinates}`
+    `https://api.mapbox.com/directions-matrix/v1/mapbox/walking/${coordinates}`,
   );
   url.searchParams.set("access_token", MAPBOX_ACCESS_TOKEN);
   url.searchParams.set("sources", "0");
   url.searchParams.set(
     "destinations",
-    buildings.map((_, index) => index + 1).join(";")
+    buildings.map((_, index) => index + 1).join(";"),
   );
   url.searchParams.set("annotations", "distance,duration");
 
@@ -64,7 +64,7 @@ const useWalkingMatrix = (
   userLat: number | undefined,
   userLng: number | undefined,
   buildings: Building[] | undefined,
-  enabled: boolean
+  enabled: boolean,
 ) => {
   const [matrix, setMatrix] = useState<WalkingMatrix>(EMPTY_MATRIX);
   const lastFetchedRef = useRef<{
@@ -108,7 +108,7 @@ const useWalkingMatrix = (
 
     const indexes = buildings
       .map((building, i) =>
-        building.lat === 0 && building.long === 0 ? -1 : i
+        building.lat === 0 && building.long === 0 ? -1 : i,
       )
       .filter((i) => i !== -1);
 
@@ -123,16 +123,16 @@ const useWalkingMatrix = (
           userLat,
           userLng,
           chunk.map((i) => buildings[i]),
-          controller.signal
-        )
-      )
+          controller.signal,
+        ),
+      ),
     )
       .then((results) => {
         const distances: (number | undefined)[] = buildings.map(
-          () => undefined
+          () => undefined,
         );
         const durations: (number | undefined)[] = buildings.map(
-          () => undefined
+          () => undefined,
         );
 
         results.forEach((result, chunkIndex) => {

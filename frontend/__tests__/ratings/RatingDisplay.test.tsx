@@ -21,7 +21,7 @@ jest.mock("@frontend/app/clientLayout", () => ({
 jest.mock("nuqs", () => ({
   useQueryStates: (keys: Record<string, { defaultValue: string }>) => [
     Object.fromEntries(
-      Object.entries(keys).map(([key, options]) => [key, options.defaultValue])
+      Object.entries(keys).map(([key, options]) => [key, options.defaultValue]),
     ),
     jest.fn(),
   ],
@@ -102,7 +102,7 @@ describe("Rating Star", () => {
     render(
       <Provider store={store}>
         <Page />
-      </Provider>
+      </Provider>,
     );
 
     expect(screen.getByText(/^Stars:/)).toBeInTheDocument();

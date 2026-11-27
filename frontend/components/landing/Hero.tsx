@@ -58,7 +58,7 @@ const HeroOverlay = styled("div")(({ theme }) => ({
   pointerEvents: "none",
   backgroundColor: alpha(
     theme.colours.neutral.black,
-    theme.palette.mode === "dark" ? 0.62 : 0.46
+    theme.palette.mode === "dark" ? 0.62 : 0.46,
   ),
 }));
 

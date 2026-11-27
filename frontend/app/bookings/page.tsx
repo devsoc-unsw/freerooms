@@ -39,12 +39,12 @@ const fetcher = async (url: string): Promise<BookingsPaginationResponse> => {
 const Bookings = () => {
   const [sort, setSort] = useQueryState(
     "sort",
-    parseAsString.withDefault("ascendingStart")
+    parseAsString.withDefault("ascendingStart"),
   );
   const [query, setQuery] = React.useState<string>("");
   const [start, setStart] = useQueryState(
     "start",
-    parseAsString.withDefault("")
+    parseAsString.withDefault(""),
   );
   const [end, setEnd] = useQueryState("endTime", parseAsString.withDefault(""));
   const startTime =
@@ -62,7 +62,7 @@ const Bookings = () => {
   // Generating the url for the pages
   const getKey = (
     pageIndex: number,
-    previousPage: BookingsPaginationResponse | null
+    previousPage: BookingsPaginationResponse | null,
   ): string | null => {
     if (previousPage && (!previousPage.hasMore || !previousPage.nextCursor)) {
       return null;
@@ -133,7 +133,7 @@ const Bookings = () => {
       },
       {
         rootMargin: "4000px 0px",
-      }
+      },
     );
 
     observer.observe(element);

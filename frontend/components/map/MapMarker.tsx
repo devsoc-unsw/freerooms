@@ -63,7 +63,7 @@ const MarkerHoverPillText = styled(Typography)<TypographyProps>(
     fontSize: 12,
     fontWeight: 500,
     color: theme.colours.text.primary,
-  })
+  }),
 );
 
 const MarkerHoverTitleBox = styled(Box)<BoxProps>(({ theme }) => ({

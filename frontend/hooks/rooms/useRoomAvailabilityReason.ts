@@ -5,7 +5,7 @@ import type { RoomStatus } from "common/types";
 // Used in the availability pill as the reason for unavailability
 const useRoomAvailabilityReason = (
   roomId: string | undefined,
-  status: RoomStatus | undefined
+  status: RoomStatus | undefined,
 ) => {
   const needsBookings =
     status !== undefined &&
@@ -13,7 +13,7 @@ const useRoomAvailabilityReason = (
       (status.status === "free" && !getStatusEnd(status)));
   const { current, nextLaterThatDay } = useNearbyBookings(
     roomId,
-    needsBookings
+    needsBookings,
   );
 
   return { reason: current?.name, until: nextLaterThatDay?.start };

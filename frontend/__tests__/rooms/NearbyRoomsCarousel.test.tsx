@@ -63,11 +63,11 @@ describe("NearbyRoomCard", () => {
     expect(screen.getByText("Ainsworth 101")).toBeInTheDocument();
 
     expect(
-      screen.getByText("Lower campus, Ainsworth Building")
+      screen.getByText("Lower campus, Ainsworth Building"),
     ).toBeInTheDocument();
 
     expect(
-      screen.getByText(/^Available until \d{1,2}:\d{2}(am|pm)$/)
+      screen.getByText(/^Available until \d{1,2}:\d{2}(am|pm)$/),
     ).toBeInTheDocument();
   });
 
@@ -85,7 +85,7 @@ describe("NearbyRoomCard", () => {
       <NearbyRoomCard
         {...nearbyRoom}
         status={{ status: "free", endtime: "" }}
-      />
+      />,
     );
 
     expect(screen.getByText("Available")).toBeInTheDocument();
@@ -96,7 +96,7 @@ describe("NearbyRoomCard", () => {
       <NearbyRoomCard
         {...nearbyRoom}
         room={{ ...nearbyRoom.room, school: "CSE" }}
-      />
+      />,
     );
 
     expect(screen.getByText("ID Required")).toBeInTheDocument();
@@ -108,7 +108,7 @@ describe("NearbyRoomCard", () => {
     fireEvent.click(screen.getByRole("button", { name: "Add as favourite" }));
 
     expect(
-      JSON.parse(window.localStorage.getItem("favourite") ?? "[]")
+      JSON.parse(window.localStorage.getItem("favourite") ?? "[]"),
     ).toContain(nearbyRoom.room.id);
 
     const removeButton = screen.getByRole("button", {
@@ -120,7 +120,7 @@ describe("NearbyRoomCard", () => {
     fireEvent.click(removeButton);
 
     expect(
-      JSON.parse(window.localStorage.getItem("favourite") ?? "[]")
+      JSON.parse(window.localStorage.getItem("favourite") ?? "[]"),
     ).not.toContain(nearbyRoom.room.id);
   });
 
@@ -143,7 +143,7 @@ describe("NearbyRoomsCarousel", () => {
     expect(
       screen.getByRole("heading", {
         name: "Available Rooms Nearby",
-      })
+      }),
     ).toBeInTheDocument();
   });
 
@@ -201,7 +201,7 @@ describe("NearbyRoomsCarousel", () => {
     render(<NearbyRoomsCarousel roomId="K-J17-100" />);
 
     expect(
-      screen.getByText("There are no available nearby rooms right now")
+      screen.getByText("There are no available nearby rooms right now"),
     ).toBeInTheDocument();
 
     expect(screen.queryByTestId("swiper")).not.toBeInTheDocument();

@@ -14,14 +14,14 @@ const useNearbyBookings = (roomId: string | undefined, enabled: boolean) => {
   const { bookings } = useBookings(enabled ? roomId : undefined);
 
   const current = bookings?.find(
-    (booking) => booking.start <= datetime && datetime < booking.end
+    (booking) => booking.start <= datetime && datetime < booking.end,
   );
 
   const startingLater = (bookings ?? []).filter(
-    (booking) => booking.start > datetime
+    (booking) => booking.start > datetime,
   );
   const [next] = startingLater.sort(
-    (a, b) => a.start.getTime() - b.start.getTime()
+    (a, b) => a.start.getTime() - b.start.getTime(),
   );
   const nextLaterThatDay =
     next && isSameSydneyDay(next.start, datetime) ? next : undefined;

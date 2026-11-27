@@ -24,10 +24,7 @@ const RoomUtilityTagsSkeleton = ({
 }: {
   compact?: boolean;
 }) => (
-  <Stack
-    spacing={compact ? space.sm : space.md}
-    sx={{ width: "100%" }}
-  >
+  <Stack spacing={compact ? space.sm : space.md} sx={{ width: "100%" }}>
     <Skeleton
       animation="wave"
       variant="text"

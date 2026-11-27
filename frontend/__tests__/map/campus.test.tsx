@@ -34,7 +34,7 @@ describe("isOnCampus", () => {
   it("excludes points outside the radius", () => {
     const { lat, lng } = eastOfCentre(1000);
     expect(
-      calculateDistance(lat, lng, CAMPUS_CENTRE.lat, CAMPUS_CENTRE.lng)
+      calculateDistance(lat, lng, CAMPUS_CENTRE.lat, CAMPUS_CENTRE.lng),
     ).toBeGreaterThan(CAMPUS_RADIUS_METRES);
     expect(isOnCampus(lat, lng)).toBe(false);
   });

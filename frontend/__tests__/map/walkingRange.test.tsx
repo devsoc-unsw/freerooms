@@ -83,7 +83,7 @@ describe("walking ranges", () => {
 
     it("documents that the APIs disagree", () => {
       const longest = Math.max(
-        ...trips.map((trip) => trip.routeDuration - trip.matrixDuration)
+        ...trips.map((trip) => trip.routeDuration - trip.matrixDuration),
       );
       // Directions was more than 5 minutes slower for some trips
       expect(longest).toBeGreaterThan(5 * 60);
@@ -97,7 +97,7 @@ describe("walking ranges", () => {
 
         expect(routeMinutes).toBeGreaterThanOrEqual(min);
         expect(routeMinutes).toBeLessThanOrEqual(max);
-      }
+      },
     );
 
     it.each(trips)(
@@ -107,7 +107,7 @@ describe("walking ranges", () => {
 
         expect(routeDistance).toBeGreaterThanOrEqual(min);
         expect(routeDistance).toBeLessThanOrEqual(max);
-      }
+      },
     );
   });
 });

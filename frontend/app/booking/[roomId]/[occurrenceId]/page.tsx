@@ -29,7 +29,7 @@ export default function BookingPage() {
 
   const { booking, error, isLoading, notFound, mutate } = useBookingDetails(
     roomId,
-    occurrenceId
+    occurrenceId,
   );
 
   const { rooms } = useRooms();

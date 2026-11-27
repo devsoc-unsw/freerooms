@@ -46,7 +46,7 @@ describe("BookingTimeSummary", () => {
     expect(
       screen.getByRole("progressbar", {
         name: "Booking progress",
-      })
+      }),
     ).toHaveAttribute("aria-valuenow", "65");
   });
 

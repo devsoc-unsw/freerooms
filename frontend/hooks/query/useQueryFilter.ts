@@ -13,7 +13,7 @@ const validFilterQueries: Partial<Record<FilterKey, string[]>> =
     [...filterBarDropdown, ...bookingsFilterDropdown].map(({ key, items }) => [
       key,
       items.map((item) => item.value),
-    ])
+    ]),
   );
 
 const filterQueries = Object.keys(validFilterQueries) as FilterKey[];
@@ -35,7 +35,7 @@ const useQueryFilter = () => {
       bookingType: parseAsString.withDefault(""),
       plannedSize: parseAsString.withDefault(""),
     },
-    { shallow: true }
+    { shallow: true },
   );
 
   // Apply filters from URL on load
@@ -57,7 +57,7 @@ const useQueryFilter = () => {
             setFilter({
               key,
               value: [...new Set(values)],
-            })
+            }),
           );
         } else {
           invalidKeys[key] = null;

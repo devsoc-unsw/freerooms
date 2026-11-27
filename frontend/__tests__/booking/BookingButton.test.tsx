@@ -14,7 +14,7 @@ describe("BookingButton", () => {
     const linkElement = screen.getByRole("link", { name: "Make a Booking" });
     expect(linkElement).toHaveAttribute(
       "href",
-      "https://unswlibrary-bookings.libcal.com"
+      "https://unswlibrary-bookings.libcal.com",
     );
   });
 
