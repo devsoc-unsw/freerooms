@@ -24,6 +24,8 @@ type TimeBarProps = {
   // False once the start time has been cleared. Pages that don't pass these always have a start time.
   startIsSet?: boolean;
   onStartIsSetChange?: (isSet: boolean) => void;
+  startTime?: Date | null;
+  onStartTimeChange?: (value: Date | null) => void;
   endTime?: Date | null;
   onEndTimeChange?: (value: Date | null) => void;
 };
@@ -31,6 +33,8 @@ type TimeBarProps = {
 const TimeBar = ({
   startIsSet = true,
   onStartIsSetChange,
+  startTime,
+  onStartTimeChange,
   endTime,
   onEndTimeChange,
 }: TimeBarProps) => {
@@ -38,10 +42,21 @@ const TimeBar = ({
   const datetime = useSelector(selectDatetime);
   const filters = useSelector(selectFilters);
 
-  const startZoned = toZonedTime(datetime, SYDNEY_TIMEZONE);
+  const selectedStart = startTime ?? datetime;
+  const startZoned = toZonedTime(selectedStart, SYDNEY_TIMEZONE);
+
   const handleStartChange = (value: Date) => {
-    dispatch(setDatetime(fromZonedTime(value, SYDNEY_TIMEZONE)));
+    const newStart = fromZonedTime(value, SYDNEY_TIMEZONE);
+
+    dispatch(setDatetime(newStart));
+
+    onStartTimeChange?.(newStart);
     onStartIsSetChange?.(true);
+
+    // Clear an invalid end time
+    if (onEndTimeChange && endTime && newStart.getTime() >= endTime.getTime()) {
+      onEndTimeChange(null);
+    }
   };
 
   const handleClearStart = () => {
@@ -51,6 +66,7 @@ const TimeBar = ({
       dispatch(unsetFilter("duration"));
     }
 
+    onStartTimeChange?.(null);
     onStartIsSetChange?.(false);
   };
 
@@ -65,7 +81,7 @@ const TimeBar = ({
     // Independent end time, used for bookings page
     if (onEndTimeChange) {
       const selectedEnd = fromZonedTime(value, SYDNEY_TIMEZONE);
-      const earliestEnd = startIsSet ? datetime : new Date();
+      const earliestEnd = startIsSet ? selectedStart : new Date();
 
       onEndTimeChange(selectedEnd > earliestEnd ? selectedEnd : null);
       return;

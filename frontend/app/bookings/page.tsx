@@ -11,7 +11,6 @@ import TopBar from "@frontend/components/ui/TopBar";
 import TopBarGroup from "@frontend/components/ui/TopBarGroup";
 import { API_URL } from "@frontend/config";
 import { useSelector } from "@frontend/redux/hooks";
-import { selectDatetime } from "@frontend/redux/slices/datetimeSlice";
 import { selectFilters } from "@frontend/redux/slices/filtersSlice";
 import type { BookingsFilters, Filters } from "@frontend/types";
 import {
@@ -49,10 +48,11 @@ const Bookings = () => {
     parseAsString.withDefault("")
   );
   const [end, setEnd] = useQueryState("endTime", parseAsString.withDefault(""));
+  const startTime =
+    start && !Number.isNaN(Date.parse(start)) ? new Date(start) : null;
   const endTime = end && !Number.isNaN(Date.parse(end)) ? new Date(end) : null;
   const getFilters = useSelector(selectFilters);
   const filters = getFilters as Filters & BookingsFilters;
-  const datetime = useSelector(selectDatetime);
   const startIsSet = start !== "" && start !== NO_START_TIME;
 
   useEffect(() => {
@@ -86,8 +86,8 @@ const Bookings = () => {
     }
     if (filters.location) params.set("location", filters.location);
 
-    if (startIsSet) {
-      params.set("startTime", datetime.toISOString());
+    if (startTime) {
+      params.set("startTime", startTime.toISOString());
     }
 
     if (endTime) {
@@ -156,8 +156,9 @@ const Bookings = () => {
               />
               <TimeBar
                 startIsSet={startIsSet}
-                onStartIsSetChange={(isSet) => {
-                  void setStart(isSet ? "set" : NO_START_TIME);
+                startTime={startTime}
+                onStartTimeChange={(value) => {
+                  void setStart(value?.toISOString() ?? null);
                 }}
                 endTime={endTime}
                 onEndTimeChange={(value) => {
