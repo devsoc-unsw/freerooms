@@ -2,6 +2,7 @@
 
 import UtilityAccordion from "@frontend/components/rooms/UtilityAccordion";
 import useRoomUtilities from "@frontend/hooks/rooms/useRoomUtilities";
+import { space } from "@frontend/theme";
 import {
   Accessible,
   AcUnit,
@@ -24,24 +25,28 @@ const RoomUtilityTagsSkeleton = ({
   compact?: boolean;
 }) => (
   <Stack
-    sx={{
-      width: "100%",
-      pt: compact ? 1 : 6,
-      pb: compact ? 1 : 3,
-      gap: 1,
-    }}
+    spacing={compact ? space.sm : space.md}
+    sx={{ width: "100%" }}
   >
-    {/* Heading */}
     <Skeleton
       animation="wave"
       variant="text"
       width={180}
-      sx={{ fontSize: 24, mb: compact ? 0 : 2 }}
+      sx={{ fontSize: "h4.fontSize" }}
     />
-    {/* UtilityAccordion */}
-    {Array.from({ length: 4 }, (_, i) => (
-      <Skeleton key={i} animation="wave" variant="rounded" height={48} />
-    ))}
+
+    <Stack spacing={space.sm}>
+      {Array.from({ length: 4 }, (_, i) => (
+        <Skeleton
+          key={i}
+          animation="wave"
+          variant="rounded"
+          sx={(theme) => ({
+            height: theme.sizes.control.lg,
+          })}
+        />
+      ))}
+    </Stack>
   </Stack>
 );
 
@@ -117,27 +122,19 @@ export default function RoomUtilities({
     });
 
   return (
-    <Box
-      sx={{
-        height: "100%",
-        width: "100%",
-        paddingTop: compact ? 1 : 6,
-        paddingBottom: compact ? 1 : 3,
-      }}
+    <Stack
+      spacing={compact ? space.sm : space.md}
+      sx={{ width: "100%", minWidth: 0 }}
     >
       <Typography
-        variant="h5"
+        variant={compact ? "h5" : "h4"}
         component="h2"
-        gutterBottom
-        sx={{
-          marginBottom: compact ? 1 : 3,
-          fontWeight: "bold",
-        }}
+        sx={{ fontWeight: "fontWeightBold" }}
       >
         Room Utilities
       </Typography>
 
-      <Stack spacing={1}>
+      <Stack spacing={space.sm}>
         {categories.map(({ key, title, icon, items }) => (
           <UtilityAccordion
             key={key}
@@ -152,8 +149,7 @@ export default function RoomUtilities({
         <Box
           sx={{
             textAlign: "center",
-            paddingTop: 4,
-            paddingBottom: 4,
+            paddingBlock: space.xl,
           }}
         >
           <Typography variant="body2" color="text.secondary">
@@ -161,6 +157,6 @@ export default function RoomUtilities({
           </Typography>
         </Box>
       )}
-    </Box>
+    </Stack>
   );
 }

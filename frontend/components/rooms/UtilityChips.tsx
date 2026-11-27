@@ -1,5 +1,4 @@
 import { Chip, Stack, useTheme } from "@mui/material";
-import { alpha } from "@mui/material/styles";
 
 interface Props {
   items: string[];
@@ -11,8 +10,11 @@ export default function UtilityChips({ items }: Props) {
   return (
     <Stack
       direction="row"
-      spacing={0.5}
-      sx={{ flexWrap: "wrap", gap: theme.spacing(0.75) }}
+      useFlexGap
+      sx={{
+        flexWrap: "wrap",
+        gap: theme.space.sm,
+      }}
     >
       {items.map((item, index) => (
         <Chip
@@ -22,25 +24,14 @@ export default function UtilityChips({ items }: Props) {
           sx={{
             fontSize: theme.typography.pxToRem(12),
             height: 26,
-            backgroundColor: theme.palette.background.paper,
+            maxWidth: "100%",
+            backgroundColor: theme.colours.surface.muted,
             color: theme.palette.text.primary,
-            border: `1px solid ${theme.palette.divider}`,
-            "&:hover": {
-              backgroundColor: theme.palette.action.hover,
-              borderColor: theme.palette.warning.main,
-              transform: "translateY(-1px)",
-              boxShadow: `0 2px 4px ${alpha(theme.palette.warning.main, 0.2)}`,
-            },
-            transition: theme.transitions.create(
-              ["background-color", "border", "transform", "box-shadow"],
-              {
-                duration: theme.transitions.duration.short,
-                easing: theme.transitions.easing.easeInOut,
-              }
-            ),
+            border: `${theme.sizes.border.weight}px solid ${theme.colours.border.subtle}`,
+            borderRadius: `${theme.radius.pill}px`,
+
             "& .MuiChip-label": {
-              paddingLeft: theme.spacing(1.5),
-              paddingRight: theme.spacing(1.5),
+              paddingInline: theme.space.sm,
               fontWeight: theme.typography.fontWeightMedium,
             },
           }}
