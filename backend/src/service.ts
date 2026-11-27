@@ -50,14 +50,14 @@ export const getAllRooms = async (): Promise<RoomsResponse> => {
   data.forEach((bldg) =>
     Object.values(bldg.rooms).forEach((room) => {
       res.rooms[room.id] = room;
-    }),
+    })
   );
   return res;
 };
 
 export const getAllRoomStatus = async (
   date: Date,
-  filters: StatusFilters,
+  filters: StatusFilters
 ): Promise<StatusResponse> => {
   const rangeEnd = getSearchRangeEnd(date, filters);
   const bookings = await getBookingsForRange(date, rangeEnd);
@@ -96,7 +96,7 @@ export const getAllRoomStatus = async (
           date,
           filters.duration || 0,
           roomBookings,
-          filters.recurring,
+          filters.recurring
         )
       ) {
         continue;
@@ -112,7 +112,7 @@ export const getAllRoomStatus = async (
 
 export const searchAllRoom = async (
   date: Date,
-  filters: SearchFilters,
+  filters: SearchFilters
 ): Promise<SearchResponse> => {
   const rangeEnd = getSearchRangeEnd(date, filters);
   const bookings = await getBookingsForRange(date, rangeEnd);
@@ -150,7 +150,7 @@ export const searchAllRoom = async (
           date,
           filters.duration || 0,
           roomBookings,
-          filters.recurring,
+          filters.recurring
         );
 
         if (!available) {
@@ -175,7 +175,7 @@ export const searchAllRoom = async (
 };
 
 export const getRoomBookings = async (
-  roomId: string,
+  roomId: string
 ): Promise<BookingsResponse> => {
   const res = await queryBookingsForRoom(roomId);
   if (res.rooms_by_pk === null) {
@@ -186,7 +186,7 @@ export const getRoomBookings = async (
 };
 
 export const getAllBookings = async (
-  params: BookingPaginationParams,
+  params: BookingPaginationParams
 ): Promise<BookingsPaginationResponse> => {
   // Parse extra booking to see if there is another page
   const result = await queryAllBookings({
@@ -207,7 +207,7 @@ export const getAllBookings = async (
 };
 
 export const getRoomByEvent = async (
-  eventId: string,
+  eventId: string
 ): Promise<BookingsEventResponse[]> => {
   const res = await queryBookingsForEvent(eventId);
   if (res.bookings === null || res.bookings.length === 0) {
@@ -219,7 +219,7 @@ export const getRoomByEvent = async (
 
 export const getBookingDetails = async (
   roomId: string,
-  occurrenceId: string,
+  occurrenceId: string
 ): Promise<BookingDetails | null> => {
   return await queryBookingDetails(roomId, occurrenceId);
 };

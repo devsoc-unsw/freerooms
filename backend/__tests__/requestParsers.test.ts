@@ -1,4 +1,9 @@
-import { bookingsPaginationQuerySchema, BookingType, searchQuerySchema } from "common/types";
+import {
+  bookingsPaginationQuerySchema,
+  BookingType,
+  searchQuerySchema,
+  statusQuerySchema,
+} from "common/types";
 import type { Request } from "express";
 
 import {
@@ -18,7 +23,7 @@ describe("Multiselect room filters", () => {
         location: "upper,lower",
         capacity: "50",
         id: "true,false",
-      }),
+      })
     );
 
     expect(filters).toEqual({
@@ -37,13 +42,13 @@ describe("Multiselect room filters", () => {
 
   it("rejects invalid room usages", () => {
     expect(() => parseStatusFilters(request({ usage: "LAB,INVALID" }))).toThrow(
-      "Invalid room usage",
+      "Invalid room usage"
     );
   });
 
   it("rejects invalid ID selections", () => {
     expect(() => parseStatusFilters(request({ id: "true,invalid" }))).toThrow(
-      "Invalid ID required",
+      "Invalid ID required"
     );
   });
 
@@ -53,8 +58,8 @@ describe("Multiselect room filters", () => {
         request({
           usage: "LAB,TUSM",
           buildingId: "K-K17",
-        }),
-      ),
+        })
+      )
     ).toEqual({
       usage: ["LAB", "TUSM"],
       buildingId: "K-K17",
@@ -69,8 +74,8 @@ describe("Multiselect booking filters", () => {
         request({
           bookingType: "TUTORIAL,LECTURE",
           plannedSize: "50",
-        }),
-      ),
+        })
+      )
     ).toEqual({
       bookingType: [BookingType.LECTURE, BookingType.TUTORIAL],
       plannedSize: 50,
@@ -82,8 +87,8 @@ describe("Multiselect booking filters", () => {
       parseBookingFilters(
         request({
           bookingType: "LECTURE,TUTORIAL,LECTURE",
-        }),
-      ),
+        })
+      )
     ).toEqual({
       bookingType: [BookingType.LECTURE, BookingType.TUTORIAL],
     });
@@ -91,13 +96,13 @@ describe("Multiselect booking filters", () => {
 
   it("rejects invalid booking types", () => {
     expect(() =>
-      parseBookingFilters(request({ bookingType: "LECTURE,INVALID" })),
+      parseBookingFilters(request({ bookingType: "LECTURE,INVALID" }))
     ).toThrow("Invalid booking type");
   });
 
   it("rejects invalid campus locations", () => {
     expect(() =>
-      parseBookingFilters(request({ location: "lower,invalid" })),
+      parseBookingFilters(request({ location: "lower,invalid" }))
     ).toThrow("Invalid location");
   });
 
@@ -106,13 +111,12 @@ describe("Multiselect booking filters", () => {
   });
 });
 
-
 describe("Multiselect API query validation", () => {
   it("accepts multiple locations in room status queries", () => {
     expect(
       statusQuerySchema.safeParse({
         location: "upper,lower",
-      }).success,
+      }).success
     ).toBe(true);
   });
 
@@ -120,7 +124,7 @@ describe("Multiselect API query validation", () => {
     expect(
       statusQuerySchema.safeParse({
         id: "true,false",
-      }).success,
+      }).success
     ).toBe(true);
   });
 
@@ -130,7 +134,7 @@ describe("Multiselect API query validation", () => {
         location: "upper,lower",
         usage: "LAB,TUSM",
         id: "true,false",
-      }).success,
+      }).success
     ).toBe(true);
   });
 
@@ -139,7 +143,7 @@ describe("Multiselect API query validation", () => {
       bookingsPaginationQuerySchema.safeParse({
         location: "upper,lower",
         bookingType: "LECTURE,TUTORIAL",
-      }).success,
+      }).success
     ).toBe(true);
   });
 });

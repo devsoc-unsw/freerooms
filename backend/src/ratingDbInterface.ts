@@ -11,7 +11,7 @@ import { MONGO_URI } from "./config";
 import { getRoomsByBuilding } from "./helpers";
 export async function insertRating(
   roomId: string,
-  ratings: number[],
+  ratings: number[]
 ): Promise<void> {
   if (!MONGO_URI) {
     throw new Error("MONGO_URI not found");
@@ -40,7 +40,7 @@ export async function insertRating(
     await collection.updateOne(
       filter,
       { $push: { ratings: ratingObject } },
-      options,
+      options
     );
   } catch (error) {
     console.error("Error inserting document:", error);
@@ -51,7 +51,7 @@ export async function insertRating(
 
 export async function insertBuldingRating(
   buildingId: string,
-  overallRating: number,
+  overallRating: number
 ): Promise<void> {
   if (!MONGO_URI) {
     throw new Error("MONGO_URI not found");
@@ -91,7 +91,7 @@ export async function insertBuldingRating(
           {
             $set: { overallRating: newOverallRating, numRating: newNumRating },
           },
-          { session },
+          { session }
         );
       }
     });
@@ -167,7 +167,7 @@ export async function getRatings(roomId: string): Promise<RatingsResponse> {
 }
 
 export async function getBuildingRatings(
-  buildingId: string,
+  buildingId: string
 ): Promise<BuildingRatingsResponse | null> {
   if (!MONGO_URI) {
     throw new Error("MONGO_URI not found");
@@ -237,7 +237,7 @@ export async function getAllBuildingRatings(): Promise<
 }
 
 export async function getAllRoomRatingsInBuilding(
-  buildingId: string,
+  buildingId: string
 ): Promise<RatingsResponse[]> {
   if (!MONGO_URI) {
     throw new Error("MONGO_URI not found");

@@ -103,7 +103,7 @@ describe("getRatings", () => {
     });
     expect(consoleError).toHaveBeenCalledWith(
       "Error finding item:",
-      expect.any(Error),
+      expect.any(Error)
     );
     expect(mockClient.close).toHaveBeenCalled();
   });
@@ -160,7 +160,7 @@ describe("getAllBuildingRatings", () => {
     expect(result).toEqual([]);
     expect(consoleError).toHaveBeenCalledWith(
       "Error finding items:",
-      expect.any(Error),
+      expect.any(Error)
     );
     expect(mockClient.close).toHaveBeenCalled();
   });
@@ -187,7 +187,7 @@ describe("getAllRoomRatingsInBuilding", () => {
 
     expect(mockCollection.find).toHaveBeenCalledWith(
       { roomId: { $in: ["K-K17-G11", "K-K17-G12"] } },
-      expect.anything(),
+      expect.anything()
     );
     expect(result).toEqual([
       {
@@ -200,11 +200,11 @@ describe("getAllRoomRatingsInBuilding", () => {
 
   it("propagates the error if the building doesn't exist", async () => {
     (getRoomsByBuilding as jest.Mock).mockRejectedValueOnce(
-      new Error("Building K-FAKE not found"),
+      new Error("Building K-FAKE not found")
     );
 
     await expect(getAllRoomRatingsInBuilding("K-FAKE")).rejects.toThrow(
-      "Building K-FAKE not found",
+      "Building K-FAKE not found"
     );
     // Failure happens before a client is ever created, so nothing to close
     expect(mockClient.close).not.toHaveBeenCalled();
@@ -223,7 +223,7 @@ describe("insertRating", () => {
           ratings: { cleanliness: 4, location: 5, quietness: 3, overall: 4 },
         },
       },
-      { upsert: true },
+      { upsert: true }
     );
     expect(mockClient.close).toHaveBeenCalled();
   });
@@ -235,12 +235,12 @@ describe("insertRating", () => {
     mockCollection.updateOne.mockRejectedValueOnce(new Error("boom"));
 
     await expect(
-      insertRating("K-K17-G11", [4, 5, 3, 4]),
+      insertRating("K-K17-G11", [4, 5, 3, 4])
     ).resolves.toBeUndefined();
 
     expect(consoleError).toHaveBeenCalledWith(
       "Error inserting document:",
-      expect.any(Error),
+      expect.any(Error)
     );
     expect(mockClient.close).toHaveBeenCalled();
   });
@@ -271,7 +271,7 @@ describe("insertBuldingRating", () => {
     expect(mockCollection.updateOne).toHaveBeenCalledWith(
       { buildingId: "K-G27" },
       { $set: { overallRating: 4.5, numRating: 2 } },
-      { session: mockSession },
+      { session: mockSession }
     );
   });
 
@@ -287,7 +287,7 @@ describe("insertBuldingRating", () => {
     expect(mockCollection.updateOne).toHaveBeenCalledWith(
       { buildingId: "K-G27" },
       { $set: { overallRating: 4.3, numRating: 4 } },
-      { session: mockSession },
+      { session: mockSession }
     );
   });
 });
