@@ -21,7 +21,7 @@ jest.mock("@frontend/app/clientLayout", () => ({
 jest.mock("nuqs", () => ({
   useQueryStates: (keys: Record<string, { defaultValue: string }>) => [
     Object.fromEntries(
-      Object.entries(keys).map(([key, options]) => [key, options.defaultValue])
+      Object.entries(keys).map(([key, options]) => [key, options.defaultValue]),
     ),
     jest.fn(),
   ],
@@ -72,6 +72,11 @@ jest.mock("@frontend/hooks/rooms/useRoom", () => ({
   },
 }));
 
+jest.mock("@frontend/components/rooms/NearbyRoomsCarousel", () => ({
+  __esModule: true,
+  default: () => <div data-testid="nearby-rooms" />,
+}));
+
 describe("Rating Star", () => {
   it("Star shows up on buildings card (non-mobile)", () => {
     renderWithRedux(<BuildingCard buildingId="K-J17" />);
@@ -97,10 +102,9 @@ describe("Rating Star", () => {
     render(
       <Provider store={store}>
         <Page />
-      </Provider>
+      </Provider>,
     );
 
-    const starInfo = screen.getByLabelText(/5-star-info/i);
-    expect(starInfo).toBeInTheDocument();
+    expect(screen.getByText(/^Stars:/)).toBeInTheDocument();
   });
 });

@@ -8,6 +8,7 @@ import FeedbackButton from "@frontend/components/feedback/FeedbackButton";
 import RoomBackButton from "@frontend/components/navigation/RoomBackButton";
 import ViewOnMapButton from "@frontend/components/navigation/ViewOnMapButton";
 import RoomRating from "@frontend/components/ratings/RoomRating";
+import NearbyRoomsCarousel from "@frontend/components/rooms/NearbyRoomsCarousel";
 import RoomMetadata from "@frontend/components/rooms/RoomMetadata";
 import RoomPhotoCarousel from "@frontend/components/rooms/RoomPhotoCarousel";
 import RoomUtilityTags from "@frontend/components/rooms/RoomUtilityTags";
@@ -38,7 +39,6 @@ import getSchoolDetails from "common/schools";
 import type { Booking, Room } from "common/types";
 import { useParams } from "next/navigation";
 import React, { useState } from "react";
-import NearbyRoomsCarousel from "@frontend/components/rooms/NearbyRoomsCarousel";
 
 const adjustDateIfMidnight = (inputDate: Date): Date => {
   // Check if the time is midnight (00:00:00)
