@@ -19,7 +19,7 @@ import { Provider as ReduxProvider } from "react-redux";
 
 export const DarkModeContext = createContext({
   isDarkMode: false,
-  toggleDarkMode: () => {},
+  toggleDarkMode: () => { },
 });
 
 const subscribeToDarkMode = (callback: () => void) => {

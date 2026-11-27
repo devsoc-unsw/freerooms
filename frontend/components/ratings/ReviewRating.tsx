@@ -15,11 +15,17 @@ const ReviewRating: React.FC<ReviewRatingProps> = ({
       <Typography id="modal-modal-title" variant="body1">
         {category}
       </Typography>
+
       <Rating
         name={category.toLowerCase()}
         defaultValue={0}
-        onChange={(event, value) => ratingCallback(category, value)}
+        onChange={(_, value) => ratingCallback(category, value)}
         size="large"
+        sx={(theme) => ({
+          "& .MuiRating-iconEmpty": {
+            color: theme.palette.text.primary,
+          },
+        })}
       />
     </Stack>
   );
