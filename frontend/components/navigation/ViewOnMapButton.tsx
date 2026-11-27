@@ -25,7 +25,7 @@ const ViewOnMapButton: React.FC<{
       aria-label="Get Directions"
       name="Get Directions"
       sx={(theme) => ({
-        height: 45,
+        height: theme.sizes.roomNavigation.buttonHeight,
         gap: `${theme.space.sm}px`,
         ml:
           variant === "full-width"

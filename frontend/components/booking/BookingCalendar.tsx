@@ -5,6 +5,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import useBookingCalendarQuery from "@frontend/hooks/bookings/useBookingCalendarQuery";
 import { useSelector } from "@frontend/redux/hooks";
 import { selectDatetime } from "@frontend/redux/slices/datetimeSlice";
+import getBookingHref from "@frontend/utils/getBookingHref";
 import toSydneyTime from "@frontend/utils/toSydneyTime";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
@@ -24,6 +25,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { Booking } from "common/types";
 import { format, getDay, isSameDay, parse, startOfWeek } from "date-fns";
 import { enAU } from "date-fns/locale";
+import { useRouter } from "next/navigation";
 import React from "react";
 import type { DateRange, View } from "react-big-calendar";
 import type { NavigateAction, ToolbarProps } from "react-big-calendar";
@@ -228,6 +230,8 @@ const BookingCalendar: React.FC<{
   loading?: boolean;
 }> = ({ events, loading }) => {
   const theme = useTheme();
+  const router = useRouter();
+
   // Enforce day view on mobile
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -353,6 +357,14 @@ const BookingCalendar: React.FC<{
   const isTodaySydney = (date: Date) =>
     isSameDay(date, toSydneyTime(new Date()));
 
+  const handleBookingSelect = (booking: Booking) => {
+    if (!booking.roomId || !booking.occurrenceId) {
+      return;
+    }
+
+    router.push(getBookingHref(booking.roomId, booking.occurrenceId));
+  };
+
   if (loading) {
     return <BookingCalendarSkeleton />;
   }
@@ -467,11 +479,13 @@ const BookingCalendar: React.FC<{
               setDesktopView(nextView);
             }
           }}
-          eventPropGetter={() => ({
+          eventPropGetter={(booking) => ({
             style: {
               backgroundColor: theme.colours.accent.primary,
               borderColor: theme.colours.accent.primary,
               opacity: 0.8,
+              cursor:
+                booking.roomId && booking.occurrenceId ? "pointer" : "default",
             },
           })}
           slotGroupPropGetter={() => ({ style: { minHeight: "50px" } })}
@@ -487,6 +501,16 @@ const BookingCalendar: React.FC<{
           formats={{
             timeGutterFormat: formatTime,
             eventTimeRangeFormat: formatTimeRange,
+          }}
+          onSelectEvent={handleBookingSelect}
+          onKeyPressEvent={(booking, event) => {
+            if (
+              "key" in event &&
+              (event.key === "Enter" || event.key === " ")
+            ) {
+              event.preventDefault();
+              handleBookingSelect(booking);
+            }
           }}
         />
       </StyledCalendarContainer>

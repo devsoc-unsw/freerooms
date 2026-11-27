@@ -1,9 +1,9 @@
 import {
+  bookingDetailsParamsSchema,
+  bookingDetailsSchema,
   BookingPaginationParams,
   bookingsEventParamsSchema,
   bookingsEventResponseSchema,
-  bookingsModuleParamsSchema,
-  bookingsModuleResponseSchema,
   bookingsPaginationQuerySchema,
   bookingsPaginationResponseSchema,
   bookingsResponseSchema,
@@ -63,7 +63,7 @@ import {
   getAllBuildings,
   getAllRooms,
   getAllRoomStatus,
-  getBookingsModule,
+  getBookingDetails,
   getRoomBookings,
   getRoomByEvent,
   searchAllRoom,
@@ -220,23 +220,40 @@ router.get(
   )
 );
 
-// Route to get the bookings module of a specific booking from an occurrence ID and room ID
+// Route to get the details of a specific booking from an occurrence ID and room ID
 router.get(
   "/api/bookings/:roomID/:occurrenceID",
   openAPIRoute(
     {
       tag: "Bookings",
-      summary: "Get booking module",
-      params: bookingsModuleParamsSchema,
-      response: bookingsModuleResponseSchema,
+      summary: "Get individual booking details",
+      params: bookingDetailsParamsSchema,
+      response: bookingDetailsSchema,
     },
-    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-      const { roomID, occurrenceID } = bookingsModuleParamsSchema.parse(
+    asyncHandler(async (req: Request, res: Response) => {
+      const { roomID, occurrenceID } = bookingDetailsParamsSchema.parse(
         req.params
       );
-      const data = await getBookingsModule(roomID, occurrenceID);
-      res.json(data);
-      next();
+
+      try {
+        const booking = await getBookingDetails(roomID, occurrenceID);
+
+        if (booking === null) {
+          res.status(404).json({
+            message: "Booking not found",
+          });
+
+          return;
+        }
+
+        res.json(booking);
+      } catch (error) {
+        console.error("Failed to retrieve booking details", error);
+
+        res.status(502).json({
+          message: "Failed to retrieve booking details",
+        });
+      }
     })
   )
 );

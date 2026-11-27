@@ -2,12 +2,21 @@ import { renderWithTheme as render } from "@frontend/__tests__/utils/renderWithP
 import BookingCalendar from "@frontend/components/booking/BookingCalendar";
 import store from "@frontend/redux/store";
 import toSydneyTime from "@frontend/utils/toSydneyTime";
-import { screen } from "@testing-library/react";
+import { fireEvent, screen } from "@testing-library/react";
 import { Booking } from "common/types";
 import mediaQuery from "css-mediaquery";
 import { Provider } from "react-redux";
 
 const mockUseQueryStates = jest.fn();
+
+const mockPush = jest.fn();
+
+jest.mock("next/navigation", () => ({
+  ...jest.requireActual("next/navigation"),
+  useRouter: () => ({
+    push: mockPush,
+  }),
+}));
 
 jest.mock("nuqs", () => ({
   useQueryStates: (...args: unknown[]) => mockUseQueryStates(...args),
@@ -51,6 +60,8 @@ beforeEach(() => {
     },
     jest.fn(),
   ]);
+
+  mockPush.mockClear();
 });
 
 describe("Booking Calendar Desktop", () => {
@@ -140,4 +151,52 @@ describe("Booking Calendar Mobile", () => {
     expect(beforeButton).toBeInTheDocument();
     expect(nextButton).toBeInTheDocument();
   });
+});
+
+describe("Booking calendar navigation", () => {
+  const booking: Booking = {
+    roomId: "K-F17-LG3",
+    occurrenceId: "occurrence-123",
+    name: "COMP2521 LEC",
+    bookingType: "LECTURE",
+    start: new Date("2026-01-04T22:00:00Z"),
+    end: new Date("2026-01-05T00:00:00Z"),
+  };
+
+  beforeEach(() => {
+    mockUseQueryStates.mockReturnValue([
+      {
+        view: "day",
+        date: "2026-01-05",
+      },
+      jest.fn(),
+    ]);
+  });
+
+  it("opens the selected booking", () => {
+    render(
+      <Provider store={store}>
+        <BookingCalendar events={[booking]} />
+      </Provider>
+    );
+
+    fireEvent.click(screen.getByText("COMP2521 LEC (LECTURE)"));
+
+    expect(mockPush).toHaveBeenCalledWith("/booking/K-F17-LG3/occurrence-123");
+  });
+
+  it.each([{ roomId: undefined }, { occurrenceId: undefined }])(
+    "does not navigate with missing identifiers",
+    (missing) => {
+      render(
+        <Provider store={store}>
+          <BookingCalendar events={[{ ...booking, ...missing }]} />
+        </Provider>
+      );
+
+      fireEvent.click(screen.getByText("COMP2521 LEC (LECTURE)"));
+
+      expect(mockPush).not.toHaveBeenCalled();
+    }
+  );
 });

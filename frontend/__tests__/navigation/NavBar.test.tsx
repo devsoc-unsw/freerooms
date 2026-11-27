@@ -85,6 +85,39 @@ describe("NavBar", () => {
           expect(link).not.toHaveAttribute("aria-current", "page")
         );
     });
+
+    test("highlights Bookings on an individual booking page", () => {
+      renderNavBar({
+        path: "/booking/K-F17-LG3/occurrence-123",
+      });
+
+      const bookingLinks = screen.getAllByRole("link", {
+        name: "Go to bookings page",
+      });
+
+      expect(
+        bookingLinks.some(
+          (link) => link.getAttribute("aria-current") === "location"
+        )
+      ).toBe(true);
+
+      expect(
+        bookingLinks.some((link) => link.classList.contains("Mui-selected"))
+      ).toBe(true);
+    });
+
+    test("does not highlight Bookings on unrelated pages", () => {
+      renderNavBar({ path: "/room/K-F17-LG3" });
+
+      const bookingLinks = screen.getAllByRole("link", {
+        name: "Go to bookings page",
+      });
+
+      bookingLinks.forEach((link) => {
+        expect(link).not.toHaveAttribute("aria-current");
+        expect(link).not.toHaveClass("Mui-selected");
+      });
+    });
   });
 
   describe("dark mode", () => {

@@ -299,6 +299,13 @@ paths:
                     items:
                       type: object
                       properties:
+                        roomId:
+                          type: string
+                        occurrenceId:
+                          type: string
+                        eventId:
+                          type: string
+                          nullable: true
                         name:
                           type: string
                         bookingType:
@@ -309,6 +316,9 @@ paths:
                         end:
                           type: string
                           format: date-time
+                        plannedSize:
+                          type: number
+                          nullable: true
                       required:
                         - name
                         - bookingType
@@ -316,6 +326,281 @@ paths:
                         - end
                 required:
                   - bookings
+        "404":
+          description: The item you requested could not be found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+  /api/bookings:
+    get:
+      tags:
+        - Bookings
+      summary: Get all bookings with pagination
+      parameters:
+        - schema:
+            type: string
+          required: false
+          name: limit
+          in: query
+        - schema:
+            type: string
+          required: false
+          name: bookingType
+          in: query
+        - schema:
+            type: string
+          required: false
+          name: startTime
+          in: query
+        - schema:
+            type: string
+          required: false
+          name: endTime
+          in: query
+        - schema:
+            type: string
+          required: false
+          name: plannedSize
+          in: query
+        - schema:
+            type: string
+            enum:
+              - upper
+              - lower
+          required: false
+          name: location
+          in: query
+        - schema:
+            type: string
+          required: false
+          name: sort
+          in: query
+        - schema:
+            type: string
+          required: false
+          name: search
+          in: query
+        - schema:
+            type: string
+          required: false
+          name: cursor
+          in: query
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  bookings:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        roomId:
+                          type: string
+                        occurrenceId:
+                          type: string
+                        eventId:
+                          type: string
+                          nullable: true
+                        name:
+                          type: string
+                        bookingType:
+                          type: string
+                        start:
+                          type: string
+                          format: date-time
+                        end:
+                          type: string
+                          format: date-time
+                        plannedSize:
+                          type: number
+                          nullable: true
+                        bookingModules:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              code:
+                                type: string
+                                nullable: true
+                              name:
+                                type: string
+                                nullable: true
+                              term:
+                                type: string
+                                nullable: true
+                              career:
+                                type: string
+                                nullable: true
+                      required:
+                        - roomId
+                        - occurrenceId
+                        - name
+                        - bookingType
+                        - start
+                        - end
+                        - bookingModules
+                  nextCursor:
+                    type: string
+                    nullable: true
+                  hasMore:
+                    type: boolean
+                required:
+                  - bookings
+                  - nextCursor
+                  - hasMore
+        "400":
+          description: The request payload or query string parameter you passed was not
+            valid
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+  /api/bookings/event/{eventID}:
+    get:
+      tags:
+        - Bookings
+      summary: Get bookings for an event
+      parameters:
+        - schema:
+            type: string
+            minLength: 1
+          required: true
+          name: eventID
+          in: path
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    roomId:
+                      type: string
+                    occurrenceId:
+                      type: string
+                    eventId:
+                      type: string
+                    name:
+                      type: string
+                    bookingType:
+                      type: string
+                    start:
+                      type: string
+                      format: date-time
+                    end:
+                      type: string
+                      format: date-time
+                    plannedSize:
+                      type: number
+                      nullable: true
+                  required:
+                    - roomId
+                    - occurrenceId
+                    - eventId
+                    - name
+                    - bookingType
+                    - start
+                    - end
+        "404":
+          description: The item you requested could not be found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+  /api/bookings/{roomID}/{occurrenceID}:
+    get:
+      tags:
+        - Bookings
+      summary: Get individual booking details
+      parameters:
+        - schema:
+            type: string
+            minLength: 1
+          required: true
+          name: roomID
+          in: path
+        - schema:
+            type: string
+            minLength: 1
+          required: true
+          name: occurrenceID
+          in: path
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  roomId:
+                    type: string
+                  occurrenceId:
+                    type: string
+                  eventId:
+                    type: string
+                    nullable: true
+                  name:
+                    type: string
+                  bookingType:
+                    type: string
+                  start:
+                    type: string
+                    format: date-time
+                  end:
+                    type: string
+                    format: date-time
+                  plannedSize:
+                    type: number
+                    nullable: true
+                  bookingModules:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                          nullable: true
+                        name:
+                          type: string
+                          nullable: true
+                        term:
+                          type: string
+                          nullable: true
+                        career:
+                          type: string
+                          nullable: true
+                required:
+                  - roomId
+                  - occurrenceId
+                  - name
+                  - bookingType
+                  - start
+                  - end
+                  - bookingModules
         "404":
           description: The item you requested could not be found
           content:
