@@ -6,6 +6,8 @@ import FeedbackButton from "@frontend/components/feedback/FeedbackButton";
 import FilterBar from "@frontend/components/filters/FilterBar";
 import SortBar from "@frontend/components/filters/SortBar";
 import SearchBar from "@frontend/components/search/SearchBar";
+import PageContainer from "@frontend/components/ui/PageContainer";
+import TopBar from "@frontend/components/ui/TopBar";
 import TopBarGroup from "@frontend/components/ui/TopBarGroup";
 import { API_URL } from "@frontend/config";
 import { useSelector } from "@frontend/redux/hooks";
@@ -17,8 +19,6 @@ import {
   bookingsSortBarDropdown,
   NO_START_TIME,
 } from "@frontend/utils/constants";
-import Container from "@mui/material/Container";
-import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -141,24 +141,11 @@ const Bookings = () => {
   }, [hasMore, isValidating, isLoading, setSize, size]);
 
   return (
-    <Container maxWidth={false}>
+    <PageContainer maxWidth={false}>
       <FeedbackButton />
       <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enAU}>
         <Tiles>
-          <Stack
-            direction={{ xs: "column", sm: "row" }}
-            sx={{
-              justifyContent: {
-                xs: "center",
-                sm: "space-between",
-              },
-              alignItems: "center",
-              marginTop: (theme) => theme.space.sm,
-              marginBottom: (theme) => theme.space.sm,
-              flexWrap: { sm: "wrap", md: "nowrap" },
-              width: "100%",
-            }}
-          >
+          <TopBar>
             <SearchBar setQuery={setQuery} placeholder="Search for bookings" />
 
             <TopBarGroup>
@@ -169,15 +156,15 @@ const Bookings = () => {
                 options={bookingsSortBarDropdown}
                 title="Booking Sort"
                 resetSort="ascendingStart"
-              />
+                />
               <TimeBar
                 startIsSet={startIsSet}
                 onStartIsSetChange={(isSet) =>
                   setStart(isSet ? null : NO_START_TIME)
                 }
-              />
+                />
             </TopBarGroup>
-          </Stack>
+          </TopBar>
           <AlignedWithSearchBar>
             {error && <p>Failed to load bookings</p>}
 
@@ -191,7 +178,7 @@ const Bookings = () => {
           </AlignedWithSearchBar>
         </Tiles>
       </LocalizationProvider>
-    </Container>
+    </PageContainer>
   );
 };
 
@@ -208,13 +195,12 @@ const Tiles = styled("div")(({ theme }) => ({
   flexDirection: "column",
   flexGrow: 1,
   alignItems: "center",
-  padding: theme.spacing(0, 0, 1, 0),
+  paddingBottom: theme.space.sm,
 }));
 
-const AlignedWithSearchBar = styled("div")(({ theme }) => ({
+const AlignedWithSearchBar = styled("div")({
   width: "100%",
   boxSizing: "border-box",
-  [theme.breakpoints.up("sm")]: { paddingLeft: theme.space.md },
-}));
+});
 
 export default Page;
