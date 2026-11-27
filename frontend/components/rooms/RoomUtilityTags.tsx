@@ -101,22 +101,27 @@ export default function RoomUtilities({
   }
 
   const categories = Object.entries(roomData)
-    .filter(([key, value]) => {
-      if (key === "id" || key === "name") return false;
-      if (typeof value === "string") return !!value;
-      return Array.isArray(value) && value.length > 0;
-    })
-    .map(([key, value]) => {
-      const items = typeof value === "string" ? [value] : value;
-      return {
-        key,
-        title: categoryInfo[key]?.title || key,
-        icon: categoryInfo[key]?.icon || (
-          <AcUnit sx={{ fontSize: ICON_SIZE, color: primary }} />
-        ),
-        items,
-      };
-    });
+  .filter(([key]) => key !== "id" && key !== "name")
+  .map(([key, value]) => {
+    const items: string[] =
+      typeof value === "string"
+        ? [value].filter(Boolean)
+        : Array.isArray(value)
+          ? value.filter(
+              (item): item is string => typeof item === "string"
+            )
+          : [];
+
+    return {
+      key,
+      title: categoryInfo[key]?.title || key,
+      icon: categoryInfo[key]?.icon || (
+        <AcUnit sx={{ fontSize: ICON_SIZE, color: primary }} />
+      ),
+      items,
+    };
+  })
+  .filter(({ items }) => items.length > 0);
 
   return (
     <Stack
@@ -137,7 +142,7 @@ export default function RoomUtilities({
             key={key}
             title={title}
             icon={icon}
-            items={items || []}
+            items={items}
           />
         ))}
       </Stack>
