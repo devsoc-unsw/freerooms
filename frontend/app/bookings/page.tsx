@@ -185,7 +185,6 @@ const Bookings = () => {
               bookings={isLoading ? undefined : bookings}
               emptyMessage="No bookings found"
             />
-
             {hasMore && <div ref={loadMoreRef} />}
 
             {isValidating && <p>Loading more bookings...</p>}

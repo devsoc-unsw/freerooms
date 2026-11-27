@@ -3,10 +3,17 @@ import { useTopBarGroup } from "@frontend/components/ui/TopBarGroup";
 import type { SvgIconComponent } from "@mui/icons-material";
 import { ClickAwayListener } from "@mui/material";
 import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
 import Popper from "@mui/material/Popper";
 import Stack from "@mui/material/Stack";
-import { styled, useTheme } from "@mui/material/styles";
+import {
+  styled,
+  type SxProps,
+  type Theme,
+  useTheme,
+} from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import React, { ReactNode, useState } from "react";
 
 const Panel = styled(AppSurface, {
@@ -33,6 +40,28 @@ const Header = styled(Box)(({ theme }) => ({
   height: theme.sizes.control.xl,
 }));
 
+// On phone view, the menu slides up from the bottom, instead of appearing as a dropdown
+const Sheet = styled(Drawer)(({ theme }) => ({
+  "& .MuiDrawer-paper": {
+    maxHeight: "70vh",
+    padding: `0 ${theme.space.md}px calc(${theme.space.md}px + env(safe-area-inset-bottom))`,
+    borderTopLeftRadius: theme.radius.card,
+    borderTopRightRadius: theme.radius.card,
+    backgroundColor: theme.colours.surface.paper,
+    backgroundImage: "none",
+  },
+}));
+
+// The three buttons share the row until the toolbar is wide enough for them to keep their own width
+const buttonBoxSx: SxProps<Theme> = (theme) => ({
+  alignSelf: "center",
+  flex: 1,
+  minWidth: 0,
+  [theme.breakpoints.up(theme.sizes.toolbar.singleRowMinWidth)]: {
+    flex: "none",
+  },
+});
+
 type TopBarMenuProps = {
   id: string; // used for aria-controls
   icon: SvgIconComponent;
@@ -44,6 +73,7 @@ type TopBarMenuProps = {
   children: ReactNode;
 };
 
+// Individual Menu/Dropdown
 const TopBarMenu = ({
   id,
   icon: Icon,
@@ -55,6 +85,7 @@ const TopBarMenu = ({
   children,
 }: TopBarMenuProps) => {
   const theme = useTheme();
+  const isPhone = useMediaQuery(theme.breakpoints.down("sm"));
   const groupElement = useTopBarGroup();
   const [buttonBox, setButtonBox] = useState<HTMLElement | null>(null);
   const [rowWidth, setRowWidth] = useState(0);
@@ -72,33 +103,80 @@ const TopBarMenu = ({
     panelWidth = rowWidth + overhang;
   }
 
+  const button = (
+    <AppButton
+      variant="outlined"
+      aria-expanded={open}
+      aria-controls={open ? id : undefined}
+      onClick={() => {
+        setRowWidth(groupElement?.offsetWidth ?? 0);
+        setOpen((isOpen) => !isOpen);
+      }}
+      sx={(theme) => ({
+        height: theme.sizes.control.xl,
+        width: "100%",
+        padding: `${theme.space.sm}px`,
+        borderWidth: `${theme.sizes.border.control}px`,
+        justifyContent: "center",
+        [theme.breakpoints.up("sm")]: { padding: `${theme.space.md}px` },
+        [theme.breakpoints.up(theme.sizes.toolbar.singleRowMinWidth)]: {
+          width: theme.sizes.toolbar.buttonWidth,
+        },
+      })}
+    >
+      <Stack
+        direction="row"
+        sx={(theme) => ({
+          alignItems: "center",
+          gap: `${theme.space.sm}px`,
+          [theme.breakpoints.up("sm")]: { gap: `${theme.space.md}px` },
+        })}
+      >
+        <Icon />
+        <Typography variant="subtitle1">{label}</Typography>
+      </Stack>
+    </AppButton>
+  );
+
+  const panelContent = (
+    <>
+      <Header>
+        <Typography variant="h4">{title}</Typography>
+        {onReset && (
+          <Typography
+            variant="body1"
+            color="primary"
+            sx={{ cursor: "pointer" }}
+            onClick={onReset}
+          >
+            Reset
+          </Typography>
+        )}
+      </Header>
+      {children}
+    </>
+  );
+
+  if (isPhone) {
+    return (
+      <Box ref={setButtonBox} sx={buttonBoxSx}>
+        {button}
+        <Sheet
+          anchor="bottom"
+          open={open}
+          onClose={() => setOpen(false)}
+          disableEnforceFocus
+        >
+          <div id={id}>{panelContent}</div>
+        </Sheet>
+      </Box>
+    );
+  }
+
   return (
     <ClickAwayListener onClickAway={() => setOpen(false)}>
-      <Box ref={setButtonBox} sx={{ alignSelf: "center" }}>
-        <AppButton
-          variant="outlined"
-          aria-expanded={open}
-          aria-controls={open ? id : undefined}
-          onClick={() => {
-            setRowWidth(groupElement?.offsetWidth ?? 0);
-            setOpen((isOpen) => !isOpen);
-          }}
-          sx={(theme) => ({
-            height: theme.sizes.control.xl,
-            width: theme.sizes.toolbar.buttonWidth,
-            padding: `${theme.space.md}px`,
-            justifyContent: "flex-start",
-          })}
-        >
-          <Stack
-            direction="row"
-            sx={{ alignItems: "center", gap: (theme) => `${theme.space.md}px` }}
-          >
-            <Icon />
-            <Typography variant="subtitle1">{label}</Typography>
-          </Stack>
-        </AppButton>
-
+      <Box ref={setButtonBox} sx={buttonBoxSx}>
+        {button}
         <Popper
           open={open}
           anchorEl={anchorEl}
@@ -114,20 +192,7 @@ const TopBarMenu = ({
           sx={{ zIndex: theme.zIndex.modal }}
         >
           <Panel id={id} panelWidth={panelWidth}>
-            <Header>
-              <Typography variant="h4">{title}</Typography>
-              {onReset && (
-                <Typography
-                  variant="body1"
-                  color="primary"
-                  sx={{ cursor: "pointer" }}
-                  onClick={onReset}
-                >
-                  Reset
-                </Typography>
-              )}
-            </Header>
-            {children}
+            {panelContent}
           </Panel>
         </Popper>
       </Box>

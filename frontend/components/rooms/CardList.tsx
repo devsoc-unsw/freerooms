@@ -1,5 +1,6 @@
 import BuildingCard from "@frontend/components/rooms/BuildingCard";
 import BuildingCardMobile from "@frontend/components/rooms/BuildingCardMobile";
+import AnimatedListItem from "@frontend/components/ui/AnimatedListItem";
 import useBuildings from "@frontend/hooks/buildings/useBuildings";
 import useBuildingSearch from "@frontend/hooks/buildings/useBuildingSearch";
 import useUserLocation from "@frontend/hooks/map/useUserLocation";
@@ -10,7 +11,7 @@ import { getNumFreerooms } from "@frontend/utils/utils";
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Building } from "common/types";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence } from "motion/react";
 import React from "react";
 
 const CardGrid = styled("div")(() => ({
@@ -18,6 +19,7 @@ const CardGrid = styled("div")(() => ({
   display: "grid",
   gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
   gridGap: "20px",
+  "& > *": { minWidth: 0 },
 }));
 
 const getBuildingPosition = (building: Building): number | null => {
@@ -146,26 +148,9 @@ const CardList: React.FC<{
     <CardGrid>
       <AnimatePresence initial={false} mode="popLayout">
         {items.map(({ key, buildingId }) => (
-          <motion.div
-            key={key}
-            layout="position"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{
-              layout: {
-                type: "tween",
-                duration: 0.75,
-                ease: "easeInOut",
-              },
-              opacity: {
-                duration: 0.2,
-                ease: "easeInOut",
-              },
-            }}
-          >
+          <AnimatedListItem key={key}>
             <FlippableCard buildingId={buildingId} />
-          </motion.div>
+          </AnimatedListItem>
         ))}
       </AnimatePresence>
     </CardGrid>

@@ -1,3 +1,4 @@
+import getBookingHref from "@frontend/utils/getBookingHref";
 import { SYDNEY_TIMEZONE } from "@frontend/utils/toSydneyTime";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 import ArrowForwardOutlinedIcon from "@mui/icons-material/ArrowForwardOutlined";
@@ -118,7 +119,7 @@ const BookingsCard = ({ booking, now }: BookingsCardProps) => {
   const timeLeft = now === null ? null : booking.end.getTime() - now;
   const isRemainingTime =
     timeLeft !== null && timeLeft > 0 && timeLeft < 10 * 60_000;
-  const bookingHref = `/booking/${encodeURIComponent(booking.roomId)}/${encodeURIComponent(booking.occurrenceId)}`;
+  const bookingHref = getBookingHref(booking.roomId, booking.occurrenceId);
 
   return (
     <StyledCard variant="outlined">

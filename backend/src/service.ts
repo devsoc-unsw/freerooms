@@ -1,8 +1,8 @@
 import { UPPER_CAMPUS_GRID_START } from "common/constants";
 import {
+  BookingDetails,
   BookingPaginationParams,
   BookingsEventResponse,
-  BookingsModuleResponse,
   BookingsPaginationResponse,
   BookingsResponse,
   BuildingsResponse,
@@ -13,9 +13,9 @@ import {
 
 import {
   queryAllBookings,
+  queryBookingDetails,
   queryBookingsForEvent,
   queryBookingsForRoom,
-  queryBookingsModule,
 } from "./dbInterface";
 import {
   calculateStatus,
@@ -218,16 +218,9 @@ export const getRoomByEvent = async (
   return res.bookings;
 };
 
-export const getBookingsModule = async (
+export const getBookingDetails = async (
   roomId: string,
   occurrenceId: string
-): Promise<BookingsModuleResponse> => {
-  const res = await queryBookingsModule(roomId, occurrenceId);
-  if (res.bookings == null) {
-    throw new Error(
-      `Booking module for room ${roomId} and occurrence ${occurrenceId} does not exist`
-    );
-  }
-
-  return res.bookings;
+): Promise<BookingDetails | null> => {
+  return await queryBookingDetails(roomId, occurrenceId);
 };

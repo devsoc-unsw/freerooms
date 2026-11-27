@@ -18,8 +18,8 @@ import { Skeleton, Slide, Typography, useMediaQuery } from "@mui/material";
 import Box, { BoxProps } from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Drawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
 import { styled, useTheme } from "@mui/material/styles";
-import { alpha } from "@mui/material/styles";
 import type { Building } from "common/types";
 import Image, { ImageProps } from "next/image";
 import { useState } from "react";
@@ -30,13 +30,27 @@ const AppBox = styled(Box)(({ theme }) => ({
   flexDirection: "row",
   alignItems: "center",
   justifyContent: "space-between",
-  padding: theme.spacing(3, 2, 2, 3),
+  paddingTop: theme.space.lg,
+  paddingRight: theme.space.md,
+  paddingBottom: theme.space.md,
+  paddingLeft: theme.space.md,
+  width: "100%",
+  boxSizing: "border-box",
 }));
 
 const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
   position: "relative",
   flex: 1,
   backgroundColor: theme.palette.background.default,
+}));
+
+const BodyBox = styled(Box)(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  gap: theme.space.md,
+  paddingLeft: theme.space.md,
+  paddingRight: theme.space.md,
+  paddingBottom: theme.space.lg,
 }));
 
 const StyledImage = styled(Image)<ImageProps>(({ theme }) => ({
@@ -50,28 +64,34 @@ const StatusBox = styled(Box)<BoxProps>(({ theme }) => ({
   justifyContent: "right",
   alignItems: "center",
   borderRadius: theme.radius.pill,
-  padding: theme.spacing(0, 2, 0, 2),
+  paddingLeft: theme.space.md,
+  paddingRight: theme.space.md,
 }));
 
 const RoomBox = styled(Box)<BoxProps>(({ theme }) => ({
-  borderRadius: theme.radius.card,
-  backgroundColor: theme.colours.surface.muted,
-  margin: theme.spacing(1.25),
-  padding: theme.spacing(0.5),
+  display: "flex",
+  flexDirection: "column",
+  gap: `${theme.space.md}px`,
+  paddingLeft: theme.space.md,
+  paddingRight: theme.space.md,
+  marginTop: 0,
+  marginBottom: 0,
 }));
 
-const CloseButton = styled(Button)(({ theme }) => ({
-  backgroundColor: alpha(theme.colours.text.secondary, 0.5),
+const CloseButton = styled(IconButton)(({ theme }) => ({
+  color: theme.colours.text.primary,
 }));
 
 const DirectionsButton = styled(Button)(({ theme }) => ({
+  height: 45,
+  gap: `${theme.space.sm}px`,
   width: "100%",
-  marginTop: theme.spacing(1.5),
+  position: "relative",
   backgroundColor: theme.palette.primary.main,
   color: theme.palette.primary.contrastText,
 
   "&:hover": {
-    backgroundColor: theme.palette.primary.dark,
+    opacity: 0.9,
   },
 }));
 
@@ -80,7 +100,7 @@ const PeekRow = styled(Box)<BoxProps>(({ theme }) => ({
   justifyContent: "space-between",
   alignItems: "center",
   gap: theme.space.sm,
-  paddingLeft: theme.spacing(3),
+  paddingLeft: theme.space.md,
   paddingRight: theme.space.md,
 }));
 
@@ -146,7 +166,7 @@ const sortRoomNumbers = (rooms: string[]): string[] => {
   });
 };
 
-const drawerWidth = 400;
+const drawerWidth = 440;
 
 const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
   onGetDirections,
@@ -199,7 +219,13 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
         }}
       >
         <Box>
-          <Typography sx={{ fontSize: 19, fontWeight: 500 }}>
+          <Typography
+            sx={(theme) => ({
+              fontSize: 19,
+              fontWeight: 500,
+              color: theme.colours.text.primary,
+            })}
+          >
             {building.name}
           </Typography>
           {isMobile && rooms && (
@@ -216,6 +242,7 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
       </div>
 
       <CloseButton
+        size="small"
         aria-label="Close"
         onClick={onClose}
         onPointerDown={(event) => event.stopPropagation()}
@@ -227,7 +254,7 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
 
   const body = (
     <>
-      <div style={{ margin: theme.spacing(1.25) }}>
+      <BodyBox>
         <StyledImage
           alt={`Image of building ${building.id}`}
           src={`/assets/building_photos/${building.id}.webp`}
@@ -241,21 +268,24 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
         {onGetDirections ? (
           <DirectionsButton
             disabled={isDirectionsLoading}
-            startIcon={
-              isDirectionsLoading ? (
-                <CircularProgress size={18} color="inherit" />
-              ) : (
-                <DirectionsWalkIcon />
-              )
-            }
             onClick={handleGetDirections}
+            variant="outlined"
+            color="primary"
           >
-            {isDirectionsLoading ? "Getting directions..." : "Get Directions"}
+            {isDirectionsLoading ? (
+              <CircularProgress size={18} color="inherit" />
+            ) : (
+              <DirectionsWalkIcon fontSize="small" />
+            )}
+
+            <Typography variant="body2">
+              {isDirectionsLoading ? "Getting directions..." : "Get Directions"}
+            </Typography>
           </DirectionsButton>
         ) : (
           <ViewOnMapButton buildingId={building.id} variant="full-width" />
         )}
-      </div>
+      </BodyBox>
 
       <RoomBox>
         {rooms ? (
@@ -274,7 +304,7 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
               fontSize: 16,
               fontWeight: 500,
               textAlign: "center",
-              padding: theme.spacing(1.25),
+              padding: `${theme.space.sm}px`,
             }}
           >
             Loading...
@@ -339,6 +369,7 @@ const BuildingDrawer: React.FC<BuildingDrawerProps> = ({
               </PeekText>
 
               <CloseButton
+                size="small"
                 aria-label="Close"
                 onClick={onClose}
                 onPointerDown={(event) => event.stopPropagation()}

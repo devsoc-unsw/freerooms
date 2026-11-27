@@ -93,7 +93,78 @@ const calendarColours = {
   },
 } as const;
 
-const statusSoon = "#FFA600";
+const bookingTypeColours = {
+  light: {
+    lecture: {
+      background: "#E8F0FF",
+      text: "#245AB0",
+    },
+    tutorial: {
+      background: "#E0F3ED",
+      text: "#13786B",
+    },
+    laboratory: {
+      background: "#F0E7FC",
+      text: "#7647B3",
+    },
+    workshop: {
+      background: "#FFF0DC",
+      text: "#A86423",
+    },
+    exam: {
+      background: "#FCE7EA",
+      text: "#AC3B46",
+    },
+    society: {
+      background: "#FDE7E1",
+      text: "#AD5333",
+    },
+    internal: {
+      background: "#EDF0F4",
+      text: "#526071",
+    },
+    other: {
+      background: "#EFF1F3",
+      text: "#667085",
+    },
+  },
+  dark: {
+    lecture: {
+      background: "#1D304D",
+      text: "#A6C8FF",
+    },
+    tutorial: {
+      background: "#193B35",
+      text: "#8CD9C7",
+    },
+    laboratory: {
+      background: "#38294D",
+      text: "#D3B7FF",
+    },
+    workshop: {
+      background: "#443321",
+      text: "#F2C58D",
+    },
+    exam: {
+      background: "#48252D",
+      text: "#FFAAB4",
+    },
+    society: {
+      background: "#482C23",
+      text: "#FEB99C",
+    },
+    internal: {
+      background: "#2D3540",
+      text: "#CAD3E0",
+    },
+    other: {
+      background: "#292D33",
+      text: "#BEC5CF",
+    },
+  },
+} as const;
+
+const statusSoon = "#E99600";
 const statusSoonBackground = "rgba(255, 166, 0, 0.2)";
 const ratingDisplay = "#D4613C";
 
@@ -164,6 +235,7 @@ export function getColours(mode: ThemeMode) {
       popup: mapColours.popup[mode],
     },
     calendar: calendarColours[mode],
+    bookingType: bookingTypeColours[mode],
     neutral,
     disabled: {
       background: c.disabledBackground,

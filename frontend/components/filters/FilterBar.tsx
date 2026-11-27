@@ -23,12 +23,21 @@ const SLIDER_KEYS: (keyof Filters | keyof BookingsFilters)[] = [
   "plannedSize",
 ];
 
-const FilterBar: React.FC<{
-  options?: DropDown[]; // defaults to the building filters that Browse uses
-}> = ({ options = filterBarDropdown }) => {
+const FilterBar = ({
+  keys,
+  options,
+}: {
+  keys?: (keyof Filters)[];
+  options?: DropDown[];
+}) => {
   // Get filters from Redux
   const dispatch = useDispatch();
   const filters = useSelector(selectFilters);
+  const dropdowns =
+    options ??
+    (keys
+      ? filterBarDropdown.filter((dropdown) => keys.includes(dropdown.key))
+      : filterBarDropdown);
 
   const handleValueChange = useCallback(
     (key: keyof Filters | keyof BookingsFilters) => (value: string | null) => {
@@ -52,7 +61,7 @@ const FilterBar: React.FC<{
       title="Filters"
       onReset={() => dispatch(clearFilters())}
     >
-      {options.map((dropdown) =>
+      {dropdowns.map((dropdown) =>
         SLIDER_KEYS.includes(dropdown.key) ? (
           <FilterSlider
             key={dropdown.key}

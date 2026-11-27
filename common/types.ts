@@ -30,13 +30,6 @@ export enum BookingType {
   "OTHER" = "OTHER",
 }
 
-export type BookingModule = {
-  term: string;
-  career: string;
-  code: string;
-  name: string;
-};
-
 // Booking Pagination
 
 // One query param per filter, each with a single value, like the browse page
@@ -104,7 +97,7 @@ export type Room = z.infer<typeof roomSchema>;
 export const bookingSchema = z.object({
   roomId: z.string().optional(),
   occurrenceId: z.string().optional(),
-  eventId: z.string().optional(),
+  eventId: z.string().nullish(),
   name: z.string(),
   bookingType: z.string(),
   start: z.date(),
@@ -179,50 +172,42 @@ export const statusResponseSchema = z.record(
 
 export type StatusResponse = z.infer<typeof statusResponseSchema>;
 
-// Bookings for a specific event occurrence
-export const bookingsEventResponseSchema = z.object({
-  eventId: z.string(),
-  occurrenceId: z.string(),
+
+// Metadata associated with a booking
+export const bookingListModuleSchema = z.object({
+  code: z.string().nullish(),
+  name: z.string().nullish(),
+  term: z.string().nullish(),
+  career: z.string().nullish(),
+});
+
+export type BookingListModule = z.infer<typeof bookingListModuleSchema>;
+
+// Booking with identifiers for nav
+export const bookingSummarySchema = bookingSchema.extend({
   roomId: z.string(),
-  name: z.string(),
-  bookingType: z.string(),
-  plannedSize: z.string(),
-  start: z.date(),
-  end: z.date(),
+  occurrenceId: z.string(),
+});
+
+export type BookingSummary = z.infer<typeof bookingSummarySchema>;
+
+// Booking with the asscoiated module information
+export const bookingDetailsSchema = bookingSummarySchema.extend({
+  bookingModules: z.array(bookingListModuleSchema),
+});
+
+export type BookingDetails = z.infer<typeof bookingDetailsSchema>;
+
+
+//  Bookings for a specific event
+export const bookingsEventResponseSchema = bookingSummarySchema.extend({
+  eventId: z.string(),
 });
 
 export type BookingsEventResponse = z.infer<typeof bookingsEventResponseSchema>;
 
-// Bookings module for a specific occurrence
-export const bookingsModuleResponseSchema = z.object({
-  occurrenceId: z.string(),
-  roomId: z.string(),
-  bookingModule: z.object({
-    term: z.string(),
-    career: z.string(),
-    code: z.string(),
-    name: z.string(),
-  }),
-});
 
-export type BookingsModuleResponse = z.infer<
-  typeof bookingsModuleResponseSchema
->;
-
-export const bookingListModuleSchema = z.object({
-  code: z.string(),
-  name: z.string(),
-  term: z.string().nullable(),
-  career: z.string().nullable(),
-})
-
-export type BookingListModule = z.infer<typeof bookingListModuleSchema>;
-
-export const paginatedBookingSchema = bookingSchema.extend({
-  roomId: z.string(),
-  occurrenceId: z.string(),
-  bookingModules: z.array(bookingListModuleSchema)
-});
+export const paginatedBookingSchema = bookingDetailsSchema;
 
 export type PaginatedBooking = z.infer<typeof paginatedBookingSchema>;
 
@@ -321,7 +306,7 @@ export const bookingsEventParamsSchema = z.object({
   eventID: z.string().min(1),
 });
 
-export const bookingsModuleParamsSchema = z.object({
+export const bookingDetailsParamsSchema = z.object({
   roomID: z.string().min(1),
   occurrenceID: z.string().min(1),
 });

@@ -45,4 +45,19 @@ describe("Carousel", () => {
       expect.stringContaining("room-photo-2.jpg")
     );
   });
+
+  test("supports a custom fixed carousel height", () => {
+    render(
+      <RoomPhotoCarousel
+        photos={["https://example.com/room-1.jpg"]}
+        height={300}
+      />
+    );
+
+    const image = screen.getByAltText(/room image/i);
+
+    expect(image.parentElement).toHaveStyle({
+      height: "300px",
+    });
+  });
 });

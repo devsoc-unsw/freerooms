@@ -1,10 +1,4 @@
-import {
-  AllRoomsFilters,
-  BookingsFilters,
-  DropDown,
-  DropDownItem,
-  Filters,
-} from "@frontend/types";
+import { BookingsFilters, BrowseView, DropDown, DropDownItem, Filters } from "@frontend/types";
 import ContactEmergencyOutlinedIcon from "@mui/icons-material/ContactEmergencyOutlined";
 import DoorBackOutlinedIcon from "@mui/icons-material/DoorBackOutlined";
 import EventRepeatOutlinedIcon from "@mui/icons-material/EventRepeatOutlined";
@@ -121,59 +115,6 @@ export const filterBarDropdown: DropDown<keyof Filters>[] = [
   },
 ];
 
-// Dropdowns and items for FilterSideBar in all-rooms-page
-export const allRoomsFilterDropdown: DropDown<keyof AllRoomsFilters>[] = [
-  {
-    text: "Room Type",
-    key: "usage",
-    items: Object.entries(roomUsages).map(([abbr, usage]) => ({
-      text: usage,
-      value: abbr,
-    })),
-  },
-  {
-    text: "Location",
-    key: "location",
-    items: [
-      {
-        text: "Upper Campus",
-        value: "upper",
-      },
-      {
-        text: "Lower Campus",
-        value: "lower",
-      },
-    ],
-  },
-  {
-    text: "Duration Free",
-    key: "duration",
-    items: [
-      {
-        text: "30+ minutes",
-        value: "30",
-      },
-      {
-        text: "1+ hours",
-        value: "60",
-      },
-      {
-        text: "2+ hours",
-        value: "120",
-      },
-      {
-        text: "3+ hours",
-        value: "180",
-      },
-    ],
-  },
-  {
-    text: "Recurring",
-    key: "recurring",
-    items: recurringWeekItems,
-  },
-];
-
 export const bookingsFilterDropdown: DropDown<keyof BookingsFilters>[] = [
   {
     text: "Campus Location",
@@ -250,12 +191,12 @@ export const sortBarDropdown: DropDownItem[] = [
     value: "reverseAlphabetical",
   },
   {
-    text: "Lower Campus",
-    value: "lowerToUpper",
+    text: "Upper Campus to Lower Campus",
+    value: "upperToLower",
   },
   {
-    text: "Upper Campus",
-    value: "upperToLower",
+    text: "Lower Campus to Upper Campus",
+    value: "lowerToUpper",
   },
 ];
 
@@ -321,3 +262,29 @@ export const bookingsSortBarDropdown: DropDownItem[] = [
     value: "remainingTime",
   },
 ];
+// Number of rooms displayed at first
+export const ROOM_LIST_PAGE_SIZE = 24;
+
+// Overlay opacity for room tiles in the building drawer
+export const DRAWER_ROOM_TILE_OVERLAY_OPACITY = 0.8;
+
+type BrowseViewConfig = {
+  sortOptions: DropDownItem[];
+  sortTitle: string;
+  filterKeys?: (keyof Filters)[]; // if left out, it does every filter
+  searchPlaceholder: string;
+};
+
+// What the top bar offers in each view of the browse page.
+export const BROWSE_VIEWS: Record<BrowseView, BrowseViewConfig> = {
+  buildings: {
+    sortOptions: sortBarDropdown,
+    sortTitle: "Sort",
+    searchPlaceholder: "Search for free rooms",
+  },
+  rooms: {
+    sortOptions: roomSortBarDropdown,
+    sortTitle: "Room Sort",
+    searchPlaceholder: "Search for free rooms",
+  },
+};
