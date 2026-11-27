@@ -56,7 +56,7 @@ describe("FilterChecklist", () => {
 
     fireEvent.click(screen.getByText("No"));
 
-    expect(onSelect).toHaveBeenCalledWith([]);
+    expect(onSelect).toHaveBeenCalledWith(["false"]);
   });
 
   it("clears the filter when the selected option is clicked again", () => {
@@ -71,7 +71,7 @@ describe("FilterChecklist", () => {
 
     fireEvent.click(screen.getByText("No"));
 
-    expect(onSelect).toHaveBeenCalledWith(null);
+    expect(onSelect).toHaveBeenCalledWith([]);
   });
 
   it("allows multiple options to be selected", () => {

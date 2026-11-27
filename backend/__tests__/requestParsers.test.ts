@@ -1,4 +1,4 @@
-import { BookingType } from "common/types";
+import { bookingsPaginationQuerySchema, BookingType, searchQuerySchema } from "common/types";
 import type { Request } from "express";
 
 import {
@@ -103,5 +103,43 @@ describe("Multiselect booking filters", () => {
 
   it("returns null when no filters are provided", () => {
     expect(parseBookingFilters(request({}))).toBeNull();
+  });
+});
+
+
+describe("Multiselect API query validation", () => {
+  it("accepts multiple locations in room status queries", () => {
+    expect(
+      statusQuerySchema.safeParse({
+        location: "upper,lower",
+      }).success,
+    ).toBe(true);
+  });
+
+  it("accepts both ID requirements", () => {
+    expect(
+      statusQuerySchema.safeParse({
+        id: "true,false",
+      }).success,
+    ).toBe(true);
+  });
+
+  it("accepts multiple filters in room search queries", () => {
+    expect(
+      searchQuerySchema.safeParse({
+        location: "upper,lower",
+        usage: "LAB,TUSM",
+        id: "true,false",
+      }).success,
+    ).toBe(true);
+  });
+
+  it("accepts multiple locations and booking types", () => {
+    expect(
+      bookingsPaginationQuerySchema.safeParse({
+        location: "upper,lower",
+        bookingType: "LECTURE,TUTORIAL",
+      }).success,
+    ).toBe(true);
   });
 });

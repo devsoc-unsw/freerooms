@@ -111,17 +111,14 @@ paths:
           in: query
         - schema:
             type: string
-            enum:
-              - upper
-              - lower
+            description: "Comma-Separated campus locations: upper, lower"
           required: false
+          description: "Comma-Separated campus locations: upper, lower"
           name: location
           in: query
         - schema:
             type: string
-            description: "Comma-Separated campus locations: upper, lower"
           required: false
-          description: "Comma-Separated campus locations: upper, lower"
           name: duration
           in: query
         - schema:
@@ -131,9 +128,6 @@ paths:
           in: query
         - schema:
             type: string
-            enum:
-              - "true"
-              - "false"
             description: "Comma-Separated ID requirements: true, false"
           required: false
           description: "Comma-Separated ID requirements: true, false"
@@ -207,17 +201,14 @@ paths:
           in: query
         - schema:
             type: string
-            enum:
-              - upper
-              - lower
+            description: "Comma-Separated campus locations: upper, lower"
           required: false
+          description: "Comma-Separated campus locations: upper, lower"
           name: location
           in: query
         - schema:
             type: string
-            description: "Comma-Separated campus locations: upper, lower"
           required: false
-          description: "Comma-Separated campus locations: upper, lower"
           name: duration
           in: query
         - schema:
@@ -227,9 +218,6 @@ paths:
           in: query
         - schema:
             type: string
-            enum:
-              - "true"
-              - "false"
             description: "Comma-Separated ID requirements: true, false"
           required: false
           description: "Comma-Separated ID requirements: true, false"
@@ -384,9 +372,6 @@ paths:
           in: query
         - schema:
             type: string
-            enum:
-              - upper
-              - lower
             description: "Comma-Separated campus locations: upper, lower"
           required: false
           description: "Comma-Separated campus locations: upper, lower"

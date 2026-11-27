@@ -317,7 +317,7 @@ export const bookingsPaginationQuerySchema = z.object({
   startTime: z.string().optional(),
   endTime: z.string().optional(),
   plannedSize: z.string().optional(),
-  location: z.enum(["upper", "lower"]).optional().describe("Comma-Separated campus locations: upper, lower"),
+  location: z.string().optional().describe("Comma-Separated campus locations: upper, lower"),
   sort: z.string().optional(),
   search: z.string().optional(),
   cursor: z.string().optional(),
@@ -327,10 +327,10 @@ export const statusQuerySchema = z.object({
   datetime: z.string().optional(),
   capacity: z.string().optional(),
   usage: z.string().optional().describe("Comma-Separated room usage codes"),
-  location: z.enum(["upper", "lower"]).optional(),
-  duration: z.string().optional().describe("Comma-Separated campus locations: upper, lower"),
+  location: z.string().optional().describe("Comma-Separated campus locations: upper, lower"),
+  duration: z.string().optional(),
   recurring: z.string().optional(),
-  id: z.enum(["true", "false"]).optional().describe("Comma-Separated ID requirements: true, false"),
+  id: z.string().optional().describe("Comma-Separated ID requirements: true, false"),
 });
 
 export const searchQuerySchema = statusQuerySchema.extend({
