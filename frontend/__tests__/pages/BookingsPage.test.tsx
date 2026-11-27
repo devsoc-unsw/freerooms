@@ -18,7 +18,10 @@ type GetKey = (
 ) => string | null;
 
 const mockSetStart = jest.fn();
+const mockSetEnd = jest.fn();
+
 let mockStart = "";
+let mockEnd = "";
 
 const mockUseSWRInfinite = jest.fn();
 let mockGetKey: GetKey | undefined;
@@ -33,8 +36,13 @@ let mockSWRResult: {
 
 jest.mock("nuqs", () => ({
   useQueryState: (key: string, options: { defaultValue: string }) => [
-    key === "start" ? mockStart : options.defaultValue,
-    key === "start" ? mockSetStart : jest.fn(),
+    key === "start"
+      ? mockStart
+      : key === "endTime"
+        ? mockEnd
+        : options.defaultValue,
+
+    key === "start" ? mockSetStart : key === "endTime" ? mockSetEnd : jest.fn(),
   ],
   useQueryStates: (keys: Record<string, { defaultValue: string }>) => [
     Object.fromEntries(
@@ -126,6 +134,8 @@ describe("Bookings page", () => {
     mockStart = NO_START_TIME;
     mockSetStart.mockClear();
     mockGetKey = undefined;
+    mockEnd = "";
+    mockSetEnd.mockClear();
 
     mockSWRResult = {
       data: [pageResponse],
@@ -167,14 +177,15 @@ describe("Bookings page", () => {
     expect(params?.has("startTime")).toBe(false);
   });
 
-  it("puts start=none in the URL when the start time is cleared", async () => {
-    mockStart = "";
+  it("clears the stored start time when the start time is cleared", async () => {
+    mockStart = "2026-11-27T01:00:00.000Z";
+
     renderPage();
 
     await clickButton("Time");
     await clickButton("Clear start time");
 
-    expect(mockSetStart).toHaveBeenCalledWith(NO_START_TIME);
+    expect(mockSetStart).toHaveBeenCalledWith(null);
   });
 
   it("passes returned bookings to the Bookings Card List", () => {
@@ -196,7 +207,8 @@ describe("Bookings page", () => {
   });
 
   it("includes search, filter, and time selections in the request", () => {
-    mockStart = "selected";
+    mockStart = "2026-11-27T01:00:00.000Z";
+    mockEnd = "2026-11-27T02:00:00.000Z";
     store.dispatch(setFilter({ key: "location", value: "lower" }));
     store.dispatch(
       setFilter({ key: "bookingType" as keyof Filters, value: "TUTORIAL" })
@@ -204,7 +216,6 @@ describe("Bookings page", () => {
     store.dispatch(
       setFilter({ key: "plannedSize" as keyof Filters, value: "50" })
     );
-    store.dispatch(setFilter({ key: "duration", value: "60" }));
 
     renderPage();
 
