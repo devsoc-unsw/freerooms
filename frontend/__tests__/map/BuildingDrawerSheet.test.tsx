@@ -81,7 +81,7 @@ describe("BuildingDrawer mobile bottom sheet", () => {
     collapseToPeek(now);
 
     expect(
-      screen.queryByAltText(/Image of building K-J17/i),
+      screen.queryByAltText(/Image of building K-J17/i)
     ).not.toBeInTheDocument();
     expect(screen.getAllByRole("button", { name: "Close" })).toHaveLength(1);
     expect(screen.getByText("7–12 min")).toBeInTheDocument();
@@ -90,7 +90,7 @@ describe("BuildingDrawer mobile bottom sheet", () => {
   it("shows skeletons at peek while the route is loading", () => {
     renderWithRedux(
       <BuildingDrawer distance={668} duration={480} isDirectionsLoading />,
-      { preloadedState },
+      { preloadedState }
     );
 
     collapseToPeek(now);

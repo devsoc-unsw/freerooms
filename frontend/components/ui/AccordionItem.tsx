@@ -87,7 +87,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({ title, content }) => {
 
   const handleChangePanel = (
     _event: React.SyntheticEvent,
-    isExpanded: boolean,
+    isExpanded: boolean
   ) => {
     setExpandedPanel(isExpanded);
   };

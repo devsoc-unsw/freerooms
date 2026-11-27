@@ -75,7 +75,7 @@ export default function Sponsors() {
     },
   ];
   const platinumSponsors = sponsors.filter(
-    (sponsor) => sponsor.tier === "Platinum",
+    (sponsor) => sponsor.tier === "Platinum"
   );
 
   const goldSponsors = sponsors.filter((sponsor) => sponsor.tier === "Gold");

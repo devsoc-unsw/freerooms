@@ -116,7 +116,7 @@ export const Map = () => {
     userLat,
     userLng,
     buildings,
-    isOnCampus(userLat, userLng),
+    isOnCampus(userLat, userLng)
   );
 
   // Walking info for the building open in the drawer; prefer the loaded route's numbers
@@ -166,10 +166,10 @@ export const Map = () => {
     }
 
     const longitudes = route.geometry.coordinates.map(
-      ([longitude]) => longitude,
+      ([longitude]) => longitude
     );
     const latitudes = route.geometry.coordinates.map(
-      ([, latitude]) => latitude,
+      ([, latitude]) => latitude
     );
 
     const routeBounds: LngLatBoundsLike = [
@@ -191,7 +191,7 @@ export const Map = () => {
 
   const handleGetDirections = async (
     destinationBuilding: Building,
-    { keepDrawerOpen = false } = {},
+    { keepDrawerOpen = false } = {}
   ): Promise<void> => {
     let origin;
 

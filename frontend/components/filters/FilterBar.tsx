@@ -51,7 +51,7 @@ const FilterBar = ({
         dispatch(setFilter({ key, value }));
       }
     },
-    [dispatch],
+    [dispatch]
   );
 
   useQueryFilter();
@@ -80,7 +80,7 @@ const FilterBar = ({
             value={filters[dropdown.key]}
             onCommit={handleValueChange(dropdown.key)}
           />
-        ),
+        )
       )}
     </TopBarMenu>
   );

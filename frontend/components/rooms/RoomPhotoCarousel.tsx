@@ -1,11 +1,15 @@
 import "swiper/css";
-import "swiper/css/navigation";
 
-import { sizes } from "@frontend/theme";
+import { sizes, space } from "@frontend/theme";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
 import Skeleton from "@mui/material/Skeleton";
 import Image from "next/image";
-import { Autoplay, Navigation } from "swiper/modules";
+import { useRef } from "react";
+import type { Swiper as SwiperInstance } from "swiper";
+import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 type CarouselHeight =
@@ -24,8 +28,9 @@ const RoomImage: React.FC<{
     <Box
       sx={{
         width: "100%",
-        height: height,
+        height,
         position: "relative",
+        overflow: "hidden",
       }}
     >
       <Image
@@ -33,7 +38,7 @@ const RoomImage: React.FC<{
         alt="Room Image"
         fill
         sizes="100vw"
-        style={{ objectFit: "cover", borderRadius: 10 }}
+        style={{ objectFit: "cover" }}
       />
     </Box>
   );
@@ -44,78 +49,87 @@ const RoomPhotoCarousel: React.FC<{
   loading?: boolean;
   height?: CarouselHeight;
 }> = ({ photos, loading, height = sizes.roomPhoto.defaultHeight }) => {
-  if (loading) {
-    return (
-      <Skeleton
-        animation="wave"
-        variant="rounded"
-        width="100%"
-        sx={{
-          height,
-          borderRadius: "10px",
-        }}
-      />
-    );
-  }
+  const swiperRef = useRef<SwiperInstance | null>(null);
 
-  if (photos.length <= 1) {
-    return <RoomImage src={photos[0]} height={height} />;
-  }
+  const showNavigation = !loading && photos.length > 1;
 
   return (
     <Box
       sx={(theme) => ({
-        maxWidth: "100%",
+        display: "grid",
+        gridTemplateColumns: {
+          xs: `${theme.sizes.control.sm}px minmax(0, 1fr) ${theme.sizes.control.sm}px`,
+          md: `${theme.sizes.control.lg}px minmax(0, 1fr) ${theme.sizes.control.lg}px`,
+        },
+        alignItems: "center",
         width: "100%",
-        height,
-        position: "relative",
-        "& .swiper-button-prev, & .swiper-button-next": {
-          backgroundColor: theme.palette.background.default,
-          width: 50,
-          height: 50,
-        },
-        "& .swiper-button-prev:hover, & .swiper-button-next:hover": {
-          backgroundColor: theme.palette.background.paper,
-        },
-
-        "& .swiper-button-prev svg, & .swiper-button-next svg": {
-          width: "50%",
-          height: "50%",
+        minWidth: 0,
+        "& .MuiIconButton-root": {
           color: theme.palette.text.primary,
-        },
-        "& .swiper-button-prev svg path, & .swiper-button-next svg path": {
-          stroke: "currentColor",
-          strokeWidth: 0.8,
         },
       })}
     >
-      <Swiper
-        modules={[Autoplay, Navigation]}
-        navigation
-        autoplay={{ delay: 5000, disableOnInteraction: false }}
-        speed={600}
-        loop={true}
-        spaceBetween={50}
-        slidesPerView={1}
-        style={
-          {
-            height: "100%",
-            "--swiper-navigation-sides-offset": "0px",
-          } as React.CSSProperties
-        }
-      >
-        {photos.map((p) => (
-          <SwiperSlide key={p} style={{ position: "relative" }}>
-            <Image
-              src={p}
-              alt="Room Image"
-              fill
-              sizes="100vw"
-              style={{ objectFit: "cover", borderRadius: 10 }}
-            />
-          </SwiperSlide>
-        ))}
-      </Swiper>
+      {/* Previous photo */}
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        {showNavigation && (
+          <IconButton
+            aria-label="Previous photo"
+            size="small"
+            onClick={() => swiperRef.current?.slidePrev()}
+          >
+            <ChevronLeftIcon fontSize="small" />
+          </IconButton>
+        )}
+      </Box>
+
+      {/* Photo area */}
+      <Box sx={{ minWidth: 0, height }}>
+        {loading || photos.length === 0 ? (
+          <Skeleton
+            animation={loading ? "wave" : false}
+            variant="rectangular"
+            width="100%"
+            sx={{ height }}
+          />
+        ) : photos.length === 1 ? (
+          <RoomImage src={photos[0]} height={height} />
+        ) : (
+          <Swiper
+            modules={[Autoplay]}
+            onSwiper={(swiper) => {
+              swiperRef.current = swiper;
+            }}
+            autoplay={{
+              delay: 5000,
+              disableOnInteraction: false,
+            }}
+            speed={600}
+            loop
+            spaceBetween={space.md}
+            slidesPerView={1}
+            style={{ height: "100%" }}
+          >
+            {photos.map((photo) => (
+              <SwiperSlide key={photo}>
+                <RoomImage src={photo} height={height} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        )}
+      </Box>
+
+      {/* Next photo */}
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        {showNavigation && (
+          <IconButton
+            aria-label="Next photo"
+            size="small"
+            onClick={() => swiperRef.current?.slideNext()}
+          >
+            <ChevronRightIcon fontSize="small" />
+          </IconButton>
+        )}
+      </Box>
     </Box>
   );
 };

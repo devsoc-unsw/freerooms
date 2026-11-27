@@ -174,7 +174,7 @@ const MOBILE_TAB_HREFS = MOBILE_TAB_ITEMS.map((item) => item.href);
 const MOBILE_MORE_HREFS = MOBILE_MORE_ITEMS.map((item) => item.href);
 const getMobileNavValue = (
   path: string,
-  isMoreOpen: boolean,
+  isMoreOpen: boolean
 ): string | false => {
   const navPath = getNavPath(path);
 

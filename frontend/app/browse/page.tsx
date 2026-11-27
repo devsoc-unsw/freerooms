@@ -62,7 +62,7 @@ const BrowseContent = () => {
   const [query, setQuery] = useQueryState("q", parseAsString.withDefault(""));
   const [start, setStart] = useQueryState(
     "start",
-    parseAsString.withDefault(""),
+    parseAsString.withDefault("")
   );
   const startIsSet = start !== NO_START_TIME;
   const [date] = useQueryState("date", parseAsString.withDefault(""));

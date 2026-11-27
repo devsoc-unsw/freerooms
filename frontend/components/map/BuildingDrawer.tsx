@@ -120,7 +120,7 @@ type BuildingDrawerProps = {
 };
 
 const formatRoomNumber = (
-  room: string,
+  room: string
 ): {
   prefixRank: number;
   num: number;

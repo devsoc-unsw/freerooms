@@ -13,7 +13,7 @@ export default async function Home() {
   const photoDir = join(process.cwd(), "public", "assets", "building_photos");
 
   const photos = (await readdir(photoDir)).filter((name) =>
-    /^K-[A-Z]\d+\.webp$/.test(name),
+    /^K-[A-Z]\d+\.webp$/.test(name)
   );
 
   if (photos.length === 0) {

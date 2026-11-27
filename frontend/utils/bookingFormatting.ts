@@ -56,7 +56,7 @@ export const formatBookingTimeRange = (start: Date, end: Date): string => {
 };
 
 export const getPlannedAttendance = (
-  plannedSize?: number | null,
+  plannedSize?: number | null
 ): number | undefined =>
   typeof plannedSize === "number" &&
   Number.isFinite(plannedSize) &&
@@ -93,7 +93,7 @@ export const formatBookingTerm = (term?: string | null): string | undefined => {
 };
 
 export const formatBookingCareer = (
-  career?: string | null,
+  career?: string | null
 ): string | undefined => {
   const value = career?.trim();
 

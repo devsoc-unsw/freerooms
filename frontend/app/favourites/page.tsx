@@ -28,7 +28,7 @@ const Favourites = () => {
   const [start, setStart] = useQueryState(
     // start time set by default. clearing start time shows all favourites, and updates in the URL
     "start",
-    parseAsString.withDefault(""),
+    parseAsString.withDefault("")
   );
   const startIsSet = start !== NO_START_TIME;
 

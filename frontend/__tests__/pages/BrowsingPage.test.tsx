@@ -22,7 +22,7 @@ jest.mock("nuqs", () => ({
     mockUseQueryState(key, options),
   useQueryStates: (keys: Record<string, { defaultValue: string }>) => [
     Object.fromEntries(
-      Object.entries(keys).map(([key, options]) => [key, options.defaultValue]),
+      Object.entries(keys).map(([key, options]) => [key, options.defaultValue])
     ),
     jest.fn(),
   ],
@@ -75,7 +75,7 @@ const setUrlParams = (params: Record<string, string>) => {
     (key: string, options: { defaultValue: string }) => [
       params[key] ?? options.defaultValue,
       jest.fn(),
-    ],
+    ]
   );
 };
 
@@ -83,7 +83,7 @@ const renderPage = () =>
   render(
     <Provider store={store}>
       <Page />
-    </Provider>,
+    </Provider>
   );
 
 describe("Browsing Page", () => {
@@ -110,10 +110,10 @@ describe("Browsing Page", () => {
     renderPage();
 
     expect(
-      screen.getByRole("radio", { name: "Building View" }),
+      screen.getByRole("radio", { name: "Building View" })
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("radio", { name: "Room View" }),
+      screen.getByRole("radio", { name: "Room View" })
     ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Filters" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Sort" })).toBeInTheDocument();
@@ -145,8 +145,8 @@ describe("Browsing Page", () => {
     });
     expect(
       screen.getByText(
-        "No rooms are free at the start time. Clear it to see every room.",
-      ),
+        "No rooms are free at the start time. Clear it to see every room."
+      )
     ).toBeInTheDocument();
   });
 
@@ -162,7 +162,7 @@ describe("Browsing Page", () => {
       availableOnly: false,
     });
     expect(
-      screen.getByText("No rooms match your filters."),
+      screen.getByText("No rooms match your filters.")
     ).toBeInTheDocument();
   });
 
@@ -173,7 +173,7 @@ describe("Browsing Page", () => {
 
     expect(screen.getByTestId("building-drawer")).toHaveAttribute(
       "data-date",
-      "2026-09-11",
+      "2026-09-11"
     );
   });
 });

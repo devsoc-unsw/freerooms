@@ -8,7 +8,7 @@ export default function TextAnimation() {
   const count = useMotionValue(0);
   const rounded = useTransform(count, (latest) => Math.round(latest));
   const displayText = useTransform(rounded, (latest) =>
-    baseText.slice(0, latest),
+    baseText.slice(0, latest)
   );
 
   useEffect(() => {

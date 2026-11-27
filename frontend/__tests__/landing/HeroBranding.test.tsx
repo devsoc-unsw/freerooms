@@ -21,7 +21,7 @@ describe("HeroBranding", () => {
       screen.getByRole("searchbox", { name: "Search for free rooms" }),
       {
         target: { value: "  Electrical & WiFi  " },
-      },
+      }
     );
     fireEvent.click(screen.getByRole("button", { name: "Search" }));
 
@@ -44,14 +44,14 @@ describe("HeroBranding", () => {
 
     fireEvent.click(door);
     expect(
-      screen.getByRole("button", { name: "Open Freerooms door" }),
+      screen.getByRole("button", { name: "Open Freerooms door" })
     ).toHaveAttribute("aria-pressed", "true");
 
     fireEvent.click(
-      screen.getByRole("button", { name: "Open Freerooms door" }),
+      screen.getByRole("button", { name: "Open Freerooms door" })
     );
     expect(
-      screen.getByRole("button", { name: "Close Freerooms door" }),
+      screen.getByRole("button", { name: "Close Freerooms door" })
     ).toHaveAttribute("aria-pressed", "false");
   });
 });

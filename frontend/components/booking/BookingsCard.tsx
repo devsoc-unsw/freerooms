@@ -110,7 +110,7 @@ const formatBookingType = (bookingType: string): string =>
 const formatBookingDateTime = (
   start: Date,
   end: Date,
-  now: number | null,
+  now: number | null
 ): string => {
   const startDay = formatInTimeZone(start, SYDNEY_TIMEZONE, "yyyy-MM-dd");
 
@@ -126,7 +126,7 @@ const formatBookingDateTime = (
   const startTime = formatInTimeZone(
     start,
     SYDNEY_TIMEZONE,
-    "h:mma",
+    "h:mma"
   ).toLowerCase();
 
   const endTime = formatInTimeZone(end, SYDNEY_TIMEZONE, "h:mma").toLowerCase();

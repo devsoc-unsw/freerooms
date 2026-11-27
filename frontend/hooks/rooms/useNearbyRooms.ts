@@ -24,7 +24,7 @@ const useNearbyRooms = (currentRoomId?: string) => {
     {
       refreshInterval: REFRESH_INTERVAL_MS,
       revalidateOnFocus: true,
-    },
+    }
   );
 
   const error = roomsError ?? buildingsError ?? statusError;

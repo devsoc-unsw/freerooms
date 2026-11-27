@@ -78,13 +78,13 @@ const findNearbyRooms = (limit?: number) =>
 describe("getNearbyRooms", () => {
   it("excludes the current room", () => {
     expect(findNearbyRooms().map(({ room }) => room.id)).not.toContain(
-      "K-F17-101",
+      "K-F17-101"
     );
   });
 
   it("only includes currently available rooms", () => {
     expect(
-      findNearbyRooms().every(({ status }) => status.status === "free"),
+      findNearbyRooms().every(({ status }) => status.status === "free")
     ).toBe(true);
 
     expect(findNearbyRooms()).toHaveLength(4);

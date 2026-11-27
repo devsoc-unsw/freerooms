@@ -46,11 +46,11 @@ export default function SponsorItem({ name, image, url, tier }: Sponsor) {
 
           event.currentTarget.style.setProperty(
             "--tilt-x",
-            `${-y * 2 * MAX_TILT}deg`,
+            `${-y * 2 * MAX_TILT}deg`
           );
           event.currentTarget.style.setProperty(
             "--tilt-y",
-            `${x * 2 * MAX_TILT}deg`,
+            `${x * 2 * MAX_TILT}deg`
           );
         }}
 

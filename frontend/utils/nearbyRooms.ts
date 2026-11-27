@@ -16,14 +16,14 @@ export const getNearbyRooms = (
   rooms: Record<string, Room>,
   buildings: Building[],
   statuses: StatusResponse,
-  limit = NEARBY_ROOM_LIMIT,
+  limit = NEARBY_ROOM_LIMIT
 ): NearbyRoom[] => {
   const buildingsById = new Map(
-    buildings.map((building) => [building.id, building]),
+    buildings.map((building) => [building.id, building])
   );
 
   const currentBuilding = buildingsById.get(
-    getBuildingIdFromRoomId(currentRoomId),
+    getBuildingIdFromRoomId(currentRoomId)
   );
 
   if (!currentBuilding) return [];
@@ -47,7 +47,7 @@ export const getNearbyRooms = (
       currentBuilding.lat,
       currentBuilding.long,
       building.lat,
-      building.long,
+      building.long
     );
 
     if (!Number.isFinite(distance)) continue;
@@ -65,7 +65,7 @@ export const getNearbyRooms = (
       (a, b) =>
         a.distance - b.distance ||
         a.room.name.localeCompare(b.room.name) ||
-        a.room.id.localeCompare(b.room.id),
+        a.room.id.localeCompare(b.room.id)
     )
     .slice(0, limit);
 };

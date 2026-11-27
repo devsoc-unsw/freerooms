@@ -37,7 +37,7 @@ const SearchModal = () => {
 
   const [recentSearches, setRecentSearches] = useLocalStorage<SearchOption[]>(
     "recentSearches",
-    [],
+    []
   );
 
   const addRecentSearch = (newOption: SearchOption) => {
@@ -88,7 +88,7 @@ const SearchModal = () => {
 
   const filterOptions = (
     options: SearchOption[],
-    { inputValue }: FilterOptionsState<SearchOption>,
+    { inputValue }: FilterOptionsState<SearchOption>
   ) => {
     if (inputValue) {
       const filtered = matchSorter(options, inputValue, {
@@ -107,7 +107,7 @@ const SearchModal = () => {
 
   const handleSelect = (
     event: React.SyntheticEvent,
-    option: SearchOption | null,
+    option: SearchOption | null
   ) => {
     if (!option) return;
 

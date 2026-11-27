@@ -38,7 +38,7 @@ describe("RoomAvailabilityBox", () => {
         roomNumber="334"
         buildingId="K-G14"
         roomStatus={roomStatus}
-      />,
+      />
     );
 
     const availableSoonText = screen.getByText(/available soon/i);
@@ -55,7 +55,7 @@ describe("RoomAvailabilityBox", () => {
         roomNumber="334"
         buildingId="K-G14"
         roomStatus={roomStatus}
-      />,
+      />
     );
 
     const box = screen.getByRole("link");
@@ -71,7 +71,7 @@ describe("RoomAvailabilityBox", () => {
         roomNumber="888"
         buildingId="K-G14"
         roomStatus={roomStatus}
-      />,
+      />
     );
 
     const box = screen.getByRole("link");
@@ -88,7 +88,7 @@ describe("RoomAvailabilityBox", () => {
         buildingId="K-G14"
         roomStatus={roomStatus}
         date="2026-09-11"
-      />,
+      />
     );
 
     const link = screen.getByRole("link");
@@ -103,7 +103,7 @@ describe("RoomAvailabilityBox", () => {
         buildingId="K-G14"
         roomStatus={roomStatus}
         date="invalid-date"
-      />,
+      />
     );
 
     const link = screen.getByRole("link");
@@ -117,21 +117,21 @@ describe("RoomAvailabilityBox", () => {
         roomNumber="334"
         buildingId="K-G14"
         roomStatus={roomStatus}
-      />,
+      />
     );
 
     fireEvent.click(screen.getByRole("button", { name: /Add as favourite/i }));
 
     expect(
-      JSON.parse(window.localStorage.getItem("favourite") ?? "[]"),
+      JSON.parse(window.localStorage.getItem("favourite") ?? "[]")
     ).toContain("K-G14-334");
 
     fireEvent.click(
-      screen.getByRole("button", { name: /Remove as favourite/i }),
+      screen.getByRole("button", { name: /Remove as favourite/i })
     );
 
     expect(
-      JSON.parse(window.localStorage.getItem("favourite") ?? "[]"),
+      JSON.parse(window.localStorage.getItem("favourite") ?? "[]")
     ).not.toContain("K-G14-334");
   });
 
@@ -141,12 +141,12 @@ describe("RoomAvailabilityBox", () => {
         roomNumber="334"
         buildingId="K-G14"
         roomStatus={roomStatus}
-      />,
+      />
     );
 
     // fireEvent returns false when the click's default action was prevented
     const notPrevented = fireEvent.click(
-      screen.getByRole("button", { name: /Add as favourite/i }),
+      screen.getByRole("button", { name: /Add as favourite/i })
     );
 
     expect(notPrevented).toBe(false);

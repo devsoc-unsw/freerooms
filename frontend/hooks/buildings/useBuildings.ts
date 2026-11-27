@@ -11,7 +11,7 @@ const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 const useBuildings = () => {
   const { data, error } = useSWRImmutable<BuildingsResponse>(
     API_URL + "/buildings",
-    fetcher,
+    fetcher
   );
   return {
     buildings: data?.buildings,

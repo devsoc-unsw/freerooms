@@ -15,7 +15,7 @@ export const FLICK_VELOCITY = 0.5;
 
 export const getStageHeight = (
   stage: SheetStage,
-  viewportHeight: number,
+  viewportHeight: number
 ): number => {
   switch (stage) {
     case "peek":
@@ -31,11 +31,11 @@ export const getStageHeight = (
 export const getVisibleHeight = (
   stage: SheetStage,
   dragOffset: number,
-  viewportHeight: number,
+  viewportHeight: number
 ): number =>
   Math.min(
     getStageHeight("full", viewportHeight),
-    Math.max(PEEK_HEIGHT, getStageHeight(stage, viewportHeight) - dragOffset),
+    Math.max(PEEK_HEIGHT, getStageHeight(stage, viewportHeight) - dragOffset)
   );
 
 // Tapping opens the sheet further
@@ -49,13 +49,13 @@ const stepStage = (stage: SheetStage, direction: 1 | -1): SheetStage => {
 
 const getNearestStage = (
   visibleHeight: number,
-  viewportHeight: number,
+  viewportHeight: number
 ): SheetStage =>
   SHEET_STAGES.reduce((best, current) =>
     Math.abs(getStageHeight(current, viewportHeight) - visibleHeight) <
     Math.abs(getStageHeight(best, viewportHeight) - visibleHeight)
       ? current
-      : best,
+      : best
   );
 
 type ReleaseArguments = {
@@ -83,6 +83,6 @@ export const getReleaseStage = ({
 
   return getNearestStage(
     getVisibleHeight(stage, dragOffset, viewportHeight),
-    viewportHeight,
+    viewportHeight
   );
 };
