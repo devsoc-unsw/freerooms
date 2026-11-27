@@ -175,19 +175,17 @@ const BookingsCard = ({ booking, now }: BookingsCardProps) => {
             </Typography>
           </TimeTag>
 
-          {isUnder30Minutes && !isUnder10Minutes && (
+          {isUnder30Minutes ? (
             <SoonRemainingTimeTag>
               <HourglassEmptyOutlinedIcon aria-hidden="true" />
               <Typography variant="body2">{"<"}30 mins left</Typography>
             </SoonRemainingTimeTag>
-          )}
-
-          {isUnder10Minutes && (
+          ) : isUnder10Minutes ? (
             <UnavailableRemainingTimeTag>
               <HourglassEmptyOutlinedIcon aria-hidden="true" />
               <Typography variant="body2">{"<"}10 mins left</Typography>
             </UnavailableRemainingTimeTag>
-          )}
+          ) : null}
         </TagsRow>
 
         <Divider
