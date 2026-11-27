@@ -36,9 +36,9 @@ export enum BookingType {
 export const bookingFilterSchema = z.object({
   startTime: z.date().optional(), // bookings starting at or after it
   endTime: z.date().optional(),
-  bookingType: z.enum(BookingType).optional(),
+  bookingType: z.array(z.enum(BookingType)).optional(),
   plannedSize: z.number().optional(), // minimum planned size, same as room capacity
-  location: z.enum(["upper", "lower"]).optional(),
+  location: z.array(z.enum(["upper", "lower"])).optional(),
 });
 
 export type BookingFilter = z.infer<typeof bookingFilterSchema>;
@@ -313,11 +313,11 @@ export const bookingDetailsParamsSchema = z.object({
 
 export const bookingsPaginationQuerySchema = z.object({
   limit: z.string().optional(),
-  bookingType: z.string().optional(),
+  bookingType: z.string().optional().describe("Comma-Separated booking types"),
   startTime: z.string().optional(),
   endTime: z.string().optional(),
   plannedSize: z.string().optional(),
-  location: z.enum(["upper", "lower"]).optional(),
+  location: z.enum(["upper", "lower"]).optional().describe("Comma-Separated campus locations: upper, lower"),
   sort: z.string().optional(),
   search: z.string().optional(),
   cursor: z.string().optional(),
@@ -326,11 +326,11 @@ export const bookingsPaginationQuerySchema = z.object({
 export const statusQuerySchema = z.object({
   datetime: z.string().optional(),
   capacity: z.string().optional(),
-  usage: z.string().optional(),
+  usage: z.string().optional().describe("Comma-Separated room usage codes"),
   location: z.enum(["upper", "lower"]).optional(),
-  duration: z.string().optional(),
+  duration: z.string().optional().describe("Comma-Separated campus locations: upper, lower"),
   recurring: z.string().optional(),
-  id: z.enum(["true", "false"]).optional(),
+  id: z.enum(["true", "false"]).optional().describe("Comma-Separated ID requirements: true, false"),
 });
 
 export const searchQuerySchema = statusQuerySchema.extend({

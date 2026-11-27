@@ -39,6 +39,31 @@ export const parseStatusDatetime = (req: Request): Date => {
   return parseDatetime(req.query.datetime as string);
 };
 
+// Convert comma based filters to seperate
+const parseFilterValues = <T extends string>(
+  value: unknown,
+  allowed: readonly T[],
+  error: string
+): T[] => {
+  if (typeof value !== "string") {
+    throw new Error(error);
+  }
+
+  const values = value.split(",").map((v) => v.trim());
+
+  const parsed = values.map((v) => {
+    const match = allowed.find((option) => option === v);
+
+    if (match === undefined) {
+      throw new Error(error);
+    }
+
+    return match;
+  });
+
+  return [...new Set(parsed)].sort();
+};
+
 // Parses the provided filters from the request params
 export const parseStatusFilters = (req: Request): StatusFilters => {
   const filters: StatusFilters = {};
@@ -68,28 +93,28 @@ export const parseStatusFilters = (req: Request): StatusFilters => {
     filters.recurring = recurring;
   }
 
-  if (req.query.usage) {
-    const usage = req.query.usage as string;
-    if (!Object.keys(roomUsages).includes(usage)) {
-      throw new Error("Invalid room usage");
-    }
-    filters.usage = usage;
+  if (req.query.usage !== undefined) {
+    filters.usage = parseFilterValues(
+      req.query.usage,
+      Object.keys(roomUsages),
+      "Invalid room usage"
+    );
   }
 
-  if (req.query.location) {
-    const location = req.query.location as string;
-    if (location !== "upper" && location !== "lower") {
-      throw new Error('Invalid location: must be one of "upper" or "lower"');
-    }
-    filters.location = location;
+  if (req.query.location !== undefined) {
+    filters.location = parseFilterValues(
+      req.query.location,
+      ["upper", "lower"] as const,
+      "Invalid location"
+    );
   }
 
-  if (req.query.id) {
-    const id = req.query.id as string;
-    if (id !== "true" && id !== "false") {
-      throw new Error('Invalid ID required: must be one of "true" or "false"');
-    }
-    filters.id = id === "true";
+  if (req.query.id !== undefined) {
+    filters.id = parseFilterValues(
+      req.query.id,
+      ["true", "false"] as const,
+      "Invalid ID required"
+    ).map((value) => value === "true");
   }
 
   return filters;
@@ -158,12 +183,12 @@ export const parseBookingFilters = (req: Request): BookingFilter | null => {
     filters.endTime = parseDatetime(req.query.endTime as string);
   }
 
-  if (req.query.bookingType) {
-    const bookingType = req.query.bookingType as string;
-    if (!Object.values(BookingType).includes(bookingType as BookingType)) {
-      throw new Error("Invalid booking type");
-    }
-    filters.bookingType = bookingType as BookingType;
+  if (req.query.bookingType !== undefined) {
+    filters.bookingType = parseFilterValues(
+      req.query.bookingType,
+      Object.values(BookingType),
+      "Invalid booking type"
+    );
   }
 
   if (req.query.plannedSize) {
@@ -174,12 +199,12 @@ export const parseBookingFilters = (req: Request): BookingFilter | null => {
     filters.plannedSize = plannedSize;
   }
 
-  if (req.query.location) {
-    const location = req.query.location as string;
-    if (location !== "upper" && location !== "lower") {
-      throw new Error('Invalid location: must be one of "upper" or "lower"');
-    }
-    filters.location = location;
+  if (req.query.location !== undefined) {
+    filters.location = parseFilterValues(
+      req.query.location,
+      ["upper", "lower"] as const,
+      "Invalid location"
+    );
   }
 
   return Object.keys(filters).length > 0 ? filters : null;
