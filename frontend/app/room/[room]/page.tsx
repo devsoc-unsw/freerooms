@@ -38,6 +38,7 @@ import getSchoolDetails from "common/schools";
 import type { Booking, Room } from "common/types";
 import { useParams } from "next/navigation";
 import React, { useState } from "react";
+import NearbyRoomsCarousel from "@frontend/components/rooms/NearbyRoomsCarousel";
 
 const adjustDateIfMidnight = (inputDate: Date): Date => {
   // Check if the time is midnight (00:00:00)
@@ -96,6 +97,7 @@ export default function Page() {
           }}
         />
         <BookingCalendar events={adjustedBookings ?? []} loading={!room} />
+        <NearbyRoomsCarousel roomId={room?.id} />
         <RoomUtilityTags roomId={room?.id} />
         <RoomRating
           buildingID={building?.id ?? ""}
