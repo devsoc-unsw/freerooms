@@ -34,7 +34,11 @@ describe("FilterChecklist", () => {
 
   it("marks only the selected option as checked", () => {
     render(
-      <FilterChecklist dropdown={idDropdown} value="true" onSelect={() => {}} />
+      <FilterChecklist
+        dropdown={idDropdown}
+        value={["true"]}
+        onSelect={() => {}}
+      />
     );
 
     expect(
@@ -52,7 +56,7 @@ describe("FilterChecklist", () => {
 
     fireEvent.click(screen.getByText("No"));
 
-    expect(onSelect).toHaveBeenCalledWith("false");
+    expect(onSelect).toHaveBeenCalledWith(["false"]);
   });
 
   it("clears the filter when the selected option is clicked again", () => {
@@ -60,14 +64,65 @@ describe("FilterChecklist", () => {
     render(
       <FilterChecklist
         dropdown={idDropdown}
-        value="false"
+        value={["false"]}
         onSelect={onSelect}
       />
     );
 
     fireEvent.click(screen.getByText("No"));
 
-    expect(onSelect).toHaveBeenCalledWith(null);
+    expect(onSelect).toHaveBeenCalledWith([]);
+  });
+
+  it("allows multiple options to be selected", () => {
+    const onSelect = jest.fn();
+
+    render(
+      <FilterChecklist
+        dropdown={idDropdown}
+        value={["true"]}
+        onSelect={onSelect}
+      />
+    );
+
+    fireEvent.click(screen.getByText("No"));
+
+    expect(onSelect).toHaveBeenCalledWith(["true", "false"]);
+  });
+
+  it("displays multiple selected options as checked", () => {
+    render(
+      <FilterChecklist
+        dropdown={idDropdown}
+        value={["true", "false"]}
+        onSelect={() => {}}
+      />
+    );
+
+    expect(
+      screen.getByText("Yes").closest('[role="checkbox"]')
+    ).toHaveAttribute("aria-checked", "true");
+
+    expect(screen.getByText("No").closest('[role="checkbox"]')).toHaveAttribute(
+      "aria-checked",
+      "true"
+    );
+  });
+
+  it("removes only the deselected option", () => {
+    const onSelect = jest.fn();
+
+    render(
+      <FilterChecklist
+        dropdown={idDropdown}
+        value={["true", "false"]}
+        onSelect={onSelect}
+      />
+    );
+
+    fireEvent.click(screen.getByText("Yes"));
+
+    expect(onSelect).toHaveBeenCalledWith(["false"]);
   });
 });
 

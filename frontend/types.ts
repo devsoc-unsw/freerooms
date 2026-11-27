@@ -48,11 +48,11 @@ export type BrowseView = "buildings" | "rooms";
 // Filters for /rooms endpoint
 export type Filters = {
   capacity?: string;
-  usage?: string;
-  location?: string;
+  usage?: string[];
+  location?: string[];
   duration?: string;
   recurring?: string;
-  id?: string;
+  id?: string[];
 };
 
 export type Sponsor = {
@@ -64,7 +64,29 @@ export type Sponsor = {
 
 // Filters for /bookings endpoint
 export type BookingsFilters = {
-  bookingType?: string;
+  bookingType?: string[];
   plannedSize?: string;
-  location?: string;
+  location?: string[];
 };
+
+export type AllFilters = Filters & BookingsFilters;
+
+export type FilterKey = keyof AllFilters;
+
+export type MultiFilterKey = "usage" | "location" | "id" | "bookingType";
+
+export const isMultiFilterKey = (key: FilterKey): key is MultiFilterKey =>
+  key === "usage" ||
+  key === "location" ||
+  key === "id" ||
+  key === "bookingType";
+
+export type FilterSelection =
+  | {
+      key: MultiFilterKey;
+      value: string[];
+    }
+  | {
+      key: Exclude<FilterKey, MultiFilterKey>;
+      value: string;
+    };

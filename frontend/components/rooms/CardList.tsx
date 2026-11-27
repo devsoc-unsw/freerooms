@@ -101,7 +101,7 @@ const CardList: React.FC<{
   let displayedBuildings: Building[] | undefined = buildings;
 
   // If we have all data, apply filters
-  if (buildings && roomStatusData && Object.keys(roomStatusData).length !== 0) {
+  if (buildings && roomStatusData) {
     // If hideUnavailable is true, filter any that have no available rooms
 
     // Hide buildings that don't match the query, or that have no rooms left
@@ -113,7 +113,8 @@ const CardList: React.FC<{
       .filter(
         (building) =>
           (!matchingIds || matchingIds.has(building.id)) &&
-          Object.keys(roomStatusData[building.id].roomStatuses).length > 0
+          Object.keys(roomStatusData[building.id]?.roomStatuses ?? {}).length >
+            0
       )
       .sort((a, b) => {
         switch (sort) {

@@ -1,5 +1,6 @@
 import CardList from "@frontend/components/rooms/CardList";
 import useBuildings from "@frontend/hooks/buildings/useBuildings";
+import useStatus from "@frontend/hooks/rooms/useStatus";
 import { render } from "@testing-library/react";
 import React from "react";
 
@@ -25,7 +26,7 @@ jest.mock("@frontend/hooks/buildings/useBuildings", () => ({
 }));
 jest.mock("@frontend/hooks/rooms/useStatus", () => ({
   __esModule: true,
-  default: () => ({ status: undefined }),
+  default: jest.fn(() => ({ status: undefined })),
 }));
 jest.mock("@frontend/hooks/map/useUserLocation", () => ({
   __esModule: true,
@@ -55,8 +56,15 @@ jest.mock("@frontend/components/rooms/BuildingCardMobile", () => ({
 }));
 
 const mockUseBuildings = useBuildings as jest.Mock;
+const mockUseStatus = useStatus as jest.Mock;
 
 describe("CardList loading state", () => {
+  beforeEach(() => {
+    mockUseStatus.mockReturnValue({
+      status: undefined,
+    });
+  });
+
   it("renders both card variants as placeholders while loading, then real cards", () => {
     mockUseBuildings.mockReturnValue({ buildings: undefined });
 
@@ -88,5 +96,52 @@ describe("CardList loading state", () => {
     expect(count("building-card-mobile-placeholder")).toBe(0);
     expect(count("building-card")).toBe(1);
     expect(count("building-card-mobile")).toBe(1);
+  });
+
+  it("excludes buildings missing from the filtered status response", () => {
+    mockUseBuildings.mockReturnValue({
+      buildings: [
+        { id: "K-J17", name: "Ainsworth", lat: 0, long: 0, aliases: [] },
+        { id: "K-J19", name: "Other Building", lat: 0, long: 0, aliases: [] },
+      ],
+    });
+
+    mockUseStatus.mockReturnValue({
+      status: {
+        "K-J17": {
+          numAvailable: 1,
+          roomStatuses: {
+            "101": {
+              status: "free",
+              endtime: "",
+            },
+          },
+        },
+      },
+    });
+
+    const { container } = render(<CardList sort="alphabetical" query="" />);
+
+    expect(
+      container.querySelectorAll('[data-testid="building-card"]')
+    ).toHaveLength(1);
+  });
+
+  it("shows no buildings when all buildings are filtered out", () => {
+    mockUseBuildings.mockReturnValue({
+      buildings: [
+        { id: "K-J17", name: "Ainsworth", lat: 0, long: 0, aliases: [] },
+      ],
+    });
+
+    mockUseStatus.mockReturnValue({
+      status: {},
+    });
+
+    const { container } = render(<CardList sort="alphabetical" query="" />);
+
+    expect(
+      container.querySelectorAll('[data-testid="building-card"]')
+    ).toHaveLength(0);
   });
 });

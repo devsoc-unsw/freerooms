@@ -10,18 +10,15 @@ import {
   setFilter,
   unsetFilter,
 } from "@frontend/redux/slices/filtersSlice";
-import { BookingsFilters, DropDown, Filters } from "@frontend/types";
+import {
+  DropDown,
+  FilterKey,
+  Filters,
+  isMultiFilterKey,
+} from "@frontend/types";
 import { filterBarDropdown } from "@frontend/utils/constants";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import React, { useCallback } from "react";
-
-// Filters shown as a slider. Rest are a checklist.
-const SLIDER_KEYS: (keyof Filters | keyof BookingsFilters)[] = [
-  "capacity",
-  "duration",
-  "recurring",
-  "plannedSize",
-];
 
 const FilterBar = ({
   keys,
@@ -40,11 +37,18 @@ const FilterBar = ({
       : filterBarDropdown);
 
   const handleValueChange = useCallback(
-    (key: keyof Filters | keyof BookingsFilters) => (value: string | null) => {
+    (key: FilterKey) => (value: string | string[] | null) => {
       if (value === null) {
-        dispatch(unsetFilter(key as keyof Filters));
-      } else {
-        dispatch(setFilter({ key: key as keyof Filters, value }));
+        dispatch(unsetFilter(key));
+        return;
+      }
+
+      if (isMultiFilterKey(key)) {
+        if (Array.isArray(value)) {
+          dispatch(setFilter({ key, value }));
+        }
+      } else if (typeof value === "string") {
+        dispatch(setFilter({ key, value }));
       }
     },
     [dispatch]
@@ -62,19 +66,19 @@ const FilterBar = ({
       onReset={() => dispatch(clearFilters())}
     >
       {dropdowns.map((dropdown) =>
-        SLIDER_KEYS.includes(dropdown.key) ? (
-          <FilterSlider
-            key={dropdown.key}
-            dropdown={dropdown}
-            value={filters[dropdown.key as keyof Filters]}
-            onCommit={handleValueChange(dropdown.key)}
-          />
-        ) : (
+        isMultiFilterKey(dropdown.key) ? (
           <FilterChecklist
             key={dropdown.key}
             dropdown={dropdown}
-            value={filters[dropdown.key as keyof Filters]}
+            value={filters[dropdown.key]}
             onSelect={handleValueChange(dropdown.key)}
+          />
+        ) : (
+          <FilterSlider
+            key={dropdown.key}
+            dropdown={dropdown}
+            value={filters[dropdown.key]}
+            onCommit={handleValueChange(dropdown.key)}
           />
         )
       )}

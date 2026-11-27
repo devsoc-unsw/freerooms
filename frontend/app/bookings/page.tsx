@@ -12,7 +12,6 @@ import TopBarGroup from "@frontend/components/ui/TopBarGroup";
 import { API_URL } from "@frontend/config";
 import { useSelector } from "@frontend/redux/hooks";
 import { selectFilters } from "@frontend/redux/slices/filtersSlice";
-import type { BookingsFilters, Filters } from "@frontend/types";
 import {
   bookingsFilterDropdown,
   bookingsSortBarDropdown,
@@ -51,8 +50,7 @@ const Bookings = () => {
   const startTime =
     start && !Number.isNaN(Date.parse(start)) ? new Date(start) : null;
   const endTime = end && !Number.isNaN(Date.parse(end)) ? new Date(end) : null;
-  const getFilters = useSelector(selectFilters);
-  const filters = getFilters as Filters & BookingsFilters;
+  const filters = useSelector(selectFilters);
   const startIsSet = start !== "" && start !== NO_START_TIME;
 
   useEffect(() => {
@@ -80,11 +78,17 @@ const Bookings = () => {
     if (search) params.set("search", search);
 
     // Add filter query to params
-    if (filters.bookingType) params.set("bookingType", filters.bookingType);
+    if (filters.bookingType?.length) {
+      params.set("bookingType", filters.bookingType.join(","));
+    }
+
     if (filters.plannedSize !== undefined) {
       params.set("plannedSize", filters.plannedSize);
     }
-    if (filters.location) params.set("location", filters.location);
+
+    if (filters.location?.length) {
+      params.set("location", filters.location.join(","));
+    }
 
     if (startTime) {
       params.set("startTime", startTime.toISOString());

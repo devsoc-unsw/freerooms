@@ -12,7 +12,19 @@ import { StatusResponse } from "common/types";
 import useSWRImmutable from "swr/immutable";
 
 const fetcher = ([url, datetime, filters]: [string, Date, Filters]) =>
-  axios.get(url, { params: { datetime, ...filters } }).then((res) => res.data);
+  axios
+    .get(url, {
+      params: {
+        datetime,
+        capacity: filters.capacity,
+        usage: filters.usage?.join(","),
+        location: filters.location?.join(","),
+        duration: filters.duration,
+        recurring: filters.recurring,
+        id: filters.id?.join(","),
+      },
+    })
+    .then((res) => res.data);
 
 const useStatus = () => {
   const datetime = useSelector(selectDatetime);

@@ -29,14 +29,7 @@ describe("DropdownSelections", () => {
           ],
         }}
         canSelectMultiple={false}
-        filters={{
-          capacity: "",
-          usage: "",
-          location: "",
-          duration: "",
-          recurring: "",
-          id: "",
-        }}
+        filters={{}}
         handleSelect={() => {}}
       />
     );

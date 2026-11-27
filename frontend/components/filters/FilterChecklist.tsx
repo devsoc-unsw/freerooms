@@ -33,19 +33,19 @@ const Option = styled(Box, {
 
 const FilterChecklist = ({
   dropdown,
-  value,
+  value = [],
   onSelect,
   columns = 2,
 }: {
   dropdown: DropDown;
-  value?: string;
-  onSelect: (value: string | null) => void;
+  value?: string[];
+  onSelect: (value: string[]) => void;
   columns?: number;
 }) => (
   <FilterSection dropdown={dropdown}>
     <OptionGrid columns={columns}>
       {dropdown.items.map((item) => {
-        const selected = value === item.value;
+        const selected = value.includes(item.value);
         const CheckIcon = selected ? CheckBoxIcon : CheckBoxOutlineBlankIcon;
         return (
           <Option
@@ -53,7 +53,13 @@ const FilterChecklist = ({
             role="checkbox"
             aria-checked={selected}
             selected={selected}
-            onClick={() => onSelect(selected ? null : item.value)}
+            onClick={() =>
+              onSelect(
+                selected
+                  ? value.filter((v) => v !== item.value)
+                  : [...value, item.value]
+              )
+            }
           >
             <CheckIcon
               color="primary"

@@ -10,11 +10,11 @@ export type BuildingDatabase = {
 
 export type StatusFilters = {
   capacity?: number;
-  usage?: string;
-  location?: "upper" | "lower";
+  usage?: string[];
+  location?: ("upper" | "lower")[];
   duration?: number;
   recurring?: number;
-  id?: boolean;
+  id?: boolean[];
 };
 
 type BaseSearchFilters = StatusFilters & {
