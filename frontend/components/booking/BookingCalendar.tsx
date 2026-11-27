@@ -7,6 +7,7 @@ import { useSelector } from "@frontend/redux/hooks";
 import { selectDatetime } from "@frontend/redux/slices/datetimeSlice";
 import { space } from "@frontend/theme";
 import { getBookingTypeAppearance } from "@frontend/utils/bookingAppearance";
+import { getBookingTypeLabel } from "@frontend/utils/bookingFormatting";
 import getBookingHref from "@frontend/utils/getBookingHref";
 import toSydneyTime from "@frontend/utils/toSydneyTime";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
@@ -17,7 +18,7 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import IconButton from "@mui/material/IconButton";
 import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
-import { styled, useTheme } from "@mui/material/styles";
+import { alpha, styled, useTheme } from "@mui/material/styles";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
@@ -30,7 +31,11 @@ import { enAU } from "date-fns/locale";
 import { useRouter } from "next/navigation";
 import React from "react";
 import type { DateRange, View } from "react-big-calendar";
-import type { NavigateAction, ToolbarProps } from "react-big-calendar";
+import type {
+  EventProps,
+  NavigateAction,
+  ToolbarProps,
+} from "react-big-calendar";
 import {
   Calendar,
   dateFnsLocalizer,
@@ -124,6 +129,18 @@ const CustomToolBar: React.FC<ToolbarProps<Booking>> = ({
   );
 };
 
+const CalendarBookingEvent = ({ event, title }: EventProps<Booking>) => {
+  const { icon: Icon } = getBookingTypeAppearance(event.bookingType);
+  const typeLabel = getBookingTypeLabel(event.bookingType);
+
+  return (
+    <span>
+      <Icon titleAccess={typeLabel} />
+      {title}
+    </span>
+  );
+};
+
 const StyledCalendarContainer = styled(Box)<BoxProps & { view: View }>(
   ({ view, theme }) => ({
     "& .rbc-calendar": {
@@ -191,10 +208,10 @@ const StyledCalendarContainer = styled(Box)<BoxProps & { view: View }>(
     },
 
     "& .rbc-event": {
-      border: "none",
+      border: `${theme.sizes.border.weight}px solid transparent`,
       borderRadius: theme.radius.md,
       padding: theme.space.xs,
-      transition: "filter 120ms ease",
+      transition: "filter 120ms ease, box-shadow 120ms ease",
     },
 
     "& .rbc-event-content": {
@@ -372,6 +389,7 @@ const BookingCalendar: React.FC<{
       return {
         components: {
           toolbar: CustomToolBar,
+          event: CalendarBookingEvent,
         },
         getNow: () => toSydneyTime(new Date()),
         localizer: dateFnsLocalizer({
@@ -539,7 +557,7 @@ const BookingCalendar: React.FC<{
         view={currView}
         sx={{
           overflow: "auto",
-          padding: space.xs,
+          minWidth: 0,
         }}
       >
         <Calendar
@@ -551,7 +569,7 @@ const BookingCalendar: React.FC<{
           events={myEvents}
           titleAccessor={titleAccessor}
           tooltipAccessor={({ name, bookingType }) =>
-            `${name} (${bookingType})`
+            `${name} (${getBookingTypeLabel(bookingType)})`
           }
           getNow={getNow}
           localizer={localizer}
@@ -572,6 +590,8 @@ const BookingCalendar: React.FC<{
               style: {
                 backgroundColor: appearance.background,
                 color: appearance.text,
+                borderColor: alpha(appearance.text, 0.24),
+                boxShadow: `0 1px 3px ${alpha(appearance.text, 0.1)}`,
                 cursor: clickable ? "pointer" : "default",
               },
             };
