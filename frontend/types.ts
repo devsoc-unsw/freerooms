@@ -4,9 +4,12 @@ import { Building, Room } from "common/types";
 ///////////////////////////////////////////////////////////////
 // Dropdown types
 
-export type DropDown = {
+export type DropDown<
+  K extends keyof Filters | keyof BookingsFilters =
+    keyof Filters | keyof BookingsFilters,
+> = {
   text: string;
-  key: keyof Filters | keyof BookingsFilters;
+  key: K;
   icon?: SvgIconComponent;
   items: DropDownItem[];
 };

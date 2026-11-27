@@ -1,4 +1,10 @@
-import { DropDown, DropDownItem } from "@frontend/types";
+import {
+  AllRoomsFilters,
+  BookingsFilters,
+  DropDown,
+  DropDownItem,
+  Filters,
+} from "@frontend/types";
 import ContactEmergencyOutlinedIcon from "@mui/icons-material/ContactEmergencyOutlined";
 import DoorBackOutlinedIcon from "@mui/icons-material/DoorBackOutlined";
 import EventRepeatOutlinedIcon from "@mui/icons-material/EventRepeatOutlined";
@@ -22,7 +28,7 @@ const recurringWeekItems: DropDownItem[] = Array.from(
 );
 
 // Dropdown & items for FilterBar in building browse page
-export const filterBarDropdown: DropDown[] = [
+export const filterBarDropdown: DropDown<keyof Filters>[] = [
   {
     text: "Campus Location",
     key: "location",
@@ -116,7 +122,7 @@ export const filterBarDropdown: DropDown[] = [
 ];
 
 // Dropdowns and items for FilterSideBar in all-rooms-page
-export const allRoomsFilterDropdown: DropDown[] = [
+export const allRoomsFilterDropdown: DropDown<keyof AllRoomsFilters>[] = [
   {
     text: "Room Type",
     key: "usage",
@@ -168,7 +174,7 @@ export const allRoomsFilterDropdown: DropDown[] = [
   },
 ];
 
-export const bookingsFilterDropdown: DropDown[] = [
+export const bookingsFilterDropdown: DropDown<keyof BookingsFilters>[] = [
   {
     text: "Campus Location",
     key: "location",
