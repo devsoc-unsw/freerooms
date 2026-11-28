@@ -1,19 +1,53 @@
-import { roomUsages } from "@common/roomUsages";
-import { DropDown, DropDownItem } from "types";
+import {
+  BookingsFilters,
+  BrowseView,
+  DropDown,
+  DropDownItem,
+  Filters,
+} from "@frontend/types";
+import ContactEmergencyOutlinedIcon from "@mui/icons-material/ContactEmergencyOutlined";
+import DoorBackOutlinedIcon from "@mui/icons-material/DoorBackOutlined";
+import EventRepeatOutlinedIcon from "@mui/icons-material/EventRepeatOutlined";
+import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
+import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
+import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
+import TimerOutlinedIcon from "@mui/icons-material/TimerOutlined";
+import { roomUsages } from "common/roomUsages";
+import { BookingType } from "common/types";
+
+const MAX_RECURRING = 10;
+const recurringWeekItems: DropDownItem[] = Array.from(
+  { length: MAX_RECURRING },
+  (_, index) => {
+    const weeks = index + 1;
+    return {
+      text: weeks === 1 ? "1 week" : `${weeks} weeks`,
+      value: `${weeks}`,
+    };
+  }
+);
 
 // Dropdown & items for FilterBar in building browse page
-export const filterBarDropdown: DropDown[] = [
+export const filterBarDropdown: DropDown<keyof Filters>[] = [
   {
-    text: "Room Type",
-    key: "usage",
-    items: Object.entries(roomUsages).map(([abbr, usage]) => ({
-      text: usage,
-      value: abbr,
-    })),
+    text: "Campus Location",
+    key: "location",
+    icon: PlaceOutlinedIcon,
+    items: [
+      {
+        text: "Lower",
+        value: "lower",
+      },
+      {
+        text: "Upper",
+        value: "upper",
+      },
+    ],
   },
   {
     text: "Room Capacity",
     key: "capacity",
+    icon: PeopleAltOutlinedIcon,
     items: [
       {
         text: "25+",
@@ -34,84 +68,32 @@ export const filterBarDropdown: DropDown[] = [
     ],
   },
   {
-    text: "Duration Free",
-    key: "duration",
-    items: [
-      {
-        text: "30+ minutes",
-        value: "30",
-      },
-      {
-        text: "1+ hours",
-        value: "60",
-      },
-      {
-        text: "2+ hours",
-        value: "120",
-      },
-      {
-        text: "3+ hours",
-        value: "180",
-      },
-    ],
-  },
-  {
-    text: "Location",
-    key: "location",
-    items: [
-      {
-        text: "Upper Campus",
-        value: "upper",
-      },
-      {
-        text: "Lower Campus",
-        value: "lower",
-      },
-    ],
+    text: "Room Type",
+    key: "usage",
+    icon: DoorBackOutlinedIcon,
+    items: Object.entries(roomUsages)
+      .map(([abbr, usage]) => ({ text: usage, value: abbr }))
+      .sort((a, b) => a.text.localeCompare(b.text)),
   },
   {
     text: "ID Required",
     key: "id",
+    icon: ContactEmergencyOutlinedIcon,
     items: [
       {
-        text: "Not Required",
-        value: "false",
-      },
-      {
-        text: "Required",
+        text: "Yes",
         value: "true",
       },
-    ],
-  },
-];
-
-// Dropdowns and items for FilterSideBar in all-rooms-page
-export const allRoomsFilterDropdown: DropDown[] = [
-  {
-    text: "Room Type",
-    key: "usage",
-    items: Object.entries(roomUsages).map(([abbr, usage]) => ({
-      text: usage,
-      value: abbr,
-    })),
-  },
-  {
-    text: "Location",
-    key: "location",
-    items: [
       {
-        text: "Upper Campus",
-        value: "upper",
-      },
-      {
-        text: "Lower Campus",
-        value: "lower",
+        text: "No",
+        value: "false",
       },
     ],
   },
   {
     text: "Duration Free",
     key: "duration",
+    icon: TimerOutlinedIcon,
     items: [
       {
         text: "30+ minutes",
@@ -128,6 +110,69 @@ export const allRoomsFilterDropdown: DropDown[] = [
       {
         text: "3+ hours",
         value: "180",
+      },
+    ],
+  },
+  {
+    text: "Recurring",
+    key: "recurring",
+    icon: EventRepeatOutlinedIcon,
+    items: recurringWeekItems,
+  },
+];
+
+export const bookingsFilterDropdown: DropDown<keyof BookingsFilters>[] = [
+  {
+    text: "Campus Location",
+    key: "location",
+    icon: PlaceOutlinedIcon,
+    items: [
+      {
+        text: "Lower",
+        value: "lower",
+      },
+      {
+        text: "Upper",
+        value: "upper",
+      },
+    ],
+  },
+  {
+    text: "Booking Type",
+    key: "bookingType",
+    icon: EventRepeatOutlinedIcon,
+    items: Object.values(BookingType).map((type) => {
+      return {
+        text: type
+          .toLowerCase()
+          .replace(/_/g, " ")
+          .split(" ")
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" "),
+        value: type,
+      };
+    }),
+  },
+  {
+    text: "Planned Size",
+    key: "plannedSize",
+    icon: GroupsOutlinedIcon,
+    items: [
+      {
+        text: "25+",
+        value: "25",
+      },
+      {
+        text: "50+",
+        value: "50",
+      },
+      {
+        text: "100+",
+        value: "100",
+      },
+      {
+        text: "200+",
+        value: "200",
       },
     ],
   },
@@ -152,11 +197,100 @@ export const sortBarDropdown: DropDownItem[] = [
     value: "reverseAlphabetical",
   },
   {
-    text: "Lower Campus",
-    value: "lowerToUpper",
-  },
-  {
-    text: "Upper Campus",
+    text: "Upper Campus to Lower Campus",
     value: "upperToLower",
   },
+  {
+    text: "Lower Campus to Upper Campus",
+    value: "lowerToUpper",
+  },
 ];
+
+// Sorts for individual rooms
+export const roomSortBarDropdown: DropDownItem[] = [
+  {
+    text: "Availability duration",
+    value: "longestAvailable",
+  },
+  {
+    text: "Room Capacity",
+    value: "capacity",
+  },
+  {
+    text: "Nearest",
+    value: "nearest",
+  },
+  {
+    text: "Alphabetical",
+    value: "alphabetical",
+  },
+  {
+    text: "Reverse Alphabetical",
+    value: "reverseAlphabetical",
+  },
+  {
+    text: "Upper Campus to Lower Campus",
+    value: "upperToLower",
+  },
+  {
+    text: "Lower Campus to Upper Campus",
+    value: "lowerToUpper",
+  },
+];
+
+// URL value of the `start` param for the start time. While the user has cleared the start time
+export const NO_START_TIME = "none";
+
+// Sorts for bookings page
+export const bookingsSortBarDropdown: DropDownItem[] = [
+  {
+    text: "Earliest Start Time",
+    value: "ascendingStart",
+  },
+  {
+    text: "Latest Start Time",
+    value: "descendingStart",
+  },
+  {
+    text: "Alphabetical",
+    value: "alphabetical",
+  },
+  {
+    text: "Reverse Alphabetical",
+    value: "reverseAlphabetical",
+  },
+  {
+    text: "Largest Planned Size",
+    value: "plannedSize",
+  },
+  {
+    text: "Least Time Remaining",
+    value: "remainingTime",
+  },
+];
+// Number of rooms displayed at first
+export const ROOM_LIST_PAGE_SIZE = 24;
+
+// Overlay opacity for room tiles in the building drawer
+export const DRAWER_ROOM_TILE_OVERLAY_OPACITY = 0.8;
+
+type BrowseViewConfig = {
+  sortOptions: DropDownItem[];
+  sortTitle: string;
+  filterKeys?: (keyof Filters)[]; // if left out, it does every filter
+  searchPlaceholder: string;
+};
+
+// What the top bar offers in each view of the browse page.
+export const BROWSE_VIEWS: Record<BrowseView, BrowseViewConfig> = {
+  buildings: {
+    sortOptions: sortBarDropdown,
+    sortTitle: "Sort",
+    searchPlaceholder: "Search for free rooms",
+  },
+  rooms: {
+    sortOptions: roomSortBarDropdown,
+    sortTitle: "Room Sort",
+    searchPlaceholder: "Search for free rooms",
+  },
+};

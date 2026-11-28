@@ -1,17 +1,20 @@
 import {
   Booking,
+  BookingPaginationParams,
   BookingsResponse,
+  BookingType,
+  RoomsResponse,
   RoomStatus,
   RoomUtilitiesResponse,
-} from "@common/types";
-import { utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
+} from "common/types";
+import { fromZonedTime, toZonedTime } from "date-fns-tz";
 
 import {
   queryBookingsInRange,
   queryBuildingsAndRooms,
   queryRoomUtilities,
 } from "./dbInterface";
-import { BuildingDatabase } from "./types";
+import { BuildingDatabase, StatusFilters } from "./types";
 
 const FIFTEEN_MIN = 15 * 1000 * 60;
 
@@ -20,11 +23,11 @@ export const getBookingsForDate = async (
   date: Date
 ): Promise<{ [roomId: string]: BookingsResponse }> => {
   // The date is in UTC time, convert to AEST first to manipulate hours
-  const base = utcToZonedTime(date, "Australia/Sydney");
+  const base = toZonedTime(date, "Australia/Sydney");
   base.setHours(0, 0);
-  const start = zonedTimeToUtc(base, "Australia/Sydney");
+  const start = fromZonedTime(base, "Australia/Sydney");
   base.setHours(23, 59);
-  const end = zonedTimeToUtc(base, "Australia/Sydney");
+  const end = fromZonedTime(base, "Australia/Sydney");
 
   const res = await queryBookingsInRange(start, end);
   return Object.fromEntries(res.rooms.map((room) => [room.id, room]));
@@ -32,11 +35,29 @@ export const getBookingsForDate = async (
 
 export const getBookingsFromStartTime = async (startTime: Date) => {
   // The date is in UTC time, convert to AEST first to manipulate hours
-  const base = utcToZonedTime(startTime, "Australia/Sydney");
+  const base = toZonedTime(startTime, "Australia/Sydney");
   base.setHours(23, 59);
-  const endTime = zonedTimeToUtc(base, "Australia/Sydney");
+  const endTime = fromZonedTime(base, "Australia/Sydney");
   const res = await queryBookingsInRange(startTime, endTime);
   return Object.fromEntries(res.rooms.map((room) => [room.id, room]));
+};
+
+export const getSearchRangeEnd = (
+  start: Date,
+  filters: StatusFilters
+): Date => {
+  if (filters.recurring) {
+    const zoned = toZonedTime(start, "Australia/Sydney");
+    zoned.setDate(zoned.getDate() + (filters.recurring - 1) * 7);
+    const lastOccurrence = fromZonedTime(zoned, "Australia/Sydney");
+    return new Date(
+      lastOccurrence.getTime() + (filters.duration || 0) * 60 * 1000
+    );
+  }
+
+  const base = toZonedTime(start, "Australia/Sydney");
+  base.setHours(23, 59);
+  return fromZonedTime(base, "Australia/Sydney");
 };
 
 export const getBuildingRoomData = async (): Promise<BuildingDatabase> => {
@@ -74,6 +95,15 @@ export const calculateStatus = (
     status: "free",
     endtime: "",
   };
+
+  // Recurring searches fetch booking across multiple weeks (see getSearchRangeEnd).
+  // We must restrict to datetime's own day so a future week booking can't be mistaken as todays.
+  const dayBase = toZonedTime(datetime, "Australia/Sydney");
+  dayBase.setHours(0, 0, 0, 0);
+  const dayStart = fromZonedTime(dayBase, "Australia/Sydney");
+  dayBase.setHours(23, 59, 59, 999);
+  const dayEnd = fromZonedTime(dayBase, "Australia/Sydney");
+  classes = classes.filter((cls) => cls.start <= dayEnd && cls.end >= dayStart);
 
   // Sort classes by start time, then end time.
   classes.sort((a, b) => {
@@ -134,4 +164,84 @@ export const calculateStatus = (
   }
 
   return roomStatus;
+};
+
+// Checks if a specific time slot is available.
+export const isSlotFree = (
+  start: Date,
+  duration: number,
+  bookings: Booking[]
+): boolean => {
+  if (duration === 0) {
+    return !bookings.some((b) => start >= b.start && start < b.end);
+  }
+  const end = new Date(start.getTime() + duration * 60 * 1000);
+
+  // return true if specific timeframe has no bookings at all.
+  return !bookings.some((booking) => {
+    return start < booking.end && end > booking.start;
+  });
+};
+
+// Checks if a room is available at the chosen time for multiple weeks.
+// Used for the recurring filter feature
+export const isRecurringFree = (
+  start: Date,
+  duration: number,
+  bookings: Booking[],
+  weeks: number
+): boolean => {
+  for (let i = 0; i < weeks; i++) {
+    const zoned = toZonedTime(start, "Australia/Sydney");
+    zoned.setDate(zoned.getDate() + i * 7);
+    const occurrence = fromZonedTime(zoned, "Australia/Sydney");
+
+    if (!isSlotFree(occurrence, duration, bookings)) {
+      return false;
+    }
+  }
+  return true;
+};
+
+// Gets all bookings affecting rooms within a given datetime range.
+export const getBookingsForRange = async (start: Date, end: Date) => {
+  const res = await queryBookingsInRange(start, end);
+  return Object.fromEntries(res.rooms.map((room) => [room.id, room]));
+};
+
+// Get all rooms in a specific building
+export const getRoomsByBuilding = async (
+  buildingId: string
+): Promise<RoomsResponse> => {
+  const buildingData = await getBuildingRoomData();
+  const building = buildingData[buildingId];
+  if (!building) {
+    throw new Error(`Building ${buildingId} not found`);
+  }
+
+  const res: RoomsResponse = { rooms: {} };
+  Object.values(building.rooms).forEach((room) => {
+    res.rooms[room.id] = room;
+  });
+
+  return res;
+};
+
+// Obtain cursor for the last booking in a page for the next request
+export const createBookingCursor = (
+  booking: Booking,
+  params: BookingPaginationParams
+): string => {
+  return JSON.stringify({
+    start: booking.start.toISOString(),
+    end: booking.end.toISOString(),
+    name: booking.name,
+    plannedSize: booking.plannedSize,
+    bookingType: booking.bookingType as BookingType,
+    roomId: booking.roomId,
+    occurrenceId: booking.occurrenceId,
+    filter: params.filters,
+    sort: params.sort,
+    search: params.search,
+  });
 };

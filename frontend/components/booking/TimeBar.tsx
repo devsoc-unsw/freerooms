@@ -1,0 +1,139 @@
+import DateTimeSelector from "@frontend/components/booking/DateTimeSelector";
+import TopBarMenu from "@frontend/components/ui/TopBarMenu";
+import { useDispatch, useSelector } from "@frontend/redux/hooks";
+import {
+  selectDatetime,
+  setDatetime,
+} from "@frontend/redux/slices/datetimeSlice";
+import {
+  selectFilters,
+  setFilter,
+  unsetFilter,
+} from "@frontend/redux/slices/filtersSlice";
+import { SYDNEY_TIMEZONE } from "@frontend/utils/toSydneyTime";
+import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
+import Stack from "@mui/material/Stack";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { addMinutes, differenceInMinutes } from "date-fns";
+import { enAU } from "date-fns/locale";
+import { fromZonedTime, toZonedTime } from "date-fns-tz";
+import React from "react";
+
+type TimeBarProps = {
+  // False once the start time has been cleared. Pages that don't pass these always have a start time.
+  startIsSet?: boolean;
+  onStartIsSetChange?: (isSet: boolean) => void;
+  startTime?: Date | null;
+  onStartTimeChange?: (value: Date | null) => void;
+  endTime?: Date | null;
+  onEndTimeChange?: (value: Date | null) => void;
+};
+
+const TimeBar = ({
+  startIsSet = true,
+  onStartIsSetChange,
+  startTime,
+  onStartTimeChange,
+  endTime,
+  onEndTimeChange,
+}: TimeBarProps) => {
+  const dispatch = useDispatch();
+  const datetime = useSelector(selectDatetime);
+  const filters = useSelector(selectFilters);
+
+  const selectedStart = startTime ?? datetime;
+  const startZoned = toZonedTime(selectedStart, SYDNEY_TIMEZONE);
+
+  const handleStartChange = (value: Date) => {
+    const newStart = fromZonedTime(value, SYDNEY_TIMEZONE);
+
+    dispatch(setDatetime(newStart));
+
+    onStartTimeChange?.(newStart);
+    onStartIsSetChange?.(true);
+
+    // Clear an invalid end time
+    if (onEndTimeChange && endTime && newStart.getTime() >= endTime.getTime()) {
+      onEndTimeChange(null);
+    }
+  };
+
+  const handleClearStart = () => {
+    dispatch(setDatetime(new Date()));
+
+    if (!onEndTimeChange) {
+      dispatch(unsetFilter("duration"));
+    }
+
+    onStartTimeChange?.(null);
+    onStartIsSetChange?.(false);
+  };
+
+  const hasEnd = onEndTimeChange ? endTime != null : Boolean(filters.duration);
+  const hasStart = startIsSet || (!onEndTimeChange && hasEnd);
+
+  const endZoned = onEndTimeChange
+    ? toZonedTime(endTime ?? datetime, SYDNEY_TIMEZONE)
+    : addMinutes(startZoned, Number(filters.duration) || 0);
+
+  const handleEndChange = (value: Date) => {
+    // Independent end time, used for bookings page
+    if (onEndTimeChange) {
+      const selectedEnd = fromZonedTime(value, SYDNEY_TIMEZONE);
+      const earliestEnd = startIsSet ? selectedStart : new Date();
+
+      onEndTimeChange(selectedEnd > earliestEnd ? selectedEnd : null);
+      return;
+    }
+
+    const minutes = differenceInMinutes(value, startZoned);
+
+    if (minutes > 0) {
+      dispatch(setFilter({ key: "duration", value: String(minutes) }));
+      onStartIsSetChange?.(true);
+    } else {
+      dispatch(unsetFilter("duration"));
+    }
+  };
+
+  return (
+    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enAU}>
+      <TopBarMenu
+        id="time-menu"
+        icon={AccessTimeOutlinedIcon}
+        label="Time"
+        title="Input availability (from → to)"
+        placement="bottom-end"
+        wide
+      >
+        <Stack sx={{ gap: (theme) => `${theme.space.md}px` }}>
+          <DateTimeSelector
+            label="Start time"
+            value={startZoned}
+            isSet={hasStart}
+            emptyLabel="No start time"
+            onClear={handleClearStart}
+            onChange={handleStartChange}
+          />
+          <DateTimeSelector
+            label="End time"
+            value={endZoned}
+            isSet={hasEnd}
+            emptyLabel="No end time"
+            onClear={() => {
+              if (onEndTimeChange) {
+                onEndTimeChange(null);
+              } else {
+                dispatch(unsetFilter("duration"));
+              }
+            }}
+            onChange={handleEndChange}
+          />
+        </Stack>
+      </TopBarMenu>
+    </LocalizationProvider>
+  );
+};
+
+export default TimeBar;

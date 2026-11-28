@@ -1,0 +1,266 @@
+export type ThemeMode = "light" | "dark";
+
+const values = {
+  light: {
+    accentPrimary: "#D4613C",
+    accentSecondary: "#FEB99C",
+    accentTertiary: "#FDD7C7",
+    accentQuaternary: "#FDE7E1",
+    labelPrimary: "#632410",
+    labelDeemphasized: "#926658",
+    disabledText: "#848484",
+    backgroundPrimary: "#FFFBF9",
+    paper: "#FFFFFF",
+    tableZebra: "#FEF5F3",
+    disabledOutline: "#AFAFAF",
+    disabledBackground: "#D3D3D3",
+    available: "#2FB702",
+    availableBackground: "rgba(47, 183, 2, 0.4)",
+    availableText: "#00600E",
+    unavailable: "#FF6060",
+    unavailableBackground: "rgba(255, 96, 96, 0.4)",
+    unavailableText: "#AD0000",
+    accentHover: "#9C4326",
+    backgroundMuted: "#F0F0F0",
+    toolbar: "#F8F8F9",
+    yellow: "#FFA600",
+    glow: "rgba(156, 67, 38, 0.1)",
+  },
+  dark: {
+    accentPrimary: "#D4613C",
+    accentSecondary: "#6E3A24",
+    accentTertiary: "#52372C",
+    accentQuaternary: "#241C19",
+    labelPrimary: "#FDF4F2",
+    labelDeemphasized: "#B6B0AF",
+    disabledText: "#787878",
+    backgroundPrimary: "#101214",
+    paper: "#101214",
+    tableZebra: "#161313",
+    disabledOutline: "#5B5B5B",
+    disabledBackground: "#454545",
+    available: "#008300",
+    availableBackground: "rgba(0, 131, 0, 0.4)",
+    availableText: "#6DB36C",
+    unavailable: "#B62B32",
+    unavailableBackground: "rgba(182, 43, 50, 0.4)",
+    unavailableText: "#ED6353",
+    accentHover: "#B75232",
+    backgroundMuted: "#363636",
+    toolbar: "#313132",
+    yellow: "#863D00",
+    glow: "rgba(203, 118, 91, 0.1)",
+  },
+} as const;
+
+const neutral = {
+  black: "#000000",
+  white: "#FFFFFF",
+} as const;
+
+// Legacy until replaced
+const controlNeutral = {
+  light: "rgba(0, 0, 0, 0.12)",
+  dark: "#424242",
+} as const;
+
+const mapLocation = {
+  main: "#4ABDFA",
+  border: "#BEDCF9",
+} as const;
+
+const mapColours = {
+  availability: {
+    available: "#66BB6A",
+    soon: "#FFA726",
+    unavailable: "#F44336",
+  },
+  route: "#EF6C02",
+  popup: {
+    light: "#EF6C02",
+    dark: "#D4613C",
+  },
+} as const;
+
+const calendarColours = {
+  light: {
+    grid: "#E0E0E0",
+    today: "#FFF3E0",
+  },
+  dark: {
+    grid: "#424242",
+    today: "#212121",
+  },
+} as const;
+
+const bookingTypeColours = {
+  light: {
+    lecture: {
+      background: "#E8F0FF",
+      text: "#245AB0",
+    },
+    tutorial: {
+      background: "#E0F3ED",
+      text: "#13786B",
+    },
+    laboratory: {
+      background: "#F0E7FC",
+      text: "#7647B3",
+    },
+    workshop: {
+      background: "#FFF0DC",
+      text: "#A86423",
+    },
+    exam: {
+      background: "#FCE7EA",
+      text: "#AC3B46",
+    },
+    society: {
+      background: "#FDE7E1",
+      text: "#AD5333",
+    },
+    internal: {
+      background: "#F9D8C5",
+      text: "#743313",
+    },
+    other: {
+      background: "#FFE8BA",
+      text: "#71480A",
+    },
+  },
+  dark: {
+    lecture: {
+      background: "#1D304D",
+      text: "#A6C8FF",
+    },
+    tutorial: {
+      background: "#193B35",
+      text: "#8CD9C7",
+    },
+    laboratory: {
+      background: "#38294D",
+      text: "#D3B7FF",
+    },
+    workshop: {
+      background: "#443321",
+      text: "#F2C58D",
+    },
+    exam: {
+      background: "#48252D",
+      text: "#FFAAB4",
+    },
+    society: {
+      background: "#482C23",
+      text: "#FEB99C",
+    },
+    internal: {
+      background: "#78401F",
+      text: "#FFF0DF",
+    },
+    other: {
+      background: "#665022",
+      text: "#FFF2D2",
+    },
+  },
+} as const;
+
+const statusSoon = "#E99600";
+const statusSoonBackground = "rgba(255, 166, 0, 0.2)";
+const ratingDisplay = "#D4613C";
+
+export function getColours(mode: ThemeMode) {
+  const c = values[mode];
+
+  return {
+    accent: {
+      primary: c.accentPrimary,
+      secondary: c.accentSecondary,
+      tertiary: c.accentTertiary,
+      quaternary: c.accentQuaternary,
+      hover: c.accentHover,
+    },
+    text: {
+      primary: c.labelPrimary,
+      secondary: c.labelDeemphasized,
+      disabled: c.disabledText,
+      onAccent: neutral.white,
+      onImage: neutral.white,
+    },
+    background: {
+      primary: c.backgroundPrimary,
+      muted: c.backgroundMuted,
+    },
+    surface: {
+      paper: c.paper,
+      appBar: c.backgroundPrimary,
+      toolbar: c.toolbar,
+      zebra: c.tableZebra,
+      muted: c.backgroundMuted,
+      control: controlNeutral[mode],
+    },
+    border: {
+      default: c.accentTertiary,
+      subtle: controlNeutral[mode],
+      disabled: c.disabledOutline,
+    },
+    shadow: {
+      default: c.glow,
+    },
+    status: {
+      available: {
+        main: c.available,
+        background: c.availableBackground,
+        text: c.availableText,
+      },
+      soon: {
+        main: statusSoon,
+        background: statusSoonBackground,
+        text: statusSoon,
+      },
+      unavailable: {
+        main: c.unavailable,
+        background: c.unavailableBackground,
+        text: c.unavailableText,
+      },
+    },
+    rating: {
+      active: c.yellow,
+      empty: c.disabledOutline,
+      display: ratingDisplay,
+    },
+    map: {
+      location: mapLocation,
+      availability: mapColours.availability,
+      route: mapColours.route,
+      popup: mapColours.popup[mode],
+    },
+    calendar: calendarColours[mode],
+    bookingType: bookingTypeColours[mode],
+    neutral,
+    disabled: {
+      background: c.disabledBackground,
+      text: c.disabledText,
+    },
+  };
+}
+
+export type AppColours = ReturnType<typeof getColours>;
+
+export function getColourVariables(
+  colours: AppColours
+): Record<string, string> {
+  const variables: Record<string, string> = {};
+
+  const add = (value: unknown, path: string) => {
+    if (typeof value === "string") {
+      variables[`--colour-${path}`] = value;
+    } else if (value && typeof value === "object") {
+      Object.entries(value).forEach(([key, child]) => {
+        add(child, path ? `${path}-${key}` : key);
+      });
+    }
+  };
+
+  add(colours, "");
+  return variables;
+}

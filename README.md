@@ -49,6 +49,10 @@ This project is rapidly expanding and our roadmap includes features such as:
 
 See the [backend](backend), [frontend](frontend) and [app](app) directories for instructions on setting up and running Freerooms locally.
 
+If you have docker installed you can use:
+- `docker compose up` - Run the system locally
+- `docker compose down` - Shut down the local system
+
 # Our Team
 
 We are a team that is part of DevSoc Development. See [TEAM.md](./TEAM.md) for more information on the current and previous team that contributed to the development of Freerooms.

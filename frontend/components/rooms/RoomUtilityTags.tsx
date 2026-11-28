@@ -1,0 +1,157 @@
+"use client";
+
+import UtilityAccordion from "@frontend/components/rooms/UtilityAccordion";
+import useRoomUtilities from "@frontend/hooks/rooms/useRoomUtilities";
+import { space } from "@frontend/theme";
+import {
+  Accessible,
+  AcUnit,
+  Chair,
+  Devices,
+  Edit,
+  Mic,
+  Monitor,
+  Settings,
+  ViewQuilt,
+} from "@mui/icons-material";
+import { Box, Skeleton, Stack, Typography, useTheme } from "@mui/material";
+import type React from "react";
+
+const ICON_SIZE = 18;
+
+const RoomUtilityTagsSkeleton = ({
+  compact = false,
+}: {
+  compact?: boolean;
+}) => (
+  <Stack spacing={compact ? space.sm : space.md} sx={{ width: "100%" }}>
+    <Skeleton
+      animation="wave"
+      variant="text"
+      width={180}
+      sx={{ fontSize: "h4.fontSize" }}
+    />
+
+    <Stack spacing={space.sm}>
+      {Array.from({ length: 4 }, (_, i) => (
+        <Skeleton
+          key={i}
+          animation="wave"
+          variant="rounded"
+          sx={(theme) => ({
+            height: theme.sizes.control.lg,
+          })}
+        />
+      ))}
+    </Stack>
+  </Stack>
+);
+
+export default function RoomUtilities({
+  roomId,
+  compact = false,
+}: {
+  roomId?: string;
+  compact?: boolean;
+}) {
+  const theme = useTheme();
+  const primary = theme.palette.primary.main;
+
+  const categoryInfo: Record<
+    string,
+    { title: string; icon: React.ReactElement }
+  > = {
+    floor: {
+      title: "Floor Type",
+      icon: <ViewQuilt sx={{ fontSize: ICON_SIZE, color: primary }} />,
+    },
+    seating: {
+      title: "Seating",
+      icon: <Chair sx={{ fontSize: ICON_SIZE, color: primary }} />,
+    },
+    microphone: {
+      title: "Audio Equipment",
+      icon: <Mic sx={{ fontSize: ICON_SIZE, color: primary }} />,
+    },
+    accessibility: {
+      title: "Accessibility Features",
+      icon: <Accessible sx={{ fontSize: ICON_SIZE, color: primary }} />,
+    },
+    audiovisual: {
+      title: "Visual & Display",
+      icon: <Monitor sx={{ fontSize: ICON_SIZE, color: primary }} />,
+    },
+    infotechnology: {
+      title: "Technology & Connectivity",
+      icon: <Devices sx={{ fontSize: ICON_SIZE, color: primary }} />,
+    },
+    writingMedia: {
+      title: "Writing Surfaces",
+      icon: <Edit sx={{ fontSize: ICON_SIZE, color: primary }} />,
+    },
+    service: {
+      title: "Additional Services",
+      icon: <Settings sx={{ fontSize: ICON_SIZE, color: primary }} />,
+    },
+  };
+
+  const { utilities: roomData } = useRoomUtilities(roomId);
+  if (!roomData) {
+    return <RoomUtilityTagsSkeleton compact={compact} />;
+  }
+
+  const categories = Object.entries(roomData)
+    .filter(([key]) => key !== "id" && key !== "name")
+    .map(([key, value]) => {
+      const items: string[] =
+        typeof value === "string"
+          ? [value].filter(Boolean)
+          : Array.isArray(value)
+            ? value.filter((item): item is string => typeof item === "string")
+            : [];
+
+      return {
+        key,
+        title: categoryInfo[key]?.title || key,
+        icon: categoryInfo[key]?.icon || (
+          <AcUnit sx={{ fontSize: ICON_SIZE, color: primary }} />
+        ),
+        items,
+      };
+    })
+    .filter(({ items }) => items.length > 0);
+
+  return (
+    <Stack
+      spacing={compact ? space.sm : space.md}
+      sx={{ width: "100%", minWidth: 0 }}
+    >
+      <Typography
+        variant={compact ? "h5" : "h4"}
+        component="h2"
+        sx={{ fontWeight: "fontWeightBold" }}
+      >
+        Room Utilities
+      </Typography>
+
+      <Stack spacing={space.sm}>
+        {categories.map(({ key, title, icon, items }) => (
+          <UtilityAccordion key={key} title={title} icon={icon} items={items} />
+        ))}
+      </Stack>
+
+      {categories.length === 0 && (
+        <Box
+          sx={{
+            textAlign: "center",
+            paddingBlock: space.xl,
+          }}
+        >
+          <Typography variant="body2" color="text.secondary">
+            No utilities information available for this room.
+          </Typography>
+        </Box>
+      )}
+    </Stack>
+  );
+}

@@ -1,0 +1,161 @@
+import BuildingCard from "@frontend/components/rooms/BuildingCard";
+import BuildingCardMobile from "@frontend/components/rooms/BuildingCardMobile";
+import AnimatedListItem from "@frontend/components/ui/AnimatedListItem";
+import useBuildings from "@frontend/hooks/buildings/useBuildings";
+import useBuildingSearch from "@frontend/hooks/buildings/useBuildingSearch";
+import useUserLocation from "@frontend/hooks/map/useUserLocation";
+import useRooms from "@frontend/hooks/rooms/useRooms";
+import useStatus from "@frontend/hooks/rooms/useStatus";
+import calculateDistance from "@frontend/utils/calculateDistance";
+import { getNumFreerooms } from "@frontend/utils/utils";
+import { Box } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { Building } from "common/types";
+import { AnimatePresence } from "motion/react";
+import React from "react";
+
+const CardGrid = styled("div")(() => ({
+  width: "100%",
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+  gridGap: "20px",
+  "& > *": { minWidth: 0 },
+}));
+
+const getBuildingPosition = (building: Building): number | null => {
+  const match = building.id.match(/(\d+)$/);
+
+  if (!match) {
+    return null;
+  }
+
+  return Number(match[1]);
+};
+const compareBuildingPosition = (
+  a: Building,
+  b: Building,
+  direction: "lowerToUpper" | "upperToLower"
+): number => {
+  const aPosition = getBuildingPosition(a);
+  const bPosition = getBuildingPosition(b);
+
+  if (aPosition == null && bPosition == null) {
+    return a.name.localeCompare(b.name);
+  }
+
+  if (aPosition == null) {
+    return 1;
+  }
+
+  if (bPosition == null) {
+    return -1;
+  }
+
+  const positionDiff = aPosition - bPosition;
+
+  if (positionDiff !== 0) {
+    return direction === "lowerToUpper" ? positionDiff : -positionDiff;
+  }
+
+  const longDiff = a.long - b.long;
+
+  if (longDiff !== 0) {
+    return direction === "lowerToUpper" ? longDiff : -longDiff;
+  }
+
+  return a.name.localeCompare(b.name);
+};
+
+const FlippableCard = React.forwardRef<HTMLDivElement, { buildingId?: string }>(
+  ({ buildingId }, ref) => {
+    return (
+      <div ref={ref}>
+        <Box sx={{ display: { xs: "block", sm: "none" } }}>
+          <BuildingCardMobile buildingId={buildingId} />
+        </Box>
+        <Box sx={{ display: { xs: "none", sm: "block" } }}>
+          <BuildingCard buildingId={buildingId} />
+        </Box>
+      </div>
+    );
+  }
+);
+FlippableCard.displayName = "FlippableCard";
+
+const NUM_PLACEHOLDER_CARDS = 12;
+const PLACEHOLDER_KEYS = Array.from(
+  { length: NUM_PLACEHOLDER_CARDS },
+  (_, i) => `placeholder-${i}`
+);
+
+const CardList: React.FC<{
+  sort: string;
+  query: string;
+}> = ({ sort, query }) => {
+  const { buildings } = useBuildings();
+  const { status: roomStatusData } = useStatus();
+  const { userLat, userLng } = useUserLocation();
+  const { rooms } = useRooms();
+  const searchBuildings = useBuildingSearch(buildings, rooms);
+
+  let displayedBuildings: Building[] | undefined = buildings;
+
+  // If we have all data, apply filters
+  if (buildings && roomStatusData) {
+    // If hideUnavailable is true, filter any that have no available rooms
+
+    // Hide buildings that don't match the query, or that have no rooms left
+    // after the active Filters (dropdown) are applied
+    // Ids of buildings matching the query (undefined = no query, show all)
+    const matchingIds = searchBuildings(query);
+
+    displayedBuildings = buildings
+      .filter(
+        (building) =>
+          (!matchingIds || matchingIds.has(building.id)) &&
+          Object.keys(roomStatusData[building.id]?.roomStatuses ?? {}).length >
+            0
+      )
+      .sort((a, b) => {
+        switch (sort) {
+          case "lowerToUpper":
+            return compareBuildingPosition(a, b, "lowerToUpper");
+          case "upperToLower":
+            return compareBuildingPosition(a, b, "upperToLower");
+          case "nearest":
+            return userLat && userLng
+              ? calculateDistance(userLat, userLng, a.lat, a.long) -
+                  calculateDistance(userLat, userLng, b.lat, b.long)
+              : 0;
+          case "mostRooms":
+            return (
+              getNumFreerooms(roomStatusData[b.id]) -
+              getNumFreerooms(roomStatusData[a.id])
+            );
+          case "reverseAlphabetical":
+            return b.name.localeCompare(a.name);
+          default:
+            // default is alphabetical
+            return a.name.localeCompare(b.name);
+        }
+      });
+  }
+
+  const items: { key: string; buildingId?: string }[] = displayedBuildings
+    ? displayedBuildings.map((b) => ({ key: b.id, buildingId: b.id }))
+    : PLACEHOLDER_KEYS.map((key) => ({ key, buildingId: undefined }));
+
+  return (
+    <CardGrid>
+      <AnimatePresence initial={false} mode="popLayout">
+        {items.map(({ key, buildingId }) => (
+          <AnimatedListItem key={key}>
+            <FlippableCard buildingId={buildingId} />
+          </AnimatedListItem>
+        ))}
+      </AnimatePresence>
+    </CardGrid>
+  );
+};
+
+export default CardList;

@@ -1,0 +1,38 @@
+import React from "react";
+
+export default function BuildingRating({
+  overallRating,
+}: {
+  overallRating: number;
+}) {
+  const content = "★★★★★";
+
+  return (
+    <div
+      style={{
+        position: "relative",
+        display: "inline-block",
+        color: "var(--colour-rating-empty)",
+        fontSize: 22,
+        lineHeight: 1,
+      }}
+    >
+      <span aria-label="rating">{content}</span>
+
+      <span
+        style={{
+          width: `${(overallRating / 5) * 100}%`,
+          color: "var(--colour-rating-display)",
+          overflow: "hidden",
+          position: "absolute",
+          top: 0,
+          left: 0,
+          whiteSpace: "nowrap",
+        }}
+        aria-hidden={true}
+      >
+        {content}
+      </span>
+    </div>
+  );
+}

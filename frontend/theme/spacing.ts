@@ -1,0 +1,17 @@
+export const space = {
+  none: 0,
+  xs: 4,
+  sm: 8,
+  md: 16,
+  lg: 24,
+  xl: 36,
+  xxl: 48,
+} as const;
+
+export const radius = {
+  md: 4,
+  lg: 8,
+  card: 10,
+  pill: 15,
+  landing: 24,
+} as const;

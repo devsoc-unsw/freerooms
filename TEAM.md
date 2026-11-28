@@ -6,10 +6,13 @@
 - Ryan Yensch (@RyanYensch)
 
 ### Developers
-- Ray Miles (@disarrayx)
+- Ray Falkner (@disarrayx)
 - Christopher Khim (@CrispyKhim)
 - Cormac Flahive (@Cfla446)
 - Caelan Gray (@caelan-g)
+- Joshua Pozzolungo (@joshuapozzolungo)
+- Nguyen Khoi Nguyen (@alexnguyen104)
+- Christopher Liang (@Citzn)
 
 
 ## 2025
@@ -22,7 +25,7 @@
 - Benjamin Harold Godwin (@bengodw)
 - Connie Du (@c0nnied)
 - Brandon Tan (@BT0906)
-- Yi Yao Wang (@yiyaoW11) 
+- Yi Yao Wang (@yiyaoW11)
 - Shabinda Sarkaria (@shaykaria)
 - Dicko Evaldo (@dickoevaldo)
 - Chris Wong (@xleonx0x)

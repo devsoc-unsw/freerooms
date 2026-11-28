@@ -1,4 +1,4 @@
-import { Building, Room } from "@common/types";
+import { Building, Room } from "common/types";
 
 export type BuildingDatabase = {
   [buildingId: string]: Building & {
@@ -10,10 +10,11 @@ export type BuildingDatabase = {
 
 export type StatusFilters = {
   capacity?: number;
-  usage?: string;
-  location?: "upper" | "lower";
+  usage?: string[];
+  location?: ("upper" | "lower")[];
   duration?: number;
-  id?: boolean;
+  recurring?: number;
+  id?: boolean[];
 };
 
 type BaseSearchFilters = StatusFilters & {

@@ -1,28 +1,32 @@
-"use client";
+import { randomInt } from "node:crypto";
+import { readdir } from "node:fs/promises";
+import { join } from "node:path";
 
-import Container from "@mui/material/Container";
-import Stack from "@mui/material/Stack";
-import { styled } from "@mui/material/styles";
-import React from "react";
+import FeedbackNotification from "@frontend/components/feedback/FeedbackNotification";
+import Landing from "@frontend/components/landing/Landing";
+import { connection } from "next/server";
 
-import FeedbackButton from "../components/FeedbackButton";
-import FeedbackNotification from "../components/FeedbackNotification";
-import Landing from "../components/Landing";
+export default async function Home() {
+  // Render for each request
+  await connection();
 
-const Home = () => {
-  return (
-    <Container maxWidth={false}>
-      <Main>
-        <FeedbackNotification />
-        <Landing />
-      </Main>
-    </Container>
+  const photoDir = join(process.cwd(), "public", "assets", "building_photos");
+
+  const photos = (await readdir(photoDir)).filter((name) =>
+    /^K-[A-Z]\d+\.webp$/.test(name)
   );
-};
 
-const Main = styled(Stack)(({ theme }) => ({
-  flexGrow: 1,
-  padding: theme.spacing(12, 0),
-}));
+  if (photos.length === 0) {
+    throw new Error("No building photos found");
+  }
 
-export default Home;
+  const selectedPhoto = photos[randomInt(photos.length)];
+  const heroImageSrc = `/assets/building_photos/${selectedPhoto}`;
+
+  return (
+    <>
+      <FeedbackNotification />
+      <Landing heroImageSrc={heroImageSrc} />
+    </>
+  );
+}

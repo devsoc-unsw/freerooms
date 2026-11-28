@@ -9,9 +9,21 @@ const env =
     ? Env.STAGING
     : process.env.NODE_ENV || Env.DEV;
 
+const getDevelopmentApiUrl = (): string => {
+  if (typeof window === "undefined") {
+    return (
+      process.env.INTERNAL_API_URL ??
+      process.env.NEXT_PUBLIC_API_URL ??
+      "http://localhost:3000"
+    );
+  }
+
+  return process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
+};
+
 // Backend API URL
 const API_CONFIG: Record<string, string> = Object.freeze({
-  [Env.DEV]: "http://localhost:3000",
+  [Env.DEV]: getDevelopmentApiUrl(),
   [Env.PROD]: "https://freerooms.devsoc.app",
   [Env.STAGING]: "https://freeroomsstaging.devsoc.app",
 });

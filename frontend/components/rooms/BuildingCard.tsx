@@ -1,0 +1,350 @@
+import BuildingRating from "@frontend/components/ratings/BuildingRating";
+import StatusDot from "@frontend/components/ui/StatusDot";
+import useBuilding from "@frontend/hooks/buildings/useBuilding";
+import useBuildingStatus from "@frontend/hooks/buildings/useBuildingStatus";
+import useAllBuildingRatings from "@frontend/hooks/ratings/useAllBuildingRatings";
+import { useDispatch } from "@frontend/redux/hooks";
+import { setCurrentBuilding } from "@frontend/redux/slices/currentBuildingSlice";
+import { getNumFreerooms } from "@frontend/utils/utils";
+import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
+import TagOutlinedIcon from "@mui/icons-material/TagOutlined";
+import { Typography, TypographyProps } from "@mui/material";
+import { useMediaQuery } from "@mui/material";
+import Box, { BoxProps } from "@mui/material/Box";
+import Skeleton from "@mui/material/Skeleton";
+import Stack from "@mui/material/Stack";
+import { styled } from "@mui/material/styles";
+import Image, { ImageProps } from "next/image";
+import React from "react";
+
+import { UPPER_CAMPUS_GRID_START } from "../../../common/constants";
+
+const INITIALISING = -2;
+const FAILED = -1;
+
+const MainBox = styled(Box)<BoxProps>(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  height: 365,
+  borderRadius: 12,
+  border: `1px solid ${theme.colours.border.default}`,
+  backgroundColor: theme.colours.surface.paper,
+  overflow: "hidden",
+  [theme.breakpoints.down("lg")]: {
+    height: 300,
+  },
+  [theme.breakpoints.down("md")]: {
+    height: 200,
+  },
+  cursor: "pointer",
+  "&:hover .building-card-image": { transform: "scale(1.05)" },
+}));
+
+const ImageBox = styled(Box)<BoxProps>(() => ({
+  position: "relative",
+  height: 249,
+  borderTopLeftRadius: 12,
+  borderTopRightRadius: 12,
+  overflow: "hidden",
+  cursor: "pointer",
+}));
+
+const StyledImage = styled(Image)<ImageProps>(({ theme }) => ({
+  transition: theme.transitions.create("transform", {
+    duration: theme.transitions.duration.standard,
+  }),
+  "@media (prefers-reduced-motion: reduce)": { transition: "none" },
+}));
+
+const StatusBox = styled(Box)<BoxProps>(({ theme }) => ({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  borderRadius: 100,
+  position: "absolute",
+  top: 0,
+  right: 0,
+  padding: 6,
+  paddingLeft: 12,
+  paddingRight: 12,
+  margin: 10,
+  gap: 6,
+  pointerEvents: "none",
+  backgroundColor: theme.palette.background.default,
+}));
+
+const InfoBox = styled(Box)<BoxProps>(() => ({
+  display: "flex",
+  flexDirection: "column",
+  borderBottomLeftRadius: 12,
+  borderBottomRightRadius: 12,
+  padding: 12,
+  gap: 4,
+}));
+
+const InfoFooterBox = styled(Box)<BoxProps>(() => ({
+  display: "flex",
+  justifyContent: "space-between",
+  paddingTop: 8,
+}));
+
+const DetailPill = styled(Box)<BoxProps>(({ theme }) => ({
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  borderRadius: 100,
+  gap: 6,
+  padding: theme.space.xs,
+  paddingLeft: 12,
+  paddingRight: 12,
+  backgroundColor: theme.colours.accent.quaternary,
+}));
+
+const DetailPillIcon = styled(Typography)<TypographyProps>(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  color: theme.colours.accent.primary,
+  "& svg": {
+    fontSize: 17,
+    display: "block",
+  },
+}));
+
+const DetailPillText = styled(Typography)<TypographyProps>(({ theme }) => ({
+  fontSize: 12,
+  fontWeight: 550,
+  lineHeight: 0.3,
+  color: theme.colours.accent.primary,
+  display: "flex",
+  alignItems: "center",
+}));
+
+// Show only building name and rating for smaller screens
+const NameRatingBox = styled(Box)<BoxProps>(() => ({
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
+  alignItems: "flex-start",
+}));
+
+// Location of building - upper or lower
+const getLocation = (buildingId: string) => {
+  return +buildingId.substring(3) < UPPER_CAMPUS_GRID_START ? "Lower" : "Upper";
+};
+
+const BuildingCard: React.FC<{
+  buildingId?: string;
+}> = ({ buildingId }) => {
+  const dispatch = useDispatch();
+  const isCompact = useMediaQuery("(max-width:900px)");
+
+  const { building } = useBuilding(buildingId);
+  const { status } = useBuildingStatus(buildingId);
+  const { ratings } = useAllBuildingRatings();
+  const buildingRating = ratings?.find(
+    (rating) => rating.buildingId === buildingId
+  );
+
+  // No id (placeholder card) or the building list hasn't resolved yet
+  const loading = !buildingId || !building;
+  const freerooms = getNumFreerooms(status);
+
+  return (
+    <MainBox
+      onClick={
+        building ? () => dispatch(setCurrentBuilding(building)) : undefined
+      }
+    >
+      <ImageBox>
+        {loading ? (
+          <Skeleton animation="wave" variant="rectangular" height="100%" />
+        ) : (
+          <>
+            <StyledImage
+              className="building-card-image"
+              alt={`Image of ${buildingId}`}
+              src={`/assets/building_photos/${buildingId}.webp`}
+              fill={true}
+              sizes="(max-width: 900px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              style={{ objectFit: "cover" }}
+              priority={true}
+            />
+            <StatusBox>
+              {freerooms > INITIALISING && (
+                <>
+                  {freerooms !== FAILED ? (
+                    <StatusDot
+                      colour={
+                        freerooms >= 5
+                          ? "green"
+                          : freerooms !== 0
+                            ? "orange"
+                            : "red"
+                      }
+                    />
+                  ) : null}
+                  <Typography
+                    sx={{
+                      fontWeight: 600,
+                      fontSize: 12,
+                      paddingBottom: "2px",
+                    }}
+                  >
+                    {freerooms !== FAILED
+                      ? `${freerooms} room${freerooms === 1 ? "" : "s"} available`
+                      : "Data Unavailable"}
+                  </Typography>
+                </>
+              )}
+            </StatusBox>
+          </>
+        )}
+      </ImageBox>
+
+      <InfoBox>
+        {loading ? (
+          <>
+            <Typography
+              sx={(theme) => ({
+                fontWeight: 700,
+                fontSize: { xs: 15, md: 20 },
+                color: theme.colours.text.primary,
+                whiteSpace: "nowrap",
+                width: "100%",
+              })}
+            >
+              <Skeleton animation="wave" width="60%" />
+            </Typography>
+
+            <Stack
+              direction="row"
+              aria-label="star-info"
+              sx={{ alignItems: "center", gap: "1px" }}
+            >
+              <Skeleton
+                animation="wave"
+                variant="rounded"
+                width={90}
+                height={20}
+              />
+            </Stack>
+
+            <InfoFooterBox sx={{ display: { xs: "none", md: "flex" } }}>
+              <Stack direction="row" sx={{ gap: "8px" }}>
+                <Skeleton
+                  animation="wave"
+                  variant="rounded"
+                  width={58}
+                  height={32}
+                  sx={{ borderRadius: "100px" }}
+                />
+                <Skeleton
+                  animation="wave"
+                  variant="rounded"
+                  width={58}
+                  height={32}
+                  sx={{ borderRadius: "100px" }}
+                />
+              </Stack>
+              <Skeleton
+                animation="wave"
+                variant="rounded"
+                width={24}
+                height={24}
+              />
+            </InfoFooterBox>
+          </>
+        ) : isCompact ? (
+          <NameRatingBox sx={{ width: "100%" }}>
+            <Typography
+              variant="cardTitle"
+              sx={{
+                color: "text.primary",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {building.name}
+            </Typography>
+
+            <Stack
+              direction="row"
+              aria-label="star-info"
+              sx={{
+                alignItems: "center",
+                gap: "1px",
+              }}
+            >
+              <BuildingRating
+                overallRating={buildingRating?.overallRating ?? 0}
+              />
+            </Stack>
+          </NameRatingBox>
+        ) : (
+          <>
+            <Typography
+              sx={(theme) => ({
+                fontWeight: 700,
+                fontSize: 20,
+                color: theme.colours.text.primary,
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              })}
+            >
+              {building.name}
+            </Typography>
+
+            <Stack
+              direction="row"
+              aria-label="star-info"
+              sx={{
+                alignItems: "center",
+                gap: "1px",
+              }}
+            >
+              <BuildingRating
+                overallRating={buildingRating?.overallRating ?? 0}
+              />
+            </Stack>
+
+            <InfoFooterBox>
+              <Stack
+                direction="row"
+                sx={{
+                  gap: "8px",
+                }}
+              >
+                <DetailPill>
+                  <DetailPillIcon>
+                    <TagOutlinedIcon />
+                  </DetailPillIcon>
+                  <DetailPillText>{buildingId}</DetailPillText>
+                </DetailPill>
+
+                <DetailPill>
+                  <DetailPillIcon>
+                    <PlaceOutlinedIcon />
+                  </DetailPillIcon>
+                  <DetailPillText>{getLocation(buildingId!)}</DetailPillText>
+                </DetailPill>
+              </Stack>
+
+              <Image
+                alt="Arrow up right icon"
+                src="/assets/icons/arrow-up-right.svg"
+                width={24}
+                height={24}
+                style={{ cursor: "pointer" }}
+              />
+            </InfoFooterBox>
+          </>
+        )}
+      </InfoBox>
+    </MainBox>
+  );
+};
+
+export default BuildingCard;

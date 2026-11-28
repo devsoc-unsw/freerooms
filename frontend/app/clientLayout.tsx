@@ -1,28 +1,21 @@
 "use client";
 
-import "@fontsource/roboto/300.css";
-import "@fontsource/roboto/400.css";
-import "@fontsource/roboto/500.css";
-import "@fontsource/roboto/700.css";
-
-import NavBar, { navHeight } from "@frontend/components/NavBar";
-import { grey } from "@mui/material/colors";
+import Footer from "@frontend/components/footer/Footer";
+import NavBar from "@frontend/components/navigation/NavBar";
+import SearchModal from "@frontend/components/search/SearchModal";
+import store from "@frontend/redux/store";
+import { createAppTheme, type ThemeMode } from "@frontend/theme";
 import CssBaseline from "@mui/material/CssBaseline";
-import { createTheme, styled } from "@mui/material/styles";
-import ThemeProvider from "@mui/system/ThemeProvider";
+import { styled, ThemeProvider } from "@mui/material/styles";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import React, {
   createContext,
   useCallback,
+  useEffect,
   useMemo,
   useSyncExternalStore,
 } from "react";
 import { Provider as ReduxProvider } from "react-redux";
-
-import SearchModal from "../components/SearchModal";
-import store from "../redux/store";
-
-type ThemeMode = "light" | "dark";
 
 export const DarkModeContext = createContext({
   isDarkMode: false,
@@ -47,19 +40,32 @@ const getClientModeSnapshot = (): ThemeMode => {
   return storedMode === "dark" ? "dark" : "light";
 };
 
-const getServerModeSnapshot = (): ThemeMode => "light";
-
 /**
  * Any global components like providers or configs should go here
  */
 const ClientLayout: React.FC<{
   children: React.ReactNode;
-}> = ({ children }) => {
+  initialTheme: ThemeMode;
+}> = ({ children, initialTheme }) => {
+  const getServerModeSnapshot = useCallback(
+    (): ThemeMode => initialTheme,
+    [initialTheme]
+  );
+
   const mode = useSyncExternalStore(
     subscribeToDarkMode,
     getClientModeSnapshot,
     getServerModeSnapshot
   );
+
+  useEffect(() => {
+    const isValidMode = mode === "light" || mode === "dark";
+    if (isValidMode) {
+      document.cookie = `darkMode=${mode};path=/;max-age=315360000;samesite=lax;secure`;
+    } else {
+      console.warn("Invalid theme mode provided.");
+    }
+  }, [mode]);
 
   const toggleDarkMode = useCallback(() => {
     const nextMode = mode === "light" ? "dark" : "light";
@@ -80,56 +86,7 @@ const ClientLayout: React.FC<{
     [mode, toggleDarkMode]
   );
 
-  const theme = useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode,
-          ...(mode === "light"
-            ? {
-                primary: {
-                  main: "#EF6C02",
-                  light: "#F3D0C5",
-                },
-                success: {
-                  main: "#3bdd03",
-                },
-                warning: {
-                  main: "#FF0000",
-                },
-                secondary: {
-                  main: "rgba(0, 0, 0, 0.12)",
-                },
-                background: {
-                  default: "#FFFBF9",
-                  paper: grey[300],
-                },
-                text: {
-                  primary: "#000000",
-                  secondary: grey[600],
-                },
-              }
-            : {
-                primary: {
-                  main: "#D4613C",
-                  dark: "#EF6C00",
-                },
-                secondary: {
-                  main: grey[800],
-                },
-                background: {
-                  default: "#101214",
-                  paper: grey[800],
-                },
-                text: {
-                  primary: "#ffffff",
-                  secondary: grey[400],
-                },
-              }),
-        },
-      }),
-    [mode]
-  );
+  const theme = useMemo(() => createAppTheme(mode), [mode]);
 
   return (
     <DarkModeContext.Provider value={darkModeContextValue}>
@@ -155,7 +112,10 @@ const App: React.FC<{
     <>
       <NavBar />
       <SearchModal />
-      <Main>{children}</Main>
+      <Main>
+        {children}
+        <Footer />
+      </Main>
     </>
   );
 };
@@ -165,7 +125,10 @@ const Main = styled("main")(({ theme }) => ({
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  paddingTop: navHeight,
+  paddingTop: theme.space.none,
+  [theme.breakpoints.up("sm")]: {
+    paddingTop: theme.sizes.navBar.height,
+  },
   width: "100%",
   marginRight: 0,
   height: "100%",

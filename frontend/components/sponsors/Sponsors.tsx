@@ -1,0 +1,170 @@
+import SponsorItem from "@frontend/components/sponsors/SponsorItem";
+import { Sponsor } from "@frontend/types";
+import { Divider, Stack, Typography, useTheme } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import Image from "next/image";
+
+export default function Sponsors() {
+  const theme = useTheme();
+  const isLightMode = theme.palette.mode === "light";
+
+  const sponsors: Sponsor[] = [
+    {
+      name: "Hudson River Trading",
+      tier: "Platinum",
+      image: isLightMode
+        ? "/assets/sponsors/hrt.png"
+        : "/assets/sponsors/hrt.png",
+      url: "https://www.hudsonrivertrading.com",
+    },
+    {
+      name: "The Trade Desk",
+      tier: "Platinum",
+      image: isLightMode
+        ? "/assets/sponsors/theTradeDesk.png"
+        : "/assets/sponsors/thetradedesk_dark.png",
+      url: "https://careers.thetradedesk.com/",
+    },
+    {
+      name: "Jane Street",
+      tier: "Platinum",
+      image: isLightMode
+        ? "/assets/sponsors/jane_street.png"
+        : "/assets/sponsors/jane_street_dark.svg",
+      url: "https://www.janestreet.com/",
+    },
+    {
+      name: "Lyra",
+      tier: "Platinum",
+      image: isLightMode
+        ? "/assets/sponsors/lyra-dark.svg"
+        : "/assets/sponsors/lyra-light.svg",
+      url: "https://lyratechnologies.com.au",
+    },
+    {
+      name: "Arista",
+      tier: "Gold",
+      image: isLightMode
+        ? "/assets/sponsors/arista.png"
+        : "/assets/sponsors/arista_dark.png",
+      url: "https://www.arista.com/en/",
+    },
+    {
+      name: "Airwallex",
+      tier: "Gold",
+      image: isLightMode
+        ? "/assets/sponsors/airwallex-dark.png"
+        : "/assets/sponsors/airwallex-light.png",
+      url: "https://www.airwallex.com/au",
+    },
+    {
+      name: "Atlassian",
+      tier: "Gold",
+      image: isLightMode
+        ? "/assets/sponsors/atlassian.png"
+        : "/assets/sponsors/atlassian.png",
+      url: "https://www.atlassian.com/",
+    },
+    {
+      name: "QRT",
+      tier: "Gold",
+      image: isLightMode
+        ? "/assets/sponsors/qrt-dark.svg"
+        : "/assets/sponsors/qrt.svg",
+      url: "https://www.qube-rt.com/",
+    },
+  ];
+  const platinumSponsors = sponsors.filter(
+    (sponsor) => sponsor.tier === "Platinum"
+  );
+
+  const goldSponsors = sponsors.filter((sponsor) => sponsor.tier === "Gold");
+
+  return (
+    <Stack sx={{ marginTop: `${theme.space.xl}px` }}>
+      <Typography
+        align="center"
+        variant="h1"
+        sx={{ fontSize: { xs: "2.25rem", md: "3rem" }, fontWeight: "bold" }}
+      >
+        Our Sponsors
+      </Typography>
+      <Image
+        alt="Underline Vector"
+        src="/assets/landing_page/underline_vector.png"
+        height={12}
+        width={200}
+        style={{
+          alignSelf: "center",
+          marginTop: theme.space.xs,
+        }}
+      />
+      <Grid
+        container
+        rowSpacing={`${theme.space.lg}px`}
+        columnSpacing={{
+          xs: `${theme.space.md}px`,
+          sm: `${theme.space.xxl}px`,
+        }}
+        columns={12}
+        sx={{
+          mt: `${theme.space.xl}px`,
+          width: "100%",
+          maxWidth: 1200,
+          mx: "auto",
+          px: {
+            xs: `${theme.space.md}px`,
+            sm: `${theme.space.lg}px`,
+            md: `${theme.space.xl}px`,
+          },
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Grid size={12}>
+          <Typography
+            component="h2"
+            variant="h3"
+            sx={{ color: theme.colours.accent.primary }}
+          >
+            Platinum Sponsors
+          </Typography>
+        </Grid>
+
+        {platinumSponsors.map((s, idx) => (
+          <SponsorItem
+            key={`platinum-${idx}`}
+            name={s.name}
+            image={s.image}
+            url={s.url}
+            tier={s.tier}
+          />
+        ))}
+
+        <Grid size={12}>
+          <Divider />
+        </Grid>
+
+        <Grid size={12}>
+          <Typography
+            component="h2"
+            variant="h3"
+            sx={{ color: theme.colours.accent.primary }}
+          >
+            Gold Sponsors
+          </Typography>
+        </Grid>
+
+        {goldSponsors.map((s, idx) => (
+          <SponsorItem
+            key={`gold-${idx}`}
+            name={s.name}
+            image={s.image}
+            url={s.url}
+            tier={s.tier}
+          />
+        ))}
+      </Grid>
+    </Stack>
+  );
+}

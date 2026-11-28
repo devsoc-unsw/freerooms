@@ -1,0 +1,43 @@
+"use client";
+
+import { useDispatch, useSelector } from "@frontend/redux/hooks";
+import {
+  selectDatetime,
+  setDatetime,
+} from "@frontend/redux/slices/datetimeSlice";
+import { getPickerFieldStyles } from "@frontend/theme/fieldStyles";
+import { SYDNEY_TIMEZONE } from "@frontend/utils/toSydneyTime";
+import { useTheme } from "@mui/material/styles";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { enAU } from "date-fns/locale";
+import { fromZonedTime, toZonedTime } from "date-fns-tz";
+import React from "react";
+
+const DatePicker = () => {
+  const dispatch = useDispatch();
+  const datetime = useSelector(selectDatetime);
+  const theme = useTheme();
+
+  return (
+    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enAU}>
+      <DesktopDatePicker
+        format="dd/MM/yy"
+        value={toZonedTime(datetime, SYDNEY_TIMEZONE)}
+        onChange={(value: Date | null) =>
+          value && dispatch(setDatetime(fromZonedTime(value, SYDNEY_TIMEZONE)))
+        }
+        slotProps={{
+          textField: {
+            variant: "outlined",
+            sx: getPickerFieldStyles(theme),
+          },
+        }}
+        aria-label="date-picker"
+      />
+    </LocalizationProvider>
+  );
+};
+
+export default DatePicker;

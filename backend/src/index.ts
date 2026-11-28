@@ -1,4 +1,29 @@
-import { BuildingRatingsResponse } from "@common/types";
+import {
+  bookingDetailsParamsSchema,
+  bookingDetailsSchema,
+  BookingPaginationParams,
+  bookingsEventParamsSchema,
+  bookingsEventResponseSchema,
+  bookingsPaginationQuerySchema,
+  bookingsPaginationResponseSchema,
+  bookingsResponseSchema,
+  buildingIdParamsSchema,
+  BuildingRatingsResponse,
+  buildingRatingsResponseSchema,
+  buildingsResponseSchema,
+  ratingCreatedResponseSchema,
+  ratingParamsSchema,
+  ratingSchema,
+  ratingsResponseSchema,
+  roomIdParamsSchema,
+  roomsResponseSchema,
+  roomUtilitiesParamsSchema,
+  roomUtilitiesResponseSchema,
+  searchQuerySchema,
+  searchResponseSchema,
+  statusQuerySchema,
+  statusResponseSchema,
+} from "common/types";
 import cors from "cors";
 import express, {
   json,
@@ -7,31 +32,48 @@ import express, {
   RequestHandler,
   Response,
 } from "express";
+import {
+  extendZodWithOpenApi,
+  openAPIRoute,
+} from "express-zod-openapi-autogen";
+import { z } from "zod";
 
 import { PORT } from "./config";
 import { getRoomUtilities } from "./helpers";
 import {
+  getAllBuildingRatings,
+  getAllRoomRatingsInBuilding,
   getBuildingRatings,
   getRatings,
   insertBuldingRating,
   insertRating,
 } from "./ratingDbInterface";
 import {
+  parseBookingCursor,
+  parseBookingFilters,
+  parseBookingLimit,
+  parseBookingSearch,
+  parseBookingSort,
   parseSearchFilters,
   parseStatusDatetime,
   parseStatusFilters,
 } from "./requestParsers";
 import {
+  getAllBookings,
   getAllBuildings,
   getAllRooms,
   getAllRoomStatus,
+  getBookingDetails,
   getRoomBookings,
+  getRoomByEvent,
   searchAllRoom,
 } from "./service";
 
 const app = express();
+const router = express.Router();
 app.use(cors());
 app.use(json());
+extendZodWithOpenApi(z);
 
 // Wrapper for request handler functions to catch async exceptions
 const asyncHandler =
@@ -40,124 +82,335 @@ const asyncHandler =
   };
 
 // Route to get info of all the buildings
-app.get(
+router.get(
   "/api/buildings",
-  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const buildingData = await getAllBuildings();
-    res.send(buildingData);
-    next();
-  })
+  openAPIRoute(
+    {
+      tag: "Buildings",
+      summary: "Get all buildings",
+      response: buildingsResponseSchema,
+    },
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      const buildingData = await getAllBuildings();
+      res.json(buildingData);
+      next();
+    })
+  )
 );
 
 // Route to get info of all the rooms
-app.get(
+router.get(
   "/api/rooms",
-  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const roomData = await getAllRooms();
-    res.send(roomData);
-    next();
-  })
+  openAPIRoute(
+    {
+      tag: "Rooms",
+      summary: "Get all rooms",
+      response: roomsResponseSchema,
+    },
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      const roomData = await getAllRooms();
+      res.json(roomData);
+      next();
+    })
+  )
 );
 
 // Route to get status of all rooms
-app.get(
+router.get(
   "/api/rooms/status",
-  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const datetime = parseStatusDatetime(req);
-    const filters = parseStatusFilters(req);
-    const data = await getAllRoomStatus(datetime, filters);
-    res.send(data);
-    next();
-  })
+  openAPIRoute(
+    {
+      tag: "Rooms",
+      summary: "Get room availability status",
+      query: statusQuerySchema,
+      response: statusResponseSchema,
+    },
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      const datetime = parseStatusDatetime(req);
+      statusQuerySchema.parse(req.query);
+      const filters = parseStatusFilters(req);
+      const data = await getAllRoomStatus(datetime, filters);
+      res.json(data);
+      next();
+    })
+  )
 );
 
 // Route to search all rooms
-app.get(
+router.get(
   "/api/rooms/search",
-  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const datetime = parseStatusDatetime(req);
-    const filters = parseSearchFilters(req);
-    const data = await searchAllRoom(datetime, filters);
-    res.send(data);
-    next();
-  })
+  openAPIRoute(
+    {
+      tag: "Rooms",
+      summary: "Search available rooms",
+      query: searchQuerySchema,
+      response: searchResponseSchema,
+    },
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      const datetime = parseStatusDatetime(req);
+      searchQuerySchema.parse(req.query);
+      const filters = parseSearchFilters(req);
+      const data = await searchAllRoom(datetime, filters);
+      res.json(data);
+      next();
+    })
+  )
 );
 
 // Route to get the bookings of a particular room
-app.get(
+router.get(
   "/api/rooms/bookings/:roomID",
-  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const { roomID } = req.params as { roomID: string };
-    const data = await getRoomBookings(roomID);
-    res.send(data);
-    next();
-  })
+  openAPIRoute(
+    {
+      tag: "Bookings",
+      summary: "Get bookings for a room",
+      params: roomIdParamsSchema,
+      response: bookingsResponseSchema,
+    },
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      const { roomID } = roomIdParamsSchema.parse(req.params);
+      const data = await getRoomBookings(roomID);
+      res.json(data);
+      next();
+    })
+  )
+);
+
+// Route to get all bookings with pagination
+router.get(
+  "/api/bookings",
+  openAPIRoute(
+    {
+      tag: "Bookings",
+      summary: "Get all bookings with pagination",
+      query: bookingsPaginationQuerySchema,
+      response: bookingsPaginationResponseSchema,
+    },
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      const params: BookingPaginationParams = {
+        limit: parseBookingLimit(req),
+        filters: parseBookingFilters(req),
+        sort: parseBookingSort(req),
+        search: parseBookingSearch(req),
+        cursor: parseBookingCursor(req),
+      };
+      const data = await getAllBookings(params);
+      res.json(data);
+      next();
+    })
+  )
+);
+
+// Route to get related bookings from an event ID
+router.get(
+  "/api/bookings/event/:eventID",
+  openAPIRoute(
+    {
+      tag: "Bookings",
+      summary: "Get bookings for an event",
+      params: bookingsEventParamsSchema,
+      response: bookingsEventResponseSchema.array(),
+    },
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      const { eventID } = bookingsEventParamsSchema.parse(req.params);
+      const data = await getRoomByEvent(eventID);
+      res.json(data);
+      next();
+    })
+  )
+);
+
+// Route to get the details of a specific booking from an occurrence ID and room ID
+router.get(
+  "/api/bookings/:roomID/:occurrenceID",
+  openAPIRoute(
+    {
+      tag: "Bookings",
+      summary: "Get individual booking details",
+      params: bookingDetailsParamsSchema,
+      response: bookingDetailsSchema,
+    },
+    asyncHandler(async (req: Request, res: Response) => {
+      const { roomID, occurrenceID } = bookingDetailsParamsSchema.parse(
+        req.params
+      );
+
+      try {
+        const booking = await getBookingDetails(roomID, occurrenceID);
+
+        if (booking === null) {
+          res.status(404).json({
+            message: "Booking not found",
+          });
+
+          return;
+        }
+
+        res.json(booking);
+      } catch (error) {
+        console.error("Failed to retrieve booking details", error);
+
+        res.status(502).json({
+          message: "Failed to retrieve booking details",
+        });
+      }
+    })
+  )
 );
 
 // Get all ratings for a room given a roomId
-app.get(
+router.get(
   "/api/rating/:roomID",
-  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const { roomID } = req.params as { roomID: string };
-    const roomRatings = await getRatings(roomID);
-    res.send(roomRatings);
-    next();
-  })
+  openAPIRoute(
+    {
+      tag: "Ratings",
+      summary: "Get ratings for a room",
+      params: roomIdParamsSchema,
+      response: ratingsResponseSchema,
+    },
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      const { roomID } = roomIdParamsSchema.parse(req.params);
+      const roomRatings = await getRatings(roomID);
+      res.json(roomRatings);
+      next();
+    })
+  )
+);
+
+// Get ratings of all rooms in a building
+router.get(
+  "/api/rating/rooms/:buildingID",
+  openAPIRoute(
+    {
+      tag: "Ratings",
+      summary: "Get ratings for rooms in a building",
+      params: buildingIdParamsSchema,
+      response: ratingsResponseSchema.array(),
+    },
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      const { buildingID } = buildingIdParamsSchema.parse(req.params);
+      const roomRatings = await getAllRoomRatingsInBuilding(buildingID);
+      res.json(roomRatings);
+      next();
+    })
+  )
 );
 
 // Insert one rating for a room
-app.post(
+router.post(
   "/api/rating/rate/:buildingID/:roomID",
-  async (req: Request, res: Response) => {
-    const { buildingID, roomID } = req.params as {
-      buildingID: string;
-      roomID: string;
-    };
-    const { cleanliness, location, quietness, overall } = req.body;
-    const ratings = [cleanliness, location, quietness, overall];
-    try {
-      // Insert a new rating object to room document
-      await insertRating(roomID, ratings);
-      // Update the overall rating of the building
-      await insertBuldingRating(buildingID, overall);
-      res.status(200).json({ message: "rating inserted successfully" });
-    } catch (error) {
-      res.status(500).json({ error: error });
-    }
-  }
+  openAPIRoute(
+    {
+      tag: "Ratings",
+      summary: "Submit a room rating",
+      params: ratingParamsSchema,
+      body: ratingSchema,
+      response: ratingCreatedResponseSchema,
+    },
+    asyncHandler(async (req: Request, res: Response) => {
+      const { buildingID, roomID } = ratingParamsSchema.parse(req.params);
+      const rating = ratingSchema.parse(req.body);
+      try {
+        // Insert a new rating object to room document
+        await insertRating(roomID, [
+          rating.cleanliness,
+          rating.location,
+          rating.quietness,
+          rating.overall,
+        ]);
+        // Update the overall rating of the building
+        await insertBuldingRating(buildingID, rating.overall);
+        res.json({
+          message: "rating inserted successfully",
+        });
+      } catch (error) {
+        res.status(500).json({ error: error });
+      }
+    })
+  )
 );
 
 // Get overall rating for a building given a buildingID
-app.get(
+router.get(
   "/api/buildingRating/:buildingID",
-  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const { buildingID } = req.params as { buildingID: string };
-    let buildingRating: BuildingRatingsResponse | null =
-      await getBuildingRatings(buildingID);
+  openAPIRoute(
+    {
+      tag: "Ratings",
+      summary: "Get a building rating",
+      params: buildingIdParamsSchema,
+      response: buildingRatingsResponseSchema,
+    },
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      const { buildingID } = buildingIdParamsSchema.parse(req.params);
+      let buildingRating: BuildingRatingsResponse | null =
+        await getBuildingRatings(buildingID);
 
-    // no reviews for current building
-    if (buildingRating === null) {
-      buildingRating = {
-        buildingId: buildingID,
-        overallRating: 0,
-      };
-    }
+      // no reviews for current building
+      if (buildingRating === null) {
+        buildingRating = {
+          buildingId: buildingID,
+          overallRating: 0,
+        };
+      }
 
-    res.send(buildingRating);
-    next();
-  })
+      res.json(buildingRating);
+      next();
+    })
+  )
+);
+
+// Get overall ratings for all buildings
+router.get(
+  "/api/buildingRating",
+  openAPIRoute(
+    {
+      tag: "Ratings",
+      summary: "Get all building ratings",
+      response: buildingRatingsResponseSchema.array(),
+    },
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      const buildingData = await getAllBuildings();
+      const buildingRatings = await getAllBuildingRatings();
+
+      const ratingsByBuildingId = new Map(
+        buildingRatings.map((rating) => [rating.buildingId, rating])
+      );
+
+      const allBuildingRatings: BuildingRatingsResponse[] =
+        buildingData.buildings.map(
+          (building) =>
+            ratingsByBuildingId.get(building.id) ?? {
+              buildingId: building.id,
+              overallRating: 0,
+            }
+        );
+
+      res.json(allBuildingRatings);
+      next();
+    })
+  )
 );
 
 // Route to get utilities of a room
-app.get(
+router.get(
   "/api/rooms/utilities/:roomId",
-  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const { roomId } = req.params as { roomId: string };
-    const roomUtilities = await getRoomUtilities(roomId);
-    res.send(roomUtilities);
-    next();
-  })
+  openAPIRoute(
+    {
+      tag: "Rooms",
+      summary: "Get room utilities",
+      params: roomUtilitiesParamsSchema,
+      response: roomUtilitiesResponseSchema,
+    },
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+      const { roomId } = roomUtilitiesParamsSchema.parse(req.params);
+      const roomUtilities = await getRoomUtilities(roomId);
+      res.json(roomUtilities);
+      next();
+    })
+  )
 );
+
+app.use(router);
 
 // Error-handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
@@ -169,6 +422,10 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-app.listen(PORT, () => {
-  console.log(`Freerooms backend now listening on port ${PORT}!`);
-});
+export { app, router };
+
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Freerooms backend now listening on port ${PORT}!`);
+  });
+}
