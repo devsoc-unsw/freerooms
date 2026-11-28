@@ -31,4 +31,4 @@ EXPOSE 3000
 
 ENV NODE_ENV production
 
-CMD ["node", "backend/src/index.js"]
+CMD ["node", "backend/dist/backend/src/index.js"]
